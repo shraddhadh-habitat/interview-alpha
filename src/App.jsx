@@ -4,6 +4,7 @@ import InterviewAlpha from './InterviewAlpha';
 import AuthPage from './pages/AuthPage';
 import PastSessions from './pages/PastSessions';
 import Leaderboard from './pages/Leaderboard';
+import PracticeQA from './pages/PracticeQA';
 import Nav from './components/Nav';
 
 const C = { bg: '#FFFFFF', text: '#1A1A1A', textMuted: '#999999', orange: '#E8650A' };
@@ -50,6 +51,7 @@ export default function App() {
     <div style={{ minHeight: '100vh' }}>
       <Nav user={user} page={page} setPage={setPage} />
       {page === 'interview'    && <InterviewAlpha user={user} />}
+      {page === 'practice'     && <PracticeQA />}
       {page === 'sessions'     && <PastSessions user={user} />}
       {page === 'leaderboard'  && <Leaderboard />}
     </div>

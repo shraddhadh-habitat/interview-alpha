@@ -13,6 +13,7 @@ const C = {
 export default function Nav({ user, page, setPage }) {
   const tabs = [
     { id: 'interview', label: 'Interview' },
+    { id: 'practice', label: 'Practice Q&A' },
     { id: 'sessions', label: 'Past Sessions' },
     { id: 'leaderboard', label: 'Leaderboard' },
   ];
