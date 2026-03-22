@@ -10,7 +10,7 @@ const C = {
   orangeLight: 'rgba(232,101,10,0.08)',
 };
 
-export default function Nav({ user, page, setPage }) {
+export default function Nav({ user, page, setPage, onReplayDemo }) {
   const tabs = [
     { id: 'interview', label: 'Interview' },
     { id: 'practice', label: 'Practice Q&A' },
@@ -88,6 +88,28 @@ export default function Nav({ user, page, setPage }) {
           <span style={{ fontSize: 11, color: C.textMuted, letterSpacing: 0.5 }}>
             {user?.email}
           </span>
+          {onReplayDemo && (
+            <button
+              onClick={onReplayDemo}
+              style={{
+                padding: '5px 12px',
+                background: 'transparent',
+                border: `1px solid ${C.border}`,
+                borderRadius: 6,
+                color: C.textMuted,
+                fontSize: 10,
+                letterSpacing: 1.5,
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                fontFamily: "'DM Mono', monospace",
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = C.orange; e.currentTarget.style.color = C.orange; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
+            >
+              Tour
+            </button>
+          )}
           <button
             onClick={() => supabase.auth.signOut()}
             style={{

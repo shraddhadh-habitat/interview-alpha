@@ -1,5 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { pmQuestions, PM_LEVELS } from '../data/pmQuestions';
+import { supabase } from '../lib/supabase';
+import PracticeMode from './PracticeMode';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAFA', bgMuted: '#F5F5F5',
@@ -8,6 +10,7 @@ const C = {
   orange: '#E8650A', orangeHover: '#D45800',
   orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
   yellow: '#C67F00', yellowLight: 'rgba(198,127,0,0.06)', yellowBorder: 'rgba(198,127,0,0.15)',
+  green: '#1B8C3A', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
 };
 
 const globalStyles = `
@@ -29,7 +32,31 @@ function ChevronIcon({ open }) {
   );
 }
 
-function QuestionCard({ question, index, isOpen, onToggle }) {
+function ScoreBadge({ score, attempts }) {
+  const color = score >= 70 ? C.green : score >= 40 ? C.yellow : '#D32F2F';
+  const bg = score >= 70 ? C.greenLight : score >= 40 ? C.yellowLight : 'rgba(211,47,47,0.07)';
+  const border = score >= 70 ? C.greenBorder : score >= 40 ? C.yellowBorder : 'rgba(211,47,47,0.18)';
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+      <span style={{
+        padding: '2px 8px',
+        background: bg, border: `1px solid ${border}`,
+        borderRadius: 20, fontSize: 10,
+        color, fontFamily: "'DM Mono', monospace",
+        fontWeight: 600, letterSpacing: 0.5,
+      }}>
+        {score}
+      </span>
+      {attempts > 1 && (
+        <span style={{ fontSize: 10, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
+          ×{attempts}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData }) {
   return (
     <div style={{
       background: C.bg,
@@ -56,8 +83,7 @@ function QuestionCard({ question, index, isOpen, onToggle }) {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono', monospace",
           color: isOpen ? '#fff' : C.textMuted,
-          transition: 'background 0.2s, color 0.2s',
-          marginTop: 1,
+          transition: 'background 0.2s, color 0.2s', marginTop: 1,
         }}>
           {index + 1}
         </div>
@@ -72,6 +98,11 @@ function QuestionCard({ question, index, isOpen, onToggle }) {
           {question.q}
         </span>
 
+        {/* Score badge (if practiced) */}
+        {practiceData && (
+          <ScoreBadge score={practiceData.best_score} attempts={practiceData.attempts} />
+        )}
+
         <ChevronIcon open={isOpen} />
       </button>
 
@@ -79,23 +110,47 @@ function QuestionCard({ question, index, isOpen, onToggle }) {
       {isOpen && (
         <div style={{
           borderTop: `1px solid ${C.orangeBorder}`,
-          padding: '20px 22px 22px',
           background: C.orangeLight,
           animation: 'fadeUp 0.25s cubic-bezier(0.22,1,0.36,1)',
         }}>
-          <div style={{
-            fontSize: 9, letterSpacing: 3, textTransform: 'uppercase',
-            color: C.orange, fontFamily: "'DM Mono', monospace",
-            fontWeight: 500, marginBottom: 12,
-          }}>
-            Expert Answer
+          <div style={{ padding: '20px 22px 16px' }}>
+            <div style={{
+              fontSize: 9, letterSpacing: 3, textTransform: 'uppercase',
+              color: C.orange, fontFamily: "'DM Mono', monospace",
+              fontWeight: 500, marginBottom: 12,
+            }}>
+              Expert Answer
+            </div>
+            <div style={{
+              fontSize: 14, lineHeight: 1.8, color: C.textSoft,
+              fontFamily: "'Source Serif 4', serif",
+              whiteSpace: 'pre-wrap',
+            }}>
+              {question.a}
+            </div>
           </div>
-          <div style={{
-            fontSize: 14, lineHeight: 1.8, color: C.textSoft,
-            fontFamily: "'Source Serif 4', serif",
-            whiteSpace: 'pre-wrap',
-          }}>
-            {question.a}
+          {/* Practice button */}
+          <div style={{ padding: '0 22px 18px' }}>
+            <button
+              onClick={(e) => { e.stopPropagation(); onPractice(); }}
+              style={{
+                padding: '9px 20px',
+                background: C.orange, border: 'none', borderRadius: 7,
+                color: '#fff', fontSize: 11, letterSpacing: 1.5,
+                textTransform: 'uppercase', cursor: 'pointer',
+                fontFamily: "'DM Mono', monospace", fontWeight: 500,
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
+              onMouseLeave={e => e.currentTarget.style.background = C.orange}
+            >
+              ✎ Practice This Question
+            </button>
+            {practiceData && (
+              <span style={{ marginLeft: 12, fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
+                Best: {practiceData.best_score}/100 · {practiceData.attempts} attempt{practiceData.attempts !== 1 ? 's' : ''}
+              </span>
+            )}
           </div>
         </div>
       )}
@@ -103,18 +158,39 @@ function QuestionCard({ question, index, isOpen, onToggle }) {
   );
 }
 
-export default function PracticeQA() {
-  const [selectedLevel, setSelectedLevel] = useState(null); // null = All Levels
+export default function PracticeQA({ user }) {
+  const [selectedLevel, setSelectedLevel] = useState(null);
   const [category, setCategory] = useState('product');
   const [search, setSearch] = useState('');
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [allExpanded, setAllExpanded] = useState(false);
+  const [practiceQuestion, setPracticeQuestion] = useState(null); // { question, questionId, designation, category }
+  const [practiceStats, setPracticeStats] = useState({}); // { [questionId]: { best_score, attempts } }
 
-  // Build flat list of filtered questions
+  // Load practice stats for current user
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('practice_attempts')
+      .select('question_id, score')
+      .eq('user_id', user.id)
+      .then(({ data }) => {
+        if (!data) return;
+        const stats = {};
+        for (const row of data) {
+          if (!stats[row.question_id]) stats[row.question_id] = { best_score: row.score, attempts: 1 };
+          else {
+            stats[row.question_id].attempts += 1;
+            if (row.score > stats[row.question_id].best_score) stats[row.question_id].best_score = row.score;
+          }
+        }
+        setPracticeStats(stats);
+      });
+  }, [user]);
+
   const filtered = useMemo(() => {
     const results = [];
     const levels = selectedLevel ? [selectedLevel] : PM_LEVELS;
-
     for (const level of levels) {
       const bank = pmQuestions[level];
       if (!bank) continue;
@@ -131,23 +207,17 @@ export default function PracticeQA() {
   const toggleCard = (key) => {
     setExpandedKeys(prev => {
       const next = new Set(prev);
-      if (next.has(key)) { next.delete(key); } else { next.add(key); }
+      if (next.has(key)) next.delete(key); else next.add(key);
       return next;
     });
     setAllExpanded(false);
   };
 
   const handleExpandAll = () => {
-    if (allExpanded) {
-      setExpandedKeys(new Set());
-      setAllExpanded(false);
-    } else {
-      setExpandedKeys(new Set(filtered.map(f => f.key)));
-      setAllExpanded(true);
-    }
+    if (allExpanded) { setExpandedKeys(new Set()); setAllExpanded(false); }
+    else { setExpandedKeys(new Set(filtered.map(f => f.key))); setAllExpanded(true); }
   };
 
-  // Total question count for header
   const totalCount = useMemo(() => {
     let n = 0;
     for (const level of PM_LEVELS) {
@@ -157,6 +227,35 @@ export default function PracticeQA() {
     }
     return n;
   }, []);
+
+  // If in practice mode, render PracticeMode instead
+  if (practiceQuestion) {
+    return (
+      <PracticeMode
+        question={practiceQuestion.question}
+        questionId={practiceQuestion.questionId}
+        designation={practiceQuestion.designation}
+        category={practiceQuestion.category}
+        user={user}
+        onBack={() => {
+          setPracticeQuestion(null);
+          // Refresh stats after coming back
+          if (user) {
+            supabase.from('practice_attempts').select('question_id, score').eq('user_id', user.id)
+              .then(({ data }) => {
+                if (!data) return;
+                const stats = {};
+                for (const row of data) {
+                  if (!stats[row.question_id]) stats[row.question_id] = { best_score: row.score, attempts: 1 };
+                  else { stats[row.question_id].attempts += 1; if (row.score > stats[row.question_id].best_score) stats[row.question_id].best_score = row.score; }
+                }
+                setPracticeStats(stats);
+              });
+          }
+        }}
+      />
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'DM Mono', monospace" }}>
@@ -178,17 +277,12 @@ export default function PracticeQA() {
         {/* Disclaimer banner */}
         <div style={{
           padding: '14px 18px',
-          background: C.yellowLight,
-          border: `1px solid ${C.yellowBorder}`,
-          borderRadius: 8,
-          marginBottom: 32,
+          background: C.yellowLight, border: `1px solid ${C.yellowBorder}`,
+          borderRadius: 8, marginBottom: 32,
           display: 'flex', gap: 12, alignItems: 'flex-start',
         }}>
           <span style={{ fontSize: 14, flexShrink: 0, marginTop: 1 }}>⚠</span>
-          <p style={{
-            fontSize: 12, lineHeight: 1.65, color: C.yellow,
-            fontFamily: "'Source Serif 4', serif", margin: 0,
-          }}>
+          <p style={{ fontSize: 12, lineHeight: 1.65, color: C.yellow, fontFamily: "'Source Serif 4', serif", margin: 0 }}>
             <strong style={{ fontFamily: "'DM Mono', monospace", letterSpacing: 0.5 }}>Framework Guide, Not a Script.</strong>{' '}
             These answers demonstrate structured thinking patterns and PM frameworks. For behavioral questions, replace the example stories with your own real experiences. Numbers used are illustrative — always use your actual data in interviews.
           </p>
@@ -258,7 +352,7 @@ export default function PracticeQA() {
             ))}
           </div>
 
-          {/* Search + Expand controls */}
+          {/* Search + Expand */}
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <div style={{
               flex: 1, display: 'flex', alignItems: 'center', gap: 10,
@@ -283,7 +377,6 @@ export default function PracticeQA() {
                 <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>
               )}
             </div>
-
             <button
               onClick={handleExpandAll}
               style={{
@@ -322,9 +415,7 @@ export default function PracticeQA() {
         {filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 0', color: C.textMuted }}>
             <div style={{ fontSize: 32, marginBottom: 12, opacity: 0.3 }}>◆</div>
-            <div style={{ fontSize: 13, fontFamily: "'Source Serif 4', serif" }}>
-              No questions match your filters.
-            </div>
+            <div style={{ fontSize: 13, fontFamily: "'Source Serif 4', serif" }}>No questions match your filters.</div>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -332,15 +423,22 @@ export default function PracticeQA() {
               <QuestionCard
                 key={item.key}
                 question={item.question}
+                questionId={item.key}
                 index={displayIndex}
                 isOpen={expandedKeys.has(item.key)}
                 onToggle={() => toggleCard(item.key)}
+                onPractice={() => setPracticeQuestion({
+                  question: item.question,
+                  questionId: item.key,
+                  designation: item.level,
+                  category,
+                })}
+                practiceData={practiceStats[item.key] || null}
               />
             ))}
           </div>
         )}
 
-        {/* Bottom spacer */}
         <div style={{ height: 60 }} />
       </div>
     </div>

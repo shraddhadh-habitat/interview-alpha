@@ -6,6 +6,7 @@ import PastSessions from './pages/PastSessions';
 import Leaderboard from './pages/Leaderboard';
 import PracticeQA from './pages/PracticeQA';
 import Nav from './components/Nav';
+import DemoTutorial from './components/DemoTutorial';
 
 const C = { bg: '#FFFFFF', text: '#1A1A1A', textMuted: '#999999', orange: '#E8650A' };
 
@@ -30,6 +31,7 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [page, setPage] = useState('interview');
+  const [showDemo, setShowDemo] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -44,16 +46,30 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Check has_seen_demo after user is set
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('profiles')
+      .select('has_seen_demo')
+      .eq('id', user.id)
+      .single()
+      .then(({ data }) => {
+        if (data && !data.has_seen_demo) setShowDemo(true);
+      });
+  }, [user]);
+
   if (authLoading) return <LoadingScreen />;
   if (!user) return <AuthPage />;
 
   return (
     <div style={{ minHeight: '100vh' }}>
-      <Nav user={user} page={page} setPage={setPage} />
+      <Nav user={user} page={page} setPage={setPage} onReplayDemo={() => setShowDemo(true)} />
       {page === 'interview'    && <InterviewAlpha user={user} />}
-      {page === 'practice'     && <PracticeQA />}
+      {page === 'practice'     && <PracticeQA user={user} />}
       {page === 'sessions'     && <PastSessions user={user} />}
       {page === 'leaderboard'  && <Leaderboard />}
+      {showDemo && <DemoTutorial user={user} onClose={() => setShowDemo(false)} />}
     </div>
   );
 }
