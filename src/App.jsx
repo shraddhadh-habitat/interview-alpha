@@ -55,7 +55,7 @@ export default function App() {
       .eq('id', user.id)
       .single()
       .then(({ data }) => {
-        if (data && !data.has_seen_demo) setShowDemo(true);
+        if (!data || !data.has_seen_demo) setShowDemo(true);
       });
   }, [user]);
 
