@@ -3,11 +3,12 @@ import { supabase } from '../lib/supabase';
 const C = {
   bg: '#FFFFFF',
   text: '#1A1A1A',
-  textMuted: '#999999',
+  textMuted: '#444444',
   border: '#E5E5E5',
   orange: '#E8650A',
   orangeHover: '#D45800',
   orangeLight: 'rgba(232,101,10,0.08)',
+  golden: '#B8860B',
   green: '#1B8C3A',
   greenLight: 'rgba(27,140,58,0.08)',
   greenBorder: 'rgba(27,140,58,0.2)',
@@ -160,10 +161,10 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           <span style={{
             fontFamily: "'Playfair Display', serif",
-            fontSize: 18, fontWeight: 700, color: C.text,
+            fontSize: 18, fontWeight: 700,
             letterSpacing: -0.5,
           }}>
-            I<span style={{ color: C.orange }}>A</span>
+            <span style={{ color: C.golden }}>I</span><span style={{ color: C.orange }}>A</span>
           </span>
 
           <div style={{ display: 'flex', gap: 4 }}>
@@ -173,30 +174,27 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                 onClick={() => tab.id === 'upgrade' ? onUpgradeClick() : setPage(tab.id)}
                 style={{
                   padding: '6px 14px',
-                  background: page === tab.id ? C.orangeLight : 'transparent',
-                  border: page === tab.id ? `1px solid rgba(232,101,10,0.2)` : '1px solid transparent',
+                  background: (tab.id === 'upgrade' || page === tab.id) ? C.orangeLight : 'transparent',
+                  border: (tab.id === 'upgrade' || page === tab.id) ? `1px solid ${C.orangeBorder}` : '1px solid transparent',
                   borderRadius: 6,
                   color: tab.id === 'admin'
                     ? (page === tab.id ? C.orange : C.red)
-                    : tab.id === 'upgrade'
+                    : (tab.id === 'upgrade' || page === tab.id)
                       ? C.orange
-                      : (page === tab.id ? C.orange : C.textMuted),
-                  background: tab.id === 'upgrade' && page !== tab.id ? C.orangeLight : (page === tab.id ? C.orangeLight : 'transparent'),
-                  border: tab.id === 'upgrade' ? `1px solid ${C.orangeBorder}` : (page === tab.id ? `1px solid rgba(232,101,10,0.2)` : '1px solid transparent'),
-                  fontWeight: tab.id === 'upgrade' ? 600 : (page === tab.id ? 500 : 400),
+                      : C.golden,
                   fontSize: 11,
                   letterSpacing: 1.5,
                   textTransform: 'uppercase',
                   cursor: 'pointer',
                   fontFamily: "'DM Mono', monospace",
-                  fontWeight: page === tab.id ? 500 : 400,
+                  fontWeight: 700,
                   transition: 'all 0.2s',
                 }}
                 onMouseEnter={e => {
-                  if (page !== tab.id && tab.id !== 'upgrade') e.currentTarget.style.color = C.text;
+                  if (page !== tab.id && tab.id !== 'upgrade') e.currentTarget.style.color = C.orange;
                 }}
                 onMouseLeave={e => {
-                  if (page !== tab.id && tab.id !== 'upgrade') e.currentTarget.style.color = tab.id === 'admin' ? C.red : C.textMuted;
+                  if (page !== tab.id && tab.id !== 'upgrade') e.currentTarget.style.color = tab.id === 'admin' ? C.red : C.golden;
                 }}
               >
                 {tab.label}

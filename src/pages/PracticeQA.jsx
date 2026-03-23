@@ -5,7 +5,7 @@ import PracticeMode from './PracticeMode';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAFA', bgMuted: '#F5F5F5',
-  text: '#1A1A1A', textSoft: '#555555', textMuted: '#999999',
+  text: '#1A1A1A', textSoft: '#1A1A1A', textMuted: '#444444',
   border: '#E5E5E5', borderLight: '#F0F0F0',
   orange: '#E8650A', orangeHover: '#D45800',
   orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
