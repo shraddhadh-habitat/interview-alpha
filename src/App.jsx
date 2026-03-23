@@ -9,6 +9,7 @@ import SalaryGuide from './pages/SalaryGuide';
 import UpgradePage from './pages/UpgradePage';
 import AdminPanel from './pages/AdminPanel';
 import Nav from './components/Nav';
+import Footer from './components/Footer';
 import DemoTutorial from './components/DemoTutorial';
 import PaywallModal from './components/PaywallModal';
 
@@ -27,7 +28,7 @@ function LoadingScreen() {
     }}>
       <div style={{ textAlign: 'center' }}>
         <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700, color: C.text, marginBottom: 16 }}>
-          Interview<span style={{ color: C.orange }}>Alpha</span>
+          Interview<span style={{ color: C.orange }}>Alpha</span><sup style={{ fontSize: 14, verticalAlign: 'super' }}>™</sup>
         </div>
         <div style={{ fontSize: 10, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase' }}>Loading...</div>
       </div>
@@ -81,9 +82,12 @@ export default function App() {
       .eq('id', uid)
       .single();
 
+    // Show demo only if DB says unseen AND we haven't shown it this session.
+    // Write has_seen_demo:true to DB immediately so a refresh mid-demo never re-shows it.
     if (!data?.has_seen_demo && !demoShownRef.current) {
       demoShownRef.current = true;
       setShowDemo(true);
+      supabase.from('profiles').upsert({ id: uid, has_seen_demo: true }, { onConflict: 'id' });
     }
 
     // Auto-expire: if active but past expiry, mark as expired locally
@@ -204,6 +208,7 @@ export default function App() {
         />
       )}
       {page === 'admin' && isAdmin && <AdminPanel user={user} />}
+      <Footer />
       {showDemo && <DemoTutorial onClose={handleDemoClose} />}
       {showPaywall && (
         <PaywallModal
