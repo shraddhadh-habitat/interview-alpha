@@ -165,7 +165,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
             fontSize: 18, fontWeight: 700,
             letterSpacing: -0.5,
           }}>
-            <span style={{ color: C.golden }}>I</span><span style={{ color: C.orange }}>A</span><sup style={{ fontSize: 8, verticalAlign: 'super', color: C.textMuted, letterSpacing: 0 }}>™</sup>
+            <span style={{ color: C.golden }}>I</span><span style={{ color: C.orange }}>A</span><span style={{ fontSize: 9, verticalAlign: 'super', color: C.textMuted, fontFamily: "'DM Mono', monospace", fontWeight: 400 }}>™</span>
           </span>
 
           <div style={{ display: 'flex', gap: 4 }}>

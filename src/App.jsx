@@ -28,7 +28,7 @@ function LoadingScreen() {
     }}>
       <div style={{ textAlign: 'center' }}>
         <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700, color: C.text, marginBottom: 16 }}>
-          Interview<span style={{ color: C.orange }}>Alpha</span><sup style={{ fontSize: 14, verticalAlign: 'super' }}>™</sup>
+          Interview<span style={{ color: C.orange }}>Alpha</span><span style={{ fontSize: 13, verticalAlign: 'super', color: C.textMuted }}>™</span>
         </div>
         <div style={{ fontSize: 10, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase' }}>Loading...</div>
       </div>
@@ -171,7 +171,7 @@ export default function App() {
   const isAdmin = ADMIN_EMAIL && user.email === ADMIN_EMAIL;
 
   return (
-    <div style={{ minHeight: '100vh' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Nav
         user={user}
         page={page}
@@ -181,33 +181,35 @@ export default function App() {
         onUpgradeClick={() => setPage('upgrade')}
         isAdmin={isAdmin}
       />
-      {page === 'interview'   && (
-        <InterviewAlpha
-          user={user}
-          profile={profile}
-          checkSession={checkSession}
-          onSessionUsed={onSessionUsed}
-        />
-      )}
-      {page === 'practice'    && (
-        <PracticeQA
-          user={user}
-          profile={profile}
-          checkSession={checkSession}
-          onSessionUsed={onSessionUsed}
-        />
-      )}
-      {page === 'sessions'    && <PastSessions user={user} />}
-      {page === 'progress'    && <MyProgress user={user} />}
-      {page === 'salary'     && <SalaryGuide />}
-      {page === 'upgrade'     && (
-        <UpgradePage
-          user={user}
-          profile={profile}
-          onBack={() => setPage('interview')}
-        />
-      )}
-      {page === 'admin' && isAdmin && <AdminPanel user={user} />}
+      <div style={{ flex: 1 }}>
+        {page === 'interview'   && (
+          <InterviewAlpha
+            user={user}
+            profile={profile}
+            checkSession={checkSession}
+            onSessionUsed={onSessionUsed}
+          />
+        )}
+        {page === 'practice'    && (
+          <PracticeQA
+            user={user}
+            profile={profile}
+            checkSession={checkSession}
+            onSessionUsed={onSessionUsed}
+          />
+        )}
+        {page === 'sessions'    && <PastSessions user={user} />}
+        {page === 'progress'    && <MyProgress user={user} />}
+        {page === 'salary'      && <SalaryGuide />}
+        {page === 'upgrade'     && (
+          <UpgradePage
+            user={user}
+            profile={profile}
+            onBack={() => setPage('interview')}
+          />
+        )}
+        {page === 'admin' && isAdmin && <AdminPanel user={user} />}
+      </div>
       <Footer />
       {showDemo && <DemoTutorial onClose={handleDemoClose} />}
       {showPaywall && (
