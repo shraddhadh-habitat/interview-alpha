@@ -129,7 +129,8 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     { id: 'interview',   label: 'Interview' },
     { id: 'practice',    label: 'Practice Q&A' },
     { id: 'sessions',    label: 'Past Sessions' },
-    { id: 'leaderboard', label: 'Leaderboard' },
+    { id: 'progress',    label: 'My Progress' },
+    { id: 'salary',      label: 'Salary Guide' },
     ...(isFree  ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
     ...(isAdmin ? [{ id: 'admin',   label: 'Admin' }]     : []),
   ];

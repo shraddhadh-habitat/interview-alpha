@@ -3,8 +3,9 @@ import { supabase } from './lib/supabase';
 import InterviewAlpha from './InterviewAlpha';
 import AuthPage from './pages/AuthPage';
 import PastSessions from './pages/PastSessions';
-import Leaderboard from './pages/Leaderboard';
 import PracticeQA from './pages/PracticeQA';
+import MyProgress from './pages/MyProgress';
+import SalaryGuide from './pages/SalaryGuide';
 import UpgradePage from './pages/UpgradePage';
 import AdminPanel from './pages/AdminPanel';
 import Nav from './components/Nav';
@@ -193,7 +194,8 @@ export default function App() {
         />
       )}
       {page === 'sessions'    && <PastSessions user={user} />}
-      {page === 'leaderboard' && <Leaderboard />}
+      {page === 'progress'    && <MyProgress user={user} />}
+      {page === 'salary'     && <SalaryGuide />}
       {page === 'upgrade'     && (
         <UpgradePage
           user={user}

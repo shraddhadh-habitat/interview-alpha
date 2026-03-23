@@ -114,7 +114,7 @@ function ScoreBar({ label, value, max = 10 }) {
 
 // ─── Feedback panel ───
 function FeedbackPanel({ result, attemptNumber }) {
-  const { score, competency_breakdown, strengths, weaknesses, filler_words,
+  const { score, score_delta_hint, competency_breakdown, strengths, weaknesses, filler_words,
     high_signal_keywords, missing_concepts, expert_rewrite, improvement_tips, feedback_text } = result;
 
   const scoreColor = score >= 70 ? C.green : score >= 40 ? C.yellow : C.red;
@@ -134,6 +134,11 @@ function FeedbackPanel({ result, attemptNumber }) {
             <span style={{ fontSize: 56, fontWeight: 700, color: scoreColor, fontFamily: "'Playfair Display', serif", lineHeight: 1 }}>{score}</span>
             <span style={{ fontSize: 14, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>/100</span>
           </div>
+          {score_delta_hint && (
+            <div style={{ marginTop: 6, fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace", letterSpacing: 0.5 }}>
+              {score_delta_hint}
+            </div>
+          )}
         </div>
       </div>
 
@@ -231,28 +236,33 @@ function FeedbackPanel({ result, attemptNumber }) {
 }
 
 // ─── Main PracticeMode component ───
-export default function PracticeMode({ question, questionId, designation, category, user, onBack, profile, checkSession, onSessionUsed }) {
+export default function PracticeMode({ question, questionId, designation, category, user, onBack, onNextQuestion, profile, checkSession, onSessionUsed }) {
   const [mode, setMode] = useState('text'); // 'text' | 'voice'
   const [textAnswer, setTextAnswer] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [attemptNumber, setAttemptNumber] = useState(1);
+  const [prevBestScore, setPrevBestScore] = useState(null);
   const [error, setError] = useState('');
+  const [showExpert, setShowExpert] = useState(false);
 
   const voice = useVoiceToText();
 
-  // Fetch existing attempt count on mount
+  // Fetch existing attempt count and best score on mount
   useEffect(() => {
     if (!user) return;
     supabase
       .from('practice_attempts')
-      .select('attempt_number')
+      .select('attempt_number, score')
       .eq('user_id', user.id)
       .eq('question_id', questionId)
       .order('attempt_number', { ascending: false })
-      .limit(1)
       .then(({ data }) => {
-        if (data?.length > 0) setAttemptNumber(data[0].attempt_number + 1);
+        if (data?.length > 0) {
+          setAttemptNumber(data[0].attempt_number + 1);
+          const best = Math.max(...data.map(d => d.score).filter(Boolean));
+          setPrevBestScore(best);
+        }
       });
   }, [user, questionId]);
 
@@ -266,10 +276,11 @@ ${question.a}
 
 CANDIDATE'S ANSWER:
 ${userAnswer}
-
+${prevBestScore !== null ? `\nPREVIOUS BEST SCORE: ${prevBestScore}/100. In "score_delta_hint", note if this attempt is better, worse, or similar and by how much.\n` : ''}
 Evaluate the candidate's answer against the expert reference. Return ONLY a valid JSON object with this exact structure:
 {
   "score": <integer 1-100>,
+  "score_delta_hint": "e.g. +8 vs your best — structure improved" or null if first attempt,
   "competency_breakdown": {
     "structure": <1-10>,
     "depth": <1-10>,
@@ -356,6 +367,9 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           feedback_text: parsed.feedback_text,
           from_voice: fromVoice,
         });
+        if (prevBestScore === null || parsed.score > prevBestScore) {
+          setPrevBestScore(parsed.score);
+        }
       }
     } catch (err) {
       setError('Something went wrong. Please try again.');
@@ -409,19 +423,57 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         <div style={{
           background: C.bg,
           border: `1px solid ${C.border}`,
-          borderRadius: 12, padding: '20px 24px',
-          marginBottom: 28,
+          borderRadius: 12,
+          marginBottom: 16,
+          overflow: 'hidden',
         }}>
-          <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'DM Mono', monospace", marginBottom: 10 }}>Question</div>
-          <p style={{ fontSize: 15, lineHeight: 1.7, color: C.text, fontFamily: "'Source Serif 4', serif", margin: 0, fontWeight: 500 }}>
-            {question.q}
-          </p>
-          {attemptNumber > 1 && (
-            <div style={{ marginTop: 10, fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
-              Attempt #{attemptNumber}
-            </div>
-          )}
+          <div style={{ padding: '20px 24px' }}>
+            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'DM Mono', monospace", marginBottom: 10 }}>Question</div>
+            <p style={{ fontSize: 15, lineHeight: 1.7, color: C.text, fontFamily: "'Source Serif 4', serif", margin: 0, fontWeight: 500 }}>
+              {question.q}
+            </p>
+            {attemptNumber > 1 && (
+              <div style={{ marginTop: 10, fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
+                Attempt #{attemptNumber}
+              </div>
+            )}
+          </div>
+          {/* View Expert Answer collapsible */}
+          <div style={{ borderTop: `1px solid ${C.border}` }}>
+            <button
+              onClick={() => setShowExpert(v => !v)}
+              style={{
+                width: '100%', padding: '12px 24px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                background: showExpert ? C.bgSoft : 'transparent',
+                border: 'none', cursor: 'pointer',
+                fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                color: C.textMuted, fontFamily: "'DM Mono', monospace",
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = C.orange; }}
+              onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
+            >
+              <span>View Expert Answer</span>
+              <span style={{ fontSize: 14, transition: 'transform 0.2s', display: 'inline-block', transform: showExpert ? 'rotate(180deg)' : 'rotate(0deg)' }}>▾</span>
+            </button>
+            {showExpert && (
+              <div style={{
+                padding: '0 24px 20px',
+                background: C.bgSoft,
+                borderTop: `1px solid ${C.border}`,
+                animation: 'fadeUp 0.2s ease',
+              }}>
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'DM Mono', monospace", margin: '16px 0 10px' }}>Expert Answer</div>
+                <p style={{ fontSize: 13, lineHeight: 1.8, color: C.textSoft, fontFamily: "'Source Serif 4', serif", margin: 0, whiteSpace: 'pre-wrap' }}>
+                  {question.a}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
+
+        <div style={{ marginBottom: 16 }} />
 
         {/* Answer input — only shown before result */}
         {!result && (
@@ -467,27 +519,34 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   onFocus={e => e.target.style.borderColor = C.orange}
                   onBlur={e => e.target.style.borderColor = C.border}
                 />
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
-                  <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
-                    {textAnswer.trim().split(/\s+/).filter(Boolean).length} words
-                  </span>
-                  <button
-                    onClick={() => handleSubmit(textAnswer, false)}
-                    disabled={loading || !textAnswer.trim()}
-                    style={{
-                      padding: '12px 32px',
-                      background: loading || !textAnswer.trim() ? C.bgMuted : C.orange,
-                      border: 'none', borderRadius: 8,
-                      color: loading || !textAnswer.trim() ? C.textMuted : '#fff',
-                      fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                      cursor: loading || !textAnswer.trim() ? 'not-allowed' : 'pointer',
-                      fontFamily: "'DM Mono', monospace", fontWeight: 500,
-                      transition: 'all 0.2s',
-                    }}
-                  >
-                    {loading ? 'Evaluating...' : 'Submit Answer'}
-                  </button>
-                </div>
+                {(() => {
+                  const wordCount = textAnswer.trim().split(/\s+/).filter(Boolean).length;
+                  const ready = wordCount >= 50;
+                  const disabled = loading || !ready;
+                  return (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+                      <span style={{ fontSize: 11, color: ready ? C.green : C.textMuted, fontFamily: "'DM Mono', monospace" }}>
+                        {wordCount} / 50 words min{!ready && wordCount > 0 ? ` — ${50 - wordCount} more` : ''}
+                      </span>
+                      <button
+                        onClick={() => handleSubmit(textAnswer, false)}
+                        disabled={disabled}
+                        style={{
+                          padding: '12px 32px',
+                          background: disabled ? C.bgMuted : C.orange,
+                          border: 'none', borderRadius: 8,
+                          color: disabled ? C.textMuted : '#fff',
+                          fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                          cursor: disabled ? 'not-allowed' : 'pointer',
+                          fontFamily: "'DM Mono', monospace", fontWeight: 500,
+                          transition: 'all 0.2s',
+                        }}
+                      >
+                        {loading ? 'Evaluating...' : 'Submit Answer'}
+                      </button>
+                    </div>
+                  );
+                })()}
               </>
             ) : (
               /* Voice panel */
@@ -598,11 +657,11 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         {result && !loading && (
           <>
             <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} />
-            <div style={{ display: 'flex', gap: 12, marginTop: 28 }}>
+            <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
               <button
                 onClick={handleTryAgain}
                 style={{
-                  flex: 1, padding: '13px 0',
+                  flex: 1, minWidth: 140, padding: '13px 0',
                   background: C.orange, border: 'none', borderRadius: 8,
                   color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                   cursor: 'pointer', fontFamily: "'DM Mono', monospace", fontWeight: 500,
@@ -611,12 +670,28 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
                 onMouseLeave={e => e.currentTarget.style.background = C.orange}
               >
-                Try Again (Attempt #{attemptNumber})
+                Try Again (#{attemptNumber})
               </button>
+              {onNextQuestion && (
+                <button
+                  onClick={onNextQuestion}
+                  style={{
+                    flex: 1, minWidth: 140, padding: '13px 0',
+                    background: 'transparent', border: `1px solid ${C.orange}`, borderRadius: 8,
+                    color: C.orange, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                    cursor: 'pointer', fontFamily: "'DM Mono', monospace",
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = C.orangeLight; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                >
+                  Next Question →
+                </button>
+              )}
               <button
                 onClick={onBack}
                 style={{
-                  flex: 1, padding: '13px 0',
+                  flex: 1, minWidth: 140, padding: '13px 0',
                   background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 8,
                   color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                   cursor: 'pointer', fontFamily: "'DM Mono', monospace",

@@ -359,6 +359,29 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   // If in practice mode, render PracticeMode instead
   if (practiceQuestion) {
+    const currentIdx = filtered.findIndex(f => f.key === practiceQuestion.questionId);
+    const nextItem = currentIdx !== -1 && currentIdx < filtered.length - 1 ? filtered[currentIdx + 1] : null;
+    const handleNextQuestion = nextItem ? () => setPracticeQuestion({
+      question: nextItem.question,
+      questionId: nextItem.key,
+      designation: nextItem.level,
+      category,
+    }) : null;
+
+    const refreshStats = () => {
+      if (!user) return;
+      supabase.from('practice_attempts').select('question_id, score').eq('user_id', user.id)
+        .then(({ data }) => {
+          if (!data) return;
+          const stats = {};
+          for (const row of data) {
+            if (!stats[row.question_id]) stats[row.question_id] = { best_score: row.score, attempts: 1 };
+            else { stats[row.question_id].attempts += 1; if (row.score > stats[row.question_id].best_score) stats[row.question_id].best_score = row.score; }
+          }
+          setPracticeStats(stats);
+        });
+    };
+
     return (
       <PracticeMode
         question={practiceQuestion.question}
@@ -369,21 +392,10 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         profile={profile}
         checkSession={checkSession}
         onSessionUsed={onSessionUsed}
+        onNextQuestion={handleNextQuestion}
         onBack={() => {
           setPracticeQuestion(null);
-          // Refresh stats after coming back
-          if (user) {
-            supabase.from('practice_attempts').select('question_id, score').eq('user_id', user.id)
-              .then(({ data }) => {
-                if (!data) return;
-                const stats = {};
-                for (const row of data) {
-                  if (!stats[row.question_id]) stats[row.question_id] = { best_score: row.score, attempts: 1 };
-                  else { stats[row.question_id].attempts += 1; if (row.score > stats[row.question_id].best_score) stats[row.question_id].best_score = row.score; }
-                }
-                setPracticeStats(stats);
-              });
-          }
+          refreshStats();
         }}
       />
     );
