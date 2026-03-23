@@ -319,7 +319,8 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
       });
 
       const data = await res.json();
-      const raw = data?.content?.[0]?.text || '';
+      const raw = (data?.content?.[0]?.text || '')
+        .replace(/<thinking>[\s\S]*?<\/thinking>/gi, '').trim();
 
       let parsed;
       try {

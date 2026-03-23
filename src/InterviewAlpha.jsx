@@ -173,8 +173,12 @@ function parseScoreFromResponse(text) {
   return null;
 }
 
+function stripThinking(text) {
+  return text.replace(/<thinking>[\s\S]*?<\/thinking>/gi, "").trim();
+}
+
 function stripJsonBlock(text) {
-  return text.replace(/```json[\s\S]*?```/g, "").trim();
+  return stripThinking(text.replace(/```json[\s\S]*?```/g, "")).trim();
 }
 
 function buildCleanMessages(visibleMessages, newContent) {
@@ -661,7 +665,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         throw new Error(errData?.error?.message || `API returned ${res.status}`);
       }
       const data = await res.json();
-      return data.content?.map(b => b.text || "").join("\n") || "I couldn't generate a response. Please try again.";
+      const raw = data.content?.map(b => b.text || "").join("\n") || "I couldn't generate a response. Please try again.";
+      return stripThinking(raw);
     } catch (e) {
       setError(e.message || "Connection error");
       return `Error: ${e.message || "Connection failed"}. Check your API key and try again.`;
