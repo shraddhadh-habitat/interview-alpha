@@ -21,6 +21,118 @@ const globalStyles = `
   ::selection { background: rgba(232,101,10,0.18); }
 `;
 
+function ReportIssueModal({ questionId, user, onClose }) {
+  const [text, setText] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!text.trim() || submitting) return;
+    setSubmitting(true);
+    await supabase.from('question_reports').insert({
+      user_id: user.id,
+      question_id: questionId,
+      report_text: text.trim(),
+    });
+    setSubmitting(false);
+    setSubmitted(true);
+  };
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 1000,
+        background: 'rgba(0,0,0,0.45)', display: 'flex',
+        alignItems: 'center', justifyContent: 'center', padding: '0 16px',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: '#fff', borderRadius: 12, padding: '28px 28px 24px',
+          width: '100%', maxWidth: 440,
+          boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
+          fontFamily: "'DM Mono', monospace",
+        }}
+      >
+        {submitted ? (
+          <div style={{ textAlign: 'center', padding: '12px 0' }}>
+            <div style={{ fontSize: 28, marginBottom: 12 }}>✓</div>
+            <div style={{ fontSize: 14, color: C.text, fontFamily: "'Source Serif 4', serif", lineHeight: 1.6 }}>
+              Thanks — we'll review this.
+            </div>
+            <button
+              onClick={onClose}
+              style={{
+                marginTop: 20, padding: '8px 22px',
+                background: C.orange, border: 'none', borderRadius: 7,
+                color: '#fff', fontSize: 11, letterSpacing: 1.5,
+                textTransform: 'uppercase', cursor: 'pointer',
+                fontFamily: "'DM Mono', monospace",
+              }}
+            >
+              Close
+            </button>
+          </div>
+        ) : (
+          <>
+            <div style={{ fontSize: 10, letterSpacing: 3, color: C.textMuted, textTransform: 'uppercase', marginBottom: 14 }}>
+              Report Issue
+            </div>
+            <label style={{ fontSize: 13, color: C.text, fontFamily: "'Source Serif 4', serif", display: 'block', marginBottom: 10 }}>
+              What's wrong with this answer?
+            </label>
+            <textarea
+              autoFocus
+              value={text}
+              onChange={e => setText(e.target.value)}
+              placeholder="Describe the issue — e.g. outdated info, factual error, unclear explanation..."
+              rows={4}
+              style={{
+                width: '100%', padding: '10px 14px',
+                border: `1px solid ${C.border}`, borderRadius: 8,
+                fontSize: 13, fontFamily: "'Source Serif 4', serif",
+                color: C.text, lineHeight: 1.6, resize: 'vertical',
+                background: C.bgSoft, outline: 'none', boxSizing: 'border-box',
+              }}
+            />
+            <div style={{ display: 'flex', gap: 10, marginTop: 14, justifyContent: 'flex-end' }}>
+              <button
+                onClick={onClose}
+                style={{
+                  padding: '8px 18px', background: 'transparent',
+                  border: `1px solid ${C.border}`, borderRadius: 7,
+                  color: C.textMuted, fontSize: 11, letterSpacing: 1.5,
+                  textTransform: 'uppercase', cursor: 'pointer',
+                  fontFamily: "'DM Mono', monospace",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmit}
+                disabled={!text.trim() || submitting}
+                style={{
+                  padding: '8px 18px',
+                  background: text.trim() && !submitting ? C.orange : C.bgMuted,
+                  border: 'none', borderRadius: 7,
+                  color: text.trim() && !submitting ? '#fff' : C.textMuted,
+                  fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                  cursor: text.trim() && !submitting ? 'pointer' : 'default',
+                  fontFamily: "'DM Mono', monospace", transition: 'background 0.2s',
+                }}
+              >
+                {submitting ? 'Sending…' : 'Submit'}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function ChevronIcon({ open }) {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -56,7 +168,7 @@ function ScoreBadge({ score, attempts }) {
   );
 }
 
-function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData }) {
+function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData, onReport }) {
   return (
     <div style={{
       background: C.bg,
@@ -129,28 +241,44 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
               {question.a}
             </div>
           </div>
-          {/* Practice button */}
-          <div style={{ padding: '0 22px 18px' }}>
+          {/* Practice button + Report link */}
+          <div style={{ padding: '0 22px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <button
+                onClick={(e) => { e.stopPropagation(); onPractice(); }}
+                style={{
+                  padding: '9px 20px',
+                  background: C.orange, border: 'none', borderRadius: 7,
+                  color: '#fff', fontSize: 11, letterSpacing: 1.5,
+                  textTransform: 'uppercase', cursor: 'pointer',
+                  fontFamily: "'DM Mono', monospace", fontWeight: 500,
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
+                onMouseLeave={e => e.currentTarget.style.background = C.orange}
+              >
+                ✎ Practice This Question
+              </button>
+              {practiceData && (
+                <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
+                  Best: {practiceData.best_score}/100 · {practiceData.attempts} attempt{practiceData.attempts !== 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
             <button
-              onClick={(e) => { e.stopPropagation(); onPractice(); }}
+              onClick={(e) => { e.stopPropagation(); onReport(); }}
               style={{
-                padding: '9px 20px',
-                background: C.orange, border: 'none', borderRadius: 7,
-                color: '#fff', fontSize: 11, letterSpacing: 1.5,
-                textTransform: 'uppercase', cursor: 'pointer',
-                fontFamily: "'DM Mono', monospace", fontWeight: 500,
-                transition: 'background 0.2s',
+                background: 'none', border: 'none', padding: 0,
+                fontSize: 11, color: C.textMuted, cursor: 'pointer',
+                fontFamily: "'DM Mono', monospace", letterSpacing: 0.5,
+                textDecoration: 'underline', textUnderlineOffset: 3,
+                transition: 'color 0.15s',
               }}
-              onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
-              onMouseLeave={e => e.currentTarget.style.background = C.orange}
+              onMouseEnter={e => e.currentTarget.style.color = C.orange}
+              onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
             >
-              ✎ Practice This Question
+              Report Issue
             </button>
-            {practiceData && (
-              <span style={{ marginLeft: 12, fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
-                Best: {practiceData.best_score}/100 · {practiceData.attempts} attempt{practiceData.attempts !== 1 ? 's' : ''}
-              </span>
-            )}
           </div>
         </div>
       )}
@@ -166,6 +294,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [allExpanded, setAllExpanded] = useState(false);
   const [practiceQuestion, setPracticeQuestion] = useState(null); // { question, questionId, designation, category }
   const [practiceStats, setPracticeStats] = useState({}); // { [questionId]: { best_score, attempts } }
+  const [reportTarget, setReportTarget] = useState(null); // questionId being reported
 
   // Load practice stats for current user
   useEffect(() => {
@@ -263,6 +392,14 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   return (
     <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'DM Mono', monospace" }}>
       <style>{globalStyles}</style>
+
+      {reportTarget && (
+        <ReportIssueModal
+          questionId={reportTarget}
+          user={user}
+          onClose={() => setReportTarget(null)}
+        />
+      )}
 
       <div style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
 
@@ -432,6 +569,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                   category,
                 })}
                 practiceData={practiceStats[item.key] || null}
+                onReport={() => setReportTarget(item.key)}
               />
             ))}
           </div>
