@@ -5,13 +5,15 @@ import AuthPage from './pages/AuthPage';
 import PastSessions from './pages/PastSessions';
 import Leaderboard from './pages/Leaderboard';
 import PracticeQA from './pages/PracticeQA';
+import UpgradePage from './pages/UpgradePage';
+import AdminPanel from './pages/AdminPanel';
 import Nav from './components/Nav';
 import DemoTutorial from './components/DemoTutorial';
-import PaywallModal from './components/PaywallModal';
 
 const C = { bg: '#FFFFFF', text: '#1A1A1A', textMuted: '#999999', orange: '#E8650A' };
 
-const FREE_SESSION_LIMIT = 3;
+const FREE_SESSION_LIMIT = 1;
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 
 function LoadingScreen() {
   return (
@@ -35,11 +37,15 @@ export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
   const [page, setPage] = useState('interview');
   const [showDemo, setShowDemo] = useState(false);
-  const [showPaywall, setShowPaywall] = useState(false);
 
-  // subscription_status: 'free' | 'pro'
-  // free_sessions_used: 0–N
-  const [profile, setProfile] = useState({ subscription_status: 'free', free_sessions_used: 0 });
+  const [profile, setProfile] = useState({
+    subscription_status:       'free',
+    subscription_plan:         null,
+    subscription_expires_at:   null,
+    free_sessions_used:        0,
+    monthly_sessions_used:     0,
+    monthly_sessions_reset_at: null,
+  });
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -54,19 +60,40 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Load profile (has_seen_demo + subscription fields)
   const loadProfile = useCallback(async (uid) => {
     const { data } = await supabase
       .from('profiles')
-      .select('has_seen_demo, subscription_status, free_sessions_used')
+      .select(`
+        has_seen_demo,
+        subscription_status,
+        subscription_plan,
+        subscription_expires_at,
+        free_sessions_used,
+        monthly_sessions_used,
+        monthly_sessions_reset_at
+      `)
       .eq('id', uid)
       .single();
 
     if (!data || !data.has_seen_demo) setShowDemo(true);
 
+    // Auto-expire: if active but past expiry, mark as expired locally
+    let status = data?.subscription_status ?? 'free';
+    if (status === 'active' && data?.subscription_expires_at) {
+      if (new Date(data.subscription_expires_at) < new Date()) {
+        status = 'expired';
+        // Write back asynchronously — don't block render
+        supabase.from('profiles').update({ subscription_status: 'expired' }).eq('id', uid);
+      }
+    }
+
     setProfile({
-      subscription_status: data?.subscription_status ?? 'free',
-      free_sessions_used: data?.free_sessions_used ?? 0,
+      subscription_status:       status,
+      subscription_plan:         data?.subscription_plan         ?? null,
+      subscription_expires_at:   data?.subscription_expires_at   ?? null,
+      free_sessions_used:        data?.free_sessions_used        ?? 0,
+      monthly_sessions_used:     data?.monthly_sessions_used     ?? 0,
+      monthly_sessions_reset_at: data?.monthly_sessions_reset_at ?? null,
     });
   }, []);
 
@@ -75,27 +102,48 @@ export default function App() {
     loadProfile(user.id);
   }, [user, loadProfile]);
 
-  // Called by InterviewAlpha and PracticeMode when they consume a session
+  // Increment session counter (called after session gate passes)
   const onSessionUsed = useCallback(async () => {
     if (!user) return;
-    const newCount = profile.free_sessions_used + 1;
-    setProfile(prev => ({ ...prev, free_sessions_used: newCount }));
-    await supabase
-      .from('profiles')
-      .update({ free_sessions_used: newCount })
-      .eq('id', user.id);
-  }, [user, profile.free_sessions_used]);
+    const status = profile.subscription_status;
 
-  // Returns true if the session can proceed, false if paywalled
+    if (status === 'active') {
+      // Check monthly reset (if reset_at is over 30 days ago, reset counter)
+      let newMonthly = profile.monthly_sessions_used + 1;
+      let resetAt    = profile.monthly_sessions_reset_at;
+      if (resetAt && new Date(resetAt) < new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)) {
+        newMonthly = 1;
+        resetAt    = new Date().toISOString();
+      }
+      setProfile(prev => ({ ...prev, monthly_sessions_used: newMonthly, monthly_sessions_reset_at: resetAt }));
+      await supabase.from('profiles').update({
+        monthly_sessions_used:     newMonthly,
+        monthly_sessions_reset_at: resetAt ?? new Date().toISOString(),
+      }).eq('id', user.id);
+    } else if (status === 'free') {
+      const newCount = profile.free_sessions_used + 1;
+      setProfile(prev => ({ ...prev, free_sessions_used: newCount }));
+      await supabase.from('profiles').update({ free_sessions_used: newCount }).eq('id', user.id);
+    }
+  }, [user, profile]);
+
+  // Returns true if session can proceed; otherwise navigates to upgrade and returns false
   const checkSession = useCallback(() => {
-    if (profile.subscription_status !== 'free') return true;
-    if (profile.free_sessions_used < FREE_SESSION_LIMIT) return true;
-    setShowPaywall(true);
+    const { subscription_status: status, free_sessions_used: used } = profile;
+
+    if (status === 'active')  return true;
+    if (status === 'pending') { setPage('upgrade'); return false; }
+    if (status === 'expired') { setPage('upgrade'); return false; }
+    // free
+    if (used < FREE_SESSION_LIMIT) return true;
+    setPage('upgrade');
     return false;
   }, [profile]);
 
   if (authLoading) return <LoadingScreen />;
   if (!user) return <AuthPage />;
+
+  const isAdmin = ADMIN_EMAIL && user.email === ADMIN_EMAIL;
 
   return (
     <div style={{ minHeight: '100vh' }}>
@@ -105,7 +153,8 @@ export default function App() {
         setPage={setPage}
         onReplayDemo={() => setShowDemo(true)}
         profile={profile}
-        onUpgradeClick={() => setShowPaywall(true)}
+        onUpgradeClick={() => setPage('upgrade')}
+        isAdmin={isAdmin}
       />
       {page === 'interview'   && (
         <InterviewAlpha
@@ -125,13 +174,15 @@ export default function App() {
       )}
       {page === 'sessions'    && <PastSessions user={user} />}
       {page === 'leaderboard' && <Leaderboard />}
-      {showDemo && <DemoTutorial user={user} onClose={() => setShowDemo(false)} />}
-      {showPaywall && (
-        <PaywallModal
-          onClose={() => setShowPaywall(false)}
-          lastSession={profile.free_sessions_used >= FREE_SESSION_LIMIT}
+      {page === 'upgrade'     && (
+        <UpgradePage
+          user={user}
+          profile={profile}
+          onBack={() => setPage('interview')}
         />
       )}
+      {page === 'admin' && isAdmin && <AdminPanel user={user} />}
+      {showDemo && <DemoTutorial user={user} onClose={() => setShowDemo(false)} />}
     </div>
   );
 }

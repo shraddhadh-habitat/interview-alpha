@@ -583,7 +583,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
   );
 }
 
-const FREE_SESSION_LIMIT = 3;
+const FREE_SESSION_LIMIT = 1;
 
 // ─── Main Component ───
 export default function InterviewAlpha({ user, profile, checkSession, onSessionUsed }) {
@@ -788,29 +788,33 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             </p>
           </div>
 
-          {/* Free session banner */}
-          {profile?.subscription_status !== 'pro' && (() => {
+          {/* Session status banner */}
+          {(() => {
+            const status = profile?.subscription_status ?? 'free';
+            if (status === 'active') return (
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+                ◆ Pro — unlimited sessions
+              </div>
+            );
+            if (status === 'pending') return (
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 12, color: C.yellow, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+                ⏳ Payment pending — activate your account to start
+              </div>
+            );
+            if (status === 'expired') return (
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+                Subscription expired — renew to continue
+              </div>
+            );
             const used = profile?.free_sessions_used ?? 0;
             const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
             return remaining > 0 ? (
-              <div style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                padding: '8px 18px', marginBottom: 28,
-                background: C.greenLight, border: `1px solid ${C.greenBorder}`,
-                borderRadius: 20, fontSize: 12, color: C.green,
-                fontFamily: "'DM Mono', monospace", letterSpacing: 0.3,
-              }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 12, color: C.green, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
                 ◆ You have {remaining} free AI session{remaining !== 1 ? 's' : ''} remaining — try one now!
               </div>
             ) : (
-              <div style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                padding: '8px 18px', marginBottom: 28,
-                background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
-                borderRadius: 20, fontSize: 12, color: C.orange,
-                fontFamily: "'DM Mono', monospace", letterSpacing: 0.3,
-              }}>
-                🔒 All 3 free sessions used. Upgrade to continue.
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+                🔒 Free session used. Upgrade to continue.
               </div>
             );
           })()}
@@ -972,27 +976,30 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 48 }}>
             <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif", margin: 0 }}>Select the interview type. Each track simulates a different round.</p>
             {(() => {
-              if (profile?.subscription_status === 'pro') return null;
+              const status = profile?.subscription_status ?? 'free';
+              if (status === 'active') return (
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.orange, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                  ◆ Pro
+                </span>
+              );
+              if (status === 'pending') return (
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.yellow, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                  ⏳ Pending
+                </span>
+              );
+              if (status === 'expired') return (
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.red, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                  🔒 Expired
+                </span>
+              );
               const used = profile?.free_sessions_used ?? 0;
               const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
               return remaining > 0 ? (
-                <span style={{
-                  flexShrink: 0, padding: '4px 10px',
-                  background: C.greenLight, border: `1px solid ${C.greenBorder}`,
-                  borderRadius: 20, fontSize: 10, fontWeight: 600,
-                  color: C.green, letterSpacing: 0.5,
-                  fontFamily: "'DM Mono', monospace",
-                }}>
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.green, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
                   {remaining} Free Session{remaining !== 1 ? 's' : ''} Left
                 </span>
               ) : (
-                <span style={{
-                  flexShrink: 0, padding: '4px 10px',
-                  background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
-                  borderRadius: 20, fontSize: 10, fontWeight: 600,
-                  color: C.orange, letterSpacing: 0.5,
-                  fontFamily: "'DM Mono', monospace",
-                }}>
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.orange, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
                   🔒 Upgrade to unlock
                 </span>
               );

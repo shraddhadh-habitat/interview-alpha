@@ -11,21 +11,123 @@ const C = {
   green: '#1B8C3A',
   greenLight: 'rgba(27,140,58,0.08)',
   greenBorder: 'rgba(27,140,58,0.2)',
+  red: '#D32F2F',
+  redLight: 'rgba(211,47,47,0.07)',
+  redBorder: 'rgba(211,47,47,0.18)',
+  yellow: '#C67F00',
+  yellowLight: 'rgba(198,127,0,0.06)',
+  yellowBorder: 'rgba(198,127,0,0.15)',
 };
 
-const FREE_SESSION_LIMIT = 3;
+const FREE_SESSION_LIMIT = 1;
 
-export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgradeClick }) {
-  const tabs = [
-    { id: 'interview', label: 'Interview' },
-    { id: 'practice', label: 'Practice Q&A' },
-    { id: 'sessions', label: 'Past Sessions' },
-    { id: 'leaderboard', label: 'Leaderboard' },
-  ];
+function SubscriptionBadge({ profile, onUpgradeClick }) {
+  const status  = profile?.subscription_status ?? 'free';
+  const used    = profile?.free_sessions_used  ?? 0;
+  const monthly = profile?.monthly_sessions_used ?? 0;
 
-  const isFree = profile?.subscription_status !== 'pro';
-  const used = profile?.free_sessions_used ?? 0;
+  if (status === 'active') {
+    return (
+      <span style={{
+        padding: '4px 10px',
+        background: C.orangeLight,
+        border: `1px solid rgba(232,101,10,0.3)`,
+        borderRadius: 20,
+        fontSize: 10, fontWeight: 600,
+        color: C.orange, letterSpacing: 0.5,
+        fontFamily: "'DM Mono', monospace",
+        whiteSpace: 'nowrap',
+      }}>
+        ◆ Pro · {monthly} this month
+      </span>
+    );
+  }
+
+  if (status === 'pending') {
+    return (
+      <span style={{
+        padding: '4px 10px',
+        background: C.yellowLight,
+        border: `1px solid ${C.yellowBorder}`,
+        borderRadius: 20,
+        fontSize: 10, fontWeight: 600,
+        color: C.yellow, letterSpacing: 0.5,
+        fontFamily: "'DM Mono', monospace",
+        whiteSpace: 'nowrap',
+      }}>
+        ⏳ Pending verification
+      </span>
+    );
+  }
+
+  if (status === 'expired') {
+    return (
+      <button
+        onClick={onUpgradeClick}
+        style={{
+          padding: '4px 10px',
+          background: C.redLight,
+          border: `1px solid ${C.redBorder}`,
+          borderRadius: 20,
+          fontSize: 10, fontWeight: 600,
+          color: C.red, letterSpacing: 0.5,
+          fontFamily: "'DM Mono', monospace",
+          cursor: 'pointer', whiteSpace: 'nowrap',
+          transition: 'all 0.2s',
+        }}
+      >
+        Expired · Renew
+      </button>
+    );
+  }
+
+  // free
   const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
+  return remaining > 0 ? (
+    <span style={{
+      padding: '4px 10px',
+      background: C.greenLight,
+      border: `1px solid ${C.greenBorder}`,
+      borderRadius: 20,
+      fontSize: 10, fontWeight: 600,
+      color: C.green, letterSpacing: 0.5,
+      fontFamily: "'DM Mono', monospace",
+      whiteSpace: 'nowrap',
+    }}>
+      {remaining}/{FREE_SESSION_LIMIT} Free Session{FREE_SESSION_LIMIT !== 1 ? 's' : ''} Left
+    </span>
+  ) : (
+    <button
+      onClick={onUpgradeClick}
+      style={{
+        padding: '5px 12px',
+        background: 'rgba(232,101,10,0.1)',
+        border: `1px solid rgba(232,101,10,0.3)`,
+        borderRadius: 6,
+        color: C.orange,
+        fontSize: 10, letterSpacing: 1.5,
+        textTransform: 'uppercase',
+        cursor: 'pointer',
+        fontFamily: "'DM Mono', monospace",
+        fontWeight: 600,
+        transition: 'all 0.2s',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.background = C.orangeLight; }}
+      onMouseLeave={e => { e.currentTarget.style.background = 'rgba(232,101,10,0.1)'; }}
+    >
+      Upgrade
+    </button>
+  );
+}
+
+export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgradeClick, isAdmin }) {
+  const tabs = [
+    { id: 'interview',   label: 'Interview' },
+    { id: 'practice',    label: 'Practice Q&A' },
+    { id: 'sessions',    label: 'Past Sessions' },
+    { id: 'leaderboard', label: 'Leaderboard' },
+    ...(isAdmin ? [{ id: 'admin', label: 'Admin' }] : []),
+  ];
 
   return (
     <>
@@ -70,7 +172,9 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                   background: page === tab.id ? C.orangeLight : 'transparent',
                   border: page === tab.id ? `1px solid rgba(232,101,10,0.2)` : '1px solid transparent',
                   borderRadius: 6,
-                  color: page === tab.id ? C.orange : C.textMuted,
+                  color: tab.id === 'admin'
+                    ? (page === tab.id ? C.orange : C.red)
+                    : (page === tab.id ? C.orange : C.textMuted),
                   fontSize: 11,
                   letterSpacing: 1.5,
                   textTransform: 'uppercase',
@@ -83,7 +187,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                   if (page !== tab.id) e.currentTarget.style.color = C.text;
                 }}
                 onMouseLeave={e => {
-                  if (page !== tab.id) e.currentTarget.style.color = C.textMuted;
+                  if (page !== tab.id) e.currentTarget.style.color = tab.id === 'admin' ? C.red : C.textMuted;
                 }}
               >
                 {tab.label}
@@ -92,49 +196,13 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
           </div>
         </div>
 
-        {/* User + session badge + Logout */}
+        {/* User + subscription badge + Logout */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{ fontSize: 11, color: C.textMuted, letterSpacing: 0.5 }}>
             {user?.email}
           </span>
 
-          {/* Session indicator — only for free users */}
-          {isFree && (
-            remaining > 0 ? (
-              <span style={{
-                padding: '4px 10px',
-                background: C.greenLight,
-                border: `1px solid ${C.greenBorder}`,
-                borderRadius: 20,
-                fontSize: 10, fontWeight: 600,
-                color: C.green, letterSpacing: 0.5,
-                whiteSpace: 'nowrap',
-              }}>
-                {remaining}/{FREE_SESSION_LIMIT} Free Sessions Left
-              </span>
-            ) : (
-              <button
-                onClick={onUpgradeClick}
-                style={{
-                  padding: '5px 12px',
-                  background: 'rgba(232,101,10,0.1)',
-                  border: `1px solid rgba(232,101,10,0.3)`,
-                  borderRadius: 6,
-                  color: C.orange,
-                  fontSize: 10, letterSpacing: 1.5,
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  fontFamily: "'DM Mono', monospace",
-                  fontWeight: 600,
-                  transition: 'all 0.2s',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = C.orangeLight; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(232,101,10,0.1)'; }}
-              >
-                Upgrade
-              </button>
-            )
-          )}
+          <SubscriptionBadge profile={profile} onUpgradeClick={onUpgradeClick} />
 
           {onReplayDemo && (
             <button
@@ -174,8 +242,8 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
               transition: 'all 0.2s',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.borderColor = '#D32F2F';
-              e.currentTarget.style.color = '#D32F2F';
+              e.currentTarget.style.borderColor = C.red;
+              e.currentTarget.style.color = C.red;
             }}
             onMouseLeave={e => {
               e.currentTarget.style.borderColor = C.border;
