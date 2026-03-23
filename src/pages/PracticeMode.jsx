@@ -231,7 +231,7 @@ function FeedbackPanel({ result, attemptNumber }) {
 }
 
 // ─── Main PracticeMode component ───
-export default function PracticeMode({ question, questionId, designation, category, user, onBack }) {
+export default function PracticeMode({ question, questionId, designation, category, user, onBack, profile, checkSession, onSessionUsed }) {
   const [mode, setMode] = useState('text'); // 'text' | 'voice'
   const [textAnswer, setTextAnswer] = useState('');
   const [loading, setLoading] = useState(false);
@@ -298,6 +298,11 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
   const handleSubmit = async (answerText, fromVoice = false) => {
     if (!answerText.trim()) return;
+
+    // ─── Session gate ───
+    if (checkSession && !checkSession()) return;
+    if (onSessionUsed) await onSessionUsed();
+
     setLoading(true);
     setError('');
     setResult(null);

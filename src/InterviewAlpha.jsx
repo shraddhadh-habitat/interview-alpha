@@ -493,8 +493,10 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
   );
 }
 
+const FREE_SESSION_LIMIT = 3;
+
 // ─── Main Component ───
-export default function InterviewAlpha({ user }) {
+export default function InterviewAlpha({ user, profile, checkSession, onSessionUsed }) {
   const [phase, setPhase] = useState("landing");
   const [resume, setResume] = useState("");
   const [jd, setJd] = useState("");
@@ -578,11 +580,15 @@ export default function InterviewAlpha({ user }) {
   }, []);
 
   const startInterview = useCallback(async (selectedTrack) => {
+    // ─── Session gate ───
+    if (checkSession && !checkSession()) return;
+    if (onSessionUsed) await onSessionUsed();
+
     const contextMsg = `Here is the candidate's context:\n\n**RESUME:**\n${resume}\n\n**JOB DESCRIPTION:**\n${jd}\n\n**SELECTED TRACK:** ${selectedTrack}\n\nBegin the ${selectedTrack} interview simulation now. Stay in character as a Senior PM Interviewer at the target company. Ask your first question.`;
     const response = await callClaude([{ role: "user", content: contextMsg }]);
     setMessages([{ role: "assistant", content: response }]);
     setPhase("interview");
-  }, [resume, jd, callClaude]);
+  }, [resume, jd, callClaude, checkSession, onSessionUsed]);
 
   const sendMessage = useCallback(async (explicitContent, fromVoice = false) => {
     const userMsg = (explicitContent || input).trim();
@@ -691,6 +697,33 @@ export default function InterviewAlpha({ user }) {
               Real-time AI coaching for PMs, not the fluff.
             </p>
           </div>
+
+          {/* Free session banner */}
+          {profile?.subscription_status !== 'pro' && (() => {
+            const used = profile?.free_sessions_used ?? 0;
+            const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
+            return remaining > 0 ? (
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                padding: '8px 18px', marginBottom: 28,
+                background: C.greenLight, border: `1px solid ${C.greenBorder}`,
+                borderRadius: 20, fontSize: 12, color: C.green,
+                fontFamily: "'DM Mono', monospace", letterSpacing: 0.3,
+              }}>
+                ◆ You have {remaining} free AI session{remaining !== 1 ? 's' : ''} remaining — try one now!
+              </div>
+            ) : (
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                padding: '8px 18px', marginBottom: 28,
+                background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
+                borderRadius: 20, fontSize: 12, color: C.orange,
+                fontFamily: "'DM Mono', monospace", letterSpacing: 0.3,
+              }}>
+                🔒 All 3 free sessions used. Upgrade to continue.
+              </div>
+            );
+          })()}
 
           <button
             onClick={() => setPhase("setup")}
@@ -846,7 +879,35 @@ export default function InterviewAlpha({ user }) {
 
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 12 }}>STEP 02</div>
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, marginBottom: 8 }}>Choose Your Track</h2>
-          <p style={{ fontSize: 13, color: C.textSoft, marginBottom: 48, fontFamily: "'Source Serif 4', serif" }}>Select the interview type. Each track simulates a different round.</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 48 }}>
+            <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif", margin: 0 }}>Select the interview type. Each track simulates a different round.</p>
+            {(() => {
+              if (profile?.subscription_status === 'pro') return null;
+              const used = profile?.free_sessions_used ?? 0;
+              const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
+              return remaining > 0 ? (
+                <span style={{
+                  flexShrink: 0, padding: '4px 10px',
+                  background: C.greenLight, border: `1px solid ${C.greenBorder}`,
+                  borderRadius: 20, fontSize: 10, fontWeight: 600,
+                  color: C.green, letterSpacing: 0.5,
+                  fontFamily: "'DM Mono', monospace",
+                }}>
+                  {remaining} Free Session{remaining !== 1 ? 's' : ''} Left
+                </span>
+              ) : (
+                <span style={{
+                  flexShrink: 0, padding: '4px 10px',
+                  background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
+                  borderRadius: 20, fontSize: 10, fontWeight: 600,
+                  color: C.orange, letterSpacing: 0.5,
+                  fontFamily: "'DM Mono', monospace",
+                }}>
+                  🔒 Upgrade to unlock
+                </span>
+              );
+            })()}
+          </div>
 
           <div style={{ display: "grid", gap: 14 }}>
             {tracks.map((t, i) => (

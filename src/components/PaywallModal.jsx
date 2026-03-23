@@ -1,0 +1,116 @@
+const C = {
+  bg: '#FFFFFF', bgSoft: '#FAFAFA',
+  text: '#1A1A1A', textSoft: '#555555', textMuted: '#999999',
+  border: '#E5E5E5',
+  orange: '#E8650A', orangeHover: '#D45800',
+  orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
+  green: '#1B8C3A', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
+};
+
+export default function PaywallModal({ onClose, lastSession = false }) {
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 200,
+      background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: 24,
+      fontFamily: "'DM Mono', monospace",
+    }}>
+      <div style={{
+        background: C.bg, borderRadius: 14,
+        border: `1px solid ${C.border}`,
+        maxWidth: 460, width: '100%',
+        padding: '40px 36px',
+        boxShadow: '0 24px 80px rgba(0,0,0,0.18)',
+        position: 'relative',
+        animation: 'paywallIn 0.3s cubic-bezier(0.22,1,0.36,1)',
+      }}>
+        <style>{`@keyframes paywallIn { from { opacity:0; transform: scale(0.94) translateY(8px); } to { opacity:1; transform: scale(1) translateY(0); } }`}</style>
+
+        {/* Lock icon */}
+        <div style={{
+          width: 52, height: 52, borderRadius: '50%',
+          background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          marginBottom: 24,
+        }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke={C.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        </div>
+
+        <h2 style={{
+          fontFamily: "'Playfair Display', serif",
+          fontSize: 26, fontWeight: 700, color: C.text,
+          marginBottom: 12, lineHeight: 1.2,
+        }}>
+          {lastSession ? "You've used all 3 free sessions" : 'Free sessions used up'}
+        </h2>
+
+        <p style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.75, marginBottom: 28, fontFamily: "'Source Serif 4', serif" }}>
+          {lastSession
+            ? "You've used all 3 free sessions. Upgrade to keep practising with full AI feedback."
+            : "You need an active subscription to start more AI sessions."}
+        </p>
+
+        {/* Plan card */}
+        <div style={{
+          background: C.bgSoft, border: `1px solid ${C.border}`,
+          borderRadius: 10, padding: '20px 22px', marginBottom: 24,
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12 }}>
+            <span style={{ fontSize: 14, fontWeight: 600, color: C.text, letterSpacing: 0.5 }}>Pro Plan</span>
+            <div>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 700, color: C.orange }}>₹699</span>
+              <span style={{ fontSize: 11, color: C.textMuted }}>/mo</span>
+            </div>
+          </div>
+          {[
+            '100 AI interview sessions / month',
+            'Full practice mode scoring',
+            'Performance history & analytics',
+            'Priority support',
+          ].map(f => (
+            <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              <span style={{ color: C.green, fontSize: 12 }}>✓</span>
+              <span style={{ fontSize: 12, color: C.textSoft }}>{f}</span>
+            </div>
+          ))}
+        </div>
+
+        <button
+          style={{
+            width: '100%', padding: '14px 0',
+            background: C.orange, border: 'none', borderRadius: 8,
+            color: '#fff', fontSize: 11, letterSpacing: 3, textTransform: 'uppercase',
+            cursor: 'pointer', fontFamily: "'DM Mono', monospace", fontWeight: 500,
+            marginBottom: 12, transition: 'background 0.2s',
+          }}
+          onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
+          onMouseLeave={e => e.currentTarget.style.background = C.orange}
+          onClick={() => alert('Payment flow coming soon!')}
+        >
+          Upgrade — ₹699/mo
+        </button>
+
+        <button
+          onClick={onClose}
+          style={{
+            width: '100%', padding: '10px 0',
+            background: 'transparent', border: `1px solid ${C.border}`,
+            borderRadius: 8, color: C.textMuted,
+            fontSize: 11, letterSpacing: 2, textTransform: 'uppercase',
+            cursor: 'pointer', fontFamily: "'DM Mono', monospace",
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = C.orange; e.currentTarget.style.color = C.orange; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
+        >
+          Maybe later
+        </button>
+      </div>
+    </div>
+  );
+}

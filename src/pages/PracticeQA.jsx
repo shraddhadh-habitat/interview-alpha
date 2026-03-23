@@ -158,7 +158,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
   );
 }
 
-export default function PracticeQA({ user }) {
+export default function PracticeQA({ user, profile, checkSession, onSessionUsed }) {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [category, setCategory] = useState('product');
   const [search, setSearch] = useState('');
@@ -223,7 +223,7 @@ export default function PracticeQA({ user }) {
     for (const level of PM_LEVELS) {
       const bank = pmQuestions[level];
       if (!bank) continue;
-      n += (bank.product?.length || 0) + (bank.behavioral?.length || 0);
+      n += (bank.product?.length || 0) + (bank.behavioral?.length || 0) + (bank.ai?.length || 0) + (bank.ai_technical?.length || 0);
     }
     return n;
   }, []);
@@ -237,6 +237,9 @@ export default function PracticeQA({ user }) {
         designation={practiceQuestion.designation}
         category={practiceQuestion.category}
         user={user}
+        profile={profile}
+        checkSession={checkSession}
+        onSessionUsed={onSessionUsed}
         onBack={() => {
           setPracticeQuestion(null);
           // Refresh stats after coming back
@@ -292,10 +295,12 @@ export default function PracticeQA({ user }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 28 }}>
 
           {/* Category toggle */}
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {[
               { id: 'product', label: 'Product Questions' },
               { id: 'behavioral', label: 'Behavioral Questions' },
+              { id: 'ai', label: 'AI & PM Questions' },
+              { id: 'ai_technical', label: 'AI Technical for PMs' },
             ].map(cat => (
               <button
                 key={cat.id}
@@ -317,39 +322,32 @@ export default function PracticeQA({ user }) {
             ))}
           </div>
 
-          {/* Designation pills */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            <button
-              onClick={() => { setSelectedLevel(null); setExpandedKeys(new Set()); setAllExpanded(false); }}
+          {/* Designation dropdown */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <select
+              value={selectedLevel || ''}
+              onChange={e => { setSelectedLevel(e.target.value || null); setExpandedKeys(new Set()); setAllExpanded(false); }}
               style={{
-                padding: '6px 14px',
-                background: selectedLevel === null ? C.orange : C.bg,
-                border: `1px solid ${selectedLevel === null ? C.orange : C.border}`,
-                borderRadius: 20, fontSize: 11, letterSpacing: 1,
-                color: selectedLevel === null ? '#fff' : C.textMuted,
+                padding: '9px 16px',
+                background: C.bg,
+                border: `1px solid ${selectedLevel ? C.orange : C.border}`,
+                borderRadius: 8, fontSize: 11, letterSpacing: 0.5,
+                color: selectedLevel ? C.orange : C.textSoft,
                 cursor: 'pointer', fontFamily: "'DM Mono', monospace",
-                transition: 'all 0.2s', whiteSpace: 'nowrap',
+                fontWeight: selectedLevel ? 500 : 400,
+                outline: 'none', appearance: 'none',
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 12px center',
+                paddingRight: 32,
+                minWidth: 200,
               }}
             >
-              All Levels
-            </button>
-            {PM_LEVELS.map(level => (
-              <button
-                key={level}
-                onClick={() => { setSelectedLevel(level); setExpandedKeys(new Set()); setAllExpanded(false); }}
-                style={{
-                  padding: '6px 14px',
-                  background: selectedLevel === level ? C.orange : C.bg,
-                  border: `1px solid ${selectedLevel === level ? C.orange : C.border}`,
-                  borderRadius: 20, fontSize: 11, letterSpacing: 0.5,
-                  color: selectedLevel === level ? '#fff' : C.textMuted,
-                  cursor: 'pointer', fontFamily: "'DM Mono', monospace",
-                  transition: 'all 0.2s', whiteSpace: 'nowrap',
-                }}
-              >
-                {level}
-              </button>
-            ))}
+              <option value="">All Levels</option>
+              {PM_LEVELS.map(level => (
+                <option key={level} value={level}>{level}</option>
+              ))}
+            </select>
           </div>
 
           {/* Search + Expand */}

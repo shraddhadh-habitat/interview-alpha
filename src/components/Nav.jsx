@@ -8,15 +8,24 @@ const C = {
   orange: '#E8650A',
   orangeHover: '#D45800',
   orangeLight: 'rgba(232,101,10,0.08)',
+  green: '#1B8C3A',
+  greenLight: 'rgba(27,140,58,0.08)',
+  greenBorder: 'rgba(27,140,58,0.2)',
 };
 
-export default function Nav({ user, page, setPage, onReplayDemo }) {
+const FREE_SESSION_LIMIT = 3;
+
+export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgradeClick }) {
   const tabs = [
     { id: 'interview', label: 'Interview' },
     { id: 'practice', label: 'Practice Q&A' },
     { id: 'sessions', label: 'Past Sessions' },
     { id: 'leaderboard', label: 'Leaderboard' },
   ];
+
+  const isFree = profile?.subscription_status !== 'pro';
+  const used = profile?.free_sessions_used ?? 0;
+  const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
 
   return (
     <>
@@ -83,11 +92,50 @@ export default function Nav({ user, page, setPage, onReplayDemo }) {
           </div>
         </div>
 
-        {/* User + Logout */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        {/* User + session badge + Logout */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{ fontSize: 11, color: C.textMuted, letterSpacing: 0.5 }}>
             {user?.email}
           </span>
+
+          {/* Session indicator — only for free users */}
+          {isFree && (
+            remaining > 0 ? (
+              <span style={{
+                padding: '4px 10px',
+                background: C.greenLight,
+                border: `1px solid ${C.greenBorder}`,
+                borderRadius: 20,
+                fontSize: 10, fontWeight: 600,
+                color: C.green, letterSpacing: 0.5,
+                whiteSpace: 'nowrap',
+              }}>
+                {remaining}/{FREE_SESSION_LIMIT} Free Sessions Left
+              </span>
+            ) : (
+              <button
+                onClick={onUpgradeClick}
+                style={{
+                  padding: '5px 12px',
+                  background: 'rgba(232,101,10,0.1)',
+                  border: `1px solid rgba(232,101,10,0.3)`,
+                  borderRadius: 6,
+                  color: C.orange,
+                  fontSize: 10, letterSpacing: 1.5,
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  fontFamily: "'DM Mono', monospace",
+                  fontWeight: 600,
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = C.orangeLight; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(232,101,10,0.1)'; }}
+              >
+                Upgrade
+              </button>
+            )
+          )}
+
           {onReplayDemo && (
             <button
               onClick={onReplayDemo}
