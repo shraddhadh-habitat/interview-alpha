@@ -386,7 +386,7 @@ function ScoreDashboard({ data }) {
 }
 
 // ─── Message Bubble ───
-function MessageBubble({ msg }) {
+function MessageBubble({ msg, isFirstAssistant }) {
   const isUser = msg.role === "user";
   const scoreData = msg.role === "assistant" ? parseScoreFromResponse(msg.content) : null;
   const displayText = msg.role === "assistant" ? stripJsonBlock(msg.content) : msg.content;
@@ -441,7 +441,21 @@ function MessageBubble({ msg }) {
             </span>
           )}
         </div>
-        {displayText}
+        {isFirstAssistant && (
+          <div style={{
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: 700,
+            fontSize: 15,
+            color: "#1A1A1A",
+            marginBottom: 10,
+            paddingBottom: 10,
+            borderBottom: `1px solid ${C.border}`,
+            letterSpacing: 0.2,
+          }}>
+            Alpha, your Interview Assistant
+          </div>
+        )}
+        <span style={{ color: "#1A1A1A" }}>{displayText}</span>
         {scoreData && <ScoreDashboard data={scoreData} />}
       </div>
     </div>
@@ -1147,9 +1161,11 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
 
       {/* Chat Area */}
       <div style={{ flex: 1, overflow: "auto", padding: "24px 28px", paddingBottom: 140 }}>
-        {messages.filter(m => !m.hidden).map((msg, i) => (
-          <MessageBubble key={i} msg={msg} />
-        ))}
+        {messages.filter(m => !m.hidden).map((msg, i, arr) => {
+          const isFirstAssistant = msg.role === "assistant" &&
+            arr.slice(0, i).every(m => m.role !== "assistant");
+          return <MessageBubble key={i} msg={msg} isFirstAssistant={isFirstAssistant} />;
+        })}
         {loading && <TypingIndicator />}
         <div ref={chatEndRef} />
       </div>
