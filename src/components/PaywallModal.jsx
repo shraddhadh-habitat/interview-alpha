@@ -7,7 +7,7 @@ const C = {
   green: '#1B8C3A', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
 };
 
-export default function PaywallModal({ onClose, lastSession = false }) {
+export default function PaywallModal({ onClose, onUpgrade, lastSession = false }) {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 200,
@@ -90,9 +90,9 @@ export default function PaywallModal({ onClose, lastSession = false }) {
           }}
           onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
           onMouseLeave={e => e.currentTarget.style.background = C.orange}
-          onClick={() => alert('Payment flow coming soon!')}
+          onClick={onUpgrade}
         >
-          Upgrade — ₹699/mo
+          Upgrade to Pro →
         </button>
 
         <button

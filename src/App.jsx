@@ -9,6 +9,7 @@ import UpgradePage from './pages/UpgradePage';
 import AdminPanel from './pages/AdminPanel';
 import Nav from './components/Nav';
 import DemoTutorial from './components/DemoTutorial';
+import PaywallModal from './components/PaywallModal';
 
 const C = { bg: '#FFFFFF', text: '#1A1A1A', textMuted: '#999999', orange: '#E8650A' };
 
@@ -38,6 +39,7 @@ export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
   const [page, setPage] = useState('interview');
   const [showDemo, setShowDemo] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
 
   const [profile, setProfile] = useState({
     subscription_status:       'free',
@@ -140,7 +142,7 @@ export default function App() {
     if (status === 'expired') { setPage('upgrade'); return false; }
     // free
     if (used < FREE_SESSION_LIMIT) return true;
-    setPage('upgrade');
+    setShowPaywall(true);
     return false;
   }, [profile]);
 
@@ -187,6 +189,13 @@ export default function App() {
       )}
       {page === 'admin' && isAdmin && <AdminPanel user={user} />}
       {showDemo && <DemoTutorial user={user} onClose={() => setShowDemo(false)} />}
+      {showPaywall && (
+        <PaywallModal
+          lastSession
+          onClose={() => setShowPaywall(false)}
+          onUpgrade={() => { setShowPaywall(false); setPage('upgrade'); }}
+        />
+      )}
     </div>
   );
 }
