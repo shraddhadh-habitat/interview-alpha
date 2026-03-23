@@ -286,8 +286,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         }}>
           <span style={{ fontSize: 14, flexShrink: 0, marginTop: 1 }}>⚠</span>
           <p style={{ fontSize: 12, lineHeight: 1.65, color: C.yellow, fontFamily: "'Source Serif 4', serif", margin: 0 }}>
-            <strong style={{ fontFamily: "'DM Mono', monospace", letterSpacing: 0.5 }}>Framework Guide, Not a Script.</strong>{' '}
-            These answers demonstrate structured thinking patterns and PM frameworks. For behavioral questions, replace the example stories with your own real experiences. Numbers used are illustrative — always use your actual data in interviews.
+            Answers represent expert frameworks and structured thinking patterns. For behavioral questions, replace example stories with your own experiences. Verify company-specific and technical details independently.{' '}
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, opacity: 0.75 }}>Last updated: March 2026.</span>
           </p>
         </div>
 
