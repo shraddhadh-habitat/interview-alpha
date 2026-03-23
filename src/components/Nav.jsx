@@ -122,12 +122,15 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
 }
 
 export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgradeClick, isAdmin }) {
+  const isFree = profile?.subscription_status === 'free';
+
   const tabs = [
     { id: 'interview',   label: 'Interview' },
     { id: 'practice',    label: 'Practice Q&A' },
     { id: 'sessions',    label: 'Past Sessions' },
     { id: 'leaderboard', label: 'Leaderboard' },
-    ...(isAdmin ? [{ id: 'admin', label: 'Admin' }] : []),
+    ...(isFree  ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
+    ...(isAdmin ? [{ id: 'admin',   label: 'Admin' }]     : []),
   ];
 
   return (
@@ -167,7 +170,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
             {tabs.map(tab => (
               <button
                 key={tab.id}
-                onClick={() => setPage(tab.id)}
+                onClick={() => tab.id === 'upgrade' ? onUpgradeClick() : setPage(tab.id)}
                 style={{
                   padding: '6px 14px',
                   background: page === tab.id ? C.orangeLight : 'transparent',
@@ -175,7 +178,12 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                   borderRadius: 6,
                   color: tab.id === 'admin'
                     ? (page === tab.id ? C.orange : C.red)
-                    : (page === tab.id ? C.orange : C.textMuted),
+                    : tab.id === 'upgrade'
+                      ? C.orange
+                      : (page === tab.id ? C.orange : C.textMuted),
+                  background: tab.id === 'upgrade' && page !== tab.id ? C.orangeLight : (page === tab.id ? C.orangeLight : 'transparent'),
+                  border: tab.id === 'upgrade' ? `1px solid ${C.orangeBorder}` : (page === tab.id ? `1px solid rgba(232,101,10,0.2)` : '1px solid transparent'),
+                  fontWeight: tab.id === 'upgrade' ? 600 : (page === tab.id ? 500 : 400),
                   fontSize: 11,
                   letterSpacing: 1.5,
                   textTransform: 'uppercase',
@@ -185,10 +193,10 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                   transition: 'all 0.2s',
                 }}
                 onMouseEnter={e => {
-                  if (page !== tab.id) e.currentTarget.style.color = C.text;
+                  if (page !== tab.id && tab.id !== 'upgrade') e.currentTarget.style.color = C.text;
                 }}
                 onMouseLeave={e => {
-                  if (page !== tab.id) e.currentTarget.style.color = tab.id === 'admin' ? C.red : C.textMuted;
+                  if (page !== tab.id && tab.id !== 'upgrade') e.currentTarget.style.color = tab.id === 'admin' ? C.red : C.textMuted;
                 }}
               >
                 {tab.label}

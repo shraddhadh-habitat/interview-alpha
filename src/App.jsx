@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from './lib/supabase';
 import InterviewAlpha from './InterviewAlpha';
 import AuthPage from './pages/AuthPage';
@@ -40,6 +40,8 @@ export default function App() {
   const [page, setPage] = useState('interview');
   const [showDemo, setShowDemo] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  // Prevent re-triggering demo on repeated loadProfile calls (TOKEN_REFRESHED etc.)
+  const demoShownRef = useRef(false);
 
   const [profile, setProfile] = useState({
     subscription_status:       'free',
@@ -78,7 +80,10 @@ export default function App() {
       .eq('id', uid)
       .single();
 
-    if (!data || !data.has_seen_demo) setShowDemo(true);
+    if (!data?.has_seen_demo && !demoShownRef.current) {
+      demoShownRef.current = true;
+      setShowDemo(true);
+    }
 
     // Auto-expire: if active but past expiry, mark as expired locally
     let status = data?.subscription_status ?? 'free';
@@ -129,6 +134,15 @@ export default function App() {
       await supabase.from('profiles').update({ free_sessions_used: newCount }).eq('id', user.id);
     }
   }, [user, profile]);
+
+  // Called when user closes or completes the demo — saves flag so it never auto-shows again
+  const handleDemoClose = useCallback(async () => {
+    setShowDemo(false);
+    if (!user) return;
+    await supabase
+      .from('profiles')
+      .upsert({ id: user.id, has_seen_demo: true }, { onConflict: 'id' });
+  }, [user]);
 
   // Returns true if session can proceed; otherwise navigates to upgrade and returns false
   const checkSession = useCallback(() => {
@@ -188,7 +202,7 @@ export default function App() {
         />
       )}
       {page === 'admin' && isAdmin && <AdminPanel user={user} />}
-      {showDemo && <DemoTutorial user={user} onClose={() => setShowDemo(false)} />}
+      {showDemo && <DemoTutorial onClose={handleDemoClose} />}
       {showPaywall && (
         <PaywallModal
           lastSession

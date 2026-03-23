@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAFA', bgMuted: '#F5F5F5',
@@ -65,7 +64,7 @@ const globalStyles = `
   @keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 `;
 
-export default function DemoTutorial({ user, onClose }) {
+export default function DemoTutorial({ onClose }) {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1); // 1 = forward, -1 = back
   const [animKey, setAnimKey] = useState(0);
@@ -76,11 +75,7 @@ export default function DemoTutorial({ user, onClose }) {
     setStep(next);
   };
 
-  const handleClose = async () => {
-    if (user) {
-      await supabase.from('profiles')
-        .upsert({ id: user.id, has_seen_demo: true }, { onConflict: 'id' });
-    }
+  const handleClose = () => {
     onClose();
   };
 
