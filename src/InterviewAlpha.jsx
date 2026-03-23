@@ -583,7 +583,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
   );
 }
 
-const FREE_SESSION_LIMIT = 1;
+const FREE_SESSION_LIMIT = 3;
 const PRO_SESSION_LIMIT  = 100;
 
 // ─── Main Component ───

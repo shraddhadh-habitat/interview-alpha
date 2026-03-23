@@ -19,7 +19,7 @@ const C = {
   yellowBorder: 'rgba(198,127,0,0.15)',
 };
 
-const FREE_SESSION_LIMIT = 1;
+const FREE_SESSION_LIMIT = 3;
 const PRO_SESSION_LIMIT  = 100;
 
 function SubscriptionBadge({ profile, onUpgradeClick }) {

@@ -12,7 +12,7 @@ import DemoTutorial from './components/DemoTutorial';
 
 const C = { bg: '#FFFFFF', text: '#1A1A1A', textMuted: '#999999', orange: '#E8650A' };
 
-const FREE_SESSION_LIMIT  = 1;
+const FREE_SESSION_LIMIT  = 3;
 const PRO_SESSION_LIMIT   = 100;
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 
