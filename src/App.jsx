@@ -12,7 +12,8 @@ import DemoTutorial from './components/DemoTutorial';
 
 const C = { bg: '#FFFFFF', text: '#1A1A1A', textMuted: '#999999', orange: '#E8650A' };
 
-const FREE_SESSION_LIMIT = 1;
+const FREE_SESSION_LIMIT  = 1;
+const PRO_SESSION_LIMIT   = 100;
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 
 function LoadingScreen() {
@@ -129,9 +130,12 @@ export default function App() {
 
   // Returns true if session can proceed; otherwise navigates to upgrade and returns false
   const checkSession = useCallback(() => {
-    const { subscription_status: status, free_sessions_used: used } = profile;
+    const { subscription_status: status, free_sessions_used: used, monthly_sessions_used: monthly } = profile;
 
-    if (status === 'active')  return true;
+    if (status === 'active') {
+      if ((monthly ?? 0) >= PRO_SESSION_LIMIT) { setPage('upgrade'); return false; }
+      return true;
+    }
     if (status === 'pending') { setPage('upgrade'); return false; }
     if (status === 'expired') { setPage('upgrade'); return false; }
     // free

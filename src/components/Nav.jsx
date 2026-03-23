@@ -20,6 +20,7 @@ const C = {
 };
 
 const FREE_SESSION_LIMIT = 1;
+const PRO_SESSION_LIMIT  = 100;
 
 function SubscriptionBadge({ profile, onUpgradeClick }) {
   const status  = profile?.subscription_status ?? 'free';
@@ -38,7 +39,7 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
         fontFamily: "'DM Mono', monospace",
         whiteSpace: 'nowrap',
       }}>
-        ◆ Pro · {monthly} this month
+        ◆ Pro · {monthly}/{PRO_SESSION_LIMIT} this month
       </span>
     );
   }

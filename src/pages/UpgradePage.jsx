@@ -18,7 +18,7 @@ const PLANS = {
 };
 
 const FREE_FEATURES  = ['1 free AI interview session', 'Browse 1100+ question bank', 'Read expert answers'];
-const PRO_FEATURES   = ['Unlimited AI interview sessions', 'Unlimited practice evaluations', 'Full feedback scorecard per session', 'Voice-to-text answers', 'Full session history', 'Leaderboard ranking'];
+const PRO_FEATURES   = ['100 AI sessions per month', 'Live interviews + practice evaluations', 'Full feedback scorecard per session', 'Voice-to-text answers', 'Full session history', 'Leaderboard ranking'];
 
 const globalStyles = `
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -31,10 +31,23 @@ function StatusBanner({ profile }) {
   const expires = profile?.subscription_expires_at;
 
   if (status === 'active') {
-    const d = expires ? new Date(expires).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : null;
+    const d       = expires ? new Date(expires).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : null;
+    const monthly = profile?.monthly_sessions_used ?? 0;
+    const resetAt = profile?.monthly_sessions_reset_at;
+    const resetDate = resetAt
+      ? new Date(new Date(resetAt).getTime() + 30 * 24 * 60 * 60 * 1000)
+          .toLocaleDateString('en-IN', { day: 'numeric', month: 'long' })
+      : null;
+    if (monthly >= 100) {
+      return (
+        <div style={{ padding: '14px 20px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.red, fontFamily: "'DM Mono', monospace" }}>
+          You've used all 100 AI sessions this month.{resetDate ? ` Sessions reset on ${resetDate}.` : ''} Need more? Contact us.
+        </div>
+      );
+    }
     return (
       <div style={{ padding: '14px 20px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.green, fontFamily: "'DM Mono', monospace" }}>
-        ✓ You're on Pro{profile.subscription_plan ? ` (${profile.subscription_plan})` : ''}.{d ? ` Valid until ${d}.` : ''}
+        ✓ Pro{profile.subscription_plan ? ` (${profile.subscription_plan})` : ''} · {monthly}/100 sessions this month.{d ? ` Valid until ${d}.` : ''}
       </div>
     );
   }
@@ -132,7 +145,7 @@ export default function UpgradePage({ user, profile, onBack }) {
             Go Pro. Land the Role.
           </h1>
           <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.7, maxWidth: 480, margin: '0 auto' }}>
-            Unlimited AI mock interviews, full practice evaluations, and complete session history — everything you need to prepare like a pro.
+            100 AI sessions per month — mock interviews, practice evaluations, and complete session history — everything you need to land the role.
           </p>
         </div>
 
@@ -150,8 +163,8 @@ export default function UpgradePage({ user, profile, onBack }) {
               ))}
               {/* Feature rows */}
               {[
-                ['AI Interview Sessions', '1 (free)', 'Unlimited'],
-                ['Practice Evaluations', '1 (free)', 'Unlimited'],
+                ['AI Sessions / Month', '1 (free)', '100'],
+                ['Live Interviews',     '1 (free)', '100 sessions/mo'],
                 ['Feedback Scorecard', '✓', '✓'],
                 ['Voice-to-Text', '✓', '✓'],
                 ['Session History', '✓', '✓'],

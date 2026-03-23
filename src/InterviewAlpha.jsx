@@ -584,6 +584,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
 }
 
 const FREE_SESSION_LIMIT = 1;
+const PRO_SESSION_LIMIT  = 100;
 
 // ─── Main Component ───
 export default function InterviewAlpha({ user, profile, checkSession, onSessionUsed }) {
@@ -791,11 +792,19 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           {/* Session status banner */}
           {(() => {
             const status = profile?.subscription_status ?? 'free';
-            if (status === 'active') return (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
-                ◆ Pro — unlimited sessions
-              </div>
-            );
+            if (status === 'active') {
+              const monthly = profile?.monthly_sessions_used ?? 0;
+              const atLimit = monthly >= PRO_SESSION_LIMIT;
+              return atLimit ? (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+                  🔒 100/100 sessions used this month. Sessions reset monthly from activation date.
+                </div>
+              ) : (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+                  ◆ Pro — {monthly}/100 sessions used this month
+                </div>
+              );
+            }
             if (status === 'pending') return (
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 12, color: C.yellow, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
                 ⏳ Payment pending — activate your account to start
@@ -977,11 +986,18 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif", margin: 0 }}>Select the interview type. Each track simulates a different round.</p>
             {(() => {
               const status = profile?.subscription_status ?? 'free';
-              if (status === 'active') return (
-                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.orange, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
-                  ◆ Pro
-                </span>
-              );
+              if (status === 'active') {
+                const m = profile?.monthly_sessions_used ?? 0;
+                return m >= PRO_SESSION_LIMIT ? (
+                  <span style={{ flexShrink: 0, padding: '4px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.red, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                    🔒 100/100 sessions used
+                  </span>
+                ) : (
+                  <span style={{ flexShrink: 0, padding: '4px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.orange, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                    ◆ Pro · {m}/100
+                  </span>
+                );
+              }
               if (status === 'pending') return (
                 <span style={{ flexShrink: 0, padding: '4px 10px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.yellow, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
                   ⏳ Pending
