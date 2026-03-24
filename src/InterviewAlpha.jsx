@@ -799,7 +799,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               fontSize: 72, fontWeight: 900, lineHeight: 0.95,
               letterSpacing: -2, color: C.text
             }}>
-              Interview<span style={{ color: C.orange }}>Alpha</span>
+              Interview<span style={{ color: C.orange }}>Alpha</span><sup style={{ fontSize: 12, color: '#E8650A', verticalAlign: 'super' }}>™</sup>
             </h1>
             <div style={{ width: 48, height: 3, background: C.orange, margin: "24px auto", borderRadius: 2 }} />
             <p style={{ fontSize: 15, color: C.textSoft, lineHeight: 1.8, maxWidth: 440, margin: "0 auto", fontFamily: "'Source Serif 4', serif" }}>

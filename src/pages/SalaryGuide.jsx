@@ -54,7 +54,7 @@ const COMPANY_COMP = [
 const NEG_STEPS = [
   {
     step: 1, title: 'Anchor high — always',
-    body: 'The first number mentioned sets the anchor for the entire negotiation. Never share your current salary. Instead, state a range where your floor is already above their ceiling. If asked, say: "I'm targeting ₹X–Y based on my research and total compensation."',
+    body: "The first number mentioned sets the anchor for the entire negotiation. Never share your current salary. Instead, state a range where your floor is already above their ceiling. If asked, say: \"I'm targeting ₹X–Y based on my research and total compensation.\"",
     script: '"Based on my experience and market data for this role, I\'m targeting ₹[X] all-in. Does that align with your band?"',
   },
   {

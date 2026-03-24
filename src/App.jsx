@@ -8,6 +8,7 @@ import MyProgress from './pages/MyProgress';
 import SalaryGuide from './pages/SalaryGuide';
 import UpgradePage from './pages/UpgradePage';
 import AdminPanel from './pages/AdminPanel';
+import Scorecard from './pages/Scorecard';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import DemoTutorial from './components/DemoTutorial';
@@ -166,12 +167,18 @@ export default function App() {
   }, [profile]);
 
   if (authLoading) return <LoadingScreen />;
-  if (!user) return <AuthPage />;
+
+  if (!user) return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: 1 }}><AuthPage /></div>
+      <Footer />
+    </div>
+  );
 
   const isAdmin = ADMIN_EMAIL && user.email === ADMIN_EMAIL;
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       <Nav
         user={user}
         page={page}
@@ -200,6 +207,7 @@ export default function App() {
         )}
         {page === 'sessions'    && <PastSessions user={user} />}
         {page === 'progress'    && <MyProgress user={user} />}
+        {page === 'scorecard'   && <Scorecard user={user} />}
         {page === 'salary'      && <SalaryGuide />}
         {page === 'upgrade'     && (
           <UpgradePage
