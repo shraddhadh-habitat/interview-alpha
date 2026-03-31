@@ -401,7 +401,7 @@ function MessageBubble({ msg, isFirstAssistant }) {
       marginBottom: 16,
       animation: "fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1)"
     }}>
-      <div style={{
+      <div className={isUser ? "chat-bubble-user" : "chat-bubble-ai"} style={{
         maxWidth: isUser ? "75%" : "85%",
         padding: isUser ? "14px 20px" : "18px 24px",
         borderRadius: isUser ? "20px 20px 4px 20px" : "20px 20px 20px 4px",
@@ -542,7 +542,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
         )}
       </div>
 
-      <div style={{ display: "flex", gap: 10, justifyContent: "center" }}>
+      <div className="voice-btn-row" style={{ display: "flex", gap: 10, justifyContent: "center" }}>
         {!isListening ? (
           <>
             <button
@@ -854,6 +854,11 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     @keyframes subtlePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(211,47,47,0.3); } 50% { box-shadow: 0 0 0 8px rgba(211,47,47,0); } }
     textarea:focus, input:focus { outline: none; }
     ::selection { background: rgba(232,101,10,0.18); }
+    @media (max-width: 768px) {
+      .chat-bubble-user { max-width: 95% !important; }
+      .chat-bubble-ai { max-width: 95% !important; }
+      .voice-buttons { flex-direction: column !important; }
+    }
   `;
 
   // ─── Landing ───
