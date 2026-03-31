@@ -240,6 +240,7 @@ export default function PracticeMode({ question, questionId, designation, catego
   const [mode, setMode] = useState('text'); // 'text' | 'voice'
   const [textAnswer, setTextAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+  const [analysisText, setAnalysisText] = useState('');
   const [result, setResult] = useState(null);
   const [attemptNumber, setAttemptNumber] = useState(1);
   const [prevBestScore, setPrevBestScore] = useState(null);
@@ -317,21 +318,69 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
     setLoading(true);
     setError('');
     setResult(null);
+    setAnalysisText('');
+
+    const parseSSEChunks = async (res, onChunk) => {
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let accumulated = '';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() ?? '';
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === '[DONE]') continue;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            if (parsed.type === 'error') throw new Error(parsed.error?.message || 'Stream error');
+            if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
+              accumulated += parsed.delta.text;
+              if (onChunk) onChunk(accumulated);
+            }
+          } catch (e) {
+            if (e.message && e.message.includes('Stream error')) throw e;
+          }
+        }
+      }
+      return accumulated;
+    };
 
     try {
-      const res = await fetch('/api/messages', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1500,
-          messages: [{ role: 'user', content: buildPrompt(answerText) }],
-        }),
-      });
+      let raw = '';
+      try {
+        const res = await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1500,
+            messages: [{ role: 'user', content: buildPrompt(answerText) }],
+            stream: true,
+          }),
+        });
+        if (!res.ok) throw new Error(`API returned ${res.status}`);
+        raw = await parseSSEChunks(res, (text) => setAnalysisText(text));
+      } catch {
+        // Fallback non-streaming
+        const res = await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1500,
+            messages: [{ role: 'user', content: buildPrompt(answerText) }],
+          }),
+        });
+        const data = await res.json();
+        raw = (data?.content?.[0]?.text || '');
+      }
 
-      const data = await res.json();
-      const raw = (data?.content?.[0]?.text || '')
-        .replace(/<thinking>[\s\S]*?<\/thinking>/gi, '').trim();
+      raw = raw.replace(/<thinking>[\s\S]*?<\/thinking>/gi, '').trim();
 
       let parsed;
       try {
@@ -344,6 +393,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         return;
       }
 
+      setAnalysisText('');
       setResult(parsed);
 
       // Save to Supabase
@@ -646,10 +696,15 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
         {/* Loading state */}
         {loading && (
-          <div style={{ textAlign: 'center', padding: '48px 0', animation: 'fadeUp 0.3s ease' }}>
-            <div style={{ fontSize: 11, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase', fontFamily: "'DM Mono', monospace" }}>
-              Evaluating your answer...
+          <div style={{ padding: '32px 0', animation: 'fadeUp 0.3s ease' }}>
+            <div style={{ fontSize: 11, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase', fontFamily: "'DM Mono', monospace", marginBottom: analysisText ? 16 : 0, textAlign: 'center' }}>
+              Analyzing your answer...
             </div>
+            {analysisText && (
+              <div style={{ padding: '16px 20px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 13, lineHeight: 1.7, color: C.textSoft, fontFamily: "'Source Serif 4', serif", whiteSpace: 'pre-wrap', maxHeight: 200, overflow: 'auto' }}>
+                {analysisText}
+              </div>
+            )}
           </div>
         )}
 

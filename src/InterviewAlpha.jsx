@@ -388,8 +388,10 @@ function ScoreDashboard({ data }) {
 // ─── Message Bubble ───
 function MessageBubble({ msg, isFirstAssistant }) {
   const isUser = msg.role === "user";
-  const scoreData = msg.role === "assistant" ? parseScoreFromResponse(msg.content) : null;
-  const displayText = msg.role === "assistant" ? stripJsonBlock(msg.content) : msg.content;
+  const scoreData = (msg.role === "assistant" && !msg._streaming) ? parseScoreFromResponse(msg.content) : null;
+  const displayText = msg.role === "assistant"
+    ? (msg._streaming ? msg.content : stripJsonBlock(msg.content))
+    : msg.content;
   const isVoice = msg.fromVoice;
 
   return (
@@ -660,44 +662,102 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     }
   }, [phase, voiceMode]);
 
-  const callClaude = useCallback(async (msgs) => {
+  const callClaude = useCallback(async (msgs, { systemPrompt = SYSTEM_PROMPT, onStream } = {}) => {
     setLoading(true);
     setError("");
+    let fullText = "";
+
+    const parseSSEChunks = async (res, onChunk) => {
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let accumulated = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") continue;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            if (parsed.type === "error") throw new Error(parsed.error?.message || "Stream error");
+            if (parsed.type === "content_block_delta" && parsed.delta?.type === "text_delta") {
+              accumulated += parsed.delta.text;
+              if (onChunk) onChunk(accumulated);
+            }
+          } catch (e) {
+            if (e.message && (e.message.includes("Stream error") || e.message.startsWith("API"))) throw e;
+          }
+        }
+      }
+      return accumulated;
+    };
+
     try {
+      // Try streaming first
       const res = await fetch("/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514",
           max_tokens: 2048,
-          system: SYSTEM_PROMPT,
-          messages: msgs
+          system: systemPrompt,
+          messages: msgs,
+          stream: true,
         })
       });
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData?.error?.message || `API returned ${res.status}`);
+      if (!res.ok) throw new Error(`API returned ${res.status}`);
+      fullText = await parseSSEChunks(res, onStream);
+    } catch (streamErr) {
+      // Fallback: non-streaming
+      try {
+        fullText = "";
+        const res = await fetch("/api/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 2048,
+            system: systemPrompt,
+            messages: msgs
+          })
+        });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData?.error?.message || `API returned ${res.status}`);
+        }
+        const data = await res.json();
+        fullText = data.content?.map(b => b.text || "").join("\n") || "I couldn't generate a response. Please try again.";
+      } catch (fallbackErr) {
+        setError(fallbackErr.message || "Connection error");
+        setLoading(false);
+        return `Error: ${fallbackErr.message || "Connection failed"}`;
       }
-      const data = await res.json();
-      const raw = data.content?.map(b => b.text || "").join("\n") || "I couldn't generate a response. Please try again.";
-      return stripThinking(raw);
-    } catch (e) {
-      setError(e.message || "Connection error");
-      return `Error: ${e.message || "Connection failed"}. Check your API key and try again.`;
-    } finally {
-      setLoading(false);
     }
+
+    setLoading(false);
+    return stripThinking(fullText);
   }, []);
 
   const startInterview = useCallback(async (selectedTrack) => {
-    // ─── Session gate ───
     if (checkSession && !checkSession()) return;
     if (onSessionUsed) await onSessionUsed();
 
     const contextMsg = `Here is the candidate's context:\n\n**RESUME:**\n${resume}\n\n**JOB DESCRIPTION:**\n${jd}\n\n**SELECTED TRACK:** ${selectedTrack}\n\nBegin the ${selectedTrack} interview simulation now. Stay in character as a Senior PM Interviewer at the target company. Ask your first question.`;
-    const response = await callClaude([{ role: "user", content: contextMsg }]);
-    setMessages([{ role: "assistant", content: response }]);
+
+    setMessages([{ role: "assistant", content: "▌", _streaming: true }]);
     setPhase("interview");
+
+    const response = await callClaude([{ role: "user", content: contextMsg }], {
+      onStream: (text) => {
+        setMessages([{ role: "assistant", content: text + "▌", _streaming: true }]);
+      }
+    });
+    setMessages([{ role: "assistant", content: response }]);
   }, [resume, jd, callClaude, checkSession, onSessionUsed]);
 
   const sendMessage = useCallback(async (explicitContent, fromVoice = false) => {
@@ -713,7 +773,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       : userMsg;
 
     const updatedMessages = [...messages, { role: "user", content: userMsg, fromVoice }];
-    setMessages(updatedMessages);
+    setMessages([...updatedMessages, { role: "assistant", content: "▌", _streaming: true }]);
 
     const visible = updatedMessages.filter(m => !m.hidden);
     const apiMsgs = buildCleanMessages(visible, null);
@@ -722,8 +782,29 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       if (last.role === "user") last.content = actualContent;
     }
 
-    const response = await callClaude(apiMsgs);
-    setMessages(prev => [...prev, { role: "assistant", content: response }]);
+    const response = await callClaude(apiMsgs, {
+      onStream: (text) => {
+        setMessages(prev => {
+          const newMsgs = [...prev];
+          const lastIdx = newMsgs.length - 1;
+          if (newMsgs[lastIdx]?._streaming) {
+            newMsgs[lastIdx] = { role: "assistant", content: text + "▌", _streaming: true };
+          }
+          return newMsgs;
+        });
+      }
+    });
+
+    setMessages(prev => {
+      const newMsgs = [...prev];
+      const lastIdx = newMsgs.length - 1;
+      if (newMsgs[lastIdx]?._streaming) {
+        newMsgs[lastIdx] = { role: "assistant", content: response };
+      } else {
+        newMsgs.push({ role: "assistant", content: response });
+      }
+      return newMsgs;
+    });
 
     // ─── Save session to Supabase after interview ends ───
     if (isEnd && user) {
@@ -1166,7 +1247,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             arr.slice(0, i).every(m => m.role !== "assistant");
           return <MessageBubble key={i} msg={msg} isFirstAssistant={isFirstAssistant} />;
         })}
-        {loading && <TypingIndicator />}
+        {loading && !messages.some(m => m._streaming) && <TypingIndicator />}
         <div ref={chatEndRef} />
       </div>
 
