@@ -612,6 +612,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   const [resume, setResume] = useState("");
   const [jd, setJd] = useState("");
   const [track, setTrack] = useState("");
+  const [company, setCompany] = useState("");
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -743,22 +744,23 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     return stripThinking(fullText);
   }, []);
 
-  const startInterview = useCallback(async (selectedTrack) => {
+  const startInterview = useCallback(async () => {
     if (checkSession && !checkSession()) return;
     if (onSessionUsed) await onSessionUsed();
 
-    const contextMsg = `Here is the candidate's context:\n\n**RESUME:**\n${resume}\n\n**JOB DESCRIPTION:**\n${jd}\n\n**SELECTED TRACK:** ${selectedTrack}\n\nBegin the ${selectedTrack} interview simulation now. Stay in character as a Senior PM Interviewer at the target company. Ask your first question.`;
+    const contextMsg = `Here is the candidate's context:\n\n**RESUME:**\n${resume}\n\n**JOB DESCRIPTION:**\n${jd}\n\n**SELECTED TRACK:** ${track}\n\nBegin the ${track} interview simulation now. Stay in character as a Senior PM Interviewer at the target company. Ask your first question.`;
 
     setMessages([{ role: "assistant", content: "▌", _streaming: true }]);
     setPhase("interview");
 
     const response = await callClaude([{ role: "user", content: contextMsg }], {
+      systemPrompt: buildSystemPrompt(),
       onStream: (text) => {
         setMessages([{ role: "assistant", content: text + "▌", _streaming: true }]);
       }
     });
     setMessages([{ role: "assistant", content: response }]);
-  }, [resume, jd, callClaude, checkSession, onSessionUsed]);
+  }, [resume, jd, track, callClaude, checkSession, onSessionUsed, buildSystemPrompt]);
 
   const sendMessage = useCallback(async (explicitContent, fromVoice = false) => {
     const userMsg = (explicitContent || input).trim();
@@ -783,6 +785,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     }
 
     const response = await callClaude(apiMsgs, {
+      systemPrompt: buildSystemPrompt(),
       onStream: (text) => {
         setMessages(prev => {
           const newMsgs = [...prev];
@@ -813,6 +816,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         supabase.from("sessions").insert({
           user_id: user.id,
           track,
+          company,
           overall_score: scoreData.overall_score,
           competency_breakdown: scoreData.competency_breakdown,
           detected_filler_words: scoreData.detected_filler_words,
@@ -825,7 +829,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         });
       }
     }
-  }, [input, loading, messages, callClaude, user, track]);
+  }, [input, loading, messages, callClaude, user, track, company, buildSystemPrompt]);
 
   const handleVoiceSubmit = useCallback((text) => {
     setVoiceMode(false);
@@ -843,6 +847,37 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     { id: "Execution", icon: "▲", desc: "Metrics, trade-offs, go-to-market, North Star definition" },
     { id: "Behavioral", icon: "●", desc: "STAR method, leadership stories, conflict resolution" }
   ];
+
+  const companies = [
+    { id: "Google", region: "Global", desc: "Analytical & structured. Blended questions. High technical bar. Product Vision + Analytics + Googleyness." },
+    { id: "Amazon", region: "Global", desc: "Leadership Principles driven. Deep behavioral. Bar Raiser depth. Every answer maps to a principle." },
+    { id: "Meta", region: "Global", desc: "Product Sense + Execution + Leadership & Drive. Understand-Identify-Execute. 3B+ user scale." },
+    { id: "Apple", region: "Global", desc: "Product taste & design intuition. Simplicity. Privacy-first thinking. Hardware-software integration." },
+    { id: "Microsoft", region: "Global", desc: "Growth mindset. Collaborative culture. Heavy behavioral. Enterprise + consumer balance." },
+    { id: "Flipkart", region: "India", desc: "India market dynamics. Tier 2/3 focus. Growth metrics. Marketplace + logistics." },
+    { id: "Razorpay/Fintech", region: "India", desc: "Payments, UPI, regulatory. Developer experience. B2B + B2C." },
+    { id: "CRED/Consumer", region: "India", desc: "Premium UX. Design thinking. Engagement loops. Trust & community." },
+    { id: "Swiggy/Zepto", region: "India", desc: "Hyperlocal delivery. Marketplace dynamics. Speed vs quality. Unit economics." },
+    { id: "General/Other", region: "General", desc: "Standard PM interview. No company-specific customization." },
+  ];
+
+  const companyContexts = {
+    "Google": "COMPANY CONTEXT: Interviewing for Google. Ask blended questions pivoting from vision to analytics to tradeoffs. Test Googleyness — collaborative, user-first, data-driven. Test analytical estimation. Reference Google products (Search, YouTube, Cloud, Maps, Android). Google has the highest technical bar.",
+    "Amazon": "COMPANY CONTEXT: Interviewing for Amazon. Map every question to Leadership Principles. Push deep on behavioral — 'what specifically did YOU do?' Demand metrics and data. Test Customer Obsession, Ownership, Bias for Action, Dive Deep, Disagree and Commit.",
+    "Meta": "COMPANY CONTEXT: Interviewing for Meta. Use Understand-Identify-Execute framework. Product Sense for 3B+ user base. Execution on metrics and shipping at scale. Leadership & Drive on influence without authority. Reference Facebook, Instagram, WhatsApp, Messenger.",
+    "Apple": "COMPANY CONTEXT: Interviewing for Apple. Evaluate product taste, design intuition, attention to detail, simplicity. Test privacy implications. Ask about craftsmanship. Reference iPhone, Mac, Vision Pro, services ecosystem.",
+    "Microsoft": "COMPANY CONTEXT: Interviewing for Microsoft. Growth mindset evaluation. Collaboration and inclusion. Reference Azure, Teams, Office, Windows, GitHub, LinkedIn. Enterprise thinking.",
+    "Flipkart": "COMPANY CONTEXT: Interviewing for Flipkart. India market — Tier 2/3 cities, vernacular, affordability. Growth metrics, unit economics. Marketplace dynamics, seller management, logistics.",
+    "Razorpay/Fintech": "COMPANY CONTEXT: Interviewing for fintech. Payments domain, UPI, RBI regulations, KYC. Developer experience. B2B+B2C thinking.",
+    "CRED/Consumer": "COMPANY CONTEXT: Interviewing for premium consumer company. Design thinking, premium UX, engagement loops, community building, trust.",
+    "Swiggy/Zepto": "COMPANY CONTEXT: Interviewing for hyperlocal delivery. Marketplace balance (supply/demand). Operations, delivery optimization. Speed vs quality. Quick commerce unit economics.",
+    "General/Other": "",
+  };
+
+  const buildSystemPrompt = useCallback(() => {
+    const ctx = companyContexts[company] || "";
+    return ctx ? `${SYSTEM_PROMPT}\n\n${ctx}` : SYSTEM_PROMPT;
+  }, [company]);
 
   // NAV_H = 3px accent + 52px nav bar
   const NAV_H = 55;
@@ -1131,7 +1166,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             {tracks.map((t, i) => (
               <button
                 key={t.id}
-                onClick={() => { setTrack(t.id); startInterview(t.id); }}
+                onClick={() => { setTrack(t.id); setCompany(""); setPhase("company"); }}
                 disabled={loading}
                 style={{
                   display: "flex", alignItems: "center", gap: 24,
@@ -1173,6 +1208,120 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     );
   }
 
+  // ─── Company Selection ───
+  if (phase === "company") {
+    const globalRegions = companies.filter(c => c.region === "Global");
+    const indiaRegions = companies.filter(c => c.region === "India");
+    const generalRegion = companies.filter(c => c.region === "General");
+
+    return (
+      <div style={{
+        minHeight: "100vh", background: C.bg,
+        fontFamily: "'DM Mono', monospace", color: C.text,
+        padding: "48px 32px", paddingTop: NAV_H + 48,
+        display: "flex", flexDirection: "column", alignItems: "center",
+      }}>
+        <style>{globalStyles}</style>
+        <style>{`
+          .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+          @media (max-width: 600px) { .company-grid { grid-template-columns: 1fr; } }
+        `}</style>
+        <div style={{ maxWidth: 720, width: "100%", animation: "fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1)" }}>
+          <button onClick={() => setPhase("track")} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 12, cursor: "pointer", marginBottom: 40, fontFamily: "'DM Mono', monospace", letterSpacing: 2 }}>← BACK</button>
+
+          <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 12 }}>STEP 03</div>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, marginBottom: 8, color: C.text }}>Select Target Company</h2>
+          <p style={{ fontSize: 13, color: C.textSoft, marginBottom: 36, fontFamily: "'Source Serif 4', serif" }}>
+            Alpha adapts questions and evaluation to match this company's interview style.
+          </p>
+
+          {/* Global */}
+          <div style={{ fontSize: 9, letterSpacing: 4, textTransform: "uppercase", color: C.textMuted, marginBottom: 10 }}>Global</div>
+          <div className="company-grid" style={{ marginBottom: 24 }}>
+            {globalRegions.map(c => (
+              <button
+                key={c.id}
+                onClick={() => setCompany(c.id)}
+                style={{
+                  display: "flex", flexDirection: "column", gap: 6,
+                  padding: "18px 20px", background: C.bg,
+                  border: `2px solid ${company === c.id ? C.orange : C.border}`,
+                  borderRadius: 10, cursor: "pointer", textAlign: "left",
+                  transition: "all 0.2s ease",
+                  boxShadow: company === c.id ? "0 2px 12px rgba(232,101,10,0.12)" : "none",
+                }}
+              >
+                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Playfair Display', serif" }}>{c.id}</span>
+                <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Source Serif 4', serif" }}>{c.desc}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* India */}
+          <div style={{ fontSize: 9, letterSpacing: 4, textTransform: "uppercase", color: C.textMuted, marginBottom: 10 }}>India</div>
+          <div className="company-grid" style={{ marginBottom: 24 }}>
+            {indiaRegions.map(c => (
+              <button
+                key={c.id}
+                onClick={() => setCompany(c.id)}
+                style={{
+                  display: "flex", flexDirection: "column", gap: 6,
+                  padding: "18px 20px", background: C.bg,
+                  border: `2px solid ${company === c.id ? C.orange : C.border}`,
+                  borderRadius: 10, cursor: "pointer", textAlign: "left",
+                  transition: "all 0.2s ease",
+                  boxShadow: company === c.id ? "0 2px 12px rgba(232,101,10,0.12)" : "none",
+                }}
+              >
+                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Playfair Display', serif" }}>{c.id}</span>
+                <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Source Serif 4', serif" }}>{c.desc}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* General */}
+          <div className="company-grid" style={{ marginBottom: 40 }}>
+            {generalRegion.map(c => (
+              <button
+                key={c.id}
+                onClick={() => setCompany(c.id)}
+                style={{
+                  display: "flex", flexDirection: "column", gap: 6,
+                  padding: "18px 20px", background: C.bg,
+                  border: `2px solid ${company === c.id ? C.orange : C.border}`,
+                  borderRadius: 10, cursor: "pointer", textAlign: "left",
+                  transition: "all 0.2s ease",
+                  boxShadow: company === c.id ? "0 2px 12px rgba(232,101,10,0.12)" : "none",
+                }}
+              >
+                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Playfair Display', serif" }}>{c.id}</span>
+                <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Source Serif 4', serif" }}>{c.desc}</span>
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={startInterview}
+            disabled={!company || loading}
+            style={{
+              padding: "16px 52px",
+              background: (company && !loading) ? C.orange : C.bgMuted,
+              border: "none",
+              color: (company && !loading) ? "#fff" : C.textMuted,
+              fontSize: 11, letterSpacing: 3, textTransform: "uppercase",
+              cursor: (company && !loading) ? "pointer" : "not-allowed",
+              borderRadius: 6, fontFamily: "'DM Mono', monospace",
+              fontWeight: 500, transition: "all 0.3s ease",
+              boxShadow: (company && !loading) ? "0 2px 12px rgba(232,101,10,0.25)" : "none",
+            }}
+          >
+            {loading ? "Starting..." : "Start Interview →"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   // ─── Interview ───
   return (
     <div style={{
@@ -1197,6 +1346,9 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           </span>
           <div style={{ width: 1, height: 20, background: C.border }} />
           <span style={{ fontSize: 10, letterSpacing: 3, color: C.textMuted, textTransform: "uppercase" }}>{track} Track</span>
+          {company && company !== "General/Other" && (
+            <span style={{ fontSize: 10, letterSpacing: 2, color: C.orange, textTransform: "uppercase", padding: "2px 8px", background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 4 }}>{company}</span>
+          )}
           {!interviewEnded && (
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: C.green, animation: "pulse 2s ease-in-out infinite" }} />
@@ -1351,6 +1503,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               setInput("");
               setError("");
               setVoiceMode(false);
+              setCompany("");
             }}
             style={{
               padding: "16px 48px", background: C.orange, border: "none",
