@@ -18,6 +18,14 @@ const COMP_KEYS = ['structure', 'depth', 'frameworks', 'communication', 'trade_o
 const globalStyles = `
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   * { box-sizing: border-box; }
+  @media (max-width: 768px) {
+    .mp-page-pad { padding: 24px 16px !important; }
+    .mp-stat-row { flex-wrap: wrap !important; gap: 10px !important; }
+    .mp-modal-pad { padding: 24px 20px 20px !important; }
+  }
+  @media (max-width: 480px) {
+    .mp-stat-row > * { min-width: calc(50% - 5px) !important; flex: 1 1 calc(50% - 5px) !important; }
+  }
 `;
 
 // ─── SVG Line Chart ───
@@ -285,7 +293,7 @@ export default function MyProgress({ user }) {
 
       {reviewTarget && <ReviewModal attempt={reviewTarget} onClose={() => setReviewTarget(null)} />}
 
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
+      <div className="mp-page-pad" style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 32 }}>
@@ -309,7 +317,7 @@ export default function MyProgress({ user }) {
         ) : (
           <>
             {/* Stat cards */}
-            <div style={{ display: 'flex', gap: 16, marginBottom: 24, flexWrap: 'wrap' }}>
+            <div className="mp-stat-row" style={{ display: 'flex', gap: 16, marginBottom: 24, flexWrap: 'wrap' }}>
               <StatCard label="Questions Attempted" value={uniqueQuestions} sub="unique questions" />
               <StatCard label="Total Attempts" value={totalAttempts} sub="all time" />
               <StatCard label="Avg Score" value={avgScore} sub="out of 100" color={avgScore >= 70 ? C.green : avgScore >= 40 ? C.yellow : C.red} />

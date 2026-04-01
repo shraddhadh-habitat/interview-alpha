@@ -34,7 +34,7 @@ function SessionDetail({ session, onBack }) {
   const sc = scoreColor(session.overall_score);
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: '32px 28px', animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
+    <div className="ps-detail-pad" style={{ maxWidth: 800, margin: '0 auto', padding: '32px 28px', animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
       <button onClick={onBack} style={{ background: 'none', border: 'none', color: C.textMuted, fontSize: 12, cursor: 'pointer', marginBottom: 28, fontFamily: "'DM Mono', monospace", letterSpacing: 2 }}>
         ← BACK
       </button>
@@ -71,7 +71,7 @@ function SessionDetail({ session, onBack }) {
       )}
 
       {/* Tags */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 24 }}>
+      <div className="ps-tags-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 24 }}>
         <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 10, padding: 20 }}>
           <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: C.red, marginBottom: 10 }}>Filler Words</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -117,7 +117,7 @@ function SessionDetail({ session, onBack }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {session.messages.filter(m => !m.hidden).map((msg, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
-                <div style={{
+                <div className="ps-bubble" style={{
                   maxWidth: '80%', padding: '12px 18px',
                   borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
                   background: msg.role === 'user' ? '#F7F2ED' : C.bg,
@@ -162,6 +162,15 @@ export default function PastSessions({ user }) {
   const globalStyles = `
     @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     * { box-sizing: border-box; }
+    @media (max-width: 600px) {
+      .ps-tags-2col { grid-template-columns: 1fr !important; }
+      .ps-bubble { max-width: 95% !important; }
+      .ps-session-card { padding: 14px 16px !important; gap: 12px !important; }
+      .ps-detail-pad { padding: 24px 16px !important; }
+    }
+    @media (max-width: 768px) {
+      .ps-page-pad { padding: 28px 16px !important; }
+    }
   `;
 
   if (selected) {
@@ -176,7 +185,7 @@ export default function PastSessions({ user }) {
   return (
     <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'DM Mono', monospace" }}>
       <style>{globalStyles}</style>
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: '40px 28px' }}>
+      <div className="ps-page-pad" style={{ maxWidth: 800, margin: '0 auto', padding: '40px 28px' }}>
         <div style={{ marginBottom: 36 }}>
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>YOUR HISTORY</div>
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: C.text }}>Past Sessions</h2>
@@ -200,6 +209,7 @@ export default function PastSessions({ user }) {
               <button
                 key={s.id}
                 onClick={() => setSelected(s)}
+                className="ps-session-card"
                 style={{
                   display: 'flex', alignItems: 'center', gap: 20,
                   padding: '20px 24px',

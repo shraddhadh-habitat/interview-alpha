@@ -15,6 +15,11 @@ const C = {
 const globalStyles = `
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   * { box-sizing: border-box; }
+  @media (max-width: 768px) {
+    .sg-page-pad { padding: 24px 16px !important; }
+    .sg-section-pad { padding: 16px 16px 24px !important; }
+    .sg-section-btn { padding: 18px 20px !important; }
+  }
 `;
 
 // ─── Salary Data ───
@@ -155,7 +160,7 @@ export default function SalaryGuide() {
     <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'DM Mono', monospace" }}>
       <style>{globalStyles}</style>
 
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
+      <div className="sg-page-pad" style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 36 }}>

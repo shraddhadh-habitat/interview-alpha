@@ -347,7 +347,7 @@ function ScoreDashboard({ data }) {
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 }}>
+      <div className="ia-score-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 }}>
         <div>
           <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: C.red, marginBottom: 8 }}>Filler Words Detected</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -892,7 +892,21 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     @media (max-width: 768px) {
       .chat-bubble-user { max-width: 95% !important; }
       .chat-bubble-ai { max-width: 95% !important; }
-      .voice-buttons { flex-direction: column !important; }
+      .voice-btn-row { flex-direction: column !important; }
+    }
+    @media (max-width: 600px) {
+      .ia-score-2col { grid-template-columns: 1fr !important; }
+      .ia-interview-left { flex-wrap: wrap !important; gap: 8px !important; }
+      .ia-interview-header { padding: 10px 16px !important; }
+      .ia-chat-area { padding: 16px 12px !important; padding-bottom: 140px !important; }
+      .ia-input-area { padding: 12px 12px 16px !important; }
+    }
+    @media (max-width: 480px) {
+      .ia-landing-h1 { font-size: 48px !important; letter-spacing: -1px !important; }
+      .ia-landing-steps { gap: 24px !important; flex-wrap: wrap !important; justify-content: center !important; }
+      .ia-setup-btns { flex-direction: column !important; }
+      .ia-setup-btns button { width: 100% !important; box-sizing: border-box !important; }
+      .ia-page-pad { padding: 24px 16px !important; padding-top: ${NAV_H + 24}px !important; }
     }
   `;
 
@@ -915,7 +929,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         <div style={{ position: "relative", zIndex: 1, textAlign: "center", maxWidth: 680, animation: "fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1)" }}>
           <div style={{ marginBottom: 48 }}>
             <div style={{ fontSize: 10, letterSpacing: 8, textTransform: "uppercase", color: C.textMuted, marginBottom: 20 }}>PM Prep, Supercharged.</div>
-            <h1 style={{
+            <h1 className="ia-landing-h1" style={{
               fontFamily: "'Playfair Display', serif",
               fontSize: 72, fontWeight: 900, lineHeight: 0.95,
               letterSpacing: -2, color: C.text
@@ -983,7 +997,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             Begin Session
           </button>
 
-          <div style={{ marginTop: 64, display: "flex", justifyContent: "center", gap: 48 }}>
+          <div className="ia-landing-steps" style={{ marginTop: 64, display: "flex", justifyContent: "center", gap: 48 }}>
             {[["01", "Paste Resume & JD"], ["02", "Choose Interview Track"], ["03", "Get Insightful Feedback"]].map(([num, label]) => (
               <div key={num} style={{ textAlign: "center" }}>
                 <div style={{ fontSize: 28, fontFamily: "'Playfair Display', serif", color: C.orange, opacity: 0.35, marginBottom: 8 }}>{num}</div>
@@ -1060,7 +1074,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             />
           </div>
 
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <div className="ia-setup-btns" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <button
               onClick={async () => {
                 if (resume.trim() && jd.trim()) {
@@ -1333,19 +1347,19 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       <style>{globalStyles}</style>
 
       {/* Interview header */}
-      <div style={{
+      <div className="ia-interview-header" style={{
         padding: "14px 28px",
         borderBottom: `1px solid ${C.border}`,
         display: "flex", alignItems: "center", justifyContent: "space-between",
         position: "sticky", top: NAV_H, zIndex: 10,
         background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)"
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: C.text }}>
+        <div className="ia-interview-left" style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: C.text, flexShrink: 0 }}>
             I<span style={{ color: C.orange }}>A</span>
           </span>
-          <div style={{ width: 1, height: 20, background: C.border }} />
-          <span style={{ fontSize: 10, letterSpacing: 3, color: C.textMuted, textTransform: "uppercase" }}>{track} Track</span>
+          <div style={{ width: 1, height: 20, background: C.border, flexShrink: 0 }} />
+          <span style={{ fontSize: 10, letterSpacing: 3, color: C.textMuted, textTransform: "uppercase", whiteSpace: "nowrap" }}>{track} Track</span>
           {company && company !== "General/Other" && (
             <span style={{ fontSize: 10, letterSpacing: 2, color: C.orange, textTransform: "uppercase", padding: "2px 8px", background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 4 }}>{company}</span>
           )}
@@ -1398,7 +1412,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       )}
 
       {/* Chat Area */}
-      <div style={{ flex: 1, overflow: "auto", padding: "24px 28px", paddingBottom: 140 }}>
+      <div className="ia-chat-area" style={{ flex: 1, overflow: "auto", padding: "24px 28px", paddingBottom: 140 }}>
         {messages.filter(m => !m.hidden).map((msg, i, arr) => {
           const isFirstAssistant = msg.role === "assistant" &&
             arr.slice(0, i).every(m => m.role !== "assistant");
@@ -1410,7 +1424,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
 
       {/* Input Area */}
       {!interviewEnded && (
-        <div style={{
+        <div className="ia-input-area" style={{
           position: "sticky", bottom: 0,
           padding: "16px 28px 20px",
           background: `linear-gradient(transparent, ${C.bgSoft} 25%)`,
