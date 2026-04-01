@@ -41,6 +41,17 @@ function SessionDetail({ session, onBack }) {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32, flexWrap: 'wrap' }}>
         <TrackBadge track={session.track} />
+        {session.company && session.company !== 'General/Other' && (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            padding: '3px 10px',
+            background: 'rgba(232,101,10,0.05)', border: `1px solid rgba(232,101,10,0.15)`,
+            borderRadius: 4, fontSize: 11, color: C.orange,
+            fontFamily: "'DM Mono', monospace", letterSpacing: 1,
+          }}>
+            {session.company}
+          </span>
+        )}
         <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
           {new Date(session.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
         </span>
@@ -150,7 +161,7 @@ export default function PastSessions({ user }) {
   useEffect(() => {
     supabase
       .from('sessions')
-      .select('id, track, overall_score, created_at, competency_breakdown, detected_filler_words, high_signal_keywords, alpha_rewrite, next_drill, messages')
+      .select('id, track, company, overall_score, created_at, competency_breakdown, detected_filler_words, high_signal_keywords, alpha_rewrite, next_drill, messages')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .then(({ data, error }) => {
@@ -228,8 +239,15 @@ export default function PastSessions({ user }) {
                 </div>
                 <div style={{ width: 1, height: 36, background: C.borderLight }} />
                 {/* Info */}
-                <div style={{ flex: 1 }}>
-                  <div style={{ marginBottom: 6 }}><TrackBadge track={s.track} /></div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
+                    <TrackBadge track={s.track} />
+                    {s.company && s.company !== 'General/Other' && (
+                      <span style={{ padding: '2px 8px', background: 'rgba(232,101,10,0.05)', border: '1px solid rgba(232,101,10,0.15)', borderRadius: 4, fontSize: 10, color: C.orange, fontFamily: "'DM Mono', monospace", letterSpacing: 0.5 }}>
+                        {s.company}
+                      </span>
+                    )}
+                  </div>
                   <div style={{ fontSize: 11, color: C.textMuted }}>
                     {new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     {' · '}
