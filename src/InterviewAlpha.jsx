@@ -397,70 +397,62 @@ function MessageBubble({ msg, isFirstAssistant }) {
     : msg.content;
   const isVoice = msg.fromVoice;
 
+  if (isUser) {
+    return (
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 16, animation: "fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1)" }}>
+        <div className="chat-bubble-user" style={{
+          maxWidth: "75%", padding: "14px 20px",
+          borderRadius: "20px 20px 4px 20px",
+          background: C.orange, color: "#fff",
+          fontSize: 15, lineHeight: 1.75,
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          whiteSpace: "pre-wrap",
+        }}>
+          {isVoice && (
+            <div style={{ fontSize: 10, opacity: 0.8, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
+              <MicIcon size={9} active={false} /> Voice
+            </div>
+          )}
+          {displayText}
+        </div>
+      </div>
+    );
+  }
+
+  // Alpha message
   return (
     <div style={{
       display: "flex",
-      justifyContent: isUser ? "flex-end" : "flex-start",
-      marginBottom: 16,
+      justifyContent: "flex-start",
+      marginBottom: 20,
+      gap: 12,
       animation: "fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1)"
     }}>
-      <div className={isUser ? "chat-bubble-user" : "chat-bubble-ai"} style={{
-        maxWidth: isUser ? "75%" : "85%",
-        padding: isUser ? "14px 20px" : "18px 24px",
-        borderRadius: isUser ? "20px 20px 4px 20px" : "20px 20px 20px 4px",
-        background: isUser ? C.userBubble : C.assistantBubble,
-        border: `1px solid ${isUser ? "#EDE5DB" : C.border}`,
-        color: C.text,
-        fontSize: 14,
-        lineHeight: 1.75,
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
-        whiteSpace: "pre-wrap",
-        boxShadow: isUser ? "none" : "0 1px 4px rgba(0,0,0,0.04)"
-      }}>
+      {/* Alpha avatar */}
+      <div style={{
+        width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
+        background: 'linear-gradient(135deg, #8250DF, #D946EF)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 14, color: '#fff', fontWeight: 700, marginTop: 4
+      }}>α</div>
+
+      <div className="chat-bubble-ai" style={{ maxWidth: "85%" }}>
         <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-          fontSize: 9,
-          textTransform: "uppercase",
-          letterSpacing: 2.5,
-          color: isUser ? C.textMuted : C.orange,
-          marginBottom: 8,
+          fontSize: 12, fontWeight: 600, color: C.orange, marginBottom: 6,
           fontFamily: "'Plus Jakarta Sans', sans-serif"
         }}>
-          {isUser ? "You" : "Interviewer"}
-          {isVoice && (
-            <span style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 3,
-              padding: "1px 6px",
-              background: C.orangeLight,
-              borderRadius: 3,
-              fontSize: 8,
-              color: C.orange,
-              letterSpacing: 1.5,
-              marginLeft: 4
-            }}>
-              <MicIcon size={9} active={false} /> VOICE
-            </span>
-          )}
+          Alpha
+          {isFirstAssistant && <span style={{ fontWeight: 400, color: C.textMuted, fontSize: 11 }}> · Interview Assistant</span>}
         </div>
-        {isFirstAssistant && (
-          <div style={{
-            fontFamily: "'Instrument Serif', serif",
-            fontWeight: 700,
-            fontSize: 15,
-            color: "#1B1B18",
-            marginBottom: 10,
-            paddingBottom: 10,
-            borderBottom: `1px solid ${C.border}`,
-            letterSpacing: 0.2,
-          }}>
-            Alpha, your Interview Assistant
-          </div>
-        )}
-        <span style={{ color: "#1B1B18" }}>{displayText}</span>
+        <div style={{
+          borderLeft: '3px solid #E8650A',
+          paddingLeft: 16,
+          fontSize: 15, lineHeight: 1.8,
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          color: C.text, whiteSpace: "pre-wrap"
+        }}>
+          {displayText}
+        </div>
         {scoreData && <ScoreDashboard data={scoreData} />}
       </div>
     </div>
@@ -470,25 +462,26 @@ function MessageBubble({ msg, isFirstAssistant }) {
 // ─── Typing Indicator ───
 function TypingIndicator() {
   return (
-    <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: 16 }}>
+    <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: 16, gap: 12 }}>
       <div style={{
-        padding: "18px 24px",
-        borderRadius: "20px 20px 20px 4px",
-        background: C.assistantBubble,
-        border: `1px solid ${C.border}`,
-        boxShadow: "0 1px 4px rgba(0,0,0,0.04)"
-      }}>
-        <div style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: 2.5, color: C.orange, marginBottom: 10, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          Interviewer
-        </div>
-        <div style={{ display: "flex", gap: 5 }}>
-          {[0, 1, 2].map(i => (
-            <div key={i} style={{
-              width: 7, height: 7, borderRadius: "50%",
-              background: C.textMuted,
-              animation: `pulse 1.2s ease-in-out ${i * 0.2}s infinite`
-            }} />
-          ))}
+        width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
+        background: 'linear-gradient(135deg, #8250DF, #D946EF)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 14, color: '#fff', fontWeight: 700
+      }}>α</div>
+      <div>
+        <div style={{ fontSize: 12, fontWeight: 600, color: '#E8650A', marginBottom: 8 }}>Alpha</div>
+        <div style={{ borderLeft: '3px solid #E8650A', paddingLeft: 16 }}>
+          <div className="dot-pulse" style={{ display: "flex", gap: 5, alignItems: 'center', height: 24 }}>
+            {[0, 1, 2].map(i => (
+              <span key={i} style={{
+                display: 'inline-block',
+                width: 7, height: 7, borderRadius: "50%",
+                background: C.textMuted,
+                animation: `dotPulse 1.2s ease-in-out ${i * 0.2}s infinite`
+              }} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -1450,7 +1443,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       )}
 
       {/* Chat Area */}
-      <div className="ia-chat-area" style={{ flex: 1, overflow: "auto", padding: "24px 28px", paddingBottom: 140 }}>
+      <div className="ia-chat-area" style={{ flex: 1, overflow: "auto", padding: "24px 28px", paddingBottom: 140, maxWidth: 760, margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
         {messages.filter(m => !m.hidden).map((msg, i, arr) => {
           const isFirstAssistant = msg.role === "assistant" &&
             arr.slice(0, i).every(m => m.role !== "assistant");
