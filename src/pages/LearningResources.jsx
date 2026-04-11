@@ -106,7 +106,7 @@ function VideoCard({ video }) {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               transition: 'opacity 0.18s',
             }}>
-              <span style={{ fontSize: 28, color: '#fff' }}>&#9654;</span>
+              <span style={{ fontSize: 28, color: '#fff' }}>▶</span>
             </div>
           )}
         </div>
@@ -161,7 +161,7 @@ function CoachCard({ coach }) {
           onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
         >
-          Visit Channel &rarr;
+          Visit Channel →
         </a>
       </div>
 
@@ -179,7 +179,7 @@ function CoachCard({ coach }) {
           padding: '16px 20px', background: C.bgMuted, borderRadius: 12,
           fontSize: 14, color: C.textLight, fontFamily: "'Plus Jakarta Sans', sans-serif",
         }}>
-          Visit the channel to explore their latest videos &rarr;
+          Visit the channel to explore their latest videos →
         </div>
       )}
     </div>
@@ -255,7 +255,7 @@ export default function LearningResources() {
                   <div style={{ fontSize: 13, color: C.textLight }}>{r.author}</div>
                 </div>
                 <TypeBadge type={r.type} />
-                <span style={{ fontSize: 16, color: C.textLight }}>&nearr;</span>
+                <span style={{ fontSize: 16, color: C.textLight }}>↗</span>
               </a>
             ))}
           </div>
