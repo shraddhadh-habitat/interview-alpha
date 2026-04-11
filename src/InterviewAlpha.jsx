@@ -913,12 +913,14 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     }
   `;
 
+  const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
+
   // ─── Landing ───
   if (phase === "landing") {
     return (
       <div style={{
         minHeight: "100vh",
-        background: C.bg,
+        background: 'linear-gradient(180deg, #FAFAF8 0%, #F5F3EF 100%)',
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -929,85 +931,118 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         paddingTop: NAV_H + 32,
       }}>
         <style>{globalStyles}</style>
-        <div style={{ position: "relative", zIndex: 1, textAlign: "center", maxWidth: 680, animation: "fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1)" }}>
+        <div style={{ position: "relative", zIndex: 1, textAlign: "center", maxWidth: 720, animation: "fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1)" }}>
+          {/* Hero */}
           <div style={{ marginBottom: 48 }}>
-            <div style={{ fontSize: 10, letterSpacing: 8, textTransform: "uppercase", color: C.textMuted, marginBottom: 20 }}>PM Prep, Supercharged.</div>
             <h1 className="ia-landing-h1" style={{
               fontFamily: "'Instrument Serif', serif",
-              fontSize: 72, fontWeight: 900, lineHeight: 0.95,
-              letterSpacing: -2, color: C.text
+              fontSize: 64, fontWeight: 400, lineHeight: 1.05,
+              letterSpacing: -1, color: C.text, marginBottom: 20
             }}>
-              Interview<span style={{ color: C.orange }}>Alpha</span><sup style={{ fontSize: 12, color: '#E8650A', verticalAlign: 'super' }}>™</sup>
+              Interview<span style={{ background: RAINBOW, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Alpha</span><sup style={{ fontSize: 12, verticalAlign: 'super', WebkitTextFillColor: C.textMuted, background: 'none' }}>™</sup>
             </h1>
-            <div style={{ width: 48, height: 3, background: C.orange, margin: "24px auto", borderRadius: 2 }} />
-            <p style={{ fontSize: 15, color: C.textSoft, lineHeight: 1.8, maxWidth: 440, margin: "0 auto", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Stop practicing. Start landing.<br />
+            <p style={{ fontSize: 20, fontWeight: 500, color: C.textMuted, marginBottom: 10 }}>
+              Stop practicing. Start landing.
+            </p>
+            <p style={{ fontSize: 16, color: '#9C9C97', marginBottom: 36 }}>
               Real-time AI coaching for PMs, not the fluff.
             </p>
-          </div>
 
-          {/* Session status banner */}
-          {(() => {
-            const status = profile?.subscription_status ?? 'free';
-            if (status === 'active') {
-              const monthly = profile?.monthly_sessions_used ?? 0;
-              const atLimit = monthly >= PRO_SESSION_LIMIT;
-              return atLimit ? (
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
-                  🔒 100/100 sessions used this month. Sessions reset monthly from activation date.
-                </div>
-              ) : (
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
-                  ◆ Pro — {monthly}/100 sessions used this month
+            {/* Session status banner */}
+            {(() => {
+              const status = profile?.subscription_status ?? 'free';
+              if (status === 'active') {
+                const monthly = profile?.monthly_sessions_used ?? 0;
+                const atLimit = monthly >= PRO_SESSION_LIMIT;
+                return atLimit ? (
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red }}>
+                    🔒 100/100 sessions used this month. Sessions reset monthly from activation date.
+                  </div>
+                ) : (
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange }}>
+                    ◆ Pro — {monthly}/100 sessions used this month
+                  </div>
+                );
+              }
+              if (status === 'pending') return (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 12, color: C.yellow }}>
+                  ⏳ Payment pending — activate your account to start
                 </div>
               );
-            }
-            if (status === 'pending') return (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
-                ⏳ Payment pending — activate your account to start
-              </div>
-            );
-            if (status === 'expired') return (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
-                Subscription expired — renew to continue
-              </div>
-            );
-            const used = profile?.free_sessions_used ?? 0;
-            const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
-            return remaining > 0 ? (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 12, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
-                ◆ You have {remaining} free AI session{remaining !== 1 ? 's' : ''} remaining — try one now!
-              </div>
-            ) : (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
-                🔒 Free session used. Upgrade to continue.
-              </div>
-            );
-          })()}
+              if (status === 'expired') return (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red }}>
+                  Subscription expired — renew to continue
+                </div>
+              );
+              const used = profile?.free_sessions_used ?? 0;
+              const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
+              return remaining > 0 ? (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 12, color: C.green }}>
+                  ◆ You have {remaining} free AI session{remaining !== 1 ? 's' : ''} remaining
+                </div>
+              ) : (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange }}>
+                  🔒 Free sessions used. Upgrade to continue.
+                </div>
+              );
+            })()}
 
-          <button
-            onClick={() => setPhase("setup")}
-            style={{
-              padding: "18px 56px", background: C.orange, border: "none",
-              color: "#fff", fontSize: 11, letterSpacing: 4, textTransform: "uppercase",
-              cursor: "pointer", borderRadius: 6, fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 500, transition: "all 0.3s ease",
-              boxShadow: "0 2px 12px rgba(232,101,10,0.25)"
-            }}
-            onMouseEnter={e => e.target.style.background = C.orangeHover}
-            onMouseLeave={e => e.target.style.background = C.orange}
-          >
-            Begin Session
-          </button>
+            <div>
+              <button
+                onClick={() => setPhase("setup")}
+                style={{
+                  padding: "16px 40px", background: RAINBOW, border: "none",
+                  color: "#fff", fontSize: 16,
+                  cursor: "pointer", borderRadius: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 600, transition: "all 0.2s ease",
+                  boxShadow: "0 4px 20px rgba(232,101,10,0.3)"
+                }}
+              >
+                Begin Session — It's Free
+              </button>
+              <div style={{ marginTop: 12, fontSize: 13, color: C.textMuted }}>3 free AI sessions. No credit card needed.</div>
+            </div>
+          </div>
 
-          <div className="ia-landing-steps" style={{ marginTop: 64, display: "flex", justifyContent: "center", gap: 48 }}>
-            {[["01", "Paste Resume & JD"], ["02", "Choose Interview Track"], ["03", "Get Insightful Feedback"]].map(([num, label]) => (
-              <div key={num} style={{ textAlign: "center" }}>
-                <div style={{ fontSize: 28, fontFamily: "'Instrument Serif', serif", color: C.orange, opacity: 0.35, marginBottom: 8 }}>{num}</div>
-                <div style={{ fontSize: 11, color: C.textMuted, letterSpacing: 1 }}>{label}</div>
+          {/* Stats row */}
+          <div className="ia-landing-steps" style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 64, flexWrap: 'wrap' }}>
+            {[["1,100+", "Expert Questions"], ["10", "PM Levels (APM → CPO)"], ["8", "Competency Scores"]].map(([num, label]) => (
+              <div key={num} style={{
+                background: '#FFFFFF', borderRadius: 16, padding: '24px 28px', textAlign: 'center',
+                border: `1px solid ${C.border}`, boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)',
+                minWidth: 160
+              }}>
+                <div style={{
+                  fontSize: 40, fontWeight: 700, lineHeight: 1, marginBottom: 8,
+                  background: RAINBOW, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'
+                }}>{num}</div>
+                <div style={{ fontSize: 13, color: '#9C9C97' }}>{label}</div>
               </div>
             ))}
           </div>
+
+          {/* How it works */}
+          <div style={{ marginBottom: 48 }}>
+            <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 24 }}>How It Works</div>
+            <div className="ia-landing-steps" style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: 'wrap' }}>
+              {[["📋", "Paste Resume & JD", "1"], ["🎯", "Choose Track & Company", "2"], ["📊", "Get Insightful Feedback", "3"]].map(([icon, label, step]) => (
+                <div key={step} style={{
+                  background: '#FFFFFF', borderRadius: 16, padding: '24px 20px', textAlign: 'center',
+                  border: `1px solid ${C.border}`, boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)',
+                  minWidth: 160, flex: '1 1 160px', maxWidth: 220
+                }}>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: RAINBOW, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px', fontSize: 12, fontWeight: 700, color: '#fff' }}>{step}</div>
+                  <div style={{ fontSize: 24, marginBottom: 8 }}>{icon}</div>
+                  <div style={{ fontSize: 14, fontWeight: 500, color: C.text }}>{label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Social proof */}
+          <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 12 }}>Trusted by PMs preparing for</div>
+          <div style={{ fontSize: 16, fontWeight: 500, color: '#9C9C97', marginBottom: 8 }}>Google · Amazon · Meta · Apple · Flipkart · Razorpay</div>
+          <div style={{ fontSize: 13, color: C.orange, fontWeight: 600 }}>Join 50+ PMs already practicing</div>
         </div>
       </div>
     );
