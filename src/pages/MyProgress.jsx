@@ -32,7 +32,7 @@ const globalStyles = `
 function ScoreChart({ data }) {
   if (!data.length) return (
     <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>No data yet</span>
+      <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No data yet</span>
     </div>
   );
 
@@ -58,7 +58,7 @@ function ScoreChart({ data }) {
           <line x1={PAD.left} y1={getY(y)} x2={W - PAD.right} y2={getY(y)}
             stroke={C.border} strokeWidth="1" strokeDasharray="3,3" />
           <text x={PAD.left - 6} y={getY(y) + 4} textAnchor="end"
-            fontSize="9" fill={C.textMuted} fontFamily="'DM Mono', monospace">{y}</text>
+            fontSize="9" fill={C.textMuted} fontFamily="'Plus Jakarta Sans', sans-serif">{y}</text>
         </g>
       ))}
       {areaPath && <path d={areaPath} fill="rgba(232,101,10,0.06)" />}
@@ -83,10 +83,10 @@ function CompBar({ label, value, max = 10 }) {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-        <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 1.5, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
+        <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 1.5, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           {label.replace(/_/g, ' ')}
         </span>
-        <span style={{ fontSize: 12, color, fontWeight: 600, fontFamily: "'DM Mono', monospace" }}>{value}/{max}</span>
+        <span style={{ fontSize: 12, color, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{value}/{max}</span>
       </div>
       <div style={{ height: 5, background: C.bgMuted, borderRadius: 3, overflow: 'hidden' }}>
         <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 3, transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)' }} />
@@ -102,9 +102,9 @@ function StatCard({ label, value, sub, color }) {
       background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12,
       padding: '20px 22px', flex: 1, minWidth: 120,
     }}>
-      <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 8 }}>{label}</div>
-      <div style={{ fontSize: 36, fontWeight: 700, color: color || C.text, fontFamily: "'Playfair Display', serif", lineHeight: 1 }}>{value}</div>
-      {sub && <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace", marginTop: 6 }}>{sub}</div>}
+      <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>{label}</div>
+      <div style={{ fontSize: 36, fontWeight: 700, color: color || C.text, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{value}</div>
+      {sub && <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginTop: 6 }}>{sub}</div>}
     </div>
   );
 }
@@ -121,7 +121,7 @@ function ReviewModal({ attempt, onClose }) {
         position: 'fixed', inset: 0, zIndex: 1000,
         background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: 24, fontFamily: "'DM Mono', monospace",
+        padding: 24, fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}
     >
       <div
@@ -139,7 +139,7 @@ function ReviewModal({ attempt, onClose }) {
               {attempt.designation} · Attempt #{attempt.attempt_number}
             </div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-              <span style={{ fontSize: 48, fontWeight: 700, color: scoreColor, fontFamily: "'Playfair Display', serif", lineHeight: 1 }}>{score}</span>
+              <span style={{ fontSize: 48, fontWeight: 700, color: scoreColor, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{score}</span>
               <span style={{ fontSize: 13, color: C.textMuted }}>/100</span>
             </div>
           </div>
@@ -149,7 +149,7 @@ function ReviewModal({ attempt, onClose }) {
           >×</button>
         </div>
 
-        <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.7, marginBottom: 20, padding: '12px 16px', background: C.bgSoft, borderRadius: 8 }}>
+        <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, marginBottom: 20, padding: '12px 16px', background: C.bgSoft, borderRadius: 8 }}>
           {attempt.feedback_text || 'No summary available.'}
         </p>
 
@@ -163,8 +163,8 @@ function ReviewModal({ attempt, onClose }) {
 
         {attempt.expert_rewrite && (
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'DM Mono', monospace", marginBottom: 8 }}>Expert Rewrite</div>
-            <div style={{ padding: '14px 18px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 10, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Source Serif 4', serif", whiteSpace: 'pre-wrap' }}>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Expert Rewrite</div>
+            <div style={{ padding: '14px 18px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 10, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
               {attempt.expert_rewrite}
             </div>
           </div>
@@ -172,12 +172,12 @@ function ReviewModal({ attempt, onClose }) {
 
         {(attempt.improvement_tips || []).length > 0 && (
           <div>
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 8 }}>Improvement Tips</div>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Improvement Tips</div>
             <div style={{ display: 'grid', gap: 6 }}>
               {attempt.improvement_tips.map((t, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10 }}>
-                  <span style={{ color: C.orange, fontFamily: "'DM Mono', monospace", fontSize: 11, flexShrink: 0 }}>{i + 1}.</span>
-                  <span style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.6 }}>{t}</span>
+                  <span style={{ color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, flexShrink: 0 }}>{i + 1}.</span>
+                  <span style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>{t}</span>
                 </div>
               ))}
             </div>
@@ -272,7 +272,7 @@ export default function MyProgress({ user }) {
   const recentAttempts = [...attempts].reverse().slice(0, 20);
 
   if (loading) return (
-    <div style={{ minHeight: '100vh', paddingTop: 55, display: 'flex', alignItems: 'center', justifyContent: 'center', background: C.bgSoft, fontFamily: "'DM Mono', monospace" }}>
+    <div style={{ minHeight: '100vh', paddingTop: 55, display: 'flex', alignItems: 'center', justifyContent: 'center', background: C.bgSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <span style={{ fontSize: 11, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase' }}>Loading...</span>
     </div>
   );
@@ -284,11 +284,11 @@ export default function MyProgress({ user }) {
   };
   const sectionHeader = {
     fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: C.textMuted,
-    fontFamily: "'DM Mono', monospace", marginBottom: 20,
+    fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 20,
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'DM Mono', monospace" }}>
+    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{globalStyles}</style>
 
       {reviewTarget && <ReviewModal attempt={reviewTarget} onClose={() => setReviewTarget(null)} />}
@@ -298,10 +298,10 @@ export default function MyProgress({ user }) {
         {/* Header */}
         <div style={{ marginBottom: 32 }}>
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>ANALYTICS</div>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: C.text, marginBottom: 8 }}>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, color: C.text, marginBottom: 8 }}>
             My Progress
           </h2>
-          <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif" }}>
+          <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             Your practice history, competency trends, and improvement opportunities.
           </p>
         </div>
@@ -309,8 +309,8 @@ export default function MyProgress({ user }) {
         {totalAttempts === 0 ? (
           <div style={{ ...sectionStyle, textAlign: 'center', padding: '64px 32px' }}>
             <div style={{ fontSize: 32, marginBottom: 16, opacity: 0.3 }}>◆</div>
-            <div style={{ fontSize: 18, fontFamily: "'Playfair Display', serif", color: C.text, marginBottom: 10 }}>No attempts yet</div>
-            <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Source Serif 4', serif" }}>
+            <div style={{ fontSize: 18, fontFamily: "'Instrument Serif', serif", color: C.text, marginBottom: 10 }}>No attempts yet</div>
+            <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Head to Practice Q&A and answer your first question to start tracking your progress.
             </p>
           </div>
@@ -350,7 +350,7 @@ export default function MyProgress({ user }) {
                 </div>
                 <div style={{ padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 8 }}>
                   <div style={{ fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: C.yellow, marginBottom: 8 }}>Tip</div>
-                  <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Source Serif 4', serif", lineHeight: 1.6, margin: 0 }}>
+                  <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, margin: 0 }}>
                     Focus your next sessions on <strong>{weakest[0].key.replace(/_/g, ' ')}</strong>. In the Practice Q&A library, look for questions that require explicit trade-off reasoning and structured frameworks.
                   </p>
                 </div>
@@ -377,7 +377,7 @@ export default function MyProgress({ user }) {
                         const pct = Math.round((row.attempts / maxAttempts) * 100);
                         return (
                           <tr key={row.designation}>
-                            <td style={{ padding: '12px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.text, fontFamily: "'Source Serif 4', serif", fontSize: 13 }}>{row.designation}</td>
+                            <td style={{ padding: '12px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13 }}>{row.designation}</td>
                             <td style={{ padding: '12px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textMuted }}>{row.questions}</td>
                             <td style={{ padding: '12px 12px', borderBottom: `1px solid ${C.borderLight}` }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -419,7 +419,7 @@ export default function MyProgress({ user }) {
                       return (
                         <tr key={i}>
                           <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textMuted, whiteSpace: 'nowrap' }}>{date}</td>
-                          <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textSoft, fontFamily: "'Source Serif 4', serif", maxWidth: 280 }}>
+                          <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", maxWidth: 280 }}>
                             <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 12 }}>
                               {a.user_answer ? a.user_answer.slice(0, 60) + (a.user_answer.length > 60 ? '…' : '') : qSnippet}
                             </div>
@@ -433,7 +433,7 @@ export default function MyProgress({ user }) {
                               style={{
                                 background: 'none', border: 'none', padding: 0,
                                 fontSize: 11, color: C.orange, cursor: 'pointer',
-                                fontFamily: "'DM Mono', monospace", letterSpacing: 0.5,
+                                fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
                                 textDecoration: 'underline', textUnderlineOffset: 3,
                               }}
                             >

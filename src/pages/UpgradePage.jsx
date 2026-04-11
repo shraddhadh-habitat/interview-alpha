@@ -40,20 +40,20 @@ function StatusBanner({ profile }) {
       : null;
     if (monthly >= 100) {
       return (
-        <div style={{ padding: '14px 20px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.red, fontFamily: "'DM Mono', monospace" }}>
+        <div style={{ padding: '14px 20px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           You've used all 100 AI sessions this month.{resetDate ? ` Sessions reset on ${resetDate}.` : ''} Need more? Contact us.
         </div>
       );
     }
     return (
-      <div style={{ padding: '14px 20px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.green, fontFamily: "'DM Mono', monospace" }}>
+      <div style={{ padding: '14px 20px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         ✓ Pro{profile.subscription_plan ? ` (${profile.subscription_plan})` : ''} · {monthly}/100 sessions this month.{d ? ` Valid until ${d}.` : ''}
       </div>
     );
   }
   if (status === 'pending') {
     return (
-      <div style={{ padding: '14px 20px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.yellow, fontFamily: "'DM Mono', monospace" }}>
+      <div style={{ padding: '14px 20px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         ⏳ Payment submitted — we'll activate your account within 24 hours. No action needed.
       </div>
     );
@@ -61,7 +61,7 @@ function StatusBanner({ profile }) {
   if (status === 'expired') {
     const d = expires ? new Date(expires).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : null;
     return (
-      <div style={{ padding: '14px 20px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.red, fontFamily: "'DM Mono', monospace" }}>
+      <div style={{ padding: '14px 20px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         Your Pro subscription expired{d ? ` on ${d}` : ''}. Renew below to continue.
       </div>
     );
@@ -120,7 +120,7 @@ export default function UpgradePage({ user, profile, onBack }) {
   const upiId = import.meta.env.VITE_UPI_ID || 'yourname@upi';
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'DM Mono', monospace" }}>
+    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{globalStyles}</style>
 
       <div style={{ maxWidth: 700, margin: '0 auto', padding: '48px 28px', animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
@@ -128,7 +128,7 @@ export default function UpgradePage({ user, profile, onBack }) {
         {/* Back */}
         <button
           onClick={onBack}
-          style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: "'DM Mono', monospace", marginBottom: 32, padding: 0 }}
+          style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 32, padding: 0 }}
           onMouseEnter={e => e.currentTarget.style.color = C.orange}
           onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
         >
@@ -141,10 +141,10 @@ export default function UpgradePage({ user, profile, onBack }) {
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <div style={{ fontSize: 10, letterSpacing: 5, color: C.orange, textTransform: 'uppercase', marginBottom: 12 }}>Upgrade</div>
-          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12 }}>
+          <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12 }}>
             Go Pro. Land the Role.
           </h1>
-          <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.7, maxWidth: 480, margin: '0 auto' }}>
+          <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, maxWidth: 480, margin: '0 auto' }}>
             100 AI sessions per month — mock interviews, practice evaluations, and complete session history — everything you need to land the role.
           </p>
         </div>
@@ -171,9 +171,9 @@ export default function UpgradePage({ user, profile, onBack }) {
                 ['Leaderboard', '✓', '✓'],
               ].map(([feat, freeVal, proVal]) => (
                 <div key={feat} style={{ display: 'contents' }}>
-                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, fontSize: 12, color: C.textSoft, fontFamily: "'Source Serif 4', serif" }}>{feat}</div>
-                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>{freeVal}</div>
-                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, color: C.green, fontFamily: "'DM Mono', monospace', fontWeight: 600" }}>{proVal}</div>
+                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{feat}</div>
+                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{freeVal}</div>
+                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif', fontWeight: 600" }}>{proVal}</div>
                 </div>
               ))}
             </div>
@@ -197,17 +197,17 @@ export default function UpgradePage({ user, profile, onBack }) {
                   onMouseLeave={e => { e.currentTarget.style.borderColor = key === 'yearly' ? C.orange : C.border; }}
                 >
                   {key === 'yearly' && (
-                    <div style={{ position: 'absolute', top: -1, right: 16, background: C.orange, color: '#fff', fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', padding: '3px 8px', borderRadius: '0 0 6px 6px', fontFamily: "'DM Mono', monospace" }}>
+                    <div style={{ position: 'absolute', top: -1, right: 16, background: C.orange, color: '#fff', fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', padding: '3px 8px', borderRadius: '0 0 6px 6px', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Best Value
                     </div>
                   )}
                   <div style={{ fontSize: 11, letterSpacing: 2, color: C.textMuted, marginBottom: 12 }}>{p.label.toUpperCase()}</div>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 8 }}>
-                    <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: C.text }}>₹{p.price.toLocaleString('en-IN')}</span>
+                    <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, color: C.text }}>₹{p.price.toLocaleString('en-IN')}</span>
                     <span style={{ fontSize: 12, color: C.textMuted }}>{p.period}</span>
                   </div>
                   {p.saves && (
-                    <div style={{ fontSize: 11, color: C.green, fontFamily: "'DM Mono', monospace", marginBottom: 8 }}>{p.saves}</div>
+                    <div style={{ fontSize: 11, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>{p.saves}</div>
                   )}
                   <div style={{ marginTop: 16, padding: '10px 16px', background: key === 'yearly' ? C.orange : C.bg, border: `1px solid ${key === 'yearly' ? C.orange : C.border}`, borderRadius: 6, fontSize: 11, color: key === 'yearly' ? '#fff' : C.orange, letterSpacing: 1.5, textTransform: 'uppercase', textAlign: 'center', fontWeight: 500 }}>
                     {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Plan →'}
@@ -216,7 +216,7 @@ export default function UpgradePage({ user, profile, onBack }) {
               ))}
             </div>
 
-            <p style={{ fontSize: 11, color: C.textMuted, textAlign: 'center', fontFamily: "'DM Mono', monospace" }}>
+            <p style={{ fontSize: 11, color: C.textMuted, textAlign: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Pay via UPI · Manual verification within 24 hours · No subscription auto-renewal
             </p>
           </div>
@@ -228,12 +228,12 @@ export default function UpgradePage({ user, profile, onBack }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32 }}>
               <button
                 onClick={() => setStep(1)}
-                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: "'DM Mono', monospace", padding: 0 }}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: 0 }}
               >
                 ← Change plan
               </button>
               <span style={{ fontSize: 11, color: C.textMuted }}>·</span>
-              <span style={{ fontSize: 11, letterSpacing: 1, color: C.orange, fontFamily: "'DM Mono', monospace" }}>
+              <span style={{ fontSize: 11, letterSpacing: 1, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 {PLANS[plan].label} — ₹{PLANS[plan].price.toLocaleString('en-IN')}{PLANS[plan].period}
               </span>
             </div>
@@ -241,7 +241,7 @@ export default function UpgradePage({ user, profile, onBack }) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'start' }}>
               {/* QR code side */}
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 16, fontFamily: "'DM Mono', monospace" }}>Step 1 — Scan & Pay</div>
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 16, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Step 1 — Scan & Pay</div>
                 <div style={{ width: 200, height: 200, margin: '0 auto', background: C.bgMuted, border: `1px solid ${C.border}`, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
                   <img
                     src="/upi-qr.png"
@@ -253,17 +253,17 @@ export default function UpgradePage({ user, profile, onBack }) {
                     }}
                   />
                 </div>
-                <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 4 }}>UPI ID</div>
-                <div style={{ fontSize: 13, color: C.text, fontFamily: "'DM Mono', monospace", fontWeight: 600 }}>{upiId}</div>
-                <div style={{ marginTop: 12, padding: '8px 12px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 8, fontSize: 13, color: C.orange, fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
+                <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4 }}>UPI ID</div>
+                <div style={{ fontSize: 13, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{upiId}</div>
+                <div style={{ marginTop: 12, padding: '8px 12px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 8, fontSize: 13, color: C.orange, fontFamily: "'Instrument Serif', serif", fontWeight: 700 }}>
                   ₹{PLANS[plan].price.toLocaleString('en-IN')}
                 </div>
               </div>
 
               {/* Reference entry side */}
               <div>
-                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 16, fontFamily: "'DM Mono', monospace" }}>Step 2 — Enter Reference</div>
-                <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.7, marginBottom: 20 }}>
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 16, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Step 2 — Enter Reference</div>
+                <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, marginBottom: 20 }}>
                   After paying, enter the UPI transaction ID from your payment app (e.g. 12-digit reference number or UPI ref).
                 </p>
                 <input
@@ -274,7 +274,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                   style={{
                     width: '100%', padding: '12px 14px',
                     border: `1px solid ${C.border}`, borderRadius: 8,
-                    fontSize: 14, fontFamily: "'DM Mono', monospace",
+                    fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
                     color: C.text, background: C.bg, marginBottom: 16,
                     transition: 'border-color 0.2s',
                   }}
@@ -282,7 +282,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                   onBlur={e => e.target.style.borderColor = C.border}
                 />
                 {error && (
-                  <div style={{ marginBottom: 12, padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 8, fontSize: 12, color: C.red, fontFamily: "'DM Mono', monospace" }}>
+                  <div style={{ marginBottom: 12, padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 8, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {error}
                   </div>
                 )}
@@ -296,13 +296,13 @@ export default function UpgradePage({ user, profile, onBack }) {
                     color: submitting || !upiRef.trim() ? C.textMuted : '#fff',
                     fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                     cursor: submitting || !upiRef.trim() ? 'not-allowed' : 'pointer',
-                    fontFamily: "'DM Mono', monospace", fontWeight: 500,
+                    fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
                     transition: 'all 0.2s',
                   }}
                 >
                   {submitting ? 'Submitting...' : 'Submit for Verification →'}
                 </button>
-                <p style={{ fontSize: 11, color: C.textMuted, marginTop: 10, fontFamily: "'DM Mono', monospace", lineHeight: 1.6 }}>
+                <p style={{ fontSize: 11, color: C.textMuted, marginTop: 10, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>
                   We verify manually within 24 hours. You'll be notified when your account is activated.
                 </p>
               </div>
@@ -316,13 +316,13 @@ export default function UpgradePage({ user, profile, onBack }) {
             <div style={{ width: 64, height: 64, borderRadius: '50%', background: C.greenLight, border: `2px solid ${C.greenBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', fontSize: 28 }}>
               ✓
             </div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 700, color: C.text, marginBottom: 12 }}>Payment Submitted</h2>
-            <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.7, maxWidth: 400, margin: '0 auto 32px' }}>
+            <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 700, color: C.text, marginBottom: 12 }}>Payment Submitted</h2>
+            <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, maxWidth: 400, margin: '0 auto 32px' }}>
               Your UPI reference has been received. We'll verify and activate your Pro account within 24 hours.
             </p>
             <button
               onClick={onBack}
-              style={{ padding: '12px 32px', background: C.orange, border: 'none', borderRadius: 8, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'DM Mono', monospace", fontWeight: 500 }}
+              style={{ padding: '12px 32px', background: C.orange, border: 'none', borderRadius: 8, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}
               onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
               onMouseLeave={e => e.currentTarget.style.background = C.orange}
             >

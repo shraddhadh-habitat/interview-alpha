@@ -146,7 +146,7 @@ function getQuestionText(qid) {
 function ScoreChart({ data }) {
   if (!data.length) return (
     <div style={{ height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>No data yet</span>
+      <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No data yet</span>
     </div>
   );
   const W = 720, H = 150;
@@ -164,7 +164,7 @@ function ScoreChart({ data }) {
       {[0, 25, 50, 75, 100].map(y => (
         <g key={y}>
           <line x1={PAD.left} y1={getY(y)} x2={W - PAD.right} y2={getY(y)} stroke={C.border} strokeWidth="1" strokeDasharray="3,3" />
-          <text x={PAD.left - 6} y={getY(y) + 4} textAnchor="end" fontSize="9" fill={C.textMuted} fontFamily="'DM Mono', monospace">{y}</text>
+          <text x={PAD.left - 6} y={getY(y) + 4} textAnchor="end" fontSize="9" fill={C.textMuted} fontFamily="'Plus Jakarta Sans', sans-serif">{y}</text>
         </g>
       ))}
       {areaPath && <path d={areaPath} fill="rgba(232,101,10,0.06)" />}
@@ -184,10 +184,10 @@ function CompBar({ label, value, max = 10 }) {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-        <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 1.5, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
+        <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 1.5, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           {label.replace(/_/g, ' ')}
         </span>
-        <span style={{ fontSize: 12, color, fontWeight: 600, fontFamily: "'DM Mono', monospace" }}>{value}/{max}</span>
+        <span style={{ fontSize: 12, color, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{value}/{max}</span>
       </div>
       <div style={{ height: 5, background: C.bgMuted, borderRadius: 3, overflow: 'hidden' }}>
         <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 3, transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)' }} />
@@ -199,9 +199,9 @@ function CompBar({ label, value, max = 10 }) {
 function StatCard({ label, value, sub, color }) {
   return (
     <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: '20px 22px', flex: 1, minWidth: 110 }}>
-      <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 8 }}>{label}</div>
-      <div style={{ fontSize: 34, fontWeight: 700, color: color || C.text, fontFamily: "'Playfair Display', serif", lineHeight: 1 }}>{value}</div>
-      {sub && <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace", marginTop: 6 }}>{sub}</div>}
+      <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>{label}</div>
+      <div style={{ fontSize: 34, fontWeight: 700, color: color || C.text, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{value}</div>
+      {sub && <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginTop: 6 }}>{sub}</div>}
     </div>
   );
 }
@@ -210,7 +210,7 @@ function ReviewModal({ attempt, onClose }) {
   const score = attempt.score;
   const color = scoreColor100(score);
   return (
-    <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, fontFamily: "'DM Mono', monospace" }}>
+    <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <div onClick={e => e.stopPropagation()} style={{ background: C.card, borderRadius: 16, border: `1px solid ${C.border}`, maxWidth: 640, width: '100%', maxHeight: '85vh', overflow: 'auto', padding: '36px 36px 28px', boxShadow: '0 24px 80px rgba(0,0,0,0.18)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
           <div>
@@ -218,13 +218,13 @@ function ReviewModal({ attempt, onClose }) {
               {attempt.designation} · Attempt #{attempt.attempt_number}
             </div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-              <span style={{ fontSize: 48, fontWeight: 700, color, fontFamily: "'Playfair Display', serif", lineHeight: 1 }}>{score}</span>
+              <span style={{ fontSize: 48, fontWeight: 700, color, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{score}</span>
               <span style={{ fontSize: 13, color: C.textMuted }}>/100</span>
             </div>
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: C.textMuted, lineHeight: 1, padding: 4 }}>×</button>
         </div>
-        <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.7, marginBottom: 20, padding: '12px 16px', background: C.bgMuted, borderRadius: 8 }}>
+        <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, marginBottom: 20, padding: '12px 16px', background: C.bgMuted, borderRadius: 8 }}>
           {attempt.feedback_text || 'No summary available.'}
         </p>
         {attempt.competency_breakdown && (
@@ -234,20 +234,20 @@ function ReviewModal({ attempt, onClose }) {
         )}
         {attempt.expert_rewrite && (
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'DM Mono', monospace", marginBottom: 8 }}>Expert Rewrite</div>
-            <div style={{ padding: '14px 18px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 10, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Source Serif 4', serif", whiteSpace: 'pre-wrap' }}>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Expert Rewrite</div>
+            <div style={{ padding: '14px 18px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 10, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
               {attempt.expert_rewrite}
             </div>
           </div>
         )}
         {(attempt.improvement_tips || []).length > 0 && (
           <div>
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 8 }}>Improvement Tips</div>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Improvement Tips</div>
             <div style={{ display: 'grid', gap: 6 }}>
               {attempt.improvement_tips.map((t, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10 }}>
-                  <span style={{ color: C.orange, fontFamily: "'DM Mono', monospace", fontSize: 11, flexShrink: 0 }}>{i + 1}.</span>
-                  <span style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.6 }}>{t}</span>
+                  <span style={{ color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, flexShrink: 0 }}>{i + 1}.</span>
+                  <span style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>{t}</span>
                 </div>
               ))}
             </div>
@@ -264,8 +264,8 @@ function Section({ title, sub, children }) {
   return (
     <div style={{ marginBottom: 40 }}>
       <div style={{ marginBottom: 20 }}>
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, color: C.text, letterSpacing: -0.5, marginBottom: 5 }}>{title}</h2>
-        {sub && <p style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace", letterSpacing: 0.2 }}>{sub}</p>}
+        <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 700, color: C.text, letterSpacing: -0.5, marginBottom: 5 }}>{title}</h2>
+        {sub && <p style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.2 }}>{sub}</p>}
       </div>
       <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 26 }}>
         {children}
@@ -278,14 +278,14 @@ function InsightCard({ title, icon, iconColor, value, sub, subColor, badge, badg
   return (
     <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: '18px 20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
-        <span style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>{title}</span>
-        {badge && <span style={{ padding: '2px 7px', background: badgeColor, border: `1px solid ${badgeBorder}`, borderRadius: 10, fontSize: 9, color: badgeText, fontFamily: "'DM Mono', monospace", fontWeight: 600 }}>{badge}</span>}
+        <span style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{title}</span>
+        {badge && <span style={{ padding: '2px 7px', background: badgeColor, border: `1px solid ${badgeBorder}`, borderRadius: 10, fontSize: 9, color: badgeText, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{badge}</span>}
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
         <span style={{ fontSize: 16, color: iconColor }}>{icon}</span>
-        <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: C.text }}>{value}</span>
+        <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 18, fontWeight: 700, color: C.text }}>{value}</span>
       </div>
-      <div style={{ fontSize: 11, color: subColor || C.textMuted, fontFamily: "'DM Mono', monospace", letterSpacing: 0.2 }}>{sub}</div>
+      <div style={{ fontSize: 11, color: subColor || C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.2 }}>{sub}</div>
     </div>
   );
 }
@@ -293,8 +293,8 @@ function InsightCard({ title, icon, iconColor, value, sub, subColor, badge, badg
 function FilterSelect({ label, value, onChange, options }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-      <span style={{ fontSize: 10, color: C.textMuted, fontFamily: "'DM Mono', monospace", letterSpacing: 1, textTransform: 'uppercase' }}>{label}:</span>
-      <select value={value} onChange={e => onChange(e.target.value)} style={{ padding: '5px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 11, fontFamily: "'DM Mono', monospace", color: C.text, background: C.card, cursor: 'pointer', outline: 'none' }}>
+      <span style={{ fontSize: 10, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 1, textTransform: 'uppercase' }}>{label}:</span>
+      <select value={value} onChange={e => onChange(e.target.value)} style={{ padding: '5px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, background: C.card, cursor: 'pointer', outline: 'none' }}>
         {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     </div>
@@ -311,10 +311,10 @@ function ReadinessMeter({ score, interviewCount, practiceCount }) {
       <svg width={240} height={132} style={{ overflow: 'visible' }}>
         <path d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`} fill="none" stroke={C.borderLight} strokeWidth={22} strokeLinecap="round" />
         <path d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`} fill="none" stroke={color} strokeWidth={22} strokeLinecap="round" strokeDasharray={`${filled} ${circumference}`} />
-        <text x={cx} y={cy - 14} textAnchor="middle" style={{ fontSize: 48, fontWeight: 900, fill: color, fontFamily: "'Playfair Display', serif" }}>{score}</text>
-        <text x={cx} y={cy + 18} textAnchor="middle" style={{ fontSize: 22, fontWeight: 700, fill: color, fontFamily: "'DM Mono', monospace", letterSpacing: 2 }}>{grade}</text>
+        <text x={cx} y={cy - 14} textAnchor="middle" style={{ fontSize: 48, fontWeight: 900, fill: color, fontFamily: "'Instrument Serif', serif" }}>{score}</text>
+        <text x={cx} y={cy + 18} textAnchor="middle" style={{ fontSize: 22, fontWeight: 700, fill: color, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 2 }}>{grade}</text>
       </svg>
-      <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3, marginTop: 8, lineHeight: 1.6 }}>
+      <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3, marginTop: 8, lineHeight: 1.6 }}>
         {interviewCount} interview{interviewCount !== 1 ? 's' : ''} · {practiceCount} practice attempt{practiceCount !== 1 ? 's' : ''}
       </div>
     </div>
@@ -334,7 +334,7 @@ function RadarChart({ avgComp }) {
   const axes = COMPETENCIES.map((_, i) => { const [x, y] = pt(i, 1); return <line key={i} x1={CX} y1={CY} x2={x} y2={y} stroke={C.borderLight} strokeWidth={1} />; });
   const dataPolygon = COMPETENCIES.map(({ label }, i) => pt(i, (avgComp[label] ?? 0) / 10).join(',')).join(' ');
   const dots = COMPETENCIES.map(({ label }, i) => { const [x, y] = pt(i, (avgComp[label] ?? 0) / 10); return <circle key={i} cx={x} cy={y} r={5} fill={C.orange} stroke="white" strokeWidth={2} />; });
-  const levelMarkers = [2, 4, 6, 8, 10].map((v, i) => { const [lx, ly] = pt(0, (i + 1) / LEVELS); return <text key={v} x={lx + 5} y={ly + 4} style={{ fontSize: 9, fill: '#BBBBBB', fontFamily: "'DM Mono', monospace" }}>{v}</text>; });
+  const levelMarkers = [2, 4, 6, 8, 10].map((v, i) => { const [lx, ly] = pt(0, (i + 1) / LEVELS); return <text key={v} x={lx + 5} y={ly + 4} style={{ fontSize: 9, fill: '#BBBBBB', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{v}</text>; });
   const labelEls = COMPETENCIES.map(({ label }, i) => {
     const a = angle(i);
     const lx = CX + (R + 28) * Math.cos(a), ly = CY + (R + 28) * Math.sin(a);
@@ -342,8 +342,8 @@ function RadarChart({ avgComp }) {
     const v = avgComp[label];
     return (
       <g key={i}>
-        <text x={lx} y={ly - 2} textAnchor={anchor} style={{ fontSize: 11, fill: C.text, fontFamily: "'DM Mono', monospace", fontWeight: 700 }}>{label}</text>
-        <text x={lx} y={ly + 13} textAnchor={anchor} style={{ fontSize: 10, fill: v != null ? compInsightColor(v) : C.textMuted, fontFamily: "'DM Mono', monospace" }}>{v != null ? `${v.toFixed(1)}/10` : 'No data'}</text>
+        <text x={lx} y={ly - 2} textAnchor={anchor} style={{ fontSize: 11, fill: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>{label}</text>
+        <text x={lx} y={ly + 13} textAnchor={anchor} style={{ fontSize: 10, fill: v != null ? compInsightColor(v) : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{v != null ? `${v.toFixed(1)}/10` : 'No data'}</text>
       </g>
     );
   });
@@ -358,7 +358,7 @@ function RadarChart({ avgComp }) {
 
 function PerformanceTimeline({ timeline }) {
   if (timeline.length < 2) return (
-    <div style={{ textAlign: 'center', padding: '36px 0', color: C.textMuted, fontFamily: "'DM Mono', monospace", fontSize: 12, letterSpacing: 0.3 }}>
+    <div style={{ textAlign: 'center', padding: '36px 0', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, letterSpacing: 0.3 }}>
       Complete at least 2 sessions to see your performance trend.
     </div>
   );
@@ -380,20 +380,20 @@ function PerformanceTimeline({ timeline }) {
       {[0, 25, 50, 75, 100].map(v => (
         <g key={v}>
           <line x1={PL} y1={yp(v)} x2={W - PR} y2={yp(v)} stroke={C.borderLight} strokeDasharray="4 4" />
-          <text x={PL - 6} y={yp(v) + 4} textAnchor="end" style={{ fontSize: 9, fill: C.textMuted, fontFamily: "'DM Mono', monospace" }}>{v}</text>
+          <text x={PL - 6} y={yp(v) + 4} textAnchor="end" style={{ fontSize: 9, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{v}</text>
         </g>
       ))}
       <line x1={PL} y1={PT} x2={PL} y2={PT + IH} stroke="#DDDDDD" />
       <line x1={PL} y1={PT + IH} x2={W - PR} y2={PT + IH} stroke="#DDDDDD" />
-      {xLabels.map((a, i) => <text key={i} x={xp(a.date)} y={H - 6} textAnchor="middle" style={{ fontSize: 9, fill: C.textMuted, fontFamily: "'DM Mono', monospace" }}>{new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</text>)}
+      {xLabels.map((a, i) => <text key={i} x={xp(a.date)} y={H - 6} textAnchor="middle" style={{ fontSize: 9, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</text>)}
       <path d={linePath} fill="none" stroke={C.orange} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
       <path d={avgPath}  fill="none" stroke={C.green}  strokeWidth={1.5} strokeDasharray="6 3" strokeLinecap="round" />
       {timeline.map((a, i) => <circle key={i} cx={xp(a.date)} cy={yp(scores[i])} r={3.5} fill={C.orange} stroke="white" strokeWidth={1.5} />)}
       <g>
         <line x1={PL + 10} y1={PT + 12} x2={PL + 28} y2={PT + 12} stroke={C.orange} strokeWidth={2} />
-        <text x={PL + 33} y={PT + 16} style={{ fontSize: 10, fill: C.textMuted, fontFamily: "'DM Mono', monospace" }}>Score</text>
+        <text x={PL + 33} y={PT + 16} style={{ fontSize: 10, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Score</text>
         <line x1={PL + 80} y1={PT + 12} x2={PL + 98} y2={PT + 12} stroke={C.green} strokeWidth={1.5} strokeDasharray="6 3" />
-        <text x={PL + 103} y={PT + 16} style={{ fontSize: 10, fill: C.textMuted, fontFamily: "'DM Mono', monospace" }}>3-pt Avg</text>
+        <text x={PL + 103} y={PT + 16} style={{ fontSize: 10, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>3-pt Avg</text>
       </g>
     </svg>
   );
@@ -408,13 +408,13 @@ function AttemptDetail({ item }) {
   return (
     <div style={{ padding: '18px 22px', background: '#FAFAFA', borderTop: `1px solid ${C.border}`, display: 'flex', gap: 28, flexWrap: 'wrap' }}>
       <div style={{ minWidth: 200 }}>
-        <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 10, fontWeight: 600 }}>Competency Scores</div>
+        <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10, fontWeight: 600 }}>Competency Scores</div>
         {compRows.length === 0 ? <div style={{ fontSize: 11, color: C.textMuted }}>No breakdown available</div>
           : compRows.map(({ label, value }) => (
             <div key={label} style={{ marginBottom: 7 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
-                <span style={{ fontSize: 11, color: C.textSoft, fontFamily: "'DM Mono', monospace" }}>{label}</span>
-                <span style={{ fontSize: 11, color: compInsightColor(value), fontFamily: "'DM Mono', monospace", fontWeight: 700 }}>{value}/10</span>
+                <span style={{ fontSize: 11, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{label}</span>
+                <span style={{ fontSize: 11, color: compInsightColor(value), fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>{value}/10</span>
               </div>
               <div style={{ height: 4, background: C.borderLight, borderRadius: 2, overflow: 'hidden' }}>
                 <div style={{ width: `${(value / 10) * 100}%`, height: '100%', background: compInsightColor(value), borderRadius: 2 }} />
@@ -427,30 +427,30 @@ function AttemptDetail({ item }) {
           <>
             {item.high_signal_keywords?.length > 0 && (
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.green, fontFamily: "'DM Mono', monospace", marginBottom: 7, fontWeight: 600 }}>Signal Keywords</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Signal Keywords</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                  {item.high_signal_keywords.map((kw, i) => <span key={i} style={{ padding: '2px 8px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 10, fontSize: 10, color: C.green, fontFamily: "'DM Mono', monospace" }}>{kw}</span>)}
+                  {item.high_signal_keywords.map((kw, i) => <span key={i} style={{ padding: '2px 8px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 10, fontSize: 10, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{kw}</span>)}
                 </div>
               </div>
             )}
             {item.detected_filler_words?.length > 0 && (
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.red, fontFamily: "'DM Mono', monospace", marginBottom: 7, fontWeight: 600 }}>Filler Words</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Filler Words</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                  {item.detected_filler_words.map((w, i) => <span key={i} style={{ padding: '2px 8px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, fontSize: 10, color: C.red, fontFamily: "'DM Mono', monospace" }}>{w}</span>)}
+                  {item.detected_filler_words.map((w, i) => <span key={i} style={{ padding: '2px 8px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, fontSize: 10, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)}
                 </div>
               </div>
             )}
             {item.alpha_rewrite && (
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'DM Mono', monospace", marginBottom: 7, fontWeight: 600 }}>Alpha Rewrite</div>
-                <div style={{ padding: '10px 14px', background: 'rgba(232,101,10,0.05)', border: `1px solid ${C.orangeBorder}`, borderRadius: 8, fontSize: 12, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.alpha_rewrite}</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Alpha Rewrite</div>
+                <div style={{ padding: '10px 14px', background: 'rgba(232,101,10,0.05)', border: `1px solid ${C.orangeBorder}`, borderRadius: 8, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.alpha_rewrite}</div>
               </div>
             )}
             {item.next_drill && (
               <div>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 5, fontWeight: 600 }}>Next Drill</div>
-                <div style={{ fontSize: 12, color: C.textSoft, fontFamily: "'DM Mono', monospace", lineHeight: 1.55 }}>{item.next_drill}</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 5, fontWeight: 600 }}>Next Drill</div>
+                <div style={{ fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.55 }}>{item.next_drill}</div>
               </div>
             )}
           </>
@@ -458,38 +458,38 @@ function AttemptDetail({ item }) {
           <>
             {item.user_answer && (
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 7, fontWeight: 600 }}>Your Answer</div>
-                <div style={{ padding: '10px 14px', background: C.borderLight, borderRadius: 8, fontSize: 12, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.6, maxHeight: 90, overflow: 'auto' }}>{item.user_answer}</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Your Answer</div>
+                <div style={{ padding: '10px 14px', background: C.borderLight, borderRadius: 8, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, maxHeight: 90, overflow: 'auto' }}>{item.user_answer}</div>
               </div>
             )}
             {item.feedback_text && (
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 7, fontWeight: 600 }}>AI Feedback</div>
-                <div style={{ fontSize: 12, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.65 }}>{item.feedback_text}</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>AI Feedback</div>
+                <div style={{ fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65 }}>{item.feedback_text}</div>
               </div>
             )}
             {item.strengths?.length > 0 && (
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.green, fontFamily: "'DM Mono', monospace", marginBottom: 7, fontWeight: 600 }}>Strengths</div>
-                {item.strengths.map((s, i) => <div key={i} style={{ fontSize: 12, color: C.green, fontFamily: "'DM Mono', monospace", marginBottom: 3, display: 'flex', gap: 8 }}><span>+</span><span>{s}</span></div>)}
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Strengths</div>
+                {item.strengths.map((s, i) => <div key={i} style={{ fontSize: 12, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 3, display: 'flex', gap: 8 }}><span>+</span><span>{s}</span></div>)}
               </div>
             )}
             {item.weaknesses?.length > 0 && (
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.red, fontFamily: "'DM Mono', monospace", marginBottom: 7, fontWeight: 600 }}>Areas to Improve</div>
-                {item.weaknesses.map((w, i) => <div key={i} style={{ fontSize: 12, color: C.red, fontFamily: "'DM Mono', monospace", marginBottom: 3, display: 'flex', gap: 8 }}><span>→</span><span>{w}</span></div>)}
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Areas to Improve</div>
+                {item.weaknesses.map((w, i) => <div key={i} style={{ fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 3, display: 'flex', gap: 8 }}><span>→</span><span>{w}</span></div>)}
               </div>
             )}
             {item.expert_rewrite && (
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'DM Mono', monospace", marginBottom: 7, fontWeight: 600 }}>Expert Rewrite</div>
-                <div style={{ padding: '10px 14px', background: 'rgba(232,101,10,0.05)', border: `1px solid ${C.orangeBorder}`, borderRadius: 8, fontSize: 12, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.expert_rewrite}</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Expert Rewrite</div>
+                <div style={{ padding: '10px 14px', background: 'rgba(232,101,10,0.05)', border: `1px solid ${C.orangeBorder}`, borderRadius: 8, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.expert_rewrite}</div>
               </div>
             )}
             {item.improvement_tips?.length > 0 && (
               <div>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 7, fontWeight: 600 }}>Improvement Tips</div>
-                {item.improvement_tips.map((t, i) => <div key={i} style={{ fontSize: 12, color: C.textSoft, fontFamily: "'DM Mono', monospace", marginBottom: 4, lineHeight: 1.5 }}>{i + 1}. {t}</div>)}
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Improvement Tips</div>
+                {item.improvement_tips.map((t, i) => <div key={i} style={{ fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, lineHeight: 1.5 }}>{i + 1}. {t}</div>)}
               </div>
             )}
           </>
@@ -629,17 +629,17 @@ export default function Scorecard({ user }) {
   );
 
   if (loading) return (
-    <div style={{ background: C.bg, minHeight: '100vh', paddingTop: NAV_H, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Mono', monospace" }}>
+    <div style={{ background: C.bg, minHeight: '100vh', paddingTop: NAV_H, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <span style={{ fontSize: 10, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase' }}>Loading...</span>
     </div>
   );
 
   const hasNoData = sessions.length === 0 && practiceAttempts.length === 0;
   if (hasNoData) return (
-    <div style={{ background: C.bg, minHeight: '100vh', paddingTop: NAV_H, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Mono', monospace" }}>
+    <div style={{ background: C.bg, minHeight: '100vh', paddingTop: NAV_H, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <div style={{ textAlign: 'center', maxWidth: 400 }}>
-        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 700, color: C.text, marginBottom: 14 }}>No data yet</div>
-        <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.7, fontFamily: "'Source Serif 4', serif" }}>
+        <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 700, color: C.text, marginBottom: 14 }}>No data yet</div>
+        <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.7, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           Complete at least one interview session or practice attempt to generate your scorecard.
         </div>
       </div>
@@ -647,10 +647,10 @@ export default function Scorecard({ user }) {
   );
 
   const sectionBox = { background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: '24px 28px', marginBottom: 24 };
-  const sectionLabel = { fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 18, fontWeight: 600 };
+  const sectionLabel = { fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 18, fontWeight: 600 };
 
   return (
-    <div style={{ background: C.bg, minHeight: '100vh', paddingTop: NAV_H, fontFamily: "'DM Mono', monospace" }}>
+    <div style={{ background: C.bg, minHeight: '100vh', paddingTop: NAV_H, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{`
         * { box-sizing: border-box; }
         @media (max-width: 768px) {
@@ -677,10 +677,10 @@ export default function Scorecard({ user }) {
         {/* ── PAGE HEADER ── */}
         <div style={{ marginBottom: 44, paddingBottom: 28, borderBottom: `1px solid ${C.border}` }}>
           <div style={{ fontSize: 10, letterSpacing: 6, textTransform: 'uppercase', color: C.textMuted, marginBottom: 12 }}>Performance Evaluation</div>
-          <h1 className="sc-h1" style={{ fontFamily: "'Playfair Display', serif", fontSize: 40, fontWeight: 900, color: C.text, lineHeight: 1.05, letterSpacing: -1.5, marginBottom: 12 }}>
+          <h1 className="sc-h1" style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 900, color: C.text, lineHeight: 1.05, letterSpacing: -1.5, marginBottom: 12 }}>
             Your Performance<br /><span style={{ color: C.orange }}>Scorecard</span>
           </h1>
-          <p style={{ fontFamily: "'Source Serif 4', serif", fontSize: 14, color: C.textMuted, lineHeight: 1.7, maxWidth: 500, marginBottom: 12 }}>
+          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: C.textMuted, lineHeight: 1.7, maxWidth: 500, marginBottom: 12 }}>
             Comprehensive analytics across all your interview sessions and practice attempts.
           </p>
           <div style={{ fontSize: 11, color: C.textMuted, letterSpacing: 0.5 }}>{user.email}</div>
@@ -691,15 +691,15 @@ export default function Scorecard({ user }) {
         ════════════════════════════════════════════════════════════ */}
         <div style={{ marginBottom: 52 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24 }}>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 700, color: C.text, letterSpacing: -0.5, margin: 0 }}>Practice Analytics</h2>
+            <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 26, fontWeight: 700, color: C.text, letterSpacing: -0.5, margin: 0 }}>Practice Analytics</h2>
             <span style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, paddingTop: 2 }}>Q&amp;A Practice</span>
           </div>
 
           {practiceAttempts.length === 0 ? (
             <div style={{ ...sectionBox, textAlign: 'center', padding: '48px 28px' }}>
               <div style={{ fontSize: 28, opacity: 0.2, marginBottom: 14 }}>◆</div>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: C.text, marginBottom: 10 }}>No practice attempts yet</div>
-              <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Source Serif 4', serif" }}>Head to Practice Q&amp;A and answer your first question to see analytics here.</p>
+              <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 18, color: C.text, marginBottom: 10 }}>No practice attempts yet</div>
+              <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Head to Practice Q&amp;A and answer your first question to see analytics here.</p>
             </div>
           ) : (
             <>
@@ -737,7 +737,7 @@ export default function Scorecard({ user }) {
                   </div>
                   <div style={{ padding: '12px 16px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 8 }}>
                     <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.yellow, marginBottom: 6 }}>Tip</div>
-                    <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Source Serif 4', serif", lineHeight: 1.6, margin: 0 }}>
+                    <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, margin: 0 }}>
                       Focus your next practice on <strong>{progress.weakest[0].key.replace(/_/g, ' ')}</strong>. Look for questions requiring explicit trade-off reasoning and structured frameworks.
                     </p>
                   </div>
@@ -761,7 +761,7 @@ export default function Scorecard({ user }) {
                           const maxA = Math.max(...progress.designationRows.map(r => r.attempts));
                           return (
                             <tr key={row.designation}>
-                              <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.text, fontFamily: "'Source Serif 4', serif", fontSize: 13 }}>{row.designation}</td>
+                              <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13 }}>{row.designation}</td>
                               <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textMuted }}>{row.questions}</td>
                               <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}` }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -799,7 +799,7 @@ export default function Scorecard({ user }) {
                         return (
                           <tr key={i}>
                             <td style={{ padding: '10px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textMuted, whiteSpace: 'nowrap' }}>{date}</td>
-                            <td style={{ padding: '10px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textSoft, fontFamily: "'Source Serif 4', serif", maxWidth: 260 }}>
+                            <td style={{ padding: '10px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", maxWidth: 260 }}>
                               <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 12 }}>
                                 {a.user_answer ? a.user_answer.slice(0, 60) + (a.user_answer.length > 60 ? '…' : '') : '—'}
                               </div>
@@ -808,7 +808,7 @@ export default function Scorecard({ user }) {
                             <td style={{ padding: '10px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textMuted }}>#{a.attempt_number}</td>
                             <td style={{ padding: '10px 12px', borderBottom: `1px solid ${C.borderLight}`, color, fontWeight: 700 }}>{a.score}</td>
                             <td style={{ padding: '10px 12px', borderBottom: `1px solid ${C.borderLight}` }}>
-                              <button onClick={() => setReviewTarget(a)} style={{ background: 'none', border: 'none', padding: 0, fontSize: 11, color: C.orange, cursor: 'pointer', fontFamily: "'DM Mono', monospace", letterSpacing: 0.5, textDecoration: 'underline', textUnderlineOffset: 3 }}>Review</button>
+                              <button onClick={() => setReviewTarget(a)} style={{ background: 'none', border: 'none', padding: 0, fontSize: 11, color: C.orange, cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5, textDecoration: 'underline', textUnderlineOffset: 3 }}>Review</button>
                             </td>
                           </tr>
                         );
@@ -833,8 +833,8 @@ export default function Scorecard({ user }) {
         {sessions.length === 0 ? (
           <div style={{ ...sectionBox, textAlign: 'center', padding: '48px 28px', marginBottom: 40 }}>
             <div style={{ fontSize: 28, opacity: 0.2, marginBottom: 14 }}>◆</div>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: C.text, marginBottom: 10 }}>No interview sessions yet</div>
-            <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Source Serif 4', serif" }}>Complete a full AI interview to see your readiness score, radar chart, and performance analysis.</p>
+            <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 18, color: C.text, marginBottom: 10 }}>No interview sessions yet</div>
+            <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Complete a full AI interview to see your readiness score, radar chart, and performance analysis.</p>
           </div>
         ) : (
           <>
@@ -873,7 +873,7 @@ export default function Scorecard({ user }) {
                       <div key={label} style={{ marginBottom: 15 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
                           <span style={{ fontSize: 12, fontWeight: 700, color: C.text }}>{label}</span>
-                          <span style={{ fontSize: 13, fontWeight: 700, color, fontFamily: "'Playfair Display', serif" }}>{v.toFixed(1)}/10</span>
+                          <span style={{ fontSize: 13, fontWeight: 700, color, fontFamily: "'Instrument Serif', serif" }}>{v.toFixed(1)}/10</span>
                         </div>
                         <div style={{ height: 5, background: C.borderLight, borderRadius: 3, overflow: 'hidden', marginBottom: 4 }}>
                           <div style={{ width: `${(v / 10) * 100}%`, height: '100%', background: color, borderRadius: 3 }} />
@@ -919,10 +919,10 @@ export default function Scorecard({ user }) {
                     style={{ display: 'grid', gridTemplateColumns: '88px 1fr 96px 124px 68px 32px', padding: '12px 18px', alignItems: 'center', cursor: 'pointer', background: isExpanded ? 'rgba(232,101,10,0.03)' : C.card, transition: 'background 0.15s', minWidth: 540 }}
                   >
                     <span style={{ fontSize: 11, color: C.textMuted }}>{new Date(item._date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' })}</span>
-                    <span style={{ fontSize: 12, color: C.text, fontFamily: "'Source Serif 4', serif", overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingRight: 14 }}>{item._question.length > 88 ? item._question.slice(0, 88) + '…' : item._question}</span>
+                    <span style={{ fontSize: 12, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingRight: 14 }}>{item._question.length > 88 ? item._question.slice(0, 88) + '…' : item._question}</span>
                     <span className="sc-log-col-type"><span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600, letterSpacing: 0.5, background: item._type === 'session' ? C.orangeLight : C.greenLight, border: `1px solid ${item._type === 'session' ? C.orangeBorder : C.greenBorder}`, color: item._type === 'session' ? C.orange : C.green }}>{item._type === 'session' ? 'Interview' : 'Practice'}</span></span>
                     <span className="sc-log-col-designation" style={{ fontSize: 11, color: C.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item._designation || '—'}</span>
-                    <span style={{ fontSize: 15, fontWeight: 900, color, fontFamily: "'Playfair Display', serif" }}>{item._score}</span>
+                    <span style={{ fontSize: 15, fontWeight: 900, color, fontFamily: "'Instrument Serif', serif" }}>{item._score}</span>
                     <span style={{ fontSize: 11, color: C.textMuted, textAlign: 'right' }}>{isExpanded ? '▲' : '▼'}</span>
                   </div>
                   {isExpanded && <AttemptDetail item={item} />}
@@ -936,8 +936,8 @@ export default function Scorecard({ user }) {
         {focusAreas.length > 0 && (
           <div>
             <div style={{ marginBottom: 22 }}>
-              <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, color: C.text, letterSpacing: -0.5, marginBottom: 5 }}>Your Top 3 Focus Areas</h2>
-              <p style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace", letterSpacing: 0.2 }}>Prioritized by lowest competency scores</p>
+              <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 700, color: C.text, letterSpacing: -0.5, marginBottom: 5 }}>Your Top 3 Focus Areas</h2>
+              <p style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.2 }}>Prioritized by lowest competency scores</p>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: 18 }}>
               {focusAreas.map(([label, score], idx) => {
@@ -947,21 +947,21 @@ export default function Scorecard({ user }) {
                   <div key={label} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 22, borderTop: `3px solid ${color}` }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
                       <div>
-                        <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 5 }}>Focus #{idx + 1}</div>
-                        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 700, color: C.text }}>{label}</div>
+                        <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 5 }}>Focus #{idx + 1}</div>
+                        <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 17, fontWeight: 700, color: C.text }}>{label}</div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 900, color, lineHeight: 1 }}>{score.toFixed(1)}</div>
-                        <div style={{ fontSize: 10, color: C.textMuted, fontFamily: "'DM Mono', monospace", marginTop: 2 }}>target {target}/10</div>
+                        <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 24, fontWeight: 900, color, lineHeight: 1 }}>{score.toFixed(1)}</div>
+                        <div style={{ fontSize: 10, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginTop: 2 }}>target {target}/10</div>
                       </div>
                     </div>
                     <div style={{ height: 4, background: C.borderLight, borderRadius: 2, overflow: 'hidden', marginBottom: 18 }}>
                       <div style={{ width: `${(score / 10) * 100}%`, height: '100%', background: color, borderRadius: 2 }} />
                     </div>
-                    <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'DM Mono', monospace", marginBottom: 10, fontWeight: 600 }}>Action Steps</div>
+                    <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10, fontWeight: 600 }}>Action Steps</div>
                     {(TIPS[label] || []).map((tip, i) => (
-                      <div key={i} style={{ display: 'flex', gap: 9, marginBottom: 9, fontSize: 13, color: C.textSoft, lineHeight: 1.55, fontFamily: "'Source Serif 4', serif" }}>
-                        <span style={{ color, fontWeight: 700, flexShrink: 0, fontFamily: "'DM Mono', monospace", fontSize: 11 }}>{i + 1}.</span>
+                      <div key={i} style={{ display: 'flex', gap: 9, marginBottom: 9, fontSize: 13, color: C.textSoft, lineHeight: 1.55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        <span style={{ color, fontWeight: 700, flexShrink: 0, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11 }}>{i + 1}.</span>
                         <span>{tip}</span>
                       </div>
                     ))}

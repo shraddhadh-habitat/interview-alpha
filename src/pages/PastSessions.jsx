@@ -23,7 +23,7 @@ function TrackBadge({ track }) {
       padding: '3px 10px',
       background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
       borderRadius: 4, fontSize: 11, color: C.orange,
-      fontFamily: "'DM Mono', monospace", letterSpacing: 1,
+      fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 1,
     }}>
       {icon} {track}
     </span>
@@ -35,7 +35,7 @@ function SessionDetail({ session, onBack }) {
 
   return (
     <div className="ps-detail-pad" style={{ maxWidth: 800, margin: '0 auto', padding: '32px 28px', animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
-      <button onClick={onBack} style={{ background: 'none', border: 'none', color: C.textMuted, fontSize: 12, cursor: 'pointer', marginBottom: 28, fontFamily: "'DM Mono', monospace", letterSpacing: 2 }}>
+      <button onClick={onBack} style={{ background: 'none', border: 'none', color: C.textMuted, fontSize: 12, cursor: 'pointer', marginBottom: 28, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 2 }}>
         ← BACK
       </button>
 
@@ -47,16 +47,16 @@ function SessionDetail({ session, onBack }) {
             padding: '3px 10px',
             background: 'rgba(232,101,10,0.05)', border: `1px solid rgba(232,101,10,0.15)`,
             borderRadius: 4, fontSize: 11, color: C.orange,
-            fontFamily: "'DM Mono', monospace", letterSpacing: 1,
+            fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 1,
           }}>
             {session.company}
           </span>
         )}
-        <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
+        <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           {new Date(session.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
         </span>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginLeft: 'auto' }}>
-          <span style={{ fontSize: 48, fontWeight: 700, color: sc, fontFamily: "'Playfair Display', serif", lineHeight: 1 }}>{session.overall_score}</span>
+          <span style={{ fontSize: 48, fontWeight: 700, color: sc, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{session.overall_score}</span>
           <span style={{ fontSize: 13, color: C.textMuted }}>/100</span>
         </div>
       </div>
@@ -109,7 +109,7 @@ function SessionDetail({ session, onBack }) {
       {session.alpha_rewrite && (
         <div style={{ background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 10, padding: 20, marginBottom: 24 }}>
           <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: C.orange, marginBottom: 10 }}>The Alpha Rewrite</div>
-          <div style={{ fontSize: 13, lineHeight: 1.75, color: C.text, fontFamily: "'Source Serif 4', serif" }}>{session.alpha_rewrite}</div>
+          <div style={{ fontSize: 13, lineHeight: 1.75, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{session.alpha_rewrite}</div>
         </div>
       )}
 
@@ -117,7 +117,7 @@ function SessionDetail({ session, onBack }) {
       {session.next_drill && (
         <div style={{ marginBottom: 32 }}>
           <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: C.textMuted, marginBottom: 8 }}>Next Drill</div>
-          <div style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.6, fontFamily: "'Source Serif 4', serif" }}>{session.next_drill}</div>
+          <div style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{session.next_drill}</div>
         </div>
       )}
 
@@ -134,10 +134,10 @@ function SessionDetail({ session, onBack }) {
                   background: msg.role === 'user' ? '#F7F2ED' : C.bg,
                   border: `1px solid ${msg.role === 'user' ? '#EDE5DB' : C.border}`,
                   fontSize: 13, lineHeight: 1.7, color: C.text,
-                  fontFamily: msg.role === 'user' ? "'DM Mono', monospace" : "'Source Serif 4', serif",
+                  fontFamily: msg.role === 'user' ? "'Plus Jakarta Sans', sans-serif" : "'Plus Jakarta Sans', sans-serif",
                   whiteSpace: 'pre-wrap',
                 }}>
-                  <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: 2, color: msg.role === 'user' ? C.textMuted : C.orange, marginBottom: 6, fontFamily: "'DM Mono', monospace" }}>
+                  <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: 2, color: msg.role === 'user' ? C.textMuted : C.orange, marginBottom: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {msg.role === 'user' ? 'You' : 'Interviewer'}
                   </div>
                   {msg.role === 'assistant'
@@ -194,12 +194,12 @@ export default function PastSessions({ user }) {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'DM Mono', monospace" }}>
+    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{globalStyles}</style>
       <div className="ps-page-pad" style={{ maxWidth: 800, margin: '0 auto', padding: '40px 28px' }}>
         <div style={{ marginBottom: 36 }}>
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>YOUR HISTORY</div>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: C.text }}>Past Sessions</h2>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, color: C.text }}>Past Sessions</h2>
         </div>
 
         {loading && (
@@ -209,7 +209,7 @@ export default function PastSessions({ user }) {
         {!loading && sessions.length === 0 && (
           <div style={{ textAlign: 'center', padding: 60, color: C.textMuted }}>
             <div style={{ fontSize: 36, marginBottom: 16, opacity: 0.3 }}>◆</div>
-            <div style={{ fontSize: 13, fontFamily: "'Source Serif 4', serif" }}>No sessions yet. Complete your first interview to see results here.</div>
+            <div style={{ fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No sessions yet. Complete your first interview to see results here.</div>
           </div>
         )}
 
@@ -234,7 +234,7 @@ export default function PastSessions({ user }) {
               >
                 {/* Score */}
                 <div style={{ textAlign: 'center', minWidth: 56 }}>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: sc, fontFamily: "'Playfair Display', serif", lineHeight: 1 }}>{s.overall_score ?? '—'}</div>
+                  <div style={{ fontSize: 28, fontWeight: 700, color: sc, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{s.overall_score ?? '—'}</div>
                   <div style={{ fontSize: 9, color: C.textMuted, letterSpacing: 1 }}>/100</div>
                 </div>
                 <div style={{ width: 1, height: 36, background: C.borderLight }} />
@@ -243,7 +243,7 @@ export default function PastSessions({ user }) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
                     <TrackBadge track={s.track} />
                     {s.company && s.company !== 'General/Other' && (
-                      <span style={{ padding: '2px 8px', background: 'rgba(232,101,10,0.05)', border: '1px solid rgba(232,101,10,0.15)', borderRadius: 4, fontSize: 10, color: C.orange, fontFamily: "'DM Mono', monospace", letterSpacing: 0.5 }}>
+                      <span style={{ padding: '2px 8px', background: 'rgba(232,101,10,0.05)', border: '1px solid rgba(232,101,10,0.15)', borderRadius: 4, fontSize: 10, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>
                         {s.company}
                       </span>
                     )}

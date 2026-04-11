@@ -126,7 +126,7 @@ export default function DemoTutorial({ onClose }) {
             background: 'transparent', border: 'none',
             cursor: 'pointer', color: C.textMuted,
             fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-            fontFamily: "'DM Mono', monospace", padding: '4px 8px',
+            fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '4px 8px',
           }}
           onMouseEnter={e => e.currentTarget.style.color = C.text}
           onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
@@ -156,7 +156,7 @@ export default function DemoTutorial({ onClose }) {
             </span>
             <span style={{
               fontSize: 10, letterSpacing: 3, textTransform: 'uppercase',
-              color: C.orange, fontFamily: "'DM Mono', monospace", fontWeight: 500,
+              color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
             }}>
               Step {step + 1} of {STEPS.length} — {current.label}
             </span>
@@ -164,7 +164,7 @@ export default function DemoTutorial({ onClose }) {
 
           {/* Title */}
           <h2 style={{
-            fontFamily: "'Playfair Display', serif",
+            fontFamily: "'Instrument Serif', serif",
             fontSize: 28, fontWeight: 700, color: C.text,
             marginBottom: 6, lineHeight: 1.25,
           }}>
@@ -172,7 +172,7 @@ export default function DemoTutorial({ onClose }) {
           </h2>
           <p style={{
             fontSize: 13, color: C.orange,
-            fontFamily: "'DM Mono', monospace",
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
             marginBottom: 24, letterSpacing: 0.3,
           }}>
             {current.subtitle}
@@ -181,7 +181,7 @@ export default function DemoTutorial({ onClose }) {
           {/* Body */}
           <p style={{
             fontSize: 14, lineHeight: 1.85, color: C.textSoft,
-            fontFamily: "'Source Serif 4', serif",
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
             whiteSpace: 'pre-wrap', marginBottom: 36,
           }}>
             {current.body}
@@ -219,7 +219,7 @@ export default function DemoTutorial({ onClose }) {
                     borderRadius: 8,
                     color: C.textMuted, fontSize: 11,
                     letterSpacing: 1.5, textTransform: 'uppercase',
-                    cursor: 'pointer', fontFamily: "'DM Mono', monospace",
+                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                     transition: 'all 0.2s',
                   }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = C.orange; e.currentTarget.style.color = C.orange; }}
@@ -236,7 +236,7 @@ export default function DemoTutorial({ onClose }) {
                   border: 'none', borderRadius: 8,
                   color: '#fff', fontSize: 11,
                   letterSpacing: 1.5, textTransform: 'uppercase',
-                  cursor: 'pointer', fontFamily: "'DM Mono', monospace",
+                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 500, transition: 'background 0.2s',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}

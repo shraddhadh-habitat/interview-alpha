@@ -4,7 +4,7 @@ export default function Footer() {
       background: '#F5F5F5',
       borderTop: '1px solid #E5E5E5',
       padding: '32px 28px',
-      fontFamily: "'DM Mono', monospace",
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
       textAlign: 'center',
     }}>
       <div style={{ maxWidth: 860, margin: '0 auto' }}>

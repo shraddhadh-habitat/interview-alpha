@@ -141,8 +141,8 @@ function Section({ title, subtitle, children, defaultOpen = false }) {
         }}
       >
         <div>
-          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, fontFamily: "'Playfair Display', serif", marginBottom: 4 }}>{title}</div>
-          {subtitle && <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace", letterSpacing: 0.5 }}>{subtitle}</div>}
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, fontFamily: "'Instrument Serif', serif", marginBottom: 4 }}>{title}</div>
+          {subtitle && <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>{subtitle}</div>}
         </div>
         <span style={{ fontSize: 18, color: C.orange, transition: 'transform 0.2s', display: 'inline-block', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', flexShrink: 0, marginLeft: 16 }}>▾</span>
       </button>
@@ -157,7 +157,7 @@ function Section({ title, subtitle, children, defaultOpen = false }) {
 
 export default function SalaryGuide() {
   return (
-    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'DM Mono', monospace" }}>
+    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{globalStyles}</style>
 
       <div className="sg-page-pad" style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
@@ -165,10 +165,10 @@ export default function SalaryGuide() {
         {/* Header */}
         <div style={{ marginBottom: 36 }}>
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>CAREER RESOURCES</div>
-          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12, lineHeight: 1.15 }}>
+          <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12, lineHeight: 1.15 }}>
             PM Salary & Negotiation Guide
           </h1>
-          <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.75, maxWidth: 620 }}>
+          <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, maxWidth: 620 }}>
             Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Product Manager — at every level.
           </p>
           <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
@@ -176,7 +176,7 @@ export default function SalaryGuide() {
               <span key={t} style={{
                 padding: '4px 12px',
                 background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
-                borderRadius: 20, fontSize: 10, color: C.orange, fontFamily: "'DM Mono', monospace", letterSpacing: 0.5,
+                borderRadius: 20, fontSize: 10, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
               }}>{t}</span>
             ))}
           </div>
@@ -185,7 +185,7 @@ export default function SalaryGuide() {
         {/* ── SECTION 1: Know Your Worth ── */}
         <Section title="Know Your Worth" subtitle="Salary ranges by level — India & United States" defaultOpen={true}>
           <div style={{ paddingTop: 24 }}>
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'DM Mono', monospace", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
             <div style={{ overflowX: 'auto', marginBottom: 32 }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
@@ -198,8 +198,8 @@ export default function SalaryGuide() {
                 <tbody>
                   {IN_SALARIES.map((row, i) => (
                     <tr key={i} style={{ background: i % 2 === 0 ? C.bg : C.bgSoft }}>
-                      <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Source Serif 4', serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
-                      <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 700, fontFamily: "'DM Mono', monospace" }}>{row.tc}</td>
+                      <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                      <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
                       <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
@@ -209,7 +209,7 @@ export default function SalaryGuide() {
               </table>
             </div>
 
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'DM Mono', monospace", marginBottom: 16 }}>United States (USD)</div>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>United States (USD)</div>
             <div style={{ overflowX: 'auto', marginBottom: 20 }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
@@ -222,8 +222,8 @@ export default function SalaryGuide() {
                 <tbody>
                   {US_SALARIES.map((row, i) => (
                     <tr key={i} style={{ background: i % 2 === 0 ? C.bg : C.bgSoft }}>
-                      <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Source Serif 4', serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
-                      <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 700, fontFamily: "'DM Mono', monospace" }}>{row.tc}</td>
+                      <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                      <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
                       <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
@@ -234,7 +234,7 @@ export default function SalaryGuide() {
             </div>
 
             <div style={{ padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 8 }}>
-              <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Source Serif 4', serif", lineHeight: 1.65, margin: 0 }}>
+              <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, margin: 0 }}>
                 Ranges reflect 2025–2026 market data. Total comp (TC) includes base + annual bonus + annualized equity. Startup equity values assume a 2–4x exit multiple on current 409A/valuation. Verify with levels.fyi, Glassdoor, and LinkedIn Salary.
               </p>
             </div>
@@ -250,14 +250,14 @@ export default function SalaryGuide() {
                   width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
                   background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 13, fontWeight: 700, color: C.orange, fontFamily: "'DM Mono', monospace",
+                  fontSize: 13, fontWeight: 700, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 }}>{s.step}</div>
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: "'Playfair Display', serif", marginBottom: 8 }}>{s.title}</div>
-                  <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.75, margin: '0 0 12px' }}>{s.body}</p>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: "'Instrument Serif', serif", marginBottom: 8 }}>{s.title}</div>
+                  <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, margin: '0 0 12px' }}>{s.body}</p>
                   <div style={{ padding: '12px 16px', background: C.bgSoft, border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.orange}`, borderRadius: '0 8px 8px 0' }}>
-                    <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'DM Mono', monospace", marginBottom: 6 }}>Script</div>
-                    <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif", fontStyle: 'italic', lineHeight: 1.65, margin: 0 }}>{s.script}</p>
+                    <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6 }}>Script</div>
+                    <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", fontStyle: 'italic', lineHeight: 1.65, margin: 0 }}>{s.script}</p>
                   </div>
                 </div>
               </div>
@@ -273,15 +273,15 @@ export default function SalaryGuide() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                   <span style={{
                     padding: '3px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
-                    borderRadius: 20, fontSize: 10, color: C.orange, fontFamily: "'DM Mono', monospace",
+                    borderRadius: 20, fontSize: 10, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif",
                   }}>{i + 1}</span>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: C.text, fontFamily: "'Playfair Display', serif" }}>{t.scenario}</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: C.text, fontFamily: "'Instrument Serif', serif" }}>{t.scenario}</span>
                 </div>
                 <div style={{
                   padding: '16px 20px', background: C.bgSoft,
                   border: `1px solid ${C.border}`, borderRadius: 10,
                   fontSize: 13, lineHeight: 1.8, color: C.textSoft,
-                  fontFamily: "'Source Serif 4', serif", fontStyle: 'italic',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontStyle: 'italic',
                   whiteSpace: 'pre-wrap',
                 }}>
                   {t.template}
@@ -300,10 +300,10 @@ export default function SalaryGuide() {
                 border: `1px solid ${C.redBorder}`, borderRadius: 10,
               }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                  <span style={{ color: C.red, fontFamily: "'DM Mono', monospace", fontSize: 13, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✕</span>
+                  <span style={{ color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✕</span>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: C.red, fontFamily: "'Playfair Display', serif", marginBottom: 6 }}>{m.title}</div>
-                    <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif", lineHeight: 1.7, margin: 0 }}>{m.body}</p>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: C.red, fontFamily: "'Instrument Serif', serif", marginBottom: 6 }}>{m.title}</div>
+                    <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, margin: 0 }}>{m.body}</p>
                   </div>
                 </div>
               </div>
@@ -325,17 +325,17 @@ export default function SalaryGuide() {
               <tbody>
                 {COMPANY_COMP.map((row, i) => (
                   <tr key={i} style={{ background: i % 2 === 0 ? C.bg : C.bgSoft }}>
-                    <td style={{ padding: '12px 14px', fontWeight: 700, color: C.text, fontFamily: "'Source Serif 4', serif", fontSize: 13 }}>{row.company}</td>
+                    <td style={{ padding: '12px 14px', fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13 }}>{row.company}</td>
                     <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap' }}>{row.levels}</td>
-                    <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 600, fontFamily: "'DM Mono', monospace', whiteSpace: 'nowrap'" }}>{row.tc_in}</td>
-                    <td style={{ padding: '12px 14px', color: C.green, fontWeight: 600, fontFamily: "'DM Mono', monospace", whiteSpace: 'nowrap' }}>{row.tc_us}</td>
-                    <td style={{ padding: '12px 14px', color: C.textMuted, fontFamily: "'Source Serif 4', serif", fontSize: 12 }}>{row.notes}</td>
+                    <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif', whiteSpace: 'nowrap'" }}>{row.tc_in}</td>
+                    <td style={{ padding: '12px 14px', color: C.green, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'nowrap' }}>{row.tc_us}</td>
+                    <td style={{ padding: '12px 14px', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{row.notes}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <div style={{ marginTop: 16, padding: '14px 18px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 8 }}>
-              <p style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace", lineHeight: 1.65, margin: 0 }}>
+              <p style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, margin: 0 }}>
                 All figures are estimates based on publicly available data, levels.fyi, and community reports as of 2025–2026. Actual comp varies significantly by team, negotiation, and market conditions.
               </p>
             </div>

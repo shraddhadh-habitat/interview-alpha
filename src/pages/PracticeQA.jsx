@@ -53,13 +53,13 @@ function ReportIssueModal({ questionId, user, onClose }) {
           background: '#fff', borderRadius: 12, padding: '28px 28px 24px',
           width: '100%', maxWidth: 440,
           boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
-          fontFamily: "'DM Mono', monospace",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
         }}
       >
         {submitted ? (
           <div style={{ textAlign: 'center', padding: '12px 0' }}>
             <div style={{ fontSize: 28, marginBottom: 12 }}>✓</div>
-            <div style={{ fontSize: 14, color: C.text, fontFamily: "'Source Serif 4', serif", lineHeight: 1.6 }}>
+            <div style={{ fontSize: 14, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>
               Thanks — we'll review this.
             </div>
             <button
@@ -69,7 +69,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
                 background: C.orange, border: 'none', borderRadius: 7,
                 color: '#fff', fontSize: 11, letterSpacing: 1.5,
                 textTransform: 'uppercase', cursor: 'pointer',
-                fontFamily: "'DM Mono', monospace",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
               }}
             >
               Close
@@ -80,7 +80,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
             <div style={{ fontSize: 10, letterSpacing: 3, color: C.textMuted, textTransform: 'uppercase', marginBottom: 14 }}>
               Report Issue
             </div>
-            <label style={{ fontSize: 13, color: C.text, fontFamily: "'Source Serif 4', serif", display: 'block', marginBottom: 10 }}>
+            <label style={{ fontSize: 13, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", display: 'block', marginBottom: 10 }}>
               What's wrong with this answer?
             </label>
             <textarea
@@ -92,7 +92,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
               style={{
                 width: '100%', padding: '10px 14px',
                 border: `1px solid ${C.border}`, borderRadius: 8,
-                fontSize: 13, fontFamily: "'Source Serif 4', serif",
+                fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 color: C.text, lineHeight: 1.6, resize: 'vertical',
                 background: C.bgSoft, outline: 'none', boxSizing: 'border-box',
               }}
@@ -105,7 +105,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
                   border: `1px solid ${C.border}`, borderRadius: 7,
                   color: C.textMuted, fontSize: 11, letterSpacing: 1.5,
                   textTransform: 'uppercase', cursor: 'pointer',
-                  fontFamily: "'DM Mono', monospace",
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
                 }}
               >
                 Cancel
@@ -120,7 +120,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
                   color: text.trim() && !submitting ? '#fff' : C.textMuted,
                   fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                   cursor: text.trim() && !submitting ? 'pointer' : 'default',
-                  fontFamily: "'DM Mono', monospace", transition: 'background 0.2s',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", transition: 'background 0.2s',
                 }}
               >
                 {submitting ? 'Sending…' : 'Submit'}
@@ -154,13 +154,13 @@ function ScoreBadge({ score, attempts }) {
         padding: '2px 8px',
         background: bg, border: `1px solid ${border}`,
         borderRadius: 20, fontSize: 10,
-        color, fontFamily: "'DM Mono', monospace",
+        color, fontFamily: "'Plus Jakarta Sans', sans-serif",
         fontWeight: 600, letterSpacing: 0.5,
       }}>
         {score}
       </span>
       {attempts > 1 && (
-        <span style={{ fontSize: 10, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
+        <span style={{ fontSize: 10, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           ×{attempts}
         </span>
       )}
@@ -193,7 +193,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
           background: isOpen ? C.orange : C.bgMuted,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono', monospace",
+          fontSize: 11, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif",
           color: isOpen ? '#fff' : C.textMuted,
           transition: 'background 0.2s, color 0.2s', marginTop: 1,
         }}>
@@ -203,7 +203,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
         {/* Question text */}
         <span style={{
           flex: 1, fontSize: 14, lineHeight: 1.65,
-          fontFamily: "'Source Serif 4', serif",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
           color: C.text, fontWeight: isOpen ? 600 : 400,
           transition: 'font-weight 0.1s',
         }}>
@@ -228,14 +228,14 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           <div style={{ padding: '20px 22px 16px' }}>
             <div style={{
               fontSize: 9, letterSpacing: 3, textTransform: 'uppercase',
-              color: C.orange, fontFamily: "'DM Mono', monospace",
+              color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 500, marginBottom: 12,
             }}>
               Expert Answer
             </div>
             <div style={{
               fontSize: 14, lineHeight: 1.8, color: C.textSoft,
-              fontFamily: "'Source Serif 4', serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               whiteSpace: 'pre-wrap',
             }}>
               {question.a}
@@ -251,7 +251,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                   background: C.orange, border: 'none', borderRadius: 7,
                   color: '#fff', fontSize: 11, letterSpacing: 1.5,
                   textTransform: 'uppercase', cursor: 'pointer',
-                  fontFamily: "'DM Mono', monospace", fontWeight: 500,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
                   transition: 'background 0.2s',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
@@ -260,7 +260,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                 ✎ Practice This Question
               </button>
               {practiceData && (
-                <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'DM Mono', monospace" }}>
+                <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   Best: {practiceData.best_score}/100 · {practiceData.attempts} attempt{practiceData.attempts !== 1 ? 's' : ''}
                 </span>
               )}
@@ -270,7 +270,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
               style={{
                 background: 'none', border: 'none', padding: 0,
                 fontSize: 11, color: C.textMuted, cursor: 'pointer',
-                fontFamily: "'DM Mono', monospace", letterSpacing: 0.5,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
                 textDecoration: 'underline', textUnderlineOffset: 3,
                 transition: 'color 0.15s',
               }}
@@ -402,7 +402,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'DM Mono', monospace" }}>
+    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{globalStyles}</style>
 
       {reportTarget && (
@@ -418,10 +418,10 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         {/* Page header */}
         <div style={{ marginBottom: 32 }}>
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>INTERVIEW PREP</div>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: C.text, marginBottom: 8 }}>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, color: C.text, marginBottom: 8 }}>
             Practice Q&amp;A
           </h2>
-          <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif" }}>
+          <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {totalCount} questions across {PM_LEVELS.length} PM designations — from APM to CPO.
           </p>
         </div>
@@ -434,9 +434,9 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           display: 'flex', gap: 12, alignItems: 'flex-start',
         }}>
           <span style={{ fontSize: 14, flexShrink: 0, marginTop: 1 }}>⚠</span>
-          <p style={{ fontSize: 12, lineHeight: 1.65, color: C.yellow, fontFamily: "'Source Serif 4', serif", margin: 0 }}>
+          <p style={{ fontSize: 12, lineHeight: 1.65, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0 }}>
             Answers represent expert frameworks and structured thinking patterns. For behavioral questions, replace example stories with your own experiences. Verify company-specific and technical details independently.{' '}
-            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, opacity: 0.75 }}>Last updated: March 2026.</span>
+            <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, opacity: 0.75 }}>Last updated: March 2026.</span>
           </p>
         </div>
 
@@ -461,7 +461,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                   borderRadius: 8,
                   color: category === cat.id ? '#fff' : C.textMuted,
                   fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                  cursor: 'pointer', fontFamily: "'DM Mono', monospace",
+                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: category === cat.id ? 500 : 400,
                   transition: 'all 0.2s',
                 }}
@@ -482,7 +482,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 border: `1px solid ${selectedLevel ? C.orange : C.border}`,
                 borderRadius: 8, fontSize: 11, letterSpacing: 0.5,
                 color: selectedLevel ? C.orange : C.textSoft,
-                cursor: 'pointer', fontFamily: "'DM Mono', monospace",
+                cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: selectedLevel ? 500 : 400,
                 outline: 'none', appearance: 'none',
                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
@@ -516,7 +516,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 placeholder="Search questions..."
                 style={{
                   flex: 1, border: 'none', background: 'transparent',
-                  color: C.text, fontSize: 13, fontFamily: "'Source Serif 4', serif",
+                  color: C.text, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
                   padding: '11px 0',
                 }}
               />
@@ -531,7 +531,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 border: `1px solid ${C.border}`, borderRadius: 8,
                 color: C.textSoft, fontSize: 11, letterSpacing: 1.5,
                 textTransform: 'uppercase', cursor: 'pointer',
-                fontFamily: "'DM Mono', monospace", whiteSpace: 'nowrap',
+                fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'nowrap',
                 transition: 'all 0.2s',
               }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = C.orange; e.currentTarget.style.color = C.orange; }}
@@ -562,7 +562,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         {filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 0', color: C.textMuted }}>
             <div style={{ fontSize: 32, marginBottom: 12, opacity: 0.3 }}>◆</div>
-            <div style={{ fontSize: 13, fontFamily: "'Source Serif 4', serif" }}>No questions match your filters.</div>
+            <div style={{ fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No questions match your filters.</div>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

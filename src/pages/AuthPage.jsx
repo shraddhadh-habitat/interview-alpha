@@ -49,7 +49,7 @@ export default function AuthPage() {
     padding: '14px 18px',
     color: C.text,
     fontSize: 14,
-    fontFamily: "'Source Serif 4', serif",
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
     outline: 'none',
     transition: 'border-color 0.2s',
   };
@@ -62,7 +62,7 @@ export default function AuthPage() {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      fontFamily: "'DM Mono', monospace",
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
       color: C.text,
       padding: 32,
     }}>
@@ -78,7 +78,7 @@ export default function AuthPage() {
       <div style={{ width: '100%', maxWidth: 420, animation: 'fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1)' }}>
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 48, fontWeight: 900, letterSpacing: -1.5, color: C.text }}>
+          <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 48, fontWeight: 900, letterSpacing: -1.5, color: C.text }}>
             Interview<span style={{ color: C.orange }}>Alpha</span>
           </h1>
           <div style={{ width: 36, height: 3, background: C.orange, margin: '16px auto 0', borderRadius: 2 }} />
@@ -96,7 +96,7 @@ export default function AuthPage() {
             <div style={{ fontSize: 10, letterSpacing: 4, color: C.textMuted, marginBottom: 8 }}>
               {mode === 'login' ? 'SIGN IN' : 'CREATE ACCOUNT'}
             </div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 700 }}>
+            <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 24, fontWeight: 700 }}>
               {mode === 'login' ? 'Welcome back' : 'Get started'}
             </h2>
           </div>
@@ -155,7 +155,7 @@ export default function AuthPage() {
                 letterSpacing: 3,
                 textTransform: 'uppercase',
                 cursor: loading ? 'wait' : 'pointer',
-                fontFamily: "'DM Mono', monospace",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 500,
                 transition: 'background 0.2s',
               }}
@@ -171,7 +171,7 @@ export default function AuthPage() {
               onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(''); setSuccess(''); }}
               style={{
                 background: 'none', border: 'none', cursor: 'pointer',
-                fontSize: 12, color: C.textMuted, fontFamily: "'DM Mono', monospace",
+                fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 letterSpacing: 0.5,
               }}
             >

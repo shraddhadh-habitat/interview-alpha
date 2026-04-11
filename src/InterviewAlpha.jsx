@@ -315,7 +315,7 @@ function ScoreDashboard({ data }) {
       borderRadius: 12,
       padding: 28,
       margin: "16px 0",
-      fontFamily: "'DM Mono', monospace"
+      fontFamily: "'Plus Jakarta Sans', sans-serif"
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
         <span style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: C.textMuted }}>Performance Dashboard</span>
@@ -323,7 +323,7 @@ function ScoreDashboard({ data }) {
       </div>
 
       <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 28 }}>
-        <span style={{ fontSize: 64, fontWeight: 700, color: scoreColor, lineHeight: 1, fontFamily: "'Playfair Display', serif" }}>{overall_score}</span>
+        <span style={{ fontSize: 64, fontWeight: 700, color: scoreColor, lineHeight: 1, fontFamily: "'Instrument Serif', serif" }}>{overall_score}</span>
         <span style={{ fontSize: 14, color: C.textMuted }}>/100</span>
       </div>
 
@@ -410,7 +410,7 @@ function MessageBubble({ msg, isFirstAssistant }) {
         color: C.text,
         fontSize: 14,
         lineHeight: 1.75,
-        fontFamily: isUser ? "'DM Mono', monospace" : "'Source Serif 4', serif",
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
         whiteSpace: "pre-wrap",
         boxShadow: isUser ? "none" : "0 1px 4px rgba(0,0,0,0.04)"
       }}>
@@ -423,7 +423,7 @@ function MessageBubble({ msg, isFirstAssistant }) {
           letterSpacing: 2.5,
           color: isUser ? C.textMuted : C.orange,
           marginBottom: 8,
-          fontFamily: "'DM Mono', monospace"
+          fontFamily: "'Plus Jakarta Sans', sans-serif"
         }}>
           {isUser ? "You" : "Interviewer"}
           {isVoice && (
@@ -445,7 +445,7 @@ function MessageBubble({ msg, isFirstAssistant }) {
         </div>
         {isFirstAssistant && (
           <div style={{
-            fontFamily: "'Playfair Display', serif",
+            fontFamily: "'Instrument Serif', serif",
             fontWeight: 700,
             fontSize: 15,
             color: "#1A1A1A",
@@ -475,7 +475,7 @@ function TypingIndicator() {
         border: `1px solid ${C.border}`,
         boxShadow: "0 1px 4px rgba(0,0,0,0.04)"
       }}>
-        <div style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: 2.5, color: C.orange, marginBottom: 10, fontFamily: "'DM Mono', monospace" }}>
+        <div style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: 2.5, color: C.orange, marginBottom: 10, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           Interviewer
         </div>
         <div style={{ display: "flex", gap: 5 }}>
@@ -514,13 +514,13 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
           <span style={{
             fontSize: 11, letterSpacing: 3, textTransform: "uppercase",
             color: isListening ? C.red : C.textMuted,
-            fontFamily: "'DM Mono', monospace", fontWeight: 500
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500
           }}>
             {isListening ? "Recording..." : fullText ? "Recording Complete" : "Voice Input"}
           </span>
         </div>
         {isListening && (
-          <span style={{ fontSize: 14, fontFamily: "'DM Mono', monospace", color: C.text, fontWeight: 500, background: C.bgMuted, padding: "4px 12px", borderRadius: 6 }}>
+          <span style={{ fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, fontWeight: 500, background: C.bgMuted, padding: "4px 12px", borderRadius: 6 }}>
             {formatDuration(duration)}
           </span>
         )}
@@ -530,7 +530,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
         minHeight: 80, maxHeight: 180, overflow: "auto",
         padding: 16, background: C.bgSoft, borderRadius: 10,
         border: `1px solid ${C.borderLight}`, marginBottom: 16,
-        fontSize: 14, lineHeight: 1.7, fontFamily: "'Source Serif 4', serif", color: C.text
+        fontSize: 14, lineHeight: 1.7, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text
       }}>
         {fullText || (
           <span style={{ color: C.textMuted, fontStyle: "italic" }}>
@@ -550,7 +550,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
               style={{
                 display: "flex", alignItems: "center", gap: 8,
                 padding: "12px 28px", background: C.orange, border: "none", borderRadius: 8,
-                color: "#fff", fontSize: 12, fontFamily: "'DM Mono', monospace",
+                color: "#fff", fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 500, letterSpacing: 1.5, textTransform: "uppercase", cursor: "pointer"
               }}
               onMouseEnter={e => e.target.style.background = C.orangeHover}
@@ -564,7 +564,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
                 disabled={loading}
                 style={{
                   padding: "12px 28px", background: C.green, border: "none", borderRadius: 8,
-                  color: "#fff", fontSize: 12, fontFamily: "'DM Mono', monospace",
+                  color: "#fff", fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 500, letterSpacing: 1.5, textTransform: "uppercase",
                   cursor: loading ? "wait" : "pointer", opacity: loading ? 0.6 : 1
                 }}
@@ -577,7 +577,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
               style={{
                 padding: "12px 20px", background: "transparent",
                 border: `1px solid ${C.border}`, borderRadius: 8,
-                color: C.textMuted, fontSize: 12, fontFamily: "'DM Mono', monospace",
+                color: C.textMuted, fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 letterSpacing: 1.5, textTransform: "uppercase", cursor: "pointer"
               }}
             >
@@ -590,7 +590,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
             style={{
               display: "flex", alignItems: "center", gap: 8,
               padding: "14px 36px", background: C.red, border: "none", borderRadius: 8,
-              color: "#fff", fontSize: 12, fontFamily: "'DM Mono', monospace",
+              color: "#fff", fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 500, letterSpacing: 1.5, textTransform: "uppercase",
               cursor: "pointer", animation: "subtlePulse 2s ease-in-out infinite"
             }}
@@ -920,7 +920,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: "'DM Mono', monospace",
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
         color: C.text,
         padding: 32,
         paddingTop: NAV_H + 32,
@@ -930,14 +930,14 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           <div style={{ marginBottom: 48 }}>
             <div style={{ fontSize: 10, letterSpacing: 8, textTransform: "uppercase", color: C.textMuted, marginBottom: 20 }}>PM Prep, Supercharged.</div>
             <h1 className="ia-landing-h1" style={{
-              fontFamily: "'Playfair Display', serif",
+              fontFamily: "'Instrument Serif', serif",
               fontSize: 72, fontWeight: 900, lineHeight: 0.95,
               letterSpacing: -2, color: C.text
             }}>
               Interview<span style={{ color: C.orange }}>Alpha</span><sup style={{ fontSize: 12, color: '#E8650A', verticalAlign: 'super' }}>™</sup>
             </h1>
             <div style={{ width: 48, height: 3, background: C.orange, margin: "24px auto", borderRadius: 2 }} />
-            <p style={{ fontSize: 15, color: C.textSoft, lineHeight: 1.8, maxWidth: 440, margin: "0 auto", fontFamily: "'Source Serif 4', serif" }}>
+            <p style={{ fontSize: 15, color: C.textSoft, lineHeight: 1.8, maxWidth: 440, margin: "0 auto", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Stop practicing. Start landing.<br />
               Real-time AI coaching for PMs, not the fluff.
             </p>
@@ -950,33 +950,33 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               const monthly = profile?.monthly_sessions_used ?? 0;
               const atLimit = monthly >= PRO_SESSION_LIMIT;
               return atLimit ? (
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
                   🔒 100/100 sessions used this month. Sessions reset monthly from activation date.
                 </div>
               ) : (
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
                   ◆ Pro — {monthly}/100 sessions used this month
                 </div>
               );
             }
             if (status === 'pending') return (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 12, color: C.yellow, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
                 ⏳ Payment pending — activate your account to start
               </div>
             );
             if (status === 'expired') return (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
                 Subscription expired — renew to continue
               </div>
             );
             const used = profile?.free_sessions_used ?? 0;
             const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
             return remaining > 0 ? (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 12, color: C.green, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 12, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
                 ◆ You have {remaining} free AI session{remaining !== 1 ? 's' : ''} remaining — try one now!
               </div>
             ) : (
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange, fontFamily: "'DM Mono', monospace", letterSpacing: 0.3 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.3 }}>
                 🔒 Free session used. Upgrade to continue.
               </div>
             );
@@ -987,7 +987,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             style={{
               padding: "18px 56px", background: C.orange, border: "none",
               color: "#fff", fontSize: 11, letterSpacing: 4, textTransform: "uppercase",
-              cursor: "pointer", borderRadius: 6, fontFamily: "'DM Mono', monospace",
+              cursor: "pointer", borderRadius: 6, fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 500, transition: "all 0.3s ease",
               boxShadow: "0 2px 12px rgba(232,101,10,0.25)"
             }}
@@ -1000,7 +1000,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           <div className="ia-landing-steps" style={{ marginTop: 64, display: "flex", justifyContent: "center", gap: 48 }}>
             {[["01", "Paste Resume & JD"], ["02", "Choose Interview Track"], ["03", "Get Insightful Feedback"]].map(([num, label]) => (
               <div key={num} style={{ textAlign: "center" }}>
-                <div style={{ fontSize: 28, fontFamily: "'Playfair Display', serif", color: C.orange, opacity: 0.35, marginBottom: 8 }}>{num}</div>
+                <div style={{ fontSize: 28, fontFamily: "'Instrument Serif', serif", color: C.orange, opacity: 0.35, marginBottom: 8 }}>{num}</div>
                 <div style={{ fontSize: 11, color: C.textMuted, letterSpacing: 1 }}>{label}</div>
               </div>
             ))}
@@ -1015,16 +1015,16 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     return (
       <div style={{
         minHeight: "100vh", background: C.bg,
-        fontFamily: "'DM Mono', monospace", color: C.text,
+        fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text,
         padding: "48px 32px", paddingTop: NAV_H + 48,
       }}>
         <style>{globalStyles}</style>
         <div style={{ maxWidth: 720, margin: "0 auto", animation: "fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1)" }}>
-          <button onClick={() => setPhase("landing")} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 12, cursor: "pointer", marginBottom: 40, fontFamily: "'DM Mono', monospace", letterSpacing: 2 }}>← BACK</button>
+          <button onClick={() => setPhase("landing")} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 12, cursor: "pointer", marginBottom: 40, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 2 }}>← BACK</button>
 
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 12 }}>STEP 01</div>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, marginBottom: 8, color: C.text }}>Your Context</h2>
-          <p style={{ fontSize: 13, color: C.textSoft, marginBottom: profileLoaded ? 12 : 40, fontFamily: "'Source Serif 4', serif" }}>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, marginBottom: 8, color: C.text }}>Your Context</h2>
+          <p style={{ fontSize: 13, color: C.textSoft, marginBottom: profileLoaded ? 12 : 40, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             The more detail you provide, the sharper the interview gets.
           </p>
 
@@ -1034,7 +1034,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               padding: "8px 14px", background: C.greenLight,
               border: `1px solid ${C.greenBorder}`, borderRadius: 6,
               fontSize: 11, color: C.green, marginBottom: 32,
-              fontFamily: "'DM Mono', monospace", letterSpacing: 0.5,
+              fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
             }}>
               ✓ Auto-filled from your saved profile
             </div>
@@ -1050,7 +1050,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               style={{
                 width: "100%", background: C.bgSoft, border: `1px solid ${C.border}`,
                 borderRadius: 8, padding: 20, color: C.text, fontSize: 13, lineHeight: 1.7,
-                fontFamily: "'Source Serif 4', serif", resize: "vertical", transition: "border-color 0.2s"
+                fontFamily: "'Plus Jakarta Sans', sans-serif", resize: "vertical", transition: "border-color 0.2s"
               }}
               onFocus={e => e.target.style.borderColor = C.orange}
               onBlur={e => e.target.style.borderColor = C.border}
@@ -1067,7 +1067,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               style={{
                 width: "100%", background: C.bgSoft, border: `1px solid ${C.border}`,
                 borderRadius: 8, padding: 20, color: C.text, fontSize: 13, lineHeight: 1.7,
-                fontFamily: "'Source Serif 4', serif", resize: "vertical", transition: "border-color 0.2s"
+                fontFamily: "'Plus Jakarta Sans', sans-serif", resize: "vertical", transition: "border-color 0.2s"
               }}
               onFocus={e => e.target.style.borderColor = C.orange}
               onBlur={e => e.target.style.borderColor = C.border}
@@ -1090,7 +1090,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 color: (resume.trim() && jd.trim()) ? "#fff" : C.textMuted,
                 fontSize: 11, letterSpacing: 3, textTransform: "uppercase",
                 cursor: (resume.trim() && jd.trim()) ? "pointer" : "not-allowed",
-                borderRadius: 6, fontFamily: "'DM Mono', monospace",
+                borderRadius: 6, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 500, transition: "all 0.3s ease"
               }}
             >
@@ -1107,7 +1107,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 color: (resume.trim() && jd.trim()) ? C.textSoft : C.textMuted,
                 fontSize: 11, letterSpacing: 2, textTransform: "uppercase",
                 cursor: (resume.trim() && jd.trim() && !savingProfile) ? "pointer" : "not-allowed",
-                borderRadius: 6, fontFamily: "'DM Mono', monospace",
+                borderRadius: 6, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: "all 0.2s"
               }}
               onMouseEnter={e => { if (resume.trim() && jd.trim()) e.currentTarget.style.borderColor = C.orange; }}
@@ -1126,50 +1126,50 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     return (
       <div style={{
         minHeight: "100vh", background: C.bg,
-        fontFamily: "'DM Mono', monospace", color: C.text,
+        fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text,
         padding: "48px 32px", paddingTop: NAV_H + 48,
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"
       }}>
         <style>{globalStyles}</style>
         <div style={{ maxWidth: 680, width: "100%", animation: "fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1)" }}>
-          <button onClick={() => setPhase("setup")} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 12, cursor: "pointer", marginBottom: 40, fontFamily: "'DM Mono', monospace", letterSpacing: 2 }}>← BACK</button>
+          <button onClick={() => setPhase("setup")} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 12, cursor: "pointer", marginBottom: 40, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 2 }}>← BACK</button>
 
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 12 }}>STEP 02</div>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, marginBottom: 8 }}>Choose Your Track</h2>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, marginBottom: 8 }}>Choose Your Track</h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 48 }}>
-            <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Source Serif 4', serif", margin: 0 }}>Select the interview type. Each track simulates a different round.</p>
+            <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0 }}>Select the interview type. Each track simulates a different round.</p>
             {(() => {
               const status = profile?.subscription_status ?? 'free';
               if (status === 'active') {
                 const m = profile?.monthly_sessions_used ?? 0;
                 return m >= PRO_SESSION_LIMIT ? (
-                  <span style={{ flexShrink: 0, padding: '4px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.red, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                  <span style={{ flexShrink: 0, padding: '4px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.red, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     🔒 100/100 sessions used
                   </span>
                 ) : (
-                  <span style={{ flexShrink: 0, padding: '4px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.orange, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                  <span style={{ flexShrink: 0, padding: '4px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.orange, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     ◆ Pro · {m}/100
                   </span>
                 );
               }
               if (status === 'pending') return (
-                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.yellow, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.yellow, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   ⏳ Pending
                 </span>
               );
               if (status === 'expired') return (
-                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.red, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.red, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   🔒 Expired
                 </span>
               );
               const used = profile?.free_sessions_used ?? 0;
               const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
               return remaining > 0 ? (
-                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.green, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.green, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   {remaining} Free Session{remaining !== 1 ? 's' : ''} Left
                 </span>
               ) : (
-                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.orange, letterSpacing: 0.5, fontFamily: "'DM Mono', monospace" }}>
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.orange, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   🔒 Upgrade to unlock
                 </span>
               );
@@ -1204,8 +1204,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               >
                 <span style={{ fontSize: 24, color: C.orange }}>{t.icon}</span>
                 <div>
-                  <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 3, fontFamily: "'Playfair Display', serif" }}>{t.id}</div>
-                  <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Source Serif 4', serif" }}>{t.desc}</div>
+                  <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 3, fontFamily: "'Instrument Serif', serif" }}>{t.id}</div>
+                  <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{t.desc}</div>
                 </div>
                 <span style={{ marginLeft: "auto", color: C.orange, fontSize: 18 }}>{loading ? "..." : "→"}</span>
               </button>
@@ -1231,7 +1231,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     return (
       <div style={{
         minHeight: "100vh", background: C.bg,
-        fontFamily: "'DM Mono', monospace", color: C.text,
+        fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text,
         padding: "48px 32px", paddingTop: NAV_H + 48,
         display: "flex", flexDirection: "column", alignItems: "center",
       }}>
@@ -1241,11 +1241,11 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           @media (max-width: 600px) { .company-grid { grid-template-columns: 1fr; } }
         `}</style>
         <div style={{ maxWidth: 720, width: "100%", animation: "fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1)" }}>
-          <button onClick={() => setPhase("track")} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 12, cursor: "pointer", marginBottom: 40, fontFamily: "'DM Mono', monospace", letterSpacing: 2 }}>← BACK</button>
+          <button onClick={() => setPhase("track")} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 12, cursor: "pointer", marginBottom: 40, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 2 }}>← BACK</button>
 
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 12 }}>STEP 03</div>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, marginBottom: 8, color: C.text }}>Select Target Company</h2>
-          <p style={{ fontSize: 13, color: C.textSoft, marginBottom: 36, fontFamily: "'Source Serif 4', serif" }}>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, marginBottom: 8, color: C.text }}>Select Target Company</h2>
+          <p style={{ fontSize: 13, color: C.textSoft, marginBottom: 36, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             Alpha adapts questions and evaluation to match this company's interview style.
           </p>
 
@@ -1265,8 +1265,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   boxShadow: company === c.id ? "0 2px 12px rgba(232,101,10,0.12)" : "none",
                 }}
               >
-                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Playfair Display', serif" }}>{c.id}</span>
-                <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Source Serif 4', serif" }}>{c.desc}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Instrument Serif', serif" }}>{c.id}</span>
+                <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{c.desc}</span>
               </button>
             ))}
           </div>
@@ -1287,8 +1287,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   boxShadow: company === c.id ? "0 2px 12px rgba(232,101,10,0.12)" : "none",
                 }}
               >
-                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Playfair Display', serif" }}>{c.id}</span>
-                <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Source Serif 4', serif" }}>{c.desc}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Instrument Serif', serif" }}>{c.id}</span>
+                <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{c.desc}</span>
               </button>
             ))}
           </div>
@@ -1308,8 +1308,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   boxShadow: company === c.id ? "0 2px 12px rgba(232,101,10,0.12)" : "none",
                 }}
               >
-                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Playfair Display', serif" }}>{c.id}</span>
-                <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Source Serif 4', serif" }}>{c.desc}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Instrument Serif', serif" }}>{c.id}</span>
+                <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{c.desc}</span>
               </button>
             ))}
           </div>
@@ -1324,7 +1324,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               color: (company && !loading) ? "#fff" : C.textMuted,
               fontSize: 11, letterSpacing: 3, textTransform: "uppercase",
               cursor: (company && !loading) ? "pointer" : "not-allowed",
-              borderRadius: 6, fontFamily: "'DM Mono', monospace",
+              borderRadius: 6, fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 500, transition: "all 0.3s ease",
               boxShadow: (company && !loading) ? "0 2px 12px rgba(232,101,10,0.25)" : "none",
             }}
@@ -1340,7 +1340,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   return (
     <div style={{
       minHeight: "100vh", background: C.bgSoft,
-      fontFamily: "'DM Mono', monospace", color: C.text,
+      fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text,
       display: "flex", flexDirection: "column",
       paddingTop: NAV_H,
     }}>
@@ -1355,7 +1355,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)"
       }}>
         <div className="ia-interview-left" style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: C.text, flexShrink: 0 }}>
+          <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 18, fontWeight: 700, color: C.text, flexShrink: 0 }}>
             I<span style={{ color: C.orange }}>A</span>
           </span>
           <div style={{ width: 1, height: 20, background: C.border, flexShrink: 0 }} />
@@ -1381,7 +1381,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 border: `1px solid ${C.redBorder}`, color: C.red,
                 fontSize: 10, letterSpacing: 2, textTransform: "uppercase",
                 cursor: loading ? "wait" : "pointer", borderRadius: 6,
-                fontFamily: "'DM Mono', monospace", opacity: loading ? 0.5 : 1
+                fontFamily: "'Plus Jakarta Sans', sans-serif", opacity: loading ? 0.5 : 1
               }}
             >
               End Interview
@@ -1393,7 +1393,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               padding: "8px 16px", background: "transparent",
               border: `1px solid ${C.border}`, color: C.textMuted,
               fontSize: 10, letterSpacing: 2, textTransform: "uppercase",
-              cursor: "pointer", borderRadius: 6, fontFamily: "'DM Mono', monospace",
+              cursor: "pointer", borderRadius: 6, fontFamily: "'Plus Jakarta Sans', sans-serif",
               transition: "all 0.2s"
             }}
             onMouseEnter={e => { e.currentTarget.style.borderColor = C.red; e.currentTarget.style.color = C.red; }}
@@ -1406,7 +1406,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
 
       {/* Error Banner */}
       {error && (
-        <div style={{ padding: "10px 28px", background: C.redLight, borderBottom: `1px solid ${C.redBorder}`, fontSize: 12, color: C.red, fontFamily: "'DM Mono', monospace" }}>
+        <div style={{ padding: "10px 28px", background: C.redLight, borderBottom: `1px solid ${C.redBorder}`, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           ⚠ {error} — Make sure your API key is configured.
         </div>
       )}
@@ -1455,7 +1455,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   style={{
                     flex: 1, background: "transparent", border: "none",
                     color: C.text, fontSize: 14, lineHeight: 1.6,
-                    fontFamily: "'Source Serif 4', serif", resize: "none",
+                    fontFamily: "'Plus Jakarta Sans', sans-serif", resize: "none",
                     padding: "12px 0", minHeight: 44, maxHeight: 160, overflow: "auto"
                   }}
                 />
@@ -1485,7 +1485,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                     color: (input.trim() && !loading) ? "#fff" : C.textMuted,
                     fontSize: 11, letterSpacing: 2, textTransform: "uppercase",
                     cursor: (input.trim() && !loading) ? "pointer" : "not-allowed",
-                    borderRadius: 8, fontFamily: "'DM Mono', monospace",
+                    borderRadius: 8, fontFamily: "'Plus Jakarta Sans', sans-serif",
                     fontWeight: 500, transition: "all 0.2s ease", marginBottom: 4
                   }}
                 >
@@ -1522,7 +1522,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             style={{
               padding: "16px 48px", background: C.orange, border: "none",
               color: "#fff", fontSize: 11, letterSpacing: 3, textTransform: "uppercase",
-              cursor: "pointer", borderRadius: 6, fontFamily: "'DM Mono', monospace",
+              cursor: "pointer", borderRadius: 6, fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 500, transition: "all 0.3s ease",
               boxShadow: "0 2px 12px rgba(232,101,10,0.25)"
             }}

@@ -14,7 +14,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
       background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: 24,
-      fontFamily: "'DM Mono', monospace",
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
     }}>
       <div style={{
         background: C.bg, borderRadius: 14,
@@ -42,14 +42,14 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
         </div>
 
         <h2 style={{
-          fontFamily: "'Playfair Display', serif",
+          fontFamily: "'Instrument Serif', serif",
           fontSize: 26, fontWeight: 700, color: C.text,
           marginBottom: 12, lineHeight: 1.2,
         }}>
           {lastSession ? "You've used all 3 free sessions" : 'Free sessions used up'}
         </h2>
 
-        <p style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.75, marginBottom: 28, fontFamily: "'Source Serif 4', serif" }}>
+        <p style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.75, marginBottom: 28, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           {lastSession
             ? "You've used all 3 free sessions. Upgrade to keep practising with full AI feedback."
             : "You need an active subscription to start more AI sessions."}
@@ -63,7 +63,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12 }}>
             <span style={{ fontSize: 14, fontWeight: 600, color: C.text, letterSpacing: 0.5 }}>Pro Plan</span>
             <div>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 700, color: C.orange }}>₹699</span>
+              <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 24, fontWeight: 700, color: C.orange }}>₹699</span>
               <span style={{ fontSize: 11, color: C.textMuted }}>/mo</span>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
             width: '100%', padding: '14px 0',
             background: C.orange, border: 'none', borderRadius: 8,
             color: '#fff', fontSize: 11, letterSpacing: 3, textTransform: 'uppercase',
-            cursor: 'pointer', fontFamily: "'DM Mono', monospace", fontWeight: 500,
+            cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
             marginBottom: 12, transition: 'background 0.2s',
           }}
           onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
@@ -102,7 +102,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
             background: 'transparent', border: `1px solid ${C.border}`,
             borderRadius: 8, color: C.textMuted,
             fontSize: 11, letterSpacing: 2, textTransform: 'uppercase',
-            cursor: 'pointer', fontFamily: "'DM Mono', monospace",
+            cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
             transition: 'all 0.2s',
           }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = C.orange; e.currentTarget.style.color = C.orange; }}

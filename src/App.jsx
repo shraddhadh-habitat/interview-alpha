@@ -14,7 +14,7 @@ import Footer from './components/Footer';
 import DemoTutorial from './components/DemoTutorial';
 import PaywallModal from './components/PaywallModal';
 
-const C = { bg: '#FFFFFF', text: '#1A1A1A', textMuted: '#999999', orange: '#E8650A' };
+const C = { bg: '#FAFAF8', text: '#1B1B18', textMuted: '#9C9C97', orange: '#E8650A' };
 
 const FREE_SESSION_LIMIT  = 3;
 const PRO_SESSION_LIMIT   = 100;
@@ -25,10 +25,10 @@ function LoadingScreen() {
     <div style={{
       minHeight: '100vh', background: C.bg,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontFamily: "'DM Mono', monospace",
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
     }}>
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700, color: C.text, marginBottom: 16 }}>
+        <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: C.text, marginBottom: 16 }}>
           Interview<span style={{ color: C.orange }}>Alpha</span><span style={{ fontSize: 13, verticalAlign: 'super', color: C.textMuted }}>™</span>
         </div>
         <div style={{ fontSize: 10, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase' }}>Loading...</div>
