@@ -18,12 +18,11 @@ const NAV_H = 60;
 const COACHES = [
   {
     name: 'Shravan Tikoo',
-    handle: '@ShravanTikoo',
+    handle: '@TheSwagWalaPM',
     channelUrl: 'https://www.youtube.com/c/TheSwagWalaPM',
     description: 'PM career coach helping aspiring and experienced PMs crack interviews at top tech companies. Covers product sense, execution, and real interview breakdowns.',
     videos: [
-      // No verified video IDs could be found for this channel during research.
-      // Visit the channel to explore the latest content.
+      { id: 'dOrrxtVsbyQ', title: 'The Product Management Job Search in 2024: How to Win' },
     ],
   },
   {
@@ -40,10 +39,10 @@ const COACHES = [
   {
     name: 'Diego Granados',
     handle: '@PMDiegoGranados',
-    channelUrl: 'https://www.youtube.com/@PMDiegoGranados',
+    channelUrl: 'https://www.youtube.com/c/PMDiegoGranados',
     description: 'High-energy PM interview coach known for real-talk feedback and zero-fluff approach. Covers product sense frameworks, mock interviews, and career strategy.',
     videos: [
-      { id: 't4hisfA97pE', title: 'The Ultimate Guide to Your Next Product Management Job | Diego Granados, AI PM at Google' },
+      { id: 't4hisfA97pE', title: 'The Ultimate Guide to Your Next Product Management Job' },
     ],
   },
 ];
@@ -125,6 +124,39 @@ function VideoCard({ video }) {
   );
 }
 
+const BROWSE_LABELS = [
+  { icon: '🎬', text: 'More videos on this channel' },
+  { icon: '▶', text: 'Watch on YouTube' },
+  { icon: '📺', text: 'Explore the full channel' },
+];
+
+function BrowseCard({ index }) {
+  const [hovered, setHovered] = useState(false);
+  const label = BROWSE_LABELS[index] || BROWSE_LABELS[0];
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        borderRadius: 12, overflow: 'hidden', cursor: 'pointer',
+        border: `1.5px dashed ${hovered ? C.green : C.border}`,
+        background: hovered ? C.greenLight : C.bgMuted,
+        transition: 'all 0.18s ease',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        minHeight: 140, padding: 20, textAlign: 'center',
+      }}
+    >
+      <span style={{ fontSize: 28, marginBottom: 10 }}>{label.icon}</span>
+      <span style={{
+        fontSize: 13, fontWeight: 500, color: hovered ? C.green : C.textMuted,
+        fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.4,
+        transition: 'color 0.18s',
+      }}>{label.text}</span>
+    </div>
+  );
+}
+
 function CoachCard({ coach }) {
   return (
     <div style={{
@@ -169,19 +201,22 @@ function CoachCard({ coach }) {
         {coach.description}
       </p>
 
-      {/* Videos */}
-      {coach.videos.length > 0 ? (
-        <div className="lr-video-row" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-          {coach.videos.map(v => <VideoCard key={v.id} video={v} />)}
-        </div>
-      ) : (
-        <div style={{
-          padding: '16px 20px', background: C.bgMuted, borderRadius: 12,
-          fontSize: 14, color: C.textLight, fontFamily: "'Plus Jakarta Sans', sans-serif",
-        }}>
-          Visit the channel to explore their latest videos →
-        </div>
-      )}
+      {/* Videos — verified thumbnails + "browse more" filler to maintain 3-column grid */}
+      <div className="lr-video-row" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        {coach.videos.map(v => <VideoCard key={v.id} video={v} />)}
+        {/* Fill remaining slots up to 3 with a styled channel-browse card */}
+        {Array.from({ length: Math.max(0, 3 - coach.videos.length) }).map((_, i) => (
+          <a
+            key={`more-${i}`}
+            href={coach.channelUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: 'none', flex: '1 1 0', minWidth: 0 }}
+          >
+            <BrowseCard channelUrl={coach.channelUrl} index={i} total={3 - coach.videos.length} />
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
