@@ -3,21 +3,21 @@ import { supabase } from '../lib/supabase';
 import { pmQuestions } from '../data/pmQuestions';
 
 const C = {
-  bg: '#FAFAFA',
+  bg: '#FAFAF8',
   card: '#FFFFFF',
-  bgMuted: '#F5F5F5',
-  text: '#1A1A1A',
-  textMuted: '#666666',
-  textSoft: '#444444',
-  border: '#E5E5E5',
-  borderLight: '#F0F0F0',
+  bgMuted: '#F5F3EF',
+  text: '#1B1B18',
+  textMuted: '#5C5C57',
+  textSoft: '#5C5C57',
+  border: '#E8E6E1',
+  borderLight: '#F0EDE8',
   orange: '#E8650A',
   orangeLight: 'rgba(232,101,10,0.08)',
   orangeBorder: 'rgba(232,101,10,0.2)',
-  green: '#1B8C3A',
+  green: '#1A7F37',
   greenLight: 'rgba(27,140,58,0.08)',
   greenBorder: 'rgba(27,140,58,0.2)',
-  red: '#D32F2F',
+  red: '#CF222E',
   redLight: 'rgba(211,47,47,0.07)',
   redBorder: 'rgba(211,47,47,0.18)',
   yellow: '#C67F00',
@@ -406,7 +406,7 @@ function AttemptDetail({ item }) {
     ? COMPETENCIES.map(c => ({ label: c.label, value: typeof comp[c.sessionKey] === 'number' ? comp[c.sessionKey] : null })).filter(r => r.value != null)
     : COMPETENCIES.filter(c => c.practiceKey).map(c => ({ label: c.label, value: typeof comp[c.practiceKey] === 'number' ? comp[c.practiceKey] : null })).filter(r => r.value != null);
   return (
-    <div style={{ padding: '18px 22px', background: '#FAFAFA', borderTop: `1px solid ${C.border}`, display: 'flex', gap: 28, flexWrap: 'wrap' }}>
+    <div style={{ padding: '18px 22px', background: '#FAFAF8', borderTop: `1px solid ${C.border}`, display: 'flex', gap: 28, flexWrap: 'wrap' }}>
       <div style={{ minWidth: 200 }}>
         <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10, fontWeight: 600 }}>Competency Scores</div>
         {compRows.length === 0 ? <div style={{ fontSize: 11, color: C.textMuted }}>No breakdown available</div>
@@ -913,7 +913,7 @@ export default function Scorecard({ user }) {
                 <div key={item.id ?? idx} style={{ borderBottom: idx < allItems.length - 1 ? `1px solid ${C.borderLight}` : 'none' }}>
                   <div
                     onClick={() => setExpandedRows(prev => { const n = new Set(prev); n.has(item.id) ? n.delete(item.id) : n.add(item.id); return n; })}
-                    onMouseEnter={e => { if (!isExpanded) e.currentTarget.style.background = '#FAFAFA'; }}
+                    onMouseEnter={e => { if (!isExpanded) e.currentTarget.style.background = '#FAFAF8'; }}
                     onMouseLeave={e => { if (!isExpanded) e.currentTarget.style.background = C.card; }}
                     className="sc-log-row"
                     style={{ display: 'grid', gridTemplateColumns: '88px 1fr 96px 124px 68px 32px', padding: '12px 18px', alignItems: 'center', cursor: 'pointer', background: isExpanded ? 'rgba(232,101,10,0.03)' : C.card, transition: 'background 0.15s', minWidth: 540 }}

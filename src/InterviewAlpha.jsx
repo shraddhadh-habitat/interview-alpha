@@ -140,26 +140,28 @@ TONE BY LEVEL:
 // ─── Color Palette ───
 const C = {
   bg: "#FFFFFF",
-  bgSoft: "#FAFAFA",
-  bgMuted: "#F5F5F5",
-  text: "#1A1A1A",
-  textSoft: "#1A1A1A",
-  textMuted: "#444444",
-  border: "#E5E5E5",
-  borderLight: "#F0F0F0",
+  bgSoft: "#FAFAF8",
+  bgMuted: "#F5F3EF",
+  text: "#1B1B18",
+  textSoft: "#1B1B18",
+  textMuted: "#5C5C57",
+  border: "#E8E6E1",
+  borderLight: "#F0EDE8",
   orange: "#E8650A",
   orangeHover: "#D45800",
   orangeLight: "rgba(232,101,10,0.08)",
   orangeBorder: "rgba(232,101,10,0.2)",
-  green: "#1B8C3A",
+  green: "#1A7F37",
   greenLight: "rgba(27,140,58,0.08)",
   greenBorder: "rgba(27,140,58,0.2)",
-  red: "#D32F2F",
+  red: "#CF222E",
   redLight: "rgba(211,47,47,0.07)",
   redBorder: "rgba(211,47,47,0.18)",
   yellow: "#C67F00",
   yellowLight: "rgba(198,127,0,0.06)",
   yellowBorder: "rgba(198,127,0,0.15)",
+  purple: "#8250DF",
+  purpleLight: "rgba(130,80,223,0.06)",
   userBubble: "#F7F2ED",
   assistantBubble: "#FFFFFF",
 };
@@ -310,12 +312,13 @@ function ScoreDashboard({ data }) {
 
   return (
     <div style={{
-      background: C.bgSoft,
+      background: '#FFFFFF',
       border: `1px solid ${C.border}`,
-      borderRadius: 12,
+      borderRadius: 16,
       padding: 28,
       margin: "16px 0",
-      fontFamily: "'Plus Jakarta Sans', sans-serif"
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)'
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
         <span style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: C.textMuted }}>Performance Dashboard</span>
@@ -448,7 +451,7 @@ function MessageBubble({ msg, isFirstAssistant }) {
             fontFamily: "'Instrument Serif', serif",
             fontWeight: 700,
             fontSize: 15,
-            color: "#1A1A1A",
+            color: "#1B1B18",
             marginBottom: 10,
             paddingBottom: 10,
             borderBottom: `1px solid ${C.border}`,
@@ -457,7 +460,7 @@ function MessageBubble({ msg, isFirstAssistant }) {
             Alpha, your Interview Assistant
           </div>
         )}
-        <span style={{ color: "#1A1A1A" }}>{displayText}</span>
+        <span style={{ color: "#1B1B18" }}>{displayText}</span>
         {scoreData && <ScoreDashboard data={scoreData} />}
       </div>
     </div>
