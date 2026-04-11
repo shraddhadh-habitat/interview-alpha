@@ -171,12 +171,12 @@ function ScoreBadge({ score, attempts }) {
 function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData, onReport }) {
   return (
     <div style={{
-      background: C.bg,
+      background: '#FFFFFF',
       border: `1px solid ${isOpen ? C.orangeBorder : C.border}`,
-      borderRadius: 10,
+      borderRadius: 16,
       overflow: 'hidden',
       transition: 'border-color 0.2s, box-shadow 0.2s',
-      boxShadow: isOpen ? '0 2px 16px rgba(232,101,10,0.07)' : 'none',
+      boxShadow: isOpen ? '0 2px 16px rgba(232,101,10,0.07)' : '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)',
       animation: 'fadeUp 0.3s cubic-bezier(0.22,1,0.36,1)',
     }}>
       {/* Question row */}
@@ -193,8 +193,8 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
           background: isOpen ? C.orange : C.bgMuted,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 11, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif",
-          color: isOpen ? '#fff' : C.textMuted,
+          fontSize: 12, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif",
+          color: isOpen ? '#fff' : C.text,
           transition: 'background 0.2s, color 0.2s', marginTop: 1,
         }}>
           {index + 1}
@@ -202,9 +202,9 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
 
         {/* Question text */}
         <span style={{
-          flex: 1, fontSize: 14, lineHeight: 1.65,
+          flex: 1, fontSize: 15, lineHeight: 1.65,
           fontFamily: "'Plus Jakarta Sans', sans-serif",
-          color: C.text, fontWeight: isOpen ? 600 : 400,
+          color: C.text, fontWeight: isOpen ? 600 : 500,
           transition: 'font-weight 0.1s',
         }}>
           {question.q}
@@ -226,15 +226,17 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           animation: 'fadeUp 0.25s cubic-bezier(0.22,1,0.36,1)',
         }}>
           <div style={{ padding: '20px 22px 16px' }}>
-            <div style={{
-              fontSize: 9, letterSpacing: 3, textTransform: 'uppercase',
-              color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 500, marginBottom: 12,
-            }}>
-              Expert Answer
+            <div style={{ marginBottom: 12 }}>
+              <span style={{
+                padding: '3px 10px', background: '#8250DF', color: '#fff',
+                borderRadius: 20, fontSize: 10, fontWeight: 600,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
+              }}>
+                Expert Answer
+              </span>
             </div>
             <div style={{
-              fontSize: 14, lineHeight: 1.8, color: C.textSoft,
+              fontSize: 15, lineHeight: 1.8, color: C.textMuted,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               whiteSpace: 'pre-wrap',
             }}>
@@ -247,17 +249,18 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
               <button
                 onClick={(e) => { e.stopPropagation(); onPractice(); }}
                 style={{
-                  padding: '9px 20px',
-                  background: C.orange, border: 'none', borderRadius: 7,
-                  color: '#fff', fontSize: 11, letterSpacing: 1.5,
-                  textTransform: 'uppercase', cursor: 'pointer',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
+                  padding: '10px 22px',
+                  background: C.orange, border: 'none', borderRadius: 12,
+                  color: '#fff', fontSize: 14,
+                  cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
                   transition: 'background 0.2s',
+                  boxShadow: '0 1px 2px rgba(232,101,10,0.3)',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
                 onMouseLeave={e => e.currentTarget.style.background = C.orange}
               >
-                ✎ Practice This Question
+                Practice This Question →
               </button>
               {practiceData && (
                 <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -417,33 +420,30 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
         {/* Page header */}
         <div style={{ marginBottom: 32 }}>
-          <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>INTERVIEW PREP</div>
-          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, color: C.text, marginBottom: 8 }}>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: C.text, marginBottom: 8 }}>
             Practice Q&amp;A
           </h2>
-          <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            {totalCount} questions across {PM_LEVELS.length} PM designations — from APM to CPO.
+          <p style={{ fontSize: 15, color: C.textMuted, margin: '0 0 16px' }}>
+            1,100+ expert questions across 10 PM levels
           </p>
-        </div>
-
-        {/* Disclaimer banner */}
-        <div style={{
-          padding: '14px 18px',
-          background: C.yellowLight, border: `1px solid ${C.yellowBorder}`,
-          borderRadius: 8, marginBottom: 32,
-          display: 'flex', gap: 12, alignItems: 'flex-start',
-        }}>
-          <span style={{ fontSize: 14, flexShrink: 0, marginTop: 1 }}>⚠</span>
-          <p style={{ fontSize: 12, lineHeight: 1.65, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0 }}>
-            Answers represent expert frameworks and structured thinking patterns. For behavioral questions, replace example stories with your own experiences. Verify company-specific and technical details independently.{' '}
-            <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, opacity: 0.75 }}>Last updated: March 2026.</span>
-          </p>
+          <div style={{
+            padding: '12px 16px',
+            background: '#F0F4F8', border: '1px solid #DDE4EE',
+            borderRadius: 12, marginBottom: 0,
+            display: 'flex', gap: 10, alignItems: 'flex-start',
+          }}>
+            <span style={{ fontSize: 14, flexShrink: 0 }}>ℹ️</span>
+            <p style={{ fontSize: 13, lineHeight: 1.6, color: '#4A5568', margin: 0 }}>
+              Answers represent expert frameworks. Replace example stories with your own experiences for behavioral questions.{' '}
+              <span style={{ fontSize: 11, opacity: 0.7 }}>Last updated: March 2026.</span>
+            </p>
+          </div>
         </div>
 
         {/* Controls row */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 28 }}>
 
-          {/* Category toggle */}
+          {/* Category pills */}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {[
               { id: 'product', label: 'Product Questions' },
@@ -455,14 +455,14 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 key={cat.id}
                 onClick={() => { setCategory(cat.id); setExpandedKeys(new Set()); setAllExpanded(false); }}
                 style={{
-                  padding: '10px 22px',
-                  background: category === cat.id ? C.orange : C.bg,
-                  border: `1px solid ${category === cat.id ? C.orange : C.border}`,
-                  borderRadius: 8,
+                  padding: '8px 20px',
+                  background: category === cat.id ? C.orange : C.bgMuted,
+                  border: 'none',
+                  borderRadius: 20,
                   color: category === cat.id ? '#fff' : C.textMuted,
-                  fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                  fontSize: 13,
                   cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontWeight: category === cat.id ? 500 : 400,
+                  fontWeight: category === cat.id ? 600 : 400,
                   transition: 'all 0.2s',
                 }}
               >
@@ -503,21 +503,18 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <div style={{
               flex: 1, display: 'flex', alignItems: 'center', gap: 10,
-              background: C.bg, border: `1px solid ${C.border}`,
-              borderRadius: 8, padding: '0 16px',
+              background: C.bg, border: `1.5px solid ${C.border}`,
+              borderRadius: 12, padding: '0 16px',
             }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke={C.textMuted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
+              <span style={{ fontSize: 16 }}>🔍</span>
               <input
                 value={search}
                 onChange={e => { setSearch(e.target.value); setExpandedKeys(new Set()); setAllExpanded(false); }}
                 placeholder="Search questions..."
                 style={{
                   flex: 1, border: 'none', background: 'transparent',
-                  color: C.text, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  padding: '11px 0',
+                  color: C.text, fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  padding: '12px 0',
                 }}
               />
               {search && (
@@ -565,7 +562,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             <div style={{ fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No questions match your filters.</div>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {filtered.map((item, displayIndex) => (
               <QuestionCard
                 key={item.key}
