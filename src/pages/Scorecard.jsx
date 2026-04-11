@@ -184,13 +184,13 @@ function CompBar({ label, value, max = 10 }) {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-        <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 1.5, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+        <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           {label.replace(/_/g, ' ')}
         </span>
-        <span style={{ fontSize: 12, color, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{value}/{max}</span>
+        <span style={{ fontSize: 12, color, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{value}/{max}</span>
       </div>
-      <div style={{ height: 5, background: C.bgMuted, borderRadius: 3, overflow: 'hidden' }}>
-        <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 3, transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)' }} />
+      <div style={{ height: 6, background: C.bgMuted, borderRadius: 4, overflow: 'hidden' }}>
+        <div style={{ width: `${pct}%`, height: '100%', background: `linear-gradient(90deg, ${color}99, ${color})`, borderRadius: 4, transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)' }} />
       </div>
     </div>
   );
@@ -198,9 +198,9 @@ function CompBar({ label, value, max = 10 }) {
 
 function StatCard({ label, value, sub, color }) {
   return (
-    <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: '20px 22px', flex: 1, minWidth: 110 }}>
-      <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>{label}</div>
-      <div style={{ fontSize: 34, fontWeight: 700, color: color || C.text, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{value}</div>
+    <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: '20px 22px', flex: 1, minWidth: 110, boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)' }}>
+      <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>{label}</div>
+      <div style={{ fontSize: 34, fontWeight: 700, color: color || C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1 }}>{value}</div>
       {sub && <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginTop: 6 }}>{sub}</div>}
     </div>
   );
@@ -264,10 +264,10 @@ function Section({ title, sub, children }) {
   return (
     <div style={{ marginBottom: 40 }}>
       <div style={{ marginBottom: 20 }}>
-        <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 700, color: C.text, letterSpacing: -0.5, marginBottom: 5 }}>{title}</h2>
-        {sub && <p style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.2 }}>{sub}</p>}
+        <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 400, color: C.text, letterSpacing: -0.5, marginBottom: 5 }}>{title}</h2>
+        {sub && <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{sub}</p>}
       </div>
-      <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 26 }}>
+      <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 26, boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)' }}>
         {children}
       </div>
     </div>
@@ -276,7 +276,7 @@ function Section({ title, sub, children }) {
 
 function InsightCard({ title, icon, iconColor, value, sub, subColor, badge, badgeColor, badgeBorder, badgeText }) {
   return (
-    <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: '18px 20px' }}>
+    <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: '18px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
         <span style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{title}</span>
         {badge && <span style={{ padding: '2px 7px', background: badgeColor, border: `1px solid ${badgeBorder}`, borderRadius: 10, fontSize: 9, color: badgeText, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{badge}</span>}

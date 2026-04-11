@@ -179,41 +179,57 @@ export default function UpgradePage({ user, profile, onBack }) {
             </div>
 
             {/* Pricing cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-              {Object.entries(PLANS).map(([key, p]) => (
-                <button
-                  key={key}
-                  onClick={() => handleSelectPlan(key)}
-                  disabled={isPending || isActive}
-                  style={{
-                    padding: '24px 20px',
-                    background: key === 'yearly' ? C.orangeLight : C.bg,
-                    border: `2px solid ${key === 'yearly' ? C.orange : C.border}`,
-                    borderRadius: 12, cursor: isPending || isActive ? 'not-allowed' : 'pointer',
-                    textAlign: 'left', position: 'relative',
-                    transition: 'all 0.2s', opacity: isPending || isActive ? 0.6 : 1,
-                  }}
-                  onMouseEnter={e => { if (!isPending && !isActive) e.currentTarget.style.borderColor = C.orange; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = key === 'yearly' ? C.orange : C.border; }}
-                >
-                  {key === 'yearly' && (
-                    <div style={{ position: 'absolute', top: -1, right: 16, background: C.orange, color: '#fff', fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', padding: '3px 8px', borderRadius: '0 0 6px 6px', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                      Best Value
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24, alignItems: 'start' }}>
+              {Object.entries(PLANS).map(([key, p]) => {
+                const isYearly = key === 'yearly';
+                const btn = (
+                  <button
+                    onClick={() => handleSelectPlan(key)}
+                    disabled={isPending || isActive}
+                    style={{
+                      padding: '24px 20px', background: '#FFFFFF',
+                      border: isYearly ? 'none' : `1px solid ${C.border}`,
+                      borderRadius: 20, cursor: isPending || isActive ? 'not-allowed' : 'pointer',
+                      textAlign: 'left', position: 'relative',
+                      transition: 'all 0.2s', opacity: isPending || isActive ? 0.6 : 1,
+                      width: '100%', boxSizing: 'border-box',
+                    }}
+                  >
+                    <div style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, marginBottom: 12 }}>{p.label}</div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 8 }}>
+                      <span style={{ fontSize: 36, fontWeight: 700, color: C.text }}>₹{p.price.toLocaleString('en-IN')}</span>
+                      <span style={{ fontSize: 12, color: C.textMuted }}>{p.period}</span>
                     </div>
-                  )}
-                  <div style={{ fontSize: 11, letterSpacing: 2, color: C.textMuted, marginBottom: 12 }}>{p.label.toUpperCase()}</div>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 8 }}>
-                    <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, color: C.text }}>₹{p.price.toLocaleString('en-IN')}</span>
-                    <span style={{ fontSize: 12, color: C.textMuted }}>{p.period}</span>
-                  </div>
-                  {p.saves && (
-                    <div style={{ fontSize: 11, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>{p.saves}</div>
-                  )}
-                  <div style={{ marginTop: 16, padding: '10px 16px', background: key === 'yearly' ? C.orange : C.bg, border: `1px solid ${key === 'yearly' ? C.orange : C.border}`, borderRadius: 6, fontSize: 11, color: key === 'yearly' ? '#fff' : C.orange, letterSpacing: 1.5, textTransform: 'uppercase', textAlign: 'center', fontWeight: 500 }}>
-                    {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Plan →'}
-                  </div>
-                </button>
-              ))}
+                    {p.saves && <div style={{ fontSize: 13, color: C.green, fontWeight: 600, marginBottom: 8 }}>{p.saves}</div>}
+                    <div style={{
+                      marginTop: 16, padding: '10px 16px',
+                      background: isYearly ? 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)' : C.bg,
+                      border: isYearly ? 'none' : `1px solid ${C.border}`,
+                      borderRadius: 12, fontSize: 14,
+                      color: isYearly ? '#fff' : C.orange,
+                      textAlign: 'center', fontWeight: 600,
+                    }}>
+                      {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Plan →'}
+                    </div>
+                  </button>
+                );
+                if (isYearly) {
+                  return (
+                    <div key={key} style={{ position: 'relative', paddingTop: 14 }}>
+                      <div style={{
+                        position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
+                        background: 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)',
+                        color: '#fff', fontSize: 10, padding: '3px 14px', borderRadius: 20, fontWeight: 700,
+                        whiteSpace: 'nowrap', zIndex: 1,
+                      }}>Best Value</div>
+                      <div style={{ background: 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)', padding: 2, borderRadius: 22 }}>
+                        <div style={{ background: '#FFFFFF', borderRadius: 20, overflow: 'hidden' }}>{btn}</div>
+                      </div>
+                    </div>
+                  );
+                }
+                return <div key={key}>{btn}</div>;
+              })}
             </div>
 
             <p style={{ fontSize: 11, color: C.textMuted, textAlign: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -241,8 +257,11 @@ export default function UpgradePage({ user, profile, onBack }) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'start' }}>
               {/* QR code side */}
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 16, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Step 1 — Scan & Pay</div>
-                <div style={{ width: 200, height: 200, margin: '0 auto', background: C.bgMuted, border: `1px solid ${C.border}`, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, justifyContent: 'center' }}>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff', flexShrink: 0 }}>1</div>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Scan & Pay</span>
+                </div>
+                <div style={{ width: 220, height: 220, margin: '0 auto', background: C.bgMuted, border: `2px dashed ${C.border}`, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
                   <img
                     src="/upi-qr.png"
                     alt="UPI QR Code"

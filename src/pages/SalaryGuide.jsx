@@ -191,13 +191,13 @@ export default function SalaryGuide() {
                 <thead>
                   <tr>
                     {['Level', 'Total Comp', 'Base', 'Bonus', 'Equity'].map(h => (
-                      <th key={h} style={{ textAlign: 'left', padding: '8px 14px', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, borderBottom: `1px solid ${C.border}`, fontWeight: 500 }}>{h}</th>
+                      <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {IN_SALARIES.map((row, i) => (
-                    <tr key={i} style={{ background: i % 2 === 0 ? C.bg : C.bgSoft }}>
+                    <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                       <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
                       <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
                       <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
@@ -215,13 +215,13 @@ export default function SalaryGuide() {
                 <thead>
                   <tr>
                     {['Level', 'Total Comp', 'Base', 'Bonus', 'Equity'].map(h => (
-                      <th key={h} style={{ textAlign: 'left', padding: '8px 14px', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, borderBottom: `1px solid ${C.border}`, fontWeight: 500 }}>{h}</th>
+                      <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {US_SALARIES.map((row, i) => (
-                    <tr key={i} style={{ background: i % 2 === 0 ? C.bg : C.bgSoft }}>
+                    <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                       <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
                       <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
                       <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
@@ -278,7 +278,7 @@ export default function SalaryGuide() {
                   <span style={{ fontSize: 13, fontWeight: 600, color: C.text, fontFamily: "'Instrument Serif', serif" }}>{t.scenario}</span>
                 </div>
                 <div style={{
-                  padding: '16px 20px', background: C.bgSoft,
+                  padding: '16px 20px', background: '#F8F5FF',
                   border: `1px solid ${C.border}`, borderRadius: 10,
                   fontSize: 13, lineHeight: 1.8, color: C.textSoft,
                   fontFamily: "'Plus Jakarta Sans', sans-serif", fontStyle: 'italic',
@@ -318,13 +318,13 @@ export default function SalaryGuide() {
               <thead>
                 <tr>
                   {['Company', 'PM Levels', 'India TC', 'US TC', 'Notes'].map(h => (
-                    <th key={h} style={{ textAlign: 'left', padding: '8px 14px', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, borderBottom: `1px solid ${C.border}`, fontWeight: 500 }}>{h}</th>
+                    <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {COMPANY_COMP.map((row, i) => (
-                  <tr key={i} style={{ background: i % 2 === 0 ? C.bg : C.bgSoft }}>
+                  <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                     <td style={{ padding: '12px 14px', fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13 }}>{row.company}</td>
                     <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap' }}>{row.levels}</td>
                     <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif', whiteSpace: 'nowrap'" }}>{row.tc_in}</td>
