@@ -11,12 +11,12 @@ const C = {
   textSoft: '#5C5C57',
   border: '#E8E6E1',
   borderLight: '#F0EDE8',
-  orange: '#E8650A',
-  orangeLight: 'rgba(232,101,10,0.08)',
-  orangeBorder: 'rgba(232,101,10,0.2)',
-  green: '#1A7F37',
-  greenLight: 'rgba(27,140,58,0.08)',
-  greenBorder: 'rgba(27,140,58,0.2)',
+  green: '#16A34A',
+  greenLight: 'rgba(22,163,74,0.08)',
+  greenBorder: 'rgba(22,163,74,0.2)',
+  success: '#1A7F37',
+  successLight: 'rgba(27,140,58,0.08)',
+  successBorder: 'rgba(27,140,58,0.2)',
   red: '#CF222E',
   redLight: 'rgba(211,47,47,0.07)',
   redBorder: 'rgba(211,47,47,0.18)',
@@ -88,10 +88,10 @@ const TIPS = {
 // ── Utilities ────────────────────────────────────────────────────────────────
 
 function gradeInfo(score) {
-  if (score >= 90) return { grade: 'A+', color: C.green };
-  if (score >= 80) return { grade: 'A',  color: C.green };
-  if (score >= 70) return { grade: 'B+', color: C.orange };
-  if (score >= 60) return { grade: 'B',  color: C.orange };
+  if (score >= 90) return { grade: 'A+', color: C.success };
+  if (score >= 80) return { grade: 'A',  color: C.success };
+  if (score >= 70) return { grade: 'B+', color: C.green };
+  if (score >= 60) return { grade: 'B',  color: C.green };
   if (score >= 50) return { grade: 'C',  color: C.yellow };
   return                   { grade: 'D',  color: C.red };
 }
@@ -104,14 +104,14 @@ function compInsightText(score) {
 }
 
 function compInsightColor(score) {
-  if (score >= 8) return C.green;
-  if (score >= 6) return C.orange;
+  if (score >= 8) return C.success;
+  if (score >= 6) return C.green;
   if (score >= 4) return C.yellow;
   return C.red;
 }
 
 function scoreColor100(s) {
-  return s >= 70 ? C.green : s >= 40 ? C.yellow : C.red;
+  return s >= 70 ? C.success : s >= 40 ? C.yellow : C.red;
 }
 
 function stdDev(arr) {
@@ -167,10 +167,10 @@ function ScoreChart({ data }) {
           <text x={PAD.left - 6} y={getY(y) + 4} textAnchor="end" fontSize="9" fill={C.textMuted} fontFamily="'Plus Jakarta Sans', sans-serif">{y}</text>
         </g>
       ))}
-      {areaPath && <path d={areaPath} fill="rgba(232,101,10,0.06)" />}
-      {data.length > 1 && <path d={linePath} fill="none" stroke={C.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />}
+      {areaPath && <path d={areaPath} fill="rgba(22,163,74,0.06)" />}
+      {data.length > 1 && <path d={linePath} fill="none" stroke={C.green} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />}
       {data.map((d, i) => (
-        <circle key={i} cx={getX(i)} cy={getY(d.score)} r="4" fill={C.orange} stroke="#fff" strokeWidth="2">
+        <circle key={i} cx={getX(i)} cy={getY(d.score)} r="4" fill={C.green} stroke="#fff" strokeWidth="2">
           <title>{`Score: ${d.score}`}</title>
         </circle>
       ))}
@@ -180,7 +180,7 @@ function ScoreChart({ data }) {
 
 function CompBar({ label, value, max = 10 }) {
   const pct = Math.round((value / max) * 100);
-  const color = pct >= 70 ? C.green : pct >= 40 ? C.yellow : C.red;
+  const color = pct >= 70 ? C.success : pct >= 40 ? C.yellow : C.red;
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
@@ -234,8 +234,8 @@ function ReviewModal({ attempt, onClose }) {
         )}
         {attempt.expert_rewrite && (
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Expert Rewrite</div>
-            <div style={{ padding: '14px 18px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Expert Rewrite</div>
+            <div style={{ padding: '14px 18px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
               {attempt.expert_rewrite}
             </div>
           </div>
@@ -246,7 +246,7 @@ function ReviewModal({ attempt, onClose }) {
             <div style={{ display: 'grid', gap: 6 }}>
               {attempt.improvement_tips.map((t, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10 }}>
-                  <span style={{ color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, flexShrink: 0 }}>{i + 1}.</span>
+                  <span style={{ color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, flexShrink: 0 }}>{i + 1}.</span>
                   <span style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>{t}</span>
                 </div>
               ))}
@@ -333,7 +333,7 @@ function RadarChart({ avgComp }) {
   });
   const axes = COMPETENCIES.map((_, i) => { const [x, y] = pt(i, 1); return <line key={i} x1={CX} y1={CY} x2={x} y2={y} stroke={C.borderLight} strokeWidth={1} />; });
   const dataPolygon = COMPETENCIES.map(({ label }, i) => pt(i, (avgComp[label] ?? 0) / 10).join(',')).join(' ');
-  const dots = COMPETENCIES.map(({ label }, i) => { const [x, y] = pt(i, (avgComp[label] ?? 0) / 10); return <circle key={i} cx={x} cy={y} r={5} fill={C.orange} stroke="white" strokeWidth={2} />; });
+  const dots = COMPETENCIES.map(({ label }, i) => { const [x, y] = pt(i, (avgComp[label] ?? 0) / 10); return <circle key={i} cx={x} cy={y} r={5} fill={C.green} stroke="white" strokeWidth={2} />; });
   const levelMarkers = [2, 4, 6, 8, 10].map((v, i) => { const [lx, ly] = pt(0, (i + 1) / LEVELS); return <text key={v} x={lx + 5} y={ly + 4} style={{ fontSize: 9, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{v}</text>; });
   const labelEls = COMPETENCIES.map(({ label }, i) => {
     const a = angle(i);
@@ -350,7 +350,7 @@ function RadarChart({ avgComp }) {
   return (
     <svg width="100%" viewBox="0 0 400 420" style={{ maxWidth: 420 }}>
       {bgRings}{axes}{levelMarkers}
-      <polygon points={dataPolygon} fill="rgba(232,101,10,0.12)" stroke={C.orange} strokeWidth={2.5} />
+      <polygon points={dataPolygon} fill="rgba(22,163,74,0.12)" stroke={C.green} strokeWidth={2.5} />
       {dots}{labelEls}
     </svg>
   );
@@ -386,13 +386,13 @@ function PerformanceTimeline({ timeline }) {
       <line x1={PL} y1={PT} x2={PL} y2={PT + IH} stroke={C.border} />
       <line x1={PL} y1={PT + IH} x2={W - PR} y2={PT + IH} stroke={C.border} />
       {xLabels.map((a, i) => <text key={i} x={xp(a.date)} y={H - 6} textAnchor="middle" style={{ fontSize: 9, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</text>)}
-      <path d={linePath} fill="none" stroke={C.orange} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-      <path d={avgPath}  fill="none" stroke={C.green}  strokeWidth={1.5} strokeDasharray="6 3" strokeLinecap="round" />
-      {timeline.map((a, i) => <circle key={i} cx={xp(a.date)} cy={yp(scores[i])} r={3.5} fill={C.orange} stroke="white" strokeWidth={1.5} />)}
+      <path d={linePath} fill="none" stroke={C.green} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={avgPath}  fill="none" stroke={C.success}  strokeWidth={1.5} strokeDasharray="6 3" strokeLinecap="round" />
+      {timeline.map((a, i) => <circle key={i} cx={xp(a.date)} cy={yp(scores[i])} r={3.5} fill={C.green} stroke="white" strokeWidth={1.5} />)}
       <g>
-        <line x1={PL + 10} y1={PT + 12} x2={PL + 28} y2={PT + 12} stroke={C.orange} strokeWidth={2} />
+        <line x1={PL + 10} y1={PT + 12} x2={PL + 28} y2={PT + 12} stroke={C.green} strokeWidth={2} />
         <text x={PL + 33} y={PT + 16} style={{ fontSize: 10, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Score</text>
-        <line x1={PL + 80} y1={PT + 12} x2={PL + 98} y2={PT + 12} stroke={C.green} strokeWidth={1.5} strokeDasharray="6 3" />
+        <line x1={PL + 80} y1={PT + 12} x2={PL + 98} y2={PT + 12} stroke={C.success} strokeWidth={1.5} strokeDasharray="6 3" />
         <text x={PL + 103} y={PT + 16} style={{ fontSize: 10, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>3-pt Avg</text>
       </g>
     </svg>
@@ -427,9 +427,9 @@ function AttemptDetail({ item }) {
           <>
             {item.high_signal_keywords?.length > 0 && (
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Signal Keywords</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Signal Keywords</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                  {item.high_signal_keywords.map((kw, i) => <span key={i} style={{ padding: '2px 8px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 10, fontSize: 10, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{kw}</span>)}
+                  {item.high_signal_keywords.map((kw, i) => <span key={i} style={{ padding: '2px 8px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 10, fontSize: 10, color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{kw}</span>)}
                 </div>
               </div>
             )}
@@ -443,8 +443,8 @@ function AttemptDetail({ item }) {
             )}
             {item.alpha_rewrite && (
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Alpha Rewrite</div>
-                <div style={{ padding: '10px 14px', background: 'rgba(232,101,10,0.05)', border: `1px solid ${C.orangeBorder}`, borderRadius: 12, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.alpha_rewrite}</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Alpha Rewrite</div>
+                <div style={{ padding: '10px 14px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 12, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.alpha_rewrite}</div>
               </div>
             )}
             {item.next_drill && (
@@ -470,8 +470,8 @@ function AttemptDetail({ item }) {
             )}
             {item.strengths?.length > 0 && (
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Strengths</div>
-                {item.strengths.map((s, i) => <div key={i} style={{ fontSize: 12, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 3, display: 'flex', gap: 8 }}><span>+</span><span>{s}</span></div>)}
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Strengths</div>
+                {item.strengths.map((s, i) => <div key={i} style={{ fontSize: 12, color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 3, display: 'flex', gap: 8 }}><span>+</span><span>{s}</span></div>)}
               </div>
             )}
             {item.weaknesses?.length > 0 && (
@@ -482,8 +482,8 @@ function AttemptDetail({ item }) {
             )}
             {item.expert_rewrite && (
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Expert Rewrite</div>
-                <div style={{ padding: '10px 14px', background: 'rgba(232,101,10,0.05)', border: `1px solid ${C.orangeBorder}`, borderRadius: 12, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.expert_rewrite}</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Expert Rewrite</div>
+                <div style={{ padding: '10px 14px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 12, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.expert_rewrite}</div>
               </div>
             )}
             {item.improvement_tips?.length > 0 && (
@@ -648,7 +648,7 @@ export default function Scorecard({ user }) {
         <button
           onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'interview' }))}
           style={{
-            padding: '13px 32px', background: '#E8650A', border: 'none',
+            padding: '13px 32px', background: '#16A34A', border: 'none',
             borderRadius: 12, color: '#fff', fontSize: 15, fontWeight: 600,
             cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}
@@ -691,7 +691,7 @@ export default function Scorecard({ user }) {
         <div style={{ marginBottom: 44, paddingBottom: 28, borderBottom: `1px solid ${C.border}` }}>
           <div style={{ fontSize: 10, letterSpacing: 6, textTransform: 'uppercase', color: C.textMuted, marginBottom: 12 }}>Performance Evaluation</div>
           <h1 className="sc-h1" style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 900, color: C.text, lineHeight: 1.05, letterSpacing: -1.5, marginBottom: 12 }}>
-            Your Performance<br /><span style={{ color: C.orange }}>Scorecard</span>
+            Your Performance<br /><span style={{ color: C.green }}>Scorecard</span>
           </h1>
           <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: C.textMuted, lineHeight: 1.7, maxWidth: 500, marginBottom: 12 }}>
             Comprehensive analytics across all your interview sessions and practice attempts.
@@ -721,8 +721,8 @@ export default function Scorecard({ user }) {
                 <StatCard label="Questions" value={progress.uniqueQuestions} sub="unique questions" />
                 <StatCard label="Total Attempts" value={progress.totalAttempts} sub="all time" />
                 <StatCard label="Avg Score" value={progress.avgScore} sub="out of 100" color={scoreColor100(progress.avgScore)} />
-                <StatCard label="Best Score" value={progress.bestScore} sub="personal best" color={C.orange} />
-                <StatCard label="Day Streak" value={progress.streak} sub={progress.streak === 1 ? 'day' : 'days'} color={progress.streak >= 7 ? C.green : progress.streak >= 3 ? C.yellow : C.text} />
+                <StatCard label="Best Score" value={progress.bestScore} sub="personal best" color={C.green} />
+                <StatCard label="Day Streak" value={progress.streak} sub={progress.streak === 1 ? 'day' : 'days'} color={progress.streak >= 7 ? C.success : progress.streak >= 3 ? C.yellow : C.text} />
               </div>
 
               {/* Score trend */}
@@ -779,13 +779,13 @@ export default function Scorecard({ user }) {
                               <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}` }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                   <div style={{ height: 4, width: 56, background: C.bgMuted, borderRadius: 2, overflow: 'hidden' }}>
-                                    <div style={{ width: `${Math.round((row.attempts / maxA) * 100)}%`, height: '100%', background: C.orange, borderRadius: 2 }} />
+                                    <div style={{ width: `${Math.round((row.attempts / maxA) * 100)}%`, height: '100%', background: C.green, borderRadius: 2 }} />
                                   </div>
                                   <span style={{ color: C.textMuted }}>{row.attempts}</span>
                                 </div>
                               </td>
                               <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color, fontWeight: 600 }}>{row.avg}</td>
-                              <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.orange, fontWeight: 600 }}>{row.best}</td>
+                              <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.green, fontWeight: 600 }}>{row.best}</td>
                             </tr>
                           );
                         })}
@@ -821,7 +821,7 @@ export default function Scorecard({ user }) {
                             <td style={{ padding: '10px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textMuted }}>#{a.attempt_number}</td>
                             <td style={{ padding: '10px 12px', borderBottom: `1px solid ${C.borderLight}`, color, fontWeight: 700 }}>{a.score}</td>
                             <td style={{ padding: '10px 12px', borderBottom: `1px solid ${C.borderLight}` }}>
-                              <button onClick={() => setReviewTarget(a)} style={{ background: 'none', border: 'none', padding: 0, fontSize: 11, color: C.orange, cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5, textDecoration: 'underline', textUnderlineOffset: 3 }}>Review</button>
+                              <button onClick={() => setReviewTarget(a)} style={{ background: 'none', border: 'none', padding: 0, fontSize: 11, color: C.green, cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5, textDecoration: 'underline', textUnderlineOffset: 3 }}>Review</button>
                             </td>
                           </tr>
                         );
@@ -858,10 +858,10 @@ export default function Scorecard({ user }) {
                 <ReadinessMeter score={scorecard.readiness} interviewCount={sessions.length} practiceCount={practiceAttempts.length} />
               </div>
               <div className="sc-insight-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
-                {scorecard.strongest && <InsightCard title="Strongest Competency" icon="◆" iconColor={C.green} value={scorecard.strongest[0]} sub={`${scorecard.strongest[1].toFixed(1)} / 10`} subColor={C.green} />}
+                {scorecard.strongest && <InsightCard title="Strongest Competency" icon="◆" iconColor={C.success} value={scorecard.strongest[0]} sub={`${scorecard.strongest[1].toFixed(1)} / 10`} subColor={C.success} />}
                 {scorecard.weakest && <InsightCard title="Weakest Competency" icon="▼" iconColor={C.red} value={scorecard.weakest[0]} sub={`${scorecard.weakest[1].toFixed(1)} / 10 — focus here`} subColor={C.red} badge="Focus Area" badgeColor={C.redLight} badgeBorder={C.redBorder} badgeText={C.red} />}
-                <InsightCard title="Improvement Rate" icon={scorecard.improvRate != null && parseFloat(scorecard.improvRate) >= 0 ? '▲' : '▼'} iconColor={scorecard.improvRate != null && parseFloat(scorecard.improvRate) >= 0 ? C.green : C.red} value={scorecard.improvRate != null ? `${parseFloat(scorecard.improvRate) >= 0 ? '+' : ''}${scorecard.improvRate}%` : '—'} sub="first 5 vs last 5 sessions" subColor={C.textMuted} />
-                <InsightCard title="Consistency" icon="≈" iconColor={C.orange} value={scorecard.consistency} sub={scorecard.sd != null ? `σ = ${scorecard.sd} pts` : 'Need 2+ sessions'} subColor={C.textMuted} />
+                <InsightCard title="Improvement Rate" icon={scorecard.improvRate != null && parseFloat(scorecard.improvRate) >= 0 ? '▲' : '▼'} iconColor={scorecard.improvRate != null && parseFloat(scorecard.improvRate) >= 0 ? C.success : C.red} value={scorecard.improvRate != null ? `${parseFloat(scorecard.improvRate) >= 0 ? '+' : ''}${scorecard.improvRate}%` : '—'} sub="first 5 vs last 5 sessions" subColor={C.textMuted} />
+                <InsightCard title="Consistency" icon="≈" iconColor={C.green} value={scorecard.consistency} sub={scorecard.sd != null ? `σ = ${scorecard.sd} pts` : 'Need 2+ sessions'} subColor={C.textMuted} />
               </div>
             </div>
 
@@ -929,11 +929,11 @@ export default function Scorecard({ user }) {
                     onMouseEnter={e => { if (!isExpanded) e.currentTarget.style.background = '#FAFAF8'; }}
                     onMouseLeave={e => { if (!isExpanded) e.currentTarget.style.background = C.card; }}
                     className="sc-log-row"
-                    style={{ display: 'grid', gridTemplateColumns: '88px 1fr 96px 124px 68px 32px', padding: '12px 18px', alignItems: 'center', cursor: 'pointer', background: isExpanded ? 'rgba(232,101,10,0.03)' : C.card, transition: 'background 0.15s', minWidth: 540 }}
+                    style={{ display: 'grid', gridTemplateColumns: '88px 1fr 96px 124px 68px 32px', padding: '12px 18px', alignItems: 'center', cursor: 'pointer', background: isExpanded ? C.greenLight : C.card, transition: 'background 0.15s', minWidth: 540 }}
                   >
                     <span style={{ fontSize: 11, color: C.textMuted }}>{new Date(item._date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' })}</span>
                     <span style={{ fontSize: 12, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingRight: 14 }}>{item._question.length > 88 ? item._question.slice(0, 88) + '…' : item._question}</span>
-                    <span className="sc-log-col-type"><span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600, letterSpacing: 0.5, background: item._type === 'session' ? C.orangeLight : C.greenLight, border: `1px solid ${item._type === 'session' ? C.orangeBorder : C.greenBorder}`, color: item._type === 'session' ? C.orange : C.green }}>{item._type === 'session' ? 'Interview' : 'Practice'}</span></span>
+                    <span className="sc-log-col-type"><span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600, letterSpacing: 0.5, background: item._type === 'session' ? C.greenLight : C.successLight, border: `1px solid ${item._type === 'session' ? C.greenBorder : C.successBorder}`, color: item._type === 'session' ? C.green : C.success }}>{item._type === 'session' ? 'Interview' : 'Practice'}</span></span>
                     <span className="sc-log-col-designation" style={{ fontSize: 11, color: C.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item._designation || '—'}</span>
                     <span style={{ fontSize: 15, fontWeight: 900, color, fontFamily: "'Instrument Serif', serif" }}>{item._score}</span>
                     <span style={{ fontSize: 11, color: C.textMuted, textAlign: 'right' }}>{isExpanded ? '▲' : '▼'}</span>

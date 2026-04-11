@@ -5,14 +5,14 @@ const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
   text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1', borderLight: '#F0EDE8',
-  orange: '#E8650A', orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
-  green: '#1A7F37', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
+  green: '#16A34A', greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
+  success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
   red: '#CF222E', redLight: 'rgba(211,47,47,0.07)', redBorder: 'rgba(211,47,47,0.18)',
   yellow: '#C67F00', yellowLight: 'rgba(198,127,0,0.06)',
 };
 
 function scoreColor(s) {
-  return s >= 70 ? C.green : s >= 40 ? C.yellow : C.red;
+  return s >= 70 ? C.success : s >= 40 ? C.yellow : C.red;
 }
 
 function TrackBadge({ track }) {
@@ -21,8 +21,8 @@ function TrackBadge({ track }) {
     <span style={{
       display: 'inline-flex', alignItems: 'center', gap: 5,
       padding: '3px 10px',
-      background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
-      borderRadius: 6, fontSize: 11, color: C.orange,
+      background: C.greenLight, border: `1px solid ${C.greenBorder}`,
+      borderRadius: 6, fontSize: 11, color: C.green,
       fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 1,
     }}>
       {icon} {track}
@@ -45,8 +45,8 @@ function SessionDetail({ session, onBack }) {
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
             padding: '3px 10px',
-            background: 'rgba(232,101,10,0.05)', border: `1px solid rgba(232,101,10,0.15)`,
-            borderRadius: 6, fontSize: 11, color: C.orange,
+            background: C.greenLight, border: `1px solid ${C.greenBorder}`,
+            borderRadius: 6, fontSize: 11, color: C.green,
             fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 1,
           }}>
             {session.company}
@@ -94,11 +94,11 @@ function SessionDetail({ session, onBack }) {
           </div>
         </div>
         <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
-          <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: C.green, marginBottom: 10 }}>High-Signal Keywords</div>
+          <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: C.success, marginBottom: 10 }}>High-Signal Keywords</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {(session.high_signal_keywords || []).length > 0
               ? session.high_signal_keywords.map((w, i) => (
-                  <span key={i} style={{ padding: '3px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 6, fontSize: 12, color: C.green }}>{w}</span>
+                  <span key={i} style={{ padding: '3px 10px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 6, fontSize: 12, color: C.success }}>{w}</span>
                 ))
               : <span style={{ fontSize: 12, color: C.textMuted }}>None detected</span>}
           </div>
@@ -107,8 +107,8 @@ function SessionDetail({ session, onBack }) {
 
       {/* Alpha rewrite */}
       {session.alpha_rewrite && (
-        <div style={{ background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 16, padding: 20, marginBottom: 24 }}>
-          <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: C.orange, marginBottom: 10 }}>The Alpha Rewrite</div>
+        <div style={{ background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 16, padding: 20, marginBottom: 24 }}>
+          <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: C.green, marginBottom: 10 }}>The Alpha Rewrite</div>
           <div style={{ fontSize: 13, lineHeight: 1.75, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{session.alpha_rewrite}</div>
         </div>
       )}
@@ -137,7 +137,7 @@ function SessionDetail({ session, onBack }) {
                   fontFamily: msg.role === 'user' ? "'Plus Jakarta Sans', sans-serif" : "'Plus Jakarta Sans', sans-serif",
                   whiteSpace: 'pre-wrap',
                 }}>
-                  <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: 2, color: msg.role === 'user' ? C.textMuted : C.orange, marginBottom: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: 2, color: msg.role === 'user' ? C.textMuted : C.green, marginBottom: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {msg.role === 'user' ? 'You' : 'Interviewer'}
                   </div>
                   {msg.role === 'assistant'
@@ -234,7 +234,7 @@ export default function PastSessions({ user }) {
                   transition: 'all 0.2s', width: '100%',
                   animation: `fadeUp ${0.3 + i * 0.08}s cubic-bezier(0.22,1,0.36,1)`,
                 }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = C.orange; e.currentTarget.style.boxShadow = '0 2px 12px rgba(232,101,10,0.08)'; }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.boxShadow = '0 2px 12px rgba(22,163,74,0.08)'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.boxShadow = 'none'; }}
               >
                 {/* Score */}
@@ -248,7 +248,7 @@ export default function PastSessions({ user }) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
                     <TrackBadge track={s.track} />
                     {s.company && s.company !== 'General/Other' && (
-                      <span style={{ padding: '2px 8px', background: 'rgba(232,101,10,0.05)', border: '1px solid rgba(232,101,10,0.15)', borderRadius: 6, fontSize: 10, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>
+                      <span style={{ padding: '2px 8px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 6, fontSize: 10, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>
                         {s.company}
                       </span>
                     )}

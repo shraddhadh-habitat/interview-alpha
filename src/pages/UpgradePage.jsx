@@ -5,9 +5,9 @@ const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
   text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1',
-  orange: '#E8650A', orangeHover: '#D45800',
-  orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
-  green: '#1A7F37', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
+  green: '#16A34A', greenHover: '#15803D',
+  greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
+  success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
   red: '#CF222E', redLight: 'rgba(211,47,47,0.07)', redBorder: 'rgba(211,47,47,0.18)',
   yellow: '#C67F00', yellowLight: 'rgba(198,127,0,0.06)', yellowBorder: 'rgba(198,127,0,0.15)',
 };
@@ -46,7 +46,7 @@ function StatusBanner({ profile }) {
       );
     }
     return (
-      <div style={{ padding: '14px 20px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 16, marginBottom: 32, fontSize: 13, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <div style={{ padding: '14px 20px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 16, marginBottom: 32, fontSize: 13, color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         ✓ Pro{profile.subscription_plan ? ` (${profile.subscription_plan})` : ''} · {monthly}/100 sessions this month.{d ? ` Valid until ${d}.` : ''}
       </div>
     );
@@ -129,7 +129,7 @@ export default function UpgradePage({ user, profile, onBack }) {
         <button
           onClick={onBack}
           style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 32, padding: 0 }}
-          onMouseEnter={e => e.currentTarget.style.color = C.orange}
+          onMouseEnter={e => e.currentTarget.style.color = C.green}
           onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
         >
           ← Back
@@ -140,7 +140,7 @@ export default function UpgradePage({ user, profile, onBack }) {
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <div style={{ fontSize: 10, letterSpacing: 5, color: C.orange, textTransform: 'uppercase', marginBottom: 12 }}>Upgrade</div>
+          <div style={{ fontSize: 10, letterSpacing: 5, color: C.green, textTransform: 'uppercase', marginBottom: 12 }}>Upgrade</div>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12 }}>
             Go Pro. Land the Role.
           </h1>
@@ -157,8 +157,8 @@ export default function UpgradePage({ user, profile, onBack }) {
               {/* Header row */}
               <div style={{ padding: '14px 16px', background: C.bgMuted, borderBottom: `1px solid ${C.border}` }} />
               {['Free', 'Pro'].map(tier => (
-                <div key={tier} style={{ padding: '14px 16px', background: tier === 'Pro' ? C.orangeLight : C.bgMuted, borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center' }}>
-                  <span style={{ fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: tier === 'Pro' ? C.orange : C.textMuted, fontWeight: 600 }}>{tier}</span>
+                <div key={tier} style={{ padding: '14px 16px', background: tier === 'Pro' ? C.greenLight : C.bgMuted, borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center' }}>
+                  <span style={{ fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: tier === 'Pro' ? C.green : C.textMuted, fontWeight: 600 }}>{tier}</span>
                 </div>
               ))}
               {/* Feature rows */}
@@ -173,7 +173,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                 <div key={feat} style={{ display: 'contents' }}>
                   <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{feat}</div>
                   <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{freeVal}</div>
-                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif', fontWeight: 600" }}>{proVal}</div>
+                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif', fontWeight: 600" }}>{proVal}</div>
                 </div>
               ))}
             </div>
@@ -200,13 +200,13 @@ export default function UpgradePage({ user, profile, onBack }) {
                       <span style={{ fontSize: 36, fontWeight: 700, color: C.text }}>₹{p.price.toLocaleString('en-IN')}</span>
                       <span style={{ fontSize: 12, color: C.textMuted }}>{p.period}</span>
                     </div>
-                    {p.saves && <div style={{ fontSize: 13, color: C.green, fontWeight: 600, marginBottom: 8 }}>{p.saves}</div>}
+                    {p.saves && <div style={{ fontSize: 13, color: C.success, fontWeight: 600, marginBottom: 8 }}>{p.saves}</div>}
                     <div style={{
                       marginTop: 16, padding: '10px 16px',
                       background: isYearly ? 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)' : C.bg,
                       border: isYearly ? 'none' : `1px solid ${C.border}`,
                       borderRadius: 12, fontSize: 14,
-                      color: isYearly ? '#fff' : C.orange,
+                      color: isYearly ? '#fff' : C.green,
                       textAlign: 'center', fontWeight: 600,
                     }}>
                       {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Plan →'}
@@ -249,7 +249,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                 ← Change plan
               </button>
               <span style={{ fontSize: 11, color: C.textMuted }}>·</span>
-              <span style={{ fontSize: 11, letterSpacing: 1, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <span style={{ fontSize: 11, letterSpacing: 1, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 {PLANS[plan].label} — ₹{PLANS[plan].price.toLocaleString('en-IN')}{PLANS[plan].period}
               </span>
             </div>
@@ -274,7 +274,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                 </div>
                 <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4 }}>UPI ID</div>
                 <div style={{ fontSize: 13, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{upiId}</div>
-                <div style={{ marginTop: 12, padding: '8px 12px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 12, fontSize: 13, color: C.orange, fontFamily: "'Instrument Serif', serif", fontWeight: 700 }}>
+                <div style={{ marginTop: 12, padding: '8px 12px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 12, fontSize: 13, color: C.green, fontFamily: "'Instrument Serif', serif", fontWeight: 700 }}>
                   ₹{PLANS[plan].price.toLocaleString('en-IN')}
                 </div>
               </div>
@@ -297,7 +297,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                     color: C.text, background: C.bg, marginBottom: 16,
                     transition: 'border-color 0.2s',
                   }}
-                  onFocus={e => e.target.style.borderColor = C.orange}
+                  onFocus={e => e.target.style.borderColor = C.green}
                   onBlur={e => e.target.style.borderColor = C.border}
                 />
                 {error && (
@@ -310,7 +310,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                   disabled={submitting || !upiRef.trim()}
                   style={{
                     width: '100%', padding: '13px 0',
-                    background: submitting || !upiRef.trim() ? C.bgMuted : C.orange,
+                    background: submitting || !upiRef.trim() ? C.bgMuted : C.green,
                     border: 'none', borderRadius: 12,
                     color: submitting || !upiRef.trim() ? C.textMuted : '#fff',
                     fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
@@ -332,7 +332,7 @@ export default function UpgradePage({ user, profile, onBack }) {
         {/* Step 3 — Confirmation */}
         {step === 3 && (
           <div style={{ textAlign: 'center', padding: '32px 0', animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
-            <div style={{ width: 64, height: 64, borderRadius: '50%', background: C.greenLight, border: `2px solid ${C.greenBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', fontSize: 28 }}>
+            <div style={{ width: 64, height: 64, borderRadius: '50%', background: C.successLight, border: `2px solid ${C.successBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', fontSize: 28 }}>
               ✓
             </div>
             <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 700, color: C.text, marginBottom: 12 }}>Payment Submitted</h2>
@@ -341,9 +341,9 @@ export default function UpgradePage({ user, profile, onBack }) {
             </p>
             <button
               onClick={onBack}
-              style={{ padding: '12px 32px', background: C.orange, border: 'none', borderRadius: 12, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}
-              onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
-              onMouseLeave={e => e.currentTarget.style.background = C.orange}
+              style={{ padding: '12px 32px', background: C.green, border: 'none', borderRadius: 12, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}
+              onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
+              onMouseLeave={e => e.currentTarget.style.background = C.green}
             >
               Back to Interview
             </button>

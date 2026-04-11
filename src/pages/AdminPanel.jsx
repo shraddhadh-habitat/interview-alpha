@@ -5,9 +5,9 @@ const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
   text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1',
-  orange: '#E8650A', orangeHover: '#D45800',
-  orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
-  green: '#1A7F37', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
+  green: '#16A34A', greenHover: '#15803D',
+  greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
+  success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
   red: '#CF222E', redLight: 'rgba(211,47,47,0.07)', redBorder: 'rgba(211,47,47,0.18)',
   yellow: '#C67F00', yellowLight: 'rgba(198,127,0,0.06)', yellowBorder: 'rgba(198,127,0,0.15)',
 };
@@ -119,7 +119,7 @@ export default function AdminPanel({ user }) {
   const statusChip = (status) => {
     const map = {
       pending:  { bg: C.yellowLight,  border: C.yellowBorder,  color: C.yellow, label: 'Pending' },
-      approved: { bg: C.greenLight,   border: C.greenBorder,   color: C.green,  label: 'Approved' },
+      approved: { bg: C.successLight,   border: C.successBorder,   color: C.success,  label: 'Approved' },
       rejected: { bg: C.redLight,     border: C.redBorder,     color: C.red,    label: 'Rejected' },
     };
     const s = map[status] || { bg: C.bgMuted, border: C.border, color: C.textMuted, label: status };
@@ -134,7 +134,7 @@ export default function AdminPanel({ user }) {
     const map = {
       free:    { bg: C.bgMuted,      border: C.border,        color: C.textMuted, label: 'Free' },
       pending: { bg: C.yellowLight,  border: C.yellowBorder,  color: C.yellow,    label: 'Pending' },
-      active:  { bg: C.greenLight,   border: C.greenBorder,   color: C.green,     label: 'Active' },
+      active:  { bg: C.successLight,   border: C.successBorder,   color: C.success,     label: 'Active' },
       expired: { bg: C.redLight,     border: C.redBorder,     color: C.red,       label: 'Expired' },
     };
     const s = map[status] || map.free;
@@ -155,7 +155,7 @@ export default function AdminPanel({ user }) {
 
         {/* Header */}
         <div style={{ marginBottom: 32 }}>
-          <div style={{ fontSize: 10, letterSpacing: 5, color: C.orange, textTransform: 'uppercase', marginBottom: 8 }}>Admin</div>
+          <div style={{ fontSize: 10, letterSpacing: 5, color: C.green, textTransform: 'uppercase', marginBottom: 8 }}>Admin</div>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 700, color: C.text, marginBottom: 4 }}>Control Panel</h1>
           <div style={{ fontSize: 11, color: C.textMuted }}>{ADMIN_EMAIL}</div>
         </div>
@@ -164,7 +164,7 @@ export default function AdminPanel({ user }) {
         {!loading && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 32 }}>
             <StatCard label="Pending Payments"   value={stats.pending} color={stats.pending > 0 ? C.yellow : C.textMuted} />
-            <StatCard label="Active Pro Users"   value={stats.active}  color={C.green} />
+            <StatCard label="Active Pro Users"   value={stats.active}  color={C.success} />
             <StatCard label="Total Users"        value={stats.total}   color={C.text} />
           </div>
         )}
@@ -177,15 +177,15 @@ export default function AdminPanel({ user }) {
               onClick={() => setTab(id)}
               style={{
                 padding: '10px 16px', background: 'transparent',
-                border: 'none', borderBottom: `2px solid ${tab === id ? C.orange : 'transparent'}`,
+                border: 'none', borderBottom: `2px solid ${tab === id ? C.green : 'transparent'}`,
                 cursor: 'pointer', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                color: tab === id ? C.orange : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                color: tab === id ? C.green : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: 'all 0.2s', marginBottom: -1,
               }}
             >
               {label}
               {id === 'payments' && stats.pending > 0 && (
-                <span style={{ marginLeft: 8, padding: '2px 6px', background: C.orange, color: '#fff', borderRadius: 10, fontSize: 9 }}>
+                <span style={{ marginLeft: 8, padding: '2px 6px', background: C.green, color: '#fff', borderRadius: 10, fontSize: 9 }}>
                   {stats.pending}
                 </span>
               )}

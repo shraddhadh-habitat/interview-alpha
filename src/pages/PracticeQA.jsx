@@ -7,10 +7,10 @@ const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
   text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1', borderLight: '#F0EDE8',
-  orange: '#E8650A', orangeHover: '#D45800',
-  orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
+  green: '#16A34A', greenHover: '#15803D',
+  greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
   yellow: '#C67F00', yellowLight: 'rgba(198,127,0,0.06)', yellowBorder: 'rgba(198,127,0,0.15)',
-  green: '#1A7F37', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
+  success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
 };
 
 const globalStyles = `
@@ -18,7 +18,7 @@ const globalStyles = `
   @keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 2000px; } }
   * { box-sizing: border-box; }
   input:focus { outline: none; }
-  ::selection { background: rgba(232,101,10,0.18); }
+  ::selection { background: rgba(22,163,74,0.18); }
 `;
 
 function ReportIssueModal({ questionId, user, onClose }) {
@@ -66,7 +66,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
               onClick={onClose}
               style={{
                 marginTop: 20, padding: '8px 22px',
-                background: C.orange, border: 'none', borderRadius: 10,
+                background: C.green, border: 'none', borderRadius: 10,
                 color: '#fff', fontSize: 11, letterSpacing: 1.5,
                 textTransform: 'uppercase', cursor: 'pointer',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -115,7 +115,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
                 disabled={!text.trim() || submitting}
                 style={{
                   padding: '8px 18px',
-                  background: text.trim() && !submitting ? C.orange : C.bgMuted,
+                  background: text.trim() && !submitting ? C.green : C.bgMuted,
                   border: 'none', borderRadius: 10,
                   color: text.trim() && !submitting ? '#fff' : C.textMuted,
                   fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
@@ -136,7 +136,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
 function ChevronIcon({ open }) {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-      stroke={open ? C.orange : C.textMuted} strokeWidth="2"
+      stroke={open ? C.green : C.textMuted} strokeWidth="2"
       strokeLinecap="round" strokeLinejoin="round"
       style={{ transition: 'transform 0.25s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', flexShrink: 0 }}>
       <polyline points="6 9 12 15 18 9" />
@@ -145,9 +145,9 @@ function ChevronIcon({ open }) {
 }
 
 function ScoreBadge({ score, attempts }) {
-  const color = score >= 70 ? C.green : score >= 40 ? C.yellow : '#CF222E';
-  const bg = score >= 70 ? C.greenLight : score >= 40 ? C.yellowLight : 'rgba(211,47,47,0.07)';
-  const border = score >= 70 ? C.greenBorder : score >= 40 ? C.yellowBorder : 'rgba(211,47,47,0.18)';
+  const color = score >= 70 ? C.success : score >= 40 ? C.yellow : '#CF222E';
+  const bg = score >= 70 ? C.successLight : score >= 40 ? C.yellowLight : 'rgba(211,47,47,0.07)';
+  const border = score >= 70 ? C.successBorder : score >= 40 ? C.yellowBorder : 'rgba(211,47,47,0.18)';
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
       <span style={{
@@ -172,11 +172,11 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
   return (
     <div style={{
       background: '#FFFFFF',
-      border: `1px solid ${isOpen ? C.orangeBorder : C.border}`,
+      border: `1px solid ${isOpen ? C.greenBorder : C.border}`,
       borderRadius: 16,
       overflow: 'hidden',
       transition: 'border-color 0.2s, box-shadow 0.2s',
-      boxShadow: isOpen ? '0 2px 16px rgba(232,101,10,0.07)' : '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)',
+      boxShadow: isOpen ? '0 2px 16px rgba(22,163,74,0.07)' : '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)',
       animation: 'fadeUp 0.3s cubic-bezier(0.22,1,0.36,1)',
     }}>
       {/* Question row */}
@@ -191,7 +191,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
         {/* Number badge */}
         <div style={{
           width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
-          background: isOpen ? C.orange : C.bgMuted,
+          background: isOpen ? C.green : C.bgMuted,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 12, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif",
           color: isOpen ? '#fff' : C.text,
@@ -221,8 +221,8 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
       {/* Answer panel */}
       {isOpen && (
         <div style={{
-          borderTop: `1px solid ${C.orangeBorder}`,
-          background: C.orangeLight,
+          borderTop: `1px solid ${C.greenBorder}`,
+          background: C.greenLight,
           animation: 'fadeUp 0.25s cubic-bezier(0.22,1,0.36,1)',
         }}>
           <div style={{ padding: '20px 22px 16px' }}>
@@ -250,15 +250,15 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                 onClick={(e) => { e.stopPropagation(); onPractice(); }}
                 style={{
                   padding: '10px 22px',
-                  background: C.orange, border: 'none', borderRadius: 12,
+                  background: C.green, border: 'none', borderRadius: 12,
                   color: '#fff', fontSize: 14,
                   cursor: 'pointer',
                   fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
                   transition: 'background 0.2s',
-                  boxShadow: '0 1px 2px rgba(232,101,10,0.3)',
+                  boxShadow: '0 1px 2px rgba(22,163,74,0.3)',
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
-                onMouseLeave={e => e.currentTarget.style.background = C.orange}
+                onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
+                onMouseLeave={e => e.currentTarget.style.background = C.green}
               >
                 Practice This Question →
               </button>
@@ -277,7 +277,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                 textDecoration: 'underline', textUnderlineOffset: 3,
                 transition: 'color 0.15s',
               }}
-              onMouseEnter={e => e.currentTarget.style.color = C.orange}
+              onMouseEnter={e => e.currentTarget.style.color = C.green}
               onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
             >
               Report Issue
@@ -456,7 +456,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 onClick={() => { setCategory(cat.id); setExpandedKeys(new Set()); setAllExpanded(false); }}
                 style={{
                   padding: '8px 20px',
-                  background: category === cat.id ? C.orange : C.bgMuted,
+                  background: category === cat.id ? C.green : C.bgMuted,
                   border: 'none',
                   borderRadius: 20,
                   color: category === cat.id ? '#fff' : C.textMuted,
@@ -479,9 +479,9 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               style={{
                 padding: '9px 16px',
                 background: C.bg,
-                border: `1px solid ${selectedLevel ? C.orange : C.border}`,
+                border: `1px solid ${selectedLevel ? C.green : C.border}`,
                 borderRadius: 12, fontSize: 11, letterSpacing: 0.5,
-                color: selectedLevel ? C.orange : C.textSoft,
+                color: selectedLevel ? C.green : C.textSoft,
                 cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: selectedLevel ? 500 : 400,
                 outline: 'none', appearance: 'none',
@@ -531,7 +531,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'nowrap',
                 transition: 'all 0.2s',
               }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = C.orange; e.currentTarget.style.color = C.orange; }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textSoft; }}
             >
               {allExpanded ? 'Collapse All' : 'Expand All'}
@@ -549,7 +549,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             {search && ` matching "${search}"`}
           </span>
           {expandedKeys.size > 0 && (
-            <span style={{ fontSize: 11, color: C.orange, letterSpacing: 0.5 }}>
+            <span style={{ fontSize: 11, color: C.green, letterSpacing: 0.5 }}>
               {expandedKeys.size} expanded
             </span>
           )}
@@ -568,7 +568,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             <button
               onClick={() => { setSearch(''); setCategory('All'); setLevel('All'); }}
               style={{
-                padding: '12px 28px', background: C.orange, border: 'none',
+                padding: '12px 28px', background: C.green, border: 'none',
                 borderRadius: 12, color: '#fff', fontSize: 14, fontWeight: 600,
                 cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
               }}

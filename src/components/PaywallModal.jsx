@@ -2,9 +2,9 @@ const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8',
   text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1',
-  orange: '#E8650A', orangeHover: '#D45800',
-  orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
-  green: '#1A7F37', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
+  green: '#16A34A', greenHover: '#15803D',
+  greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
+  success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
 };
 
 export default function PaywallModal({ onClose, onUpgrade, lastSession = false }) {
@@ -30,12 +30,12 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
         {/* Lock icon */}
         <div style={{
           width: 52, height: 52, borderRadius: '50%',
-          background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
+          background: C.greenLight, border: `1px solid ${C.greenBorder}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           marginBottom: 24,
         }}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-            stroke={C.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            stroke={C.green} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
@@ -63,7 +63,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12 }}>
             <span style={{ fontSize: 14, fontWeight: 600, color: C.text, letterSpacing: 0.5 }}>Pro Plan</span>
             <div>
-              <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 24, fontWeight: 700, color: C.orange }}>₹699</span>
+              <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 24, fontWeight: 700, color: C.green }}>₹699</span>
               <span style={{ fontSize: 11, color: C.textMuted }}>/mo</span>
             </div>
           </div>
@@ -74,7 +74,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
             'Priority support',
           ].map(f => (
             <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-              <span style={{ color: C.green, fontSize: 12 }}>✓</span>
+              <span style={{ color: C.success, fontSize: 12 }}>✓</span>
               <span style={{ fontSize: 12, color: C.textSoft }}>{f}</span>
             </div>
           ))}
@@ -83,13 +83,13 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
         <button
           style={{
             width: '100%', padding: '14px 0',
-            background: C.orange, border: 'none', borderRadius: 12,
+            background: C.green, border: 'none', borderRadius: 12,
             color: '#fff', fontSize: 11, letterSpacing: 3, textTransform: 'uppercase',
             cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
             marginBottom: 12, transition: 'background 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
-          onMouseLeave={e => e.currentTarget.style.background = C.orange}
+          onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
+          onMouseLeave={e => e.currentTarget.style.background = C.green}
           onClick={onUpgrade}
         >
           Upgrade to Pro →
@@ -105,7 +105,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
             cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
             transition: 'all 0.2s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = C.orange; e.currentTarget.style.color = C.orange; }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
         >
           Maybe later

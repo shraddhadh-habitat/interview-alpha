@@ -147,13 +147,13 @@ const C = {
   textMuted: "#5C5C57",
   border: "#E8E6E1",
   borderLight: "#F0EDE8",
-  orange: "#E8650A",
-  orangeHover: "#D45800",
-  orangeLight: "rgba(232,101,10,0.08)",
-  orangeBorder: "rgba(232,101,10,0.2)",
-  green: "#1A7F37",
-  greenLight: "rgba(27,140,58,0.08)",
-  greenBorder: "rgba(27,140,58,0.2)",
+  green: "#16A34A",
+  greenHover: "#15803D",
+  greenLight: "rgba(22,163,74,0.08)",
+  greenBorder: "rgba(22,163,74,0.2)",
+  success: "#1A7F37",
+  successLight: "rgba(27,140,58,0.08)",
+  successBorder: "rgba(27,140,58,0.2)",
   red: "#CF222E",
   redLight: "rgba(211,47,47,0.07)",
   redBorder: "rgba(211,47,47,0.18)",
@@ -296,7 +296,7 @@ function useVoiceToText() {
 // ─── Mic Icon ───
 function MicIcon({ active, size = 20 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={active ? C.red : C.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={active ? C.red : C.green} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="9" y="1" width="6" height="12" rx="3" />
       <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
       <line x1="12" y1="19" x2="12" y2="23" />
@@ -308,7 +308,7 @@ function MicIcon({ active, size = 20 }) {
 // ─── Score Dashboard ───
 function ScoreDashboard({ data }) {
   const { overall_score, competency_breakdown, detected_filler_words, high_signal_keywords_found, the_alpha_rewrite, next_drill } = data;
-  const scoreColor = overall_score >= 70 ? C.green : overall_score >= 40 ? C.yellow : C.red;
+  const scoreColor = overall_score >= 70 ? C.success : overall_score >= 40 ? C.yellow : C.red;
 
   return (
     <div style={{
@@ -360,10 +360,10 @@ function ScoreDashboard({ data }) {
           </div>
         </div>
         <div>
-          <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: C.green, marginBottom: 8 }}>High-Signal Keywords</div>
+          <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: C.success, marginBottom: 8 }}>High-Signal Keywords</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {(high_signal_keywords_found || []).length > 0 ? high_signal_keywords_found.map((w, i) => (
-              <span key={i} style={{ padding: "3px 10px", background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 6, fontSize: 12, color: C.green }}>{w}</span>
+              <span key={i} style={{ padding: "3px 10px", background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 6, fontSize: 12, color: C.success }}>{w}</span>
             )) : <span style={{ fontSize: 12, color: C.textMuted }}>None detected</span>}
           </div>
         </div>
@@ -371,8 +371,8 @@ function ScoreDashboard({ data }) {
 
       {the_alpha_rewrite && (
         <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: C.orange, marginBottom: 8 }}>The Alpha Rewrite</div>
-          <div style={{ padding: 16, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 12, fontSize: 13, lineHeight: 1.7, color: C.text }}>
+          <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: C.green, marginBottom: 8 }}>The Alpha Rewrite</div>
+          <div style={{ padding: 16, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 12, fontSize: 13, lineHeight: 1.7, color: C.text }}>
             {the_alpha_rewrite}
           </div>
         </div>
@@ -403,7 +403,7 @@ function MessageBubble({ msg, isFirstAssistant }) {
         <div className="chat-bubble-user" style={{
           maxWidth: "75%", padding: "14px 20px",
           borderRadius: "20px 20px 4px 20px",
-          background: C.orange, color: "#fff",
+          background: C.green, color: "#fff",
           fontSize: 15, lineHeight: 1.75,
           fontFamily: "'Plus Jakarta Sans', sans-serif",
           whiteSpace: "pre-wrap",
@@ -438,14 +438,14 @@ function MessageBubble({ msg, isFirstAssistant }) {
 
       <div className="chat-bubble-ai" style={{ maxWidth: "85%" }}>
         <div style={{
-          fontSize: 12, fontWeight: 600, color: C.orange, marginBottom: 6,
+          fontSize: 12, fontWeight: 600, color: C.green, marginBottom: 6,
           fontFamily: "'Plus Jakarta Sans', sans-serif"
         }}>
           Alpha
           {isFirstAssistant && <span style={{ fontWeight: 400, color: C.textMuted, fontSize: 11 }}> · Interview Assistant</span>}
         </div>
         <div style={{
-          borderLeft: '3px solid #E8650A',
+          borderLeft: '3px solid #16A34A',
           paddingLeft: 16,
           fontSize: 15, lineHeight: 1.8,
           fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -470,8 +470,8 @@ function TypingIndicator() {
         fontSize: 14, color: '#fff', fontWeight: 700
       }}>α</div>
       <div>
-        <div style={{ fontSize: 12, fontWeight: 600, color: '#E8650A', marginBottom: 8 }}>Alpha</div>
-        <div style={{ borderLeft: '3px solid #E8650A', paddingLeft: 16 }}>
+        <div style={{ fontSize: 12, fontWeight: 600, color: '#16A34A', marginBottom: 8 }}>Alpha</div>
+        <div style={{ borderLeft: '3px solid #16A34A', paddingLeft: 16 }}>
           <div className="dot-pulse" style={{ display: "flex", gap: 5, alignItems: 'center', height: 24 }}>
             {[0, 1, 2].map(i => (
               <span key={i} style={{
@@ -496,7 +496,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
   return (
     <div style={{
       background: C.bg,
-      border: `2px solid ${isListening ? C.orange : C.border}`,
+      border: `2px solid ${isListening ? C.green : C.border}`,
       borderRadius: 16,
       padding: 24,
       animation: "fadeUp 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
@@ -545,12 +545,12 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
               onClick={startListening}
               style={{
                 display: "flex", alignItems: "center", gap: 8,
-                padding: "12px 28px", background: C.orange, border: "none", borderRadius: 12,
+                padding: "12px 28px", background: C.green, border: "none", borderRadius: 12,
                 color: "#fff", fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", cursor: "pointer"
               }}
-              onMouseEnter={e => e.target.style.background = C.orangeHover}
-              onMouseLeave={e => e.target.style.background = C.orange}
+              onMouseEnter={e => e.target.style.background = C.greenHover}
+              onMouseLeave={e => e.target.style.background = C.green}
             >
               <MicIcon active={false} size={16} /> {fullText ? "Re-Record" : "Start Recording"}
             </button>
@@ -559,7 +559,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
                 onClick={() => onSubmit(fullText)}
                 disabled={loading}
                 style={{
-                  padding: "12px 28px", background: C.green, border: "none", borderRadius: 12,
+                  padding: "12px 28px", background: C.success, border: "none", borderRadius: 12,
                   color: "#fff", fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase",
                   cursor: loading ? "wait" : "pointer", opacity: loading ? 0.6 : 1
@@ -884,7 +884,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     @keyframes pulse { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } }
     @keyframes subtlePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(211,47,47,0.3); } 50% { box-shadow: 0 0 0 8px rgba(211,47,47,0); } }
     textarea:focus, input:focus { outline: none; }
-    ::selection { background: rgba(232,101,10,0.18); }
+    ::selection { background: rgba(22,163,74,0.18); }
     @media (max-width: 768px) {
       .chat-bubble-user { max-width: 95% !important; }
       .chat-bubble-ai { max-width: 95% !important; }
@@ -952,7 +952,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                     🔒 100/100 sessions used this month. Sessions reset monthly from activation date.
                   </div>
                 ) : (
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 12, color: C.green }}>
                     ◆ Pro — {monthly}/100 sessions used this month
                   </div>
                 );
@@ -970,11 +970,11 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               const used = profile?.free_sessions_used ?? 0;
               const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
               return remaining > 0 ? (
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 12, color: C.green }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 20, fontSize: 12, color: C.success }}>
                   ◆ You have {remaining} free AI session{remaining !== 1 ? 's' : ''} remaining
                 </div>
               ) : (
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 12, color: C.orange }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 12, color: C.green }}>
                   🔒 Free sessions used. Upgrade to continue.
                 </div>
               );
@@ -988,7 +988,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   color: "#fff", fontSize: 16,
                   cursor: "pointer", borderRadius: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 600, transition: "all 0.2s ease",
-                  boxShadow: "0 4px 20px rgba(232,101,10,0.3)"
+                  boxShadow: "0 4px 20px rgba(22,163,74,0.3)"
                 }}
               >
                 Begin Session — It's Free
@@ -1035,7 +1035,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           {/* Social proof */}
           <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 12 }}>Trusted by PMs preparing for</div>
           <div style={{ fontSize: 16, fontWeight: 500, color: '#9C9C97', marginBottom: 8 }}>Google · Amazon · Meta · Apple · Flipkart · Razorpay</div>
-          <div style={{ fontSize: 13, color: C.orange, fontWeight: 600 }}>Join 50+ PMs already practicing</div>
+          <div style={{ fontSize: 13, color: C.green, fontWeight: 600 }}>Join 50+ PMs already practicing</div>
         </div>
       </div>
     );
@@ -1062,9 +1062,9 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           {profileLoaded && (
             <div style={{
               display: "flex", alignItems: "center", gap: 8,
-              padding: "8px 14px", background: C.greenLight,
-              border: `1px solid ${C.greenBorder}`, borderRadius: 10,
-              fontSize: 11, color: C.green, marginBottom: 32,
+              padding: "8px 14px", background: C.successLight,
+              border: `1px solid ${C.successBorder}`, borderRadius: 10,
+              fontSize: 11, color: C.success, marginBottom: 32,
               fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
             }}>
               ✓ Auto-filled from your saved profile
@@ -1083,7 +1083,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 borderRadius: 12, padding: 20, color: C.text, fontSize: 13, lineHeight: 1.7,
                 fontFamily: "'Plus Jakarta Sans', sans-serif", resize: "vertical", transition: "border-color 0.2s"
               }}
-              onFocus={e => e.target.style.borderColor = C.orange}
+              onFocus={e => e.target.style.borderColor = C.green}
               onBlur={e => e.target.style.borderColor = C.border}
             />
           </div>
@@ -1100,7 +1100,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 borderRadius: 12, padding: 20, color: C.text, fontSize: 13, lineHeight: 1.7,
                 fontFamily: "'Plus Jakarta Sans', sans-serif", resize: "vertical", transition: "border-color 0.2s"
               }}
-              onFocus={e => e.target.style.borderColor = C.orange}
+              onFocus={e => e.target.style.borderColor = C.green}
               onBlur={e => e.target.style.borderColor = C.border}
             />
           </div>
@@ -1116,7 +1116,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               disabled={!resume.trim() || !jd.trim()}
               style={{
                 padding: "16px 48px",
-                background: (resume.trim() && jd.trim()) ? C.orange : C.bgMuted,
+                background: (resume.trim() && jd.trim()) ? C.green : C.bgMuted,
                 border: "none",
                 color: (resume.trim() && jd.trim()) ? "#fff" : C.textMuted,
                 fontSize: 11, letterSpacing: 3, textTransform: "uppercase",
@@ -1141,7 +1141,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 borderRadius: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: "all 0.2s"
               }}
-              onMouseEnter={e => { if (resume.trim() && jd.trim()) e.currentTarget.style.borderColor = C.orange; }}
+              onMouseEnter={e => { if (resume.trim() && jd.trim()) e.currentTarget.style.borderColor = C.green; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; }}
             >
               {savingProfile ? "Saving..." : "Update Profile"}
@@ -1178,7 +1178,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                     🔒 100/100 sessions used
                   </span>
                 ) : (
-                  <span style={{ flexShrink: 0, padding: '4px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.orange, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  <span style={{ flexShrink: 0, padding: '4px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.green, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     ◆ Pro · {m}/100
                   </span>
                 );
@@ -1196,11 +1196,11 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               const used = profile?.free_sessions_used ?? 0;
               const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
               return remaining > 0 ? (
-                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.green, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.success, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   {remaining} Free Session{remaining !== 1 ? 's' : ''} Left
                 </span>
               ) : (
-                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.orange, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.green, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   🔒 Upgrade to unlock
                 </span>
               );
@@ -1224,8 +1224,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 }}
                 onMouseEnter={e => {
                   if (!loading) {
-                    e.currentTarget.style.borderColor = C.orange;
-                    e.currentTarget.style.boxShadow = "0 2px 12px rgba(232,101,10,0.1)";
+                    e.currentTarget.style.borderColor = C.green;
+                    e.currentTarget.style.boxShadow = "0 2px 12px rgba(22,163,74,0.1)";
                   }
                 }}
                 onMouseLeave={e => {
@@ -1233,18 +1233,18 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
-                <span style={{ fontSize: 24, color: C.orange }}>{t.icon}</span>
+                <span style={{ fontSize: 24, color: C.green }}>{t.icon}</span>
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 3, fontFamily: "'Instrument Serif', serif" }}>{t.id}</div>
                   <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{t.desc}</div>
                 </div>
-                <span style={{ marginLeft: "auto", color: C.orange, fontSize: 18 }}>{loading ? "..." : "→"}</span>
+                <span style={{ marginLeft: "auto", color: C.green, fontSize: 18 }}>{loading ? "..." : "→"}</span>
               </button>
             ))}
           </div>
 
           {loading && (
-            <div style={{ textAlign: "center", marginTop: 24, fontSize: 12, color: C.orange, letterSpacing: 1 }}>
+            <div style={{ textAlign: "center", marginTop: 24, fontSize: 12, color: C.green, letterSpacing: 1 }}>
               Preparing your interview...
             </div>
           )}
@@ -1290,13 +1290,13 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 style={{
                   display: "flex", flexDirection: "column", gap: 6,
                   padding: "18px 20px", background: C.bg,
-                  border: `2px solid ${company === c.id ? C.orange : C.border}`,
+                  border: `2px solid ${company === c.id ? C.green : C.border}`,
                   borderRadius: 16, cursor: "pointer", textAlign: "left",
                   transition: "all 0.2s ease",
-                  boxShadow: company === c.id ? "0 2px 12px rgba(232,101,10,0.12)" : "none",
+                  boxShadow: company === c.id ? "0 2px 12px rgba(22,163,74,0.12)" : "none",
                 }}
               >
-                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Instrument Serif', serif" }}>{c.id}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.green : C.text, fontFamily: "'Instrument Serif', serif" }}>{c.id}</span>
                 <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{c.desc}</span>
               </button>
             ))}
@@ -1312,13 +1312,13 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 style={{
                   display: "flex", flexDirection: "column", gap: 6,
                   padding: "18px 20px", background: C.bg,
-                  border: `2px solid ${company === c.id ? C.orange : C.border}`,
+                  border: `2px solid ${company === c.id ? C.green : C.border}`,
                   borderRadius: 16, cursor: "pointer", textAlign: "left",
                   transition: "all 0.2s ease",
-                  boxShadow: company === c.id ? "0 2px 12px rgba(232,101,10,0.12)" : "none",
+                  boxShadow: company === c.id ? "0 2px 12px rgba(22,163,74,0.12)" : "none",
                 }}
               >
-                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Instrument Serif', serif" }}>{c.id}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.green : C.text, fontFamily: "'Instrument Serif', serif" }}>{c.id}</span>
                 <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{c.desc}</span>
               </button>
             ))}
@@ -1333,13 +1333,13 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 style={{
                   display: "flex", flexDirection: "column", gap: 6,
                   padding: "18px 20px", background: C.bg,
-                  border: `2px solid ${company === c.id ? C.orange : C.border}`,
+                  border: `2px solid ${company === c.id ? C.green : C.border}`,
                   borderRadius: 16, cursor: "pointer", textAlign: "left",
                   transition: "all 0.2s ease",
-                  boxShadow: company === c.id ? "0 2px 12px rgba(232,101,10,0.12)" : "none",
+                  boxShadow: company === c.id ? "0 2px 12px rgba(22,163,74,0.12)" : "none",
                 }}
               >
-                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.orange : C.text, fontFamily: "'Instrument Serif', serif" }}>{c.id}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: company === c.id ? C.green : C.text, fontFamily: "'Instrument Serif', serif" }}>{c.id}</span>
                 <span style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{c.desc}</span>
               </button>
             ))}
@@ -1350,14 +1350,14 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             disabled={!company || loading}
             style={{
               padding: "16px 52px",
-              background: (company && !loading) ? C.orange : C.bgMuted,
+              background: (company && !loading) ? C.green : C.bgMuted,
               border: "none",
               color: (company && !loading) ? "#fff" : C.textMuted,
               fontSize: 11, letterSpacing: 3, textTransform: "uppercase",
               cursor: (company && !loading) ? "pointer" : "not-allowed",
               borderRadius: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 600, transition: "all 0.3s ease",
-              boxShadow: (company && !loading) ? "0 2px 12px rgba(232,101,10,0.25)" : "none",
+              boxShadow: (company && !loading) ? "0 2px 12px rgba(22,163,74,0.25)" : "none",
             }}
           >
             {loading ? "Starting..." : "Start Interview →"}
@@ -1387,17 +1387,17 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       }}>
         <div className="ia-interview-left" style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 18, fontWeight: 700, color: C.text, flexShrink: 0 }}>
-            I<span style={{ color: C.orange }}>A</span>
+            I<span style={{ color: C.green }}>A</span>
           </span>
           <div style={{ width: 1, height: 20, background: C.border, flexShrink: 0 }} />
           <span style={{ fontSize: 10, letterSpacing: 3, color: C.textMuted, textTransform: "uppercase", whiteSpace: "nowrap" }}>{track} Track</span>
           {company && company !== "General/Other" && (
-            <span style={{ fontSize: 10, letterSpacing: 2, color: C.orange, textTransform: "uppercase", padding: "2px 8px", background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 6 }}>{company}</span>
+            <span style={{ fontSize: 10, letterSpacing: 2, color: C.green, textTransform: "uppercase", padding: "2px 8px", background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 6 }}>{company}</span>
           )}
           {!interviewEnded && (
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", background: C.green, animation: "pulse 2s ease-in-out infinite" }} />
-              <span style={{ fontSize: 10, color: C.green, letterSpacing: 1 }}>LIVE</span>
+              <div style={{ width: 6, height: 6, borderRadius: "50%", background: C.success, animation: "pulse 2s ease-in-out infinite" }} />
+              <span style={{ fontSize: 10, color: C.success, letterSpacing: 1 }}>LIVE</span>
             </div>
           )}
         </div>
@@ -1496,12 +1496,12 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                     title="Switch to voice input"
                     style={{
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      width: 42, height: 42, background: C.orangeLight,
-                      border: `1px solid ${C.orangeBorder}`, borderRadius: 12,
+                      width: 42, height: 42, background: C.greenLight,
+                      border: `1px solid ${C.greenBorder}`, borderRadius: 12,
                       cursor: "pointer", marginBottom: 4, transition: "all 0.2s"
                     }}
-                    onMouseEnter={e => e.currentTarget.style.background = C.orangeBorder}
-                    onMouseLeave={e => e.currentTarget.style.background = C.orangeLight}
+                    onMouseEnter={e => e.currentTarget.style.background = C.greenBorder}
+                    onMouseLeave={e => e.currentTarget.style.background = C.greenLight}
                   >
                     <MicIcon active={false} size={18} />
                   </button>
@@ -1511,7 +1511,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   disabled={!input.trim() || loading}
                   style={{
                     padding: "10px 22px",
-                    background: (input.trim() && !loading) ? C.orange : C.bgMuted,
+                    background: (input.trim() && !loading) ? C.green : C.bgMuted,
                     border: "none",
                     color: (input.trim() && !loading) ? "#fff" : C.textMuted,
                     fontSize: 11, letterSpacing: 2, textTransform: "uppercase",
@@ -1551,14 +1551,14 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               setCompany("");
             }}
             style={{
-              padding: "16px 48px", background: C.orange, border: "none",
+              padding: "16px 48px", background: C.green, border: "none",
               color: "#fff", fontSize: 11, letterSpacing: 3, textTransform: "uppercase",
               cursor: "pointer", borderRadius: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 600, transition: "all 0.3s ease",
-              boxShadow: "0 2px 12px rgba(232,101,10,0.25)"
+              boxShadow: "0 2px 12px rgba(22,163,74,0.25)"
             }}
-            onMouseEnter={e => e.target.style.background = C.orangeHover}
-            onMouseLeave={e => e.target.style.background = C.orange}
+            onMouseEnter={e => e.target.style.background = C.greenHover}
+            onMouseLeave={e => e.target.style.background = C.green}
           >
             Start New Session
           </button>

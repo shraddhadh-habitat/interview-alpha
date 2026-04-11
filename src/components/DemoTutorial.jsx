@@ -4,8 +4,8 @@ const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
   text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1',
-  orange: '#E8650A', orangeHover: '#D45800',
-  orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
+  green: '#16A34A', greenHover: '#15803D',
+  greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
 };
 
 const STEPS = [
@@ -113,7 +113,7 @@ export default function DemoTutorial({ onClose }) {
         {/* Orange accent bar */}
         <div style={{
           height: 4,
-          background: `linear-gradient(90deg, ${C.orange}, #D45800)`,
+          background: `linear-gradient(90deg, ${C.green}, #15803D)`,
           width: `${((step + 1) / STEPS.length) * 100}%`,
           transition: 'width 0.4s cubic-bezier(0.22,1,0.36,1)',
         }} />
@@ -146,17 +146,17 @@ export default function DemoTutorial({ onClose }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
             <span style={{
               width: 36, height: 36,
-              background: C.orangeLight,
-              border: `1px solid ${C.orangeBorder}`,
+              background: C.greenLight,
+              border: `1px solid ${C.greenBorder}`,
               borderRadius: 16,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 16, color: C.orange,
+              fontSize: 16, color: C.green,
             }}>
               {current.icon}
             </span>
             <span style={{
               fontSize: 10, letterSpacing: 3, textTransform: 'uppercase',
-              color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
+              color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
             }}>
               Step {step + 1} of {STEPS.length} — {current.label}
             </span>
@@ -171,7 +171,7 @@ export default function DemoTutorial({ onClose }) {
             {current.title}
           </h2>
           <p style={{
-            fontSize: 13, color: C.orange,
+            fontSize: 13, color: C.green,
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             marginBottom: 24, letterSpacing: 0.3,
           }}>
@@ -199,7 +199,7 @@ export default function DemoTutorial({ onClose }) {
                     width: i === step ? 22 : 8,
                     height: 8,
                     borderRadius: 6,
-                    background: i === step ? C.orange : C.border,
+                    background: i === step ? C.green : C.border,
                     border: 'none', cursor: 'pointer', padding: 0,
                     transition: 'all 0.3s cubic-bezier(0.22,1,0.36,1)',
                   }}
@@ -222,7 +222,7 @@ export default function DemoTutorial({ onClose }) {
                     cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                     transition: 'all 0.2s',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = C.orange; e.currentTarget.style.color = C.orange; }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
                 >
                   Back
@@ -232,15 +232,15 @@ export default function DemoTutorial({ onClose }) {
                 onClick={handleNext}
                 style={{
                   padding: '10px 28px',
-                  background: C.orange,
+                  background: C.green,
                   border: 'none', borderRadius: 12,
                   color: '#fff', fontSize: 11,
                   letterSpacing: 1.5, textTransform: 'uppercase',
                   cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 600, transition: 'background 0.2s',
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
-                onMouseLeave={e => e.currentTarget.style.background = C.orange}
+                onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
+                onMouseLeave={e => e.currentTarget.style.background = C.green}
               >
                 {isLast ? 'Get Started →' : 'Next →'}
               </button>

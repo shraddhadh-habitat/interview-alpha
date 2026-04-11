@@ -5,9 +5,9 @@ const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
   text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1', borderLight: '#F0EDE8',
-  orange: '#E8650A', orangeHover: '#D45800',
-  orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
-  green: '#1A7F37', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
+  green: '#16A34A', greenHover: '#15803D',
+  greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
+  success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
   red: '#CF222E', redLight: 'rgba(211,47,47,0.07)', redBorder: 'rgba(211,47,47,0.18)',
   yellow: '#C67F00', yellowLight: 'rgba(198,127,0,0.06)', yellowBorder: 'rgba(198,127,0,0.15)',
   golden: '#B8860B',
@@ -61,14 +61,14 @@ function ScoreChart({ data }) {
             fontSize="9" fill={C.textMuted} fontFamily="'Plus Jakarta Sans', sans-serif">{y}</text>
         </g>
       ))}
-      {areaPath && <path d={areaPath} fill="rgba(232,101,10,0.06)" />}
+      {areaPath && <path d={areaPath} fill="rgba(22,163,74,0.06)" />}
       {data.length > 1 && (
-        <path d={linePath} fill="none" stroke={C.orange} strokeWidth="2"
+        <path d={linePath} fill="none" stroke={C.green} strokeWidth="2"
           strokeLinecap="round" strokeLinejoin="round" />
       )}
       {data.map((d, i) => (
         <circle key={i} cx={getX(i)} cy={getY(d.score)} r="4"
-          fill={C.orange} stroke="#fff" strokeWidth="2">
+          fill={C.green} stroke="#fff" strokeWidth="2">
           <title>{`Score: ${d.score}`}</title>
         </circle>
       ))}
@@ -79,7 +79,7 @@ function ScoreChart({ data }) {
 // ─── Competency bar ───
 function CompBar({ label, value, max = 10 }) {
   const pct = Math.round((value / max) * 100);
-  const color = pct >= 70 ? C.green : pct >= 40 ? C.yellow : C.red;
+  const color = pct >= 70 ? C.success : pct >= 40 ? C.yellow : C.red;
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
@@ -112,7 +112,7 @@ function StatCard({ label, value, sub, color }) {
 // ─── Review Modal ───
 function ReviewModal({ attempt, onClose }) {
   const score = attempt.score;
-  const scoreColor = score >= 70 ? C.green : score >= 40 ? C.yellow : C.red;
+  const scoreColor = score >= 70 ? C.success : score >= 40 ? C.yellow : C.red;
 
   return (
     <div
@@ -163,8 +163,8 @@ function ReviewModal({ attempt, onClose }) {
 
         {attempt.expert_rewrite && (
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Expert Rewrite</div>
-            <div style={{ padding: '14px 18px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Expert Rewrite</div>
+            <div style={{ padding: '14px 18px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
               {attempt.expert_rewrite}
             </div>
           </div>
@@ -176,7 +176,7 @@ function ReviewModal({ attempt, onClose }) {
             <div style={{ display: 'grid', gap: 6 }}>
               {attempt.improvement_tips.map((t, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10 }}>
-                  <span style={{ color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, flexShrink: 0 }}>{i + 1}.</span>
+                  <span style={{ color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, flexShrink: 0 }}>{i + 1}.</span>
                   <span style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>{t}</span>
                 </div>
               ))}
@@ -320,9 +320,9 @@ export default function MyProgress({ user }) {
             <div className="mp-stat-row" style={{ display: 'flex', gap: 16, marginBottom: 24, flexWrap: 'wrap' }}>
               <StatCard label="Questions Attempted" value={uniqueQuestions} sub="unique questions" />
               <StatCard label="Total Attempts" value={totalAttempts} sub="all time" />
-              <StatCard label="Avg Score" value={avgScore} sub="out of 100" color={avgScore >= 70 ? C.green : avgScore >= 40 ? C.yellow : C.red} />
-              <StatCard label="Best Score" value={bestScore} sub="personal best" color={C.orange} />
-              <StatCard label="Day Streak" value={streak} sub={streak === 1 ? 'day' : 'days'} color={streak >= 7 ? C.green : streak >= 3 ? C.yellow : C.text} />
+              <StatCard label="Avg Score" value={avgScore} sub="out of 100" color={avgScore >= 70 ? C.success : avgScore >= 40 ? C.yellow : C.red} />
+              <StatCard label="Best Score" value={bestScore} sub="personal best" color={C.green} />
+              <StatCard label="Day Streak" value={streak} sub={streak === 1 ? 'day' : 'days'} color={streak >= 7 ? C.success : streak >= 3 ? C.yellow : C.text} />
             </div>
 
             {/* Score over time */}
@@ -372,7 +372,7 @@ export default function MyProgress({ user }) {
                     </thead>
                     <tbody>
                       {designationRows.map(row => {
-                        const avgColor = row.avg >= 70 ? C.green : row.avg >= 40 ? C.yellow : C.red;
+                        const avgColor = row.avg >= 70 ? C.success : row.avg >= 40 ? C.yellow : C.red;
                         const maxAttempts = Math.max(...designationRows.map(r => r.attempts));
                         const pct = Math.round((row.attempts / maxAttempts) * 100);
                         return (
@@ -382,13 +382,13 @@ export default function MyProgress({ user }) {
                             <td style={{ padding: '12px 12px', borderBottom: `1px solid ${C.borderLight}` }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                 <div style={{ height: 4, width: 60, background: C.bgMuted, borderRadius: 2, overflow: 'hidden' }}>
-                                  <div style={{ width: `${pct}%`, height: '100%', background: C.orange, borderRadius: 2 }} />
+                                  <div style={{ width: `${pct}%`, height: '100%', background: C.green, borderRadius: 2 }} />
                                 </div>
                                 <span style={{ color: C.textMuted }}>{row.attempts}</span>
                               </div>
                             </td>
                             <td style={{ padding: '12px 12px', borderBottom: `1px solid ${C.borderLight}`, color: avgColor, fontWeight: 600 }}>{row.avg}</td>
-                            <td style={{ padding: '12px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.orange, fontWeight: 600 }}>{row.best}</td>
+                            <td style={{ padding: '12px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.green, fontWeight: 600 }}>{row.best}</td>
                           </tr>
                         );
                       })}
@@ -413,7 +413,7 @@ export default function MyProgress({ user }) {
                   <tbody>
                     {recentAttempts.map((a, i) => {
                       const score = a.score;
-                      const scoreColor = score >= 70 ? C.green : score >= 40 ? C.yellow : C.red;
+                      const scoreColor = score >= 70 ? C.success : score >= 40 ? C.yellow : C.red;
                       const date = a.created_at ? new Date(a.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '—';
                       const qSnippet = a.question_id?.split('-').slice(2).join(' ') || a.question_id || '—';
                       return (
@@ -432,7 +432,7 @@ export default function MyProgress({ user }) {
                               onClick={() => setReviewTarget(a)}
                               style={{
                                 background: 'none', border: 'none', padding: 0,
-                                fontSize: 11, color: C.orange, cursor: 'pointer',
+                                fontSize: 11, color: C.green, cursor: 'pointer',
                                 fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
                                 textDecoration: 'underline', textUnderlineOffset: 3,
                               }}

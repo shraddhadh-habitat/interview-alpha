@@ -20,7 +20,7 @@ body {
 /* ─── Button micro-interactions ─── */
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(232,101,10,0.4);
+  box-shadow: 0 4px 12px rgba(22,163,74,0.4);
 }
 
 .card-hover {
@@ -76,7 +76,7 @@ input, textarea, select {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 input:focus, textarea:focus {
-  box-shadow: 0 0 0 3px rgba(232,101,10,0.1);
+  box-shadow: 0 0 0 3px rgba(22,163,74,0.1);
 }
 
 /* ─── Global Mobile Responsive ─── */

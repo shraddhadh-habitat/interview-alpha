@@ -5,9 +5,9 @@ const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
   text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1', borderLight: '#F0EDE8',
-  orange: '#E8650A', orangeHover: '#D45800',
-  orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
-  green: '#1A7F37', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
+  green: '#16A34A', greenHover: '#15803D',
+  greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
+  success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
   red: '#CF222E', redLight: 'rgba(211,47,47,0.07)', redBorder: 'rgba(211,47,47,0.18)',
   yellow: '#C67F00', yellowLight: 'rgba(198,127,0,0.06)', yellowBorder: 'rgba(198,127,0,0.15)',
 };
@@ -83,7 +83,7 @@ function useVoiceToText() {
 function MicIcon({ active, size = 18 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      stroke={active ? C.red : C.orange} strokeWidth="2"
+      stroke={active ? C.red : C.green} strokeWidth="2"
       strokeLinecap="round" strokeLinejoin="round">
       <rect x="9" y="1" width="6" height="12" rx="3" />
       <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
@@ -96,7 +96,7 @@ function MicIcon({ active, size = 18 }) {
 // ─── Score bar ───
 function ScoreBar({ label, value, max = 10 }) {
   const pct = Math.round((value / max) * 100);
-  const color = pct >= 70 ? C.green : pct >= 40 ? C.yellow : C.red;
+  const color = pct >= 70 ? C.success : pct >= 40 ? C.yellow : C.red;
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
@@ -117,7 +117,7 @@ function FeedbackPanel({ result, attemptNumber }) {
   const { score, score_delta_hint, competency_breakdown, strengths, weaknesses, filler_words,
     high_signal_keywords, missing_concepts, expert_rewrite, improvement_tips, feedback_text } = result;
 
-  const scoreColor = score >= 70 ? C.green : score >= 40 ? C.yellow : C.red;
+  const scoreColor = score >= 70 ? C.success : score >= 40 ? C.yellow : C.red;
 
   return (
     <div style={{ animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
@@ -161,8 +161,8 @@ function FeedbackPanel({ result, attemptNumber }) {
 
       {/* Strengths / Weaknesses */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
-        <div style={{ padding: '14px 16px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Strengths</div>
+        <div style={{ padding: '14px 16px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 16 }}>
+          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Strengths</div>
           {(strengths || []).length > 0
             ? strengths.map((s, i) => <div key={i} style={{ fontSize: 12, color: C.textSoft, lineHeight: 1.6, marginBottom: 4, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>· {s}</div>)
             : <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
@@ -198,10 +198,10 @@ function FeedbackPanel({ result, attemptNumber }) {
           </div>
         </div>
         <div>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>High-Signal Keywords</div>
+          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>High-Signal Keywords</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {(high_signal_keywords || []).length > 0
-              ? high_signal_keywords.map((w, i) => <span key={i} style={{ padding: '3px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 6, fontSize: 12, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)
+              ? high_signal_keywords.map((w, i) => <span key={i} style={{ padding: '3px 10px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 6, fontSize: 12, color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)
               : <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None detected</span>}
           </div>
         </div>
@@ -210,8 +210,8 @@ function FeedbackPanel({ result, attemptNumber }) {
       {/* Expert rewrite */}
       {expert_rewrite && (
         <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Expert Rewrite</div>
-          <div style={{ padding: '16px 20px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
+          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Expert Rewrite</div>
+          <div style={{ padding: '16px 20px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
             {expert_rewrite}
           </div>
         </div>
@@ -224,7 +224,7 @@ function FeedbackPanel({ result, attemptNumber }) {
           <div style={{ display: 'grid', gap: 8 }}>
             {improvement_tips.map((tip, i) => (
               <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                <span style={{ color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, marginTop: 2, flexShrink: 0 }}>{i + 1}.</span>
+                <span style={{ color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, marginTop: 2, flexShrink: 0 }}>{i + 1}.</span>
                 <span style={{ fontSize: 13, lineHeight: 1.7, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{tip}</span>
               </div>
             ))}
@@ -453,7 +453,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
             textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif",
             marginBottom: 32, padding: 0,
           }}
-          onMouseEnter={e => e.currentTarget.style.color = C.orange}
+          onMouseEnter={e => e.currentTarget.style.color = C.green}
           onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
         >
           ← Back to Q&A
@@ -478,7 +478,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           overflow: 'hidden',
         }}>
           <div style={{ padding: '20px 24px' }}>
-            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Question</div>
+            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Question</div>
             <p style={{ fontSize: 15, lineHeight: 1.7, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, fontWeight: 500 }}>
               {question.q}
             </p>
@@ -501,7 +501,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: 'all 0.2s',
               }}
-              onMouseEnter={e => { e.currentTarget.style.color = C.orange; }}
+              onMouseEnter={e => { e.currentTarget.style.color = C.green; }}
               onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
             >
               <span>View Expert Answer</span>
@@ -514,7 +514,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 borderTop: `1px solid ${C.border}`,
                 animation: 'fadeUp 0.2s ease',
               }}>
-                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: '16px 0 10px' }}>Expert Answer</div>
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: '16px 0 10px' }}>Expert Answer</div>
                 <p style={{ fontSize: 13, lineHeight: 1.8, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, whiteSpace: 'pre-wrap' }}>
                   {question.a}
                 </p>
@@ -537,8 +537,8 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   disabled={m === 'voice' && !voice.supported}
                   style={{
                     padding: '7px 18px',
-                    background: mode === m ? C.orange : C.bg,
-                    border: `1px solid ${mode === m ? C.orange : C.border}`,
+                    background: mode === m ? C.green : C.bg,
+                    border: `1px solid ${mode === m ? C.green : C.border}`,
                     borderRadius: 10, fontSize: 11, letterSpacing: 1.5,
                     textTransform: 'uppercase', cursor: m === 'voice' && !voice.supported ? 'not-allowed' : 'pointer',
                     color: mode === m ? '#fff' : C.textMuted,
@@ -566,7 +566,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                     background: C.bg, resize: 'vertical',
                     transition: 'border-color 0.2s',
                   }}
-                  onFocus={e => e.target.style.borderColor = C.orange}
+                  onFocus={e => e.target.style.borderColor = C.green}
                   onBlur={e => e.target.style.borderColor = C.border}
                 />
                 {(() => {
@@ -575,7 +575,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   const disabled = loading || !ready;
                   return (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
-                      <span style={{ fontSize: 11, color: ready ? C.green : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      <span style={{ fontSize: 11, color: ready ? C.success : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {wordCount} / 50 words min{!ready && wordCount > 0 ? ` — ${50 - wordCount} more` : ''}
                       </span>
                       <button
@@ -583,7 +583,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                         disabled={disabled}
                         style={{
                           padding: '12px 32px',
-                          background: disabled ? C.bgMuted : C.orange,
+                          background: disabled ? C.bgMuted : C.green,
                           border: 'none', borderRadius: 12,
                           color: disabled ? C.textMuted : '#fff',
                           fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
@@ -601,7 +601,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
             ) : (
               /* Voice panel */
               <div style={{
-                background: C.bg, border: `2px solid ${voice.isListening ? C.orange : C.border}`,
+                background: C.bg, border: `2px solid ${voice.isListening ? C.green : C.border}`,
                 borderRadius: 16, padding: 22,
                 transition: 'border-color 0.3s',
               }}>
@@ -644,7 +644,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                         onClick={voice.startListening}
                         style={{
                           display: 'flex', alignItems: 'center', gap: 8,
-                          padding: '11px 24px', background: C.orange, border: 'none', borderRadius: 12,
+                          padding: '11px 24px', background: C.green, border: 'none', borderRadius: 12,
                           color: '#fff', fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif",
                           fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer',
                         }}
@@ -717,13 +717,13 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 onClick={handleTryAgain}
                 style={{
                   flex: 1, minWidth: 140, padding: '13px 0',
-                  background: C.orange, border: 'none', borderRadius: 12,
+                  background: C.green, border: 'none', borderRadius: 12,
                   color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                   cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
                   transition: 'background 0.2s',
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
-                onMouseLeave={e => e.currentTarget.style.background = C.orange}
+                onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
+                onMouseLeave={e => e.currentTarget.style.background = C.green}
               >
                 Try Again (#{attemptNumber})
               </button>
@@ -732,12 +732,12 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   onClick={onNextQuestion}
                   style={{
                     flex: 1, minWidth: 140, padding: '13px 0',
-                    background: 'transparent', border: `1px solid ${C.orange}`, borderRadius: 12,
-                    color: C.orange, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                    background: 'transparent', border: `1px solid ${C.green}`, borderRadius: 12,
+                    color: C.green, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                     cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                     transition: 'all 0.2s',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = C.orangeLight; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                 >
                   Next Question →
@@ -752,7 +752,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                   transition: 'all 0.2s',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = C.orange; e.currentTarget.style.color = C.orange; }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
               >
                 ← Back to Q&A

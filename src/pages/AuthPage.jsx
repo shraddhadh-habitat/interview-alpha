@@ -5,10 +5,10 @@ const C = {
   bg: '#FAFAF8', card: '#FFFFFF',
   text: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1',
-  orange: '#E8650A', orangeHover: '#D45800',
-  orangeLight: 'rgba(232,101,10,0.06)',
+  green: '#16A34A', greenHover: '#15803D',
+  greenLight: 'rgba(22,163,74,0.06)',
   red: '#CF222E', redLight: 'rgba(207,34,46,0.06)', redBorder: 'rgba(207,34,46,0.18)',
-  green: '#1A7F37', greenLight: 'rgba(26,127,55,0.06)', greenBorder: 'rgba(26,127,55,0.2)',
+  success: '#1A7F37', successLight: 'rgba(26,127,55,0.06)', successBorder: 'rgba(26,127,55,0.2)',
 };
 
 const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
@@ -54,8 +54,8 @@ export default function AuthPage() {
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        input:focus { border-color: ${C.orange} !important; outline: none; }
-        ::selection { background: rgba(232,101,10,0.18); }
+        input:focus { border-color: ${C.green} !important; outline: none; }
+        ::selection { background: rgba(22,163,74,0.18); }
         @media (max-width: 768px) {
           .auth-left { display: none !important; }
           .auth-right { min-width: 0 !important; }
@@ -134,7 +134,7 @@ export default function AuthPage() {
             </div>
           )}
           {success && (
-            <div style={{ padding: '10px 14px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 12, fontSize: 13, color: C.green, marginBottom: 20 }}>
+            <div style={{ padding: '10px 14px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 12, fontSize: 13, color: C.success, marginBottom: 20 }}>
               {success}
             </div>
           )}
@@ -210,7 +210,7 @@ export default function AuthPage() {
               }}
             >
               {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-              <span style={{ color: C.orange, fontWeight: 600 }}>
+              <span style={{ color: C.green, fontWeight: 600 }}>
                 {mode === 'login' ? 'Sign up' : 'Sign in'}
               </span>
             </button>

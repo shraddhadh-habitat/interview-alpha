@@ -6,7 +6,7 @@ const C = {
   text: '#FAFAF8',
   textMuted: '#9C9C97',
   border: 'rgba(255,255,255,0.08)',
-  orange: '#E8650A',
+  green: '#16A34A',
 };
 
 function FooterLink({ children, href = '#', email = false }) {
@@ -14,7 +14,7 @@ function FooterLink({ children, href = '#', email = false }) {
     <a
       href={href}
       style={{ fontSize: 13, color: C.textMuted, textDecoration: 'none', display: 'block', marginBottom: 10, fontFamily: "'Plus Jakarta Sans', sans-serif", transition: 'color 0.2s' }}
-      onMouseEnter={e => { e.currentTarget.style.color = email ? C.orange : C.text; }}
+      onMouseEnter={e => { e.currentTarget.style.color = email ? C.green : C.text; }}
       onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
     >
       {children}

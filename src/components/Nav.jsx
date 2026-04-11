@@ -8,13 +8,13 @@ const C = {
   textLight: '#9C9C97',
   border: '#E8E6E1',
   bgMuted: '#F5F3EF',
-  orange: '#E8650A',
-  orangeHover: '#D45800',
-  orangeLight: 'rgba(232,101,10,0.06)',
-  orangeBorder: 'rgba(232,101,10,0.2)',
-  green: '#1A7F37',
-  greenLight: 'rgba(26,127,55,0.06)',
-  greenBorder: 'rgba(26,127,55,0.2)',
+  green: '#16A34A',
+  greenHover: '#15803D',
+  greenLight: 'rgba(22,163,74,0.06)',
+  greenBorder: 'rgba(22,163,74,0.2)',
+  success: '#1A7F37',
+  successLight: 'rgba(26,127,55,0.06)',
+  successBorder: 'rgba(26,127,55,0.2)',
   red: '#CF222E',
   redLight: 'rgba(207,34,46,0.06)',
   redBorder: 'rgba(207,34,46,0.18)',
@@ -34,7 +34,7 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
 
   if (status === 'active') {
     return (
-      <span style={{ padding: '4px 10px', background: C.orangeLight, border: `1px solid rgba(232,101,10,0.3)`, borderRadius: 20, fontSize: 11, fontWeight: 600, color: C.orange, whiteSpace: 'nowrap' }}>
+      <span style={{ padding: '4px 10px', background: C.greenLight, border: `1px solid rgba(22,163,74,0.3)`, borderRadius: 20, fontSize: 11, fontWeight: 600, color: C.green, whiteSpace: 'nowrap' }}>
         ◆ Pro · {monthly}/{PRO_SESSION_LIMIT}
       </span>
     );
@@ -47,7 +47,7 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
   }
   const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
   return remaining > 0 ? (
-    <span style={{ padding: '4px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 11, fontWeight: 600, color: C.green, whiteSpace: 'nowrap' }}>
+    <span style={{ padding: '4px 10px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 20, fontSize: 11, fontWeight: 600, color: C.success, whiteSpace: 'nowrap' }}>
       {remaining}/{FREE_SESSION_LIMIT} Free Left
     </span>
   ) : (
@@ -130,10 +130,10 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     }
     .nav-tab:hover { color: ${C.text}; }
     .nav-tab.active {
-      color: ${C.orange};
-      border-bottom-color: ${C.orange};
+      color: ${C.green};
+      border-bottom-color: ${C.green};
     }
-    .nav-tab.upgrade { color: ${C.orange}; }
+    .nav-tab.upgrade { color: ${C.green}; }
     .nav-tab.admin { color: ${C.red}; }
     .hamburger-btn {
       display: none;
@@ -206,7 +206,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
           <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 400, letterSpacing: -0.5, cursor: 'pointer' }} onClick={() => handleNav('interview')}>
-            <span style={{ color: C.text }}>I</span><span style={{ color: C.orange }}>A</span><sup style={{ fontSize: 10, color: C.textMuted, verticalAlign: 'super' }}>™</sup>
+            <span style={{ color: C.text }}>I</span><span style={{ color: C.green }}>A</span><sup style={{ fontSize: 10, color: C.textMuted, verticalAlign: 'super' }}>™</sup>
           </span>
         </div>
 
@@ -307,10 +307,10 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
               style={{
                 display: 'block', width: '100%', textAlign: 'left',
                 padding: '0 16px', height: 56,
-                background: page === tab.id ? C.orangeLight : 'transparent',
+                background: page === tab.id ? C.greenLight : 'transparent',
                 border: 'none',
                 borderRadius: 12,
-                color: tab.id === 'admin' ? C.red : (page === tab.id || tab.id === 'upgrade') ? C.orange : C.text,
+                color: tab.id === 'admin' ? C.red : (page === tab.id || tab.id === 'upgrade') ? C.green : C.text,
                 fontSize: 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: page === tab.id ? 600 : 400,
                 cursor: 'pointer',

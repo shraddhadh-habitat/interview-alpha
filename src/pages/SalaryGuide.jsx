@@ -4,9 +4,9 @@ const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
   text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1',
-  orange: '#E8650A', orangeHover: '#D45800',
-  orangeLight: 'rgba(232,101,10,0.08)', orangeBorder: 'rgba(232,101,10,0.2)',
-  green: '#1A7F37', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
+  green: '#16A34A', greenHover: '#15803D',
+  greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
+  success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
   red: '#CF222E', redLight: 'rgba(211,47,47,0.07)', redBorder: 'rgba(211,47,47,0.18)',
   yellow: '#C67F00', yellowLight: 'rgba(198,127,0,0.06)', yellowBorder: 'rgba(198,127,0,0.15)',
   golden: '#B8860B',
@@ -144,7 +144,7 @@ function Section({ title, subtitle, children, defaultOpen = false }) {
           <div style={{ fontSize: 16, fontWeight: 700, color: C.text, fontFamily: "'Instrument Serif', serif", marginBottom: 4 }}>{title}</div>
           {subtitle && <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>{subtitle}</div>}
         </div>
-        <span style={{ fontSize: 18, color: C.orange, transition: 'transform 0.2s', display: 'inline-block', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', flexShrink: 0, marginLeft: 16 }}>▾</span>
+        <span style={{ fontSize: 18, color: C.green, transition: 'transform 0.2s', display: 'inline-block', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', flexShrink: 0, marginLeft: 16 }}>▾</span>
       </button>
       {open && (
         <div style={{ padding: '0 32px 32px', borderTop: `1px solid ${C.border}`, animation: 'fadeUp 0.25s ease' }}>
@@ -175,8 +175,8 @@ export default function SalaryGuide() {
             {['India & US Ranges', '5-Step Framework', '7 Counter-Offer Scripts', '5 Common Mistakes', '10 Companies'].map(t => (
               <span key={t} style={{
                 padding: '4px 12px',
-                background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
-                borderRadius: 20, fontSize: 10, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
+                background: C.greenLight, border: `1px solid ${C.greenBorder}`,
+                borderRadius: 20, fontSize: 10, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
               }}>{t}</span>
             ))}
           </div>
@@ -185,7 +185,7 @@ export default function SalaryGuide() {
         {/* ── SECTION 1: Know Your Worth ── */}
         <Section title="Know Your Worth" subtitle="Salary ranges by level — India & United States" defaultOpen={true}>
           <div style={{ paddingTop: 24 }}>
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
             <div style={{ overflowX: 'auto', marginBottom: 32 }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
@@ -199,7 +199,7 @@ export default function SalaryGuide() {
                   {IN_SALARIES.map((row, i) => (
                     <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                       <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
-                      <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
+                      <td style={{ padding: '12px 14px', color: C.green, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
                       <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
@@ -209,7 +209,7 @@ export default function SalaryGuide() {
               </table>
             </div>
 
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>United States (USD)</div>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>United States (USD)</div>
             <div style={{ overflowX: 'auto', marginBottom: 20 }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
@@ -223,7 +223,7 @@ export default function SalaryGuide() {
                   {US_SALARIES.map((row, i) => (
                     <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                       <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
-                      <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
+                      <td style={{ padding: '12px 14px', color: C.green, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
                       <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
@@ -248,15 +248,15 @@ export default function SalaryGuide() {
               <div key={s.step} style={{ display: 'flex', gap: 20 }}>
                 <div style={{
                   width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-                  background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
+                  background: C.greenLight, border: `1px solid ${C.greenBorder}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 13, fontWeight: 700, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontSize: 13, fontWeight: 700, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 }}>{s.step}</div>
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: "'Instrument Serif', serif", marginBottom: 8 }}>{s.title}</div>
                   <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, margin: '0 0 12px' }}>{s.body}</p>
-                  <div style={{ padding: '12px 16px', background: C.bgSoft, border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.orange}`, borderRadius: '0 12px 12px 0' }}>
-                    <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6 }}>Script</div>
+                  <div style={{ padding: '12px 16px', background: C.bgSoft, border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.green}`, borderRadius: '0 12px 12px 0' }}>
+                    <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6 }}>Script</div>
                     <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", fontStyle: 'italic', lineHeight: 1.65, margin: 0 }}>{s.script}</p>
                   </div>
                 </div>
@@ -272,8 +272,8 @@ export default function SalaryGuide() {
               <div key={i}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                   <span style={{
-                    padding: '3px 10px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
-                    borderRadius: 20, fontSize: 10, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    padding: '3px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`,
+                    borderRadius: 20, fontSize: 10, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif",
                   }}>{i + 1}</span>
                   <span style={{ fontSize: 13, fontWeight: 600, color: C.text, fontFamily: "'Instrument Serif', serif" }}>{t.scenario}</span>
                 </div>
@@ -327,7 +327,7 @@ export default function SalaryGuide() {
                   <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                     <td style={{ padding: '12px 14px', fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13 }}>{row.company}</td>
                     <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap' }}>{row.levels}</td>
-                    <td style={{ padding: '12px 14px', color: C.orange, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif', whiteSpace: 'nowrap'" }}>{row.tc_in}</td>
+                    <td style={{ padding: '12px 14px', color: C.green, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif', whiteSpace: 'nowrap'" }}>{row.tc_in}</td>
                     <td style={{ padding: '12px 14px', color: C.green, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'nowrap' }}>{row.tc_us}</td>
                     <td style={{ padding: '12px 14px', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{row.notes}</td>
                   </tr>
