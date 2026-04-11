@@ -1,7 +1,7 @@
 const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
 
 const C = {
-  bg: '#1B1B18',
+  bg: '#0A0A0A',
   bgSoft: '#242420',
   text: '#FAFAF8',
   textMuted: '#9C9C97',

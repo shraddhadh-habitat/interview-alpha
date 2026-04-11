@@ -6,7 +6,7 @@ const C = {
   bg: '#FAFAF8',
   card: '#FFFFFF',
   bgMuted: '#F5F3EF',
-  text: '#1B1B18',
+  text: '#0A0A0A',
   textMuted: '#5C5C57',
   textSoft: '#5C5C57',
   border: '#E8E6E1',

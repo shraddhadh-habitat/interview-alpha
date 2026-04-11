@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 
 const C = {
   bg: '#FAFAF8', card: '#FFFFFF',
-  text: '#1B1B18', textMuted: '#5C5C57',
+  text: '#0A0A0A', textMuted: '#5C5C57',
   border: '#E8E6E1',
   green: '#16A34A', greenHover: '#15803D',
   greenLight: 'rgba(22,163,74,0.06)',
