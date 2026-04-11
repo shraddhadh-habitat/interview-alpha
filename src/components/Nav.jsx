@@ -76,6 +76,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     { id: 'practice', label: 'Practice' },
     { id: 'scorecard', label: 'Scorecard' },
     { id: 'salary', label: 'Salary Guide' },
+    { id: 'resources', label: 'Resources' },
   ];
 
   const handleNav = (tabId) => {
@@ -292,6 +293,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
             { id: 'practice', label: 'Practice Q&A' },
             { id: 'scorecard', label: 'Scorecard' },
             { id: 'salary', label: 'Salary Guide' },
+            { id: 'resources', label: 'Learning Resources' },
             { id: 'sessions', label: 'Past Sessions' },
             { id: 'progress', label: 'My Progress' },
             ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
