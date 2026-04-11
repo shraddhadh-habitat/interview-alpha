@@ -51,8 +51,6 @@ const MORE_RESOURCES = [
   { title: 'Cracking the PM Interview', author: 'Lewis C. Lin', type: 'Book', url: 'https://www.amazon.com/Cracking-PM-Interview-Product-Technology/dp/0984782818' },
   { title: 'Decode and Conquer', author: 'Lewis C. Lin', type: 'Book', url: 'https://www.amazon.com/Decode-Conquer-Answers-Management-Interviews/dp/0615930417' },
   { title: 'Inspired', author: 'Marty Cagan', type: 'Book', url: 'https://www.amazon.com/INSPIRED-Create-Tech-Products-Customers/dp/1119387507' },
-  { title: 'Exponent PM Course', author: 'Exponent', type: 'Course', url: 'https://www.tryexponent.com' },
-  { title: 'Product Alliance', author: 'Product Alliance', type: 'Course', url: 'https://productalliance.com' },
 ];
 
 function TypeBadge({ type }) {
