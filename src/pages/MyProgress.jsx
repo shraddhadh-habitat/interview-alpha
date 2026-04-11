@@ -149,7 +149,7 @@ function ReviewModal({ attempt, onClose }) {
           >×</button>
         </div>
 
-        <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, marginBottom: 20, padding: '12px 16px', background: C.bgSoft, borderRadius: 8 }}>
+        <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, marginBottom: 20, padding: '12px 16px', background: C.bgSoft, borderRadius: 12 }}>
           {attempt.feedback_text || 'No summary available.'}
         </p>
 
@@ -164,7 +164,7 @@ function ReviewModal({ attempt, onClose }) {
         {attempt.expert_rewrite && (
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Expert Rewrite</div>
-            <div style={{ padding: '14px 18px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 10, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
+            <div style={{ padding: '14px 18px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
               {attempt.expert_rewrite}
             </div>
           </div>
@@ -278,7 +278,7 @@ export default function MyProgress({ user }) {
   );
 
   const sectionStyle = {
-    background: C.bg, border: `1px solid ${C.border}`, borderRadius: 14,
+    background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16,
     padding: '28px 32px', marginBottom: 24,
     animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)',
   };
@@ -348,7 +348,7 @@ export default function MyProgress({ user }) {
                 <div style={{ display: 'grid', gap: 14, marginBottom: 20 }}>
                   {weakest.map(w => <CompBar key={w.key} label={w.key} value={w.value} />)}
                 </div>
-                <div style={{ padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 8 }}>
+                <div style={{ padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 12 }}>
                   <div style={{ fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: C.yellow, marginBottom: 8 }}>Tip</div>
                   <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, margin: 0 }}>
                     Focus your next sessions on <strong>{weakest[0].key.replace(/_/g, ' ')}</strong>. In the Practice Q&A library, look for questions that require explicit trade-off reasoning and structured frameworks.

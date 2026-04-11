@@ -66,7 +66,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
               onClick={onClose}
               style={{
                 marginTop: 20, padding: '8px 22px',
-                background: C.orange, border: 'none', borderRadius: 7,
+                background: C.orange, border: 'none', borderRadius: 10,
                 color: '#fff', fontSize: 11, letterSpacing: 1.5,
                 textTransform: 'uppercase', cursor: 'pointer',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -91,7 +91,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
               rows={4}
               style={{
                 width: '100%', padding: '10px 14px',
-                border: `1px solid ${C.border}`, borderRadius: 8,
+                border: `1px solid ${C.border}`, borderRadius: 12,
                 fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 color: C.text, lineHeight: 1.6, resize: 'vertical',
                 background: C.bgSoft, outline: 'none', boxSizing: 'border-box',
@@ -102,7 +102,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
                 onClick={onClose}
                 style={{
                   padding: '8px 18px', background: 'transparent',
-                  border: `1px solid ${C.border}`, borderRadius: 7,
+                  border: `1px solid ${C.border}`, borderRadius: 10,
                   color: C.textMuted, fontSize: 11, letterSpacing: 1.5,
                   textTransform: 'uppercase', cursor: 'pointer',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -116,7 +116,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
                 style={{
                   padding: '8px 18px',
                   background: text.trim() && !submitting ? C.orange : C.bgMuted,
-                  border: 'none', borderRadius: 7,
+                  border: 'none', borderRadius: 10,
                   color: text.trim() && !submitting ? '#fff' : C.textMuted,
                   fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                   cursor: text.trim() && !submitting ? 'pointer' : 'default',
@@ -428,12 +428,12 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           </p>
           <div style={{
             padding: '12px 16px',
-            background: '#F0F4F8', border: '1px solid #DDE4EE',
+            background: C.bgMuted, border: `1px solid ${C.border}`,
             borderRadius: 12, marginBottom: 0,
             display: 'flex', gap: 10, alignItems: 'flex-start',
           }}>
             <span style={{ fontSize: 14, flexShrink: 0 }}>ℹ️</span>
-            <p style={{ fontSize: 13, lineHeight: 1.6, color: '#4A5568', margin: 0 }}>
+            <p style={{ fontSize: 13, lineHeight: 1.6, color: C.textMuted, margin: 0 }}>
               Answers represent expert frameworks. Replace example stories with your own experiences for behavioral questions.{' '}
               <span style={{ fontSize: 11, opacity: 0.7 }}>Last updated: March 2026.</span>
             </p>
@@ -480,7 +480,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 padding: '9px 16px',
                 background: C.bg,
                 border: `1px solid ${selectedLevel ? C.orange : C.border}`,
-                borderRadius: 8, fontSize: 11, letterSpacing: 0.5,
+                borderRadius: 12, fontSize: 11, letterSpacing: 0.5,
                 color: selectedLevel ? C.orange : C.textSoft,
                 cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: selectedLevel ? 500 : 400,
@@ -525,7 +525,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               onClick={handleExpandAll}
               style={{
                 padding: '10px 18px', background: C.bg,
-                border: `1px solid ${C.border}`, borderRadius: 8,
+                border: `1px solid ${C.border}`, borderRadius: 12,
                 color: C.textSoft, fontSize: 11, letterSpacing: 1.5,
                 textTransform: 'uppercase', cursor: 'pointer',
                 fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'nowrap',

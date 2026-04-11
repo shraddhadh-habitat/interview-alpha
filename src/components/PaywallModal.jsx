@@ -17,7 +17,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
       fontFamily: "'Plus Jakarta Sans', sans-serif",
     }}>
       <div style={{
-        background: C.bg, borderRadius: 14,
+        background: C.bg, borderRadius: 16,
         border: `1px solid ${C.border}`,
         maxWidth: 460, width: '100%',
         padding: '40px 36px',
@@ -58,7 +58,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
         {/* Plan card */}
         <div style={{
           background: C.bgSoft, border: `1px solid ${C.border}`,
-          borderRadius: 10, padding: '20px 22px', marginBottom: 24,
+          borderRadius: 16, padding: '20px 22px', marginBottom: 24,
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12 }}>
             <span style={{ fontSize: 14, fontWeight: 600, color: C.text, letterSpacing: 0.5 }}>Pro Plan</span>
@@ -83,9 +83,9 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
         <button
           style={{
             width: '100%', padding: '14px 0',
-            background: C.orange, border: 'none', borderRadius: 8,
+            background: C.orange, border: 'none', borderRadius: 12,
             color: '#fff', fontSize: 11, letterSpacing: 3, textTransform: 'uppercase',
-            cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
+            cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
             marginBottom: 12, transition: 'background 0.2s',
           }}
           onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
@@ -100,7 +100,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
           style={{
             width: '100%', padding: '10px 0',
             background: 'transparent', border: `1px solid ${C.border}`,
-            borderRadius: 8, color: C.textMuted,
+            borderRadius: 12, color: C.textMuted,
             fontSize: 11, letterSpacing: 2, textTransform: 'uppercase',
             cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
             transition: 'all 0.2s',

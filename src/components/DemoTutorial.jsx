@@ -148,7 +148,7 @@ export default function DemoTutorial({ onClose }) {
               width: 36, height: 36,
               background: C.orangeLight,
               border: `1px solid ${C.orangeBorder}`,
-              borderRadius: 10,
+              borderRadius: 16,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 16, color: C.orange,
             }}>
@@ -198,7 +198,7 @@ export default function DemoTutorial({ onClose }) {
                   style={{
                     width: i === step ? 22 : 8,
                     height: 8,
-                    borderRadius: 4,
+                    borderRadius: 6,
                     background: i === step ? C.orange : C.border,
                     border: 'none', cursor: 'pointer', padding: 0,
                     transition: 'all 0.3s cubic-bezier(0.22,1,0.36,1)',
@@ -216,7 +216,7 @@ export default function DemoTutorial({ onClose }) {
                     padding: '10px 20px',
                     background: 'transparent',
                     border: `1px solid ${C.border}`,
-                    borderRadius: 8,
+                    borderRadius: 12,
                     color: C.textMuted, fontSize: 11,
                     letterSpacing: 1.5, textTransform: 'uppercase',
                     cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -233,11 +233,11 @@ export default function DemoTutorial({ onClose }) {
                 style={{
                   padding: '10px 28px',
                   background: C.orange,
-                  border: 'none', borderRadius: 8,
+                  border: 'none', borderRadius: 12,
                   color: '#fff', fontSize: 11,
                   letterSpacing: 1.5, textTransform: 'uppercase',
                   cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontWeight: 500, transition: 'background 0.2s',
+                  fontWeight: 600, transition: 'background 0.2s',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
                 onMouseLeave={e => e.currentTarget.style.background = C.orange}

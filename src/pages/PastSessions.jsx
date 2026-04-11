@@ -22,7 +22,7 @@ function TrackBadge({ track }) {
       display: 'inline-flex', alignItems: 'center', gap: 5,
       padding: '3px 10px',
       background: C.orangeLight, border: `1px solid ${C.orangeBorder}`,
-      borderRadius: 4, fontSize: 11, color: C.orange,
+      borderRadius: 6, fontSize: 11, color: C.orange,
       fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 1,
     }}>
       {icon} {track}
@@ -46,7 +46,7 @@ function SessionDetail({ session, onBack }) {
             display: 'inline-flex', alignItems: 'center', gap: 5,
             padding: '3px 10px',
             background: 'rgba(232,101,10,0.05)', border: `1px solid rgba(232,101,10,0.15)`,
-            borderRadius: 4, fontSize: 11, color: C.orange,
+            borderRadius: 6, fontSize: 11, color: C.orange,
             fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 1,
           }}>
             {session.company}
@@ -63,7 +63,7 @@ function SessionDetail({ session, onBack }) {
 
       {/* Competency bars */}
       {session.competency_breakdown && (
-        <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 10, padding: 24, marginBottom: 24 }}>
+        <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16, padding: 24, marginBottom: 24 }}>
           <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 16 }}>Competency Breakdown</div>
           <div style={{ display: 'grid', gap: 14 }}>
             {Object.entries(session.competency_breakdown).map(([key, val]) => (
@@ -83,22 +83,22 @@ function SessionDetail({ session, onBack }) {
 
       {/* Tags */}
       <div className="ps-tags-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 24 }}>
-        <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 10, padding: 20 }}>
+        <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
           <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: C.red, marginBottom: 10 }}>Filler Words</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {(session.detected_filler_words || []).length > 0
               ? session.detected_filler_words.map((w, i) => (
-                  <span key={i} style={{ padding: '3px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 4, fontSize: 12, color: C.red }}>{w}</span>
+                  <span key={i} style={{ padding: '3px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 6, fontSize: 12, color: C.red }}>{w}</span>
                 ))
               : <span style={{ fontSize: 12, color: C.textMuted }}>None — clean delivery</span>}
           </div>
         </div>
-        <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 10, padding: 20 }}>
+        <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
           <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: C.green, marginBottom: 10 }}>High-Signal Keywords</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {(session.high_signal_keywords || []).length > 0
               ? session.high_signal_keywords.map((w, i) => (
-                  <span key={i} style={{ padding: '3px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 4, fontSize: 12, color: C.green }}>{w}</span>
+                  <span key={i} style={{ padding: '3px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 6, fontSize: 12, color: C.green }}>{w}</span>
                 ))
               : <span style={{ fontSize: 12, color: C.textMuted }}>None detected</span>}
           </div>
@@ -107,7 +107,7 @@ function SessionDetail({ session, onBack }) {
 
       {/* Alpha rewrite */}
       {session.alpha_rewrite && (
-        <div style={{ background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 10, padding: 20, marginBottom: 24 }}>
+        <div style={{ background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 16, padding: 20, marginBottom: 24 }}>
           <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: C.orange, marginBottom: 10 }}>The Alpha Rewrite</div>
           <div style={{ fontSize: 13, lineHeight: 1.75, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{session.alpha_rewrite}</div>
         </div>
@@ -229,7 +229,7 @@ export default function PastSessions({ user }) {
                 style={{
                   display: 'flex', alignItems: 'center', gap: 20,
                   padding: '20px 24px',
-                  background: C.bg, border: `1px solid ${C.border}`, borderRadius: 10,
+                  background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16,
                   cursor: 'pointer', textAlign: 'left', color: C.text,
                   transition: 'all 0.2s', width: '100%',
                   animation: `fadeUp ${0.3 + i * 0.08}s cubic-bezier(0.22,1,0.36,1)`,
@@ -248,7 +248,7 @@ export default function PastSessions({ user }) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
                     <TrackBadge track={s.track} />
                     {s.company && s.company !== 'General/Other' && (
-                      <span style={{ padding: '2px 8px', background: 'rgba(232,101,10,0.05)', border: '1px solid rgba(232,101,10,0.15)', borderRadius: 4, fontSize: 10, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>
+                      <span style={{ padding: '2px 8px', background: 'rgba(232,101,10,0.05)', border: '1px solid rgba(232,101,10,0.15)', borderRadius: 6, fontSize: 10, color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>
                         {s.company}
                       </span>
                     )}

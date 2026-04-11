@@ -21,7 +21,7 @@ const globalStyles = `
 
 function StatCard({ label, value, color }) {
   return (
-    <div style={{ padding: '20px 24px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 10 }}>
+    <div style={{ padding: '20px 24px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16 }}>
       <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>{label}</div>
       <div style={{ fontSize: 32, fontWeight: 700, fontFamily: "'Instrument Serif', serif", color: color || C.text }}>{value}</div>
     </div>
@@ -205,7 +205,7 @@ export default function AdminPanel({ user }) {
             {requests.length === 0 ? (
               <div style={{ padding: '40px 0', textAlign: 'center', fontSize: 12, color: C.textMuted }}>No payment requests yet.</div>
             ) : (
-              <div style={{ border: `1px solid ${C.border}`, borderRadius: 10, overflow: 'hidden' }}>
+              <div style={{ border: `1px solid ${C.border}`, borderRadius: 16, overflow: 'hidden' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                   <thead>
                     <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
@@ -229,14 +229,14 @@ export default function AdminPanel({ user }) {
                               <button
                                 onClick={() => handleApprove(r.id)}
                                 disabled={actionId === r.id}
-                                style={{ padding: '5px 12px', background: C.green, border: 'none', borderRadius: 5, color: '#fff', fontSize: 10, letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", opacity: actionId === r.id ? 0.5 : 1 }}
+                                style={{ padding: '5px 12px', background: C.green, border: 'none', borderRadius: 6, color: '#fff', fontSize: 10, letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", opacity: actionId === r.id ? 0.5 : 1 }}
                               >
                                 {actionId === r.id ? '...' : 'Approve'}
                               </button>
                               <button
                                 onClick={() => setRejectTarget(r.id)}
                                 disabled={actionId === r.id}
-                                style={{ padding: '5px 12px', background: 'transparent', border: `1px solid ${C.red}`, borderRadius: 5, color: C.red, fontSize: 10, letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                style={{ padding: '5px 12px', background: 'transparent', border: `1px solid ${C.red}`, borderRadius: 6, color: C.red, fontSize: 10, letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                               >
                                 Reject
                               </button>
@@ -261,7 +261,7 @@ export default function AdminPanel({ user }) {
             {users.length === 0 ? (
               <div style={{ padding: '40px 0', textAlign: 'center', fontSize: 12, color: C.textMuted }}>No users yet.</div>
             ) : (
-              <div style={{ border: `1px solid ${C.border}`, borderRadius: 10, overflow: 'hidden' }}>
+              <div style={{ border: `1px solid ${C.border}`, borderRadius: 16, overflow: 'hidden' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                   <thead>
                     <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
@@ -302,19 +302,19 @@ export default function AdminPanel({ user }) {
               onChange={e => setRejectNote(e.target.value)}
               placeholder="e.g. UPI reference not found. Please resubmit."
               rows={3}
-              style={{ width: '100%', padding: '10px 12px', border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, resize: 'none', marginBottom: 16 }}
+              style={{ width: '100%', padding: '10px 12px', border: `1px solid ${C.border}`, borderRadius: 12, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, resize: 'none', marginBottom: 16 }}
             />
             <div style={{ display: 'flex', gap: 10 }}>
               <button
                 onClick={handleReject}
                 disabled={actionId === rejectTarget}
-                style={{ flex: 1, padding: '11px 0', background: C.red, border: 'none', borderRadius: 8, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}
+                style={{ flex: 1, padding: '11px 0', background: C.red, border: 'none', borderRadius: 12, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}
               >
                 {actionId === rejectTarget ? 'Rejecting...' : 'Confirm Reject'}
               </button>
               <button
                 onClick={() => { setRejectTarget(null); setRejectNote(''); }}
-                style={{ flex: 1, padding: '11px 0', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 8, color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                style={{ flex: 1, padding: '11px 0', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 12, color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 Cancel
               </button>

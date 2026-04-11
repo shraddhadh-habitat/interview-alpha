@@ -129,12 +129,12 @@ export default function AuthPage() {
           </p>
 
           {error && (
-            <div style={{ padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 8, fontSize: 13, color: C.red, marginBottom: 20 }}>
+            <div style={{ padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 12, fontSize: 13, color: C.red, marginBottom: 20 }}>
               {error}
             </div>
           )}
           {success && (
-            <div style={{ padding: '10px 14px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 8, fontSize: 13, color: C.green, marginBottom: 20 }}>
+            <div style={{ padding: '10px 14px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 12, fontSize: 13, color: C.green, marginBottom: 20 }}>
               {success}
             </div>
           )}

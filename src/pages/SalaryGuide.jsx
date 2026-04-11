@@ -128,7 +128,7 @@ function Section({ title, subtitle, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div style={{
-      background: C.bg, border: `1px solid ${C.border}`, borderRadius: 14,
+      background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16,
       marginBottom: 16, overflow: 'hidden',
     }}>
       <button
@@ -233,7 +233,7 @@ export default function SalaryGuide() {
               </table>
             </div>
 
-            <div style={{ padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 8 }}>
+            <div style={{ padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 12 }}>
               <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, margin: 0 }}>
                 Ranges reflect 2025–2026 market data. Total comp (TC) includes base + annual bonus + annualized equity. Startup equity values assume a 2–4x exit multiple on current 409A/valuation. Verify with levels.fyi, Glassdoor, and LinkedIn Salary.
               </p>
@@ -255,7 +255,7 @@ export default function SalaryGuide() {
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: "'Instrument Serif', serif", marginBottom: 8 }}>{s.title}</div>
                   <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, margin: '0 0 12px' }}>{s.body}</p>
-                  <div style={{ padding: '12px 16px', background: C.bgSoft, border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.orange}`, borderRadius: '0 8px 8px 0' }}>
+                  <div style={{ padding: '12px 16px', background: C.bgSoft, border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.orange}`, borderRadius: '0 12px 12px 0' }}>
                     <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6 }}>Script</div>
                     <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", fontStyle: 'italic', lineHeight: 1.65, margin: 0 }}>{s.script}</p>
                   </div>
@@ -278,8 +278,8 @@ export default function SalaryGuide() {
                   <span style={{ fontSize: 13, fontWeight: 600, color: C.text, fontFamily: "'Instrument Serif', serif" }}>{t.scenario}</span>
                 </div>
                 <div style={{
-                  padding: '16px 20px', background: '#F8F5FF',
-                  border: `1px solid ${C.border}`, borderRadius: 10,
+                  padding: '16px 20px', background: C.bgSoft,
+                  border: `1px solid ${C.border}`, borderRadius: 16,
                   fontSize: 13, lineHeight: 1.8, color: C.textSoft,
                   fontFamily: "'Plus Jakarta Sans', sans-serif", fontStyle: 'italic',
                   whiteSpace: 'pre-wrap',
@@ -297,7 +297,7 @@ export default function SalaryGuide() {
             {MISTAKES.map((m, i) => (
               <div key={i} style={{
                 padding: '18px 20px', background: C.redLight,
-                border: `1px solid ${C.redBorder}`, borderRadius: 10,
+                border: `1px solid ${C.redBorder}`, borderRadius: 16,
               }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                   <span style={{ color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✕</span>
@@ -334,7 +334,7 @@ export default function SalaryGuide() {
                 ))}
               </tbody>
             </table>
-            <div style={{ marginTop: 16, padding: '14px 18px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 8 }}>
+            <div style={{ marginTop: 16, padding: '14px 18px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 12 }}>
               <p style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, margin: 0 }}>
                 All figures are estimates based on publicly available data, levels.fyi, and community reports as of 2025–2026. Actual comp varies significantly by team, negotiation, and market conditions.
               </p>

@@ -224,7 +224,7 @@ function ReviewModal({ attempt, onClose }) {
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: C.textMuted, lineHeight: 1, padding: 4 }}>×</button>
         </div>
-        <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, marginBottom: 20, padding: '12px 16px', background: C.bgMuted, borderRadius: 8 }}>
+        <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, marginBottom: 20, padding: '12px 16px', background: C.bgMuted, borderRadius: 12 }}>
           {attempt.feedback_text || 'No summary available.'}
         </p>
         {attempt.competency_breakdown && (
@@ -235,7 +235,7 @@ function ReviewModal({ attempt, onClose }) {
         {attempt.expert_rewrite && (
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Expert Rewrite</div>
-            <div style={{ padding: '14px 18px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 10, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
+            <div style={{ padding: '14px 18px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
               {attempt.expert_rewrite}
             </div>
           </div>
@@ -294,7 +294,7 @@ function FilterSelect({ label, value, onChange, options }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
       <span style={{ fontSize: 10, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 1, textTransform: 'uppercase' }}>{label}:</span>
-      <select value={value} onChange={e => onChange(e.target.value)} style={{ padding: '5px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, background: C.card, cursor: 'pointer', outline: 'none' }}>
+      <select value={value} onChange={e => onChange(e.target.value)} style={{ padding: '5px 10px', border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, background: C.card, cursor: 'pointer', outline: 'none' }}>
         {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     </div>
@@ -329,12 +329,12 @@ function RadarChart({ avgComp }) {
   const bgRings = Array.from({ length: LEVELS }, (_, lvl) => {
     const sc = (lvl + 1) / LEVELS;
     const pts = COMPETENCIES.map((_, i) => pt(i, sc).join(',')).join(' ');
-    return <polygon key={lvl} points={pts} fill="none" stroke={lvl === LEVELS - 1 ? '#CCCCCC' : C.borderLight} strokeWidth={lvl === LEVELS - 1 ? 1.5 : 1} />;
+    return <polygon key={lvl} points={pts} fill="none" stroke={lvl === LEVELS - 1 ? C.border : C.borderLight} strokeWidth={lvl === LEVELS - 1 ? 1.5 : 1} />;
   });
   const axes = COMPETENCIES.map((_, i) => { const [x, y] = pt(i, 1); return <line key={i} x1={CX} y1={CY} x2={x} y2={y} stroke={C.borderLight} strokeWidth={1} />; });
   const dataPolygon = COMPETENCIES.map(({ label }, i) => pt(i, (avgComp[label] ?? 0) / 10).join(',')).join(' ');
   const dots = COMPETENCIES.map(({ label }, i) => { const [x, y] = pt(i, (avgComp[label] ?? 0) / 10); return <circle key={i} cx={x} cy={y} r={5} fill={C.orange} stroke="white" strokeWidth={2} />; });
-  const levelMarkers = [2, 4, 6, 8, 10].map((v, i) => { const [lx, ly] = pt(0, (i + 1) / LEVELS); return <text key={v} x={lx + 5} y={ly + 4} style={{ fontSize: 9, fill: '#BBBBBB', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{v}</text>; });
+  const levelMarkers = [2, 4, 6, 8, 10].map((v, i) => { const [lx, ly] = pt(0, (i + 1) / LEVELS); return <text key={v} x={lx + 5} y={ly + 4} style={{ fontSize: 9, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{v}</text>; });
   const labelEls = COMPETENCIES.map(({ label }, i) => {
     const a = angle(i);
     const lx = CX + (R + 28) * Math.cos(a), ly = CY + (R + 28) * Math.sin(a);
@@ -383,8 +383,8 @@ function PerformanceTimeline({ timeline }) {
           <text x={PL - 6} y={yp(v) + 4} textAnchor="end" style={{ fontSize: 9, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{v}</text>
         </g>
       ))}
-      <line x1={PL} y1={PT} x2={PL} y2={PT + IH} stroke="#DDDDDD" />
-      <line x1={PL} y1={PT + IH} x2={W - PR} y2={PT + IH} stroke="#DDDDDD" />
+      <line x1={PL} y1={PT} x2={PL} y2={PT + IH} stroke={C.border} />
+      <line x1={PL} y1={PT + IH} x2={W - PR} y2={PT + IH} stroke={C.border} />
       {xLabels.map((a, i) => <text key={i} x={xp(a.date)} y={H - 6} textAnchor="middle" style={{ fontSize: 9, fill: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</text>)}
       <path d={linePath} fill="none" stroke={C.orange} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
       <path d={avgPath}  fill="none" stroke={C.green}  strokeWidth={1.5} strokeDasharray="6 3" strokeLinecap="round" />
@@ -444,7 +444,7 @@ function AttemptDetail({ item }) {
             {item.alpha_rewrite && (
               <div style={{ marginBottom: 10 }}>
                 <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Alpha Rewrite</div>
-                <div style={{ padding: '10px 14px', background: 'rgba(232,101,10,0.05)', border: `1px solid ${C.orangeBorder}`, borderRadius: 8, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.alpha_rewrite}</div>
+                <div style={{ padding: '10px 14px', background: 'rgba(232,101,10,0.05)', border: `1px solid ${C.orangeBorder}`, borderRadius: 12, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.alpha_rewrite}</div>
               </div>
             )}
             {item.next_drill && (
@@ -459,7 +459,7 @@ function AttemptDetail({ item }) {
             {item.user_answer && (
               <div style={{ marginBottom: 12 }}>
                 <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Your Answer</div>
-                <div style={{ padding: '10px 14px', background: C.borderLight, borderRadius: 8, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, maxHeight: 90, overflow: 'auto' }}>{item.user_answer}</div>
+                <div style={{ padding: '10px 14px', background: C.borderLight, borderRadius: 12, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, maxHeight: 90, overflow: 'auto' }}>{item.user_answer}</div>
               </div>
             )}
             {item.feedback_text && (
@@ -483,7 +483,7 @@ function AttemptDetail({ item }) {
             {item.expert_rewrite && (
               <div style={{ marginBottom: 10 }}>
                 <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.orange, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Expert Rewrite</div>
-                <div style={{ padding: '10px 14px', background: 'rgba(232,101,10,0.05)', border: `1px solid ${C.orangeBorder}`, borderRadius: 8, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.expert_rewrite}</div>
+                <div style={{ padding: '10px 14px', background: 'rgba(232,101,10,0.05)', border: `1px solid ${C.orangeBorder}`, borderRadius: 12, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, maxHeight: 120, overflow: 'auto' }}>{item.expert_rewrite}</div>
               </div>
             )}
             {item.improvement_tips?.length > 0 && (
@@ -748,7 +748,7 @@ export default function Scorecard({ user }) {
                   <div style={{ display: 'grid', gap: 12, marginBottom: 18 }}>
                     {progress.weakest.map(w => <CompBar key={w.key} label={w.key} value={w.value} />)}
                   </div>
-                  <div style={{ padding: '12px 16px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 8 }}>
+                  <div style={{ padding: '12px 16px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 12 }}>
                     <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.yellow, marginBottom: 6 }}>Tip</div>
                     <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, margin: 0 }}>
                       Focus your next practice on <strong>{progress.weakest[0].key.replace(/_/g, ' ')}</strong>. Look for questions requiring explicit trade-off reasoning and structured frameworks.
@@ -913,8 +913,8 @@ export default function Scorecard({ user }) {
             <FilterSelect label="Sort" value={`${sortBy}-${sortDir}`} onChange={v => { const [by, dir] = v.split('-'); setSortBy(by); setSortDir(dir); }} options={[{ value: 'date-desc', label: 'Newest first' }, { value: 'date-asc', label: 'Oldest first' }, { value: 'score-desc', label: 'Highest score' }, { value: 'score-asc', label: 'Lowest score' }]} />
             <span style={{ fontSize: 11, color: C.textMuted, marginLeft: 'auto' }}>{allItems.length} attempt{allItems.length !== 1 ? 's' : ''}</span>
           </div>
-          <div style={{ border: `1px solid ${C.border}`, borderRadius: 10, overflow: 'hidden', overflowX: 'auto' }}>
-            <div className="sc-log-header" style={{ display: 'grid', gridTemplateColumns: '88px 1fr 96px 124px 68px 32px', padding: '10px 18px', background: '#F7F7F7', borderBottom: `1px solid ${C.border}`, fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 700, minWidth: 540 }}>
+          <div style={{ border: `1px solid ${C.border}`, borderRadius: 16, overflow: 'hidden', overflowX: 'auto' }}>
+            <div className="sc-log-header" style={{ display: 'grid', gridTemplateColumns: '88px 1fr 96px 124px 68px 32px', padding: '10px 18px', background: C.bgMuted, borderBottom: `1px solid ${C.border}`, fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 700, minWidth: 540 }}>
               <span>Date</span><span>Question / Track</span><span className="sc-log-col-type">Type</span><span className="sc-log-col-designation">Designation</span><span>Score</span><span></span>
             </div>
             {allItems.length === 0 ? (

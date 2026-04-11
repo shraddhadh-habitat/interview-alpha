@@ -40,20 +40,20 @@ function StatusBanner({ profile }) {
       : null;
     if (monthly >= 100) {
       return (
-        <div style={{ padding: '14px 20px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+        <div style={{ padding: '14px 20px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 16, marginBottom: 32, fontSize: 13, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           You've used all 100 AI sessions this month.{resetDate ? ` Sessions reset on ${resetDate}.` : ''} Need more? Contact us.
         </div>
       );
     }
     return (
-      <div style={{ padding: '14px 20px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <div style={{ padding: '14px 20px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 16, marginBottom: 32, fontSize: 13, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         ✓ Pro{profile.subscription_plan ? ` (${profile.subscription_plan})` : ''} · {monthly}/100 sessions this month.{d ? ` Valid until ${d}.` : ''}
       </div>
     );
   }
   if (status === 'pending') {
     return (
-      <div style={{ padding: '14px 20px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <div style={{ padding: '14px 20px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 16, marginBottom: 32, fontSize: 13, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         ⏳ Payment submitted — we'll activate your account within 24 hours. No action needed.
       </div>
     );
@@ -61,7 +61,7 @@ function StatusBanner({ profile }) {
   if (status === 'expired') {
     const d = expires ? new Date(expires).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : null;
     return (
-      <div style={{ padding: '14px 20px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, marginBottom: 32, fontSize: 13, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <div style={{ padding: '14px 20px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 16, marginBottom: 32, fontSize: 13, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         Your Pro subscription expired{d ? ` on ${d}` : ''}. Renew below to continue.
       </div>
     );
@@ -261,20 +261,20 @@ export default function UpgradePage({ user, profile, onBack }) {
                   <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff', flexShrink: 0 }}>1</div>
                   <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Scan & Pay</span>
                 </div>
-                <div style={{ width: 220, height: 220, margin: '0 auto', background: C.bgMuted, border: `2px dashed ${C.border}`, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+                <div style={{ width: 220, height: 220, margin: '0 auto', background: C.bgMuted, border: `2px dashed ${C.border}`, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
                   <img
                     src="/upi-qr.png"
                     alt="UPI QR Code"
                     style={{ width: 180, height: 180, objectFit: 'contain', borderRadius: 8 }}
                     onError={e => {
                       e.currentTarget.style.display = 'none';
-                      e.currentTarget.parentElement.innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:11px;color:#999;text-align:center;padding:16px">Add /public/upi-qr.png<br/>to show QR code</div>`;
+                      e.currentTarget.parentElement.innerHTML = `<div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;color:#9C9C97;text-align:center;padding:16px">Add /public/upi-qr.png<br/>to show QR code</div>`;
                     }}
                   />
                 </div>
                 <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4 }}>UPI ID</div>
                 <div style={{ fontSize: 13, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{upiId}</div>
-                <div style={{ marginTop: 12, padding: '8px 12px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 8, fontSize: 13, color: C.orange, fontFamily: "'Instrument Serif', serif", fontWeight: 700 }}>
+                <div style={{ marginTop: 12, padding: '8px 12px', background: C.orangeLight, border: `1px solid ${C.orangeBorder}`, borderRadius: 12, fontSize: 13, color: C.orange, fontFamily: "'Instrument Serif', serif", fontWeight: 700 }}>
                   ₹{PLANS[plan].price.toLocaleString('en-IN')}
                 </div>
               </div>
@@ -292,7 +292,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                   placeholder="e.g. 407812345678"
                   style={{
                     width: '100%', padding: '12px 14px',
-                    border: `1px solid ${C.border}`, borderRadius: 8,
+                    border: `1px solid ${C.border}`, borderRadius: 12,
                     fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
                     color: C.text, background: C.bg, marginBottom: 16,
                     transition: 'border-color 0.2s',
@@ -301,7 +301,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                   onBlur={e => e.target.style.borderColor = C.border}
                 />
                 {error && (
-                  <div style={{ marginBottom: 12, padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 8, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  <div style={{ marginBottom: 12, padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 12, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {error}
                   </div>
                 )}
@@ -311,7 +311,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                   style={{
                     width: '100%', padding: '13px 0',
                     background: submitting || !upiRef.trim() ? C.bgMuted : C.orange,
-                    border: 'none', borderRadius: 8,
+                    border: 'none', borderRadius: 12,
                     color: submitting || !upiRef.trim() ? C.textMuted : '#fff',
                     fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                     cursor: submitting || !upiRef.trim() ? 'not-allowed' : 'pointer',
@@ -341,7 +341,7 @@ export default function UpgradePage({ user, profile, onBack }) {
             </p>
             <button
               onClick={onBack}
-              style={{ padding: '12px 32px', background: C.orange, border: 'none', borderRadius: 8, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}
+              style={{ padding: '12px 32px', background: C.orange, border: 'none', borderRadius: 12, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}
               onMouseEnter={e => e.currentTarget.style.background = C.orangeHover}
               onMouseLeave={e => e.currentTarget.style.background = C.orange}
             >
