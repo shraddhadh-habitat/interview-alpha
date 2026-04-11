@@ -2,16 +2,19 @@ import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 
 const C = {
-  bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
-  text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#5C5C57',
+  bg: '#FAFAF8', card: '#FFFFFF',
+  text: '#1B1B18', textMuted: '#5C5C57',
   border: '#E8E6E1',
-  orange: '#E8650A', orangeHover: '#D45800', orangeLight: 'rgba(232,101,10,0.08)',
-  red: '#CF222E', redLight: 'rgba(211,47,47,0.07)', redBorder: 'rgba(211,47,47,0.18)',
-  green: '#1A7F37', greenLight: 'rgba(27,140,58,0.08)', greenBorder: 'rgba(27,140,58,0.2)',
+  orange: '#E8650A', orangeHover: '#D45800',
+  orangeLight: 'rgba(232,101,10,0.06)',
+  red: '#CF222E', redLight: 'rgba(207,34,46,0.06)', redBorder: 'rgba(207,34,46,0.18)',
+  green: '#1A7F37', greenLight: 'rgba(26,127,55,0.06)', greenBorder: 'rgba(26,127,55,0.2)',
 };
 
+const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
+
 export default function AuthPage() {
-  const [mode, setMode] = useState('login'); // 'login' | 'signup'
+  const [mode, setMode] = useState('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -32,7 +35,6 @@ export default function AuthPage() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        // App.jsx auth listener will handle the redirect
       }
     } catch (err) {
       setError(err.message);
@@ -41,80 +43,105 @@ export default function AuthPage() {
     }
   };
 
-  const inputStyle = {
-    width: '100%',
-    background: C.bgSoft,
-    border: `1px solid ${C.border}`,
-    borderRadius: 8,
-    padding: '14px 18px',
-    color: C.text,
-    fontSize: 14,
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-    outline: 'none',
-    transition: 'border-color 0.2s',
-  };
-
   return (
     <div style={{
       minHeight: '100vh',
       background: C.bg,
       display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
       fontFamily: "'Plus Jakarta Sans', sans-serif",
       color: C.text,
-      padding: 32,
     }}>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        input:focus { border-color: ${C.orange} !important; }
+        input:focus { border-color: ${C.orange} !important; outline: none; }
         ::selection { background: rgba(232,101,10,0.18); }
+        @media (max-width: 768px) {
+          .auth-left { display: none !important; }
+          .auth-right { min-width: 0 !important; }
+        }
       `}</style>
 
-      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.orange}, ${C.orangeHover})` }} />
-
-      <div style={{ width: '100%', maxWidth: 420, animation: 'fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1)' }}>
-        {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 48, fontWeight: 900, letterSpacing: -1.5, color: C.text }}>
-            Interview<span style={{ color: C.orange }}>Alpha</span>
+      {/* Left panel */}
+      <div className="auth-left" style={{
+        flex: 1, minWidth: 0,
+        background: 'linear-gradient(135deg, #FAFAF8, #F5F3EF)',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        padding: '48px 56px',
+        borderRight: `1px solid ${C.border}`,
+      }}>
+        <div style={{ maxWidth: 380, width: '100%' }}>
+          <h1 style={{
+            fontFamily: "'Instrument Serif', serif", fontSize: 48, fontWeight: 400,
+            marginBottom: 32, lineHeight: 1.1,
+            background: RAINBOW, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          }}>
+            InterviewAlpha™
           </h1>
-          <div style={{ width: 36, height: 3, background: C.orange, margin: '16px auto 0', borderRadius: 2 }} />
-        </div>
 
-        {/* Card */}
-        <div style={{
-          background: C.bg,
-          border: `1px solid ${C.border}`,
-          borderRadius: 12,
-          padding: 36,
-          boxShadow: '0 2px 20px rgba(0,0,0,0.06)',
-        }}>
-          <div style={{ marginBottom: 28 }}>
-            <div style={{ fontSize: 10, letterSpacing: 4, color: C.textMuted, marginBottom: 8 }}>
-              {mode === 'login' ? 'SIGN IN' : 'CREATE ACCOUNT'}
-            </div>
-            <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 24, fontWeight: 700 }}>
-              {mode === 'login' ? 'Welcome back' : 'Get started'}
-            </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 40 }}>
+            {[
+              { icon: '🎯', text: '1,100+ Expert PM Questions' },
+              { icon: '🤖', text: 'AI Interviewer with Real-Time Feedback' },
+              { icon: '📊', text: 'Personalized Scorecard & Study Plan' },
+            ].map(({ icon, text }) => (
+              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                <span style={{ fontSize: 22 }}>{icon}</span>
+                <span style={{ fontSize: 16, color: C.textMuted, lineHeight: 1.5 }}>{text}</span>
+              </div>
+            ))}
           </div>
 
+          <div style={{
+            padding: '16px 20px',
+            background: '#FFFFFF', border: `1px solid ${C.border}`,
+            borderRadius: 12, fontSize: 16, fontWeight: 600, color: C.text,
+            boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+          }}>
+            3 free AI sessions. No credit card.
+          </div>
+        </div>
+      </div>
+
+      {/* Right panel */}
+      <div className="auth-right" style={{
+        flex: 1, minWidth: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '48px 32px',
+      }}>
+        <div style={{
+          background: '#FFFFFF', borderRadius: 24,
+          border: `1px solid ${C.border}`,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
+          padding: '40px 40px',
+          width: '100%', maxWidth: 440,
+          animation: 'fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
+        }}>
+          <h2 style={{
+            fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400,
+            color: C.text, marginBottom: 6,
+          }}>
+            {mode === 'login' ? 'Welcome back' : 'Create your account'}
+          </h2>
+          <p style={{ fontSize: 14, color: C.textMuted, marginBottom: 28 }}>
+            {mode === 'login' ? 'Sign in to continue your practice.' : 'Start with 3 free AI interview sessions.'}
+          </p>
+
           {error && (
-            <div style={{ padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 6, fontSize: 12, color: C.red, marginBottom: 20 }}>
+            <div style={{ padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 8, fontSize: 13, color: C.red, marginBottom: 20 }}>
               {error}
             </div>
           )}
           {success && (
-            <div style={{ padding: '10px 14px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 6, fontSize: 12, color: C.green, marginBottom: 20 }}>
+            <div style={{ padding: '10px 14px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 8, fontSize: 13, color: C.green, marginBottom: 20 }}>
               {success}
             </div>
           )}
 
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 8 }}>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: C.textMuted, marginBottom: 8 }}>
                 Email
               </label>
               <input
@@ -123,12 +150,19 @@ export default function AuthPage() {
                 onChange={e => setEmail(e.target.value)}
                 required
                 placeholder="you@example.com"
-                style={inputStyle}
+                style={{
+                  width: '100%', background: '#FFFFFF',
+                  border: `1.5px solid ${C.border}`,
+                  borderRadius: 12, padding: '14px 18px',
+                  color: C.text, fontSize: 15,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'border-color 0.2s',
+                }}
               />
             </div>
 
             <div style={{ marginBottom: 28 }}>
-              <label style={{ display: 'block', fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 8 }}>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: C.textMuted, marginBottom: 8 }}>
                 Password
               </label>
               <input
@@ -137,7 +171,14 @@ export default function AuthPage() {
                 onChange={e => setPassword(e.target.value)}
                 required
                 placeholder={mode === 'signup' ? 'Min. 6 characters' : '••••••••'}
-                style={inputStyle}
+                style={{
+                  width: '100%', background: '#FFFFFF',
+                  border: `1.5px solid ${C.border}`,
+                  borderRadius: 12, padding: '14px 18px',
+                  color: C.text, fontSize: 15,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'border-color 0.2s',
+                }}
               />
             </div>
 
@@ -145,22 +186,16 @@ export default function AuthPage() {
               type="submit"
               disabled={loading}
               style={{
-                width: '100%',
-                padding: '15px',
-                background: loading ? C.bgMuted : C.orange,
-                border: 'none',
-                borderRadius: 8,
+                width: '100%', height: 48,
+                background: loading ? C.border : RAINBOW,
+                border: 'none', borderRadius: 12,
                 color: loading ? C.textMuted : '#fff',
-                fontSize: 11,
-                letterSpacing: 3,
-                textTransform: 'uppercase',
+                fontSize: 16,
                 cursor: loading ? 'wait' : 'pointer',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 500,
-                transition: 'background 0.2s',
+                fontWeight: 600,
+                opacity: loading ? 0.7 : 1,
               }}
-              onMouseEnter={e => { if (!loading) e.currentTarget.style.background = C.orangeHover; }}
-              onMouseLeave={e => { if (!loading) e.currentTarget.style.background = C.orange; }}
             >
               {loading ? 'Please wait...' : mode === 'login' ? 'Sign In' : 'Create Account'}
             </button>
@@ -171,12 +206,11 @@ export default function AuthPage() {
               onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(''); setSuccess(''); }}
               style={{
                 background: 'none', border: 'none', cursor: 'pointer',
-                fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                letterSpacing: 0.5,
+                fontSize: 14, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
               }}
             >
               {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-              <span style={{ color: C.orange, textDecoration: 'underline' }}>
+              <span style={{ color: C.orange, fontWeight: 600 }}>
                 {mode === 'login' ? 'Sign up' : 'Sign in'}
               </span>
             </button>
