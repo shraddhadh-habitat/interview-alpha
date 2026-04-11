@@ -68,6 +68,12 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const handler = (e) => setPage(e.detail);
+    window.addEventListener('ia:navigate', handler);
+    return () => window.removeEventListener('ia:navigate', handler);
+  }, []);
+
   const loadProfile = useCallback(async (uid) => {
     const { data } = await supabase
       .from('profiles')

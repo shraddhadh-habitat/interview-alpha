@@ -637,11 +637,24 @@ export default function Scorecard({ user }) {
   const hasNoData = sessions.length === 0 && practiceAttempts.length === 0;
   if (hasNoData) return (
     <div style={{ background: C.bg, minHeight: '100vh', paddingTop: NAV_H, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <div style={{ textAlign: 'center', maxWidth: 400 }}>
-        <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 700, color: C.text, marginBottom: 14 }}>No data yet</div>
-        <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.7, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          Complete at least one interview session or practice attempt to generate your scorecard.
+      <div style={{ textAlign: 'center', maxWidth: 440, padding: '0 24px' }}>
+        <div style={{ fontSize: 56, marginBottom: 20 }}>📊</div>
+        <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: C.text, marginBottom: 14, lineHeight: 1.2 }}>
+          Your scorecard is waiting
         </div>
+        <div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.7, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 28 }}>
+          Complete at least one interview session or practice attempt to unlock your personalized performance scorecard.
+        </div>
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'interview' }))}
+          style={{
+            padding: '13px 32px', background: '#E8650A', border: 'none',
+            borderRadius: 12, color: '#fff', fontSize: 15, fontWeight: 600,
+            cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}
+        >
+          Start Practicing →
+        </button>
       </div>
     </div>
   );

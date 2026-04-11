@@ -557,9 +557,24 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
         {/* Question list */}
         {filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: C.textMuted }}>
-            <div style={{ fontSize: 32, marginBottom: 12, opacity: 0.3 }}>◆</div>
-            <div style={{ fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No questions match your filters.</div>
+          <div style={{ textAlign: 'center', padding: '72px 24px', color: C.textMuted }}>
+            <div style={{ fontSize: 52, marginBottom: 16 }}>🔍</div>
+            <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, color: C.text, marginBottom: 10 }}>
+              You haven&apos;t practiced any questions yet
+            </div>
+            <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 24 }}>
+              Try a different filter, or browse all categories to find your next challenge.
+            </div>
+            <button
+              onClick={() => { setSearch(''); setCategory('All'); setLevel('All'); }}
+              style={{
+                padding: '12px 28px', background: C.orange, border: 'none',
+                borderRadius: 12, color: '#fff', fontSize: 14, fontWeight: 600,
+                cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}
+            >
+              Browse Questions →
+            </button>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
