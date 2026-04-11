@@ -740,6 +740,24 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     return stripThinking(fullText);
   }, []);
 
+  const companyContexts = {
+    "Google": "COMPANY CONTEXT: Interviewing for Google. Ask blended questions pivoting from vision to analytics to tradeoffs. Test Googleyness — collaborative, user-first, data-driven. Test analytical estimation. Reference Google products (Search, YouTube, Cloud, Maps, Android). Google has the highest technical bar.",
+    "Amazon": "COMPANY CONTEXT: Interviewing for Amazon. Map every question to Leadership Principles. Push deep on behavioral — 'what specifically did YOU do?' Demand metrics and data. Test Customer Obsession, Ownership, Bias for Action, Dive Deep, Disagree and Commit.",
+    "Meta": "COMPANY CONTEXT: Interviewing for Meta. Use Understand-Identify-Execute framework. Product Sense for 3B+ user base. Execution on metrics and shipping at scale. Leadership & Drive on influence without authority. Reference Facebook, Instagram, WhatsApp, Messenger.",
+    "Apple": "COMPANY CONTEXT: Interviewing for Apple. Evaluate product taste, design intuition, attention to detail, simplicity. Test privacy implications. Ask about craftsmanship. Reference iPhone, Mac, Vision Pro, services ecosystem.",
+    "Microsoft": "COMPANY CONTEXT: Interviewing for Microsoft. Growth mindset evaluation. Collaboration and inclusion. Reference Azure, Teams, Office, Windows, GitHub, LinkedIn. Enterprise thinking.",
+    "Flipkart": "COMPANY CONTEXT: Interviewing for Flipkart. India market — Tier 2/3 cities, vernacular, affordability. Growth metrics, unit economics. Marketplace dynamics, seller management, logistics.",
+    "Razorpay/Fintech": "COMPANY CONTEXT: Interviewing for fintech. Payments domain, UPI, RBI regulations, KYC. Developer experience. B2B+B2C thinking.",
+    "CRED/Consumer": "COMPANY CONTEXT: Interviewing for premium consumer company. Design thinking, premium UX, engagement loops, community building, trust.",
+    "Swiggy/Zepto": "COMPANY CONTEXT: Interviewing for hyperlocal delivery. Marketplace balance (supply/demand). Operations, delivery optimization. Speed vs quality. Quick commerce unit economics.",
+    "General/Other": "",
+  };
+
+  const buildSystemPrompt = useCallback(() => {
+    const ctx = companyContexts[company] || "";
+    return ctx ? `${SYSTEM_PROMPT}\n\n${ctx}` : SYSTEM_PROMPT;
+  }, [company]);
+
   const startInterview = useCallback(async () => {
     if (checkSession && !checkSession()) return;
     if (onSessionUsed) await onSessionUsed();
@@ -856,24 +874,6 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     { id: "Swiggy/Zepto", region: "India", desc: "Hyperlocal delivery. Marketplace dynamics. Speed vs quality. Unit economics." },
     { id: "General/Other", region: "General", desc: "Standard PM interview. No company-specific customization." },
   ];
-
-  const companyContexts = {
-    "Google": "COMPANY CONTEXT: Interviewing for Google. Ask blended questions pivoting from vision to analytics to tradeoffs. Test Googleyness — collaborative, user-first, data-driven. Test analytical estimation. Reference Google products (Search, YouTube, Cloud, Maps, Android). Google has the highest technical bar.",
-    "Amazon": "COMPANY CONTEXT: Interviewing for Amazon. Map every question to Leadership Principles. Push deep on behavioral — 'what specifically did YOU do?' Demand metrics and data. Test Customer Obsession, Ownership, Bias for Action, Dive Deep, Disagree and Commit.",
-    "Meta": "COMPANY CONTEXT: Interviewing for Meta. Use Understand-Identify-Execute framework. Product Sense for 3B+ user base. Execution on metrics and shipping at scale. Leadership & Drive on influence without authority. Reference Facebook, Instagram, WhatsApp, Messenger.",
-    "Apple": "COMPANY CONTEXT: Interviewing for Apple. Evaluate product taste, design intuition, attention to detail, simplicity. Test privacy implications. Ask about craftsmanship. Reference iPhone, Mac, Vision Pro, services ecosystem.",
-    "Microsoft": "COMPANY CONTEXT: Interviewing for Microsoft. Growth mindset evaluation. Collaboration and inclusion. Reference Azure, Teams, Office, Windows, GitHub, LinkedIn. Enterprise thinking.",
-    "Flipkart": "COMPANY CONTEXT: Interviewing for Flipkart. India market — Tier 2/3 cities, vernacular, affordability. Growth metrics, unit economics. Marketplace dynamics, seller management, logistics.",
-    "Razorpay/Fintech": "COMPANY CONTEXT: Interviewing for fintech. Payments domain, UPI, RBI regulations, KYC. Developer experience. B2B+B2C thinking.",
-    "CRED/Consumer": "COMPANY CONTEXT: Interviewing for premium consumer company. Design thinking, premium UX, engagement loops, community building, trust.",
-    "Swiggy/Zepto": "COMPANY CONTEXT: Interviewing for hyperlocal delivery. Marketplace balance (supply/demand). Operations, delivery optimization. Speed vs quality. Quick commerce unit economics.",
-    "General/Other": "",
-  };
-
-  const buildSystemPrompt = useCallback(() => {
-    const ctx = companyContexts[company] || "";
-    return ctx ? `${SYSTEM_PROMPT}\n\n${ctx}` : SYSTEM_PROMPT;
-  }, [company]);
 
   // NAV_H = 3px accent + 52px nav bar
   const NAV_H = 55;

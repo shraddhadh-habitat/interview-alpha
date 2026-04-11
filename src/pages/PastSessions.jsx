@@ -207,9 +207,14 @@ export default function PastSessions({ user }) {
         )}
 
         {!loading && sessions.length === 0 && (
-          <div style={{ textAlign: 'center', padding: 60, color: C.textMuted }}>
-            <div style={{ fontSize: 36, marginBottom: 16, opacity: 0.3 }}>◆</div>
-            <div style={{ fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No sessions yet. Complete your first interview to see results here.</div>
+          <div style={{ textAlign: 'center', padding: '60px 24px' }}>
+            <div style={{ fontSize: 56, marginBottom: 20 }}>💬</div>
+            <div style={{ fontSize: 22, fontFamily: "'Instrument Serif', serif", color: C.text, marginBottom: 12 }}>
+              No interviews yet. Ready for your first session with Alpha?
+            </div>
+            <div style={{ fontSize: 15, color: C.textMuted, marginBottom: 28 }}>
+              Complete a live interview to see your performance history and scorecards.
+            </div>
           </div>
         )}
 
