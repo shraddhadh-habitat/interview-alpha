@@ -50,7 +50,7 @@ const COACHES = [
     handle: '@drnancyli',
     channelUrl: 'https://www.youtube.com/c/drnancyli',
     description: 'CEO of PM Accelerator and Forbes-featured AI product leader. Offers free PM interview frameworks, mock interviews, and career coaching with over 1 million YouTube views.',
-    videos: [],
+    videos: null,
   },
   {
     name: 'Ankit Shukla',
@@ -58,7 +58,6 @@ const COACHES = [
     channelUrl: 'https://hellopm.co',
     description: 'Founder of HelloPM, a PM bootcamp and upskilling platform serving the Indian tech market. Covers PM fundamentals, case studies, and interview prep for top companies.',
     videos: null,
-    noYouTube: true,
   },
   {
     name: 'Lenny Rachitsky',
@@ -77,7 +76,6 @@ const COACHES = [
     channelUrl: 'https://www.productteacher.com',
     description: 'Founder of Product Teacher. Teaches PM interviews, product strategy frameworks, and career transitions through structured, highly accessible educational content.',
     videos: null,
-    noYouTube: true,
   },
   {
     name: 'Mahesh Yadav',
@@ -85,16 +83,13 @@ const COACHES = [
     channelUrl: 'https://www.linkedin.com/in/initmahesh/',
     description: 'Former Google, Meta, AWS, and Microsoft AI product leader with 20+ years of experience and 12 patents. Teaches AI product management, agentic AI, and PM interview prep on Maven.',
     videos: null,
-    noYouTube: true,
   },
   {
     name: 'Peter Yang',
     handle: '@peteryangyt',
     channelUrl: 'https://www.youtube.com/@peteryangyt',
     description: 'Former Meta PM and creator of the Behind the Craft newsletter with 140K+ readers. Makes practical AI tutorials and interviews top product builders on strategy and senior PM thinking.',
-    videos: [
-      { id: 'ikyxK6i0AL0', title: 'From Idea to Product in 30 Min Using AI Agents — with Claire Vo' },
-    ],
+    videos: null,
   },
   {
     name: 'Claire Vo',
@@ -102,14 +97,13 @@ const COACHES = [
     channelUrl: 'https://clairevo.com',
     description: '3x CPO and founder of ChatPRD. Known for sharp takes on AI\'s impact on the PM role, what product leadership looks like at scale, and the future of the PM career.',
     videos: null,
-    noYouTube: true,
   },
   {
     name: 'Sachin Sharma',
     handle: '@catchupwithsachin',
     channelUrl: 'https://www.youtube.com/@catchupwithsachin',
     description: 'Product Career Coach with 10+ years of PM experience who has mentored 1,000+ aspiring PMs. Covers PM skills, interview prep, and product case studies for Indian and global tech.',
-    videos: [],
+    videos: null,
   },
 ];
 
@@ -188,40 +182,14 @@ function VideoCard({ video }) {
   );
 }
 
-const BROWSE_LABELS = [
-  { icon: '🎬', text: 'More videos on this channel' },
-  { icon: '▶', text: 'Watch on YouTube' },
-  { icon: '📺', text: 'Explore the full channel' },
-];
-
-function BrowseCard({ index }) {
-  const [hovered, setHovered] = useState(false);
-  const label = BROWSE_LABELS[index] || BROWSE_LABELS[0];
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        borderRadius: 12, overflow: 'hidden', cursor: 'pointer',
-        border: `1.5px dashed ${hovered ? C.green : C.border}`,
-        background: hovered ? C.greenLight : C.bgMuted,
-        transition: 'all 0.18s ease',
-        display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        minHeight: 140, padding: 20, textAlign: 'center',
-      }}
-    >
-      <span style={{ fontSize: 28, marginBottom: 10 }}>{label.icon}</span>
-      <span style={{
-        fontSize: 13, fontWeight: 500, color: hovered ? C.green : C.textMuted,
-        fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.4,
-        transition: 'color 0.18s',
-      }}>{label.text}</span>
-    </div>
-  );
+function buttonLabel(url) {
+  if (url.includes('youtube.com')) return 'Visit Channel →';
+  if (url.includes('linkedin.com')) return 'Visit LinkedIn →';
+  return 'Visit Profile →';
 }
 
 function CoachCard({ coach }) {
+  const hasVideos = coach.videos && coach.videos.length > 0;
   return (
     <div style={{
       background: C.card, borderRadius: 16,
@@ -257,30 +225,17 @@ function CoachCard({ coach }) {
           onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
         >
-          {coach.noYouTube ? 'Visit Profile →' : 'Visit Channel →'}
+          {buttonLabel(coach.channelUrl)}
         </a>
       </div>
 
-      <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: coach.noYouTube ? 0 : '0 0 24px', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: hasVideos ? '0 0 24px' : 0, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         {coach.description}
       </p>
 
-      {/* Videos — only for coaches with a YouTube channel */}
-      {coach.videos !== null && coach.videos !== undefined && (
+      {hasVideos && (
         <div className="lr-video-row" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
           {coach.videos.map(v => <VideoCard key={v.id} video={v} />)}
-          {/* Fill remaining slots up to 3 with a styled channel-browse card */}
-          {Array.from({ length: Math.max(0, 3 - coach.videos.length) }).map((_, i) => (
-            <a
-              key={`more-${i}`}
-              href={coach.channelUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: 'none', flex: '1 1 0', minWidth: 0 }}
-            >
-              <BrowseCard channelUrl={coach.channelUrl} index={i} total={3 - coach.videos.length} />
-            </a>
-          ))}
         </div>
       )}
     </div>
