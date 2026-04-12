@@ -45,6 +45,72 @@ const COACHES = [
       { id: 't4hisfA97pE', title: 'The Ultimate Guide to Your Next Product Management Job' },
     ],
   },
+  {
+    name: 'Dr. Nancy Li',
+    handle: '@drnancyli',
+    channelUrl: 'https://www.youtube.com/c/drnancyli',
+    description: 'CEO of PM Accelerator and Forbes-featured AI product leader. Offers free PM interview frameworks, mock interviews, and career coaching with over 1 million YouTube views.',
+    videos: [],
+  },
+  {
+    name: 'Ankit Shukla',
+    handle: '@HelloPM',
+    channelUrl: 'https://hellopm.co',
+    description: 'Founder of HelloPM, a PM bootcamp and upskilling platform serving the Indian tech market. Covers PM fundamentals, case studies, and interview prep for top companies.',
+    videos: null,
+    noYouTube: true,
+  },
+  {
+    name: 'Lenny Rachitsky',
+    handle: '@lennysan',
+    channelUrl: 'https://www.youtube.com/@LennysPodcast',
+    description: 'Former Airbnb PM and author of the #1 product newsletter. Hosts in-depth interviews with world-class product leaders and growth experts on strategy, career, and building great products.',
+    videos: [
+      { id: '93fCvFkY1Lg', title: 'PM Is Dead. So What Are We Doing Instead? — Lenny & Friends Summit 2024' },
+      { id: '4LjddcccYIo', title: 'Mastering Product Strategy and Growing as a PM — Maggie Crowley' },
+      { id: 'atS060bNpE0', title: '4 Questions Shreyas Doshi Wishes He\'d Asked Himself Sooner' },
+    ],
+  },
+  {
+    name: 'Clement Kao',
+    handle: '@ProductTeacher',
+    channelUrl: 'https://www.productteacher.com',
+    description: 'Founder of Product Teacher. Teaches PM interviews, product strategy frameworks, and career transitions through structured, highly accessible educational content.',
+    videos: null,
+    noYouTube: true,
+  },
+  {
+    name: 'Mahesh Yadav',
+    handle: '@initmahesh',
+    channelUrl: 'https://www.linkedin.com/in/initmahesh/',
+    description: 'Former Google, Meta, AWS, and Microsoft AI product leader with 20+ years of experience and 12 patents. Teaches AI product management, agentic AI, and PM interview prep on Maven.',
+    videos: null,
+    noYouTube: true,
+  },
+  {
+    name: 'Peter Yang',
+    handle: '@peteryangyt',
+    channelUrl: 'https://www.youtube.com/@peteryangyt',
+    description: 'Former Meta PM and creator of the Behind the Craft newsletter with 140K+ readers. Makes practical AI tutorials and interviews top product builders on strategy and senior PM thinking.',
+    videos: [
+      { id: 'ikyxK6i0AL0', title: 'From Idea to Product in 30 Min Using AI Agents — with Claire Vo' },
+    ],
+  },
+  {
+    name: 'Claire Vo',
+    handle: '@clairevo',
+    channelUrl: 'https://clairevo.com',
+    description: '3x CPO and founder of ChatPRD. Known for sharp takes on AI\'s impact on the PM role, what product leadership looks like at scale, and the future of the PM career.',
+    videos: null,
+    noYouTube: true,
+  },
+  {
+    name: 'Sachin Sharma',
+    handle: '@catchupwithsachin',
+    channelUrl: 'https://www.youtube.com/@catchupwithsachin',
+    description: 'Product Career Coach with 10+ years of PM experience who has mentored 1,000+ aspiring PMs. Covers PM skills, interview prep, and product case studies for Indian and global tech.',
+    videos: [],
+  },
 ];
 
 const MORE_RESOURCES = [
@@ -191,30 +257,32 @@ function CoachCard({ coach }) {
           onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
         >
-          Visit Channel →
+          {coach.noYouTube ? 'Visit Profile →' : 'Visit Channel →'}
         </a>
       </div>
 
-      <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: '0 0 24px', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.75, margin: coach.noYouTube ? 0 : '0 0 24px', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         {coach.description}
       </p>
 
-      {/* Videos — verified thumbnails + "browse more" filler to maintain 3-column grid */}
-      <div className="lr-video-row" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-        {coach.videos.map(v => <VideoCard key={v.id} video={v} />)}
-        {/* Fill remaining slots up to 3 with a styled channel-browse card */}
-        {Array.from({ length: Math.max(0, 3 - coach.videos.length) }).map((_, i) => (
-          <a
-            key={`more-${i}`}
-            href={coach.channelUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: 'none', flex: '1 1 0', minWidth: 0 }}
-          >
-            <BrowseCard channelUrl={coach.channelUrl} index={i} total={3 - coach.videos.length} />
-          </a>
-        ))}
-      </div>
+      {/* Videos — only for coaches with a YouTube channel */}
+      {coach.videos !== null && coach.videos !== undefined && (
+        <div className="lr-video-row" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+          {coach.videos.map(v => <VideoCard key={v.id} video={v} />)}
+          {/* Fill remaining slots up to 3 with a styled channel-browse card */}
+          {Array.from({ length: Math.max(0, 3 - coach.videos.length) }).map((_, i) => (
+            <a
+              key={`more-${i}`}
+              href={coach.channelUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: 'none', flex: '1 1 0', minWidth: 0 }}
+            >
+              <BrowseCard channelUrl={coach.channelUrl} index={i} total={3 - coach.videos.length} />
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
