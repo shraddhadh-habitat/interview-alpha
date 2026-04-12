@@ -77,7 +77,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     { id: 'scorecard', label: 'Scorecard' },
     { id: 'salary', label: 'Salary Guide' },
     { id: 'resources', label: 'Resources' },
-    ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade', isUpgrade: true }] : []),
+    ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
   ];
 
   const handleNav = (tabId) => {
@@ -117,26 +117,28 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     .nav-tabs::-webkit-scrollbar { display: none; }
     .nav-tab {
       padding: 0 16px;
-      background: transparent;
+      background: ${RAINBOW};
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       border: none;
       border-bottom: 2px solid transparent;
-      color: ${C.textMuted};
       font-size: 14px;
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 500;
       white-space: nowrap;
       cursor: pointer;
-      transition: all 0.18s;
+      transition: opacity 0.18s;
       display: flex;
       align-items: center;
     }
-    .nav-tab:hover { color: ${C.text}; }
+    .nav-tab:hover { opacity: 0.65; }
     .nav-tab.active {
-      color: ${C.green};
-      border-bottom-color: ${C.green};
+      font-weight: 700;
+      border-bottom: 2px solid;
+      border-image: ${RAINBOW} 1;
     }
-    .nav-tab.upgrade { color: ${C.green}; }
-    .nav-tab.admin { color: ${C.red}; }
+    .nav-tab.admin { color: ${C.red}; -webkit-text-fill-color: ${C.red}; }
     .hamburger-btn {
       display: none;
       background: none;
@@ -220,11 +222,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
               className={`nav-tab${page === tab.id ? ' active' : ''}`}
               onClick={() => handleNav(tab.id)}
             >
-              {tab.isUpgrade ? (
-                <span style={{ padding: '4px 12px', background: RAINBOW, borderRadius: 20, color: '#fff', fontSize: 12, fontWeight: 600 }}>
-                  {tab.label}
-                </span>
-              ) : tab.label}
+              {tab.label}
             </button>
           ))}
         </div>
@@ -314,12 +312,15 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
               style={{
                 display: 'block', width: '100%', textAlign: 'left',
                 padding: '0 16px', height: 56,
-                background: page === tab.id ? C.greenLight : 'transparent',
+                background: tab.id === 'admin' ? 'transparent' : (page === tab.id ? 'rgba(255,107,107,0.07)' : RAINBOW),
+                WebkitBackgroundClip: tab.id === 'admin' ? 'unset' : 'text',
+                WebkitTextFillColor: tab.id === 'admin' ? C.red : 'transparent',
+                backgroundClip: tab.id === 'admin' ? 'unset' : 'text',
                 border: 'none',
                 borderRadius: 12,
-                color: tab.id === 'admin' ? C.red : (page === tab.id || tab.id === 'upgrade') ? C.green : C.text,
+                color: tab.id === 'admin' ? C.red : 'transparent',
                 fontSize: 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: page === tab.id ? 600 : 400,
+                fontWeight: page === tab.id ? 700 : 400,
                 cursor: 'pointer',
               }}
             >
