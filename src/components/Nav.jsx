@@ -77,6 +77,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     { id: 'scorecard', label: 'Scorecard' },
     { id: 'salary', label: 'Salary Guide' },
     { id: 'resources', label: 'Resources' },
+    ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade', isUpgrade: true }] : []),
   ];
 
   const handleNav = (tabId) => {
@@ -219,7 +220,11 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
               className={`nav-tab${page === tab.id ? ' active' : ''}`}
               onClick={() => handleNav(tab.id)}
             >
-              {tab.label}
+              {tab.isUpgrade ? (
+                <span style={{ padding: '4px 12px', background: RAINBOW, borderRadius: 20, color: '#fff', fontSize: 12, fontWeight: 600 }}>
+                  {tab.label}
+                </span>
+              ) : tab.label}
             </button>
           ))}
         </div>
@@ -294,10 +299,10 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
             { id: 'scorecard', label: 'Scorecard' },
             { id: 'salary', label: 'Salary Guide' },
             { id: 'resources', label: 'Learning Resources' },
-            { id: 'sessions', label: 'Past Sessions' },
-            { id: 'progress', label: 'My Progress' },
             ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
             ...(isAdmin ? [{ id: 'admin', label: 'Admin' }] : []),
+            { id: 'sessions', label: 'Past Sessions' },
+            { id: 'progress', label: 'My Progress' },
             ...(onReplayDemo ? [{ id: '__tour', label: 'Take Tour' }] : []),
           ].map(tab => (
             <button
