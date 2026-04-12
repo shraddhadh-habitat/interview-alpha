@@ -21,9 +21,7 @@ const COACHES = [
     handle: '@TheSwagWalaPM',
     channelUrl: 'https://www.youtube.com/c/TheSwagWalaPM',
     description: 'PM career coach helping aspiring and experienced PMs crack interviews at top tech companies. Covers product sense, execution, and real interview breakdowns.',
-    videos: [
-      { id: 'dOrrxtVsbyQ', title: 'The Product Management Job Search in 2024: How to Win' },
-    ],
+    videos: null,
   },
   {
     name: 'Sugat Nayak',
@@ -41,9 +39,7 @@ const COACHES = [
     handle: '@PMDiegoGranados',
     channelUrl: 'https://www.youtube.com/c/PMDiegoGranados',
     description: 'High-energy PM interview coach known for real-talk feedback and zero-fluff approach. Covers product sense frameworks, mock interviews, and career strategy.',
-    videos: [
-      { id: 't4hisfA97pE', title: 'The Ultimate Guide to Your Next Product Management Job' },
-    ],
+    videos: null,
   },
   {
     name: 'Dr. Nancy Li',
