@@ -14,46 +14,22 @@ const C = {
 
 const NAV_H = 60;
 
-// ── Section 1: coaches with verified working thumbnails only ─────────────────
-const FEATURED = [
-  {
-    name: 'Sugat Nayak',
-    handle: '@SugatNayak',
-    channelUrl: 'https://www.youtube.com/@SugatNayak',
-    description: 'Product management mentor focused on the Indian tech ecosystem. Covers PM interviews, career transitions, and product strategy for startups and MNCs.',
-    videos: [
-      { id: 'IuPL0z99xwo', title: 'Interview Experience at PayPal | Product Manager Interview' },
-      { id: 'HPopE5cY18w', title: 'PM Interview Experience at Swiggy | Sales to Product Manager' },
-      { id: 'HVzFjiA5UMQ', title: 'Interview Experience at PayU | Product Manager Interview Series' },
-    ],
-  },
-  {
-    name: 'Lenny Rachitsky',
-    handle: '@lennysan',
-    channelUrl: 'https://www.youtube.com/@LennysPodcast',
-    description: 'Former Airbnb PM and author of the #1 product newsletter. In-depth interviews with world-class product leaders on strategy, growth, and career.',
-    videos: [
-      { id: '93fCvFkY1Lg', title: 'PM Is Dead. So What Are We Doing Instead? — Lenny & Friends Summit 2024' },
-      { id: '4LjddcccYIo', title: 'Mastering Product Strategy and Growing as a PM — Maggie Crowley' },
-      { id: 'atS060bNpE0', title: '4 Questions Shreyas Doshi Wishes He\'d Asked Himself Sooner' },
-    ],
-  },
-];
-
-// ── Section 2: compact coach grid ────────────────────────────────────────────
+// ── Section 1: PM Coaches & Mentors ──────────────────────────────────────────
 const COACHES = [
-  { name: 'Shravan Tikoo',  tagline: 'PM career coach. Product sense, execution, interview breakdowns.',  url: 'https://www.youtube.com/c/TheSwagWalaPM',                         btn: 'YouTube →'  },
-  { name: 'Diego Granados', tagline: 'High-energy PM coach. Real-talk feedback, mock interviews.',         url: 'https://www.youtube.com/c/PMDiegoGranados',                      btn: 'YouTube →'  },
-  { name: 'Dr. Nancy Li',   tagline: 'Former Google PM. Interview frameworks, career coaching.',           url: 'https://www.youtube.com/c/drnancyli',                             btn: 'YouTube →'  },
-  { name: 'Ankit Shukla',   tagline: 'Indian tech PM coach. Fundamentals, case studies.',                 url: 'https://hellopm.co',                                              btn: 'Website →'  },
-  { name: 'Clement Kao',    tagline: 'Product Teacher founder. PM interviews, strategy.',                  url: 'https://www.youtube.com/@ProductTeacher',                         btn: 'YouTube →'  },
-  { name: 'Mahesh Yadav',   tagline: 'AI product leader. PM interviews, agentic AI.',                     url: 'https://www.linkedin.com/in/initmahesh/',                         btn: 'LinkedIn →' },
-  { name: 'Peter Yang',     tagline: 'Former Meta PM. Product sense, strategy frameworks.',                url: 'https://www.youtube.com/@peteryangyt',                           btn: 'YouTube →'  },
-  { name: 'Claire Vo',      tagline: 'CEO & former CPO. Product leadership insights.',                    url: 'https://www.linkedin.com/in/clairevo/',                           btn: 'LinkedIn →' },
-  { name: 'Sachin Sharma',  tagline: 'PM content creator. Skills, interview prep.',                       url: 'https://www.linkedin.com/in/sachin-sharma-product-career-coach/', btn: 'LinkedIn →' },
+  { name: 'Sugat Nayak',    tagline: 'PM mentor for Indian tech. Interviews, career transitions, product strategy.',  url: 'https://www.youtube.com/@SugatNayak',                            btn: 'YouTube →'  },
+  { name: 'Lenny Rachitsky',tagline: 'Former Airbnb PM. In-depth interviews with world-class product leaders.',       url: 'https://www.youtube.com/@LennysPodcast',                         btn: 'YouTube →'  },
+  { name: 'Shravan Tikoo',  tagline: 'PM career coach. Product sense, execution, interview breakdowns.',              url: 'https://www.youtube.com/c/TheSwagWalaPM',                         btn: 'YouTube →'  },
+  { name: 'Diego Granados', tagline: 'High-energy PM coach. Real-talk feedback, mock interviews.',                    url: 'https://www.youtube.com/c/PMDiegoGranados',                      btn: 'YouTube →'  },
+  { name: 'Dr. Nancy Li',   tagline: 'Former Google PM. Interview frameworks, career coaching.',                      url: 'https://www.youtube.com/c/drnancyli',                             btn: 'YouTube →'  },
+  { name: 'Ankit Shukla',   tagline: 'Indian tech PM coach. Fundamentals, case studies.',                            url: 'https://hellopm.co',                                              btn: 'Website →'  },
+  { name: 'Clement Kao',    tagline: 'Product Teacher founder. PM interviews, strategy.',                             url: 'https://www.youtube.com/@ProductTeacher',                         btn: 'YouTube →'  },
+  { name: 'Mahesh Yadav',   tagline: 'AI product leader. PM interviews, agentic AI.',                                url: 'https://www.linkedin.com/in/initmahesh/',                         btn: 'LinkedIn →' },
+  { name: 'Peter Yang',     tagline: 'Former Meta PM. Product sense, strategy frameworks.',                           url: 'https://www.youtube.com/@peteryangyt',                           btn: 'YouTube →'  },
+  { name: 'Claire Vo',      tagline: 'CEO & former CPO. Product leadership insights.',                               url: 'https://www.linkedin.com/in/clairevo/',                           btn: 'LinkedIn →' },
+  { name: 'Sachin Sharma',  tagline: 'PM content creator. Skills, interview prep.',                                  url: 'https://www.linkedin.com/in/sachin-sharma-product-career-coach/', btn: 'LinkedIn →' },
 ];
 
-// ── Section 3: books ─────────────────────────────────────────────────────────
+// ── Section 2: Books ──────────────────────────────────────────────────────────
 const BOOKS = [
   { title: 'Cracking the PM Interview', author: 'Lewis C. Lin',  url: 'https://www.amazon.com/Cracking-PM-Interview-Product-Technology/dp/0984782818' },
   { title: 'Decode and Conquer',        author: 'Lewis C. Lin',  url: 'https://www.amazon.com/Decode-Conquer-Answers-Management-Interviews/dp/0615930417' },
@@ -70,100 +46,6 @@ function SectionLabel({ children, style }) {
       ...style,
     }}>
       {children}
-    </div>
-  );
-}
-
-function VideoCard({ video }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <a
-      href={`https://www.youtube.com/watch?v=${video.id}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ textDecoration: 'none', flex: '1 1 0', minWidth: 0 }}
-    >
-      <div
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        style={{
-          borderRadius: 10, overflow: 'hidden', cursor: 'pointer',
-          boxShadow: hovered ? '0 6px 20px rgba(0,0,0,0.13)' : '0 1px 4px rgba(0,0,0,0.08)',
-          transform: hovered ? 'scale(1.02)' : 'scale(1)',
-          transition: 'box-shadow 0.18s ease, transform 0.18s ease',
-        }}
-      >
-        <div style={{ position: 'relative' }}>
-          <img
-            src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
-            alt={video.title}
-            style={{ width: '100%', display: 'block', aspectRatio: '16/9', objectFit: 'cover' }}
-          />
-          {hovered && (
-            <div style={{
-              position: 'absolute', inset: 0,
-              background: 'rgba(0,0,0,0.4)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <span style={{ fontSize: 28, color: '#fff' }}>▶</span>
-            </div>
-          )}
-        </div>
-        <div style={{
-          padding: '9px 11px', background: C.card,
-          fontSize: 12, fontWeight: 500, color: C.text,
-          fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.4,
-        }}>
-          {video.title}
-        </div>
-      </div>
-    </a>
-  );
-}
-
-function FeaturedCard({ coach }) {
-  return (
-    <div style={{
-      background: C.card, borderRadius: 16,
-      border: `1px solid ${C.border}`,
-      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-      padding: 28, marginBottom: 20,
-    }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 12 }}>
-        <div>
-          <h2 style={{
-            fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 400,
-            color: C.text, margin: '0 0 4px',
-          }}>{coach.name}</h2>
-          <div style={{ fontSize: 13, color: C.textLight, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{coach.handle}</div>
-        </div>
-        <a
-          href={coach.channelUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex', alignItems: 'center',
-            padding: '7px 16px',
-            background: 'transparent',
-            border: `1.5px solid ${C.green}`,
-            borderRadius: 10, color: C.green,
-            fontSize: 13, fontWeight: 600,
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            textDecoration: 'none', whiteSpace: 'nowrap',
-            transition: 'background 0.15s',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-        >
-          Visit Channel →
-        </a>
-      </div>
-      <p style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.7, margin: '0 0 20px', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-        {coach.description}
-      </p>
-      <div className="lr-video-row" style={{ display: 'flex', gap: 14 }}>
-        {coach.videos.map(v => <VideoCard key={v.id} video={v} />)}
-      </div>
     </div>
   );
 }
@@ -240,7 +122,6 @@ export default function LearningResources() {
         }
         @media (max-width: 768px) {
           .lr-page { padding: 24px 16px !important; }
-          .lr-video-row { flex-direction: column !important; }
           .coaches-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
         @media (max-width: 480px) {
@@ -261,17 +142,13 @@ export default function LearningResources() {
           </p>
         </div>
 
-        {/* ── Section 1: Featured Video Channels ── */}
-        <SectionLabel>Featured Video Channels</SectionLabel>
-        {FEATURED.map(coach => <FeaturedCard key={coach.name} coach={coach} />)}
-
-        {/* ── Section 2: PM Coaches & Mentors ── */}
-        <SectionLabel style={{ marginTop: 44 }}>PM Coaches &amp; Mentors</SectionLabel>
+        {/* ── Section 1: PM Coaches & Mentors ── */}
+        <SectionLabel>PM Coaches &amp; Mentors</SectionLabel>
         <div className="coaches-grid">
           {COACHES.map(coach => <CoachCard key={coach.name} coach={coach} />)}
         </div>
 
-        {/* ── Section 3: Recommended Books ── */}
+        {/* ── Section 2: Recommended Books ── */}
         <SectionLabel style={{ marginTop: 44 }}>Recommended Books</SectionLabel>
         <div style={{
           background: C.card, borderRadius: 16,
