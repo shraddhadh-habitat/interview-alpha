@@ -117,6 +117,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     .nav-tabs::-webkit-scrollbar { display: none; }
     .nav-tab {
       padding: 0 16px;
+      font-weight: 700;
       background: ${RAINBOW};
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -320,7 +321,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                 borderRadius: 12,
                 color: tab.id === 'admin' ? C.red : 'transparent',
                 fontSize: 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: page === tab.id ? 700 : 400,
+                fontWeight: 700,
                 cursor: 'pointer',
               }}
             >
