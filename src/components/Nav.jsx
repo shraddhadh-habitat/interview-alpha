@@ -116,28 +116,28 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     }
     .nav-tabs::-webkit-scrollbar { display: none; }
     .nav-tab {
-      padding: 0 16px;
-      font-weight: 700;
+      padding: 0 18px;
       background: ${RAINBOW};
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       border: none;
-      border-bottom: 2px solid transparent;
-      font-size: 14px;
+      border-bottom: 3px solid transparent;
+      font-size: 15px;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 500;
+      font-weight: 800;
+      letter-spacing: 0.1px;
       white-space: nowrap;
       cursor: pointer;
-      transition: opacity 0.18s;
+      transition: filter 0.18s, transform 0.18s;
       display: flex;
       align-items: center;
     }
-    .nav-tab:hover { opacity: 0.65; }
+    .nav-tab:hover { filter: brightness(1.15) saturate(1.2); transform: translateY(-1px); }
     .nav-tab.active {
-      font-weight: 700;
-      border-bottom: 2px solid;
+      border-bottom: 3px solid;
       border-image: ${RAINBOW} 1;
+      filter: saturate(1.3);
     }
     .nav-tab.admin { color: ${C.red}; -webkit-text-fill-color: ${C.red}; }
     .hamburger-btn {
@@ -321,7 +321,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                 borderRadius: 12,
                 color: tab.id === 'admin' ? C.red : 'transparent',
                 fontSize: 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 700,
+                fontWeight: 800,
                 cursor: 'pointer',
               }}
             >
