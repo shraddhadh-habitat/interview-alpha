@@ -16,17 +16,13 @@ const NAV_H = 60;
 
 // ── Section 1: PM Coaches & Mentors ──────────────────────────────────────────
 const COACHES = [
-  { name: 'Shravan Tikoo',  tagline: 'PM career coach. Product sense, execution, interview breakdowns.',              url: 'https://www.youtube.com/c/TheSwagWalaPM',                         btn: 'YouTube →'  },
-  { name: 'Sugat Nayak',    tagline: 'PM mentor for Indian tech. Interviews, career transitions, product strategy.',  url: 'https://www.youtube.com/@SugatNayak',                            btn: 'YouTube →'  },
-  { name: 'Lenny Rachitsky',tagline: 'Former Airbnb PM. In-depth interviews with world-class product leaders.',       url: 'https://www.youtube.com/@LennysPodcast',                         btn: 'YouTube →'  },
-  { name: 'Diego Granados', tagline: 'High-energy PM coach. Real-talk feedback, mock interviews.',                    url: 'https://www.youtube.com/c/PMDiegoGranados',                      btn: 'YouTube →'  },
-  { name: 'Dr. Nancy Li',   tagline: 'Former Google PM. Interview frameworks, career coaching.',                      url: 'https://www.youtube.com/c/drnancyli',                             btn: 'YouTube →'  },
-  { name: 'Ankit Shukla',   tagline: 'Indian tech PM coach. Fundamentals, case studies.',                            url: 'https://hellopm.co',                                              btn: 'Website →'  },
-  { name: 'Clement Kao',    tagline: 'Product Teacher founder. PM interviews, strategy.',                             url: 'https://www.youtube.com/@ProductTeacher',                         btn: 'YouTube →'  },
-  { name: 'Mahesh Yadav',   tagline: 'AI product leader. PM interviews, agentic AI.',                                url: 'https://www.linkedin.com/in/initmahesh/',                         btn: 'LinkedIn →' },
-  { name: 'Peter Yang',     tagline: 'Former Meta PM. Product sense, strategy frameworks.',                           url: 'https://www.youtube.com/@peteryangyt',                           btn: 'YouTube →'  },
-  { name: 'Claire Vo',      tagline: 'CEO & former CPO. Product leadership insights.',                               url: 'https://www.linkedin.com/in/clairevo/',                           btn: 'LinkedIn →' },
-  { name: 'Sachin Sharma',  tagline: 'PM content creator. Skills, interview prep.',                                  url: 'https://www.linkedin.com/in/sachin-sharma-product-career-coach/', btn: 'LinkedIn →' },
+  { name: 'Shravan Tikoo',   tagline: 'PM career coach. Product sense, execution, interview breakdowns.',                                         url: 'https://www.youtube.com/c/TheSwagWalaPM',          btn: 'YouTube →' },
+  { name: 'Sugat Nayak',     tagline: 'PM mentor for Indian tech. Interviews, career transitions, product strategy.',                             url: 'https://www.youtube.com/@SugatNayak',              btn: 'YouTube →' },
+  { name: 'Diego Granados',  tagline: 'High-energy PM coach. Real-talk feedback, mock interviews.',                                               url: 'https://www.youtube.com/c/PMDiegoGranados',        btn: 'YouTube →' },
+  { name: 'Dr. Nancy Li',    tagline: 'Former Google PM. Interview frameworks, career coaching.',                                                  url: 'https://www.youtube.com/c/drnancyli',              btn: 'YouTube →' },
+  { name: 'Lenny Rachitsky', tagline: 'Former Airbnb PM. In-depth interviews with world-class product leaders.',                                  url: 'https://www.youtube.com/@LennysPodcast',           btn: 'YouTube →' },
+  { name: 'Peter Yang',      tagline: 'Former Meta PM. Product sense, strategy frameworks.',                                                      url: 'https://www.youtube.com/@peteryangyt',             btn: 'YouTube →' },
+  { name: 'Sachin Sharma',   tagline: 'PM content creator. PM skills, interview prep, and product case studies from Indian and global tech companies.', url: 'https://www.youtube.com/@catchupwithsachin', btn: 'YouTube →' },
 ];
 
 // ── Section 2: Books ──────────────────────────────────────────────────────────
