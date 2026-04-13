@@ -17,6 +17,7 @@ const NAV_H = 60;
 // ── Section 1: PM Coaches & Mentors ──────────────────────────────────────────
 const COACHES = [
   { name: 'Shravan Tikoo',   tagline: 'PM career coach. Product sense, execution, interview breakdowns.',                                         url: 'https://www.youtube.com/c/TheSwagWalaPM',          btn: 'YouTube →' },
+  { name: 'Aakash Gupta',    tagline: 'Former Faire & Yahoo PM. Product growth, metrics, and strategy deep-dives.',                               url: 'https://www.youtube.com/@growproduct',             btn: 'YouTube →' },
   { name: 'Sugat Nayak',     tagline: 'PM mentor for Indian tech. Interviews, career transitions, product strategy.',                             url: 'https://www.youtube.com/@SugatNayak',              btn: 'YouTube →' },
   { name: 'Diego Granados',  tagline: 'High-energy PM coach. Real-talk feedback, mock interviews.',                                               url: 'https://www.youtube.com/c/PMDiegoGranados',        btn: 'YouTube →' },
   { name: 'Dr. Nancy Li',    tagline: 'Former Google PM. Interview frameworks, career coaching.',                                                  url: 'https://www.youtube.com/c/drnancyli',              btn: 'YouTube →' },
@@ -24,7 +25,6 @@ const COACHES = [
   { name: 'Peter Yang',      tagline: 'Former Meta PM. Product sense, strategy frameworks.',                                                      url: 'https://www.youtube.com/@peteryangyt',             btn: 'YouTube →' },
   { name: 'Sachin Sharma',   tagline: 'PM content creator. PM skills, interview prep, and product case studies from Indian and global tech companies.', url: 'https://www.youtube.com/@catchupwithsachin',   btn: 'YouTube →' },
   { name: 'Dr. Bart Jaworski', tagline: 'PM coach and YouTuber. Product management tips, interview prep, and career advice.',                            url: 'https://www.youtube.com/@DrBartPM',             btn: 'YouTube →' },
-  { name: 'Aakash Gupta',      tagline: 'Former Faire & Yahoo PM. Product growth, metrics, and strategy deep-dives.',                                   url: 'https://www.youtube.com/@growproduct',          btn: 'YouTube →' },
 ];
 
 // ── Section 2: Books ──────────────────────────────────────────────────────────
