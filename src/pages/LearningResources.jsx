@@ -24,6 +24,7 @@ const COACHES = [
   { name: 'Peter Yang',      tagline: 'Former Meta PM. Product sense, strategy frameworks.',                                                      url: 'https://www.youtube.com/@peteryangyt',             btn: 'YouTube →' },
   { name: 'Sachin Sharma',   tagline: 'PM content creator. PM skills, interview prep, and product case studies from Indian and global tech companies.', url: 'https://www.youtube.com/@catchupwithsachin',   btn: 'YouTube →' },
   { name: 'Dr. Bart Jaworski', tagline: 'PM coach and YouTuber. Product management tips, interview prep, and career advice.',                            url: 'https://www.youtube.com/@DrBartPM',             btn: 'YouTube →' },
+  { name: 'Aakash Gupta',      tagline: 'Former Faire & Yahoo PM. Product growth, metrics, and strategy deep-dives.',                                   url: 'https://www.youtube.com/@growproduct',          btn: 'YouTube →' },
 ];
 
 // ── Section 2: Books ──────────────────────────────────────────────────────────
