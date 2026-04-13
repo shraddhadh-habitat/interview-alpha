@@ -116,28 +116,37 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     }
     .nav-tabs::-webkit-scrollbar { display: none; }
     .nav-tab {
-      padding: 0 18px;
-      background: ${RAINBOW};
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      padding: 0 16px;
+      background: none;
       border: none;
       border-bottom: 3px solid transparent;
       font-size: 15px;
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 800;
-      letter-spacing: 0.1px;
+      letter-spacing: 0.2px;
+      color: #6B7280;
       white-space: nowrap;
       cursor: pointer;
-      transition: filter 0.18s, transform 0.18s;
+      transition: color 0.15s, transform 0.15s;
       display: flex;
       align-items: center;
     }
-    .nav-tab:hover { filter: brightness(1.15) saturate(1.2); transform: translateY(-1px); }
+    .nav-tab:hover { color: #111827; transform: translateY(-1px); }
     .nav-tab.active {
-      border-bottom: 3px solid;
-      border-image: ${RAINBOW} 1;
-      filter: saturate(1.3);
+      background: ${RAINBOW};
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      border-bottom: 3px solid transparent;
+      position: relative;
+    }
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 12px; right: 12px;
+      height: 3px;
+      background: ${RAINBOW};
+      border-radius: 2px 2px 0 0;
     }
     .nav-tab.admin { color: ${C.red}; -webkit-text-fill-color: ${C.red}; }
     .hamburger-btn {
