@@ -22,7 +22,6 @@ const COACHES = [
   { name: 'Dr. Nancy Li',    tagline: 'Former Google PM. Interview frameworks, career coaching.',                                                  url: 'https://www.youtube.com/c/drnancyli',              btn: 'YouTube →' },
   { name: 'Lenny Rachitsky', tagline: 'Former Airbnb PM. In-depth interviews with world-class product leaders.',                                  url: 'https://www.youtube.com/@LennysPodcast',           btn: 'YouTube →' },
   { name: 'Peter Yang',      tagline: 'Former Meta PM. Product sense, strategy frameworks.',                                                      url: 'https://www.youtube.com/@peteryangyt',             btn: 'YouTube →' },
-  { name: 'Sachin Sharma',   tagline: 'PM content creator. PM skills, interview prep, and product case studies from Indian and global tech companies.', url: 'https://www.youtube.com/@catchupwithsachin', btn: 'YouTube →' },
 ];
 
 // ── Section 2: Books ──────────────────────────────────────────────────────────
