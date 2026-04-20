@@ -17,15 +17,15 @@ const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36
 
 // ── Section 1: PM Coaches & Mentors ──────────────────────────────────────────
 const COACHES = [
-  { name: 'Shravan Tikoo',    tagline: 'PM career coach. Product sense, execution, interview breakdowns.',                                          url: 'https://www.youtube.com/c/TheSwagWalaPM',        btn: 'YouTube →' },
-  { name: 'Aakash Gupta',     tagline: 'Former Faire & Yahoo PM. Product growth, metrics, and strategy deep-dives.',                                url: 'https://www.youtube.com/@growproduct',           btn: 'YouTube →' },
-  { name: 'Sugat Nayak',      tagline: 'PM mentor for Indian tech. Interviews, career transitions, product strategy.',                              url: 'https://www.youtube.com/@SugatNayak',            btn: 'YouTube →' },
-  { name: 'Diego Granados',   tagline: 'High-energy PM coach. Real-talk feedback, mock interviews.',                                                url: 'https://www.youtube.com/c/PMDiegoGranados',      btn: 'YouTube →' },
-  { name: 'Dr. Nancy Li',     tagline: 'Former Google PM. Interview frameworks, career coaching.',                                                   url: 'https://www.youtube.com/c/drnancyli',            btn: 'YouTube →' },
-  { name: 'Lenny Rachitsky',  tagline: 'Former Airbnb PM. In-depth interviews with world-class product leaders.',                                   url: 'https://www.youtube.com/@LennysPodcast',         btn: 'YouTube →' },
-  { name: 'Peter Yang',       tagline: 'Former Meta PM. Product sense, strategy frameworks.',                                                       url: 'https://www.youtube.com/@peteryangyt',           btn: 'YouTube →' },
-  { name: 'Sachin Sharma',    tagline: 'PM content creator. PM skills, interview prep, and product case studies from Indian and global tech.',      url: 'https://www.youtube.com/@catchupwithsachin',    btn: 'YouTube →' },
-  { name: 'Dr. Bart Jaworski',tagline: 'PM coach and YouTuber. Product management tips, interview prep, and career advice.',                        url: 'https://www.youtube.com/@DrBartPM',              btn: 'YouTube →' },
+  { name: 'Shravan Tikoo',    tagline: 'PM career coach. Product sense, execution, interview breakdowns.',                                          url: 'https://www.youtube.com/c/TheSwagWalaPM',        btn: 'YouTube →', videoId: '4qLNc4OiE2I' },
+  { name: 'Aakash Gupta',     tagline: 'Former Faire & Yahoo PM. Product growth, metrics, and strategy deep-dives.',                                url: 'https://www.youtube.com/@growproduct',           btn: 'YouTube →', videoId: 'whYs9JpLx8I' },
+  { name: 'Sugat Nayak',      tagline: 'PM mentor for Indian tech. Interviews, career transitions, product strategy.',                              url: 'https://www.youtube.com/@SugatNayak',            btn: 'YouTube →', videoId: 'K62p4ghDH0c' },
+  { name: 'Diego Granados',   tagline: 'High-energy PM coach. Real-talk feedback, mock interviews.',                                                url: 'https://www.youtube.com/c/PMDiegoGranados',      btn: 'YouTube →', videoId: 'dcdGWK1lUNY' },
+  { name: 'Dr. Nancy Li',     tagline: 'Former Google PM. Interview frameworks, career coaching.',                                                   url: 'https://www.youtube.com/c/drnancyli',            btn: 'YouTube →', videoId: 'S7NxrvGe8Xc' },
+  { name: 'Lenny Rachitsky',  tagline: 'Former Airbnb PM. In-depth interviews with world-class product leaders.',                                   url: 'https://www.youtube.com/@LennysPodcast',         btn: 'YouTube →', videoId: 'JFX869KrDGM' },
+  { name: 'Peter Yang',       tagline: 'Former Meta PM. Product sense, strategy frameworks.',                                                       url: 'https://www.youtube.com/@peteryangyt',           btn: 'YouTube →', videoId: 'GJJU7enXSRc' },
+  { name: 'Sachin Sharma',    tagline: 'PM content creator. PM skills, interview prep, and product case studies from Indian and global tech.',      url: 'https://www.youtube.com/@catchupwithsachin',    btn: 'YouTube →', videoId: 'V-Cxpq-wR0w' },
+  { name: 'Dr. Bart Jaworski',tagline: 'PM coach and YouTuber. Product management tips, interview prep, and career advice.',                        url: 'https://www.youtube.com/@DrBartPM',              btn: 'YouTube →', videoId: 'VboR68J8x-4' },
 ];
 
 // ── Section 2: Recommended Books ─────────────────────────────────────────────
@@ -102,6 +102,10 @@ function SectionLabel({ children, style }) {
 
 function CoachCard({ coach }) {
   const [hovered, setHovered] = useState(false);
+  const [imgError, setImgError] = useState(false);
+  const thumbUrl = coach.videoId ? `https://img.youtube.com/vi/${coach.videoId}/hqdefault.jpg` : null;
+  const showThumb = thumbUrl && !imgError;
+
   return (
     <div
       onMouseEnter={() => setHovered(true)}
@@ -112,29 +116,55 @@ function CoachCard({ coach }) {
         boxShadow: hovered ? '0 8px 24px rgba(0,0,0,0.10)' : '0 2px 6px rgba(0,0,0,0.05)',
         transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
         transition: 'box-shadow 0.2s ease, transform 0.2s ease',
-        padding: 24, display: 'flex', flexDirection: 'column',
+        overflow: 'hidden', display: 'flex', flexDirection: 'column',
       }}
     >
-      <div style={{ fontSize: 18, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6 }}>
-        {coach.name}
+      {/* Banner: video thumbnail or gradient fallback */}
+      {showThumb ? (
+        <img
+          src={thumbUrl}
+          alt={coach.name}
+          onError={() => setImgError(true)}
+          style={{
+            width: '100%', height: 140, objectFit: 'cover',
+            display: 'block', flexShrink: 0,
+          }}
+        />
+      ) : (
+        <div style={{
+          width: '100%', height: 140, flexShrink: 0,
+          background: 'linear-gradient(135deg, #8250DF 0%, #D946EF 100%)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 52, fontWeight: 800, color: 'rgba(255,255,255,0.9)',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
+          {coach.name[0]}
+        </div>
+      )}
+
+      {/* Content */}
+      <div style={{ padding: 20, display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <div style={{ fontSize: 18, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6 }}>
+          {coach.name}
+        </div>
+        <div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Plus Jakarta Sans', sans-serif", flex: 1, marginBottom: 20 }}>
+          {coach.tagline}
+        </div>
+        <a
+          href={coach.url} target="_blank" rel="noopener noreferrer"
+          style={{
+            display: 'inline-block', alignSelf: 'flex-start',
+            padding: '7px 14px', background: 'transparent',
+            border: `1.5px solid ${C.green}`, borderRadius: 8, color: C.green,
+            fontSize: 13, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif",
+            textDecoration: 'none', transition: 'background 0.15s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+        >
+          {coach.btn}
+        </a>
       </div>
-      <div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, fontFamily: "'Plus Jakarta Sans', sans-serif", flex: 1, marginBottom: 20 }}>
-        {coach.tagline}
-      </div>
-      <a
-        href={coach.url} target="_blank" rel="noopener noreferrer"
-        style={{
-          display: 'inline-block', alignSelf: 'flex-start',
-          padding: '7px 14px', background: 'transparent',
-          border: `1.5px solid ${C.green}`, borderRadius: 8, color: C.green,
-          fontSize: 13, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif",
-          textDecoration: 'none', transition: 'background 0.15s',
-        }}
-        onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
-        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-      >
-        {coach.btn}
-      </a>
     </div>
   );
 }
