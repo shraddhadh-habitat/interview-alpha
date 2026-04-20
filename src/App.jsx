@@ -7,6 +7,7 @@ import PracticeQA from './pages/PracticeQA';
 import MyProgress from './pages/MyProgress';
 import SalaryGuide from './pages/SalaryGuide';
 import LearningResources from './pages/LearningResources';
+import CompanyQuestions from './pages/CompanyQuestions';
 import UpgradePage from './pages/UpgradePage';
 import AdminPanel from './pages/AdminPanel';
 import Scorecard from './pages/Scorecard';
@@ -214,6 +215,7 @@ export default function App() {
         )}
         {page === 'sessions'    && <PastSessions user={user} />}
         {page === 'progress'    && <MyProgress user={user} />}
+        {page === 'company'     && <CompanyQuestions setPage={setPage} />}
         {page === 'scorecard'   && <Scorecard user={user} />}
         {page === 'salary'      && <SalaryGuide />}
         {page === 'resources'   && <LearningResources />}

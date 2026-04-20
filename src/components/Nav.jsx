@@ -74,6 +74,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
   const tabs = [
     { id: 'interview', label: 'Interview' },
     { id: 'practice', label: 'Practice' },
+    { id: 'company', label: 'Company Prep' },
     { id: 'scorecard', label: 'Scorecard' },
     { id: 'salary', label: 'Salary Guide' },
     { id: 'resources', label: 'Resources' },
@@ -304,6 +305,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
           {[
             { id: 'interview', label: 'Interview' },
             { id: 'practice', label: 'Practice Q&A' },
+            { id: 'company', label: 'Company Prep' },
             { id: 'scorecard', label: 'Scorecard' },
             { id: 'salary', label: 'Salary Guide' },
             { id: 'resources', label: 'Learning Resources' },
