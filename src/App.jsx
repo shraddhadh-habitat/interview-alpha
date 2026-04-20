@@ -18,6 +18,146 @@ import PaywallModal from './components/PaywallModal';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
+const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
+const RC = {
+  bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#5C5C57', border: '#E8E6E1',
+  green: '#16A34A',
+  red: '#CF222E', redLight: 'rgba(207,34,46,0.06)', redBorder: 'rgba(207,34,46,0.18)',
+  success: '#1A7F37', successLight: 'rgba(26,127,55,0.06)', successBorder: 'rgba(26,127,55,0.2)',
+};
+
+function ResetPasswordPage({ onDone }) {
+  const [newPassword, setNewPassword]         = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading]                 = useState(false);
+  const [error, setError]                     = useState('');
+  const [success, setSuccess]                 = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    if (newPassword.length < 8) { setError('Password must be at least 8 characters.'); return; }
+    if (newPassword !== confirmPassword) { setError('Passwords do not match.'); return; }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+      setSuccess(true);
+      setTimeout(onDone, 2000);
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const inputStyle = {
+    width: '100%', background: '#FFFFFF',
+    border: `1.5px solid ${RC.border}`, borderRadius: 12,
+    padding: '14px 18px', color: RC.text, fontSize: 15,
+    fontFamily: "'Plus Jakarta Sans', sans-serif", transition: 'border-color 0.2s',
+  };
+
+  return (
+    <div style={{ minHeight: '100vh', background: RC.bg, display: 'flex', fontFamily: "'Plus Jakarta Sans', sans-serif", color: RC.text }}>
+      <style>{`
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        input:focus { border-color: ${RC.green} !important; outline: none; }
+        @media (max-width: 768px) { .rp-left { display: none !important; } }
+      `}</style>
+
+      {/* Left panel */}
+      <div className="rp-left" style={{
+        flex: 1, minWidth: 0,
+        background: 'linear-gradient(135deg, #FAFAF8, #F5F3EF)',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        padding: '48px 56px', borderRight: `1px solid ${RC.border}`,
+      }}>
+        <div style={{ maxWidth: 380, width: '100%' }}>
+          <h1 style={{
+            fontFamily: "'Instrument Serif', serif", fontSize: 48, fontWeight: 400,
+            marginBottom: 24, lineHeight: 1.1,
+            background: RAINBOW, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          }}>
+            InterviewAlpha™
+          </h1>
+          <p style={{ fontSize: 16, color: RC.textMuted, lineHeight: 1.7 }}>
+            Almost there — set a strong new password to get back to your practice.
+          </p>
+        </div>
+      </div>
+
+      {/* Right panel */}
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 32px' }}>
+        <div style={{
+          background: '#FFFFFF', borderRadius: 24,
+          border: `1px solid ${RC.border}`,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
+          padding: '40px 40px', width: '100%', maxWidth: 440,
+          animation: 'fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
+        }}>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400, color: RC.text, marginBottom: 6 }}>
+            Set new password
+          </h2>
+          <p style={{ fontSize: 14, color: RC.textMuted, marginBottom: 28 }}>
+            Choose a strong password — minimum 8 characters.
+          </p>
+
+          {error && (
+            <div style={{ padding: '10px 14px', background: RC.redLight, border: `1px solid ${RC.redBorder}`, borderRadius: 12, fontSize: 13, color: RC.red, marginBottom: 20 }}>
+              {error}
+            </div>
+          )}
+          {success && (
+            <div style={{ padding: '10px 14px', background: RC.successLight, border: `1px solid ${RC.successBorder}`, borderRadius: 12, fontSize: 13, color: RC.success, marginBottom: 20 }}>
+              Password updated successfully! Redirecting to sign in...
+            </div>
+          )}
+
+          {!success && (
+            <form onSubmit={handleSubmit}>
+              <div style={{ marginBottom: 16 }}>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: RC.textMuted, marginBottom: 8 }}>
+                  New Password
+                </label>
+                <input
+                  type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
+                  required placeholder="Min. 8 characters" style={inputStyle}
+                />
+              </div>
+              <div style={{ marginBottom: 28 }}>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: RC.textMuted, marginBottom: 8 }}>
+                  Confirm Password
+                </label>
+                <input
+                  type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
+                  required placeholder="Repeat password" style={inputStyle}
+                />
+              </div>
+              <button
+                type="submit" disabled={loading}
+                style={{
+                  width: '100%', height: 48,
+                  background: loading ? RC.border : RAINBOW,
+                  border: 'none', borderRadius: 12,
+                  color: loading ? RC.textMuted : '#fff',
+                  fontSize: 16, cursor: loading ? 'wait' : 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 600, opacity: loading ? 0.7 : 1,
+                }}
+              >
+                {loading ? 'Updating...' : 'Update Password'}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const FREE_SESSION_LIMIT  = 3;
 const PRO_SESSION_LIMIT   = 100;
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
@@ -45,6 +185,7 @@ export default function App() {
   const [page, setPage] = useState('interview');
   const [showDemo, setShowDemo] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
   // Prevent re-triggering demo on repeated loadProfile calls (TOKEN_REFRESHED etc.)
   const demoShownRef = useRef(false);
 
@@ -63,8 +204,9 @@ export default function App() {
       setAuthLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+      if (event === 'PASSWORD_RECOVERY') setShowResetPassword(true);
     });
 
     return () => subscription.unsubscribe();
@@ -175,6 +317,8 @@ export default function App() {
   }, [profile]);
 
   if (authLoading) return <LoadingScreen />;
+
+  if (showResetPassword) return <ResetPasswordPage onDone={() => { setShowResetPassword(false); supabase.auth.signOut(); }} />;
 
   if (!user) return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>

@@ -7,26 +7,33 @@ const C = {
   border: '#E8E6E1',
   green: '#16A34A', greenHover: '#15803D',
   greenLight: 'rgba(22,163,74,0.06)',
+  orange: '#F97316',
   red: '#CF222E', redLight: 'rgba(207,34,46,0.06)', redBorder: 'rgba(207,34,46,0.18)',
   success: '#1A7F37', successLight: 'rgba(26,127,55,0.06)', successBorder: 'rgba(26,127,55,0.2)',
 };
 
 const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
 
+const TITLES    = { login: 'Welcome back', signup: 'Create your account', forgot: 'Reset your password' };
+const SUBTITLES = {
+  login:  'Sign in to continue your practice.',
+  signup: 'Start with 3 free AI interview sessions.',
+  forgot: "Enter your email and we'll send you a reset link.",
+};
+
 export default function AuthPage() {
-  const [mode, setMode] = useState('login');
-  const [email, setEmail] = useState('');
+  const [mode, setMode]         = useState('login');
+  const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState('');
+  const [success, setSuccess]   = useState('');
+
+  const switchMode = (m) => { setMode(m); setError(''); setSuccess(''); };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
-    setLoading(true);
-
+    setError(''); setSuccess(''); setLoading(true);
     try {
       if (mode === 'signup') {
         const { error } = await supabase.auth.signUp({ email, password });
@@ -43,14 +50,41 @@ export default function AuthPage() {
     }
   };
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setError(''); setSuccess(''); setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/?reset=true',
+      });
+      if (error) throw error;
+      setSuccess('Check your email for a password reset link.');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const inputStyle = {
+    width: '100%', background: '#FFFFFF',
+    border: `1.5px solid ${C.border}`, borderRadius: 12,
+    padding: '14px 18px', color: C.text, fontSize: 15,
+    fontFamily: "'Plus Jakarta Sans', sans-serif", transition: 'border-color 0.2s',
+  };
+  const labelStyle = { display: 'block', fontSize: 13, fontWeight: 600, color: C.textMuted, marginBottom: 8 };
+  const btnStyle = (active) => ({
+    width: '100%', height: 48,
+    background: active ? RAINBOW : C.border,
+    border: 'none', borderRadius: 12,
+    color: active ? '#fff' : C.textMuted,
+    fontSize: 16, cursor: active ? 'pointer' : 'wait',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontWeight: 600, opacity: active ? 1 : 0.7,
+  });
+
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: C.bg,
-      display: 'flex',
-      fontFamily: "'Plus Jakarta Sans', sans-serif",
-      color: C.text,
-    }}>
+    <div style={{ minHeight: '100vh', background: C.bg, display: 'flex', fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text }}>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
@@ -68,8 +102,7 @@ export default function AuthPage() {
         background: 'linear-gradient(135deg, #FAFAF8, #F5F3EF)',
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
-        padding: '48px 56px',
-        borderRight: `1px solid ${C.border}`,
+        padding: '48px 56px', borderRight: `1px solid ${C.border}`,
       }}>
         <div style={{ maxWidth: 380, width: '100%' }}>
           <h1 style={{
@@ -79,7 +112,6 @@ export default function AuthPage() {
           }}>
             InterviewAlpha™
           </h1>
-
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 40 }}>
             {[
               { icon: '🎯', text: '1,100+ Expert PM Questions' },
@@ -92,10 +124,8 @@ export default function AuthPage() {
               </div>
             ))}
           </div>
-
           <div style={{
-            padding: '16px 20px',
-            background: '#FFFFFF', border: `1px solid ${C.border}`,
+            padding: '16px 20px', background: '#FFFFFF', border: `1px solid ${C.border}`,
             borderRadius: 12, fontSize: 16, fontWeight: 600, color: C.text,
             boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
           }}>
@@ -114,18 +144,14 @@ export default function AuthPage() {
           background: '#FFFFFF', borderRadius: 24,
           border: `1px solid ${C.border}`,
           boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
-          padding: '40px 40px',
-          width: '100%', maxWidth: 440,
+          padding: '40px 40px', width: '100%', maxWidth: 440,
           animation: 'fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
         }}>
-          <h2 style={{
-            fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400,
-            color: C.text, marginBottom: 6,
-          }}>
-            {mode === 'login' ? 'Welcome back' : 'Create your account'}
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400, color: C.text, marginBottom: 6 }}>
+            {TITLES[mode]}
           </h2>
           <p style={{ fontSize: 14, color: C.textMuted, marginBottom: 28 }}>
-            {mode === 'login' ? 'Sign in to continue your practice.' : 'Start with 3 free AI interview sessions.'}
+            {SUBTITLES[mode]}
           </p>
 
           {error && (
@@ -139,82 +165,89 @@ export default function AuthPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: C.textMuted, marginBottom: 8 }}>
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-                placeholder="you@example.com"
-                style={{
-                  width: '100%', background: '#FFFFFF',
-                  border: `1.5px solid ${C.border}`,
-                  borderRadius: 12, padding: '14px 18px',
-                  color: C.text, fontSize: 15,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  transition: 'border-color 0.2s',
-                }}
-              />
-            </div>
+          {/* ── Forgot password form ── */}
+          {mode === 'forgot' && (
+            <>
+              <form onSubmit={handleForgotPassword}>
+                <div style={{ marginBottom: 28 }}>
+                  <label style={labelStyle}>Email</label>
+                  <input
+                    type="email" value={email} onChange={e => setEmail(e.target.value)}
+                    required placeholder="you@example.com" style={inputStyle}
+                  />
+                </div>
+                <button type="submit" disabled={loading} style={btnStyle(!loading)}>
+                  {loading ? 'Sending...' : 'Send Reset Link'}
+                </button>
+              </form>
+              <div style={{ marginTop: 24, textAlign: 'center' }}>
+                <button
+                  onClick={() => switchMode('login')}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  ← <span style={{ color: C.green, fontWeight: 600 }}>Back to Sign In</span>
+                </button>
+              </div>
+            </>
+          )}
 
-            <div style={{ marginBottom: 28 }}>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: C.textMuted, marginBottom: 8 }}>
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-                placeholder={mode === 'signup' ? 'Min. 6 characters' : '••••••••'}
-                style={{
-                  width: '100%', background: '#FFFFFF',
-                  border: `1.5px solid ${C.border}`,
-                  borderRadius: 12, padding: '14px 18px',
-                  color: C.text, fontSize: 15,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  transition: 'border-color 0.2s',
-                }}
-              />
-            </div>
+          {/* ── Login / Signup form ── */}
+          {mode !== 'forgot' && (
+            <>
+              <form onSubmit={handleSubmit}>
+                <div style={{ marginBottom: 16 }}>
+                  <label style={labelStyle}>Email</label>
+                  <input
+                    type="email" value={email} onChange={e => setEmail(e.target.value)}
+                    required placeholder="you@example.com" style={inputStyle}
+                  />
+                </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                width: '100%', height: 48,
-                background: loading ? C.border : RAINBOW,
-                border: 'none', borderRadius: 12,
-                color: loading ? C.textMuted : '#fff',
-                fontSize: 16,
-                cursor: loading ? 'wait' : 'pointer',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 600,
-                opacity: loading ? 0.7 : 1,
-              }}
-            >
-              {loading ? 'Please wait...' : mode === 'login' ? 'Sign In' : 'Create Account'}
-            </button>
-          </form>
+                <div style={{ marginBottom: 28 }}>
+                  <label style={{
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    fontSize: 13, fontWeight: 600, color: C.textMuted, marginBottom: 8,
+                  }}>
+                    <span>Password</span>
+                    {mode === 'login' && (
+                      <button
+                        type="button"
+                        onClick={() => switchMode('forgot')}
+                        style={{
+                          background: 'none', border: 'none', cursor: 'pointer',
+                          fontSize: 12, color: C.orange, fontWeight: 600,
+                          fontFamily: "'Plus Jakarta Sans', sans-serif", padding: 0,
+                        }}
+                      >
+                        Forgot password?
+                      </button>
+                    )}
+                  </label>
+                  <input
+                    type="password" value={password} onChange={e => setPassword(e.target.value)}
+                    required placeholder={mode === 'signup' ? 'Min. 6 characters' : '••••••••'}
+                    style={inputStyle}
+                  />
+                </div>
 
-          <div style={{ marginTop: 24, textAlign: 'center' }}>
-            <button
-              onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(''); setSuccess(''); }}
-              style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                fontSize: 14, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
-              }}
-            >
-              {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-              <span style={{ color: C.green, fontWeight: 600 }}>
-                {mode === 'login' ? 'Sign up' : 'Sign in'}
-              </span>
-            </button>
-          </div>
+                <button type="submit" disabled={loading} style={btnStyle(!loading)}>
+                  {loading ? 'Please wait...' : mode === 'login' ? 'Sign In' : 'Create Account'}
+                </button>
+              </form>
+
+              <div style={{ marginTop: 24, textAlign: 'center' }}>
+                <button
+                  onClick={() => switchMode(mode === 'login' ? 'signup' : 'login')}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
+                  <span style={{ color: C.green, fontWeight: 600 }}>
+                    {mode === 'login' ? 'Sign up' : 'Sign in'}
+                  </span>
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
