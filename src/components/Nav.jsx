@@ -77,7 +77,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     { id: 'company', label: 'Company Prep' },
     { id: 'scorecard', label: 'Scorecard' },
     { id: 'salary', label: 'Salary Guide' },
-    { id: 'resources', label: 'Resources' },
+    ...(isAdmin ? [{ id: 'resources', label: 'Resources' }] : []),
     ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
   ];
 
@@ -308,7 +308,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
             { id: 'company', label: 'Company Prep' },
             { id: 'scorecard', label: 'Scorecard' },
             { id: 'salary', label: 'Salary Guide' },
-            { id: 'resources', label: 'Learning Resources' },
+            ...(isAdmin ? [{ id: 'resources', label: 'Learning Resources' }] : []),
             ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
             ...(isAdmin ? [{ id: 'admin', label: 'Admin' }] : []),
             { id: 'sessions', label: 'Past Sessions' },
