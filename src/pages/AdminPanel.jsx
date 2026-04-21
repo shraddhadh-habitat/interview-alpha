@@ -58,9 +58,7 @@ export default function AdminPanel({ user }) {
           .from('payment_requests')
           .select('*')
           .order('submitted_at', { ascending: false }),
-        supabase
-          .from('profiles')
-          .select('id, subscription_status, subscription_plan, subscription_expires_at, free_sessions_used, monthly_sessions_used, payment_submitted_at'),
+        supabase.rpc('get_all_users'),
         supabase.rpc('get_admin_stats'),
       ]);
 
