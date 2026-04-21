@@ -53,7 +53,7 @@ export default function AdminPanel({ user }) {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [reqRes, profileRes] = await Promise.all([
+      const [reqRes, profileRes, totalRes, activeRes, pendingRes] = await Promise.all([
         supabase
           .from('payment_requests')
           .select('*')
@@ -61,17 +61,28 @@ export default function AdminPanel({ user }) {
         supabase
           .from('profiles')
           .select('id, subscription_status, subscription_plan, subscription_expires_at, free_sessions_used, monthly_sessions_used, payment_submitted_at'),
+        supabase
+          .from('profiles')
+          .select('*', { count: 'exact', head: true }),
+        supabase
+          .from('profiles')
+          .select('*', { count: 'exact', head: true })
+          .eq('subscription_status', 'active'),
+        supabase
+          .from('payment_requests')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'pending'),
       ]);
 
-      const reqs    = reqRes.data    || [];
-      const profs   = profileRes.data || [];
+      const reqs  = reqRes.data     || [];
+      const profs = profileRes.data || [];
 
       setRequests(reqs);
       setUsers(profs);
       setStats({
-        pending: reqs.filter(r => r.status === 'pending').length,
-        active:  profs.filter(p => p.subscription_status === 'active').length,
-        total:   profs.length,
+        pending: pendingRes.count ?? 0,
+        active:  activeRes.count  ?? 0,
+        total:   totalRes.count   ?? 0,
       });
     } finally {
       setLoading(false);
