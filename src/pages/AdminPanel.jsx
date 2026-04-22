@@ -209,7 +209,7 @@ export default function AdminPanel({ user }) {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                   <thead>
                     <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
-                      {['Email', 'Plan', 'Amount', 'UPI Ref', 'Submitted', 'Status', 'Actions'].map(h => (
+                      {['Email', 'Plan', 'Amount', 'Discount', 'Final Amt', 'UPI Ref', 'Submitted', 'Status', 'Actions'].map(h => (
                         <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600 }}>{h}</th>
                       ))}
                     </tr>
@@ -220,6 +220,16 @@ export default function AdminPanel({ user }) {
                         <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{r.user_email}</td>
                         <td style={{ padding: '12px 14px', color: C.textSoft, textTransform: 'capitalize' }}>{r.plan}</td>
                         <td style={{ padding: '12px 14px', color: C.text, fontWeight: 600 }}>₹{r.amount_inr?.toLocaleString('en-IN')}</td>
+                        <td style={{ padding: '12px 14px' }}>
+                          {r.discount_code ? (
+                            <span style={{ padding: '2px 8px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 10, fontSize: 10, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5, whiteSpace: 'nowrap' }}>
+                              {r.discount_code} ({r.discount_percent}%)
+                            </span>
+                          ) : <span style={{ color: C.textMuted }}>—</span>}
+                        </td>
+                        <td style={{ padding: '12px 14px', color: r.final_amount ? C.success : C.textMuted, fontWeight: r.final_amount ? 600 : 400 }}>
+                          {r.final_amount ? `₹${r.final_amount.toLocaleString('en-IN')}` : '—'}
+                        </td>
                         <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>{r.upi_ref}</td>
                         <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap' }}>{fmt(r.submitted_at)}</td>
                         <td style={{ padding: '12px 14px' }}>{statusChip(r.status)}</td>

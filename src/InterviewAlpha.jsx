@@ -599,7 +599,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
   );
 }
 
-const FREE_SESSION_LIMIT = 3;
+const FREE_SESSION_LIMIT = 2;
 const PRO_SESSION_LIMIT  = 100;
 
 // ─── Main Component ───
@@ -993,7 +993,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               >
                 Begin Session — It's Free
               </button>
-              <div style={{ marginTop: 12, fontSize: 13, color: C.textMuted }}>3 free AI sessions. No credit card needed.</div>
+              <div style={{ marginTop: 12, fontSize: 13, color: C.textMuted }}>2 free AI sessions. No credit card needed.</div>
             </div>
           </div>
 

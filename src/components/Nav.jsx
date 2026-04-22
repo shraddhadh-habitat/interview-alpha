@@ -23,7 +23,7 @@ const C = {
   yellowBorder: 'rgba(194,120,0,0.15)',
 };
 
-const FREE_SESSION_LIMIT = 3;
+const FREE_SESSION_LIMIT = 2;
 const PRO_SESSION_LIMIT = 100;
 const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
 

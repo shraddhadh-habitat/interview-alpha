@@ -49,7 +49,7 @@ export default function Footer() {
               AI-powered PM interview preparation. Practice with a real-time interviewer, get scored, and level up.
             </p>
             <div style={{ fontSize: 12, color: C.textMuted }}>
-              3 free sessions — no credit card required.
+              2 free sessions — no credit card required.
             </div>
           </div>
 

@@ -46,12 +46,12 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
           fontSize: 26, fontWeight: 700, color: C.text,
           marginBottom: 12, lineHeight: 1.2,
         }}>
-          {lastSession ? "You've used all 3 free sessions" : 'Free sessions used up'}
+          {lastSession ? "You've used all 2 free sessions" : 'Free sessions used up'}
         </h2>
 
         <p style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.75, marginBottom: 28, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           {lastSession
-            ? "You've used all 3 free sessions. Upgrade to keep practising with full AI feedback."
+            ? "You've used all 2 free sessions. Upgrade to keep practising with full AI feedback."
             : "You need an active subscription to start more AI sessions."}
         </p>
 

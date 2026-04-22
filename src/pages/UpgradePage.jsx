@@ -17,7 +17,12 @@ const PLANS = {
   yearly:  { label: 'Yearly',  price: 6999, period: '/year',  saves: 'Save ₹1,389' },
 };
 
-const FREE_FEATURES  = ['3 free AI interview sessions', 'Browse 1100+ question bank', 'Read expert answers'];
+const DISCOUNT_CODES = {
+  'EARLY10':  { percent: 10, description: '10% Early Adopter Discount', active: true, maxUses: 100, currentUses: 0 },
+  'LAUNCH10': { percent: 10, description: '10% Launch Day Discount',    active: true, maxUses: 50,  currentUses: 0 },
+};
+
+const FREE_FEATURES  = ['2 free AI interview sessions', 'Browse 1100+ question bank', 'Read expert answers'];
 const PRO_FEATURES   = ['100 AI sessions per month', 'Live interviews + practice evaluations', 'Full feedback scorecard per session', 'Voice-to-text answers', 'Full session history', 'Leaderboard ranking'];
 
 const globalStyles = `
@@ -75,13 +80,29 @@ export default function UpgradePage({ user, profile, onBack }) {
   const [upiRef, setUpiRef] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [discountOpen, setDiscountOpen]       = useState(true);
+  const [discountInput, setDiscountInput]     = useState('');
+  const [discountStatus, setDiscountStatus]   = useState('idle'); // 'idle'|'valid'|'invalid'|'expired'
+  const [appliedDiscount, setAppliedDiscount] = useState(null);  // { code, percent }
 
   const isPending = profile?.subscription_status === 'pending';
   const isActive  = profile?.subscription_status === 'active';
 
+  const discountedPrice = (basePrice) =>
+    appliedDiscount ? Math.round(basePrice * (1 - appliedDiscount.percent / 100)) : basePrice;
+
   const handleSelectPlan = (p) => {
     setPlan(p);
     setStep(2);
+  };
+
+  const handleApplyDiscount = () => {
+    const code = discountInput.trim().toUpperCase();
+    const d = DISCOUNT_CODES[code];
+    if (!d) { setDiscountStatus('invalid'); setAppliedDiscount(null); return; }
+    if (!d.active || d.currentUses >= d.maxUses) { setDiscountStatus('expired'); setAppliedDiscount(null); return; }
+    setDiscountStatus('valid');
+    setAppliedDiscount({ code, percent: d.percent });
   };
 
   const handleSubmitPayment = async () => {
@@ -89,15 +110,21 @@ export default function UpgradePage({ user, profile, onBack }) {
     setError('');
     setSubmitting(true);
     try {
-      const amount = PLANS[plan].price;
+      const amount      = PLANS[plan].price;
+      const finalAmount = discountedPrice(amount);
 
       // Insert payment request
       const { error: insertErr } = await supabase.from('payment_requests').insert({
-        user_id:    user.id,
-        user_email: user.email,
+        user_id:          user.id,
+        user_email:       user.email,
         plan,
-        amount_inr: amount,
-        upi_ref:    upiRef.trim(),
+        amount_inr:       amount,
+        upi_ref:          upiRef.trim(),
+        ...(appliedDiscount && {
+          discount_code:    appliedDiscount.code,
+          discount_percent: appliedDiscount.percent,
+          final_amount:     finalAmount,
+        }),
       });
       if (insertErr) throw insertErr;
 
@@ -163,8 +190,8 @@ export default function UpgradePage({ user, profile, onBack }) {
               ))}
               {/* Feature rows */}
               {[
-                ['AI Sessions / Month', '3 (free)', '100'],
-                ['Live Interviews',     '3 (free)', '100 sessions/mo'],
+                ['AI Sessions / Month', '2 (free)', '100'],
+                ['Live Interviews',     '2 (free)', '100 sessions/mo'],
                 ['Feedback Scorecard', '✓', '✓'],
                 ['Voice-to-Text', '✓', '✓'],
                 ['Session History', '✓', '✓'],
@@ -250,8 +277,71 @@ export default function UpgradePage({ user, profile, onBack }) {
               </button>
               <span style={{ fontSize: 11, color: C.textMuted }}>·</span>
               <span style={{ fontSize: 11, letterSpacing: 1, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                {PLANS[plan].label} — ₹{PLANS[plan].price.toLocaleString('en-IN')}{PLANS[plan].period}
+                {PLANS[plan].label} —{' '}
+                {appliedDiscount ? (
+                  <>
+                    <span style={{ textDecoration: 'line-through', color: C.textMuted, marginRight: 4 }}>
+                      ₹{PLANS[plan].price.toLocaleString('en-IN')}
+                    </span>
+                    ₹{discountedPrice(PLANS[plan].price).toLocaleString('en-IN')}
+                  </>
+                ) : (
+                  <>₹{PLANS[plan].price.toLocaleString('en-IN')}</>
+                )}
+                {PLANS[plan].period}
               </span>
+            </div>
+
+            {/* Discount code section */}
+            <div style={{ marginBottom: 28 }}>
+              <button
+                onClick={() => setDiscountOpen(o => !o)}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 0, fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", display: 'flex', alignItems: 'center', gap: 6 }}
+              >
+                <span style={{ fontSize: 10, display: 'inline-block', transform: discountOpen ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▶</span>
+                Have a discount code?
+              </button>
+              {discountOpen && (
+                <div style={{ marginTop: 12, display: 'flex', gap: 8, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                  <input
+                    type="text"
+                    value={discountInput}
+                    onChange={e => { setDiscountInput(e.target.value); setDiscountStatus('idle'); }}
+                    placeholder="e.g. EARLY10"
+                    style={{
+                      padding: '9px 12px', border: `1px solid ${discountStatus === 'valid' ? C.green : discountStatus === 'idle' ? C.border : C.red}`,
+                      borderRadius: 10, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      color: C.text, background: C.bg, width: 180, transition: 'border-color 0.2s',
+                    }}
+                    onKeyDown={e => e.key === 'Enter' && handleApplyDiscount()}
+                  />
+                  <button
+                    onClick={handleApplyDiscount}
+                    style={{ padding: '9px 16px', background: C.green, border: 'none', borderRadius: 10, color: '#fff', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, whiteSpace: 'nowrap' }}
+                  >
+                    Apply
+                  </button>
+                  {discountStatus === 'valid' && appliedDiscount && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 14px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 10, fontSize: 12, color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      <span style={{ fontSize: 14 }}>✓</span>
+                      {appliedDiscount.percent}% off applied
+                      <span style={{ color: C.textMuted, marginLeft: 2 }}>
+                        · ₹{PLANS[plan].price.toLocaleString('en-IN')} → ₹{discountedPrice(PLANS[plan].price).toLocaleString('en-IN')}
+                      </span>
+                    </div>
+                  )}
+                  {discountStatus === 'invalid' && (
+                    <div style={{ display: 'flex', alignItems: 'center', padding: '9px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Invalid code
+                    </div>
+                  )}
+                  {discountStatus === 'expired' && (
+                    <div style={{ display: 'flex', alignItems: 'center', padding: '9px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      This code has expired
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'start' }}>
@@ -274,8 +364,17 @@ export default function UpgradePage({ user, profile, onBack }) {
                 </div>
                 <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4 }}>UPI ID</div>
                 <div style={{ fontSize: 13, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{upiId}</div>
-                <div style={{ marginTop: 12, padding: '8px 12px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 12, fontSize: 13, color: C.green, fontFamily: "'Instrument Serif', serif", fontWeight: 700 }}>
-                  ₹{PLANS[plan].price.toLocaleString('en-IN')}
+                <div style={{ marginTop: 12, padding: '8px 12px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 12, fontSize: 13, color: C.green, fontFamily: "'Instrument Serif', serif", fontWeight: 700, textAlign: 'center' }}>
+                  {appliedDiscount ? (
+                    <>
+                      <span style={{ textDecoration: 'line-through', color: C.textMuted, marginRight: 6, fontWeight: 400, fontSize: 11 }}>
+                        ₹{PLANS[plan].price.toLocaleString('en-IN')}
+                      </span>
+                      ₹{discountedPrice(PLANS[plan].price).toLocaleString('en-IN')}
+                    </>
+                  ) : (
+                    <>₹{PLANS[plan].price.toLocaleString('en-IN')}</>
+                  )}
                 </div>
               </div>
 

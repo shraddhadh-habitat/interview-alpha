@@ -17,7 +17,7 @@ const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36
 const TITLES    = { login: 'Welcome back', signup: 'Create your account', forgot: 'Reset your password' };
 const SUBTITLES = {
   login:  'Sign in to continue your practice.',
-  signup: 'Start with 3 free AI interview sessions.',
+  signup: 'Start with 2 free AI interview sessions.',
   forgot: "Enter your email and we'll send you a reset link.",
 };
 
@@ -129,7 +129,7 @@ export default function AuthPage() {
             borderRadius: 12, fontSize: 16, fontWeight: 600, color: C.text,
             boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
           }}>
-            3 free AI sessions. No credit card.
+            2 free AI sessions. No credit card.
           </div>
         </div>
       </div>
