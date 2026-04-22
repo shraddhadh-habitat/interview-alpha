@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
 
 const C = {
@@ -14,6 +14,22 @@ const C = {
 
 const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
 
+// FNV-1a 32-bit hash of browser environment signals — used to detect same-browser re-signups.
+// Not stored in plain text on the server; collision rate is acceptable for abuse prevention.
+function generateFingerprint() {
+  const raw = [
+    screen.width, screen.height, screen.colorDepth,
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+    navigator.language, navigator.platform, navigator.userAgent,
+  ].join('||');
+  let h = 2166136261;
+  for (let i = 0; i < raw.length; i++) {
+    h ^= raw.charCodeAt(i);
+    h = (Math.imul(h, 16777619)) >>> 0;
+  }
+  return h.toString(16).padStart(8, '0');
+}
+
 const TITLES    = { login: 'Welcome back', signup: 'Create your account', forgot: 'Reset your password' };
 const SUBTITLES = {
   login:  'Sign in to continue your practice.',
@@ -28,6 +44,7 @@ export default function AuthPage() {
   const [loading, setLoading]   = useState(false);
   const [error, setError]       = useState('');
   const [success, setSuccess]   = useState('');
+  const fingerprint = useMemo(() => generateFingerprint(), []);
 
   const switchMode = (m) => { setMode(m); setError(''); setSuccess(''); };
 
@@ -36,8 +53,30 @@ export default function AuthPage() {
     setError(''); setSuccess(''); setLoading(true);
     try {
       if (mode === 'signup') {
-        const { error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
+        // Gate 1: IP rate limit (max 2 signups per IP per 24h)
+        const ipRes = await fetch('/api/signup-check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: '{}',
+        });
+        if (ipRes.status === 429) {
+          const { error: ipErr } = await ipRes.json();
+          throw new Error(ipErr);
+        }
+
+        // Gate 2: browser fingerprint — blocks same-browser re-signups
+        const { data: fpExists } = await supabase.rpc('check_fingerprint_exists', { fp: fingerprint });
+        if (fpExists) {
+          throw new Error('It looks like you already have an account. Please sign in instead.');
+        }
+
+        // Create account (Supabase handles email confirmation flow)
+        const { error: signUpErr } = await supabase.auth.signUp({ email, password });
+        if (signUpErr) throw signUpErr;
+
+        // Save fingerprint to profile (fire-and-forget — profile exists via DB trigger)
+        supabase.rpc('set_pending_fingerprint', { p_email: email, fp: fingerprint });
+
         setSuccess('Account created — check your email to confirm, then log in.');
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -246,6 +285,12 @@ export default function AuthPage() {
                   </span>
                 </button>
               </div>
+
+              {mode === 'signup' && (
+                <p style={{ fontSize: 11, color: C.textMuted, textAlign: 'center', marginTop: 16, lineHeight: 1.6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  One account per person. Multiple accounts will be suspended.
+                </p>
+              )}
             </>
           )}
         </div>

@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import { createClient } from '@supabase/supabase-js';
 
 const app = express();
 const PORT = 3001;
@@ -56,6 +57,38 @@ app.post('/api/messages', async (req, res) => {
     } else {
       res.status(502).json({ error: { message: err.message } });
     }
+  }
+});
+
+app.post('/api/signup-check', async (req, res) => {
+  const supabase = createClient(
+    process.env.VITE_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+  );
+
+  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim()
+    || req.socket?.remoteAddress
+    || '127.0.0.1';
+
+  const windowStart = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+
+  try {
+    const { count, error: countErr } = await supabase
+      .from('signup_attempts')
+      .select('*', { count: 'exact', head: true })
+      .eq('ip_address', ip)
+      .gte('attempted_at', windowStart);
+
+    if (countErr) return res.status(200).json({ allowed: true });
+
+    if (count >= 2) {
+      return res.status(429).json({ error: 'Too many signup attempts. Please try again later.' });
+    }
+
+    await supabase.from('signup_attempts').insert({ ip_address: ip });
+    return res.status(200).json({ allowed: true });
+  } catch {
+    return res.status(200).json({ allowed: true });
   }
 });
 
