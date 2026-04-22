@@ -18,8 +18,9 @@ const PLANS = {
 };
 
 const DISCOUNT_CODES = {
-  'EARLY10':  { percent: 10, description: '10% Early Adopter Discount', active: true, maxUses: 100, currentUses: 0 },
-  'LAUNCH10': { percent: 10, description: '10% Launch Day Discount',    active: true, maxUses: 50,  currentUses: 0 },
+  'ALPHA2026':  { percent: 10, description: '10% Early Adopter Discount',  active: true, maxUses: 100, currentUses: 0 },
+  'PMREADY10':  { percent: 10, description: '10% Launch Discount',         active: true, maxUses: 50,  currentUses: 0 },
+  'FOUNDER20':  { percent: 20, description: '20% Founder Referral Discount', active: true, maxUses: 20,  currentUses: 0 },
 };
 
 const FREE_FEATURES  = ['2 free AI interview sessions', 'Browse 1100+ question bank', 'Read expert answers'];
@@ -307,7 +308,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                     type="text"
                     value={discountInput}
                     onChange={e => { setDiscountInput(e.target.value); setDiscountStatus('idle'); }}
-                    placeholder="e.g. EARLY10"
+                    placeholder="Enter discount code"
                     style={{
                       padding: '9px 12px', border: `1px solid ${discountStatus === 'valid' ? C.green : discountStatus === 'idle' ? C.border : C.red}`,
                       borderRadius: 10, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
