@@ -158,7 +158,7 @@ function ResetPasswordPage({ onDone }) {
   );
 }
 
-const FREE_SESSION_LIMIT  = 2;
+const FREE_SESSION_LIMIT  = 1;
 const PRO_SESSION_LIMIT   = 100;
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 

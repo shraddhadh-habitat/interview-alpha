@@ -46,13 +46,11 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
           fontSize: 26, fontWeight: 700, color: C.text,
           marginBottom: 12, lineHeight: 1.2,
         }}>
-          {lastSession ? "You've used all 2 free sessions" : 'Free sessions used up'}
+          Upgrade to keep practising
         </h2>
 
         <p style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.75, marginBottom: 28, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          {lastSession
-            ? "You've used all 2 free sessions. Upgrade to keep practising with full AI feedback."
-            : "You need an active subscription to start more AI sessions."}
+          Upgrade to Pro to continue practicing with Alpha.
         </p>
 
         {/* Plan card */}

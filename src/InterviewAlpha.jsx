@@ -599,7 +599,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
   );
 }
 
-const FREE_SESSION_LIMIT = 2;
+const FREE_SESSION_LIMIT = 1;
 const PRO_SESSION_LIMIT  = 100;
 
 // ─── Main Component ───
@@ -967,17 +967,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   Subscription expired — renew to continue
                 </div>
               );
-              const used = profile?.free_sessions_used ?? 0;
-              const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
-              return remaining > 0 ? (
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 20, fontSize: 12, color: C.success }}>
-                  ◆ You have {remaining} free AI session{remaining !== 1 ? 's' : ''} remaining
-                </div>
-              ) : (
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 12, color: C.green }}>
-                  🔒 Free sessions used. Upgrade to continue.
-                </div>
-              );
+              return null;
             })()}
 
             <div>
@@ -993,7 +983,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               >
                 Begin Session — It's Free
               </button>
-              <div style={{ marginTop: 12, fontSize: 13, color: C.textMuted }}>2 free AI sessions. No credit card needed.</div>
+              <div style={{ marginTop: 12, fontSize: 13, color: C.textMuted }}>Try free AI session. No credit card needed.</div>
             </div>
           </div>
 
@@ -1193,17 +1183,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   🔒 Expired
                 </span>
               );
-              const used = profile?.free_sessions_used ?? 0;
-              const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
-              return remaining > 0 ? (
-                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.success, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  {remaining} Free Session{remaining !== 1 ? 's' : ''} Left
-                </span>
-              ) : (
-                <span style={{ flexShrink: 0, padding: '4px 10px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: C.green, letterSpacing: 0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  🔒 Upgrade to unlock
-                </span>
-              );
+              return null;
             })()}
           </div>
 

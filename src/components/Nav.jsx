@@ -23,13 +23,11 @@ const C = {
   yellowBorder: 'rgba(194,120,0,0.15)',
 };
 
-const FREE_SESSION_LIMIT = 2;
 const PRO_SESSION_LIMIT = 100;
 const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
 
 function SubscriptionBadge({ profile, onUpgradeClick }) {
   const status = profile?.subscription_status ?? 'free';
-  const used = profile?.free_sessions_used ?? 0;
   const monthly = profile?.monthly_sessions_used ?? 0;
 
   if (status === 'active') {
@@ -45,24 +43,7 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
   if (status === 'expired') {
     return <button onClick={onUpgradeClick} style={{ padding: '4px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 11, fontWeight: 600, color: C.red, cursor: 'pointer', whiteSpace: 'nowrap' }}>Expired · Renew</button>;
   }
-  const remaining = Math.max(0, FREE_SESSION_LIMIT - used);
-  return remaining > 0 ? (
-    <span style={{ padding: '4px 10px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 20, fontSize: 11, fontWeight: 600, color: C.success, whiteSpace: 'nowrap' }}>
-      {remaining}/{FREE_SESSION_LIMIT} Free Left
-    </span>
-  ) : (
-    <button
-      onClick={onUpgradeClick}
-      style={{
-        padding: '4px 12px',
-        background: RAINBOW, border: 'none',
-        borderRadius: 20, color: '#fff', fontSize: 11,
-        cursor: 'pointer', fontWeight: 600
-      }}
-    >
-      Upgrade ◆
-    </button>
-  );
+  return null;
 }
 
 export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgradeClick, isAdmin }) {

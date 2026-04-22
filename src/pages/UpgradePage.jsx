@@ -23,7 +23,7 @@ const DISCOUNT_CODES = {
   'FOUNDER20':  { percent: 20, description: '20% Founder Discount',          active: true, maxUses: 20,  currentUses: 0 },
 };
 
-const FREE_FEATURES  = ['2 free AI interview sessions', 'Browse 1100+ question bank', 'Read expert answers'];
+const FREE_FEATURES  = ['Free AI interview session', 'Browse 1100+ question bank', 'Read expert answers'];
 const PRO_FEATURES   = ['100 AI sessions per month', 'Live interviews + practice evaluations', 'Full feedback scorecard per session', 'Voice-to-text answers', 'Full session history', 'Leaderboard ranking'];
 
 const globalStyles = `
