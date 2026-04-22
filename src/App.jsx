@@ -160,7 +160,7 @@ function ResetPasswordPage({ onDone }) {
 
 const FREE_SESSION_LIMIT  = 1;
 const PRO_SESSION_LIMIT   = 100;
-const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
+const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAIL || '').split(',').map(e => e.trim().toLowerCase());
 
 function LoadingScreen() {
   return (
@@ -327,7 +327,7 @@ export default function App() {
     </div>
   );
 
-  const isAdmin = ADMIN_EMAIL && user.email === ADMIN_EMAIL;
+  const isAdmin = ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email.toLowerCase());
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>

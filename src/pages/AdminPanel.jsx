@@ -12,7 +12,7 @@ const C = {
   yellow: '#C67F00', yellowLight: 'rgba(198,127,0,0.06)', yellowBorder: 'rgba(198,127,0,0.15)',
 };
 
-const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
+const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAIL || '').split(',').map(e => e.trim().toLowerCase());
 
 const globalStyles = `
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -39,7 +39,7 @@ export default function AdminPanel({ user }) {
   const [rejectTarget, setRejectTarget] = useState(null);
 
   // Gate — only admin email
-  if (!user || user.email !== ADMIN_EMAIL) {
+  if (!user || !ADMIN_EMAILS.includes(user.email.toLowerCase())) {
     return (
       <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         <div style={{ textAlign: 'center' }}>
@@ -85,7 +85,7 @@ export default function AdminPanel({ user }) {
     try {
       const { error } = await supabase.rpc('approve_payment', {
         request_id:  id,
-        admin_email: ADMIN_EMAIL,
+        admin_email: user.email,
       });
       if (error) throw error;
       await loadData();
@@ -102,7 +102,7 @@ export default function AdminPanel({ user }) {
     try {
       const { error } = await supabase.rpc('reject_payment', {
         request_id:  rejectTarget,
-        admin_email: ADMIN_EMAIL,
+        admin_email: user.email,
         note:        rejectNote || null,
       });
       if (error) throw error;
@@ -157,7 +157,7 @@ export default function AdminPanel({ user }) {
         <div style={{ marginBottom: 32 }}>
           <div style={{ fontSize: 10, letterSpacing: 5, color: C.green, textTransform: 'uppercase', marginBottom: 8 }}>Admin</div>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 700, color: C.text, marginBottom: 4 }}>Control Panel</h1>
-          <div style={{ fontSize: 11, color: C.textMuted }}>{ADMIN_EMAIL}</div>
+          <div style={{ fontSize: 11, color: C.textMuted }}>{user.email}</div>
         </div>
 
         {/* Stats */}
