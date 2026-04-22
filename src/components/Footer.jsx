@@ -68,7 +68,7 @@ export default function Footer() {
             <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 18 }}>Legal &amp; Contact</div>
             <FooterLink>Terms of Service</FooterLink>
             <FooterLink>Privacy Policy</FooterLink>
-            <FooterLink href="mailto:shraddhadh@gmail.com" email>shraddhadh@gmail.com</FooterLink>
+            <FooterLink href="mailto:communications@interviewalpha.ai" email>communications@interviewalpha.ai</FooterLink>
           </div>
         </div>
       </div>
