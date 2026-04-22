@@ -20,7 +20,7 @@ const PLANS = {
 const DISCOUNT_CODES = {
   'ALPHA2026':  { percent: 10, description: '10% Early Adopter Discount',  active: true, maxUses: 100, currentUses: 0 },
   'PMREADY10':  { percent: 10, description: '10% Launch Discount',         active: true, maxUses: 50,  currentUses: 0 },
-  'FOUNDER20':  { percent: 20, description: '20% Founder Referral Discount', active: true, maxUses: 20,  currentUses: 0 },
+  'FOUNDER20':  { percent: 20, description: '20% Founder Discount',          active: true, maxUses: 20,  currentUses: 0 },
 };
 
 const FREE_FEATURES  = ['2 free AI interview sessions', 'Browse 1100+ question bank', 'Read expert answers'];
