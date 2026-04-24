@@ -239,6 +239,9 @@ export default function App() {
       demoShownRef.current = true;
       setShowDemo(true);
       supabase.from('profiles').upsert({ id: uid, has_seen_demo: true }, { onConflict: 'id' });
+      // First login → skip high-friction Interview page, land on Practice Q&A
+      setPage('practice');
+      sessionStorage.setItem('ia:welcome', '1');
     }
 
     // Auto-expire: if active but past expiry, mark as expired locally

@@ -762,7 +762,10 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     if (checkSession && !checkSession()) return;
     if (onSessionUsed) await onSessionUsed();
 
-    const contextMsg = `Here is the candidate's context:\n\n**RESUME:**\n${resume}\n\n**JOB DESCRIPTION:**\n${jd}\n\n**SELECTED TRACK:** ${track}\n\nBegin the ${track} interview simulation now. Stay in character as a Senior PM Interviewer at the target company. Ask your first question.`;
+    const hasContext = resume.trim() || jd.trim();
+    const contextMsg = hasContext
+      ? `Here is the candidate's context:\n\n**RESUME:**\n${resume || "(not provided)"}\n\n**JOB DESCRIPTION:**\n${jd || "(not provided)"}\n\n**SELECTED TRACK:** ${track}\n\nBegin the ${track} interview simulation now. Stay in character as a Senior PM Interviewer at the target company. Ask your first question.`
+      : `The candidate has not provided a resume or job description.\n\n**SELECTED TRACK:** ${track}\n\nBegin with general PM interview questions for the ${track} track. Open with exactly this note: "I don't have your resume — I'll ask general PM questions. For personalized questions, add your resume in your profile." Then immediately ask your first question.`;
 
     setMessages([{ role: "assistant", content: "▌", _streaming: true }]);
     setPhase("interview");
@@ -985,6 +988,57 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               </button>
               <div style={{ marginTop: 12, fontSize: 13, color: C.textMuted }}>3 free AI sessions this weekend. No credit card needed.</div>
             </div>
+
+            {/* Quick Practice + Featured Question */}
+            <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
+                style={{
+                  padding: '12px 28px', background: 'transparent',
+                  border: `1.5px solid ${C.border}`, borderRadius: 12,
+                  color: C.textSoft, fontSize: 14, fontWeight: 500,
+                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textSoft; }}
+              >
+                Quick Practice — No Resume Needed →
+              </button>
+
+              <div style={{
+                marginTop: 4, padding: '20px 24px',
+                background: '#fff', border: `1px solid ${C.border}`,
+                borderRadius: 16, textAlign: 'left', maxWidth: 480, width: '100%',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+              }}>
+                <div style={{ fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 10 }}>Try This</div>
+                <div style={{ fontSize: 15, fontWeight: 500, color: C.text, lineHeight: 1.5, marginBottom: 16 }}>
+                  How would you improve Instagram's Explore page?
+                </div>
+                <button
+                  onClick={() => {
+                    sessionStorage.setItem('ia:quickQuestion', JSON.stringify({
+                      question: { q: "How would you improve Instagram's Explore page?", a: "" },
+                      questionId: 'featured-instagram-explore',
+                      designation: 'Senior PM',
+                      category: 'product',
+                    }));
+                    window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
+                  }}
+                  style={{
+                    padding: '10px 22px', background: C.green, border: 'none',
+                    borderRadius: 10, color: '#fff', fontSize: 13, fontWeight: 600,
+                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    transition: 'background 0.2s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
+                >
+                  Answer This Question →
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Stats row */}
@@ -1046,7 +1100,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 12 }}>STEP 01</div>
           <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, marginBottom: 8, color: C.text }}>Your Context</h2>
           <p style={{ fontSize: 13, color: C.textSoft, marginBottom: profileLoaded ? 12 : 40, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            The more detail you provide, the sharper the interview gets.
+            Both fields are optional — skip them and Alpha will ask general PM questions. Add your resume for personalized coaching.
           </p>
 
           {profileLoaded && (
@@ -1098,19 +1152,16 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           <div className="ia-setup-btns" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <button
               onClick={async () => {
-                if (resume.trim() && jd.trim()) {
-                  await saveProfile();
-                  setPhase("track");
-                }
+                if (resume.trim() || jd.trim()) await saveProfile();
+                setPhase("track");
               }}
-              disabled={!resume.trim() || !jd.trim()}
               style={{
                 padding: "16px 48px",
-                background: (resume.trim() && jd.trim()) ? C.green : C.bgMuted,
+                background: C.green,
                 border: "none",
-                color: (resume.trim() && jd.trim()) ? "#fff" : C.textMuted,
+                color: "#fff",
                 fontSize: 11, letterSpacing: 3, textTransform: "uppercase",
-                cursor: (resume.trim() && jd.trim()) ? "pointer" : "not-allowed",
+                cursor: "pointer",
                 borderRadius: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 600, transition: "all 0.3s ease"
               }}

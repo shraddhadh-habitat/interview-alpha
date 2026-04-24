@@ -298,6 +298,20 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [practiceQuestion, setPracticeQuestion] = useState(null); // { question, questionId, designation, category }
   const [practiceStats, setPracticeStats] = useState({}); // { [questionId]: { best_score, attempts } }
   const [reportTarget, setReportTarget] = useState(null); // questionId being reported
+  const [showWelcome, setShowWelcome] = useState(() => {
+    const flag = sessionStorage.getItem('ia:welcome');
+    if (flag) { sessionStorage.removeItem('ia:welcome'); return true; }
+    return false;
+  });
+
+  // Pre-load a featured/quick question passed via sessionStorage
+  useEffect(() => {
+    const raw = sessionStorage.getItem('ia:quickQuestion');
+    if (raw) {
+      sessionStorage.removeItem('ia:quickQuestion');
+      try { setPracticeQuestion(JSON.parse(raw)); } catch {}
+    }
+  }, []);
 
   // Load practice stats for current user
   useEffect(() => {
@@ -417,6 +431,29 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       )}
 
       <div style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
+
+        {/* Welcome banner — shown only on first login */}
+        {showWelcome && (
+          <div style={{
+            display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12,
+            padding: '16px 20px', marginBottom: 24,
+            background: C.greenLight, border: `1px solid ${C.greenBorder}`,
+            borderRadius: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            <div style={{ fontSize: 14, color: C.success, lineHeight: 1.6 }}>
+              <strong>Welcome!</strong> Try answering a question below — tap <strong>'Practice This Question'</strong> on any question to get AI feedback.
+            </div>
+            <button
+              onClick={() => setShowWelcome(false)}
+              style={{
+                background: 'none', border: 'none', fontSize: 18, color: C.textMuted,
+                cursor: 'pointer', lineHeight: 1, flexShrink: 0, padding: 0,
+              }}
+            >
+              ×
+            </button>
+          </div>
+        )}
 
         {/* Page header */}
         <div style={{ marginBottom: 32 }}>
