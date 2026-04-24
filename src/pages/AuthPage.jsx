@@ -33,7 +33,7 @@ function generateFingerprint() {
 const TITLES    = { login: 'Welcome back', signup: 'Create your account', forgot: 'Reset your password' };
 const SUBTITLES = {
   login:  'Sign in to continue your practice.',
-  signup: 'Try a free AI session. No credit card needed.',
+  signup: '3 free AI sessions this weekend. No credit card needed.',
   forgot: "Enter your email and we'll send you a reset link.",
 };
 
@@ -168,7 +168,7 @@ export default function AuthPage() {
             borderRadius: 12, fontSize: 16, fontWeight: 600, color: C.text,
             boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
           }}>
-            Try free AI session. No credit card.
+            3 free AI sessions this weekend. No credit card.
           </div>
         </div>
       </div>
