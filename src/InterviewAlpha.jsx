@@ -222,17 +222,15 @@ function useVoiceToText() {
       recognition.lang = "en-US";
 
       recognition.onresult = (event) => {
-        let final = "";
-        let interim = "";
-        for (let i = 0; i < event.results.length; i++) {
+        let newFinal = "";
+        let interim  = "";
+        // Start from event.resultIndex — do NOT re-process already-finalized results
+        for (let i = event.resultIndex; i < event.results.length; i++) {
           const result = event.results[i];
-          if (result.isFinal) {
-            final += result[0].transcript + " ";
-          } else {
-            interim += result[0].transcript;
-          }
+          if (result.isFinal) newFinal += result[0].transcript + " ";
+          else                interim  += result[0].transcript;
         }
-        if (final) setTranscript(prev => prev + final);
+        if (newFinal) setTranscript(prev => prev + newFinal);
         setInterimTranscript(interim);
       };
 

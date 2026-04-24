@@ -19,48 +19,112 @@ const globalStyles = `
   textarea:focus { outline: none; }
 `;
 
-// ─── Voice hook (mirrored from InterviewAlpha) ───
+// ─── Deduplicate repeated phrases in transcript (run before submit) ───
+function dedupeTranscript(text) {
+  return text
+    .trim()
+    .replace(/(\b\w+(?:\s+\w+){0,5})\s+(?:\1\s*)+/gi, '$1 ')
+    .trim();
+}
+
+// ─── Voice hook ───
 function useVoiceToText() {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [interimTranscript, setInterimTranscript] = useState('');
   const [supported, setSupported] = useState(false);
   const [duration, setDuration] = useState(0);
-  const recognitionRef = useRef(null);
-  const timerRef = useRef(null);
+  const recognitionRef   = useRef(null);
+  const timerRef         = useRef(null);
+  const lastChunkRef     = useRef('');   // duplicate detection
+  const isListeningRef   = useRef(false);
+  const isRestartingRef  = useRef(false); // Android restart cycle guard
+  const restartTimerRef  = useRef(null);
 
   useEffect(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SR) {
-      setSupported(true);
-      const r = new SR();
-      r.continuous = true;
-      r.interimResults = true;
-      r.lang = 'en-US';
-      r.onresult = (e) => {
-        let final = '', interim = '';
-        for (let i = 0; i < e.results.length; i++) {
-          if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
-          else interim += e.results[i][0].transcript;
+    if (!SR) return;
+    setSupported(true);
+
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const r = new SR();
+    r.continuous = true;
+    r.interimResults = true;
+    r.lang = 'en-US';
+
+    r.onresult = (e) => {
+      let newFinal = '';
+      let interim  = '';
+
+      // Start from e.resultIndex — never re-process already-finalized results.
+      // This is the primary fix for Android Chrome duplicate accumulation.
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const result = e.results[i];
+        if (result.isFinal) newFinal += result[0].transcript + ' ';
+        else                interim  += result[0].transcript;
+      }
+
+      if (newFinal) {
+        const chunk = newFinal.trim();
+        // Secondary duplicate guard: skip if identical to the previous chunk
+        if (chunk && chunk !== lastChunkRef.current) {
+          lastChunkRef.current = chunk;
+          setTranscript(prev => prev + newFinal);
         }
-        if (final) setTranscript(prev => prev + final);
-        setInterimTranscript(interim);
-      };
-      r.onerror = (e) => {
-        if (e.error !== 'no-speech') { setIsListening(false); clearInterval(timerRef.current); }
-      };
-      r.onend = () => { setIsListening(false); setInterimTranscript(''); clearInterval(timerRef.current); };
-      recognitionRef.current = r;
-    }
+
+        // Android Chrome sometimes resets resultIndex to 0 after an internal
+        // restart, re-delivering old results. A brief stop→restart cycle
+        // flushes the engine state and prevents this.
+        if (isAndroid) {
+          isRestartingRef.current = true;
+          try { r.stop(); } catch {}
+          clearTimeout(restartTimerRef.current);
+          restartTimerRef.current = setTimeout(() => {
+            isRestartingRef.current = false;
+            if (isListeningRef.current) {
+              try { r.start(); } catch {}
+            }
+          }, 100);
+        }
+      }
+
+      // Interim text replaces (not appends) — shown as live preview only
+      setInterimTranscript(interim);
+    };
+
+    r.onerror = (e) => {
+      if (e.error !== 'no-speech') {
+        setIsListening(false);
+        isListeningRef.current = false;
+        clearInterval(timerRef.current);
+      }
+    };
+
+    r.onend = () => {
+      // Don't tear down state during an Android restart cycle
+      if (isRestartingRef.current) return;
+      setIsListening(false);
+      isListeningRef.current = false;
+      setInterimTranscript('');
+      clearInterval(timerRef.current);
+    };
+
+    recognitionRef.current = r;
+
     return () => {
       clearInterval(timerRef.current);
+      clearTimeout(restartTimerRef.current);
       try { recognitionRef.current?.stop(); } catch {}
     };
   }, []);
 
   const startListening = useCallback(() => {
     if (!recognitionRef.current) return;
-    setTranscript(''); setInterimTranscript(''); setDuration(0);
+    lastChunkRef.current = '';
+    isListeningRef.current = true;
+    setTranscript('');
+    setInterimTranscript('');
+    setDuration(0);
     try {
       recognitionRef.current.start();
       setIsListening(true);
@@ -69,6 +133,7 @@ function useVoiceToText() {
   }, []);
 
   const stopListening = useCallback(() => {
+    isListeningRef.current = false;
     try { recognitionRef.current?.stop(); } catch {}
     setIsListening(false);
     clearInterval(timerRef.current);
@@ -435,7 +500,9 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
     setAttemptNumber(n => n + 1);
   };
 
-  const voiceText = (voice.transcript + voice.interimTranscript).trim();
+  // Only final transcript for submit/button logic.
+  // Interim is shown separately as a live preview (not appended to final).
+  const voiceText = voice.transcript.trim();
 
   return (
     <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -627,11 +694,13 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   border: `1px solid ${C.borderLight}`, marginBottom: 14,
                   fontSize: 14, lineHeight: 1.7, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text,
                 }}>
-                  {voiceText || (
+                  {/* Final confirmed text */}
+                  {voice.transcript || (!voice.interimTranscript && (
                     <span style={{ color: C.textMuted, fontStyle: 'italic' }}>
                       {voice.isListening ? 'Start speaking...' : 'Click the microphone to begin.'}
                     </span>
-                  )}
+                  ))}
+                  {/* Live preview — replaces on each interim event, never appends */}
                   {voice.interimTranscript && (
                     <span style={{ color: C.textMuted }}>{voice.transcript ? ' ' : ''}{voice.interimTranscript}</span>
                   )}
@@ -653,7 +722,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                       </button>
                       {voiceText && (
                         <button
-                          onClick={() => handleSubmit(voiceText, true)}
+                          onClick={() => handleSubmit(dedupeTranscript(voiceText), true)}
                           disabled={loading}
                           style={{
                             padding: '11px 24px', background: C.green, border: 'none', borderRadius: 12,
