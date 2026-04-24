@@ -28,190 +28,153 @@ function dedupeTranscript(text) {
 }
 
 // ─── Voice hook ───
+// Creates a fresh SpeechRecognition instance on every tap (not in useEffect).
+// This avoids the Android Chrome bug where a reused instance fires onend
+// immediately and silently after the first use.
 function useVoiceToText() {
-  const [isListening, setIsListening]         = useState(false);
-  const [transcript, setTranscript]           = useState('');
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  // SpeechRecognition doesn't exist on iOS Safari at all — hide Voice tab there
+  const supported  = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+
+  const [isListening, setIsListening]             = useState(false);
+  const [transcript, setTranscript]               = useState('');
   const [interimTranscript, setInterimTranscript] = useState('');
-  const [supported, setSupported]             = useState(false);
-  const [duration, setDuration]               = useState(0);
-  const [voiceError, setVoiceError]           = useState('');
+  const [duration, setDuration]                   = useState(0);
+  const [voiceError, setVoiceError]               = useState('');
 
-  const recognitionRef  = useRef(null);
-  const timerRef        = useRef(null);
-  const lastChunkRef    = useRef('');
-  const isListeningRef  = useRef(false);
-  const hasResultRef    = useRef(false);   // for 3-second fallback
-  const failureTimerRef = useRef(null);
-  const isAndroidRef    = useRef(false);
+  const recognitionRef = useRef(null);
+  const timerRef       = useRef(null);
 
+  // Clean up on unmount only
   useEffect(() => {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) return;
-    setSupported(true);
-
-    isAndroidRef.current = /Android/i.test(navigator.userAgent);
-
-    const r = new SR();
-    // continuous=true crashes Android Chrome — it fires onend immediately and silently.
-    // On Android we use continuous=false and manually restart in onend instead.
-    r.continuous     = !isAndroidRef.current;
-    r.interimResults = true;
-    r.lang           = 'en-US';
-
-    r.onstart = () => {
-      console.log('[Voice] Recognition started');
-    };
-
-    r.onresult = (e) => {
-      console.log('[Voice] Recognition result — resultIndex:', e.resultIndex, 'total:', e.results.length);
-      // Got a result — cancel the 3-second failure timer
-      hasResultRef.current = true;
-      clearTimeout(failureTimerRef.current);
-
-      let newFinal = '';
-      let interim  = '';
-      // Start from e.resultIndex — never re-process already-finalized results
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        const res = e.results[i];
-        if (res.isFinal) newFinal += res[0].transcript + ' ';
-        else             interim  += res[0].transcript;
-      }
-
-      if (newFinal) {
-        const chunk = newFinal.trim();
-        if (chunk && chunk !== lastChunkRef.current) {
-          lastChunkRef.current = chunk;
-          setTranscript(prev => prev + newFinal);
-        }
-      }
-      // Interim replaces — shown as live preview only, never accumulated
-      setInterimTranscript(interim);
-    };
-
-    r.onerror = (e) => {
-      console.log('[Voice] Recognition error:', e.error);
-      clearTimeout(failureTimerRef.current);
-      if (e.error === 'not-allowed') {
-        setVoiceError('Microphone access denied. Please allow microphone in browser settings.');
-      } else if (e.error !== 'no-speech') {
-        // no-speech is not a real error; everything else is
-        setVoiceError('Voice input encountered an error. Try typing your answer instead.');
-      }
-      if (e.error !== 'no-speech') {
-        setIsListening(false);
-        isListeningRef.current = false;
-        clearInterval(timerRef.current);
-      }
-    };
-
-    r.onend = () => {
-      console.log('[Voice] Recognition ended — isListeningRef:', isListeningRef.current);
-      // Android with continuous=false: onend fires after each utterance pause.
-      // Restart automatically if the user hasn't pressed Stop.
-      if (isAndroidRef.current && isListeningRef.current) {
-        console.log('[Voice] Android: restarting recognition');
-        try { r.start(); } catch (err) {
-          console.log('[Voice] Android restart failed:', err);
-          setIsListening(false);
-          isListeningRef.current = false;
-          clearInterval(timerRef.current);
-        }
-        return;
-      }
-      setIsListening(false);
-      isListeningRef.current = false;
-      setInterimTranscript('');
-      clearInterval(timerRef.current);
-    };
-
-    recognitionRef.current = r;
-
     return () => {
       clearInterval(timerRef.current);
-      clearTimeout(failureTimerRef.current);
       try { recognitionRef.current?.stop(); } catch {}
     };
   }, []);
 
-  // onFailure: optional callback invoked when voice fails (e.g. to switch to text mode)
-  const startListening = useCallback((onFailure) => {
-    if (!recognitionRef.current) return;
+  // startChunk: creates a NEW recognition instance and records one chunk.
+  // Appends the result to the existing transcript (chunk-based approach).
+  // Call this for both "Start Recording" and "Continue Recording".
+  // onFailure: optional callback (e.g. () => setMode('text')) on hard failure.
+  const startChunk = useCallback((onFailure) => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { if (onFailure) onFailure(); return; }
 
     console.log('[Voice] Recognition starting...');
-    lastChunkRef.current = '';
-    hasResultRef.current = false;
     setVoiceError('');
+    // Optimistic: show Listening state before getUserMedia resolves
+    setIsListening(true);
+    timerRef.current = setInterval(() => setDuration(d => d + 1), 1000);
+
+    // Step 1: request mic permission explicitly.
+    // Getting then immediately stopping the stream grants permission so that
+    // Chrome's user-gesture check passes for recognition.start() in the .then().
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then((stream) => {
+        // Release the stream — we only needed the permission prompt
+        stream.getTracks().forEach(t => t.stop());
+
+        // Step 2: create a FRESH recognition instance every time
+        const r = new SR();
+        r.lang             = 'en-US';
+        r.continuous       = false;      // MUST be false — true crashes Android Chrome
+        r.interimResults   = !isAndroid; // false on Android (true causes duplicate delivery)
+        r.maxAlternatives  = 1;
+
+        r.onstart = () => console.log('[Voice] Recognition started');
+
+        r.onresult = (e) => {
+          console.log('[Voice] onresult — resultIndex:', e.resultIndex, 'total:', e.results.length);
+          if (isAndroid) {
+            // interimResults=false: results[0][0] is the complete final transcript
+            const text = e.results[0][0].transcript.trim();
+            if (text) setTranscript(prev => prev + (prev.trim() ? ' ' : '') + text);
+          } else {
+            // Desktop: process only new results, show interim as live preview
+            let newFinal = '', interim = '';
+            for (let i = e.resultIndex; i < e.results.length; i++) {
+              if (e.results[i].isFinal) newFinal += e.results[i][0].transcript + ' ';
+              else interim += e.results[i][0].transcript;
+            }
+            if (newFinal.trim()) {
+              setTranscript(prev => prev + (prev.trim() ? ' ' : '') + newFinal.trim());
+            }
+            setInterimTranscript(interim);
+          }
+        };
+
+        r.onerror = (e) => {
+          console.error('[Voice] onerror:', e.error);
+          clearInterval(timerRef.current);
+          setIsListening(false);
+          setInterimTranscript('');
+          if (e.error === 'not-allowed') {
+            setVoiceError('Microphone access denied. Please allow microphone in browser settings.');
+            if (onFailure) onFailure();
+          } else if (e.error !== 'no-speech') {
+            setVoiceError('Voice input failed. Please type your answer instead.');
+            if (onFailure) onFailure();
+          }
+        };
+
+        r.onend = () => {
+          // continuous=false: onend fires after each utterance pause on ALL platforms.
+          // On Android this is expected — the component shows "Continue Recording".
+          // On desktop the user can also continue with another chunk.
+          console.log('[Voice] onend');
+          clearInterval(timerRef.current);
+          setIsListening(false);
+          setInterimTranscript('');
+        };
+
+        recognitionRef.current = r;
+        try {
+          r.start();
+          console.log('[Voice] start() called');
+        } catch (err) {
+          console.error('[Voice] start() threw:', err);
+          clearInterval(timerRef.current);
+          setIsListening(false);
+          setVoiceError('Could not start voice input. Please type your answer.');
+          if (onFailure) onFailure();
+        }
+      })
+      .catch((err) => {
+        console.error('[Voice] getUserMedia denied:', err);
+        clearInterval(timerRef.current);
+        setIsListening(false);
+        setVoiceError('Microphone access denied. Please allow microphone in browser settings and try again.');
+        if (onFailure) onFailure();
+      });
+  }, [isAndroid]);
+
+  const stopListening = useCallback(() => {
+    console.log('[Voice] stopListening called');
+    clearInterval(timerRef.current);
+    try { recognitionRef.current?.stop(); } catch {}
+    setIsListening(false);
+    setInterimTranscript('');
+  }, []);
+
+  // resetVoice: full reset (called by Re-Record)
+  const resetVoice = useCallback(() => {
+    clearInterval(timerRef.current);
+    try { recognitionRef.current?.stop(); } catch {}
+    setIsListening(false);
     setTranscript('');
     setInterimTranscript('');
     setDuration(0);
-
-    // Show listening state immediately — gives visual feedback before events fire
-    setIsListening(true);
-    isListeningRef.current = true;
-    timerRef.current = setInterval(() => setDuration(d => d + 1), 1000);
-
-    const doStart = () => {
-      try {
-        recognitionRef.current.start();
-        // 3-second fallback: if no results arrive, assume failure and switch to text
-        failureTimerRef.current = setTimeout(() => {
-          if (!hasResultRef.current && isListeningRef.current) {
-            console.log('[Voice] No results in 3s — falling back to text mode');
-            setVoiceError('Voice input failed. Try typing your answer instead.');
-            setIsListening(false);
-            isListeningRef.current = false;
-            clearInterval(timerRef.current);
-            try { recognitionRef.current?.stop(); } catch {}
-            if (onFailure) onFailure();
-          }
-        }, 3000);
-      } catch (err) {
-        console.log('[Voice] start() threw:', err);
-        setVoiceError('Voice input failed to start. Please try again or type your answer.');
-        setIsListening(false);
-        isListeningRef.current = false;
-        clearInterval(timerRef.current);
-        if (onFailure) onFailure();
-      }
-    };
-
-    // Explicitly request mic permission before starting.
-    // Chrome propagates the user-gesture activation through Promise chains,
-    // so calling r.start() inside .then() still counts as a user gesture.
-    if (navigator.mediaDevices?.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(() => { doStart(); })
-        .catch((err) => {
-          console.log('[Voice] getUserMedia denied:', err);
-          if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-            setVoiceError('Microphone access denied. Please allow microphone in browser settings.');
-            setIsListening(false);
-            isListeningRef.current = false;
-            clearInterval(timerRef.current);
-            if (onFailure) onFailure();
-          } else {
-            // Unknown getUserMedia error — still try starting recognition directly
-            doStart();
-          }
-        });
-    } else {
-      // getUserMedia not available (HTTP, old browser) — try directly
-      doStart();
-    }
-  }, []);
-
-  const stopListening = useCallback(() => {
-    console.log('[Voice] Stopping recognition');
-    isListeningRef.current = false;
-    clearTimeout(failureTimerRef.current);
-    try { recognitionRef.current?.stop(); } catch {}
-    setIsListening(false);
-    clearInterval(timerRef.current);
+    setVoiceError('');
   }, []);
 
   const fmt = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 
-  return { isListening, transcript, interimTranscript, supported, duration, fmt, startListening, stopListening, setTranscript, voiceError, setVoiceError };
+  return {
+    isListening, transcript, interimTranscript, supported, isAndroid,
+    duration, fmt, startChunk, stopListening, resetVoice,
+    setTranscript, voiceError, setVoiceError,
+  };
 }
 
 // ─── Mic icon ───
@@ -566,7 +529,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
   const handleTryAgain = () => {
     setResult(null);
     setTextAnswer('');
-    voice.setTranscript('');
+    voice.resetVoice();
     setAttemptNumber(n => n + 1);
   };
 
@@ -665,21 +628,20 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         {/* Answer input — only shown before result */}
         {!result && (
           <div style={{ marginBottom: 24, animation: 'fadeUp 0.3s cubic-bezier(0.22,1,0.36,1)' }}>
-            {/* Mode toggle */}
+            {/* Mode toggle — Voice tab hidden on iOS Safari (no SpeechRecognition) */}
             <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-              {['text', 'voice'].map(m => (
+              {(['text', ...(voice.supported ? ['voice'] : [])]).map(m => (
                 <button
                   key={m}
                   onClick={() => setMode(m)}
-                  disabled={m === 'voice' && !voice.supported}
                   style={{
                     padding: '7px 18px',
                     background: mode === m ? C.green : C.bg,
                     border: `1px solid ${mode === m ? C.green : C.border}`,
                     borderRadius: 10, fontSize: 11, letterSpacing: 1.5,
-                    textTransform: 'uppercase', cursor: m === 'voice' && !voice.supported ? 'not-allowed' : 'pointer',
+                    textTransform: 'uppercase', cursor: 'pointer',
                     color: mode === m ? '#fff' : C.textMuted,
-                    fontFamily: "'Plus Jakarta Sans', sans-serif", opacity: m === 'voice' && !voice.supported ? 0.4 : 1,
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
                     transition: 'all 0.2s',
                   }}
                 >
@@ -737,62 +699,73 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               </>
             ) : (
               /* Voice panel */
-              !voice.supported ? (
-                <div style={{ padding: '20px', background: C.bgMuted, borderRadius: 16, textAlign: 'center', fontSize: 14, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>
-                  Voice input is not supported on this browser. Please type your answer instead.
-                </div>
-              ) : (
               <div style={{
                 background: C.bg, border: `2px solid ${voice.isListening ? C.green : C.border}`,
-                borderRadius: 16, padding: 22,
-                transition: 'border-color 0.3s',
+                borderRadius: 16, padding: 22, transition: 'border-color 0.3s',
               }}>
+                {/* Header: status + timer */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     {voice.isListening && (
                       <div style={{ width: 9, height: 9, borderRadius: '50%', background: C.red, animation: 'pulse 1s ease-in-out infinite' }} />
                     )}
                     <span style={{ fontSize: 11, letterSpacing: 3, textTransform: 'uppercase', color: voice.isListening ? C.red : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                      {voice.isListening ? 'Listening...' : voiceText ? 'Recording Complete' : 'Voice Input'}
+                      {voice.isListening ? 'Listening...' : voiceText ? 'Ready to Submit' : 'Voice Input'}
                     </span>
                   </div>
-                  {voice.isListening && (
+                  {voice.duration > 0 && (
                     <span style={{ fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", background: C.bgMuted, padding: '3px 10px', borderRadius: 10 }}>
                       {voice.fmt(voice.duration)}
                     </span>
                   )}
                 </div>
 
+                {/* Transcript display */}
                 <div style={{
-                  minHeight: 80, maxHeight: 160, overflow: 'auto',
+                  minHeight: 80, maxHeight: 180, overflow: 'auto',
                   padding: 14, background: C.bgSoft, borderRadius: 12,
                   border: `1px solid ${C.borderLight}`, marginBottom: 14,
                   fontSize: 14, lineHeight: 1.7, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text,
                 }}>
-                  {/* Final confirmed text */}
                   {voice.transcript || (!voice.interimTranscript && (
                     <span style={{ color: C.textMuted, fontStyle: 'italic' }}>
                       {voice.isListening ? 'Start speaking...' : 'Tap the microphone to begin.'}
                     </span>
                   ))}
-                  {/* Live preview — replaces on each interim event, never accumulates */}
+                  {/* Desktop: live interim preview replaces on each event */}
                   {voice.interimTranscript && (
                     <span style={{ color: C.textMuted }}>{voice.transcript ? ' ' : ''}{voice.interimTranscript}</span>
                   )}
                 </div>
 
-                {/* Voice-specific error (mic denied, fallback, etc.) */}
+                {/* Voice error */}
                 {voice.voiceError && (
                   <div style={{ marginBottom: 12, padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {voice.voiceError}
                   </div>
                 )}
 
-                <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
-                  {!voice.isListening ? (
+                {/* Buttons */}
+                <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+                  {voice.isListening ? (
+                    <button
+                      onClick={voice.stopListening}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 8,
+                        padding: '11px 24px', background: 'transparent',
+                        border: `2px solid ${C.red}`, borderRadius: 12, color: C.red,
+                        fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                        fontWeight: 500, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer',
+                      }}
+                    >
+                      <div style={{ width: 10, height: 10, background: C.red, borderRadius: 2 }} />
+                      Stop Recording
+                    </button>
+                  ) : (
                     <>
+                      {/* Start / Continue */}
                       <button
-                        onClick={() => voice.startListening(() => setMode('text'))}
+                        onClick={() => voice.startChunk(() => setMode('text'))}
                         style={{
                           display: 'flex', alignItems: 'center', gap: 8,
                           padding: '11px 24px', background: C.green, border: 'none', borderRadius: 12,
@@ -800,8 +773,11 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                           fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer',
                         }}
                       >
-                        <MicIcon active={false} /> {voiceText ? 'Re-Record' : 'Start Recording'}
+                        <MicIcon active={false} />
+                        {voiceText ? 'Continue Recording' : 'Start Recording'}
                       </button>
+
+                      {/* Submit — shown when there is transcript */}
                       {voiceText && (
                         <button
                           onClick={() => handleSubmit(dedupeTranscript(voiceText), true)}
@@ -816,26 +792,32 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                           {loading ? 'Evaluating...' : 'Submit Answer'}
                         </button>
                       )}
+
+                      {/* Re-Record — resets everything */}
+                      {voiceText && (
+                        <button
+                          onClick={voice.resetVoice}
+                          style={{
+                            padding: '11px 20px', background: 'transparent',
+                            border: `1px solid ${C.border}`, borderRadius: 12, color: C.textMuted,
+                            fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                            letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer',
+                          }}
+                        >
+                          Re-Record
+                        </button>
+                      )}
                     </>
-                  ) : (
-                    <button
-                      onClick={voice.stopListening}
-                      style={{
-                        display: 'flex', alignItems: 'center', gap: 8,
-                        padding: '11px 24px',
-                        background: 'transparent', border: `2px solid ${C.red}`,
-                        borderRadius: 12, color: C.red, fontSize: 11,
-                        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
-                        letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer',
-                      }}
-                    >
-                      <div style={{ width: 10, height: 10, background: C.red, borderRadius: 2 }} />
-                      Stop Recording
-                    </button>
                   )}
                 </div>
+
+                {/* Android-specific instruction */}
+                {voice.isAndroid && (
+                  <div style={{ marginTop: 12, fontSize: 12, color: C.textMuted, textAlign: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.5 }}>
+                    Tap mic, speak one sentence, tap again. Repeat for longer answers.
+                  </div>
+                )}
               </div>
-              )
             )}
 
             {error && (
