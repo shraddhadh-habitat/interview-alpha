@@ -1,5 +1,51 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "./lib/supabase";
+import * as pdfjsLib from "pdfjs-dist";
+import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+import mammoth from "mammoth";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
+
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+
+async function extractFileText(file) {
+  if (file.size > MAX_FILE_SIZE) throw new Error("File is over 2MB. Please paste the text instead.");
+
+  const ext = file.name.split(".").pop().toLowerCase();
+
+  if (ext === "txt") {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result);
+      reader.onerror = () => reject(new Error("Could not read file. Please paste your text instead."));
+      reader.readAsText(file);
+    });
+  }
+
+  if (ext === "pdf") {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pages = [];
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      pages.push(content.items.map((item) => item.str).join(" "));
+    }
+    const text = pages.join("\n").trim();
+    if (!text) throw new Error("Could not read file. Please paste your text instead.");
+    return text;
+  }
+
+  if (ext === "docx") {
+    const arrayBuffer = await file.arrayBuffer();
+    const result = await mammoth.extractRawText({ arrayBuffer });
+    const text = result.value.trim();
+    if (!text) throw new Error("Could not read file. Please paste your text instead.");
+    return text;
+  }
+
+  throw new Error("Unsupported file type. Please upload a .pdf, .docx, or .txt file.");
+}
 
 const SYSTEM_PROMPT = `You are Alpha, an elite Product Management interview assistant at InterviewAlpha. You've trained on thousands of real PM interviews at FAANG companies and you have zero tolerance for fluff. You're known for being direct, high-energy, and brutally honest — but always constructive. You push people to their best, not pat them on the back for mediocrity.
 
@@ -687,6 +733,12 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   const [voiceMode, setVoiceMode] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [savingProfile, setSavingProfile] = useState(false);
+  const [resumeUploading, setResumeUploading] = useState(false);
+  const [jdUploading, setJdUploading] = useState(false);
+  const [resumeFileError, setResumeFileError] = useState("");
+  const [jdFileError, setJdFileError] = useState("");
+  const resumeFileRef = useRef(null);
+  const jdFileRef = useRef(null);
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
   const voice = useVoiceToText();
@@ -705,9 +757,26 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       });
   }, [user]);
 
+  // ─── File upload handler ───
+  const handleFileUpload = useCallback(async (file, field) => {
+    const setUploading = field === "resume" ? setResumeUploading : setJdUploading;
+    const setError = field === "resume" ? setResumeFileError : setJdFileError;
+    const setValue = field === "resume" ? setResume : setJd;
+    setError("");
+    setUploading(true);
+    try {
+      const text = await extractFileText(file);
+      setValue(text);
+    } catch (err) {
+      setError(err.message || "Could not read file. Please paste your text instead.");
+    } finally {
+      setUploading(false);
+    }
+  }, []);
+
   // ─── Save / update profile ───
   const saveProfile = useCallback(async () => {
-    if (!user || !resume.trim() || !jd.trim()) return;
+    if (!user || (!resume.trim() && !jd.trim())) return;
     setSavingProfile(true);
     await supabase.from("profiles").upsert({
       id: user.id,
@@ -1204,7 +1273,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           )}
 
           <div style={{ marginBottom: 32 }}>
-            <label style={{ display: "block", fontSize: 10, letterSpacing: 3, textTransform: "uppercase", color: C.textMuted, marginBottom: 12 }}>Resume / Experience</label>
+            <label style={{ display: "block", fontSize: 10, letterSpacing: 3, textTransform: "uppercase", color: C.textMuted, marginBottom: 12 }}>Resume / Experience <span style={{ textTransform: "none", letterSpacing: 0, fontWeight: 400, fontSize: 10 }}>(optional)</span></label>
             <textarea
               value={resume}
               onChange={e => setResume(e.target.value)}
@@ -1218,10 +1287,35 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               onFocus={e => e.target.style.borderColor = C.green}
               onBlur={e => e.target.style.borderColor = C.border}
             />
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 8 }}>
+              <input
+                ref={resumeFileRef}
+                type="file"
+                accept=".pdf,.docx,.txt"
+                style={{ display: "none" }}
+                onChange={e => { if (e.target.files[0]) handleFileUpload(e.target.files[0], "resume"); e.target.value = ""; }}
+              />
+              <button
+                type="button"
+                onClick={() => resumeFileRef.current?.click()}
+                disabled={resumeUploading}
+                style={{
+                  background: "none", border: `1px solid ${C.border}`, borderRadius: 8,
+                  padding: "6px 14px", fontSize: 12, color: C.textMuted,
+                  cursor: resumeUploading ? "wait" : "pointer",
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "border-color 0.2s",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
+              >
+                {resumeUploading ? "Reading..." : "📎 Upload File (.pdf, .docx, .txt)"}
+              </button>
+            </div>
+            {resumeFileError && <div style={{ marginTop: 6, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{resumeFileError}</div>}
           </div>
 
           <div style={{ marginBottom: 40 }}>
-            <label style={{ display: "block", fontSize: 10, letterSpacing: 3, textTransform: "uppercase", color: C.textMuted, marginBottom: 12 }}>Target Job Description</label>
+            <label style={{ display: "block", fontSize: 10, letterSpacing: 3, textTransform: "uppercase", color: C.textMuted, marginBottom: 12 }}>Job Description <span style={{ textTransform: "none", letterSpacing: 0, fontWeight: 400, fontSize: 10 }}>(optional)</span></label>
             <textarea
               value={jd}
               onChange={e => setJd(e.target.value)}
@@ -1235,6 +1329,31 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               onFocus={e => e.target.style.borderColor = C.green}
               onBlur={e => e.target.style.borderColor = C.border}
             />
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 8 }}>
+              <input
+                ref={jdFileRef}
+                type="file"
+                accept=".pdf,.docx,.txt"
+                style={{ display: "none" }}
+                onChange={e => { if (e.target.files[0]) handleFileUpload(e.target.files[0], "jd"); e.target.value = ""; }}
+              />
+              <button
+                type="button"
+                onClick={() => jdFileRef.current?.click()}
+                disabled={jdUploading}
+                style={{
+                  background: "none", border: `1px solid ${C.border}`, borderRadius: 8,
+                  padding: "6px 14px", fontSize: 12, color: C.textMuted,
+                  cursor: jdUploading ? "wait" : "pointer",
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "border-color 0.2s",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
+              >
+                {jdUploading ? "Reading..." : "📎 Upload File (.pdf, .docx, .txt)"}
+              </button>
+            </div>
+            {jdFileError && <div style={{ marginTop: 6, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{jdFileError}</div>}
           </div>
 
           <div className="ia-setup-btns" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
@@ -1259,21 +1378,21 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
 
             <button
               onClick={saveProfile}
-              disabled={!resume.trim() || !jd.trim() || savingProfile}
+              disabled={(!resume.trim() && !jd.trim()) || savingProfile}
               style={{
                 padding: "16px 28px",
                 background: "transparent",
-                border: `1px solid ${(resume.trim() && jd.trim()) ? C.border : C.borderLight}`,
-                color: (resume.trim() && jd.trim()) ? C.textSoft : C.textMuted,
+                border: `1px solid ${(resume.trim() || jd.trim()) ? C.border : C.borderLight}`,
+                color: (resume.trim() || jd.trim()) ? C.textSoft : C.textMuted,
                 fontSize: 11, letterSpacing: 2, textTransform: "uppercase",
-                cursor: (resume.trim() && jd.trim() && !savingProfile) ? "pointer" : "not-allowed",
+                cursor: ((resume.trim() || jd.trim()) && !savingProfile) ? "pointer" : "not-allowed",
                 borderRadius: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: "all 0.2s"
               }}
-              onMouseEnter={e => { if (resume.trim() && jd.trim()) e.currentTarget.style.borderColor = C.green; }}
+              onMouseEnter={e => { if (resume.trim() || jd.trim()) e.currentTarget.style.borderColor = C.green; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; }}
             >
-              {savingProfile ? "Saving..." : "Update Profile"}
+              {savingProfile ? "Saving..." : "Save Profile"}
             </button>
           </div>
         </div>
