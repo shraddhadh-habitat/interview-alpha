@@ -1133,14 +1133,14 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                     onClick={onStartTour}
                     style={{
                       background: 'none', border: 'none', padding: 0,
-                      fontSize: 14, color: '#5C5C57', cursor: 'pointer',
+                      fontSize: 16, color: '#E8650A', cursor: 'pointer',
                       fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      textDecoration: 'none',
+                      fontWeight: 700, textDecoration: 'none',
                     }}
                     onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline'; }}
                     onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none'; }}
                   >
-                    New here? Take a quick tour →
+                    Take a Quick Tour →
                   </button>
                 </div>
               )}
@@ -1301,7 +1301,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 disabled={resumeUploading}
                 style={{
                   background: "none", border: `1px solid ${C.border}`, borderRadius: 8,
-                  padding: "6px 14px", fontSize: 12, color: C.textMuted,
+                  padding: "6px 14px", fontSize: 15, fontWeight: 700, color: C.textMuted,
                   cursor: resumeUploading ? "wait" : "pointer",
                   fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "border-color 0.2s",
                 }}
@@ -1343,7 +1343,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 disabled={jdUploading}
                 style={{
                   background: "none", border: `1px solid ${C.border}`, borderRadius: 8,
-                  padding: "6px 14px", fontSize: 12, color: C.textMuted,
+                  padding: "6px 14px", fontSize: 15, fontWeight: 700, color: C.textMuted,
                   cursor: jdUploading ? "wait" : "pointer",
                   fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "border-color 0.2s",
                 }}
