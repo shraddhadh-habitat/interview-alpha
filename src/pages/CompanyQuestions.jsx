@@ -351,44 +351,15 @@ const QUESTIONS = {
   ],
 };
 
-// ── Components ────────────────────────────────────────────────────────────────
+// Sorted alphabetically for dropdown; Meta shows as "Meta/Facebook"
+const DROPDOWN_LABEL = { meta: 'Meta/Facebook' };
+const COMPANIES_SORTED = [...COMPANIES].sort((a, b) => {
+  const la = (DROPDOWN_LABEL[a.id] || a.name).toLowerCase();
+  const lb = (DROPDOWN_LABEL[b.id] || b.name).toLowerCase();
+  return la < lb ? -1 : la > lb ? 1 : 0;
+});
 
-function CompanyCard({ company, onClick }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: C.card, borderRadius: 16,
-        border: hovered ? `1.5px solid ${company.color}` : `1px solid ${C.border}`,
-        boxShadow: hovered ? `0 8px 24px ${company.color}22` : '0 2px 6px rgba(0,0,0,0.05)',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        transition: 'all 0.2s ease',
-        padding: '24px 20px', cursor: 'pointer',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 10,
-      }}
-    >
-      <div style={{
-        width: 52, height: 52, borderRadius: 14,
-        background: `${company.color}18`,
-        border: `1.5px solid ${company.color}33`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 22, fontWeight: 800, color: company.color,
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
-      }}>
-        {company.initial || company.name[0]}
-      </div>
-      <div style={{ fontSize: 16, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-        {company.name}
-      </div>
-      <div style={{ fontSize: 12, color: C.textLight, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.4 }}>
-        {company.tagline}
-      </div>
-    </div>
-  );
-}
+// ── Components ────────────────────────────────────────────────────────────────
 
 function QuestionCard({ item, setPage }) {
   const [open, setOpen] = useState(false);
@@ -469,22 +440,10 @@ function QuestionCard({ item, setPage }) {
   );
 }
 
-function CompanyView({ company, data, onBack, setPage }) {
+function CompanyView({ company, data, setPage }) {
   return (
     <div>
-      {/* Back + header */}
       <div style={{ marginBottom: 32 }}>
-        <button
-          onClick={onBack}
-          style={{
-            background: 'none', border: 'none', padding: '6px 0',
-            fontSize: 14, color: C.textMuted, cursor: 'pointer',
-            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
-            marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6,
-          }}
-        >
-          ← All Companies
-        </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <div style={{
             width: 48, height: 48, borderRadius: 13,
@@ -525,49 +484,122 @@ function CompanyView({ company, data, onBack, setPage }) {
   );
 }
 
+function AllCompaniesView({ setPage }) {
+  return (
+    <div>
+      {COMPANIES_SORTED.map(company => {
+        const data = QUESTIONS[company.id];
+        if (!data) return null;
+        return (
+          <div key={company.id} style={{ marginBottom: 48 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: 11,
+                background: `${company.color}18`, border: `1.5px solid ${company.color}33`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 17, fontWeight: 800, color: company.color,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", flexShrink: 0,
+              }}>
+                {company.initial || company.name[0]}
+              </div>
+              <h2 style={{
+                fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 400,
+                color: C.text, margin: 0,
+              }}>
+                {DROPDOWN_LABEL[company.id] || company.name}
+              </h2>
+            </div>
+            {data.map(round => (
+              <div key={round.round} style={{ marginBottom: 28 }}>
+                <div style={{
+                  fontSize: 11, fontWeight: 600, letterSpacing: 3,
+                  textTransform: 'uppercase', color: C.textLight, marginBottom: 12,
+                }}>
+                  {round.round}
+                </div>
+                {round.questions.map((item, i) => (
+                  <QuestionCard key={i} item={item} setPage={setPage} />
+                ))}
+              </div>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function CompanyQuestions({ setPage }) {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState('all');
   const company = COMPANIES.find(c => c.id === selected);
-  const data = selected ? QUESTIONS[selected] : null;
+  const data = selected !== 'all' ? QUESTIONS[selected] : null;
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", paddingTop: NAV_H + 40 }}>
       <style>{`
         @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         * { box-sizing: border-box; }
-        .company-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
-        @media (max-width: 900px) { .company-grid { grid-template-columns: repeat(3, 1fr) !important; } }
-        @media (max-width: 600px) { .cq-page { padding: 24px 16px !important; } .company-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 600px) { .cq-page { padding: 24px 16px !important; } }
+        .company-select {
+          width: 100%; max-width: 400px;
+          padding: 12px 16px; font-size: 16px;
+          font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500;
+          color: #0A0A0A; background: #FFFFFF;
+          border: 1.5px solid #E8E6E1; border-radius: 12px;
+          cursor: pointer; appearance: none;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235C5C57' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 14px center;
+          padding-right: 40px;
+          outline: none;
+        }
+        .company-select:focus { border-color: #FF8A00; box-shadow: 0 0 0 3px rgba(255,138,0,0.12); }
+        @media (max-width: 600px) { .company-select { max-width: 100%; } }
       `}</style>
 
       <div className="cq-page" style={{ maxWidth: 960, margin: '0 auto', padding: '0 28px 60px', animation: 'fadeUp 0.5s ease' }}>
 
-        {!selected ? (
-          <>
-            <div style={{ marginBottom: 40 }}>
-              <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 400, color: C.text, margin: '0 0 12px', lineHeight: 1.1 }}>
-                Company-Specific Interview Prep
-              </h1>
-              <p style={{ fontSize: 16, color: C.textMuted, margin: 0, lineHeight: 1.6 }}>
-                Questions commonly asked at top tech companies, with expert answer frameworks.
-              </p>
-            </div>
-            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 3, textTransform: 'uppercase', color: C.textLight, marginBottom: 16 }}>
-              Select a company
-            </div>
-            <div className="company-grid">
-              {COMPANIES.map(c => (
-                <CompanyCard key={c.id} company={c} onClick={() => setSelected(c.id)} />
+        {/* Header */}
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 400, color: C.text, margin: '0 0 12px', lineHeight: 1.1 }}>
+            Company-Specific Interview Prep
+          </h1>
+          <p style={{ fontSize: 16, color: C.textMuted, margin: '0 0 24px', lineHeight: 1.6 }}>
+            Questions commonly asked at top tech companies, with expert answer frameworks.
+          </p>
+
+          {/* Dropdown */}
+          <div>
+            <label style={{
+              display: 'block', fontSize: 11, fontWeight: 600, letterSpacing: 3,
+              textTransform: 'uppercase', color: C.textLight, marginBottom: 10,
+            }}>
+              Select a Company
+            </label>
+            <select
+              className="company-select"
+              value={selected}
+              onChange={e => setSelected(e.target.value)}
+            >
+              <option value="all">All Companies</option>
+              {COMPANIES_SORTED.map(c => (
+                <option key={c.id} value={c.id}>
+                  {DROPDOWN_LABEL[c.id] || c.name}
+                </option>
               ))}
-            </div>
-          </>
+            </select>
+          </div>
+        </div>
+
+        {/* Content */}
+        {selected === 'all' ? (
+          <AllCompaniesView setPage={setPage} />
         ) : (
           <CompanyView
             company={company}
             data={data || []}
-            onBack={() => setSelected(null)}
             setPage={setPage}
           />
         )}

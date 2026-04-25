@@ -295,31 +295,44 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
             { id: 'sessions', label: 'Past Sessions' },
             { id: 'progress', label: 'My Progress' },
             ...(onReplayDemo ? [{ id: '__tour', label: 'Take Tour' }] : []),
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => {
-                if (tab.id === '__tour') { setDrawerOpen(false); onReplayDemo(); }
-                else handleNav(tab.id);
-              }}
-              style={{
-                display: 'block', width: '100%', textAlign: 'left',
-                padding: '0 16px', height: 56,
-                background: tab.id === 'admin' ? 'transparent' : (page === tab.id ? 'rgba(255,107,107,0.07)' : RAINBOW),
-                WebkitBackgroundClip: tab.id === 'admin' ? 'unset' : 'text',
-                WebkitTextFillColor: tab.id === 'admin' ? C.red : 'transparent',
-                backgroundClip: tab.id === 'admin' ? 'unset' : 'text',
-                border: 'none',
-                borderRadius: 12,
-                color: tab.id === 'admin' ? C.red : 'transparent',
-                fontSize: 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 800,
-                cursor: 'pointer',
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
+          ].map(tab => {
+            const isActive = page === tab.id;
+            const isUpgrade = tab.id === 'upgrade';
+            const isAdminTab = tab.id === 'admin';
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  if (tab.id === '__tour') { setDrawerOpen(false); onReplayDemo(); }
+                  else handleNav(tab.id);
+                }}
+                style={{
+                  display: 'flex', alignItems: 'center', width: '100%', textAlign: 'left',
+                  padding: '0 16px', height: 56,
+                  background: isActive ? 'rgba(255,138,0,0.08)' : 'transparent',
+                  border: 'none',
+                  borderLeft: isActive ? '3px solid #FF8A00' : '3px solid transparent',
+                  borderRadius: isActive ? '0 12px 12px 0' : 12,
+                  color: isAdminTab ? C.red : isActive ? '#FF8A00' : '#1B1B18',
+                  fontSize: 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: isActive ? 700 : 500,
+                  cursor: 'pointer',
+                }}
+              >
+                {isUpgrade ? (
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center',
+                    padding: '4px 12px', borderRadius: 20,
+                    background: RAINBOW,
+                    color: '#fff',
+                    fontSize: 14, fontWeight: 700,
+                  }}>
+                    {tab.label}
+                  </span>
+                ) : tab.label}
+              </button>
+            );
+          })}
         </div>
 
         <div style={{ padding: '0 12px' }}>
