@@ -532,9 +532,9 @@ function AllCompaniesView({ setPage }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function CompanyQuestions({ setPage }) {
-  const [selected, setSelected] = useState('all');
-  const company = COMPANIES.find(c => c.id === selected);
-  const data = selected !== 'all' ? QUESTIONS[selected] : null;
+  const [selectedCompany, setSelectedCompany] = useState('');
+  const company = COMPANIES.find(c => c.id === selectedCompany);
+  const data = selectedCompany ? QUESTIONS[selectedCompany] : null;
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", paddingTop: NAV_H + 40 }}>
@@ -580,10 +580,10 @@ export default function CompanyQuestions({ setPage }) {
             </label>
             <select
               className="company-select"
-              value={selected}
-              onChange={e => setSelected(e.target.value)}
+              value={selectedCompany}
+              onChange={e => setSelectedCompany(e.target.value)}
             >
-              <option value="all">All Companies</option>
+              <option value="" disabled>-- Select a Company --</option>
               {COMPANIES_SORTED.map(c => (
                 <option key={c.id} value={c.id}>
                   {DROPDOWN_LABEL[c.id] || c.name}
@@ -594,9 +594,7 @@ export default function CompanyQuestions({ setPage }) {
         </div>
 
         {/* Content */}
-        {selected === 'all' ? (
-          <AllCompaniesView setPage={setPage} />
-        ) : (
+        {selectedCompany && (
           <CompanyView
             company={company}
             data={data || []}
