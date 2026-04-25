@@ -30,6 +30,12 @@ const globalStyles = `
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   * { box-sizing: border-box; }
   input:focus { outline: none; }
+  @media (max-width: 500px) {
+    .up-container { padding: 20px 16px 40px !important; }
+    .up-compare-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .up-plans { grid-template-columns: 1fr !important; }
+    .up-payment { grid-template-columns: 1fr !important; gap: 24px !important; }
+  }
 `;
 
 function StatusBanner({ profile }) {
@@ -151,7 +157,7 @@ export default function UpgradePage({ user, profile, onBack }) {
     <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{globalStyles}</style>
 
-      <div style={{ maxWidth: 700, margin: '0 auto', padding: '48px 28px', animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
+      <div className="up-container" style={{ maxWidth: 700, margin: '0 auto', padding: '48px 28px', animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
 
         {/* Back */}
         <button
@@ -180,8 +186,9 @@ export default function UpgradePage({ user, profile, onBack }) {
         {/* Step 1 — Plan selection */}
         {step === 1 && (
           <div style={{ animation: 'fadeUp 0.35s cubic-bezier(0.22,1,0.36,1)' }}>
-            {/* Plan comparison table */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0, border: `1px solid ${C.border}`, borderRadius: 12, overflow: 'hidden', marginBottom: 32 }}>
+            {/* Plan comparison table — scrollable on narrow screens */}
+            <div className="up-compare-wrap" style={{ marginBottom: 32, borderRadius: 12, border: `1px solid ${C.border}` }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0, borderRadius: 12, overflow: 'hidden', minWidth: 320 }}>
               {/* Header row */}
               <div style={{ padding: '14px 16px', background: C.bgMuted, borderBottom: `1px solid ${C.border}` }} />
               {['Free', 'Pro'].map(tier => (
@@ -205,9 +212,10 @@ export default function UpgradePage({ user, profile, onBack }) {
                 </div>
               ))}
             </div>
+            </div>
 
             {/* Pricing cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24, alignItems: 'start' }}>
+            <div className="up-plans" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24, alignItems: 'start' }}>
               {Object.entries(PLANS).map(([key, p]) => {
                 const isYearly = key === 'yearly';
                 const btn = (
@@ -345,7 +353,7 @@ export default function UpgradePage({ user, profile, onBack }) {
               )}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'start' }}>
+            <div className="up-payment" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'start' }}>
               {/* QR code side */}
               <div style={{ textAlign: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, justifyContent: 'center' }}>

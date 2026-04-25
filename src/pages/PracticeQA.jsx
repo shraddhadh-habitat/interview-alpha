@@ -19,6 +19,12 @@ const globalStyles = `
   * { box-sizing: border-box; }
   input:focus { outline: none; }
   ::selection { background: rgba(22,163,74,0.18); }
+  @media (max-width: 480px) {
+    .pqa-container { padding: 20px 16px 40px !important; }
+    .pqa-level-select { width: 100% !important; min-width: 0 !important; }
+    .pqa-search-row { flex-wrap: wrap !important; }
+    .pqa-expand-btn { width: 100% !important; }
+  }
 `;
 
 function ReportIssueModal({ questionId, user, onClose }) {
@@ -430,7 +436,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         />
       )}
 
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
+      <div className="pqa-container" style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
 
         {/* Welcome banner — shown only on first login */}
         {showWelcome && (
@@ -511,13 +517,14 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           {/* Designation dropdown */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <select
+              className="pqa-level-select"
               value={selectedLevel || ''}
               onChange={e => { setSelectedLevel(e.target.value || null); setExpandedKeys(new Set()); setAllExpanded(false); }}
               style={{
                 padding: '9px 16px',
                 background: C.bg,
                 border: `1px solid ${selectedLevel ? C.green : C.border}`,
-                borderRadius: 12, fontSize: 11, letterSpacing: 0.5,
+                borderRadius: 12, fontSize: 14, letterSpacing: 0.5,
                 color: selectedLevel ? C.green : C.textSoft,
                 cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: selectedLevel ? 500 : 400,
@@ -526,7 +533,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'right 12px center',
                 paddingRight: 32,
-                minWidth: 200,
+                minWidth: 200, width: '100%', maxWidth: 280,
               }}
             >
               <option value="">All Levels</option>
@@ -537,7 +544,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           </div>
 
           {/* Search + Expand */}
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div className="pqa-search-row" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <div style={{
               flex: 1, display: 'flex', alignItems: 'center', gap: 10,
               background: C.bg, border: `1.5px solid ${C.border}`,
@@ -559,6 +566,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               )}
             </div>
             <button
+              className="pqa-expand-btn"
               onClick={handleExpandAll}
               style={{
                 padding: '10px 18px', background: C.bg,

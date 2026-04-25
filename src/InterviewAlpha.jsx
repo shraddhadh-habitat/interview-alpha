@@ -976,6 +976,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       .ia-setup-btns { flex-direction: column !important; }
       .ia-setup-btns button { width: 100% !important; box-sizing: border-box !important; }
       .ia-page-pad { padding: 24px 16px !important; padding-top: ${NAV_H + 24}px !important; }
+      .ia-chat-input textarea { font-size: 16px !important; }
     }
   `;
 
@@ -1571,7 +1572,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             />
           ) : (
             <>
-              <div style={{
+              <div className="ia-chat-input" style={{
                 display: "flex", gap: 8, background: C.bg,
                 border: `1px solid ${C.border}`, borderRadius: 12,
                 padding: "4px 4px 4px 20px", alignItems: "flex-end",

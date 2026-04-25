@@ -17,6 +17,10 @@ const globalStyles = `
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
   * { box-sizing: border-box; }
   textarea:focus { outline: none; }
+  @media (max-width: 480px) {
+    .pm-container { padding: 20px 16px 40px !important; }
+    .pm-answer-textarea { font-size: 16px !important; }
+  }
 `;
 
 // ─── Deduplicate repeated phrases in transcript (run before submit) ───
@@ -541,7 +545,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
     <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{globalStyles}</style>
 
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '40px 28px' }}>
+      <div className="pm-container" style={{ maxWidth: 760, margin: '0 auto', padding: '40px 28px' }}>
 
         {/* Back */}
         <button
@@ -653,6 +657,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
             {mode === 'text' ? (
               <>
                 <textarea
+                  className="pm-answer-textarea"
                   value={textAnswer}
                   onChange={e => setTextAnswer(e.target.value)}
                   placeholder="Type your answer here. Structure matters — try to open with a clear framework before diving into details."
