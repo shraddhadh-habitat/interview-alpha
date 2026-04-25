@@ -203,92 +203,135 @@ function buildCleanMessages(visibleMessages, newContent) {
 }
 
 // ─── Voice-to-Text Hook ───
+// Fresh SpeechRecognition instance per tap — avoids Android Chrome reuse bug.
+// Requests mic permission via getUserMedia first (required for Chrome user-gesture check).
 function useVoiceToText() {
-  const [isListening, setIsListening] = useState(false);
-  const [transcript, setTranscript] = useState("");
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  // iOS Safari has no SpeechRecognition at all — hide the voice button there
+  const supported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+
+  const [isListening, setIsListening]             = useState(false);
+  const [transcript, setTranscript]               = useState("");
   const [interimTranscript, setInterimTranscript] = useState("");
-  const [supported, setSupported] = useState(false);
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration]                   = useState(0);
+  const [voiceError, setVoiceError]               = useState("");
+
   const recognitionRef = useRef(null);
-  const timerRef = useRef(null);
+  const timerRef       = useRef(null);
 
   useEffect(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      setSupported(true);
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = "en-US";
-
-      recognition.onresult = (event) => {
-        let newFinal = "";
-        let interim  = "";
-        // Start from event.resultIndex — do NOT re-process already-finalized results
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const result = event.results[i];
-          if (result.isFinal) newFinal += result[0].transcript + " ";
-          else                interim  += result[0].transcript;
-        }
-        if (newFinal) setTranscript(prev => prev + newFinal);
-        setInterimTranscript(interim);
-      };
-
-      recognition.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
-        if (event.error !== "no-speech") {
-          setIsListening(false);
-          clearInterval(timerRef.current);
-        }
-      };
-
-      recognition.onend = () => {
-        setIsListening(false);
-        setInterimTranscript("");
-        clearInterval(timerRef.current);
-      };
-
-      recognitionRef.current = recognition;
-    }
-
     return () => {
       clearInterval(timerRef.current);
-      if (recognitionRef.current) {
-        try { recognitionRef.current.stop(); } catch {}
-      }
+      try { recognitionRef.current?.stop(); } catch {}
     };
   }, []);
 
-  const startListening = useCallback(() => {
-    if (!recognitionRef.current) return;
+  // startChunk: creates a NEW recognition instance each call and records one phrase.
+  // Appends to existing transcript — call again for "Continue Recording".
+  // onFailure: optional callback (e.g. dismiss voice panel) on hard error.
+  const startChunk = useCallback((onFailure) => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { if (onFailure) onFailure(); return; }
+
+    setVoiceError("");
+    setIsListening(true);
+    timerRef.current = setInterval(() => setDuration(d => d + 1), 1000);
+
+    // Step 1: get mic permission explicitly, then release the stream.
+    // This satisfies Chrome's user-gesture check before recognition.start().
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then((stream) => {
+        stream.getTracks().forEach(t => t.stop());
+
+        // Step 2: fresh instance every tap
+        const r = new SR();
+        r.lang            = "en-US";
+        r.continuous      = false;      // MUST be false — true crashes Android Chrome
+        r.interimResults  = !isAndroid; // false on Android (true causes duplicate delivery)
+        r.maxAlternatives = 1;
+
+        r.onresult = (e) => {
+          if (isAndroid) {
+            // interimResults=false: results[0][0] is the complete final transcript
+            const text = e.results[0][0].transcript.trim();
+            if (text) setTranscript(prev => prev + (prev.trim() ? " " : "") + text);
+          } else {
+            let newFinal = "", interim = "";
+            for (let i = e.resultIndex; i < e.results.length; i++) {
+              if (e.results[i].isFinal) newFinal += e.results[i][0].transcript + " ";
+              else interim += e.results[i][0].transcript;
+            }
+            if (newFinal.trim()) setTranscript(prev => prev + (prev.trim() ? " " : "") + newFinal.trim());
+            setInterimTranscript(interim);
+          }
+        };
+
+        r.onerror = (e) => {
+          console.error("[Voice] onerror:", e.error);
+          clearInterval(timerRef.current);
+          setIsListening(false);
+          setInterimTranscript("");
+          if (e.error === "not-allowed") {
+            setVoiceError("Microphone access denied. Please allow microphone in browser settings.");
+            if (onFailure) onFailure();
+          } else if (e.error !== "no-speech") {
+            setVoiceError("Voice input failed. Please type your answer instead.");
+            if (onFailure) onFailure();
+          }
+        };
+
+        r.onend = () => {
+          // continuous=false: onend fires after each utterance pause on all platforms.
+          // The user taps "Continue Recording" for longer answers.
+          clearInterval(timerRef.current);
+          setIsListening(false);
+          setInterimTranscript("");
+        };
+
+        recognitionRef.current = r;
+        try {
+          r.start();
+        } catch (err) {
+          console.error("[Voice] start() threw:", err);
+          clearInterval(timerRef.current);
+          setIsListening(false);
+          setVoiceError("Could not start voice input. Please type your answer.");
+          if (onFailure) onFailure();
+        }
+      })
+      .catch((err) => {
+        console.error("[Voice] getUserMedia denied:", err);
+        clearInterval(timerRef.current);
+        setIsListening(false);
+        setVoiceError("Microphone access denied. Please allow microphone in browser settings and try again.");
+        if (onFailure) onFailure();
+      });
+  }, [isAndroid]);
+
+  const stopListening = useCallback(() => {
+    clearInterval(timerRef.current);
+    try { recognitionRef.current?.stop(); } catch {}
+    setIsListening(false);
+    setInterimTranscript("");
+  }, []);
+
+  const resetVoice = useCallback(() => {
+    clearInterval(timerRef.current);
+    try { recognitionRef.current?.stop(); } catch {}
+    setIsListening(false);
     setTranscript("");
     setInterimTranscript("");
     setDuration(0);
-    try {
-      recognitionRef.current.start();
-      setIsListening(true);
-      timerRef.current = setInterval(() => {
-        setDuration(prev => prev + 1);
-      }, 1000);
-    } catch (e) {
-      console.error("Could not start speech recognition:", e);
-    }
+    setVoiceError("");
   }, []);
 
-  const stopListening = useCallback(() => {
-    if (!recognitionRef.current) return;
-    try { recognitionRef.current.stop(); } catch {}
-    setIsListening(false);
-    clearInterval(timerRef.current);
-  }, []);
+  const fmt = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 
-  const formatDuration = (s) => {
-    const m = Math.floor(s / 60);
-    const sec = s % 60;
-    return `${m}:${sec.toString().padStart(2, "0")}`;
+  return {
+    isListening, transcript, interimTranscript, supported, isAndroid,
+    duration, fmt, startChunk, stopListening, resetVoice,
+    setTranscript, voiceError,
   };
-
-  return { isListening, transcript, interimTranscript, supported, duration, formatDuration, startListening, stopListening, setTranscript };
 }
 
 // ─── Mic Icon ───
@@ -488,8 +531,8 @@ function TypingIndicator() {
 
 // ─── Voice Recording Panel ───
 function VoicePanel({ voice, onSubmit, onCancel, loading }) {
-  const { isListening, transcript, interimTranscript, duration, formatDuration, startListening, stopListening } = voice;
-  const fullText = (transcript + interimTranscript).trim();
+  const { isListening, transcript, interimTranscript, duration, fmt, startChunk, stopListening, resetVoice, isAndroid, voiceError } = voice;
+  const hasTranscript = !!transcript.trim();
 
   return (
     <div style={{
@@ -500,6 +543,7 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
       animation: "fadeUp 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
       transition: "border-color 0.3s ease"
     }}>
+      {/* Status row */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           {isListening && (
@@ -510,51 +554,72 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
             color: isListening ? C.red : C.textMuted,
             fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500
           }}>
-            {isListening ? "Recording..." : fullText ? "Recording Complete" : "Voice Input"}
+            {isListening ? "Listening..." : hasTranscript ? "Ready to Submit" : "Voice Input"}
           </span>
         </div>
-        {isListening && (
+        {duration > 0 && (
           <span style={{ fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, fontWeight: 500, background: C.bgMuted, padding: "4px 12px", borderRadius: 10 }}>
-            {formatDuration(duration)}
+            {fmt(duration)}
           </span>
         )}
       </div>
 
+      {/* Transcript display */}
       <div style={{
         minHeight: 80, maxHeight: 180, overflow: "auto",
         padding: 16, background: C.bgSoft, borderRadius: 16,
         border: `1px solid ${C.borderLight}`, marginBottom: 16,
         fontSize: 14, lineHeight: 1.7, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text
       }}>
-        {fullText || (
+        {transcript || (!interimTranscript && (
           <span style={{ color: C.textMuted, fontStyle: "italic" }}>
-            {isListening ? "Start speaking — your words will appear here in real time..." : "Click the microphone to start recording your answer"}
+            {isListening ? "Start speaking..." : "Tap the microphone to begin."}
           </span>
-        )}
+        ))}
         {interimTranscript && (
           <span style={{ color: C.textMuted }}>{transcript ? " " : ""}{interimTranscript}</span>
         )}
       </div>
 
-      <div className="voice-btn-row" style={{ display: "flex", gap: 10, justifyContent: "center" }}>
-        {!isListening ? (
+      {/* Error display */}
+      {voiceError && (
+        <div style={{ marginBottom: 14, padding: "10px 14px", background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 10, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          {voiceError}
+        </div>
+      )}
+
+      {/* Buttons */}
+      <div className="voice-btn-row" style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+        {isListening ? (
+          <button
+            onClick={stopListening}
+            style={{
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "12px 28px", background: "transparent",
+              border: `2px solid ${C.red}`, borderRadius: 12, color: C.red,
+              fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 500, letterSpacing: 1.5, textTransform: "uppercase", cursor: "pointer"
+            }}
+          >
+            <div style={{ width: 10, height: 10, background: C.red, borderRadius: 2 }} /> Stop
+          </button>
+        ) : (
           <>
             <button
-              onClick={startListening}
+              onClick={() => startChunk(onCancel)}
               style={{
                 display: "flex", alignItems: "center", gap: 8,
                 padding: "12px 28px", background: C.green, border: "none", borderRadius: 12,
                 color: "#fff", fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", cursor: "pointer"
               }}
-              onMouseEnter={e => e.target.style.background = C.greenHover}
-              onMouseLeave={e => e.target.style.background = C.green}
             >
-              <MicIcon active={false} size={16} /> {fullText ? "Re-Record" : "Start Recording"}
+              <MicIcon active={false} size={16} />
+              {hasTranscript ? "Continue Recording" : "Start Recording"}
             </button>
-            {fullText && (
+            {hasTranscript && (
               <button
-                onClick={() => onSubmit(fullText)}
+                onClick={() => onSubmit(transcript.trim())}
                 disabled={loading}
                 style={{
                   padding: "12px 28px", background: C.success, border: "none", borderRadius: 12,
@@ -564,6 +629,19 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
                 }}
               >
                 Submit Answer
+              </button>
+            )}
+            {hasTranscript && (
+              <button
+                onClick={resetVoice}
+                style={{
+                  padding: "12px 20px", background: "transparent",
+                  border: `1px solid ${C.border}`, borderRadius: 12,
+                  color: C.textMuted, fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  letterSpacing: 1.5, textTransform: "uppercase", cursor: "pointer"
+                }}
+              >
+                Re-Record
               </button>
             )}
             <button
@@ -578,21 +656,15 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
               Cancel
             </button>
           </>
-        ) : (
-          <button
-            onClick={stopListening}
-            style={{
-              display: "flex", alignItems: "center", gap: 8,
-              padding: "14px 36px", background: C.red, border: "none", borderRadius: 12,
-              color: "#fff", fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 500, letterSpacing: 1.5, textTransform: "uppercase",
-              cursor: "pointer", animation: "subtlePulse 2s ease-in-out infinite"
-            }}
-          >
-            ■ Stop Recording
-          </button>
         )}
       </div>
+
+      {/* Android chunk-recording hint */}
+      {isAndroid && (
+        <div style={{ marginTop: 12, fontSize: 12, color: C.textMuted, textAlign: "center", fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.5 }}>
+          Tap mic, speak one sentence, tap again. Repeat for longer answers.
+        </div>
+      )}
     </div>
   );
 }
@@ -1494,7 +1566,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             <VoicePanel
               voice={voice}
               onSubmit={handleVoiceSubmit}
-              onCancel={() => { setVoiceMode(false); if (voice.isListening) voice.stopListening(); }}
+              onCancel={() => { setVoiceMode(false); voice.resetVoice(); }}
               loading={loading}
             />
           ) : (
