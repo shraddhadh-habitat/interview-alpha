@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { pmQuestions, PM_LEVELS } from '../data/pmQuestions';
 import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
+import { useAuth } from '../contexts/AuthContext';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -296,6 +297,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
 }
 
 export default function PracticeQA({ user, profile, checkSession, onSessionUsed }) {
+  const { requireAuth } = useAuth();
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [category, setCategory] = useState('product');
   const [search, setSearch] = useState('');
@@ -631,14 +633,14 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 index={displayIndex}
                 isOpen={expandedKeys.has(item.key)}
                 onToggle={() => toggleCard(item.key)}
-                onPractice={() => setPracticeQuestion({
+                onPractice={() => requireAuth('Sign up to practice with AI scoring', () => setPracticeQuestion({
                   question: item.question,
                   questionId: item.key,
                   designation: item.level,
                   category,
-                })}
+                }))}
                 practiceData={practiceStats[item.key] || null}
-                onReport={() => setReportTarget(item.key)}
+                onReport={() => requireAuth('Sign up to report question issues', () => setReportTarget(item.key))}
               />
             ))}
           </div>

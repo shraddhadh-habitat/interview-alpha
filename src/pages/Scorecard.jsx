@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
 import { pmQuestions } from '../data/pmQuestions';
+import { useAuth } from '../contexts/AuthContext';
 
 const C = {
   bg: '#FAFAF8',
@@ -502,6 +503,7 @@ function AttemptDetail({ item }) {
 // ── Main ─────────────────────────────────────────────────────────────────────
 
 export default function Scorecard({ user }) {
+  const { requireAuth } = useAuth();
   const [sessions, setSessions] = useState([]);
   const [practiceAttempts, setPracticeAttempts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -626,6 +628,30 @@ export default function Scorecard({ user }) {
   const focusAreas = useMemo(() =>
     Object.entries(scorecard.compData).filter(([, v]) => v != null).sort((a, b) => a[1] - b[1]).slice(0, 3),
     [scorecard]
+  );
+
+  if (!user) return (
+    <div style={{ background: C.bg, minHeight: '100vh', paddingTop: NAV_H, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: `${NAV_H + 40}px 24px 40px` }}>
+      <div style={{ textAlign: 'center', maxWidth: 440 }}>
+        <div style={{ fontSize: 52, marginBottom: 20 }}>📊</div>
+        <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 26, color: C.text, marginBottom: 12 }}>
+          Track your interview performance
+        </div>
+        <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.7, marginBottom: 28 }}>
+          Sign up to get a full scorecard across 8 competencies, practice analytics, and your PM readiness score.
+        </p>
+        <button
+          onClick={() => requireAuth('Sign up to track your interview performance')}
+          style={{
+            padding: '14px 32px', background: '#16A34A', border: 'none',
+            borderRadius: 12, color: '#fff', fontSize: 15, fontWeight: 600,
+            cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}
+        >
+          Sign Up →
+        </button>
+      </div>
+    </div>
   );
 
   if (loading) return (

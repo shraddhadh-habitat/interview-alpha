@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from './lib/supabase';
 import InterviewAlpha from './InterviewAlpha';
-import AuthPage from './pages/AuthPage';
 import PastSessions from './pages/PastSessions';
 import PracticeQA from './pages/PracticeQA';
 import MyProgress from './pages/MyProgress';
@@ -15,6 +14,7 @@ import Nav from './components/Nav';
 import Footer from './components/Footer';
 import DemoTutorial from './components/DemoTutorial';
 import PaywallModal from './components/PaywallModal';
+import { AuthProvider } from './contexts/AuthContext';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
@@ -67,7 +67,6 @@ function ResetPasswordPage({ onDone }) {
         @media (max-width: 768px) { .rp-left { display: none !important; } }
       `}</style>
 
-      {/* Left panel */}
       <div className="rp-left" style={{
         flex: 1, minWidth: 0,
         background: 'linear-gradient(135deg, #FAFAF8, #F5F3EF)',
@@ -89,7 +88,6 @@ function ResetPasswordPage({ onDone }) {
         </div>
       </div>
 
-      {/* Right panel */}
       <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 32px' }}>
         <div style={{
           background: '#FFFFFF', borderRadius: 24,
@@ -119,22 +117,12 @@ function ResetPasswordPage({ onDone }) {
           {!success && (
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: 16 }}>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: RC.textMuted, marginBottom: 8 }}>
-                  New Password
-                </label>
-                <input
-                  type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
-                  required placeholder="Min. 8 characters" style={inputStyle}
-                />
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: RC.textMuted, marginBottom: 8 }}>New Password</label>
+                <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} required placeholder="Min. 8 characters" style={inputStyle} />
               </div>
               <div style={{ marginBottom: 28 }}>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: RC.textMuted, marginBottom: 8 }}>
-                  Confirm Password
-                </label>
-                <input
-                  type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
-                  required placeholder="Repeat password" style={inputStyle}
-                />
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: RC.textMuted, marginBottom: 8 }}>Confirm Password</label>
+                <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required placeholder="Repeat password" style={inputStyle} />
               </div>
               <button
                 type="submit" disabled={loading}
@@ -186,6 +174,7 @@ export default function App() {
   const [showDemo, setShowDemo] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
+
   const [profile, setProfile] = useState({
     subscription_status:       'free',
     subscription_plan:         null,
@@ -229,12 +218,10 @@ export default function App() {
       .eq('id', uid)
       .single();
 
-    // Auto-expire: if active but past expiry, mark as expired locally
     let status = data?.subscription_status ?? 'free';
     if (status === 'active' && data?.subscription_expires_at) {
       if (new Date(data.subscription_expires_at) < new Date()) {
         status = 'expired';
-        // Write back asynchronously — don't block render
         supabase.from('profiles').update({ subscription_status: 'expired' }).eq('id', uid);
       }
     }
@@ -254,13 +241,11 @@ export default function App() {
     loadProfile(user.id);
   }, [user, loadProfile]);
 
-  // Increment session counter (called after session gate passes)
   const onSessionUsed = useCallback(async () => {
     if (!user) return;
     const status = profile.subscription_status;
 
     if (status === 'active') {
-      // Check monthly reset (if reset_at is over 30 days ago, reset counter)
       let newMonthly = profile.monthly_sessions_used + 1;
       let resetAt    = profile.monthly_sessions_reset_at;
       if (resetAt && new Date(resetAt) < new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)) {
@@ -279,16 +264,12 @@ export default function App() {
     }
   }, [user, profile]);
 
-  // Called when user closes or completes the demo — saves flag so it never auto-shows again
   const handleDemoClose = useCallback(async () => {
     setShowDemo(false);
     if (!user) return;
-    await supabase
-      .from('profiles')
-      .upsert({ id: user.id, has_seen_demo: true }, { onConflict: 'id' });
+    await supabase.from('profiles').upsert({ id: user.id, has_seen_demo: true }, { onConflict: 'id' });
   }, [user]);
 
-  // Returns true if session can proceed; otherwise navigates to upgrade and returns false
   const checkSession = useCallback(() => {
     const { subscription_status: status, free_sessions_used: used, monthly_sessions_used: monthly } = profile;
 
@@ -298,78 +279,71 @@ export default function App() {
     }
     if (status === 'pending') { setPage('upgrade'); return false; }
     if (status === 'expired') { setPage('upgrade'); return false; }
-    // free
     if (used < FREE_SESSION_LIMIT) return true;
     setShowPaywall(true);
     return false;
   }, [profile]);
 
   if (authLoading) return <LoadingScreen />;
-
   if (showResetPassword) return <ResetPasswordPage onDone={() => { setShowResetPassword(false); supabase.auth.signOut(); }} />;
 
-  if (!user) return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1 }}><AuthPage /></div>
-      <Footer />
-    </div>
-  );
-
-  const isAdmin = ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email.toLowerCase());
+  const isAdmin = user && ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email?.toLowerCase());
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <Nav
-        user={user}
-        page={page}
-        setPage={setPage}
-        onReplayDemo={() => setShowDemo(true)}
-        profile={profile}
-        onUpgradeClick={() => setPage('upgrade')}
-        isAdmin={isAdmin}
-      />
-      <div style={{ flex: 1 }}>
-        {page === 'interview'   && (
-          <InterviewAlpha
-            user={user}
-            profile={profile}
-            checkSession={checkSession}
-            onSessionUsed={onSessionUsed}
-            onStartTour={() => setShowDemo(true)}
-          />
-        )}
-        {page === 'practice'    && (
-          <PracticeQA
-            user={user}
-            profile={profile}
-            checkSession={checkSession}
-            onSessionUsed={onSessionUsed}
-          />
-        )}
-        {page === 'sessions'    && <PastSessions user={user} />}
-        {page === 'progress'    && <MyProgress user={user} />}
-        {page === 'company'     && <CompanyQuestions setPage={setPage} />}
-        {page === 'scorecard'   && <Scorecard user={user} />}
-        {page === 'salary'      && <SalaryGuide />}
-        {page === 'resources'   && <LearningResources />}
-        {page === 'upgrade'     && (
-          <UpgradePage
-            user={user}
-            profile={profile}
-            onBack={() => setPage('interview')}
-          />
-        )}
-        {page === 'admin' && isAdmin && <AdminPanel user={user} />}
-      </div>
-      <Footer />
-      {showDemo && <DemoTutorial onClose={handleDemoClose} />}
-      {showPaywall && (
-        <PaywallModal
-          lastSession
-          onClose={() => setShowPaywall(false)}
-          onUpgrade={() => { setShowPaywall(false); setPage('upgrade'); }}
+    <AuthProvider user={user}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <Nav
+          user={user}
+          page={page}
+          setPage={setPage}
+          onReplayDemo={user ? () => setShowDemo(true) : null}
+          profile={profile}
+          onUpgradeClick={() => setPage('upgrade')}
+          isAdmin={isAdmin}
         />
-      )}
-    </div>
+        <div style={{ flex: 1 }}>
+          {page === 'interview'   && (
+            <InterviewAlpha
+              user={user}
+              profile={profile}
+              checkSession={checkSession}
+              onSessionUsed={onSessionUsed}
+              onStartTour={user ? () => setShowDemo(true) : null}
+            />
+          )}
+          {page === 'practice'    && (
+            <PracticeQA
+              user={user}
+              profile={profile}
+              checkSession={checkSession}
+              onSessionUsed={onSessionUsed}
+            />
+          )}
+          {page === 'sessions'    && <PastSessions user={user} />}
+          {page === 'progress'    && <MyProgress user={user} />}
+          {page === 'company'     && <CompanyQuestions setPage={setPage} />}
+          {page === 'scorecard'   && <Scorecard user={user} />}
+          {page === 'salary'      && <SalaryGuide />}
+          {page === 'resources'   && <LearningResources />}
+          {page === 'upgrade'     && (
+            <UpgradePage
+              user={user}
+              profile={profile}
+              onBack={() => setPage('interview')}
+            />
+          )}
+          {page === 'admin' && isAdmin && <AdminPanel user={user} />}
+        </div>
+        <Footer />
+        {user && showDemo && <DemoTutorial onClose={handleDemoClose} />}
+        {user && showPaywall && (
+          <PaywallModal
+            lastSession
+            onClose={() => setShowPaywall(false)}
+            onUpgrade={() => { setShowPaywall(false); setPage('upgrade'); }}
+          />
+        )}
+      </div>
+    </AuthProvider>
   );
 }

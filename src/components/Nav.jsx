@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../contexts/AuthContext';
 
 const C = {
   bg: '#FFFFFF',
@@ -12,15 +13,13 @@ const C = {
   greenHover: '#15803D',
   greenLight: 'rgba(22,163,74,0.06)',
   greenBorder: 'rgba(22,163,74,0.2)',
-  success: '#1A7F37',
-  successLight: 'rgba(26,127,55,0.06)',
-  successBorder: 'rgba(26,127,55,0.2)',
   red: '#CF222E',
   redLight: 'rgba(207,34,46,0.06)',
   redBorder: 'rgba(207,34,46,0.18)',
   yellow: '#C27800',
   yellowLight: 'rgba(194,120,0,0.06)',
   yellowBorder: 'rgba(194,120,0,0.15)',
+  orange: '#E8650A',
 };
 
 const PRO_SESSION_LIMIT = 100;
@@ -46,21 +45,30 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
   return null;
 }
 
+// Tabs shown to everyone (logged in or not)
+const PUBLIC_TABS = [
+  { id: 'interview',  label: 'Interview' },
+  { id: 'practice',   label: 'Practice' },
+  { id: 'company',    label: 'Company Prep' },
+  { id: 'scorecard',  label: 'Scorecard' },
+  { id: 'salary',     label: 'Salary Guide' },
+];
+
 export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgradeClick, isAdmin }) {
+  const { requireAuth } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [avatarDropOpen, setAvatarDropOpen] = useState(false);
   const avatarRef = useRef(null);
   const isFree = profile?.subscription_status === 'free' || !profile?.subscription_status;
 
-  const tabs = [
-    { id: 'interview', label: 'Interview' },
-    { id: 'practice', label: 'Practice' },
-    { id: 'company', label: 'Company Prep' },
-    { id: 'scorecard', label: 'Scorecard' },
-    { id: 'salary', label: 'Salary Guide' },
+  // Authenticated tabs include Upgrade (for free users) and admin
+  const authedTabs = [
+    ...PUBLIC_TABS,
     ...(isAdmin ? [{ id: 'resources', label: 'Resources' }] : []),
     ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
   ];
+
+  const tabs = user ? authedTabs : PUBLIC_TABS;
 
   const handleNav = (tabId) => {
     setDrawerOpen(false);
@@ -72,7 +80,6 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     }
   };
 
-  // Close avatar dropdown on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (avatarRef.current && !avatarRef.current.contains(e.target)) {
@@ -146,7 +153,6 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       justify-content: center;
       flex-shrink: 0;
     }
-    /* Mobile bottom sheet overlay */
     .drawer-overlay {
       display: none;
       position: fixed;
@@ -154,7 +160,6 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       background: rgba(0,0,0,0.45);
       z-index: 200;
     }
-    /* Mobile bottom sheet */
     .drawer {
       position: fixed;
       bottom: 0;
@@ -184,6 +189,28 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       .hamburger-btn { display: flex !important; }
     }
   `;
+
+  // Mobile drawer items for unauthenticated users
+  const unauthDrawerTabs = [
+    ...PUBLIC_TABS,
+  ];
+
+  // Mobile drawer items for authenticated users
+  const authDrawerTabs = [
+    { id: 'interview', label: 'Interview' },
+    { id: 'practice', label: 'Practice Q&A' },
+    { id: 'company', label: 'Company Prep' },
+    { id: 'scorecard', label: 'Scorecard' },
+    { id: 'salary', label: 'Salary Guide' },
+    ...(isAdmin ? [{ id: 'resources', label: 'Learning Resources' }] : []),
+    ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
+    ...(isAdmin ? [{ id: 'admin', label: 'Admin' }] : []),
+    { id: 'sessions', label: 'Past Sessions' },
+    { id: 'progress', label: 'My Progress' },
+    ...(onReplayDemo ? [{ id: '__tour', label: 'Take Tour' }] : []),
+  ];
+
+  const drawerTabs = user ? authDrawerTabs : unauthDrawerTabs;
 
   return (
     <>
@@ -221,44 +248,69 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
 
         {/* Right side */}
         <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-          <SubscriptionBadge profile={profile} onUpgradeClick={onUpgradeClick} />
+          {user ? (
+            <>
+              <SubscriptionBadge profile={profile} onUpgradeClick={onUpgradeClick} />
 
-          {/* Avatar with dropdown */}
-          <div ref={avatarRef} style={{ position: 'relative' }}>
-            <button
-              onClick={() => setAvatarDropOpen(v => !v)}
-              style={{
-                width: 32, height: 32, borderRadius: '50%',
-                background: C.bgMuted, border: `1.5px solid ${C.border}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 14, fontWeight: 700, color: C.text,
-                cursor: 'pointer', flexShrink: 0
-              }}
-            >
-              {avatarLetter}
-            </button>
+              {/* Avatar with dropdown */}
+              <div ref={avatarRef} style={{ position: 'relative' }}>
+                <button
+                  onClick={() => setAvatarDropOpen(v => !v)}
+                  style={{
+                    width: 32, height: 32, borderRadius: '50%',
+                    background: C.bgMuted, border: `1.5px solid ${C.border}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 14, fontWeight: 700, color: C.text,
+                    cursor: 'pointer', flexShrink: 0
+                  }}
+                >
+                  {avatarLetter}
+                </button>
 
-            {avatarDropOpen && (
-              <div style={{
-                position: 'absolute', top: 40, right: 0,
-                background: '#FFFFFF', border: `1px solid ${C.border}`,
-                borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
-                minWidth: 200, zIndex: 300, overflow: 'hidden',
-                fontFamily: "'Plus Jakarta Sans', sans-serif"
-              }}>
-                <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, fontSize: 13, color: C.textMuted, wordBreak: 'break-all' }}>
-                  {user?.email}
-                </div>
-                <div style={{ padding: '4px 0' }}>
-                  <button onClick={() => handleNav('sessions')} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.text, cursor: 'pointer' }}>Past Sessions</button>
-                  {isAdmin && <button onClick={() => handleNav('admin')} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.red, cursor: 'pointer' }}>Admin</button>}
-                  {onReplayDemo && <button onClick={() => { setAvatarDropOpen(false); onReplayDemo(); }} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 13, color: C.textMuted, cursor: 'pointer' }}>Tour</button>}
-                  <div style={{ margin: '4px 8px', height: 1, background: C.border }} />
-                  <button onClick={() => supabase.auth.signOut()} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.red, cursor: 'pointer' }}>Logout</button>
-                </div>
+                {avatarDropOpen && (
+                  <div style={{
+                    position: 'absolute', top: 40, right: 0,
+                    background: '#FFFFFF', border: `1px solid ${C.border}`,
+                    borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)',
+                    minWidth: 200, zIndex: 300, overflow: 'hidden',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif"
+                  }}>
+                    <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, fontSize: 13, color: C.textMuted, wordBreak: 'break-all' }}>
+                      {user?.email}
+                    </div>
+                    <div style={{ padding: '4px 0' }}>
+                      <button onClick={() => handleNav('sessions')} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.text, cursor: 'pointer' }}>Past Sessions</button>
+                      {isAdmin && <button onClick={() => handleNav('admin')} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.red, cursor: 'pointer' }}>Admin</button>}
+                      {onReplayDemo && <button onClick={() => { setAvatarDropOpen(false); onReplayDemo(); }} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 13, color: C.textMuted, cursor: 'pointer' }}>Tour</button>}
+                      <div style={{ margin: '4px 8px', height: 1, background: C.border }} />
+                      <button onClick={() => supabase.auth.signOut()} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.red, cursor: 'pointer' }}>Logout</button>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          ) : (
+            /* Sign In button for unauthenticated users */
+            <button
+              onClick={() => requireAuth('Sign in to continue')}
+              style={{
+                padding: '8px 20px',
+                background: 'none',
+                border: `1.5px solid ${C.orange}`,
+                borderRadius: 12,
+                color: C.orange,
+                fontSize: 14, fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                transition: 'all 0.2s',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = C.orange; e.currentTarget.style.color = '#fff'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = C.orange; }}
+            >
+              Sign In
+            </button>
+          )}
         </div>
 
         {/* Hamburger (mobile only) */}
@@ -275,27 +327,34 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
           <div style={{ width: 36, height: 4, background: C.border, borderRadius: 2 }} />
         </div>
 
-        {/* User info */}
-        <div style={{ padding: '8px 20px 16px', borderBottom: `1px solid ${C.border}` }}>
-          <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 8 }}>{user?.email}</div>
-          <SubscriptionBadge profile={profile} onUpgradeClick={() => { setDrawerOpen(false); onUpgradeClick(); }} />
-        </div>
+        {/* Unauthenticated: Sign In CTA at top */}
+        {!user && (
+          <div style={{ padding: '8px 16px 16px', borderBottom: `1px solid ${C.border}` }}>
+            <button
+              onClick={() => { setDrawerOpen(false); requireAuth('Sign in to continue'); }}
+              style={{
+                width: '100%', height: 48,
+                background: RAINBOW, border: 'none', borderRadius: 12,
+                color: '#fff', fontSize: 16, fontWeight: 700,
+                cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}
+            >
+              Sign In / Sign Up
+            </button>
+          </div>
+        )}
+
+        {/* Authenticated: user info */}
+        {user && (
+          <div style={{ padding: '8px 20px 16px', borderBottom: `1px solid ${C.border}` }}>
+            <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 8 }}>{user?.email}</div>
+            <SubscriptionBadge profile={profile} onUpgradeClick={() => { setDrawerOpen(false); onUpgradeClick(); }} />
+          </div>
+        )}
 
         {/* Nav items */}
         <div style={{ padding: '8px 12px', flex: 1 }}>
-          {[
-            { id: 'interview', label: 'Interview' },
-            { id: 'practice', label: 'Practice Q&A' },
-            { id: 'company', label: 'Company Prep' },
-            { id: 'scorecard', label: 'Scorecard' },
-            { id: 'salary', label: 'Salary Guide' },
-            ...(isAdmin ? [{ id: 'resources', label: 'Learning Resources' }] : []),
-            ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
-            ...(isAdmin ? [{ id: 'admin', label: 'Admin' }] : []),
-            { id: 'sessions', label: 'Past Sessions' },
-            { id: 'progress', label: 'My Progress' },
-            ...(onReplayDemo ? [{ id: '__tour', label: 'Take Tour' }] : []),
-          ].map(tab => {
+          {drawerTabs.map(tab => {
             const isActive = page === tab.id;
             const isUpgrade = tab.id === 'upgrade';
             const isAdminTab = tab.id === 'admin';
@@ -336,19 +395,22 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
           })}
         </div>
 
-        <div style={{ padding: '0 12px' }}>
-          <button
-            onClick={() => { setDrawerOpen(false); supabase.auth.signOut(); }}
-            style={{
-              width: '100%', padding: '16px', background: C.redLight,
-              border: `1px solid ${C.redBorder}`, borderRadius: 12,
-              color: C.red, fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif",
-              cursor: 'pointer', fontWeight: 500,
-            }}
-          >
-            Logout
-          </button>
-        </div>
+        {/* Logout (authenticated only) */}
+        {user && (
+          <div style={{ padding: '0 12px' }}>
+            <button
+              onClick={() => { setDrawerOpen(false); supabase.auth.signOut(); }}
+              style={{
+                width: '100%', padding: '16px', background: C.redLight,
+                border: `1px solid ${C.redBorder}`, borderRadius: 12,
+                color: C.red, fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                cursor: 'pointer', fontWeight: 500,
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

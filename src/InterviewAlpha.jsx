@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "./lib/supabase";
+import { useAuth } from "./contexts/AuthContext";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import mammoth from "mammoth";
@@ -720,6 +721,7 @@ const PRO_SESSION_LIMIT  = 100;
 
 // ─── Main Component ───
 export default function InterviewAlpha({ user, profile, checkSession, onSessionUsed, onStartTour }) {
+  const { requireAuth } = useAuth();
   const [phase, setPhase] = useState("landing");
   const [resume, setResume] = useState("");
   const [jd, setJd] = useState("");
@@ -1115,7 +1117,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
 
             <div>
               <button
-                onClick={() => setPhase("setup")}
+                onClick={() => requireAuth('Sign up to start your AI interview', () => setPhase("setup"))}
                 style={{
                   padding: "16px 40px", background: RAINBOW, border: "none",
                   color: "#fff", fontSize: 16,

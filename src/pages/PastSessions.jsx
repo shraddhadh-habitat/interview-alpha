@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../contexts/AuthContext';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -154,11 +155,13 @@ function SessionDetail({ session, onBack }) {
 }
 
 export default function PastSessions({ user }) {
+  const { requireAuth } = useAuth();
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
+    if (!user) { setLoading(false); return; }
     supabase
       .from('sessions')
       .select('id, track, company, overall_score, created_at, competency_breakdown, detected_filler_words, high_signal_keywords, alpha_rewrite, next_drill, messages')
@@ -202,11 +205,33 @@ export default function PastSessions({ user }) {
           <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, color: C.text }}>Past Sessions</h2>
         </div>
 
-        {loading && (
+        {!user && (
+          <div style={{ textAlign: 'center', padding: '80px 24px' }}>
+            <div style={{ fontSize: 52, marginBottom: 20 }}>🔒</div>
+            <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 24, color: C.text, marginBottom: 12 }}>
+              Sign up to save your interview history
+            </div>
+            <div style={{ fontSize: 15, color: C.textMuted, marginBottom: 28, lineHeight: 1.6 }}>
+              Every session is saved and scored. Track your progress over time.
+            </div>
+            <button
+              onClick={() => requireAuth('Sign up to save your interview history')}
+              style={{
+                padding: '14px 32px', background: C.green, border: 'none',
+                borderRadius: 12, color: '#fff', fontSize: 15, fontWeight: 600,
+                cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}
+            >
+              Sign Up →
+            </button>
+          </div>
+        )}
+
+        {user && loading && (
           <div style={{ textAlign: 'center', padding: 60, color: C.textMuted, fontSize: 12, letterSpacing: 1 }}>Loading sessions...</div>
         )}
 
-        {!loading && sessions.length === 0 && (
+        {user && !loading && sessions.length === 0 && (
           <div style={{ textAlign: 'center', padding: '60px 24px' }}>
             <div style={{ fontSize: 56, marginBottom: 20 }}>💬</div>
             <div style={{ fontSize: 22, fontFamily: "'Instrument Serif', serif", color: C.text, marginBottom: 12 }}>
@@ -219,7 +244,7 @@ export default function PastSessions({ user }) {
         )}
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {sessions.map((s, i) => {
+          {user && sessions.map((s, i) => {
             const sc = scoreColor(s.overall_score);
             return (
               <button

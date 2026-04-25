@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 const C = {
   bg: '#FAFAF8',
@@ -363,6 +364,7 @@ const COMPANIES_SORTED = [...COMPANIES].sort((a, b) => {
 
 function QuestionCard({ item, setPage }) {
   const [open, setOpen] = useState(false);
+  const { requireAuth } = useAuth();
   const d = DIFF[item.difficulty] || DIFF.Medium;
   return (
     <div style={{
@@ -394,7 +396,7 @@ function QuestionCard({ item, setPage }) {
         {/* Action row */}
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <button
-            onClick={() => setPage('practice')}
+            onClick={() => requireAuth('Sign up to practice with AI scoring', () => setPage('practice'))}
             style={{
               padding: '7px 16px', borderRadius: 8,
               background: '#16A34A', border: 'none', color: '#fff',
