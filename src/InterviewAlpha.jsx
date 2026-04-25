@@ -673,7 +673,7 @@ const FREE_SESSION_LIMIT = 3;
 const PRO_SESSION_LIMIT  = 100;
 
 // ─── Main Component ───
-export default function InterviewAlpha({ user, profile, checkSession, onSessionUsed }) {
+export default function InterviewAlpha({ user, profile, checkSession, onSessionUsed, onStartTour }) {
   const [phase, setPhase] = useState("landing");
   const [resume, setResume] = useState("");
   const [jd, setJd] = useState("");
@@ -1058,6 +1058,23 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 Begin Session — It's Free
               </button>
               <div style={{ marginTop: 12, fontSize: 13, color: C.textMuted }}>3 free AI sessions this weekend. No credit card needed.</div>
+              {onStartTour && (
+                <div style={{ marginTop: 10 }}>
+                  <button
+                    onClick={onStartTour}
+                    style={{
+                      background: 'none', border: 'none', padding: 0,
+                      fontSize: 14, color: '#5C5C57', cursor: 'pointer',
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      textDecoration: 'none',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline'; }}
+                    onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none'; }}
+                  >
+                    New here? Take a quick tour →
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Quick Practice + Featured Question */}

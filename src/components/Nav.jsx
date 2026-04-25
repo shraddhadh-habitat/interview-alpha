@@ -252,7 +252,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                 <div style={{ padding: '4px 0' }}>
                   <button onClick={() => handleNav('sessions')} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.text, cursor: 'pointer' }}>Past Sessions</button>
                   {isAdmin && <button onClick={() => handleNav('admin')} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.red, cursor: 'pointer' }}>Admin</button>}
-                  {onReplayDemo && <button onClick={() => { setAvatarDropOpen(false); onReplayDemo(); }} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.text, cursor: 'pointer' }}>Tour</button>}
+                  {onReplayDemo && <button onClick={() => { setAvatarDropOpen(false); onReplayDemo(); }} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 13, color: C.textMuted, cursor: 'pointer' }}>Tour</button>}
                   <div style={{ margin: '4px 8px', height: 1, background: C.border }} />
                   <button onClick={() => supabase.auth.signOut()} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.red, cursor: 'pointer' }}>Logout</button>
                 </div>
@@ -299,6 +299,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
             const isActive = page === tab.id;
             const isUpgrade = tab.id === 'upgrade';
             const isAdminTab = tab.id === 'admin';
+            const isTour = tab.id === '__tour';
             return (
               <button
                 key={tab.id}
@@ -308,14 +309,14 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                 }}
                 style={{
                   display: 'flex', alignItems: 'center', width: '100%', textAlign: 'left',
-                  padding: '0 16px', height: 56,
+                  padding: '0 16px', height: isTour ? 44 : 56,
                   background: isActive ? 'rgba(255,138,0,0.08)' : 'transparent',
                   border: 'none',
                   borderLeft: isActive ? '3px solid #FF8A00' : '3px solid transparent',
                   borderRadius: isActive ? '0 12px 12px 0' : 12,
-                  color: isAdminTab ? C.red : isActive ? '#FF8A00' : '#1B1B18',
-                  fontSize: 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontWeight: isActive ? 700 : 500,
+                  color: isTour ? C.textMuted : isAdminTab ? C.red : isActive ? '#FF8A00' : '#1B1B18',
+                  fontSize: isTour ? 14 : 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: isTour ? 400 : isActive ? 700 : 500,
                   cursor: 'pointer',
                 }}
               >

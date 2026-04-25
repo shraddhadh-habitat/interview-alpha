@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from './lib/supabase';
 import InterviewAlpha from './InterviewAlpha';
 import AuthPage from './pages/AuthPage';
@@ -186,9 +186,6 @@ export default function App() {
   const [showDemo, setShowDemo] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
-  // Prevent re-triggering demo on repeated loadProfile calls (TOKEN_REFRESHED etc.)
-  const demoShownRef = useRef(false);
-
   const [profile, setProfile] = useState({
     subscription_status:       'free',
     subscription_plan:         null,
@@ -222,7 +219,6 @@ export default function App() {
     const { data } = await supabase
       .from('profiles')
       .select(`
-        has_seen_demo,
         subscription_status,
         subscription_plan,
         subscription_expires_at,
@@ -232,17 +228,6 @@ export default function App() {
       `)
       .eq('id', uid)
       .single();
-
-    // Show demo only if DB says unseen AND we haven't shown it this session.
-    // Write has_seen_demo:true to DB immediately so a refresh mid-demo never re-shows it.
-    if (!data?.has_seen_demo && !demoShownRef.current) {
-      demoShownRef.current = true;
-      setShowDemo(true);
-      supabase.from('profiles').upsert({ id: uid, has_seen_demo: true }, { onConflict: 'id' });
-      // First login → skip high-friction Interview page, land on Practice Q&A
-      setPage('practice');
-      sessionStorage.setItem('ia:welcome', '1');
-    }
 
     // Auto-expire: if active but past expiry, mark as expired locally
     let status = data?.subscription_status ?? 'free';
@@ -350,6 +335,7 @@ export default function App() {
             profile={profile}
             checkSession={checkSession}
             onSessionUsed={onSessionUsed}
+            onStartTour={() => setShowDemo(true)}
           />
         )}
         {page === 'practice'    && (
