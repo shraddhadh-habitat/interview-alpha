@@ -140,6 +140,56 @@ function ReportIssueModal({ questionId, user, onClose }) {
   );
 }
 
+const TEASER_LEN = 120;
+
+function BlurredAnswer({ text, bgColor = 'rgb(236,247,241)' }) {
+  const { user, requireAuth } = useAuth();
+  const hasMore = text.length > TEASER_LEN;
+  const teaser = hasMore ? text.slice(0, TEASER_LEN) : text;
+  const rest = hasMore ? text.slice(TEASER_LEN) : '';
+
+  const textStyle = {
+    fontSize: 15, lineHeight: 1.8, color: C.textMuted,
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    whiteSpace: 'pre-wrap',
+  };
+
+  if (user || !hasMore) {
+    return <div style={textStyle}>{text}</div>;
+  }
+
+  return (
+    <div>
+      <div style={textStyle}>{teaser}</div>
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{ ...textStyle, filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none' }}>
+          {rest}
+        </div>
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: `linear-gradient(to bottom, transparent 0%, ${bgColor} 55%)`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          paddingTop: 48,
+        }}>
+          <button
+            onClick={() => requireAuth('Sign up to read the full expert answer')}
+            style={{
+              padding: '10px 24px', minHeight: 44,
+              background: C.green, border: 'none', borderRadius: 10,
+              color: '#fff', fontSize: 14, fontWeight: 600,
+              cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+              boxShadow: '0 2px 8px rgba(22,163,74,0.25)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Sign up to read full answer →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ChevronIcon({ open }) {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -242,13 +292,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                 Expert Answer
               </span>
             </div>
-            <div style={{
-              fontSize: 15, lineHeight: 1.8, color: C.textMuted,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              whiteSpace: 'pre-wrap',
-            }}>
-              {question.a}
-            </div>
+            <BlurredAnswer text={question.a} />
           </div>
           {/* Practice button + Report link */}
           <div style={{ padding: '0 22px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
