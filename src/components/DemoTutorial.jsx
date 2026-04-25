@@ -15,7 +15,7 @@ const STEPS = [
     label: 'Welcome',
     title: 'Welcome to InterviewAlpha',
     subtitle: 'Your AI-powered PM interview coach',
-    body: `InterviewAlpha gives you everything you need to land your next PM role — from live mock interviews with real-time feedback, to a 1100+ question practice bank covering every level from APM to CPO.\n\nThis 60-second tour will show you what's waiting for you.`,
+    body: `InterviewAlpha gives you everything you need to land your next PM role — from live mock interviews with real-time feedback, to a 1100+ question practice bank covering every level from APM to CPO.`,
   },
   {
     id: 'profile',
