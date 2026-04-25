@@ -1,6 +1,56 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
+const TEASER_LEN = 120;
+
+function BlurredAnswer({ text, bgColor = '#F5F3EF' }) {
+  const { user, requireAuth } = useAuth();
+  const hasMore = text.length > TEASER_LEN;
+  const teaser = hasMore ? text.slice(0, TEASER_LEN) : text;
+  const rest = hasMore ? text.slice(TEASER_LEN) : '';
+
+  const textStyle = {
+    fontSize: 14, color: '#5C5C57', lineHeight: 1.7,
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    whiteSpace: 'pre-wrap',
+  };
+
+  if (user || !hasMore) {
+    return <div style={textStyle}>{text}</div>;
+  }
+
+  return (
+    <div>
+      <div style={textStyle}>{teaser}</div>
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{ ...textStyle, filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none' }}>
+          {rest}
+        </div>
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: `linear-gradient(to bottom, transparent 0%, ${bgColor} 55%)`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          paddingTop: 48,
+        }}>
+          <button
+            onClick={() => requireAuth('Sign up to read the full expert answer')}
+            style={{
+              padding: '10px 24px', minHeight: 44,
+              background: '#16A34A', border: 'none', borderRadius: 10,
+              color: '#fff', fontSize: 14, fontWeight: 600,
+              cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+              boxShadow: '0 2px 8px rgba(22,163,74,0.25)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Sign up to read full answer →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const C = {
   bg: '#FAFAF8',
   card: '#FFFFFF',
@@ -422,20 +472,8 @@ function QuestionCard({ item, setPage }) {
 
       {/* Expandable answer */}
       {open && (
-        <div style={{
-          borderTop: `1px solid ${C.border}`,
-          padding: '16px 20px',
-          background: C.bgMuted,
-        }}>
-          {item.answer.split('\n\n').map((para, i) => (
-            <p key={i} style={{
-              fontSize: 14, color: C.textMuted, lineHeight: 1.7,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: i < item.answer.split('\n\n').length - 1 ? '0 0 12px' : 0,
-            }}>
-              {para}
-            </p>
-          ))}
+        <div style={{ borderTop: `1px solid ${C.border}`, padding: '16px 20px', background: C.bgMuted }}>
+          <BlurredAnswer text={item.answer} />
         </div>
       )}
     </div>
