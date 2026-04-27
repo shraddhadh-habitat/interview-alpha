@@ -39,6 +39,7 @@ export default function AdminPanel({ user }) {
   const [rejectNote, setRejectNote] = useState('');
   const [rejectTarget, setRejectTarget] = useState(null);
   const [reviewActionId, setReviewActionId] = useState(null);
+  const [deleteTarget, setDeleteTarget]     = useState(null); // review id pending delete confirm
 
   // Gate — only admin email
   if (!user || !ADMIN_EMAILS.includes(user.email.toLowerCase())) {
@@ -124,11 +125,26 @@ export default function AdminPanel({ user }) {
   const handleReviewStatus = async (id, newStatus) => {
     setReviewActionId(id);
     try {
-      const { error } = await supabase.rpc('update_review_status', { review_id: id, new_status: newStatus });
+      const { error } = await supabase.rpc('admin_update_review_status', { review_id: id, new_status: newStatus });
       if (error) throw error;
       setReviews(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
     } catch (e) {
       alert(`Failed: ${e.message}`);
+    } finally {
+      setReviewActionId(null);
+    }
+  };
+
+  const handleDeleteReview = async () => {
+    if (!deleteTarget) return;
+    setReviewActionId(deleteTarget);
+    try {
+      const { error } = await supabase.rpc('admin_delete_review', { review_id: deleteTarget });
+      if (error) throw error;
+      setReviews(prev => prev.filter(r => r.id !== deleteTarget));
+      setDeleteTarget(null);
+    } catch (e) {
+      alert(`Delete failed: ${e.message}`);
     } finally {
       setReviewActionId(null);
     }
@@ -373,6 +389,13 @@ export default function AdminPanel({ user }) {
                               Reject
                             </button>
                           )}
+                          <button
+                            onClick={() => setDeleteTarget(r.id)}
+                            disabled={reviewActionId === r.id}
+                            style={{ padding: '5px 12px', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 6, color: C.textMuted, fontSize: 10, letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", opacity: reviewActionId === r.id ? 0.5 : 1, marginLeft: 6 }}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -385,6 +408,33 @@ export default function AdminPanel({ user }) {
 
         <div style={{ height: 60 }} />
       </div>
+
+      {/* Delete review confirmation */}
+      {deleteTarget && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+          <div style={{ width: '100%', maxWidth: 400, background: C.bg, borderRadius: 16, padding: '28px 32px', boxShadow: '0 16px 48px rgba(0,0,0,0.14)' }}>
+            <h3 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 20, fontWeight: 700, color: C.text, marginBottom: 10 }}>Delete Review</h3>
+            <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 24, lineHeight: 1.6 }}>
+              Are you sure you want to permanently delete this review? This cannot be undone.
+            </p>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button
+                onClick={handleDeleteReview}
+                disabled={reviewActionId === deleteTarget}
+                style={{ flex: 1, padding: '11px 0', background: C.red, border: 'none', borderRadius: 12, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, opacity: reviewActionId === deleteTarget ? 0.5 : 1 }}
+              >
+                {reviewActionId === deleteTarget ? 'Deleting...' : 'Delete'}
+              </button>
+              <button
+                onClick={() => setDeleteTarget(null)}
+                style={{ flex: 1, padding: '11px 0', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 12, color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Reject modal */}
       {rejectTarget && (
