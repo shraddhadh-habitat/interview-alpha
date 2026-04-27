@@ -12,7 +12,7 @@ const C = {
   success: '#1A7F37', successLight: 'rgba(26,127,55,0.06)', successBorder: 'rgba(26,127,55,0.2)',
 };
 
-const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
+const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
 
 // FNV-1a 32-bit hash of browser environment signals — used to detect same-browser re-signups.
 // Not stored in plain text on the server; collision rate is acceptable for abuse prevention.

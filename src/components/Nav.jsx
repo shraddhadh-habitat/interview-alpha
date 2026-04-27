@@ -23,7 +23,7 @@ const C = {
 };
 
 const PRO_SESSION_LIMIT = 100;
-const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
+const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
 
 function SubscriptionBadge({ profile, onUpgradeClick }) {
   const status = profile?.subscription_status ?? 'free';

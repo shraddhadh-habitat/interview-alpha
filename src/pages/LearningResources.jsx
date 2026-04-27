@@ -13,7 +13,7 @@ const C = {
 };
 
 const NAV_H = 60;
-const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
+const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
 
 // ── Section 1: PM Coaches & Mentors ──────────────────────────────────────────
 const COACHES = [
@@ -133,7 +133,7 @@ function CoachCard({ coach }) {
       ) : (
         <div style={{
           width: '100%', height: 140, flexShrink: 0,
-          background: 'linear-gradient(135deg, #8250DF 0%, #D946EF 100%)',
+          background: 'linear-gradient(135deg, #A78BFA, #60A5FA)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 52, fontWeight: 800, color: 'rgba(255,255,255,0.9)',
           fontFamily: "'Plus Jakarta Sans', sans-serif",

@@ -239,7 +239,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                     {p.saves && <div style={{ fontSize: 13, color: C.success, fontWeight: 600, marginBottom: 8 }}>{p.saves}</div>}
                     <div style={{
                       marginTop: 16, padding: '10px 16px',
-                      background: isYearly ? 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)' : C.bg,
+                      background: isYearly ? 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)' : C.bg,
                       border: isYearly ? 'none' : `1px solid ${C.border}`,
                       borderRadius: 12, fontSize: 14,
                       color: isYearly ? '#fff' : C.green,
@@ -254,11 +254,11 @@ export default function UpgradePage({ user, profile, onBack }) {
                     <div key={key} style={{ position: 'relative', paddingTop: 14 }}>
                       <div style={{
                         position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-                        background: 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)',
+                        background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)',
                         color: '#fff', fontSize: 10, padding: '3px 14px', borderRadius: 20, fontWeight: 700,
                         whiteSpace: 'nowrap', zIndex: 1,
                       }}>Best Value</div>
-                      <div style={{ background: 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)', padding: 2, borderRadius: 22 }}>
+                      <div style={{ background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)', padding: 2, borderRadius: 22 }}>
                         <div style={{ background: '#FFFFFF', borderRadius: 20, overflow: 'hidden' }}>{btn}</div>
                       </div>
                     </div>
@@ -357,7 +357,7 @@ export default function UpgradePage({ user, profile, onBack }) {
               {/* QR code side */}
               <div style={{ textAlign: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, justifyContent: 'center' }}>
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff', flexShrink: 0 }}>1</div>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff', flexShrink: 0 }}>1</div>
                   <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Scan & Pay</span>
                 </div>
                 <div style={{ width: 220, height: 220, margin: '0 auto', background: C.bgMuted, border: `2px dashed ${C.border}`, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>

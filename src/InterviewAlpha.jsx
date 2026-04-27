@@ -521,7 +521,7 @@ function MessageBubble({ msg, isFirstAssistant }) {
       {/* Alpha avatar */}
       <div style={{
         width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-        background: 'linear-gradient(135deg, #8250DF, #D946EF)',
+        background: 'linear-gradient(135deg, #A78BFA, #60A5FA)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: 14, color: '#fff', fontWeight: 700, marginTop: 4
       }}>α</div>
@@ -555,7 +555,7 @@ function TypingIndicator() {
     <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: 16, gap: 12 }}>
       <div style={{
         width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-        background: 'linear-gradient(135deg, #8250DF, #D946EF)',
+        background: 'linear-gradient(135deg, #A78BFA, #60A5FA)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: 14, color: '#fff', fontWeight: 700
       }}>α</div>
@@ -1106,7 +1106,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     }
   `;
 
-  const RAINBOW = 'linear-gradient(135deg, #FF6B6B, #FF8E53, #FFBD59, #4ECB71, #36B5FF, #8B5CF6, #D946EF)';
+  const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
 
   // ─── Landing ───
   if (phase === "landing") {
