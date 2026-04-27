@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from './lib/supabase';
 import InterviewAlpha from './InterviewAlpha';
 import PastSessions from './pages/PastSessions';
@@ -15,6 +15,7 @@ import Footer from './components/Footer';
 import DemoTutorial from './components/DemoTutorial';
 import PaywallModal from './components/PaywallModal';
 import { AuthProvider } from './contexts/AuthContext';
+import QuickStart from './components/QuickStart';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
@@ -174,6 +175,9 @@ export default function App() {
   const [showDemo, setShowDemo] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
+  const [showQuickStart, setShowQuickStart] = useState(false);
+  const [profileLoaded, setProfileLoaded]   = useState(false);
+  const quickStartCheckedRef = useRef(false);
 
   const [profile, setProfile] = useState({
     subscription_status:       'free',
@@ -234,10 +238,15 @@ export default function App() {
       monthly_sessions_used:     data?.monthly_sessions_used     ?? 0,
       monthly_sessions_reset_at: data?.monthly_sessions_reset_at ?? null,
     });
+    setProfileLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setProfileLoaded(false);
+      quickStartCheckedRef.current = false;
+      return;
+    }
     loadProfile(user.id);
   }, [user, loadProfile]);
 
@@ -263,6 +272,30 @@ export default function App() {
       await supabase.from('profiles').update({ free_sessions_used: newCount }).eq('id', user.id);
     }
   }, [user, profile]);
+
+  // Show QuickStart once for first-time users (0 sessions, never seen before).
+  // Only runs after profile is confirmed loaded from Supabase (profileLoaded flag).
+  useEffect(() => {
+    if (!user || !profileLoaded || quickStartCheckedRef.current) return;
+    quickStartCheckedRef.current = true;
+    if (profile.free_sessions_used === 0 && profile.monthly_sessions_used === 0) {
+      const key = 'ia:qs_' + user.id;
+      if (!localStorage.getItem(key)) {
+        setShowQuickStart(true);
+      }
+    }
+  }, [user, profileLoaded, profile.free_sessions_used, profile.monthly_sessions_used]);
+
+  const handleQuickStartDismiss = useCallback(() => {
+    if (user) localStorage.setItem('ia:qs_' + user.id, '1');
+    setShowQuickStart(false);
+  }, [user]);
+
+  const handleQuickStartExplore = useCallback(() => {
+    if (user) localStorage.setItem('ia:qs_' + user.id, '1');
+    setShowQuickStart(false);
+    setPage('practice');
+  }, [user]);
 
   const handleDemoClose = useCallback(async () => {
     setShowDemo(false);
@@ -335,6 +368,13 @@ export default function App() {
           {page === 'admin' && isAdmin && <AdminPanel user={user} />}
         </div>
         <Footer />
+        {user && showQuickStart && (
+          <QuickStart
+            onDismiss={handleQuickStartDismiss}
+            onSessionUsed={onSessionUsed}
+            onExplore={handleQuickStartExplore}
+          />
+        )}
         {user && showDemo && <DemoTutorial onClose={handleDemoClose} />}
         {user && showPaywall && (
           <PaywallModal
