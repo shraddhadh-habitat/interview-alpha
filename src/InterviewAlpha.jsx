@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "./lib/supabase";
 import { useAuth } from "./contexts/AuthContext";
 import ReviewsDisplay from "./components/ReviewsDisplay";
+import { pmQuestions as PM_QUESTIONS } from "./data/pmQuestions";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import mammoth from "mammoth";
@@ -720,6 +721,43 @@ function VoicePanel({ voice, onSubmit, onCancel, loading }) {
 const FREE_SESSION_LIMIT = 1;
 const PRO_SESSION_LIMIT  = 100;
 
+// ─── Engagement helpers ───
+const PRO_TIPS = [
+  "Use the CIRCLES framework for product sense: Comprehend, Identify, Report, Cut, List, Evaluate, Summarize.",
+  "Always start execution answers with clarifying the goal and defining success metrics.",
+  "In behavioral questions, use STAR: Situation, Task, Action, Result — then add what you learned.",
+  "For metrics questions, think: North Star metric → Input metrics → Counter metrics → Guardrails.",
+  "Amazon interviews map everything to Leadership Principles. Know all 16 by heart.",
+];
+
+// Flatten all questions from the Q&A bank into a single array
+const ALL_QUESTIONS = (() => {
+  const out = [];
+  Object.entries(PM_QUESTIONS).forEach(([level, cats]) => {
+    Object.entries(cats).forEach(([cat, qs]) => {
+      qs.forEach(q => out.push({ ...q, _level: level, _cat: cat }));
+    });
+  });
+  return out;
+})();
+
+function calcStreak(sortedDates) {
+  if (!sortedDates.length) return 0;
+  const today     = new Date(); today.setHours(0, 0, 0, 0);
+  const todayStr  = today.toISOString().split('T')[0];
+  const yest      = new Date(today); yest.setDate(today.getDate() - 1);
+  const yesterStr = yest.toISOString().split('T')[0];
+  if (sortedDates[0] !== todayStr && sortedDates[0] !== yesterStr) return 0;
+  let streak = 1;
+  for (let i = 1; i < sortedDates.length; i++) {
+    const prev = new Date(sortedDates[i - 1]);
+    const curr = new Date(sortedDates[i]);
+    if (Math.round((prev - curr) / 86400000) === 1) streak++;
+    else break;
+  }
+  return streak;
+}
+
 // ─── Main Component ───
 export default function InterviewAlpha({ user, profile, checkSession, onSessionUsed, onStartTour }) {
   const { requireAuth } = useAuth();
@@ -745,6 +783,22 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
   const voice = useVoiceToText();
+  const [streak, setStreak] = useState(null); // null = not yet loaded
+
+  // ─── Practice streak ───
+  useEffect(() => {
+    if (!user) { setStreak(0); return; }
+    supabase
+      .from('practice_attempts')
+      .select('created_at')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => {
+        if (!data?.length) { setStreak(0); return; }
+        const dates = [...new Set(data.map(r => r.created_at.split('T')[0]))].sort((a, b) => b.localeCompare(a));
+        setStreak(calcStreak(dates));
+      });
+  }, [user]);
 
   // ─── Load saved profile on mount ───
   useEffect(() => {
@@ -1086,6 +1140,64 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             <p style={{ fontSize: 16, color: '#9C9C97', marginBottom: 36 }}>
               Real-time AI coaching for PMs, not the fluff.
             </p>
+
+            {/* ── Engagement features (logged-in users only) ── */}
+            {user && (() => {
+              const dayOfYear   = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+              const dailyQ      = ALL_QUESTIONS[dayOfYear % ALL_QUESTIONS.length];
+              const todayTip    = PRO_TIPS[new Date().getDay() % PRO_TIPS.length];
+              return (
+                <div style={{ marginBottom: 28, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, width: '100%' }}>
+                  {/* Streak badge */}
+                  {streak !== null && (
+                    streak > 0 ? (
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 16px', background: 'rgba(234,88,12,0.08)', border: '1px solid rgba(234,88,12,0.2)', borderRadius: 20, fontSize: 13, fontWeight: 700, color: '#EA580C', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        🔥 {streak} Day Streak
+                      </div>
+                    ) : (
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 16px', background: C.bgMuted, border: `1px solid ${C.border}`, borderRadius: 20, fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Start your streak today!
+                      </div>
+                    )
+                  )}
+
+                  {/* Daily Question */}
+                  <div style={{ width: '100%', maxWidth: 480, background: '#fff', border: `1px solid ${C.border}`, borderRadius: 16, padding: '16px 20px', textAlign: 'left', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                    <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>📅 Today's Challenge</div>
+                    <div style={{ fontSize: 14, fontWeight: 500, color: C.text, lineHeight: 1.55, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      {dailyQ.q}
+                    </div>
+                    <button
+                      onClick={() => {
+                        sessionStorage.setItem('ia:quickQuestion', JSON.stringify({
+                          question: { q: dailyQ.q, a: dailyQ.a },
+                          questionId: 'daily-' + dayOfYear,
+                          designation: dailyQ._level || 'Senior PM',
+                          category: dailyQ._cat || 'product',
+                        }));
+                        window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
+                      }}
+                      style={{
+                        padding: '8px 18px', background: C.green, border: 'none',
+                        borderRadius: 10, color: '#fff', fontSize: 12, fontWeight: 600,
+                        cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                        transition: 'background 0.2s',
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
+                    >
+                      Try This Question →
+                    </button>
+                  </div>
+
+                  {/* Pro Tip */}
+                  <div style={{ width: '100%', maxWidth: 480, background: 'rgba(198,127,0,0.05)', border: '1px solid rgba(198,127,0,0.18)', borderRadius: 14, padding: '14px 18px', textAlign: 'left' }}>
+                    <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>💡 Pro Tip</div>
+                    <div style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.65, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{todayTip}</div>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Session status banner */}
             {(() => {
