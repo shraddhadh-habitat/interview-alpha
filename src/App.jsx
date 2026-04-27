@@ -16,6 +16,7 @@ import DemoTutorial from './components/DemoTutorial';
 import PaywallModal from './components/PaywallModal';
 import { AuthProvider } from './contexts/AuthContext';
 import QuickStart from './components/QuickStart';
+import ReviewWidget from './components/ReviewWidget';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
@@ -368,6 +369,7 @@ export default function App() {
           {page === 'admin' && isAdmin && <AdminPanel user={user} />}
         </div>
         <Footer />
+        {user && !showQuickStart && <ReviewWidget user={user} profile={profile} />}
         {user && showQuickStart && (
           <QuickStart
             onDismiss={handleQuickStartDismiss}

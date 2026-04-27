@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "./lib/supabase";
 import { useAuth } from "./contexts/AuthContext";
+import ReviewsDisplay from "./components/ReviewsDisplay";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import mammoth from "mammoth";
@@ -1216,6 +1217,9 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               </div>
             ))}
           </div>
+
+          {/* Approved reviews */}
+          <ReviewsDisplay />
 
           {/* How it works */}
           <div style={{ marginBottom: 48 }}>

@@ -31,12 +31,14 @@ function StatCard({ label, value, color }) {
 export default function AdminPanel({ user }) {
   const [requests, setRequests]     = useState([]);
   const [users, setUsers]           = useState([]);
+  const [reviews, setReviews]       = useState([]);
   const [stats, setStats]           = useState({ pending: 0, active: 0, total: 0 });
   const [loading, setLoading]       = useState(true);
   const [actionId, setActionId]     = useState(null);
   const [tab, setTab]               = useState('payments');
   const [rejectNote, setRejectNote] = useState('');
   const [rejectTarget, setRejectTarget] = useState(null);
+  const [reviewActionId, setReviewActionId] = useState(null);
 
   // Gate — only admin email
   if (!user || !ADMIN_EMAILS.includes(user.email.toLowerCase())) {
@@ -53,21 +55,24 @@ export default function AdminPanel({ user }) {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [reqRes, profileRes, statsRes] = await Promise.all([
+      const [reqRes, profileRes, statsRes, reviewRes] = await Promise.all([
         supabase
           .from('payment_requests')
           .select('*')
           .order('submitted_at', { ascending: false }),
         supabase.rpc('get_all_users'),
         supabase.rpc('get_admin_stats'),
+        supabase.rpc('get_all_reviews'),
       ]);
 
-      const reqs  = reqRes.data     || [];
-      const profs = profileRes.data || [];
-      const s     = statsRes.data   || {};
+      const reqs  = reqRes.data      || [];
+      const profs = profileRes.data  || [];
+      const s     = statsRes.data    || {};
+      const revs  = reviewRes.data   || [];
 
       setRequests(reqs);
       setUsers(profs);
+      setReviews(revs);
       setStats({
         pending: s.pending_payments ?? 0,
         active:  s.active_pro       ?? 0,
@@ -113,6 +118,19 @@ export default function AdminPanel({ user }) {
       alert(`Reject failed: ${e.message}`);
     } finally {
       setActionId(null);
+    }
+  };
+
+  const handleReviewStatus = async (id, newStatus) => {
+    setReviewActionId(id);
+    try {
+      const { error } = await supabase.rpc('update_review_status', { review_id: id, new_status: newStatus });
+      if (error) throw error;
+      setReviews(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
+    } catch (e) {
+      alert(`Failed: ${e.message}`);
+    } finally {
+      setReviewActionId(null);
     }
   };
 
@@ -171,26 +189,34 @@ export default function AdminPanel({ user }) {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 24, borderBottom: `1px solid ${C.border}` }}>
-          {[['payments', 'Payment Requests'], ['users', 'Users']].map(([id, label]) => (
-            <button
-              key={id}
-              onClick={() => setTab(id)}
-              style={{
-                padding: '10px 16px', background: 'transparent',
-                border: 'none', borderBottom: `2px solid ${tab === id ? C.green : 'transparent'}`,
-                cursor: 'pointer', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                color: tab === id ? C.green : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                transition: 'all 0.2s', marginBottom: -1,
-              }}
-            >
-              {label}
-              {id === 'payments' && stats.pending > 0 && (
-                <span style={{ marginLeft: 8, padding: '2px 6px', background: C.green, color: '#fff', borderRadius: 10, fontSize: 9 }}>
-                  {stats.pending}
-                </span>
-              )}
-            </button>
-          ))}
+          {[['payments', 'Payment Requests'], ['users', 'Users'], ['reviews', 'Reviews']].map(([id, label]) => {
+            const pendingReviews = reviews.filter(r => r.status === 'pending').length;
+            return (
+              <button
+                key={id}
+                onClick={() => setTab(id)}
+                style={{
+                  padding: '10px 16px', background: 'transparent',
+                  border: 'none', borderBottom: `2px solid ${tab === id ? C.green : 'transparent'}`,
+                  cursor: 'pointer', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                  color: tab === id ? C.green : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'all 0.2s', marginBottom: -1,
+                }}
+              >
+                {label}
+                {id === 'payments' && stats.pending > 0 && (
+                  <span style={{ marginLeft: 8, padding: '2px 6px', background: C.green, color: '#fff', borderRadius: 10, fontSize: 9 }}>
+                    {stats.pending}
+                  </span>
+                )}
+                {id === 'reviews' && pendingReviews > 0 && (
+                  <span style={{ marginLeft: 8, padding: '2px 6px', background: C.yellow, color: '#fff', borderRadius: 10, fontSize: 9 }}>
+                    {pendingReviews}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {loading && (
@@ -289,6 +315,65 @@ export default function AdminPanel({ user }) {
                         <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{fmt(u.subscription_expires_at)}</td>
                         <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.free_sessions_used ?? 0}</td>
                         <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.monthly_sessions_used ?? 0}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Reviews tab */}
+        {!loading && tab === 'reviews' && (
+          <div>
+            {reviews.length === 0 ? (
+              <div style={{ padding: '40px 0', textAlign: 'center', fontSize: 12, color: C.textMuted }}>No reviews yet.</div>
+            ) : (
+              <div style={{ border: `1px solid ${C.border}`, borderRadius: 16, overflow: 'hidden' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                  <thead>
+                    <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
+                      {['Name', 'Email', 'Rating', 'Review', 'Status', 'Date', 'Actions'].map(h => (
+                        <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600 }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {reviews.map((r, i) => (
+                      <tr key={r.id} style={{ borderBottom: i < reviews.length - 1 ? `1px solid ${C.border}` : 'none', background: r.status === 'pending' ? C.yellowLight : C.bg }}>
+                        <td style={{ padding: '12px 14px', color: C.text }}>{r.show_name ? r.display_name : <em style={{ color: C.textMuted }}>anonymous</em>}</td>
+                        <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{r.user_email}</td>
+                        <td style={{ padding: '12px 14px' }}>
+                          <span style={{ color: '#F59E0B', letterSpacing: 1 }}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
+                        </td>
+                        <td style={{ padding: '12px 14px', color: C.text, maxWidth: 260 }}>
+                          <div style={{ overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: 1.5 }}>
+                            {r.review_text}
+                          </div>
+                        </td>
+                        <td style={{ padding: '12px 14px' }}>{statusChip(r.status)}</td>
+                        <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{fmt(r.created_at)}</td>
+                        <td style={{ padding: '12px 14px' }}>
+                          {r.status !== 'approved' && (
+                            <button
+                              onClick={() => handleReviewStatus(r.id, 'approved')}
+                              disabled={reviewActionId === r.id}
+                              style={{ padding: '5px 12px', background: C.green, border: 'none', borderRadius: 6, color: '#fff', fontSize: 10, letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", marginRight: 6, opacity: reviewActionId === r.id ? 0.5 : 1 }}
+                            >
+                              Approve
+                            </button>
+                          )}
+                          {r.status !== 'rejected' && (
+                            <button
+                              onClick={() => handleReviewStatus(r.id, 'rejected')}
+                              disabled={reviewActionId === r.id}
+                              style={{ padding: '5px 12px', background: 'transparent', border: `1px solid ${C.red}`, borderRadius: 6, color: C.red, fontSize: 10, letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", opacity: reviewActionId === r.id ? 0.5 : 1 }}
+                            >
+                              Reject
+                            </button>
+                          )}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
