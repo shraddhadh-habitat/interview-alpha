@@ -40,6 +40,7 @@ export default function AdminPanel({ user }) {
   const [rejectTarget, setRejectTarget] = useState(null);
   const [reviewActionId, setReviewActionId] = useState(null);
   const [deleteTarget, setDeleteTarget]     = useState(null); // review id pending delete confirm
+  const [userFilters, setUserFilters] = useState({ email: '', name: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' });
 
   // Gate — only admin email
   if (!user || !ADMIN_EMAILS.includes(user.email.toLowerCase())) {
@@ -312,32 +313,126 @@ export default function AdminPanel({ user }) {
           <div>
             {users.length === 0 ? (
               <div style={{ padding: '40px 0', textAlign: 'center', fontSize: 12, color: C.textMuted }}>No users yet.</div>
-            ) : (
-              <div style={{ border: `1px solid ${C.border}`, borderRadius: 16, overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, minWidth: 700 }}>
-                  <thead>
-                    <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
-                      {['Email', 'Name', 'Status', 'Plan', 'Expires', 'Free Sessions', 'Monthly Sessions'].map(h => (
-                        <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.map((u, i) => (
-                      <tr key={u.id} style={{ borderBottom: i < users.length - 1 ? `1px solid ${C.border}` : 'none' }}>
-                        <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.email || '—'}</td>
-                        <td style={{ padding: '12px 14px', color: u.display_name ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.display_name || '—'}</td>
-                        <td style={{ padding: '12px 14px' }}>{subChip(u.subscription_status)}</td>
-                        <td style={{ padding: '12px 14px', color: C.textSoft, textTransform: 'capitalize' }}>{u.subscription_plan || '—'}</td>
-                        <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{fmt(u.subscription_expires_at)}</td>
-                        <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.free_sessions_used ?? 0}</td>
-                        <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.monthly_sessions_used ?? 0}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+            ) : (() => {
+              const f = userFilters;
+              const filtered = users.filter(u => {
+                if (f.email && !(u.email || '').toLowerCase().includes(f.email.toLowerCase())) return false;
+                if (f.name  && !(u.display_name || '').toLowerCase().includes(f.name.toLowerCase())) return false;
+                if (f.status !== 'all') {
+                  const st = u.subscription_status || 'free';
+                  if (f.status === 'free'    && st !== 'free')    return false;
+                  if (f.status === 'active'  && st !== 'active')  return false;
+                  if (f.status === 'expired' && st !== 'expired') return false;
+                }
+                if (f.plan !== 'all') {
+                  const pl = u.subscription_plan || '';
+                  if (f.plan === 'monthly' && pl !== 'monthly') return false;
+                  if (f.plan === 'yearly'  && pl !== 'yearly')  return false;
+                  if (f.plan === 'none'    && pl !== '')         return false;
+                }
+                if (f.freeSessions === 'used'    && (u.free_sessions_used ?? 0) === 0) return false;
+                if (f.freeSessions === 'notused' && (u.free_sessions_used ?? 0) > 0)   return false;
+                if (f.monthlySessions === 'active'   && (u.monthly_sessions_used ?? 0) === 0) return false;
+                if (f.monthlySessions === 'inactive' && (u.monthly_sessions_used ?? 0) > 0)   return false;
+                return true;
+              });
+
+              const inputStyle = { width: '100%', padding: '6px 10px', border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, background: C.bg, outline: 'none' };
+              const selectStyle = { ...inputStyle, cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235C5C57'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center', paddingRight: 28 };
+              const labelStyle = { fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, display: 'block', marginBottom: 5 };
+              const setF = (key, val) => setUserFilters(prev => ({ ...prev, [key]: val }));
+              const hasFilters = f.email || f.name || f.status !== 'all' || f.plan !== 'all' || f.freeSessions !== 'all' || f.monthlySessions !== 'all';
+
+              return (
+                <>
+                  {/* Filter row */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 12, alignItems: 'flex-end' }}>
+                    <div style={{ flex: '1 1 160px', minWidth: 140 }}>
+                      <label style={labelStyle}>Email</label>
+                      <input type="text" placeholder="Search email…" value={f.email} onChange={e => setF('email', e.target.value)} style={inputStyle} />
+                    </div>
+                    <div style={{ flex: '1 1 140px', minWidth: 120 }}>
+                      <label style={labelStyle}>Name</label>
+                      <input type="text" placeholder="Search name…" value={f.name} onChange={e => setF('name', e.target.value)} style={inputStyle} />
+                    </div>
+                    <div style={{ flex: '1 1 130px', minWidth: 110 }}>
+                      <label style={labelStyle}>Status</label>
+                      <select value={f.status} onChange={e => setF('status', e.target.value)} style={selectStyle}>
+                        <option value="all">All</option>
+                        <option value="free">Free</option>
+                        <option value="active">Active (Pro)</option>
+                        <option value="expired">Expired</option>
+                      </select>
+                    </div>
+                    <div style={{ flex: '1 1 130px', minWidth: 110 }}>
+                      <label style={labelStyle}>Plan</label>
+                      <select value={f.plan} onChange={e => setF('plan', e.target.value)} style={selectStyle}>
+                        <option value="all">All</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="none">None</option>
+                      </select>
+                    </div>
+                    <div style={{ flex: '1 1 150px', minWidth: 130 }}>
+                      <label style={labelStyle}>Free Sessions</label>
+                      <select value={f.freeSessions} onChange={e => setF('freeSessions', e.target.value)} style={selectStyle}>
+                        <option value="all">All</option>
+                        <option value="used">Used (&gt;0)</option>
+                        <option value="notused">Not Used (0)</option>
+                      </select>
+                    </div>
+                    <div style={{ flex: '1 1 170px', minWidth: 150 }}>
+                      <label style={labelStyle}>Monthly Sessions</label>
+                      <select value={f.monthlySessions} onChange={e => setF('monthlySessions', e.target.value)} style={selectStyle}>
+                        <option value="all">All</option>
+                        <option value="active">Active (&gt;0)</option>
+                        <option value="inactive">Inactive (0)</option>
+                      </select>
+                    </div>
+                    {hasFilters && (
+                      <div style={{ flex: '0 0 auto', paddingBottom: 1 }}>
+                        <button onClick={() => setUserFilters({ email: '', name: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' })} style={{ background: 'none', border: 'none', color: C.green, fontSize: 11, cursor: 'pointer', textDecoration: 'underline', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '6px 0' }}>
+                          Reset Filters
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Count */}
+                  <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 12 }}>
+                    Showing {filtered.length} of {users.length} users
+                  </div>
+
+                  {/* Table */}
+                  <div style={{ border: `1px solid ${C.border}`, borderRadius: 16, overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, minWidth: 700 }}>
+                      <thead>
+                        <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
+                          {['Email', 'Name', 'Status', 'Plan', 'Expires', 'Free Sessions', 'Monthly Sessions'].map(h => (
+                            <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filtered.length === 0 ? (
+                          <tr><td colSpan={7} style={{ padding: '28px 14px', textAlign: 'center', color: C.textMuted, fontSize: 12 }}>No users match the filters.</td></tr>
+                        ) : filtered.map((u, i) => (
+                          <tr key={u.id} style={{ borderBottom: i < filtered.length - 1 ? `1px solid ${C.border}` : 'none' }}>
+                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.email || '—'}</td>
+                            <td style={{ padding: '12px 14px', color: u.display_name ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.display_name || '—'}</td>
+                            <td style={{ padding: '12px 14px' }}>{subChip(u.subscription_status)}</td>
+                            <td style={{ padding: '12px 14px', color: C.textSoft, textTransform: 'capitalize' }}>{u.subscription_plan || '—'}</td>
+                            <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{fmt(u.subscription_expires_at)}</td>
+                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.free_sessions_used ?? 0}</td>
+                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.monthly_sessions_used ?? 0}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         )}
 
