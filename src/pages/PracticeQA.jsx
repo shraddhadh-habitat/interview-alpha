@@ -14,19 +14,63 @@ const C = {
   success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
 };
 
+const CATEGORY_CHIPS = [
+  { id: 'design',     label: 'Product Design', dataKey: 'product' },
+  { id: 'strategy',   label: 'Strategy',       dataKey: 'product' },
+  { id: 'execution',  label: 'Execution',      dataKey: 'product' },
+  { id: 'technical',  label: 'Technical',      dataKey: 'ai_technical' },
+  { id: 'data',       label: 'Data',           dataKey: 'ai' },
+  { id: 'behavioral', label: 'Behavioral',     dataKey: 'behavioral' },
+];
+
+const EXP_LEVEL_CHIPS = [
+  { id: 'intern', label: 'Intern',          levels: ['Associate PM'] },
+  { id: 'apm',    label: 'Associate PM',    levels: ['Associate PM'] },
+  { id: 'pm',     label: 'Product Manager', levels: ['PM'] },
+  { id: 'spm',    label: 'Senior PM',       levels: ['Senior PM', 'Lead PM', 'Staff/Principal PM'] },
+  { id: 'gpm',    label: 'Group PM',        levels: ['Group Product Manager'] },
+  { id: 'dir',    label: 'Director+',       levels: ['Director of PM', 'Senior Director of PM', 'VP of Product', 'Chief Product Officer (CPO)'] },
+];
+
+const FORMAT_CHIPS = ['Open-ended', 'Case Study', 'Scenario-based', 'Rapid-fire'];
+const FOCUS_CHIPS = [
+  'Design a product', 'Improve a product', 'Debug a problem',
+  'Strategy / Market entry', 'Prioritization', 'Metrics definition',
+  'Root cause analysis', 'Trade-off decision',
+];
+const RECOMMENDED_FOCUS = ['Design a product', 'Prioritization', 'Metrics definition'];
+const DOMAIN_CHIPS = [
+  'Consumer', 'B2B / SaaS', 'Marketplace', 'Mobile', 'Platform / API',
+  'AI / ML', 'Fintech', 'E-commerce', 'Social', 'Accessibility',
+];
+const DIFFICULTY_CHIPS = ['Easy', 'Medium', 'Difficult'];
+const SORT_OPTIONS = [
+  { id: 'relevant',   label: 'Most Relevant' },
+  { id: 'practiced',  label: 'Most Practiced' },
+  { id: 'recent',     label: 'Recently Added' },
+  { id: 'difficulty', label: 'Highest Difficulty' },
+];
+
 const globalStyles = `
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 2000px; } }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
   * { box-sizing: border-box; }
   input:focus { outline: none; }
+  button:focus-visible { outline: 2px solid #16A34A; outline-offset: 2px; }
   ::selection { background: rgba(22,163,74,0.18); }
-  @media (max-width: 480px) {
-    .pqa-container { padding: 20px 16px 40px !important; }
-    .pqa-level-select { width: 100% !important; min-width: 0 !important; }
-    .pqa-search-row { flex-wrap: wrap !important; }
-    .pqa-expand-btn { width: 100% !important; }
+  .cat-chips-scroll {
+    display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .cat-chips-scroll::-webkit-scrollbar { display: none; }
+  .filter-tags-row {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;
   }
 `;
+
+// ─── Preserved components ────────────────────────────────────────────────────
 
 function ReportIssueModal({ questionId, user, onClose }) {
   const [text, setText] = useState('');
@@ -340,21 +384,253 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
   );
 }
 
+// ─── New helper components ────────────────────────────────────────────────────
+
+function BottomSheet({ open, onClose, children }) {
+  if (!open) return null;
+  return (
+    <>
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 300 }} />
+      <div style={{
+        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 301,
+        background: '#fff', borderRadius: '20px 20px 0 0',
+        height: '85vh', display: 'flex', flexDirection: 'column',
+        animation: 'slideUp 0.3s cubic-bezier(0.22,1,0.36,1)',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+      }}>
+        <div style={{ width: 40, height: 4, borderRadius: 2, background: '#E0E0E0', margin: '12px auto 4px', flexShrink: 0 }} />
+        {children}
+      </div>
+    </>
+  );
+}
+
+function FilterSidebar({ open, onClose, children }) {
+  if (!open) return null;
+  return (
+    <>
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.25)', zIndex: 300 }} />
+      <div style={{
+        position: 'fixed', top: 0, right: 0, bottom: 0, zIndex: 301,
+        width: 400, background: '#fff',
+        display: 'flex', flexDirection: 'column',
+        boxShadow: '-4px 0 32px rgba(0,0,0,0.12)',
+        animation: 'slideInRight 0.3s cubic-bezier(0.22,1,0.36,1)',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+      }}>
+        {children}
+      </div>
+    </>
+  );
+}
+
+function CollapsibleSection({ title, children, defaultOpen = true }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div style={{ borderBottom: `1px solid ${C.borderLight}`, paddingTop: 18, paddingBottom: open ? 16 : 4 }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+          marginBottom: open ? 12 : 0,
+        }}
+      >
+        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted }}>
+          {title}
+        </span>
+        <ChevronIcon open={open} />
+      </button>
+      {open && children}
+    </div>
+  );
+}
+
+function FilterChip({ label, selected, onToggle, recommended }) {
+  return (
+    <button
+      onClick={onToggle}
+      style={{
+        padding: '6px 12px', minHeight: 32,
+        background: selected ? C.green : 'transparent',
+        border: `1px solid ${selected ? C.green : C.border}`,
+        borderRadius: 20, cursor: 'pointer',
+        fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
+        color: selected ? '#fff' : C.textMuted,
+        fontWeight: selected ? 600 : 400,
+        transition: 'all 0.15s',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {label}{recommended && !selected ? <span style={{ marginLeft: 4, fontSize: 10, color: C.green }}>★</span> : null}
+    </button>
+  );
+}
+
+function FilterContent({
+  filterExpLevel, setFilterExpLevel,
+  filterFormat, setFilterFormat,
+  filterFocus, setFilterFocus,
+  filterDomain, setFilterDomain,
+  filterDifficulty, setFilterDifficulty,
+  resultCount,
+  onApply,
+  onClearAll,
+}) {
+  const toggle = (setter, val) => setter(prev => {
+    const next = new Set(prev);
+    next.has(val) ? next.delete(val) : next.add(val);
+    return next;
+  });
+
+  const activeCount = filterExpLevel.size + filterFormat.size + filterFocus.size + filterDomain.size + filterDifficulty.size;
+
+  return (
+    <>
+      {/* Header */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '14px 20px', borderBottom: `1px solid ${C.border}`, flexShrink: 0,
+      }}>
+        <span style={{ fontSize: 16, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Filters</span>
+        <button
+          onClick={onClearAll}
+          style={{ fontSize: 13, color: C.green, background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}
+        >
+          Clear All
+        </button>
+      </div>
+
+      {/* Scrollable sections */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '0 20px' }}>
+
+        {/* Experience Level */}
+        <CollapsibleSection title="Experience Level">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {EXP_LEVEL_CHIPS.map(chip => (
+              <FilterChip
+                key={chip.id}
+                label={chip.label}
+                selected={filterExpLevel.has(chip.id)}
+                onToggle={() => toggle(setFilterExpLevel, chip.id)}
+              />
+            ))}
+          </div>
+        </CollapsibleSection>
+
+        {/* Question Format */}
+        <CollapsibleSection title="Question Format">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {FORMAT_CHIPS.map(f => (
+              <FilterChip
+                key={f} label={f}
+                selected={filterFormat.has(f)}
+                onToggle={() => toggle(setFilterFormat, f)}
+              />
+            ))}
+          </div>
+        </CollapsibleSection>
+
+        {/* Problem Focus */}
+        <CollapsibleSection title="Problem Focus">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {FOCUS_CHIPS.map(f => (
+              <FilterChip
+                key={f} label={f}
+                selected={filterFocus.has(f)}
+                onToggle={() => toggle(setFilterFocus, f)}
+                recommended={RECOMMENDED_FOCUS.includes(f)}
+              />
+            ))}
+          </div>
+        </CollapsibleSection>
+
+        {/* Product Domain */}
+        <CollapsibleSection title="Product Domain" defaultOpen={false}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {DOMAIN_CHIPS.map(d => (
+              <FilterChip
+                key={d} label={d}
+                selected={filterDomain.has(d)}
+                onToggle={() => toggle(setFilterDomain, d)}
+              />
+            ))}
+          </div>
+        </CollapsibleSection>
+
+        {/* Difficulty */}
+        <CollapsibleSection title="Difficulty">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {DIFFICULTY_CHIPS.map(d => (
+              <FilterChip
+                key={d} label={d}
+                selected={filterDifficulty.has(d)}
+                onToggle={() => toggle(setFilterDifficulty, d)}
+              />
+            ))}
+          </div>
+        </CollapsibleSection>
+
+        <div style={{ height: 20 }} />
+      </div>
+
+      {/* Footer */}
+      <div style={{
+        padding: '16px 20px', borderTop: `1px solid ${C.border}`,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        flexShrink: 0, background: '#fff',
+      }}>
+        <span style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          {activeCount > 0 ? `${activeCount} filter${activeCount !== 1 ? 's' : ''} applied` : 'No filters applied'}
+        </span>
+        <button
+          onClick={onApply}
+          style={{
+            padding: '11px 22px', background: C.green, border: 'none', borderRadius: 12,
+            color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            boxShadow: '0 1px 4px rgba(22,163,74,0.3)',
+          }}
+        >
+          Apply ({resultCount} results)
+        </button>
+      </div>
+    </>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
 export default function PracticeQA({ user, profile, checkSession, onSessionUsed }) {
   const { requireAuth } = useAuth();
-  const [selectedLevel, setSelectedLevel] = useState(null);
-  const [category, setCategory] = useState('product');
+
   const [search, setSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [sortBy, setSortBy] = useState('relevant');
+  const [showFilters, setShowFilters] = useState(false);
+  const [showSortSheet, setShowSortSheet] = useState(false);
+  const [filterExpLevel, setFilterExpLevel] = useState(new Set());
+  const [filterFormat, setFilterFormat] = useState(new Set());
+  const [filterFocus, setFilterFocus] = useState(new Set());
+  const [filterDomain, setFilterDomain] = useState(new Set());
+  const [filterDifficulty, setFilterDifficulty] = useState(new Set());
   const [expandedKeys, setExpandedKeys] = useState(new Set());
-  const [allExpanded, setAllExpanded] = useState(false);
-  const [practiceQuestion, setPracticeQuestion] = useState(null); // { question, questionId, designation, category }
-  const [practiceStats, setPracticeStats] = useState({}); // { [questionId]: { best_score, attempts } }
-  const [reportTarget, setReportTarget] = useState(null); // questionId being reported
+  const [practiceQuestion, setPracticeQuestion] = useState(null);
+  const [practiceStats, setPracticeStats] = useState({});
+  const [reportTarget, setReportTarget] = useState(null);
   const [showWelcome, setShowWelcome] = useState(() => {
     const flag = sessionStorage.getItem('ia:welcome');
     if (flag) { sessionStorage.removeItem('ia:welcome'); return true; }
     return false;
   });
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Resize listener for isMobile
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
 
   // Pre-load a featured/quick question passed via sessionStorage
   useEffect(() => {
@@ -386,21 +662,75 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       });
   }, [user]);
 
+  // ── Filtering ──────────────────────────────────────────────────────────────
+
   const filtered = useMemo(() => {
+    const dataCats = selectedCategory
+      ? [CATEGORY_CHIPS.find(c => c.id === selectedCategory)?.dataKey].filter(Boolean)
+      : ['product', 'behavioral', 'ai', 'ai_technical'];
+
+    let levelsToShow = PM_LEVELS;
+    if (filterExpLevel.size > 0) {
+      const allowed = new Set();
+      for (const chipId of filterExpLevel) {
+        EXP_LEVEL_CHIPS.find(c => c.id === chipId)?.levels.forEach(l => allowed.add(l));
+      }
+      levelsToShow = PM_LEVELS.filter(l => allowed.has(l));
+    }
+
     const results = [];
-    const levels = selectedLevel ? [selectedLevel] : PM_LEVELS;
-    for (const level of levels) {
+    const searchLower = search.toLowerCase();
+
+    for (const level of levelsToShow) {
       const bank = pmQuestions[level];
       if (!bank) continue;
-      const questions = bank[category] || [];
-      for (let i = 0; i < questions.length; i++) {
-        const q = questions[i];
-        if (search && !q.q.toLowerCase().includes(search.toLowerCase()) && !q.a.toLowerCase().includes(search.toLowerCase())) continue;
-        results.push({ key: `${level}-${category}-${i}`, level, question: q, localIndex: i });
+      for (const cat of dataCats) {
+        const questions = bank[cat] || [];
+        for (let i = 0; i < questions.length; i++) {
+          const q = questions[i];
+          if (search && !q.q.toLowerCase().includes(searchLower) && !q.a.toLowerCase().includes(searchLower)) continue;
+          results.push({ key: `${level}-${cat}-${i}`, level, dataCategory: cat, question: q });
+        }
       }
     }
+
+    if (sortBy === 'practiced') {
+      results.sort((a, b) => (practiceStats[b.key]?.attempts ?? 0) - (practiceStats[a.key]?.attempts ?? 0));
+    }
+
     return results;
-  }, [selectedLevel, category, search]);
+  }, [selectedCategory, filterExpLevel, search, sortBy, practiceStats]);
+
+  // ── Applied filter tags ────────────────────────────────────────────────────
+
+  const appliedFilterTags = useMemo(() => {
+    const tags = [];
+    const addTags = (set, labelFn, prefix) => {
+      for (const val of set) tags.push({ key: `${prefix}-${val}`, label: labelFn(val), prefix, val });
+    };
+    addTags(filterExpLevel, v => EXP_LEVEL_CHIPS.find(c => c.id === v)?.label || v, 'exp');
+    addTags(filterFormat, v => v, 'fmt');
+    addTags(filterFocus, v => v, 'foc');
+    addTags(filterDomain, v => v, 'dom');
+    addTags(filterDifficulty, v => v, 'dif');
+    return tags;
+  }, [filterExpLevel, filterFormat, filterFocus, filterDomain, filterDifficulty]);
+
+  const removeFilterTag = (prefix, val) => {
+    const map = {
+      exp: setFilterExpLevel, fmt: setFilterFormat,
+      foc: setFilterFocus,    dom: setFilterDomain, dif: setFilterDifficulty,
+    };
+    map[prefix]?.(prev => { const next = new Set(prev); next.delete(val); return next; });
+  };
+
+  const clearAllFilters = () => {
+    setFilterExpLevel(new Set());
+    setFilterFormat(new Set());
+    setFilterFocus(new Set());
+    setFilterDomain(new Set());
+    setFilterDifficulty(new Set());
+  };
 
   const toggleCard = (key) => {
     setExpandedKeys(prev => {
@@ -408,25 +738,10 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       if (next.has(key)) next.delete(key); else next.add(key);
       return next;
     });
-    setAllExpanded(false);
   };
 
-  const handleExpandAll = () => {
-    if (allExpanded) { setExpandedKeys(new Set()); setAllExpanded(false); }
-    else { setExpandedKeys(new Set(filtered.map(f => f.key))); setAllExpanded(true); }
-  };
+  // ── Practice mode ──────────────────────────────────────────────────────────
 
-  const totalCount = useMemo(() => {
-    let n = 0;
-    for (const level of PM_LEVELS) {
-      const bank = pmQuestions[level];
-      if (!bank) continue;
-      n += (bank.product?.length || 0) + (bank.behavioral?.length || 0) + (bank.ai?.length || 0) + (bank.ai_technical?.length || 0);
-    }
-    return n;
-  }, []);
-
-  // If in practice mode, render PracticeMode instead
   if (practiceQuestion) {
     const currentIdx = filtered.findIndex(f => f.key === practiceQuestion.questionId);
     const nextItem = currentIdx !== -1 && currentIdx < filtered.length - 1 ? filtered[currentIdx + 1] : null;
@@ -434,7 +749,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       question: nextItem.question,
       questionId: nextItem.key,
       designation: nextItem.level,
-      category,
+      category: nextItem.dataCategory,
     }) : null;
 
     const refreshStats = () => {
@@ -462,16 +777,28 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         checkSession={checkSession}
         onSessionUsed={onSessionUsed}
         onNextQuestion={handleNextQuestion}
-        onBack={() => {
-          setPracticeQuestion(null);
-          refreshStats();
-        }}
+        onBack={() => { setPracticeQuestion(null); refreshStats(); }}
       />
     );
   }
 
+  // ── Filter props bundle ────────────────────────────────────────────────────
+
+  const filterContentProps = {
+    filterExpLevel, setFilterExpLevel,
+    filterFormat, setFilterFormat,
+    filterFocus, setFilterFocus,
+    filterDomain, setFilterDomain,
+    filterDifficulty, setFilterDifficulty,
+    resultCount: filtered.length,
+    onApply: () => setShowFilters(false),
+    onClearAll: clearAllFilters,
+  };
+
+  // ── Render ─────────────────────────────────────────────────────────────────
+
   return (
-    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55 }}>
       <style>{globalStyles}</style>
 
       {reportTarget && (
@@ -482,9 +809,54 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         />
       )}
 
-      <div className="pqa-container" style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
+      {/* Filter panel */}
+      {showFilters && isMobile && (
+        <BottomSheet open onClose={() => setShowFilters(false)}>
+          <FilterContent {...filterContentProps} />
+        </BottomSheet>
+      )}
+      {showFilters && !isMobile && (
+        <FilterSidebar open onClose={() => setShowFilters(false)}>
+          <FilterContent {...filterContentProps} />
+        </FilterSidebar>
+      )}
 
-        {/* Welcome banner — shown only on first login */}
+      {/* Sort bottom sheet — mobile only */}
+      {showSortSheet && isMobile && (
+        <BottomSheet open onClose={() => setShowSortSheet(false)}>
+          <div style={{ padding: '20px 20px 8px', borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
+            <span style={{ fontSize: 16, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Sort by</span>
+          </div>
+          <div style={{ flex: 1, overflowY: 'auto' }}>
+            {SORT_OPTIONS.map(option => (
+              <button
+                key={option.id}
+                onClick={() => { setSortBy(option.id); setShowSortSheet(false); }}
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '16px 20px', background: 'none', border: 'none',
+                  borderBottom: `1px solid ${C.borderLight}`, cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}
+              >
+                <span style={{ fontSize: 15, color: C.text, fontWeight: sortBy === option.id ? 600 : 400 }}>{option.label}</span>
+                <div style={{
+                  width: 20, height: 20, borderRadius: '50%',
+                  border: `2px solid ${sortBy === option.id ? C.green : C.border}`,
+                  background: sortBy === option.id ? C.green : 'transparent',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  {sortBy === option.id && <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#fff' }} />}
+                </div>
+              </button>
+            ))}
+          </div>
+        </BottomSheet>
+      )}
+
+      <div style={{ maxWidth: 860, margin: '0 auto', padding: isMobile ? '20px 16px 60px' : '40px 28px 60px' }}>
+
+        {/* Welcome banner */}
         {showWelcome && (
           <div style={{
             display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12,
@@ -508,167 +880,193 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         )}
 
         {/* Page header */}
-        <div style={{ marginBottom: 32 }}>
-          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: C.text, marginBottom: 8 }}>
+        <div style={{ marginBottom: 24 }}>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: C.text, marginBottom: 6, margin: 0 }}>
             Practice Q&amp;A
           </h2>
-          <p style={{ fontSize: 15, color: C.textMuted, margin: '0 0 16px' }}>
+          <p style={{ fontSize: 15, color: C.textMuted, margin: '6px 0 0' }}>
             1,100+ expert questions across 10 PM levels
           </p>
-          <div style={{
-            padding: '12px 16px',
-            background: C.bgMuted, border: `1px solid ${C.border}`,
-            borderRadius: 12, marginBottom: 0,
-            display: 'flex', gap: 10, alignItems: 'flex-start',
-          }}>
-            <span style={{ fontSize: 14, flexShrink: 0 }}>ℹ️</span>
-            <p style={{ fontSize: 13, lineHeight: 1.6, color: C.textMuted, margin: 0 }}>
-              Answers represent expert frameworks. Replace example stories with your own experiences for behavioral questions.{' '}
-              <span style={{ fontSize: 11, opacity: 0.7 }}>Last updated: March 2026.</span>
-            </p>
-          </div>
         </div>
 
-        {/* Controls row */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 28 }}>
-
-          {/* Category pills */}
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {[
-              { id: 'product', label: 'Product Questions' },
-              { id: 'behavioral', label: 'Behavioral Questions' },
-              { id: 'ai', label: 'AI & PM Questions' },
-              { id: 'ai_technical', label: 'AI Technical for PMs' },
-            ].map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => { setCategory(cat.id); setExpandedKeys(new Set()); setAllExpanded(false); }}
-                style={{
-                  padding: '8px 20px',
-                  background: category === cat.id ? C.green : C.bgMuted,
-                  border: 'none',
-                  borderRadius: 20,
-                  color: category === cat.id ? '#fff' : C.textMuted,
-                  fontSize: 13,
-                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontWeight: category === cat.id ? 600 : 400,
-                  transition: 'all 0.2s',
-                }}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Designation dropdown */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <select
-              className="pqa-level-select"
-              value={selectedLevel || ''}
-              onChange={e => { setSelectedLevel(e.target.value || null); setExpandedKeys(new Set()); setAllExpanded(false); }}
-              style={{
-                padding: '9px 16px',
-                background: C.bg,
-                border: `1px solid ${selectedLevel ? C.green : C.border}`,
-                borderRadius: 12, fontSize: 14, letterSpacing: 0.5,
-                color: selectedLevel ? C.green : C.textSoft,
-                cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: selectedLevel ? 500 : 400,
-                outline: 'none', appearance: 'none',
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'right 12px center',
-                paddingRight: 32,
-                minWidth: 200, width: '100%', maxWidth: 280,
-              }}
-            >
-              <option value="">All Levels</option>
-              {PM_LEVELS.map(level => (
-                <option key={level} value={level}>{level}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Search + Expand */}
-          <div className="pqa-search-row" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-            <div style={{
-              flex: 1, display: 'flex', alignItems: 'center', gap: 10,
-              background: C.bg, border: `1.5px solid ${C.border}`,
-              borderRadius: 12, padding: '0 16px',
-            }}>
-              <span style={{ fontSize: 16 }}>🔍</span>
-              <input
-                value={search}
-                onChange={e => { setSearch(e.target.value); setExpandedKeys(new Set()); setAllExpanded(false); }}
-                placeholder="Search questions..."
-                style={{
-                  flex: 1, border: 'none', background: 'transparent',
-                  color: C.text, fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  padding: '12px 0',
-                }}
-              />
-              {search && (
-                <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>
-              )}
-            </div>
-            <button
-              className="pqa-expand-btn"
-              onClick={handleExpandAll}
-              style={{
-                padding: '10px 18px', background: C.bg,
-                border: `1px solid ${C.border}`, borderRadius: 12,
-                color: C.textSoft, fontSize: 11, letterSpacing: 1.5,
-                textTransform: 'uppercase', cursor: 'pointer',
-                fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'nowrap',
-                transition: 'all 0.2s',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textSoft; }}
-            >
-              {allExpanded ? 'Collapse All' : 'Expand All'}
-            </button>
-          </div>
-        </div>
-
-        {/* Results count */}
+        {/* 1. Search bar */}
         <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          marginBottom: 16, padding: '0 4px',
+          display: 'flex', alignItems: 'center', gap: 10,
+          background: C.bg, border: `1.5px solid ${C.border}`,
+          borderRadius: 12, padding: '0 16px',
+          height: isMobile ? 48 : 44,
+          marginBottom: 12,
         }}>
-          <span style={{ fontSize: 11, color: C.textMuted, letterSpacing: 1 }}>
-            {filtered.length} {filtered.length === 1 ? 'question' : 'questions'}
-            {search && ` matching "${search}"`}
-          </span>
-          {expandedKeys.size > 0 && (
-            <span style={{ fontSize: 11, color: C.green, letterSpacing: 0.5 }}>
-              {expandedKeys.size} expanded
-            </span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.textMuted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            value={search}
+            onChange={e => { setSearch(e.target.value); setExpandedKeys(new Set()); }}
+            placeholder="Search by company, product, or question..."
+            style={{ flex: 1, border: 'none', background: 'transparent', color: C.text, fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          />
+          {search && (
+            <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 20, lineHeight: 1, padding: 0 }}>×</button>
           )}
         </div>
 
-        {/* Question list */}
+        {/* 2. Sort + Filter row */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+          {/* Sort */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Sort</span>
+            {isMobile ? (
+              <button
+                onClick={() => setShowSortSheet(true)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 4,
+                  padding: '6px 12px', minHeight: 36,
+                  background: C.bg, border: `1px solid ${C.border}`,
+                  borderRadius: 8, cursor: 'pointer',
+                  fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  color: C.text, fontWeight: 500,
+                }}
+              >
+                {SORT_OPTIONS.find(o => o.id === sortBy)?.label}
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.textMuted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+            ) : (
+              <select
+                value={sortBy}
+                onChange={e => setSortBy(e.target.value)}
+                style={{
+                  padding: '6px 32px 6px 12px', height: 36,
+                  background: C.bg, border: `1px solid ${C.border}`,
+                  borderRadius: 8, cursor: 'pointer',
+                  fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  color: C.text, fontWeight: 500,
+                  outline: 'none', appearance: 'none',
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right 10px center',
+                }}
+              >
+                {SORT_OPTIONS.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
+              </select>
+            )}
+          </div>
+
+          {/* Filters button */}
+          <button
+            onClick={() => setShowFilters(true)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '6px 14px', minHeight: 36,
+              background: appliedFilterTags.length > 0 ? C.greenLight : C.bg,
+              border: `1px solid ${appliedFilterTags.length > 0 ? C.greenBorder : C.border}`,
+              borderRadius: 8, cursor: 'pointer',
+              fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
+              color: appliedFilterTags.length > 0 ? C.success : C.text,
+              fontWeight: 500,
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="4" y1="6" x2="20" y2="6"/>
+              <line x1="8" y1="12" x2="16" y2="12"/>
+              <line x1="11" y1="18" x2="13" y2="18"/>
+            </svg>
+            Filters{appliedFilterTags.length > 0 ? ` (${appliedFilterTags.length})` : ''}
+          </button>
+        </div>
+
+        {/* 3. Category chips */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+          <div className="cat-chips-scroll" style={{ flex: 1 }}>
+            {CATEGORY_CHIPS.map(chip => {
+              const isSelected = selectedCategory === chip.id;
+              return (
+                <button
+                  key={chip.id}
+                  onClick={() => { setSelectedCategory(isSelected ? null : chip.id); setExpandedKeys(new Set()); }}
+                  style={{
+                    padding: '7px 16px', minHeight: 36, whiteSpace: 'nowrap', flexShrink: 0,
+                    background: isSelected ? C.green : 'transparent',
+                    border: `1.5px solid ${isSelected ? C.green : C.border}`,
+                    borderRadius: 20, cursor: 'pointer',
+                    fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    color: isSelected ? '#fff' : C.textMuted,
+                    fontWeight: isSelected ? 600 : 400,
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  {chip.label}
+                </button>
+              );
+            })}
+          </div>
+          {selectedCategory && (
+            <button
+              onClick={() => { setSelectedCategory(null); setExpandedKeys(new Set()); }}
+              style={{ fontSize: 12, color: C.green, background: 'none', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: "'Plus Jakarta Sans', sans-serif", flexShrink: 0 }}
+            >
+              Clear all
+            </button>
+          )}
+        </div>
+
+        {/* 4. Applied filter tags */}
+        {appliedFilterTags.length > 0 && (
+          <div className="filter-tags-row" style={{ marginBottom: 12 }}>
+            {appliedFilterTags.map(tag => (
+              <span key={tag.key} style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                padding: '4px 10px',
+                background: C.greenLight, border: `1px solid ${C.greenBorder}`,
+                borderRadius: 20, fontSize: 12, color: C.success,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                {tag.label}
+                <button
+                  onClick={() => removeFilterTag(tag.prefix, tag.val)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.success, padding: 0, fontSize: 15, lineHeight: 1 }}
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* 5. Question count */}
+        <div style={{ marginBottom: 16 }}>
+          <span style={{ fontSize: 22, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            {filtered.length.toLocaleString()} Question{filtered.length !== 1 ? 's' : ''}
+          </span>
+        </div>
+
+        {/* 6. Question list or empty state */}
         {filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '72px 24px', color: C.textMuted }}>
-            <div style={{ fontSize: 52, marginBottom: 16 }}>🔍</div>
+            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke={C.border} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 16 }}>
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
             <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, color: C.text, marginBottom: 10 }}>
-              You haven&apos;t practiced any questions yet
+              No questions found
             </div>
             <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 24 }}>
-              Try a different filter, or browse all categories to find your next challenge.
+              Try adjusting your filters or search something else.
             </div>
             <button
-              onClick={() => { setSearch(''); setCategory('All'); setLevel('All'); }}
+              onClick={() => { setSearch(''); setSelectedCategory(null); clearAllFilters(); }}
               style={{
                 padding: '12px 28px', background: C.green, border: 'none',
                 borderRadius: 12, color: '#fff', fontSize: 14, fontWeight: 600,
                 cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
               }}
             >
-              Browse Questions →
+              Clear filters
             </button>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {filtered.map((item, displayIndex) => (
               <QuestionCard
                 key={item.key}
@@ -681,7 +1079,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                   question: item.question,
                   questionId: item.key,
                   designation: item.level,
-                  category,
+                  category: item.dataCategory,
                 }))}
                 practiceData={practiceStats[item.key] || null}
                 onReport={() => requireAuth('Sign up to report question issues', () => setReportTarget(item.key))}
@@ -690,7 +1088,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           </div>
         )}
 
-        <div style={{ height: 60 }} />
       </div>
     </div>
   );
