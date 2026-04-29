@@ -353,7 +353,7 @@ export default function AdminPanel({ user }) {
                     </div>
                     <div style={{ flex: '1 1 140px', minWidth: 120 }}>
                       <label style={labelStyle}>Name</label>
-                      <input type="text" placeholder="Search name…" value={f.name} onChange={e => setF('name', e.target.value)} style={inputStyle} />
+                      <input type="text" placeholder="Filter by name" value={f.name} onChange={e => setF('name', e.target.value)} style={inputStyle} />
                     </div>
                     <div style={{ flex: '1 1 130px', minWidth: 110 }}>
                       <label style={labelStyle}>Status</label>
