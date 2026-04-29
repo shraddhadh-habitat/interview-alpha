@@ -11,4 +11,7 @@ export default defineConfig({
       '/api': 'http://localhost:3001',
     },
   },
+  optimizeDeps: {
+    exclude: ['pdfjs-dist'],
+  },
 })
