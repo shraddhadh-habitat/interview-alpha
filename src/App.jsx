@@ -152,6 +152,98 @@ const FREE_SESSION_LIMIT  = 3;
 const PRO_SESSION_LIMIT   = 100;
 const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAIL || '').split(',').map(e => e.trim().toLowerCase());
 
+function MissingNameModal({ user, onSave }) {
+  const [name, setName] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (name.trim().length < 2) { setError('Please enter at least 2 characters.'); return; }
+    setSaving(true);
+    setError('');
+    try {
+      const { error: err } = await supabase.from('profiles').upsert({
+        id: user.id, email: user.email, display_name: name.trim(),
+      });
+      if (err) throw err;
+      onSave(name.trim());
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.');
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(0,0,0,0.6)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '0 16px', fontFamily: "'Plus Jakarta Sans', sans-serif",
+    }}>
+      <style>{`@keyframes mnFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }`}</style>
+      <div style={{
+        background: '#fff', borderRadius: 20, padding: '36px 32px',
+        width: '100%', maxWidth: 420,
+        boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+        animation: 'mnFadeUp 0.3s cubic-bezier(0.22,1,0.36,1)',
+      }}>
+        <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 26, fontWeight: 400, color: '#0A0A0A', marginBottom: 8 }}>
+          Welcome back!
+        </div>
+        <p style={{ fontSize: 14, color: '#5C5C57', marginBottom: 28, lineHeight: 1.6 }}>
+          Please add your name to continue.
+        </p>
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#5C5C57', marginBottom: 8 }}>
+              Full Name
+            </label>
+            <input
+              autoFocus
+              type="text"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              placeholder="Enter your full name"
+              minLength={2}
+              required
+              style={{
+                width: '100%', padding: '13px 16px',
+                border: '1.5px solid #E8E6E1', borderRadius: 12,
+                fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                color: '#0A0A0A', background: '#FAFAF8',
+                boxSizing: 'border-box', outline: 'none',
+              }}
+              onFocus={e => e.target.style.borderColor = '#16A34A'}
+              onBlur={e => e.target.style.borderColor = '#E8E6E1'}
+            />
+          </div>
+          {error && (
+            <div style={{ marginBottom: 16, padding: '10px 14px', background: 'rgba(207,34,46,0.06)', border: '1px solid rgba(207,34,46,0.18)', borderRadius: 10, fontSize: 13, color: '#CF222E' }}>
+              {error}
+            </div>
+          )}
+          <button
+            type="submit"
+            disabled={saving}
+            style={{
+              width: '100%', height: 48,
+              background: saving ? '#E8E6E1' : '#16A34A',
+              border: 'none', borderRadius: 12,
+              color: saving ? '#5C5C57' : '#fff',
+              fontSize: 16, fontWeight: 700, cursor: saving ? 'wait' : 'pointer',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              opacity: saving ? 0.7 : 1,
+            }}
+          >
+            {saving ? 'Saving…' : 'Continue'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 function LoadingScreen() {
   return (
     <div style={{
@@ -187,7 +279,9 @@ export default function App() {
     free_sessions_used:        0,
     monthly_sessions_used:     0,
     monthly_sessions_reset_at: null,
+    display_name:              null,
   });
+  const [showNamePrompt, setShowNamePrompt] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -218,7 +312,8 @@ export default function App() {
         subscription_expires_at,
         free_sessions_used,
         monthly_sessions_used,
-        monthly_sessions_reset_at
+        monthly_sessions_reset_at,
+        display_name
       `)
       .eq('id', uid)
       .single();
@@ -238,6 +333,7 @@ export default function App() {
       free_sessions_used:        data?.free_sessions_used        ?? 0,
       monthly_sessions_used:     data?.monthly_sessions_used     ?? 0,
       monthly_sessions_reset_at: data?.monthly_sessions_reset_at ?? null,
+      display_name:              data?.display_name              ?? null,
     });
     setProfileLoaded(true);
   }, []);
@@ -287,6 +383,20 @@ export default function App() {
     }
   }, [user, profileLoaded, profile.free_sessions_used, profile.monthly_sessions_used]);
 
+  // Show name prompt for existing users who haven't set a display_name yet.
+  // Skip if user just signed up (flag set by LoginModal signup flow).
+  useEffect(() => {
+    if (!user || !profileLoaded) return;
+    if (!profile.display_name) {
+      const justSignedUp = localStorage.getItem('ia:just_signed_up');
+      if (justSignedUp) {
+        localStorage.removeItem('ia:just_signed_up');
+        return;
+      }
+      setShowNamePrompt(true);
+    }
+  }, [user, profileLoaded, profile.display_name]);
+
   const handleQuickStartDismiss = useCallback(() => {
     if (user) localStorage.setItem('ia:qs_' + user.id, '1');
     setShowQuickStart(false);
@@ -325,6 +435,15 @@ export default function App() {
 
   return (
     <AuthProvider user={user}>
+      {showNamePrompt && user && (
+        <MissingNameModal
+          user={user}
+          onSave={(savedName) => {
+            setProfile(prev => ({ ...prev, display_name: savedName }));
+            setShowNamePrompt(false);
+          }}
+        />
+      )}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Nav
           user={user}

@@ -11,6 +11,7 @@ const C = {
 };
 
 function AuthForm({ tab, mobile, onSuccess }) {
+  const [name, setName]                   = useState('');
   const [email, setEmail]                 = useState('');
   const [password, setPassword]           = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -30,10 +31,16 @@ function AuthForm({ tab, mobile, onSuccess }) {
     setLoading(true);
     try {
       if (tab === 'signup') {
+        if (name.trim().length < 2) { setError('Please enter your full name (at least 2 characters).'); return; }
         if (password.length < 8) { setError('Password must be at least 8 characters.'); return; }
         if (password !== confirmPassword) { setError('Passwords do not match.'); return; }
-        const { error: err } = await supabase.auth.signUp({ email, password });
+        const { data, error: err } = await supabase.auth.signUp({ email, password });
         if (err) throw err;
+        // Save name to profile; mark as just-signed-up to skip the name prompt
+        if (data?.user) {
+          await supabase.from('profiles').upsert({ id: data.user.id, email, display_name: name.trim() });
+        }
+        localStorage.setItem('ia:just_signed_up', '1');
         onSuccess();
       } else {
         const { error: err } = await supabase.auth.signInWithPassword({ email, password });
@@ -104,6 +111,21 @@ function AuthForm({ tab, mobile, onSuccess }) {
           marginBottom: 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
         }}>
           {error}
+        </div>
+      )}
+
+      {tab === 'signup' && (
+        <div style={{ marginBottom: 14 }}>
+          <label style={labelStyle}>Full Name</label>
+          <input
+            type="text" required value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="Enter your full name"
+            minLength={2}
+            style={inputStyle}
+            onFocus={e => e.target.style.borderColor = C.green}
+            onBlur={e => e.target.style.borderColor = C.border}
+          />
         </div>
       )}
 

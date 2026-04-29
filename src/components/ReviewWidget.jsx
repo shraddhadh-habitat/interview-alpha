@@ -54,7 +54,7 @@ export default function ReviewWidget({ user, profile }) {
     const sessionsUsed = (profile.free_sessions_used ?? 0) + (profile.monthly_sessions_used ?? 0);
     if (sessionsUsed < 1) return;
     setVisible(true);
-    setDisplayName(user.email?.split('@')[0] || '');
+    setDisplayName(profile?.display_name || user.email?.split('@')[0] || '');
     // Check if already submitted (policy allows users to read own reviews)
     supabase.from('reviews').select('id').eq('user_id', user.id).limit(1)
       .then(({ data }) => { if (data?.length > 0) setAlreadySubmitted(true); });

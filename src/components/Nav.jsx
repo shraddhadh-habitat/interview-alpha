@@ -90,7 +90,8 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  const avatarLetter = user?.email?.[0]?.toUpperCase() ?? 'U';
+  const displayName = profile?.display_name || '';
+  const avatarLetter = (displayName[0] || user?.email?.[0] || 'U').toUpperCase();
 
   const navStyles = `
     .nav-tabs {
@@ -275,8 +276,11 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                     minWidth: 200, zIndex: 300, overflow: 'hidden',
                     fontFamily: "'Plus Jakarta Sans', sans-serif"
                   }}>
-                    <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, fontSize: 13, color: C.textMuted, wordBreak: 'break-all' }}>
-                      {user?.email}
+                    <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}` }}>
+                      {displayName && (
+                        <div style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 2, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{displayName}</div>
+                      )}
+                      <div style={{ fontSize: 12, color: C.textMuted, wordBreak: 'break-all', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{user?.email}</div>
                     </div>
                     <div style={{ padding: '4px 0' }}>
                       <button onClick={() => handleNav('sessions')} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.text, cursor: 'pointer' }}>Past Sessions</button>
@@ -347,7 +351,10 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         {/* Authenticated: user info */}
         {user && (
           <div style={{ padding: '8px 20px 16px', borderBottom: `1px solid ${C.border}` }}>
-            <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 8 }}>{user?.email}</div>
+            {displayName && (
+              <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 2, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{displayName}</div>
+            )}
+            <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 8, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{user?.email}</div>
             <SubscriptionBadge profile={profile} onUpgradeClick={() => { setDrawerOpen(false); onUpgradeClick(); }} />
           </div>
         )}
