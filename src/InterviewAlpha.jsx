@@ -1355,6 +1355,134 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 12 }}>Trusted by PMs preparing for</div>
           <div style={{ fontSize: 16, fontWeight: 500, color: '#9C9C97', marginBottom: 8 }}>Google · Amazon · Meta · Apple · Flipkart · Razorpay</div>
           <div style={{ fontSize: 13, color: C.green, fontWeight: 600 }}>Join 50+ PMs already practicing</div>
+
+          {/* ── SEO Content: crawlable, natural below-the-fold sections ── */}
+          <div style={{ marginTop: 80, borderTop: `1px solid ${C.border}`, paddingTop: 64, textAlign: 'left' }}>
+
+            {/* By Company */}
+            <div style={{ marginBottom: 56 }}>
+              <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400, color: C.text, marginBottom: 8 }}>
+                PM Interview Questions by Company
+              </h2>
+              <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.7, marginBottom: 32, maxWidth: 620 }}>
+                Practice company-specific PM interview questions with expert answer frameworks and AI-scored feedback.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
+                {[
+                  { co: 'Google', blurb: 'Practice 50+ Google PM interview questions covering product sense, analytical estimation, execution, and Googleyness. Get AI-scored feedback on your answers.' },
+                  { co: 'Amazon', blurb: "Master Amazon's Leadership Principles with 50+ practice questions. Every answer evaluated against Customer Obsession, Ownership, Bias for Action, and Dive Deep." },
+                  { co: 'Meta', blurb: "Prepare for Meta's Product Sense, Execution, and Leadership & Drive rounds with AI-powered mock interviews and scored feedback." },
+                  { co: 'Apple', blurb: "Practice Apple PM interview questions focused on product design, creativity, and the Apple ecosystem. Includes product critique and design thinking questions." },
+                  { co: 'Microsoft', blurb: "Prepare for Microsoft PM interviews covering product design, strategy, estimation, and collaboration. Questions aligned to Microsoft's culture of growth mindset." },
+                  { co: 'Flipkart', blurb: "Practice Flipkart PM interview questions covering e-commerce product design, marketplace metrics, and India-specific execution challenges." },
+                  { co: 'Swiggy', blurb: "Swiggy PM interview questions on hyperlocal delivery, supply-demand balance, marketplace design, and growth strategy for quick commerce." },
+                  { co: 'Razorpay', blurb: "Razorpay PM interview questions covering fintech product design, payments infrastructure, developer tools, and merchant-facing growth." },
+                  { co: 'CRED', blurb: "CRED PM interview questions focused on premium user products, financial behavior, retention mechanics, and community-led growth strategies." },
+                ].map(({ co, blurb }) => (
+                  <div key={co} style={{
+                    background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16,
+                    padding: '24px 22px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                  }}>
+                    <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 10 }}>
+                      {co} Product Manager Interview Questions
+                    </h3>
+                    <p style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.65, marginBottom: 14 }}>{blurb}</p>
+                    <button
+                      onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'company' }))}
+                      style={{
+                        background: 'none', border: 'none', padding: 0,
+                        fontSize: 13, color: C.green, fontWeight: 600, cursor: 'pointer',
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      }}
+                    >
+                      Practice {co} Questions →
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* By Question Type */}
+            <div style={{ marginBottom: 56 }}>
+              <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400, color: C.text, marginBottom: 8 }}>
+                PM Interview Questions by Type
+              </h2>
+              <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.7, marginBottom: 32, maxWidth: 620 }}>
+                Master every question format you'll face in product manager interviews.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
+                {[
+                  { title: 'Product Sense Interview Questions', blurb: "Product sense questions test your ability to design products, identify user needs, and articulate a clear value proposition. Practice the CIRCLES method and Jobs-to-be-Done frameworks with 200+ questions.", cat: 'design' },
+                  { title: 'PM Behavioral Interview Questions', blurb: "Behavioral questions assess leadership, collaboration, and decision-making under pressure. Practice STAR-method answers for stakeholder management, shipping under constraints, and data-driven decisions.", cat: 'behavioral' },
+                  { title: 'PM Metrics & Analytics Questions', blurb: "Metrics questions test your analytical thinking — defining North Star metrics, diagnosing metric drops, and designing A/B tests. Practice with real-world scenarios from top tech companies.", cat: 'data' },
+                  { title: 'AI Product Manager Interview Questions 2026', blurb: "AI PM questions cover ML product design, responsible AI, model evaluation, and building AI-native features. Essential preparation for PM roles at AI-first companies in 2026.", cat: 'technical' },
+                ].map(({ title, blurb, cat }) => (
+                  <div key={title} style={{
+                    background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16,
+                    padding: '24px 22px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                  }}>
+                    <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 10 }}>
+                      {title}
+                    </h3>
+                    <p style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.65, marginBottom: 14 }}>{blurb}</p>
+                    <button
+                      onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
+                      style={{
+                        background: 'none', border: 'none', padding: 0,
+                        fontSize: 13, color: C.green, fontWeight: 600, cursor: 'pointer',
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      }}
+                    >
+                      Practice These Questions →
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* By Level */}
+            <div style={{ marginBottom: 32 }}>
+              <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400, color: C.text, marginBottom: 8 }}>
+                PM Interview Questions by Level
+              </h2>
+              <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.7, marginBottom: 32, maxWidth: 620 }}>
+                Interview difficulty and question focus vary significantly by seniority. Practice questions calibrated for your target level.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
+                {[
+                  { title: 'Associate Product Manager (APM) Interview Questions', blurb: "APM interviews test analytical thinking, product intuition, and learning agility. Questions focus on product design, estimation, and structured problem-solving — ideal for early-career candidates." },
+                  { title: 'Senior Product Manager Interview Questions', blurb: "Senior PM interviews assess strategic thinking, cross-functional leadership, and impact at scale. Expect complex trade-off decisions, OKR setting, and questions about managing without authority." },
+                  { title: 'Director of Product Interview Questions', blurb: "Director-level interviews focus on organizational design, portfolio prioritization, building PM teams, and long-term product strategy. Practice executive presence with AI-scored feedback." },
+                ].map(({ title, blurb }) => (
+                  <div key={title} style={{
+                    background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16,
+                    padding: '24px 22px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                  }}>
+                    <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 10 }}>
+                      {title}
+                    </h3>
+                    <p style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.65, marginBottom: 14 }}>{blurb}</p>
+                    <button
+                      onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
+                      style={{
+                        background: 'none', border: 'none', padding: 0,
+                        fontSize: 13, color: C.green, fontWeight: 600, cursor: 'pointer',
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      }}
+                    >
+                      Practice These Questions →
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+          {/* ── End SEO Content ── */}
+
         </div>
       </div>
     );

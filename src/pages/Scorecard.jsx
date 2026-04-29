@@ -505,6 +505,11 @@ function AttemptDetail({ item }) {
 export default function Scorecard({ user }) {
   const { requireAuth } = useAuth();
   const [sessions, setSessions] = useState([]);
+
+  useEffect(() => {
+    document.title = 'PM Interview Scorecard | InterviewAlpha';
+    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+  }, []);
   const [practiceAttempts, setPracticeAttempts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reviewTarget, setReviewTarget] = useState(null);

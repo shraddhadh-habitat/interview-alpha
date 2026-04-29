@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -156,6 +156,11 @@ function Section({ title, subtitle, children, defaultOpen = false }) {
 }
 
 export default function SalaryGuide() {
+  useEffect(() => {
+    document.title = 'Product Manager Salary Guide 2026 | InterviewAlpha';
+    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+  }, []);
+
   return (
     <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{globalStyles}</style>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 const TEASER_LEN = 120;
@@ -574,6 +574,12 @@ function AllCompaniesView({ setPage }) {
 export default function CompanyQuestions({ setPage }) {
   const [selectedCompany, setSelectedCompany] = useState('');
   const company = COMPANIES.find(c => c.id === selectedCompany);
+
+  useEffect(() => {
+    const companyTitle = company ? `${company.name} PM Interview Questions | InterviewAlpha` : 'Google, Amazon, Meta PM Interview Questions | InterviewAlpha';
+    document.title = companyTitle;
+    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+  }, [company]);
   const data = selectedCompany ? QUESTIONS[selectedCompany] : null;
 
   return (

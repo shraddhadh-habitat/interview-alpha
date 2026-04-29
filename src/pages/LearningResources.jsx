@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const C = {
   bg: '#FAFAF8',
@@ -227,6 +227,11 @@ function BookCard({ book, badge }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function LearningResources() {
+  useEffect(() => {
+    document.title = 'PM Learning Resources | Books, Courses & Guides | InterviewAlpha';
+    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+  }, []);
+
   return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", paddingTop: NAV_H + 40 }}>
       <style>{`

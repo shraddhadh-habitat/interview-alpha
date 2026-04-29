@@ -604,6 +604,11 @@ function FilterContent({
 export default function PracticeQA({ user, profile, checkSession, onSessionUsed }) {
   const { requireAuth } = useAuth();
 
+  useEffect(() => {
+    document.title = 'PM Interview Questions & Answers | 1,100+ Free Questions | InterviewAlpha';
+    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+  }, []);
+
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sortBy, setSortBy] = useState('relevant');
