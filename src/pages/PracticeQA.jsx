@@ -25,12 +25,18 @@ const CATEGORY_CHIPS = [
 ];
 
 const EXP_LEVEL_CHIPS = [
-  { id: 'intern', label: 'Intern',          levels: ['Associate PM'] },
-  { id: 'apm',    label: 'Associate PM',    levels: ['Associate PM'] },
-  { id: 'pm',     label: 'Product Manager', levels: ['PM'] },
-  { id: 'spm',    label: 'Senior PM',       levels: ['Senior PM', 'Lead PM', 'Staff/Principal PM'] },
-  { id: 'gpm',    label: 'Group PM',        levels: ['Group Product Manager'] },
-  { id: 'dir',    label: 'Director+',       levels: ['Director of PM', 'Senior Director of PM', 'VP of Product', 'Chief Product Officer (CPO)'] },
+  { id: 'intern',    label: 'Intern',              levels: ['Associate PM'] },
+  { id: 'apm',       label: 'Associate PM',        levels: ['Associate PM'] },
+  { id: 'pm',        label: 'Product Manager',     levels: ['PM'] },
+  { id: 'spm',       label: 'Senior PM',           levels: ['Senior PM'] },
+  { id: 'lpm',       label: 'Lead PM',             levels: ['Lead PM'] },
+  { id: 'staff',     label: 'Staff/Principal PM',  levels: ['Staff/Principal PM'] },
+  { id: 'gpm',       label: 'Group PM',            levels: ['Group Product Manager'] },
+  { id: 'dir',       label: 'Director',            levels: ['Director of PM', 'Senior Director of PM'] },
+  { id: 'vp',        label: 'VP/Head of Product',  levels: ['VP of Product'] },
+  { id: 'cpo',       label: 'CPO',                 levels: ['Chief Product Officer (CPO)'] },
+  { id: 'tpm',       label: 'Technical PM',        levels: ['Technical PM'] },
+  { id: 'aipm',      label: 'AI PM',               levels: ['AI PM'] },
 ];
 
 const DIFFICULTY_CHIPS = ['Easy', 'Medium', 'Difficult'];
@@ -606,7 +612,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   const [search, setSearch] = useState('');
   const [filterCategory, setFilterCategory] = useState(new Set());
-  const [sortBy, setSortBy] = useState('relevant');
+  const [sortBy, setSortBy] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [filterExpLevel, setFilterExpLevel] = useState(new Set());
   const [filterDifficulty, setFilterDifficulty] = useState(null);
