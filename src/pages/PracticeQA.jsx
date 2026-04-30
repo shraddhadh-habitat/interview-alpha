@@ -32,62 +32,13 @@ const EXP_LEVEL_CHIPS = [
   { id: 'dir',    label: 'Director+',       levels: ['Director of PM', 'Senior Director of PM', 'VP of Product', 'Chief Product Officer (CPO)'] },
 ];
 
-const FORMAT_CHIPS = ['Open-ended', 'Case Study', 'Scenario-based', 'Rapid-fire'];
-const FOCUS_CHIPS = [
-  'Design a product', 'Improve a product', 'Debug a problem',
-  'Strategy / Market entry', 'Prioritization', 'Metrics definition',
-  'Root cause analysis', 'Trade-off decision',
-];
-const RECOMMENDED_FOCUS = ['Design a product', 'Prioritization', 'Metrics definition'];
-const DOMAIN_CHIPS = [
-  'Consumer', 'B2B / SaaS', 'Marketplace', 'Mobile', 'Platform / API',
-  'AI / ML', 'Fintech', 'E-commerce', 'Social', 'Accessibility',
-];
 const DIFFICULTY_CHIPS = ['Easy', 'Medium', 'Difficult'];
 
-// ─── Question classification helpers ─────────────────────────────────────────
-
+// Difficulty derived from PM level — the only reliable classification signal in the data
 function getDifficulty(level) {
-  if (level === 'Associate PM') return 'Easy';
-  if (['PM', 'Senior PM', 'Lead PM'].includes(level)) return 'Medium';
-  return 'Difficult';
-}
-
-function getFormat(qText) {
-  const t = qText.toLowerCase();
-  if (/\bestimate\b|how many|number of\b/.test(t)) return 'Case Study';
-  if (/\bscenario\b|just (launched|happened|shipped)|a (user|customer) (complains|reports|says|is)|your (ceo|team|company|manager)|suddenly|dropped|declined/.test(t)) return 'Scenario-based';
-  if (/^(what (is|are|does|'s|was)|define |explain |why (is|are|do)|describe )/.test(t) || qText.length < 65) return 'Rapid-fire';
-  return 'Open-ended';
-}
-
-function getFocus(qText) {
-  const t = qText.toLowerCase();
-  if (/prioriti(ze|zation)|backlog|roadmap/.test(t)) return 'Prioritization';
-  if (/metric|measure (the )?success|kpi|track|success metric|analytic/.test(t)) return 'Metrics definition';
-  if (/root cause|why (did|has|is) .*(drop|declin|fall)|debug/.test(t)) return 'Root cause analysis';
-  if (/trade.?off|tradeoff|\bvs\b|versus|choose between|balance/.test(t)) return 'Trade-off decision';
-  if (/strategy|market entry|expand|enter.*market|launch.*new market|competitive landscape/.test(t)) return 'Strategy / Market entry';
-  if (/not working|bug|crash|broken|outage|incident|fell|dropped|declined|decreased/.test(t)) return 'Debug a problem';
-  if (/improve|better|enhanc|increas|optimiz|redesign|upgrade/.test(t)) return 'Improve a product';
-  if (/design|build|create|develop/.test(t)) return 'Design a product';
-  return null;
-}
-
-function getDomains(qText, dataCategory) {
-  const t = qText.toLowerCase();
-  const domains = new Set();
-  if (dataCategory === 'ai' || dataCategory === 'ai_technical' || /\bai\b|machine learning|\bml\b|\bllm\b|generative|recommendation engine|algorithm/.test(t)) domains.add('AI / ML');
-  if (/consumer|spotify|netflix|tiktok|youtube|instagram|snapchat|social app|messaging app|dating/.test(t)) domains.add('Consumer');
-  if (/enterprise|b2b|saas|business software|salesforce|slack enterprise|jira|organization/.test(t)) domains.add('B2B / SaaS');
-  if (/marketplace|airbnb|uber|etsy|doordash|instacart|two.sided|buyer.*seller/.test(t)) domains.add('Marketplace');
-  if (/\bmobile\b|ios|android|smartphone|app store|play store/.test(t)) domains.add('Mobile');
-  if (/\bplatform\b|\bapi\b|developer|sdk|infrastructure/.test(t)) domains.add('Platform / API');
-  if (/fintech|finance|payment|bank|money|crypto|invest|wallet|insurance/.test(t)) domains.add('Fintech');
-  if (/e.?commerce|shopping|checkout|cart|retail|amazon/.test(t)) domains.add('E-commerce');
-  if (/social (media|network)|twitter|facebook|linkedin|community|feed|post|share/.test(t)) domains.add('Social');
-  if (/accessib|disability|impair|inclusive|blind|deaf|screen reader/.test(t)) domains.add('Accessibility');
-  return domains;
+  if (['Associate PM', 'PM'].includes(level)) return 'Easy';
+  if (['Senior PM', 'Lead PM', 'Staff/Principal PM'].includes(level)) return 'Medium';
+  return 'Difficult'; // Group PM, Director+
 }
 
 const SORT_OPTIONS = [
@@ -515,9 +466,6 @@ function FilterChip({ label, selected, onToggle, recommended }) {
 
 function FilterContent({
   filterExpLevel, setFilterExpLevel,
-  filterFormat, setFilterFormat,
-  filterFocus, setFilterFocus,
-  filterDomain, setFilterDomain,
   filterDifficulty, setFilterDifficulty,
   resultCount,
   onApply,
@@ -529,7 +477,7 @@ function FilterContent({
     return next;
   });
 
-  const activeCount = filterExpLevel.size + filterFormat.size + filterFocus.size + filterDomain.size + (filterDifficulty ? 1 : 0);
+  const activeCount = filterExpLevel.size + (filterDifficulty ? 1 : 0);
 
   return (
     <>
@@ -559,46 +507,6 @@ function FilterContent({
                 label={chip.label}
                 selected={filterExpLevel.has(chip.id)}
                 onToggle={() => toggle(setFilterExpLevel, chip.id)}
-              />
-            ))}
-          </div>
-        </CollapsibleSection>
-
-        {/* Question Format */}
-        <CollapsibleSection title="Question Format">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {FORMAT_CHIPS.map(f => (
-              <FilterChip
-                key={f} label={f}
-                selected={filterFormat.has(f)}
-                onToggle={() => toggle(setFilterFormat, f)}
-              />
-            ))}
-          </div>
-        </CollapsibleSection>
-
-        {/* Problem Focus */}
-        <CollapsibleSection title="Problem Focus">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {FOCUS_CHIPS.map(f => (
-              <FilterChip
-                key={f} label={f}
-                selected={filterFocus.has(f)}
-                onToggle={() => toggle(setFilterFocus, f)}
-                recommended={RECOMMENDED_FOCUS.includes(f)}
-              />
-            ))}
-          </div>
-        </CollapsibleSection>
-
-        {/* Product Domain */}
-        <CollapsibleSection title="Product Domain" defaultOpen={false}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {DOMAIN_CHIPS.map(d => (
-              <FilterChip
-                key={d} label={d}
-                selected={filterDomain.has(d)}
-                onToggle={() => toggle(setFilterDomain, d)}
               />
             ))}
           </div>
@@ -661,9 +569,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [showFilters, setShowFilters] = useState(false);
   const [showSortSheet, setShowSortSheet] = useState(false);
   const [filterExpLevel, setFilterExpLevel] = useState(new Set());
-  const [filterFormat, setFilterFormat] = useState(new Set());
-  const [filterFocus, setFilterFocus] = useState(new Set());
-  const [filterDomain, setFilterDomain] = useState(new Set());
   const [filterDifficulty, setFilterDifficulty] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [practiceQuestion, setPracticeQuestion] = useState(null);
@@ -741,23 +646,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           const q = questions[i];
           if (search && !q.q.toLowerCase().includes(searchLower) && !q.a.toLowerCase().includes(searchLower)) continue;
 
-          // Difficulty filter (single-select)
+          // Difficulty filter (single-select, derived from PM level)
           if (filterDifficulty && getDifficulty(level) !== filterDifficulty) continue;
-
-          // Format filter (multi-select)
-          if (filterFormat.size > 0 && !filterFormat.has(getFormat(q.q))) continue;
-
-          // Focus filter (multi-select)
-          if (filterFocus.size > 0) {
-            const focus = getFocus(q.q);
-            if (!focus || !filterFocus.has(focus)) continue;
-          }
-
-          // Domain filter (multi-select — question matches if ANY selected domain applies)
-          if (filterDomain.size > 0) {
-            const domains = getDomains(q.q, cat);
-            if (![...filterDomain].some(d => domains.has(d))) continue;
-          }
 
           results.push({ key: `${level}-${cat}-${i}`, level, dataCategory: cat, question: q });
         }
@@ -769,7 +659,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     }
 
     return results;
-  }, [selectedCategory, filterExpLevel, filterFormat, filterFocus, filterDomain, filterDifficulty, search, sortBy, practiceStats]);
+  }, [selectedCategory, filterExpLevel, filterDifficulty, search, sortBy, practiceStats]);
 
   // ── Applied filter tags ────────────────────────────────────────────────────
 
@@ -779,27 +669,17 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       for (const val of set) tags.push({ key: `${prefix}-${val}`, label: labelFn(val), prefix, val });
     };
     addTags(filterExpLevel, v => EXP_LEVEL_CHIPS.find(c => c.id === v)?.label || v, 'exp');
-    addTags(filterFormat, v => v, 'fmt');
-    addTags(filterFocus, v => v, 'foc');
-    addTags(filterDomain, v => v, 'dom');
     if (filterDifficulty) tags.push({ key: `dif-${filterDifficulty}`, label: filterDifficulty, prefix: 'dif', val: filterDifficulty });
     return tags;
-  }, [filterExpLevel, filterFormat, filterFocus, filterDomain, filterDifficulty]);
+  }, [filterExpLevel, filterDifficulty]);
 
   const removeFilterTag = (prefix, val) => {
     if (prefix === 'dif') { setFilterDifficulty(null); return; }
-    const map = {
-      exp: setFilterExpLevel, fmt: setFilterFormat,
-      foc: setFilterFocus,    dom: setFilterDomain,
-    };
-    map[prefix]?.(prev => { const next = new Set(prev); next.delete(val); return next; });
+    if (prefix === 'exp') setFilterExpLevel(prev => { const next = new Set(prev); next.delete(val); return next; });
   };
 
   const clearAllFilters = () => {
     setFilterExpLevel(new Set());
-    setFilterFormat(new Set());
-    setFilterFocus(new Set());
-    setFilterDomain(new Set());
     setFilterDifficulty(null);
   };
 
@@ -857,9 +737,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   const filterContentProps = {
     filterExpLevel, setFilterExpLevel,
-    filterFormat, setFilterFormat,
-    filterFocus, setFilterFocus,
-    filterDomain, setFilterDomain,
     filterDifficulty, setFilterDifficulty,
     resultCount: filtered.length,
     onApply: () => setShowFilters(false),
