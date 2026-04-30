@@ -483,7 +483,7 @@ function FilterContent({
     return next;
   });
 
-  const activeCount = filterExpLevel.size + filterFormat.size + filterFocus.size + filterDomain.size + filterDifficulty.size;
+  const activeCount = filterExpLevel.size + filterFormat.size + filterFocus.size + filterDomain.size + (filterDifficulty ? 1 : 0);
 
   return (
     <>
@@ -564,8 +564,8 @@ function FilterContent({
             {DIFFICULTY_CHIPS.map(d => (
               <FilterChip
                 key={d} label={d}
-                selected={filterDifficulty.has(d)}
-                onToggle={() => toggle(setFilterDifficulty, d)}
+                selected={filterDifficulty === d}
+                onToggle={() => setFilterDifficulty(prev => prev === d ? null : d)}
               />
             ))}
           </div>
@@ -618,7 +618,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [filterFormat, setFilterFormat] = useState(new Set());
   const [filterFocus, setFilterFocus] = useState(new Set());
   const [filterDomain, setFilterDomain] = useState(new Set());
-  const [filterDifficulty, setFilterDifficulty] = useState(new Set());
+  const [filterDifficulty, setFilterDifficulty] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [practiceQuestion, setPracticeQuestion] = useState(null);
   const [practiceStats, setPracticeStats] = useState({});
@@ -717,14 +717,15 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     addTags(filterFormat, v => v, 'fmt');
     addTags(filterFocus, v => v, 'foc');
     addTags(filterDomain, v => v, 'dom');
-    addTags(filterDifficulty, v => v, 'dif');
+    if (filterDifficulty) tags.push({ key: `dif-${filterDifficulty}`, label: filterDifficulty, prefix: 'dif', val: filterDifficulty });
     return tags;
   }, [filterExpLevel, filterFormat, filterFocus, filterDomain, filterDifficulty]);
 
   const removeFilterTag = (prefix, val) => {
+    if (prefix === 'dif') { setFilterDifficulty(null); return; }
     const map = {
       exp: setFilterExpLevel, fmt: setFilterFormat,
-      foc: setFilterFocus,    dom: setFilterDomain, dif: setFilterDifficulty,
+      foc: setFilterFocus,    dom: setFilterDomain,
     };
     map[prefix]?.(prev => { const next = new Set(prev); next.delete(val); return next; });
   };
@@ -734,7 +735,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     setFilterFormat(new Set());
     setFilterFocus(new Set());
     setFilterDomain(new Set());
-    setFilterDifficulty(new Set());
+    setFilterDifficulty(null);
   };
 
   const toggleCard = (key) => {
