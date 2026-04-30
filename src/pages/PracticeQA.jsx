@@ -44,6 +44,52 @@ const DOMAIN_CHIPS = [
   'AI / ML', 'Fintech', 'E-commerce', 'Social', 'Accessibility',
 ];
 const DIFFICULTY_CHIPS = ['Easy', 'Medium', 'Difficult'];
+
+// ─── Question classification helpers ─────────────────────────────────────────
+
+function getDifficulty(level) {
+  if (level === 'Associate PM') return 'Easy';
+  if (['PM', 'Senior PM', 'Lead PM'].includes(level)) return 'Medium';
+  return 'Difficult';
+}
+
+function getFormat(qText) {
+  const t = qText.toLowerCase();
+  if (/\bestimate\b|how many|number of\b/.test(t)) return 'Case Study';
+  if (/\bscenario\b|just (launched|happened|shipped)|a (user|customer) (complains|reports|says|is)|your (ceo|team|company|manager)|suddenly|dropped|declined/.test(t)) return 'Scenario-based';
+  if (/^(what (is|are|does|'s|was)|define |explain |why (is|are|do)|describe )/.test(t) || qText.length < 65) return 'Rapid-fire';
+  return 'Open-ended';
+}
+
+function getFocus(qText) {
+  const t = qText.toLowerCase();
+  if (/prioriti(ze|zation)|backlog|roadmap/.test(t)) return 'Prioritization';
+  if (/metric|measure (the )?success|kpi|track|success metric|analytic/.test(t)) return 'Metrics definition';
+  if (/root cause|why (did|has|is) .*(drop|declin|fall)|debug/.test(t)) return 'Root cause analysis';
+  if (/trade.?off|tradeoff|\bvs\b|versus|choose between|balance/.test(t)) return 'Trade-off decision';
+  if (/strategy|market entry|expand|enter.*market|launch.*new market|competitive landscape/.test(t)) return 'Strategy / Market entry';
+  if (/not working|bug|crash|broken|outage|incident|fell|dropped|declined|decreased/.test(t)) return 'Debug a problem';
+  if (/improve|better|enhanc|increas|optimiz|redesign|upgrade/.test(t)) return 'Improve a product';
+  if (/design|build|create|develop/.test(t)) return 'Design a product';
+  return null;
+}
+
+function getDomains(qText, dataCategory) {
+  const t = qText.toLowerCase();
+  const domains = new Set();
+  if (dataCategory === 'ai' || dataCategory === 'ai_technical' || /\bai\b|machine learning|\bml\b|\bllm\b|generative|recommendation engine|algorithm/.test(t)) domains.add('AI / ML');
+  if (/consumer|spotify|netflix|tiktok|youtube|instagram|snapchat|social app|messaging app|dating/.test(t)) domains.add('Consumer');
+  if (/enterprise|b2b|saas|business software|salesforce|slack enterprise|jira|organization/.test(t)) domains.add('B2B / SaaS');
+  if (/marketplace|airbnb|uber|etsy|doordash|instacart|two.sided|buyer.*seller/.test(t)) domains.add('Marketplace');
+  if (/\bmobile\b|ios|android|smartphone|app store|play store/.test(t)) domains.add('Mobile');
+  if (/\bplatform\b|\bapi\b|developer|sdk|infrastructure/.test(t)) domains.add('Platform / API');
+  if (/fintech|finance|payment|bank|money|crypto|invest|wallet|insurance/.test(t)) domains.add('Fintech');
+  if (/e.?commerce|shopping|checkout|cart|retail|amazon/.test(t)) domains.add('E-commerce');
+  if (/social (media|network)|twitter|facebook|linkedin|community|feed|post|share/.test(t)) domains.add('Social');
+  if (/accessib|disability|impair|inclusive|blind|deaf|screen reader/.test(t)) domains.add('Accessibility');
+  return domains;
+}
+
 const SORT_OPTIONS = [
   { id: 'relevant',   label: 'Most Relevant' },
   { id: 'practiced',  label: 'Most Practiced' },
@@ -694,6 +740,25 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         for (let i = 0; i < questions.length; i++) {
           const q = questions[i];
           if (search && !q.q.toLowerCase().includes(searchLower) && !q.a.toLowerCase().includes(searchLower)) continue;
+
+          // Difficulty filter (single-select)
+          if (filterDifficulty && getDifficulty(level) !== filterDifficulty) continue;
+
+          // Format filter (multi-select)
+          if (filterFormat.size > 0 && !filterFormat.has(getFormat(q.q))) continue;
+
+          // Focus filter (multi-select)
+          if (filterFocus.size > 0) {
+            const focus = getFocus(q.q);
+            if (!focus || !filterFocus.has(focus)) continue;
+          }
+
+          // Domain filter (multi-select — question matches if ANY selected domain applies)
+          if (filterDomain.size > 0) {
+            const domains = getDomains(q.q, cat);
+            if (![...filterDomain].some(d => domains.has(d))) continue;
+          }
+
           results.push({ key: `${level}-${cat}-${i}`, level, dataCategory: cat, question: q });
         }
       }
@@ -704,7 +769,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     }
 
     return results;
-  }, [selectedCategory, filterExpLevel, search, sortBy, practiceStats]);
+  }, [selectedCategory, filterExpLevel, filterFormat, filterFocus, filterDomain, filterDifficulty, search, sortBy, practiceStats]);
 
   // ── Applied filter tags ────────────────────────────────────────────────────
 

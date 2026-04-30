@@ -98,7 +98,7 @@ export default function ReviewWidget({ user, profile }) {
     <>
       <style>{`
         .rw-fab {
-          position: fixed; bottom: 24px; right: 24px; z-index: 800;
+          position: fixed; bottom: 24px; left: 24px; z-index: 800;
           display: flex; align-items: center; gap: 8px;
           padding: 12px 20px; border: none; border-radius: 50px;
           font-family: ${FONT}; font-size: 13px; font-weight: 600;
