@@ -15,12 +15,13 @@ const C = {
 };
 
 const CATEGORY_CHIPS = [
-  { id: 'design',     label: 'Product Design', dataKey: 'product' },
-  { id: 'strategy',   label: 'Strategy',       dataKey: 'product' },
-  { id: 'execution',  label: 'Execution',      dataKey: 'product' },
-  { id: 'technical',  label: 'Technical',      dataKey: 'ai_technical' },
-  { id: 'data',       label: 'Data',           dataKey: 'ai' },
-  { id: 'behavioral', label: 'Behavioral',     dataKey: 'behavioral' },
+  { id: 'product_design', label: 'Product Design', dataKeys: ['product'] },
+  { id: 'strategy',       label: 'Strategy',       dataKeys: ['product'] },
+  { id: 'execution',      label: 'Execution',      dataKeys: ['product'] },
+  { id: 'technical',      label: 'Technical',      dataKeys: ['ai_technical'] },
+  { id: 'data',           label: 'Data',           dataKeys: ['ai'] },
+  { id: 'behavioral',     label: 'Behavioral',     dataKeys: ['behavioral'] },
+  { id: 'ai',             label: 'AI',             dataKeys: ['ai', 'ai_technical'] },
 ];
 
 const EXP_LEVEL_CHIPS = [
@@ -57,11 +58,6 @@ const globalStyles = `
   input:focus { outline: none; }
   button:focus-visible { outline: 2px solid #16A34A; outline-offset: 2px; }
   ::selection { background: rgba(22,163,74,0.18); }
-  .cat-chips-scroll {
-    display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
-    scrollbar-width: none; -ms-overflow-style: none;
-  }
-  .cat-chips-scroll::-webkit-scrollbar { display: none; }
   .filter-tags-row {
     display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;
   }
@@ -465,19 +461,21 @@ function FilterChip({ label, selected, onToggle, recommended }) {
 }
 
 function FilterContent({
+  sortBy, setSortBy,
+  filterCategory, setFilterCategory,
   filterExpLevel, setFilterExpLevel,
   filterDifficulty, setFilterDifficulty,
   resultCount,
   onApply,
   onClearAll,
 }) {
-  const toggle = (setter, val) => setter(prev => {
+  const toggleSet = (setter, val) => setter(prev => {
     const next = new Set(prev);
     next.has(val) ? next.delete(val) : next.add(val);
     return next;
   });
 
-  const activeCount = filterExpLevel.size + (filterDifficulty ? 1 : 0);
+  const activeCount = filterCategory.size + filterExpLevel.size + (filterDifficulty ? 1 : 0);
 
   return (
     <>
@@ -498,6 +496,49 @@ function FilterContent({
       {/* Scrollable sections */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '0 20px' }}>
 
+        {/* Sort By */}
+        <CollapsibleSection title="Sort By">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {SORT_OPTIONS.map(option => (
+              <button
+                key={option.id}
+                onClick={() => setSortBy(option.id)}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '10px 14px', background: sortBy === option.id ? C.greenLight : 'transparent',
+                  border: `1px solid ${sortBy === option.id ? C.greenBorder : C.border}`,
+                  borderRadius: 10, cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'all 0.15s',
+                }}
+              >
+                <span style={{ fontSize: 13, color: C.text, fontWeight: sortBy === option.id ? 600 : 400 }}>{option.label}</span>
+                <div style={{
+                  width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                  border: `2px solid ${sortBy === option.id ? C.green : C.border}`,
+                  background: sortBy === option.id ? C.green : 'transparent',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  {sortBy === option.id && <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#fff' }} />}
+                </div>
+              </button>
+            ))}
+          </div>
+        </CollapsibleSection>
+
+        {/* Category */}
+        <CollapsibleSection title="Category">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {CATEGORY_CHIPS.map(chip => (
+              <FilterChip
+                key={chip.id}
+                label={chip.label}
+                selected={filterCategory.has(chip.id)}
+                onToggle={() => toggleSet(setFilterCategory, chip.id)}
+              />
+            ))}
+          </div>
+        </CollapsibleSection>
+
         {/* Experience Level */}
         <CollapsibleSection title="Experience Level">
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -506,7 +547,7 @@ function FilterContent({
                 key={chip.id}
                 label={chip.label}
                 selected={filterExpLevel.has(chip.id)}
-                onToggle={() => toggle(setFilterExpLevel, chip.id)}
+                onToggle={() => toggleSet(setFilterExpLevel, chip.id)}
               />
             ))}
           </div>
@@ -564,10 +605,9 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   }, []);
 
   const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [filterCategory, setFilterCategory] = useState(new Set());
   const [sortBy, setSortBy] = useState('relevant');
   const [showFilters, setShowFilters] = useState(false);
-  const [showSortSheet, setShowSortSheet] = useState(false);
   const [filterExpLevel, setFilterExpLevel] = useState(new Set());
   const [filterDifficulty, setFilterDifficulty] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
@@ -621,8 +661,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   // ── Filtering ──────────────────────────────────────────────────────────────
 
   const filtered = useMemo(() => {
-    const dataCats = selectedCategory
-      ? [CATEGORY_CHIPS.find(c => c.id === selectedCategory)?.dataKey].filter(Boolean)
+    const dataCats = filterCategory.size > 0
+      ? [...new Set([...filterCategory].flatMap(id => CATEGORY_CHIPS.find(c => c.id === id)?.dataKeys ?? []))]
       : ['product', 'behavioral', 'ai', 'ai_technical'];
 
     let levelsToShow = PM_LEVELS;
@@ -659,7 +699,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     }
 
     return results;
-  }, [selectedCategory, filterExpLevel, filterDifficulty, search, sortBy, practiceStats]);
+  }, [filterCategory, filterExpLevel, filterDifficulty, search, sortBy, practiceStats]);
 
   // ── Applied filter tags ────────────────────────────────────────────────────
 
@@ -668,17 +708,20 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const addTags = (set, labelFn, prefix) => {
       for (const val of set) tags.push({ key: `${prefix}-${val}`, label: labelFn(val), prefix, val });
     };
+    addTags(filterCategory, v => CATEGORY_CHIPS.find(c => c.id === v)?.label || v, 'cat');
     addTags(filterExpLevel, v => EXP_LEVEL_CHIPS.find(c => c.id === v)?.label || v, 'exp');
     if (filterDifficulty) tags.push({ key: `dif-${filterDifficulty}`, label: filterDifficulty, prefix: 'dif', val: filterDifficulty });
     return tags;
-  }, [filterExpLevel, filterDifficulty]);
+  }, [filterCategory, filterExpLevel, filterDifficulty]);
 
   const removeFilterTag = (prefix, val) => {
     if (prefix === 'dif') { setFilterDifficulty(null); return; }
     if (prefix === 'exp') setFilterExpLevel(prev => { const next = new Set(prev); next.delete(val); return next; });
+    if (prefix === 'cat') setFilterCategory(prev => { const next = new Set(prev); next.delete(val); return next; });
   };
 
   const clearAllFilters = () => {
+    setFilterCategory(new Set());
     setFilterExpLevel(new Set());
     setFilterDifficulty(null);
   };
@@ -736,6 +779,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   // ── Filter props bundle ────────────────────────────────────────────────────
 
   const filterContentProps = {
+    sortBy, setSortBy,
+    filterCategory, setFilterCategory,
     filterExpLevel, setFilterExpLevel,
     filterDifficulty, setFilterDifficulty,
     resultCount: filtered.length,
@@ -767,39 +812,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         <FilterSidebar open onClose={() => setShowFilters(false)}>
           <FilterContent {...filterContentProps} />
         </FilterSidebar>
-      )}
-
-      {/* Sort bottom sheet — mobile only */}
-      {showSortSheet && isMobile && (
-        <BottomSheet open onClose={() => setShowSortSheet(false)}>
-          <div style={{ padding: '20px 20px 8px', borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
-            <span style={{ fontSize: 16, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Sort by</span>
-          </div>
-          <div style={{ flex: 1, overflowY: 'auto' }}>
-            {SORT_OPTIONS.map(option => (
-              <button
-                key={option.id}
-                onClick={() => { setSortBy(option.id); setShowSortSheet(false); }}
-                style={{
-                  width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '16px 20px', background: 'none', border: 'none',
-                  borderBottom: `1px solid ${C.borderLight}`, cursor: 'pointer',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                }}
-              >
-                <span style={{ fontSize: 15, color: C.text, fontWeight: sortBy === option.id ? 600 : 400 }}>{option.label}</span>
-                <div style={{
-                  width: 20, height: 20, borderRadius: '50%',
-                  border: `2px solid ${sortBy === option.id ? C.green : C.border}`,
-                  background: sortBy === option.id ? C.green : 'transparent',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  {sortBy === option.id && <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#fff' }} />}
-                </div>
-              </button>
-            ))}
-          </div>
-        </BottomSheet>
       )}
 
       <div style={{ maxWidth: 860, margin: '0 auto', padding: isMobile ? '20px 16px 60px' : '40px 28px 60px' }}>
@@ -859,50 +871,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           )}
         </div>
 
-        {/* 2. Sort + Filter row */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-          {/* Sort */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Sort</span>
-            {isMobile ? (
-              <button
-                onClick={() => setShowSortSheet(true)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 4,
-                  padding: '6px 12px', minHeight: 36,
-                  background: C.bg, border: `1px solid ${C.border}`,
-                  borderRadius: 8, cursor: 'pointer',
-                  fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  color: C.text, fontWeight: 500,
-                }}
-              >
-                {SORT_OPTIONS.find(o => o.id === sortBy)?.label}
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.textMuted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              </button>
-            ) : (
-              <select
-                value={sortBy}
-                onChange={e => setSortBy(e.target.value)}
-                style={{
-                  padding: '6px 32px 6px 12px', height: 36,
-                  background: C.bg, border: `1px solid ${C.border}`,
-                  borderRadius: 8, cursor: 'pointer',
-                  fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  color: C.text, fontWeight: 500,
-                  outline: 'none', appearance: 'none',
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'right 10px center',
-                }}
-              >
-                {SORT_OPTIONS.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
-              </select>
-            )}
-          </div>
-
-          {/* Filters button */}
+        {/* Filters button */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
           <button
             onClick={() => setShowFilters(true)}
             style={{
@@ -923,41 +893,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             </svg>
             Filters{appliedFilterTags.length > 0 ? ` (${appliedFilterTags.length})` : ''}
           </button>
-        </div>
-
-        {/* 3. Category chips */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-          <div className="cat-chips-scroll" style={{ flex: 1 }}>
-            {CATEGORY_CHIPS.map(chip => {
-              const isSelected = selectedCategory === chip.id;
-              return (
-                <button
-                  key={chip.id}
-                  onClick={() => { setSelectedCategory(isSelected ? null : chip.id); setExpandedKeys(new Set()); }}
-                  style={{
-                    padding: '7px 16px', minHeight: 36, whiteSpace: 'nowrap', flexShrink: 0,
-                    background: isSelected ? C.green : 'transparent',
-                    border: `1.5px solid ${isSelected ? C.green : C.border}`,
-                    borderRadius: 20, cursor: 'pointer',
-                    fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    color: isSelected ? '#fff' : C.textMuted,
-                    fontWeight: isSelected ? 600 : 400,
-                    transition: 'all 0.15s',
-                  }}
-                >
-                  {chip.label}
-                </button>
-              );
-            })}
-          </div>
-          {selectedCategory && (
-            <button
-              onClick={() => { setSelectedCategory(null); setExpandedKeys(new Set()); }}
-              style={{ fontSize: 12, color: C.green, background: 'none', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: "'Plus Jakarta Sans', sans-serif", flexShrink: 0 }}
-            >
-              Clear all
-            </button>
-          )}
         </div>
 
         {/* 4. Applied filter tags */}
@@ -1003,7 +938,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               Try adjusting your filters or search something else.
             </div>
             <button
-              onClick={() => { setSearch(''); setSelectedCategory(null); clearAllFilters(); }}
+              onClick={() => { setSearch(''); clearAllFilters(); }}
               style={{
                 padding: '12px 28px', background: C.green, border: 'none',
                 borderRadius: 12, color: '#fff', fontSize: 14, fontWeight: 600,
