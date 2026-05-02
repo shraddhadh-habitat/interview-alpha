@@ -41,6 +41,19 @@ const EXP_LEVEL_CHIPS = [
 
 const DIFFICULTY_CHIPS = ['Easy', 'Medium', 'Difficult'];
 
+const COMPANY_CHIPS = [
+  { id: 'Google',    label: 'Google' },
+  { id: 'Amazon',    label: 'Amazon' },
+  { id: 'Meta',      label: 'Meta' },
+  { id: 'Apple',     label: 'Apple' },
+  { id: 'Microsoft', label: 'Microsoft' },
+  { id: 'Flipkart',  label: 'Flipkart' },
+  { id: 'Swiggy',    label: 'Swiggy' },
+  { id: 'Razorpay',  label: 'Razorpay' },
+  { id: 'CRED',      label: 'CRED' },
+  { id: 'Zepto',     label: 'Zepto' },
+];
+
 // Difficulty derived from PM level — the only reliable classification signal in the data
 function getDifficulty(level) {
   if (['Associate PM', 'PM'].includes(level)) return 'Easy';
@@ -470,6 +483,7 @@ function FilterContent({
   sortBy, setSortBy,
   filterCategory, setFilterCategory,
   filterExpLevel, setFilterExpLevel,
+  filterCompany, setFilterCompany,
   filterDifficulty, setFilterDifficulty,
   resultCount,
   onApply,
@@ -481,7 +495,7 @@ function FilterContent({
     return next;
   });
 
-  const activeCount = filterCategory.size + filterExpLevel.size + (filterDifficulty ? 1 : 0);
+  const activeCount = filterCategory.size + filterExpLevel.size + filterCompany.size + (filterDifficulty ? 1 : 0);
 
   return (
     <>
@@ -559,6 +573,20 @@ function FilterContent({
           </div>
         </CollapsibleSection>
 
+        {/* Company */}
+        <CollapsibleSection title="Company">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {COMPANY_CHIPS.map(chip => (
+              <FilterChip
+                key={chip.id}
+                label={chip.label}
+                selected={filterCompany.has(chip.id)}
+                onToggle={() => toggleSet(setFilterCompany, chip.id)}
+              />
+            ))}
+          </div>
+        </CollapsibleSection>
+
         {/* Difficulty */}
         <CollapsibleSection title="Difficulty">
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -615,6 +643,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [sortBy, setSortBy] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [filterExpLevel, setFilterExpLevel] = useState(new Set());
+  const [filterCompany, setFilterCompany] = useState(new Set());
   const [filterDifficulty, setFilterDifficulty] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [practiceQuestion, setPracticeQuestion] = useState(null);
@@ -677,6 +706,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       for (const chipId of filterExpLevel) {
         EXP_LEVEL_CHIPS.find(c => c.id === chipId)?.levels.forEach(l => allowed.add(l));
       }
+      // Always include Company Prep level so company questions show alongside level-filtered results
+      allowed.add('Company Prep');
       levelsToShow = PM_LEVELS.filter(l => allowed.has(l));
     }
 
@@ -692,8 +723,13 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           const q = questions[i];
           if (search && !q.q.toLowerCase().includes(searchLower) && !q.a.toLowerCase().includes(searchLower)) continue;
 
-          // Difficulty filter (single-select, derived from PM level)
-          if (filterDifficulty && getDifficulty(level) !== filterDifficulty) continue;
+          // Difficulty filter — use per-question override if present, else derive from level
+          const effectiveDifficulty = q.difficulty || getDifficulty(level);
+          if (filterDifficulty && effectiveDifficulty !== filterDifficulty) continue;
+
+          // Company filter — if active, hide company questions not in the selected set;
+          // general questions (no company field) always pass through
+          if (filterCompany.size > 0 && q.company && !filterCompany.has(q.company)) continue;
 
           results.push({ key: `${level}-${cat}-${i}`, level, dataCategory: cat, question: q });
         }
@@ -705,7 +741,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     }
 
     return results;
-  }, [filterCategory, filterExpLevel, filterDifficulty, search, sortBy, practiceStats]);
+  }, [filterCategory, filterExpLevel, filterCompany, filterDifficulty, search, sortBy, practiceStats]);
 
   // ── Applied filter tags ────────────────────────────────────────────────────
 
@@ -716,19 +752,22 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     };
     addTags(filterCategory, v => CATEGORY_CHIPS.find(c => c.id === v)?.label || v, 'cat');
     addTags(filterExpLevel, v => EXP_LEVEL_CHIPS.find(c => c.id === v)?.label || v, 'exp');
+    addTags(filterCompany, v => COMPANY_CHIPS.find(c => c.id === v)?.label || v, 'cmp');
     if (filterDifficulty) tags.push({ key: `dif-${filterDifficulty}`, label: filterDifficulty, prefix: 'dif', val: filterDifficulty });
     return tags;
-  }, [filterCategory, filterExpLevel, filterDifficulty]);
+  }, [filterCategory, filterExpLevel, filterCompany, filterDifficulty]);
 
   const removeFilterTag = (prefix, val) => {
     if (prefix === 'dif') { setFilterDifficulty(null); return; }
     if (prefix === 'exp') setFilterExpLevel(prev => { const next = new Set(prev); next.delete(val); return next; });
     if (prefix === 'cat') setFilterCategory(prev => { const next = new Set(prev); next.delete(val); return next; });
+    if (prefix === 'cmp') setFilterCompany(prev => { const next = new Set(prev); next.delete(val); return next; });
   };
 
   const clearAllFilters = () => {
     setFilterCategory(new Set());
     setFilterExpLevel(new Set());
+    setFilterCompany(new Set());
     setFilterDifficulty(null);
   };
 
@@ -788,6 +827,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     sortBy, setSortBy,
     filterCategory, setFilterCategory,
     filterExpLevel, setFilterExpLevel,
+    filterCompany, setFilterCompany,
     filterDifficulty, setFilterDifficulty,
     resultCount: filtered.length,
     onApply: () => setShowFilters(false),

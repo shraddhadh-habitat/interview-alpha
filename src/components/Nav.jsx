@@ -49,7 +49,6 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
 const PUBLIC_TABS = [
   { id: 'interview',  label: 'Interview' },
   { id: 'practice',   label: 'Practice' },
-  { id: 'company',    label: 'Company Prep' },
   { id: 'scorecard',  label: 'Scorecard' },
   { id: 'salary',     label: 'Salary Guide' },
 ];
@@ -200,7 +199,6 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
   const authDrawerTabs = [
     { id: 'interview', label: 'Interview' },
     { id: 'practice', label: 'Practice Q&A' },
-    { id: 'company', label: 'Company Prep' },
     { id: 'scorecard', label: 'Scorecard' },
     { id: 'salary', label: 'Salary Guide' },
     ...(isAdmin ? [{ id: 'resources', label: 'Learning Resources' }] : []),
