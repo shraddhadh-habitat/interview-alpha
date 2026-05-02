@@ -1275,41 +1275,9 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textSoft; }}
               >
-                Quick Practice — No Resume Needed →
+                Quick Practice — No Resume Needed
               </button>
 
-              <div style={{
-                marginTop: 4, padding: '20px 24px',
-                background: '#fff', border: `1px solid ${C.border}`,
-                borderRadius: 16, textAlign: 'left', maxWidth: 480, width: '100%',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-              }}>
-                <div style={{ fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 10 }}>Try This</div>
-                <div style={{ fontSize: 15, fontWeight: 500, color: C.text, lineHeight: 1.5, marginBottom: 16 }}>
-                  How would you improve Instagram's Explore page?
-                </div>
-                <button
-                  onClick={() => {
-                    sessionStorage.setItem('ia:quickQuestion', JSON.stringify({
-                      question: { q: "How would you improve Instagram's Explore page?", a: "" },
-                      questionId: 'featured-instagram-explore',
-                      designation: 'Senior PM',
-                      category: 'product',
-                    }));
-                    window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
-                  }}
-                  style={{
-                    padding: '10px 22px', background: C.green, border: 'none',
-                    borderRadius: 10, color: '#fff', fontSize: 13, fontWeight: 600,
-                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    transition: 'background 0.2s',
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
-                >
-                  Answer This Question →
-                </button>
-              </div>
             </div>
           </div>
 
