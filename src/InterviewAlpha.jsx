@@ -1155,8 +1155,10 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                         🔥 {streak} Day Streak
                       </div>
                     ) : (
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 16px', background: C.bgMuted, border: `1px solid ${C.border}`, borderRadius: 20, fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        Start your streak today!
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', background: '#FFF8E1', borderRadius: 8, fontSize: 20, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                          🔥 Start your streak today!
+                        </div>
                       </div>
                     )
                   )}
