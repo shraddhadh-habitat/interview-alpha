@@ -9,10 +9,17 @@ import mammoth from "mammoth";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+const VALID_EXTS = ["pdf", "docx", "txt"];
+const VALID_MIMES = [
+  "application/pdf",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "text/plain",
+];
 
 async function extractFileText(file) {
-  if (file.size > MAX_FILE_SIZE) throw new Error("File is over 2MB. Please paste the text instead.");
+  if (file.size > MAX_FILE_SIZE) throw new Error("File is too large. Please upload a file under 5MB or paste text directly.");
 
   const ext = file.name.split(".").pop().toLowerCase();
 
@@ -20,7 +27,7 @@ async function extractFileText(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => resolve(e.target.result);
-      reader.onerror = () => reject(new Error("Could not read file. Please paste your text instead."));
+      reader.onerror = () => reject(new Error("Could not read this file. Please paste your text directly."));
       reader.readAsText(file);
     });
   }
@@ -35,7 +42,7 @@ async function extractFileText(file) {
       pages.push(content.items.map((item) => item.str).join(" "));
     }
     const text = pages.join("\n").trim();
-    if (!text) throw new Error("Could not read file. Please paste your text instead.");
+    if (!text) throw new Error("Could not read this file. Please paste your text directly.");
     return text;
   }
 
@@ -43,7 +50,7 @@ async function extractFileText(file) {
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
     const text = result.value.trim();
-    if (!text) throw new Error("Could not read file. Please paste your text instead.");
+    if (!text) throw new Error("Could not read this file. Please paste your text directly.");
     return text;
   }
 
@@ -821,7 +828,9 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     const setValue = field === "resume" ? setResume : setJd;
     setError("");
     const ext = file.name.split(".").pop().toLowerCase();
-    if (!["pdf", "docx", "txt"].includes(ext)) {
+    const mime = (file.type || "").toLowerCase();
+    const isValid = VALID_EXTS.includes(ext) || VALID_MIMES.includes(mime);
+    if (!isValid) {
       setError("Please upload your resume as PDF or DOCX, or paste the text directly.");
       return;
     }
@@ -830,7 +839,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       const text = await extractFileText(file);
       setValue(text);
     } catch (err) {
-      setError(err.message || "Could not read file. Please paste your text instead.");
+      setError(err.message || "Could not read this file. Please paste your text directly.");
     } finally {
       setUploading(false);
     }
@@ -1513,7 +1522,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               <input
                 ref={resumeFileRef}
                 type="file"
-                accept=".pdf,.docx,.txt"
+                accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
                 style={{ display: "none" }}
                 onChange={e => { if (e.target.files[0]) handleFileUpload(e.target.files[0], "resume"); e.target.value = ""; }}
               />
@@ -1523,17 +1532,17 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 disabled={resumeUploading}
                 style={{
                   background: "none", border: `1px solid ${C.border}`, borderRadius: 8,
-                  padding: "6px 14px", fontSize: 15, fontWeight: 700, color: C.textMuted,
-                  cursor: resumeUploading ? "wait" : "pointer",
+                  padding: "12px 16px", fontSize: 14, fontWeight: 700, color: C.textMuted,
+                  minHeight: 44, cursor: resumeUploading ? "wait" : "pointer",
                   fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "border-color 0.2s",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
               >
-                {resumeUploading ? "Reading..." : "📎 Upload Resume (PDF or DOCX)"}
+                {resumeUploading ? "Reading file..." : "📎 Upload Resume (PDF or DOCX)"}
               </button>
             </div>
-            {resumeFileError && <div style={{ marginTop: 6, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{resumeFileError}</div>}
+            {resumeFileError && <div style={{ marginTop: 6, fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{resumeFileError}</div>}
           </div>
 
           <div style={{ marginBottom: 40 }}>
@@ -1556,7 +1565,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               <input
                 ref={jdFileRef}
                 type="file"
-                accept=".pdf,.docx,.txt"
+                accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
                 style={{ display: "none" }}
                 onChange={e => { if (e.target.files[0]) handleFileUpload(e.target.files[0], "jd"); e.target.value = ""; }}
               />
@@ -1566,17 +1575,17 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 disabled={jdUploading}
                 style={{
                   background: "none", border: `1px solid ${C.border}`, borderRadius: 8,
-                  padding: "6px 14px", fontSize: 15, fontWeight: 700, color: C.textMuted,
-                  cursor: jdUploading ? "wait" : "pointer",
+                  padding: "12px 16px", fontSize: 14, fontWeight: 700, color: C.textMuted,
+                  minHeight: 44, cursor: jdUploading ? "wait" : "pointer",
                   fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "border-color 0.2s",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
               >
-                {jdUploading ? "Reading..." : "📎 Upload JD (PDF or DOCX)"}
+                {jdUploading ? "Reading file..." : "📎 Upload JD (PDF or DOCX)"}
               </button>
             </div>
-            {jdFileError && <div style={{ marginTop: 6, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{jdFileError}</div>}
+            {jdFileError && <div style={{ marginTop: 6, fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{jdFileError}</div>}
           </div>
 
           <div className="ia-setup-btns" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
