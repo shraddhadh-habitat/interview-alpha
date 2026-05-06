@@ -151,6 +151,19 @@ export default function AdminPanel({ user }) {
     }
   };
 
+  const formatIST = (dateStr) => {
+    if (!dateStr) return 'Never';
+    return new Date(dateStr).toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    });
+  };
+
   const statusChip = (status) => {
     const map = {
       pending:  { bg: C.yellowLight,  border: C.yellowBorder,  color: C.yellow, label: 'Pending' },
@@ -408,14 +421,14 @@ export default function AdminPanel({ user }) {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, minWidth: 700 }}>
                       <thead>
                         <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
-                          {['Email', 'Name', 'Status', 'Plan', 'Expires', 'Free Sessions', 'Monthly Sessions'].map(h => (
+                          {['Email', 'Name', 'Status', 'Plan', 'Expires', 'Last Accessed', 'Free Sessions', 'Monthly Sessions'].map(h => (
                             <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
                           ))}
                         </tr>
                       </thead>
                       <tbody>
                         {filtered.length === 0 ? (
-                          <tr><td colSpan={7} style={{ padding: '28px 14px', textAlign: 'center', color: C.textMuted, fontSize: 12 }}>No users match the filters.</td></tr>
+                          <tr><td colSpan={8} style={{ padding: '28px 14px', textAlign: 'center', color: C.textMuted, fontSize: 12 }}>No users match the filters.</td></tr>
                         ) : filtered.map((u, i) => (
                           <tr key={u.id} style={{ borderBottom: i < filtered.length - 1 ? `1px solid ${C.border}` : 'none' }}>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.email || '—'}</td>
@@ -423,6 +436,7 @@ export default function AdminPanel({ user }) {
                             <td style={{ padding: '12px 14px' }}>{subChip(u.subscription_status)}</td>
                             <td style={{ padding: '12px 14px', color: C.textSoft, textTransform: 'capitalize' }}>{u.subscription_plan || '—'}</td>
                             <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{fmt(u.subscription_expires_at)}</td>
+                            <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{formatIST(u.last_seen_at)}</td>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.free_sessions_used ?? 0}</td>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.monthly_sessions_used ?? 0}</td>
                           </tr>

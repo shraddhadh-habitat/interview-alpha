@@ -347,6 +347,22 @@ export default function App() {
     loadProfile(user.id);
   }, [user, loadProfile]);
 
+  // Update last_seen_at on every page load/session restore
+  useEffect(() => {
+    if (!user) return;
+    const updateLastSeen = async () => {
+      try {
+        await supabase
+          .from('profiles')
+          .update({ last_seen_at: new Date().toISOString() })
+          .eq('id', user.id);
+      } catch (err) {
+        console.error('Failed to update last_seen_at:', err);
+      }
+    };
+    updateLastSeen();
+  }, [user]);
+
   const onSessionUsed = useCallback(async () => {
     if (!user) return;
     const status = profile.subscription_status;
