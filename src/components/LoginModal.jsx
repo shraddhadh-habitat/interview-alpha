@@ -12,6 +12,7 @@ const C = {
 
 function AuthForm({ tab, mobile, onSuccess }) {
   const [name, setName]                   = useState('');
+  const [phone, setPhone]                 = useState('');
   const [email, setEmail]                 = useState('');
   const [password, setPassword]           = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -32,13 +33,15 @@ function AuthForm({ tab, mobile, onSuccess }) {
     try {
       if (tab === 'signup') {
         if (name.trim().length < 2) { setError('Please enter your full name (at least 2 characters).'); return; }
+        const phoneDigits = phone.replace(/\D/g, '');
+        if (phoneDigits.length < 10) { setError('Please enter a valid mobile number.'); return; }
         if (password.length < 8) { setError('Password must be at least 8 characters.'); return; }
         if (password !== confirmPassword) { setError('Passwords do not match.'); return; }
         const { data, error: err } = await supabase.auth.signUp({ email, password });
         if (err) throw err;
-        // Save name to profile; mark as just-signed-up to skip the name prompt
+        // Save name and phone to profile; mark as just-signed-up to skip the name prompt
         if (data?.user) {
-          await supabase.from('profiles').upsert({ id: data.user.id, email, display_name: name.trim() });
+          await supabase.from('profiles').upsert({ id: data.user.id, email, display_name: name.trim(), phone_number: phoneDigits });
         }
         localStorage.setItem('ia:just_signed_up', '1');
         onSuccess();
@@ -122,6 +125,21 @@ function AuthForm({ tab, mobile, onSuccess }) {
             onChange={e => setName(e.target.value)}
             placeholder="Enter your full name"
             minLength={2}
+            style={inputStyle}
+            onFocus={e => e.target.style.borderColor = C.green}
+            onBlur={e => e.target.style.borderColor = C.border}
+          />
+        </div>
+      )}
+
+      {tab === 'signup' && (
+        <div style={{ marginBottom: 14 }}>
+          <label style={labelStyle}>Mobile Number</label>
+          <input
+            type="tel" required value={phone}
+            onChange={e => setPhone(e.target.value)}
+            placeholder="+91 9876543210"
+            inputMode="tel"
             style={inputStyle}
             onFocus={e => e.target.style.borderColor = C.green}
             onBlur={e => e.target.style.borderColor = C.border}

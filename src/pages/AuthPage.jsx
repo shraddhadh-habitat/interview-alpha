@@ -40,6 +40,7 @@ const SUBTITLES = {
 export default function AuthPage() {
   const [mode, setMode]         = useState('login');
   const [name, setName]         = useState('');
+  const [phone, setPhone]       = useState('');
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading]   = useState(false);
@@ -55,6 +56,8 @@ export default function AuthPage() {
     try {
       if (mode === 'signup') {
         if (name.trim().length < 2) { throw new Error('Please enter your full name (at least 2 characters).'); }
+        const phoneDigits = phone.replace(/\D/g, '');
+        if (phoneDigits.length < 10) { throw new Error('Please enter a valid mobile number.'); }
 
         // Gate 1: IP rate limit (max 2 signups per IP per 24h)
         const ipRes = await fetch('/api/signup-check', {
@@ -77,9 +80,9 @@ export default function AuthPage() {
         const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({ email, password });
         if (signUpErr) throw signUpErr;
 
-        // Save name to profile
+        // Save name and phone to profile
         if (signUpData?.user) {
-          await supabase.from('profiles').upsert({ id: signUpData.user.id, email, display_name: name.trim() });
+          await supabase.from('profiles').upsert({ id: signUpData.user.id, email, display_name: name.trim(), phone_number: phoneDigits });
         }
 
         // Save fingerprint to profile (fire-and-forget — profile exists via DB trigger)
@@ -248,6 +251,15 @@ export default function AuthPage() {
                     <input
                       type="text" value={name} onChange={e => setName(e.target.value)}
                       required minLength={2} placeholder="Enter your full name" style={inputStyle}
+                    />
+                  </div>
+                )}
+                {mode === 'signup' && (
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={labelStyle}>Mobile Number</label>
+                    <input
+                      type="tel" value={phone} onChange={e => setPhone(e.target.value)}
+                      required placeholder="+91 9876543210" inputMode="tel" style={inputStyle}
                     />
                   </div>
                 )}
