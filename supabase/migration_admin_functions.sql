@@ -37,6 +37,8 @@ CREATE POLICY "Users can insert own reviews"
   WITH CHECK (auth.uid() = user_id);
 
 -- Get all users (for admin panel)
+DROP FUNCTION IF EXISTS public.get_all_users();
+
 CREATE OR REPLACE FUNCTION public.get_all_users()
 RETURNS TABLE (
   id uuid,
@@ -54,17 +56,7 @@ LANGUAGE sql
 SECURITY DEFINER
 SET search_path = public
 AS $$
-  SELECT
-    id,
-    email,
-    display_name,
-    phone_number,
-    subscription_status,
-    subscription_plan,
-    subscription_expires_at,
-    free_sessions_used,
-    monthly_sessions_used,
-    last_seen_at
+  SELECT id, email, display_name, phone_number, subscription_status, subscription_plan, subscription_expires_at, free_sessions_used, monthly_sessions_used, last_seen_at
   FROM public.profiles
   ORDER BY last_seen_at DESC NULLS LAST;
 $$;
