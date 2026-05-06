@@ -140,9 +140,11 @@ BEGIN
 END;
 $$;
 
--- Grant execute to authenticated users (admin only in practice via email check in app)
-GRANT EXECUTE ON FUNCTION public.get_all_users() TO authenticated;
+-- Grant execute to authenticated users (only get_admin_stats for admin panel counts)
 GRANT EXECUTE ON FUNCTION public.get_admin_stats() TO authenticated;
-GRANT EXECUTE ON FUNCTION public.get_all_reviews() TO authenticated;
-GRANT EXECUTE ON FUNCTION public.admin_update_review_status(uuid, text) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.admin_delete_review(uuid) TO authenticated;
+
+-- Revoke from all authenticated users (enforced client-side in AdminPanel)
+REVOKE EXECUTE ON FUNCTION public.get_all_users() FROM authenticated;
+REVOKE EXECUTE ON FUNCTION public.get_all_reviews() FROM authenticated;
+REVOKE EXECUTE ON FUNCTION public.admin_update_review_status(uuid, text) FROM authenticated;
+REVOKE EXECUTE ON FUNCTION public.admin_delete_review(uuid) FROM authenticated;
