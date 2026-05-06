@@ -47,7 +47,7 @@ async function extractFileText(file) {
     return text;
   }
 
-  throw new Error("Unsupported file type. Please upload a .pdf, .docx, or .txt file.");
+  throw new Error("Please upload your resume as PDF or DOCX, or paste the text directly.");
 }
 
 const SYSTEM_PROMPT = `You are Alpha, an elite Product Management interview assistant at InterviewAlpha. You've trained on thousands of real PM interviews at FAANG companies and you have zero tolerance for fluff. You're known for being direct, high-energy, and brutally honest — but always constructive. You push people to their best, not pat them on the back for mediocrity.
@@ -820,6 +820,11 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     const setError = field === "resume" ? setResumeFileError : setJdFileError;
     const setValue = field === "resume" ? setResume : setJd;
     setError("");
+    const ext = file.name.split(".").pop().toLowerCase();
+    if (!["pdf", "docx", "txt"].includes(ext)) {
+      setError("Please upload your resume as PDF or DOCX, or paste the text directly.");
+      return;
+    }
     setUploading(true);
     try {
       const text = await extractFileText(file);
@@ -1503,6 +1508,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               onFocus={e => e.target.style.borderColor = C.green}
               onBlur={e => e.target.style.borderColor = C.border}
             />
+            <div style={{ fontSize: 11, color: C.textMuted, marginTop: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Upload as PDF/DOCX or paste text directly</div>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 8 }}>
               <input
                 ref={resumeFileRef}
@@ -1524,7 +1530,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
               >
-                {resumeUploading ? "Reading..." : "📎 Upload File (.pdf, .docx, .txt)"}
+                {resumeUploading ? "Reading..." : "📎 Upload Resume (PDF or DOCX)"}
               </button>
             </div>
             {resumeFileError && <div style={{ marginTop: 6, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{resumeFileError}</div>}
@@ -1545,6 +1551,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               onFocus={e => e.target.style.borderColor = C.green}
               onBlur={e => e.target.style.borderColor = C.border}
             />
+            <div style={{ fontSize: 11, color: C.textMuted, marginTop: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Upload as PDF/DOCX or paste text directly</div>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 8 }}>
               <input
                 ref={jdFileRef}
@@ -1566,7 +1573,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
               >
-                {jdUploading ? "Reading..." : "📎 Upload File (.pdf, .docx, .txt)"}
+                {jdUploading ? "Reading..." : "📎 Upload JD (PDF or DOCX)"}
               </button>
             </div>
             {jdFileError && <div style={{ marginTop: 6, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{jdFileError}</div>}
