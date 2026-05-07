@@ -55,19 +55,19 @@ const COMPANY_CHIPS = [
 ];
 
 const DOMAIN_CHIPS = [
-  { id: 'fintech',      label: 'Fintech',        keywords: ['fintech', 'payment', 'banking', 'lending', 'fraud detection', 'upi', 'credit', 'transaction'] },
-  { id: 'healthcare',   label: 'Healthcare',     keywords: ['healthcare', 'health', 'medical', 'hipaa', 'patient', 'clinical', 'diagnosis', 'telemedicine'] },
-  { id: 'telecom',      label: 'Telecom',        keywords: ['telecom', 'network', 'subscriber', '5g', 'bandwidth', 'carrier'] },
-  { id: 'edtech',       label: 'Edtech',         keywords: ['edtech', 'education', 'learning', 'student', 'course', 'classroom', 'tutoring'] },
-  { id: 'ecommerce',    label: 'E-commerce',     keywords: ['e-commerce', 'ecommerce', 'shopping', 'cart', 'checkout', 'retail', 'order'] },
-  { id: 'oilgas',       label: 'Oil & Gas',      keywords: ['oil', 'gas', 'pipeline', 'drilling', 'energy', 'scada', 'refinery'] },
-  { id: 'logistics',    label: 'Logistics',      keywords: ['logistics', 'shipping', 'delivery', 'warehouse', 'supply chain', 'fleet'] },
-  { id: 'cybersecurity',label: 'Cybersecurity',  keywords: ['security', 'cyber', 'vulnerability', 'encryption', 'breach', 'soc', 'firewall'] },
-  { id: 'saas',         label: 'SaaS',           keywords: ['saas', 'subscription', 'enterprise', 'b2b', 'onboarding', 'churn'] },
-  { id: 'consumer',     label: 'Consumer',       keywords: ['consumer', 'b2c', 'social', 'engagement', 'retention', 'dau', 'mau'] },
-  { id: 'marketplace',  label: 'Marketplace',    keywords: ['marketplace', 'supply', 'demand', 'seller', 'buyer', 'matching'] },
-  { id: 'aiml',         label: 'AI/ML',          keywords: ['ai', 'ml', 'machine learning', 'model', 'llm', 'gpt', 'neural', 'training'] },
-  { id: 'general',      label: 'General',        keywords: [] },
+  { id: 'fintech',       label: 'Fintech' },
+  { id: 'healthcare',    label: 'Healthcare' },
+  { id: 'telecom',       label: 'Telecom' },
+  { id: 'edtech',        label: 'Edtech' },
+  { id: 'ecommerce',     label: 'E-commerce' },
+  { id: 'oilgas',        label: 'Oil & Gas' },
+  { id: 'logistics',     label: 'Logistics' },
+  { id: 'cybersecurity', label: 'Cybersecurity' },
+  { id: 'saas',          label: 'SaaS' },
+  { id: 'consumer',      label: 'Consumer' },
+  { id: 'marketplace',   label: 'Marketplace' },
+  { id: 'aiml',          label: 'AI/ML' },
+  { id: 'general',       label: 'General' },
 ];
 
 // Difficulty derived from PM level — the only reliable classification signal in the data
@@ -719,10 +719,14 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           if (filterCompany && q.company && q.company !== filterCompany) continue;
 
           // Domain filter
-          if (filterDomain && filterDomain !== 'general') {
-            const domain = DOMAIN_CHIPS.find(d => d.id === filterDomain);
-            const questionText = (q.q + ' ' + q.a).toLowerCase();
-            if (domain && !domain.keywords.some(kw => questionText.includes(kw))) continue;
+          if (filterDomain) {
+            if (filterDomain === 'general') {
+              // Show questions with no domain or explicitly general domain
+              if (q.domain && q.domain !== 'general') continue;
+            } else {
+              // Show only questions with matching domain
+              if (q.domain !== filterDomain) continue;
+            }
           }
 
           results.push({ key: `${level}-${cat}-${i}`, level, dataCategory: cat, question: q });
