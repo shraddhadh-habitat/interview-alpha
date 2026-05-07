@@ -452,46 +452,33 @@ function FilterSidebar({ open, onClose, children }) {
   );
 }
 
-function CollapsibleSection({ title, children, defaultOpen = true }) {
-  const [open, setOpen] = useState(defaultOpen);
+function FilterDropdown({ label, value, onChange, options }) {
   return (
-    <div style={{ borderBottom: `1px solid ${C.borderLight}`, paddingTop: 18, paddingBottom: open ? 16 : 4 }}>
-      <button
-        onClick={() => setOpen(o => !o)}
+    <div style={{ marginBottom: 16 }}>
+      <label style={{ display: 'block', fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, color: C.textMuted, marginBottom: 8 }}>
+        {label}
+      </label>
+      <select
+        value={value || ''}
+        onChange={e => onChange(e.target.value || null)}
         style={{
-          width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-          marginBottom: open ? 12 : 0,
+          width: '100%', minHeight: 44,
+          padding: '12px 14px', fontSize: 15, fontWeight: 500,
+          border: `1.5px solid ${C.border}`, borderRadius: 12,
+          background: C.bg, color: C.text,
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          cursor: 'pointer', transition: 'border-color 0.2s',
         }}
+        onFocus={e => e.target.style.borderColor = '#C67F00'}
+        onBlur={e => e.target.style.borderColor = C.border}
       >
-        <span style={{ fontSize: 14, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted }}>
-          {title}
-        </span>
-        <ChevronIcon open={open} />
-      </button>
-      {open && children}
+        {options.map(opt => (
+          <option key={opt.id} value={opt.id || ''}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
     </div>
-  );
-}
-
-function FilterChip({ label, selected, onToggle, recommended }) {
-  return (
-    <button
-      onClick={onToggle}
-      style={{
-        padding: '8px 16px', minHeight: 38,
-        background: selected ? C.green : 'transparent',
-        border: `1px solid ${selected ? C.green : C.border}`,
-        borderRadius: 20, cursor: 'pointer',
-        fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
-        color: selected ? '#fff' : C.textMuted,
-        fontWeight: 600,
-        transition: 'all 0.15s',
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {label}{recommended && !selected ? <span style={{ marginLeft: 4, fontSize: 10, color: C.green }}>★</span> : null}
-    </button>
   );
 }
 
@@ -506,13 +493,74 @@ function FilterContent({
   onApply,
   onClearAll,
 }) {
-  const toggleSet = (setter, val) => setter(prev => {
-    const next = new Set(prev);
-    next.has(val) ? next.delete(val) : next.add(val);
-    return next;
-  });
+  const sortOptions = [{ id: '', label: 'Most Relevant' }, ...SORT_OPTIONS];
 
-  const activeCount = filterCategory.size + filterExpLevel.size + filterCompany.size + filterDomain.size + (filterDifficulty ? 1 : 0);
+  const categoryOptions = [
+    { id: '', label: 'All' },
+    { id: 'product_design', label: 'Product Design' },
+    { id: 'strategy', label: 'Strategy' },
+    { id: 'execution', label: 'Execution' },
+    { id: 'technical', label: 'Technical' },
+    { id: 'data', label: 'Data' },
+    { id: 'behavioral', label: 'Behavioral' },
+    { id: 'ai', label: 'AI' },
+  ];
+
+  const expLevelOptions = [
+    { id: '', label: 'All' },
+    { id: 'apm', label: 'Associate PM' },
+    { id: 'aipm', label: 'AI PM' },
+    { id: 'cpo', label: 'CPO' },
+    { id: 'dir', label: 'Director' },
+    { id: 'gpm', label: 'Group PM' },
+    { id: 'intern', label: 'Intern' },
+    { id: 'lpm', label: 'Lead PM' },
+    { id: 'pm', label: 'Product Manager' },
+    { id: 'spm', label: 'Senior PM' },
+    { id: 'staff', label: 'Staff/Principal PM' },
+    { id: 'tpm', label: 'Technical PM' },
+    { id: 'vp', label: 'VP/Head of Product' },
+  ];
+
+  const companyOptions = [
+    { id: '', label: 'All' },
+    { id: 'Amazon', label: 'Amazon' },
+    { id: 'Apple', label: 'Apple' },
+    { id: 'CRED', label: 'CRED' },
+    { id: 'Flipkart', label: 'Flipkart' },
+    { id: 'Google', label: 'Google' },
+    { id: 'Meta', label: 'Meta' },
+    { id: 'Microsoft', label: 'Microsoft' },
+    { id: 'Razorpay', label: 'Razorpay' },
+    { id: 'Swiggy', label: 'Swiggy' },
+    { id: 'Zepto', label: 'Zepto' },
+  ];
+
+  const domainOptions = [
+    { id: '', label: 'All' },
+    { id: 'aiml', label: 'AI/ML' },
+    { id: 'consumer', label: 'Consumer' },
+    { id: 'cybersecurity', label: 'Cybersecurity' },
+    { id: 'ecommerce', label: 'E-commerce' },
+    { id: 'edtech', label: 'Edtech' },
+    { id: 'fintech', label: 'Fintech' },
+    { id: 'general', label: 'General' },
+    { id: 'healthcare', label: 'Healthcare' },
+    { id: 'logistics', label: 'Logistics' },
+    { id: 'marketplace', label: 'Marketplace' },
+    { id: 'oilgas', label: 'Oil & Gas' },
+    { id: 'saas', label: 'SaaS' },
+    { id: 'telecom', label: 'Telecom' },
+  ];
+
+  const difficultyOptions = [
+    { id: '', label: 'All' },
+    { id: 'Easy', label: 'Easy' },
+    { id: 'Medium', label: 'Medium' },
+    { id: 'Difficult', label: 'Difficult' },
+  ];
+
+  const activeCount = (sortBy ? 1 : 0) + (filterCategory ? 1 : 0) + (filterExpLevel ? 1 : 0) + (filterCompany ? 1 : 0) + (filterDomain ? 1 : 0) + (filterDifficulty ? 1 : 0);
 
   return (
     <>
@@ -531,106 +579,13 @@ function FilterContent({
       </div>
 
       {/* Scrollable sections */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '0 20px' }}>
-
-        {/* Sort By */}
-        <CollapsibleSection title="Sort By">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {SORT_OPTIONS.map(option => (
-              <button
-                key={option.id}
-                onClick={() => setSortBy(option.id)}
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '10px 14px', background: sortBy === option.id ? C.greenLight : 'transparent',
-                  border: `1px solid ${sortBy === option.id ? C.greenBorder : C.border}`,
-                  borderRadius: 10, cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  transition: 'all 0.15s',
-                }}
-              >
-                <span style={{ fontSize: 13, color: C.text, fontWeight: sortBy === option.id ? 600 : 400 }}>{option.label}</span>
-                <div style={{
-                  width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
-                  border: `2px solid ${sortBy === option.id ? C.green : C.border}`,
-                  background: sortBy === option.id ? C.green : 'transparent',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  {sortBy === option.id && <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#fff' }} />}
-                </div>
-              </button>
-            ))}
-          </div>
-        </CollapsibleSection>
-
-        {/* Category */}
-        <CollapsibleSection title="Category">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {CATEGORY_CHIPS.map(chip => (
-              <FilterChip
-                key={chip.id}
-                label={chip.label}
-                selected={filterCategory.has(chip.id)}
-                onToggle={() => toggleSet(setFilterCategory, chip.id)}
-              />
-            ))}
-          </div>
-        </CollapsibleSection>
-
-        {/* Experience Level */}
-        <CollapsibleSection title="Experience Level">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {EXP_LEVEL_CHIPS.map(chip => (
-              <FilterChip
-                key={chip.id}
-                label={chip.label}
-                selected={filterExpLevel.has(chip.id)}
-                onToggle={() => toggleSet(setFilterExpLevel, chip.id)}
-              />
-            ))}
-          </div>
-        </CollapsibleSection>
-
-        {/* Company */}
-        <CollapsibleSection title="Company">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {COMPANY_CHIPS.map(chip => (
-              <FilterChip
-                key={chip.id}
-                label={chip.label}
-                selected={filterCompany.has(chip.id)}
-                onToggle={() => toggleSet(setFilterCompany, chip.id)}
-              />
-            ))}
-          </div>
-        </CollapsibleSection>
-
-        {/* Domain */}
-        <CollapsibleSection title="Domain">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {DOMAIN_CHIPS.map(chip => (
-              <FilterChip
-                key={chip.id}
-                label={chip.label}
-                selected={filterDomain.has(chip.id)}
-                onToggle={() => toggleSet(setFilterDomain, chip.id)}
-              />
-            ))}
-          </div>
-        </CollapsibleSection>
-
-        {/* Difficulty */}
-        <CollapsibleSection title="Difficulty">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {DIFFICULTY_CHIPS.map(d => (
-              <FilterChip
-                key={d} label={d}
-                selected={filterDifficulty === d}
-                onToggle={() => setFilterDifficulty(prev => prev === d ? null : d)}
-              />
-            ))}
-          </div>
-        </CollapsibleSection>
-
+      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 20px' }}>
+        <FilterDropdown label="Sort By" value={sortBy} onChange={setSortBy} options={sortOptions} />
+        <FilterDropdown label="Category" value={filterCategory} onChange={setFilterCategory} options={categoryOptions} />
+        <FilterDropdown label="Experience Level" value={filterExpLevel} onChange={setFilterExpLevel} options={expLevelOptions} />
+        <FilterDropdown label="Company" value={filterCompany} onChange={setFilterCompany} options={companyOptions} />
+        <FilterDropdown label="Domain" value={filterDomain} onChange={setFilterDomain} options={domainOptions} />
+        <FilterDropdown label="Difficulty" value={filterDifficulty} onChange={setFilterDifficulty} options={difficultyOptions} />
         <div style={{ height: 20 }} />
       </div>
 
@@ -670,12 +625,12 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   }, []);
 
   const [search, setSearch] = useState('');
-  const [filterCategory, setFilterCategory] = useState(new Set());
+  const [filterCategory, setFilterCategory] = useState(null);
   const [sortBy, setSortBy] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [filterExpLevel, setFilterExpLevel] = useState(new Set());
-  const [filterCompany, setFilterCompany] = useState(new Set());
-  const [filterDomain, setFilterDomain] = useState(new Set());
+  const [filterExpLevel, setFilterExpLevel] = useState(null);
+  const [filterCompany, setFilterCompany] = useState(null);
+  const [filterDomain, setFilterDomain] = useState(null);
   const [filterDifficulty, setFilterDifficulty] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [practiceQuestion, setPracticeQuestion] = useState(null);
@@ -728,19 +683,20 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   // ── Filtering ──────────────────────────────────────────────────────────────
 
   const filtered = useMemo(() => {
-    const dataCats = filterCategory.size > 0
-      ? [...new Set([...filterCategory].flatMap(id => CATEGORY_CHIPS.find(c => c.id === id)?.dataKeys ?? []))]
-      : ['product', 'behavioral', 'ai', 'ai_technical'];
+    let dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
+    if (filterCategory) {
+      const chip = CATEGORY_CHIPS.find(c => c.id === filterCategory);
+      if (chip) dataCats = chip.dataKeys;
+    }
 
     let levelsToShow = PM_LEVELS;
-    if (filterExpLevel.size > 0) {
-      const allowed = new Set();
-      for (const chipId of filterExpLevel) {
-        EXP_LEVEL_CHIPS.find(c => c.id === chipId)?.levels.forEach(l => allowed.add(l));
+    if (filterExpLevel) {
+      const chip = EXP_LEVEL_CHIPS.find(c => c.id === filterExpLevel);
+      if (chip) {
+        const allowed = new Set(chip.levels);
+        allowed.add('Company Prep');
+        levelsToShow = PM_LEVELS.filter(l => allowed.has(l));
       }
-      // Always include Company Prep level so company questions show alongside level-filtered results
-      allowed.add('Company Prep');
-      levelsToShow = PM_LEVELS.filter(l => allowed.has(l));
     }
 
     const results = [];
@@ -755,30 +711,18 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           const q = questions[i];
           if (search && !q.q.toLowerCase().includes(searchLower) && !q.a.toLowerCase().includes(searchLower)) continue;
 
-          // Difficulty filter — use per-question override if present, else derive from level
+          // Difficulty filter
           const effectiveDifficulty = q.difficulty || getDifficulty(level);
           if (filterDifficulty && effectiveDifficulty !== filterDifficulty) continue;
 
-          // Company filter — if active, hide company questions not in the selected set;
-          // general questions (no company field) always pass through
-          if (filterCompany.size > 0 && q.company && !filterCompany.has(q.company)) continue;
+          // Company filter
+          if (filterCompany && q.company && q.company !== filterCompany) continue;
 
-          // Domain filter — if active, check if question matches domain keywords
-          if (filterDomain.size > 0) {
+          // Domain filter
+          if (filterDomain && filterDomain !== 'general') {
+            const domain = DOMAIN_CHIPS.find(d => d.id === filterDomain);
             const questionText = (q.q + ' ' + q.a).toLowerCase();
-            let matchesDomain = false;
-            for (const domainId of filterDomain) {
-              const domain = DOMAIN_CHIPS.find(d => d.id === domainId);
-              if (domain && domain.id === 'general') {
-                matchesDomain = true;
-                break;
-              }
-              if (domain && domain.keywords.some(kw => questionText.includes(kw))) {
-                matchesDomain = true;
-                break;
-              }
-            }
-            if (!matchesDomain) continue;
+            if (domain && !domain.keywords.some(kw => questionText.includes(kw))) continue;
           }
 
           results.push({ key: `${level}-${cat}-${i}`, level, dataCategory: cat, question: q });
@@ -797,30 +741,30 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   const appliedFilterTags = useMemo(() => {
     const tags = [];
-    const addTags = (set, labelFn, prefix) => {
-      for (const val of set) tags.push({ key: `${prefix}-${val}`, label: labelFn(val), prefix, val });
-    };
-    addTags(filterCategory, v => CATEGORY_CHIPS.find(c => c.id === v)?.label || v, 'cat');
-    addTags(filterExpLevel, v => EXP_LEVEL_CHIPS.find(c => c.id === v)?.label || v, 'exp');
-    addTags(filterCompany, v => COMPANY_CHIPS.find(c => c.id === v)?.label || v, 'cmp');
-    addTags(filterDomain, v => DOMAIN_CHIPS.find(d => d.id === v)?.label || v, 'dom');
+    if (sortBy) tags.push({ key: `sort-${sortBy}`, label: SORT_OPTIONS.find(s => s.id === sortBy)?.label || sortBy, prefix: 'sort', val: sortBy });
+    if (filterCategory) tags.push({ key: `cat-${filterCategory}`, label: CATEGORY_CHIPS.find(c => c.id === filterCategory)?.label || filterCategory, prefix: 'cat', val: filterCategory });
+    if (filterExpLevel) tags.push({ key: `exp-${filterExpLevel}`, label: EXP_LEVEL_CHIPS.find(e => e.id === filterExpLevel)?.label || filterExpLevel, prefix: 'exp', val: filterExpLevel });
+    if (filterCompany) tags.push({ key: `cmp-${filterCompany}`, label: filterCompany, prefix: 'cmp', val: filterCompany });
+    if (filterDomain) tags.push({ key: `dom-${filterDomain}`, label: DOMAIN_CHIPS.find(d => d.id === filterDomain)?.label || filterDomain, prefix: 'dom', val: filterDomain });
     if (filterDifficulty) tags.push({ key: `dif-${filterDifficulty}`, label: filterDifficulty, prefix: 'dif', val: filterDifficulty });
     return tags;
-  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty]);
+  }, [sortBy, filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty]);
 
   const removeFilterTag = (prefix, val) => {
-    if (prefix === 'dif') { setFilterDifficulty(null); return; }
-    if (prefix === 'exp') setFilterExpLevel(prev => { const next = new Set(prev); next.delete(val); return next; });
-    if (prefix === 'cat') setFilterCategory(prev => { const next = new Set(prev); next.delete(val); return next; });
-    if (prefix === 'cmp') setFilterCompany(prev => { const next = new Set(prev); next.delete(val); return next; });
-    if (prefix === 'dom') setFilterDomain(prev => { const next = new Set(prev); next.delete(val); return next; });
+    if (prefix === 'sort') setSortBy(null);
+    if (prefix === 'cat') setFilterCategory(null);
+    if (prefix === 'exp') setFilterExpLevel(null);
+    if (prefix === 'cmp') setFilterCompany(null);
+    if (prefix === 'dom') setFilterDomain(null);
+    if (prefix === 'dif') setFilterDifficulty(null);
   };
 
   const clearAllFilters = () => {
-    setFilterCategory(new Set());
-    setFilterExpLevel(new Set());
-    setFilterCompany(new Set());
-    setFilterDomain(new Set());
+    setSortBy('');
+    setFilterCategory(null);
+    setFilterExpLevel(null);
+    setFilterCompany(null);
+    setFilterDomain(null);
     setFilterDifficulty(null);
   };
 
