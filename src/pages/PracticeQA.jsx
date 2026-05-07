@@ -722,10 +722,10 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           if (filterDomain) {
             if (filterDomain === 'general') {
               // Show questions with no domain or explicitly general domain
-              if (q.domain && q.domain !== 'general') continue;
+              if (q.domain && q.domain.toLowerCase() !== 'general') continue;
             } else {
               // Show only questions with matching domain
-              if (q.domain !== filterDomain) continue;
+              if (!q.domain || q.domain.toLowerCase() !== filterDomain.toLowerCase()) continue;
             }
           }
 
