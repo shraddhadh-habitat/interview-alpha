@@ -54,6 +54,22 @@ const COMPANY_CHIPS = [
   { id: 'Zepto',     label: 'Zepto' },
 ];
 
+const DOMAIN_CHIPS = [
+  { id: 'fintech',      label: 'Fintech',        keywords: ['fintech', 'payment', 'banking', 'lending', 'fraud detection', 'upi', 'credit', 'transaction'] },
+  { id: 'healthcare',   label: 'Healthcare',     keywords: ['healthcare', 'health', 'medical', 'hipaa', 'patient', 'clinical', 'diagnosis', 'telemedicine'] },
+  { id: 'telecom',      label: 'Telecom',        keywords: ['telecom', 'network', 'subscriber', '5g', 'bandwidth', 'carrier'] },
+  { id: 'edtech',       label: 'Edtech',         keywords: ['edtech', 'education', 'learning', 'student', 'course', 'classroom', 'tutoring'] },
+  { id: 'ecommerce',    label: 'E-commerce',     keywords: ['e-commerce', 'ecommerce', 'shopping', 'cart', 'checkout', 'retail', 'order'] },
+  { id: 'oilgas',       label: 'Oil & Gas',      keywords: ['oil', 'gas', 'pipeline', 'drilling', 'energy', 'scada', 'refinery'] },
+  { id: 'logistics',    label: 'Logistics',      keywords: ['logistics', 'shipping', 'delivery', 'warehouse', 'supply chain', 'fleet'] },
+  { id: 'cybersecurity',label: 'Cybersecurity',  keywords: ['security', 'cyber', 'vulnerability', 'encryption', 'breach', 'soc', 'firewall'] },
+  { id: 'saas',         label: 'SaaS',           keywords: ['saas', 'subscription', 'enterprise', 'b2b', 'onboarding', 'churn'] },
+  { id: 'consumer',     label: 'Consumer',       keywords: ['consumer', 'b2c', 'social', 'engagement', 'retention', 'dau', 'mau'] },
+  { id: 'marketplace',  label: 'Marketplace',    keywords: ['marketplace', 'supply', 'demand', 'seller', 'buyer', 'matching'] },
+  { id: 'aiml',         label: 'AI/ML',          keywords: ['ai', 'ml', 'machine learning', 'model', 'llm', 'gpt', 'neural', 'training'] },
+  { id: 'general',      label: 'General',        keywords: [] },
+];
+
 // Difficulty derived from PM level — the only reliable classification signal in the data
 function getDifficulty(level) {
   if (['Associate PM', 'PM'].includes(level)) return 'Easy';
@@ -448,7 +464,7 @@ function CollapsibleSection({ title, children, defaultOpen = true }) {
           marginBottom: open ? 12 : 0,
         }}
       >
-        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted }}>
+        <span style={{ fontSize: 14, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted }}>
           {title}
         </span>
         <ChevronIcon open={open} />
@@ -463,13 +479,13 @@ function FilterChip({ label, selected, onToggle, recommended }) {
     <button
       onClick={onToggle}
       style={{
-        padding: '6px 12px', minHeight: 32,
+        padding: '8px 16px', minHeight: 38,
         background: selected ? C.green : 'transparent',
         border: `1px solid ${selected ? C.green : C.border}`,
         borderRadius: 20, cursor: 'pointer',
-        fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
         color: selected ? '#fff' : C.textMuted,
-        fontWeight: selected ? 600 : 400,
+        fontWeight: 600,
         transition: 'all 0.15s',
         whiteSpace: 'nowrap',
       }}
@@ -485,6 +501,7 @@ function FilterContent({
   filterExpLevel, setFilterExpLevel,
   filterCompany, setFilterCompany,
   filterDifficulty, setFilterDifficulty,
+  filterDomain, setFilterDomain,
   resultCount,
   onApply,
   onClearAll,
@@ -495,7 +512,7 @@ function FilterContent({
     return next;
   });
 
-  const activeCount = filterCategory.size + filterExpLevel.size + filterCompany.size + (filterDifficulty ? 1 : 0);
+  const activeCount = filterCategory.size + filterExpLevel.size + filterCompany.size + filterDomain.size + (filterDifficulty ? 1 : 0);
 
   return (
     <>
@@ -507,7 +524,7 @@ function FilterContent({
         <span style={{ fontSize: 16, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Filters</span>
         <button
           onClick={onClearAll}
-          style={{ fontSize: 13, color: C.green, background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}
+          style={{ fontSize: 14, color: C.green, background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}
         >
           Clear All
         </button>
@@ -587,6 +604,20 @@ function FilterContent({
           </div>
         </CollapsibleSection>
 
+        {/* Domain */}
+        <CollapsibleSection title="Domain">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {DOMAIN_CHIPS.map(chip => (
+              <FilterChip
+                key={chip.id}
+                label={chip.label}
+                selected={filterDomain.has(chip.id)}
+                onToggle={() => toggleSet(setFilterDomain, chip.id)}
+              />
+            ))}
+          </div>
+        </CollapsibleSection>
+
         {/* Difficulty */}
         <CollapsibleSection title="Difficulty">
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -616,7 +647,7 @@ function FilterContent({
           onClick={onApply}
           style={{
             padding: '11px 22px', background: C.green, border: 'none', borderRadius: 12,
-            color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer',
+            color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             boxShadow: '0 1px 4px rgba(22,163,74,0.3)',
           }}
@@ -644,6 +675,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [showFilters, setShowFilters] = useState(false);
   const [filterExpLevel, setFilterExpLevel] = useState(new Set());
   const [filterCompany, setFilterCompany] = useState(new Set());
+  const [filterDomain, setFilterDomain] = useState(new Set());
   const [filterDifficulty, setFilterDifficulty] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [practiceQuestion, setPracticeQuestion] = useState(null);
@@ -731,6 +763,24 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           // general questions (no company field) always pass through
           if (filterCompany.size > 0 && q.company && !filterCompany.has(q.company)) continue;
 
+          // Domain filter — if active, check if question matches domain keywords
+          if (filterDomain.size > 0) {
+            const questionText = (q.q + ' ' + q.a).toLowerCase();
+            let matchesDomain = false;
+            for (const domainId of filterDomain) {
+              const domain = DOMAIN_CHIPS.find(d => d.id === domainId);
+              if (domain && domain.id === 'general') {
+                matchesDomain = true;
+                break;
+              }
+              if (domain && domain.keywords.some(kw => questionText.includes(kw))) {
+                matchesDomain = true;
+                break;
+              }
+            }
+            if (!matchesDomain) continue;
+          }
+
           results.push({ key: `${level}-${cat}-${i}`, level, dataCategory: cat, question: q });
         }
       }
@@ -741,7 +791,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     }
 
     return results;
-  }, [filterCategory, filterExpLevel, filterCompany, filterDifficulty, search, sortBy, practiceStats]);
+  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, sortBy, practiceStats]);
 
   // ── Applied filter tags ────────────────────────────────────────────────────
 
@@ -753,21 +803,24 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     addTags(filterCategory, v => CATEGORY_CHIPS.find(c => c.id === v)?.label || v, 'cat');
     addTags(filterExpLevel, v => EXP_LEVEL_CHIPS.find(c => c.id === v)?.label || v, 'exp');
     addTags(filterCompany, v => COMPANY_CHIPS.find(c => c.id === v)?.label || v, 'cmp');
+    addTags(filterDomain, v => DOMAIN_CHIPS.find(d => d.id === v)?.label || v, 'dom');
     if (filterDifficulty) tags.push({ key: `dif-${filterDifficulty}`, label: filterDifficulty, prefix: 'dif', val: filterDifficulty });
     return tags;
-  }, [filterCategory, filterExpLevel, filterCompany, filterDifficulty]);
+  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty]);
 
   const removeFilterTag = (prefix, val) => {
     if (prefix === 'dif') { setFilterDifficulty(null); return; }
     if (prefix === 'exp') setFilterExpLevel(prev => { const next = new Set(prev); next.delete(val); return next; });
     if (prefix === 'cat') setFilterCategory(prev => { const next = new Set(prev); next.delete(val); return next; });
     if (prefix === 'cmp') setFilterCompany(prev => { const next = new Set(prev); next.delete(val); return next; });
+    if (prefix === 'dom') setFilterDomain(prev => { const next = new Set(prev); next.delete(val); return next; });
   };
 
   const clearAllFilters = () => {
     setFilterCategory(new Set());
     setFilterExpLevel(new Set());
     setFilterCompany(new Set());
+    setFilterDomain(new Set());
     setFilterDifficulty(null);
   };
 
@@ -828,6 +881,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     filterCategory, setFilterCategory,
     filterExpLevel, setFilterExpLevel,
     filterCompany, setFilterCompany,
+    filterDomain, setFilterDomain,
     filterDifficulty, setFilterDifficulty,
     resultCount: filtered.length,
     onApply: () => setShowFilters(false),
@@ -923,13 +977,13 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             onClick={() => setShowFilters(true)}
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
-              padding: '6px 14px', minHeight: 36,
+              padding: '12px 20px', minHeight: 44,
               background: appliedFilterTags.length > 0 ? C.greenLight : C.bg,
               border: `1px solid ${appliedFilterTags.length > 0 ? C.greenBorder : C.border}`,
               borderRadius: 8, cursor: 'pointer',
-              fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
               color: appliedFilterTags.length > 0 ? C.success : C.text,
-              fontWeight: 500,
+              fontWeight: 700,
             }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
