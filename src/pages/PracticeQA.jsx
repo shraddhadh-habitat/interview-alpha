@@ -538,19 +538,9 @@ function FilterContent({
 
   const domainOptions = [
     { id: '', label: 'All' },
-    { id: 'aiml', label: 'AI/ML' },
-    { id: 'consumer', label: 'Consumer' },
-    { id: 'cybersecurity', label: 'Cybersecurity' },
-    { id: 'ecommerce', label: 'E-commerce' },
-    { id: 'edtech', label: 'Edtech' },
-    { id: 'fintech', label: 'Fintech' },
-    { id: 'general', label: 'General' },
-    { id: 'healthcare', label: 'Healthcare' },
-    { id: 'logistics', label: 'Logistics' },
-    { id: 'marketplace', label: 'Marketplace' },
-    { id: 'oilgas', label: 'Oil & Gas' },
-    { id: 'saas', label: 'SaaS' },
-    { id: 'telecom', label: 'Telecom' },
+    { id: 'fintech', label: 'Fintech (21)' },
+    { id: 'healthcare', label: 'Healthcare (2)' },
+    { id: 'telecom', label: 'Telecom (26)' },
   ];
 
   const difficultyOptions = [
@@ -720,13 +710,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
           // Domain filter
           if (filterDomain) {
-            if (filterDomain === 'general') {
-              // Show questions with no domain or explicitly general domain
-              if (q.domain && q.domain.toLowerCase() !== 'general') continue;
-            } else {
-              // Show questions with matching domain + untagged questions
-              if (q.domain && q.domain.toLowerCase() !== filterDomain.toLowerCase()) continue;
-            }
+            if (!q.domain || q.domain.toLowerCase() !== filterDomain.toLowerCase()) continue;
           }
 
           results.push({ key: `${level}-${cat}-${i}`, level, dataCategory: cat, question: q });
