@@ -15,13 +15,11 @@ const C = {
 };
 
 const CATEGORY_CHIPS = [
-  { id: 'product_design', label: 'Product Design', dataKeys: ['product'] },
-  { id: 'strategy',       label: 'Strategy',       dataKeys: ['product'] },
-  { id: 'execution',      label: 'Execution',      dataKeys: ['product'] },
-  { id: 'technical',      label: 'Technical',      dataKeys: ['ai_technical'] },
-  { id: 'data',           label: 'Data',           dataKeys: ['ai'] },
-  { id: 'behavioral',     label: 'Behavioral',     dataKeys: ['behavioral'] },
-  { id: 'ai',             label: 'AI',             dataKeys: ['ai', 'ai_technical'] },
+  { id: 'product', label: 'Product', dataKeys: ['product'] },
+  { id: 'behavioral', label: 'Behavioral', dataKeys: ['behavioral'] },
+  { id: 'ai_pm', label: 'AI & PM', dataKeys: ['ai'] },
+  { id: 'ai_technical', label: 'AI Technical', dataKeys: ['ai_technical'] },
+  { id: 'all_ai', label: 'All AI', dataKeys: ['ai', 'ai_technical'] },
 ];
 
 const EXP_LEVEL_CHIPS = [
@@ -497,13 +495,11 @@ function FilterContent({
 
   const categoryOptions = [
     { id: '', label: 'All' },
-    { id: 'product_design', label: 'Product Design' },
-    { id: 'strategy', label: 'Strategy' },
-    { id: 'execution', label: 'Execution' },
-    { id: 'technical', label: 'Technical' },
-    { id: 'data', label: 'Data' },
+    { id: 'product', label: 'Product' },
     { id: 'behavioral', label: 'Behavioral' },
-    { id: 'ai', label: 'AI' },
+    { id: 'ai_pm', label: 'AI & PM' },
+    { id: 'ai_technical', label: 'AI Technical' },
+    { id: 'all_ai', label: 'All AI' },
   ];
 
   const expLevelOptions = [
