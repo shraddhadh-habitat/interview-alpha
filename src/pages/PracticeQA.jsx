@@ -724,8 +724,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               // Show questions with no domain or explicitly general domain
               if (q.domain && q.domain.toLowerCase() !== 'general') continue;
             } else {
-              // Show only questions with matching domain
-              if (!q.domain || q.domain.toLowerCase() !== filterDomain.toLowerCase()) continue;
+              // Show questions with matching domain + untagged questions
+              if (q.domain && q.domain.toLowerCase() !== filterDomain.toLowerCase()) continue;
             }
           }
 
