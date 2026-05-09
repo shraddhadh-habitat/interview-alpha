@@ -15,11 +15,11 @@ const C = {
 };
 
 const CATEGORY_CHIPS = [
-  { id: 'product', label: 'Product', dataKeys: ['product'] },
-  { id: 'behavioral', label: 'Behavioral', dataKeys: ['behavioral'] },
-  { id: 'ai_pm', label: 'AI & PM', dataKeys: ['ai'] },
-  { id: 'ai_technical', label: 'AI Technical', dataKeys: ['ai_technical'] },
-  { id: 'all_ai', label: 'All AI', dataKeys: ['ai', 'ai_technical'] },
+  { id: 'behavioral',       label: 'Behavioral',           dataKeys: ['behavioral'], subcategory: null },
+  { id: 'product_design',   label: 'Product Design',       dataKeys: ['product'],    subcategory: 'product_design' },
+  { id: 'product_strategy', label: 'Product Strategy',     dataKeys: ['product'],    subcategory: 'product_strategy' },
+  { id: 'analytical',       label: 'Analytical/Metrics',   dataKeys: ['ai'],         subcategory: null },
+  { id: 'technical',        label: 'Technical/Estimation', dataKeys: ['ai_technical'], subcategory: null },
 ];
 
 const EXP_LEVEL_CHIPS = [
@@ -495,11 +495,11 @@ function FilterContent({
 
   const categoryOptions = [
     { id: '', label: 'All' },
-    { id: 'product', label: 'Product' },
     { id: 'behavioral', label: 'Behavioral' },
-    { id: 'ai_pm', label: 'AI & PM' },
-    { id: 'ai_technical', label: 'AI Technical' },
-    { id: 'all_ai', label: 'All AI' },
+    { id: 'product_design', label: 'Product Design' },
+    { id: 'product_strategy', label: 'Product Strategy' },
+    { id: 'analytical', label: 'Analytical/Metrics' },
+    { id: 'technical', label: 'Technical/Estimation' },
   ];
 
   const expLevelOptions = [
@@ -668,9 +668,13 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   const filtered = useMemo(() => {
     let dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
+    let subcategoryFilter = null;
     if (filterCategory) {
       const chip = CATEGORY_CHIPS.find(c => c.id === filterCategory);
-      if (chip) dataCats = chip.dataKeys;
+      if (chip) {
+        dataCats = chip.dataKeys;
+        subcategoryFilter = chip.subcategory;
+      }
     }
 
     let levelsToShow = PM_LEVELS;
@@ -705,6 +709,12 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           // Domain filter
           if (filterDomain) {
             if (!q.domain || q.domain.toLowerCase() !== filterDomain.toLowerCase()) continue;
+          }
+
+          // Subcategory filter (for Product Design vs Product Strategy)
+          if (subcategoryFilter) {
+            if (q.subcategory && q.subcategory !== subcategoryFilter) continue;
+            // questions with no subcategory pass through (show in both)
           }
 
           results.push({ key: `${level}-${cat}-${i}`, level, dataCategory: cat, question: q });
