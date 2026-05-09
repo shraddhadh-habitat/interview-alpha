@@ -532,9 +532,9 @@ function FilterContent({
 
   const domainOptions = [
     { id: '', label: 'All' },
-    { id: 'fintech', label: 'Fintech (21)' },
-    { id: 'healthcare', label: 'Healthcare (2)' },
-    { id: 'telecom', label: 'Telecom (26)' },
+    { id: 'fintech', label: 'Fintech' },
+    { id: 'healthcare', label: 'Healthcare' },
+    { id: 'telecom', label: 'Telecom' },
   ];
 
   const difficultyOptions = [
@@ -591,7 +591,7 @@ function FilterContent({
             boxShadow: '0 1px 4px rgba(22,163,74,0.3)',
           }}
         >
-          Apply ({resultCount} results)
+          Apply
         </button>
       </div>
     </>
@@ -881,7 +881,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             Practice Q&amp;A
           </h2>
           <p style={{ fontSize: 15, color: C.textMuted, margin: '6px 0 0' }}>
-            1,100+ expert questions across 10 PM levels
+            Expert questions across all PM levels
           </p>
         </div>
 
@@ -927,7 +927,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               <line x1="8" y1="12" x2="16" y2="12"/>
               <line x1="11" y1="18" x2="13" y2="18"/>
             </svg>
-            Filters{appliedFilterTags.length > 0 ? ` (${appliedFilterTags.length})` : ''}
+            Filters
           </button>
         </div>
 
@@ -954,14 +954,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           </div>
         )}
 
-        {/* 5. Question count */}
-        <div style={{ marginBottom: 16 }}>
-          <span style={{ fontSize: 22, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            {filtered.length.toLocaleString()} Question{filtered.length !== 1 ? 's' : ''}
-          </span>
-        </div>
-
-        {/* 6. Question list or empty state */}
+        {/* 5. Question list or empty state */}
         {filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '72px 24px', color: C.textMuted }}>
             <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke={C.border} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 16 }}>
