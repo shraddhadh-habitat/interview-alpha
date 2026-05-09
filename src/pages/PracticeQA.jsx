@@ -508,18 +508,16 @@ function FilterContent({
 
   const expLevelOptions = [
     { id: '', label: 'All' },
-    { id: 'apm', label: 'Associate PM' },
-    { id: 'aipm', label: 'AI PM' },
-    { id: 'cpo', label: 'CPO' },
-    { id: 'dir', label: 'Director' },
-    { id: 'gpm', label: 'Group PM' },
     { id: 'intern', label: 'Intern' },
-    { id: 'lpm', label: 'Lead PM' },
+    { id: 'apm', label: 'Associate PM' },
     { id: 'pm', label: 'Product Manager' },
     { id: 'spm', label: 'Senior PM' },
+    { id: 'lpm', label: 'Lead PM' },
     { id: 'staff', label: 'Staff/Principal PM' },
-    { id: 'tpm', label: 'Technical PM' },
+    { id: 'gpm', label: 'Group PM' },
+    { id: 'dir', label: 'Director' },
     { id: 'vp', label: 'VP/Head of Product' },
+    { id: 'cpo', label: 'CPO' },
   ];
 
   const companyOptions = [
