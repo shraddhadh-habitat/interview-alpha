@@ -704,7 +704,9 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           if (filterDifficulty && effectiveDifficulty !== filterDifficulty) continue;
 
           // Company filter
-          if (filterCompany && q.company && q.company !== filterCompany) continue;
+          if (filterCompany) {
+            if (!q.company || q.company.toLowerCase() !== filterCompany.toLowerCase()) continue;
+          }
 
           // Domain filter
           if (filterDomain) {
