@@ -75,13 +75,6 @@ function getDifficulty(level) {
   return 'Difficult'; // Group PM, Director+
 }
 
-const SORT_OPTIONS = [
-  { id: 'relevant',   label: 'Most Relevant' },
-  { id: 'practiced',  label: 'Most Practiced' },
-  { id: 'recent',     label: 'Recently Added' },
-  { id: 'difficulty', label: 'Highest Difficulty' },
-];
-
 const globalStyles = `
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 2000px; } }
@@ -481,7 +474,6 @@ function FilterDropdown({ label, value, onChange, options }) {
 }
 
 function FilterContent({
-  sortBy, setSortBy,
   filterCategory, setFilterCategory,
   filterExpLevel, setFilterExpLevel,
   filterCompany, setFilterCompany,
@@ -491,7 +483,6 @@ function FilterContent({
   onApply,
   onClearAll,
 }) {
-  const sortOptions = [{ id: '', label: 'Most Relevant' }, ...SORT_OPTIONS];
 
   const categoryOptions = [
     { id: '', label: 'All' },
@@ -544,7 +535,7 @@ function FilterContent({
     { id: 'Difficult', label: 'Difficult' },
   ];
 
-  const activeCount = (sortBy ? 1 : 0) + (filterCategory ? 1 : 0) + (filterExpLevel ? 1 : 0) + (filterCompany ? 1 : 0) + (filterDomain ? 1 : 0) + (filterDifficulty ? 1 : 0);
+  const activeCount = (filterCategory ? 1 : 0) + (filterExpLevel ? 1 : 0) + (filterCompany ? 1 : 0) + (filterDomain ? 1 : 0) + (filterDifficulty ? 1 : 0);
 
   return (
     <>
@@ -564,7 +555,6 @@ function FilterContent({
 
       {/* Scrollable sections */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px 20px' }}>
-        <FilterDropdown label="Sort By" value={sortBy} onChange={setSortBy} options={sortOptions} />
         <FilterDropdown label="Category" value={filterCategory} onChange={setFilterCategory} options={categoryOptions} />
         <FilterDropdown label="Experience Level" value={filterExpLevel} onChange={setFilterExpLevel} options={expLevelOptions} />
         <FilterDropdown label="Company" value={filterCompany} onChange={setFilterCompany} options={companyOptions} />
@@ -610,7 +600,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   const [search, setSearch] = useState('');
   const [filterCategory, setFilterCategory] = useState(null);
-  const [sortBy, setSortBy] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [filterExpLevel, setFilterExpLevel] = useState(null);
   const [filterCompany, setFilterCompany] = useState(null);
@@ -724,25 +713,20 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       }
     }
 
-    if (sortBy === 'practiced') {
-      results.sort((a, b) => (practiceStats[b.key]?.attempts ?? 0) - (practiceStats[a.key]?.attempts ?? 0));
-    }
-
     return results;
-  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, sortBy, practiceStats]);
+  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, practiceStats]);
 
   // ── Applied filter tags ────────────────────────────────────────────────────
 
   const appliedFilterTags = useMemo(() => {
     const tags = [];
-    if (sortBy) tags.push({ key: `sort-${sortBy}`, label: SORT_OPTIONS.find(s => s.id === sortBy)?.label || sortBy, prefix: 'sort', val: sortBy });
     if (filterCategory) tags.push({ key: `cat-${filterCategory}`, label: CATEGORY_CHIPS.find(c => c.id === filterCategory)?.label || filterCategory, prefix: 'cat', val: filterCategory });
     if (filterExpLevel) tags.push({ key: `exp-${filterExpLevel}`, label: EXP_LEVEL_CHIPS.find(e => e.id === filterExpLevel)?.label || filterExpLevel, prefix: 'exp', val: filterExpLevel });
     if (filterCompany) tags.push({ key: `cmp-${filterCompany}`, label: filterCompany, prefix: 'cmp', val: filterCompany });
     if (filterDomain) tags.push({ key: `dom-${filterDomain}`, label: DOMAIN_CHIPS.find(d => d.id === filterDomain)?.label || filterDomain, prefix: 'dom', val: filterDomain });
     if (filterDifficulty) tags.push({ key: `dif-${filterDifficulty}`, label: filterDifficulty, prefix: 'dif', val: filterDifficulty });
     return tags;
-  }, [sortBy, filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty]);
+  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty]);
 
   const removeFilterTag = (prefix, val) => {
     if (prefix === 'sort') setSortBy(null);
@@ -754,7 +738,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   };
 
   const clearAllFilters = () => {
-    setSortBy('');
     setFilterCategory(null);
     setFilterExpLevel(null);
     setFilterCompany(null);
@@ -815,7 +798,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   // ── Filter props bundle ────────────────────────────────────────────────────
 
   const filterContentProps = {
-    sortBy, setSortBy,
     filterCategory, setFilterCategory,
     filterExpLevel, setFilterExpLevel,
     filterCompany, setFilterCompany,
