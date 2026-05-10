@@ -1,9 +1,10 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 export default function useTextToSpeech() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [currentUtterance, setCurrentUtterance] = useState(null);
   const [voices, setVoices] = useState([]);
+  const resumeTimerRef = useRef(null);
 
   // Load voices when component mounts
   useEffect(() => {
@@ -24,6 +25,12 @@ export default function useTextToSpeech() {
 
     return () => {
       window.speechSynthesis.onvoiceschanged = null;
+      // Cleanup: stop any ongoing speech and clear timers
+      if (resumeTimerRef.current) {
+        clearInterval(resumeTimerRef.current);
+        resumeTimerRef.current = null;
+      }
+      window.speechSynthesis.cancel();
     };
   }, []);
 
@@ -46,14 +53,14 @@ export default function useTextToSpeech() {
 
     if (!cleanedText) return;
 
-    // Split into chunks of ~200 words to prevent browser cutoff
+    // Split into chunks of ~150 words to prevent browser cutoff
     const sentences = cleanedText.match(/[^.!?]+[.!?]+/g) || [cleanedText];
     let chunks = [];
     let currentChunk = '';
 
     sentences.forEach((sentence) => {
       const words = currentChunk.split(' ').length + sentence.split(' ').length;
-      if (words > 200) {
+      if (words > 150) {
         if (currentChunk) chunks.push(currentChunk);
         currentChunk = sentence;
       } else {
@@ -66,6 +73,10 @@ export default function useTextToSpeech() {
 
     const speakChunk = () => {
       if (chunkIndex >= chunks.length) {
+        if (resumeTimerRef.current) {
+          clearInterval(resumeTimerRef.current);
+          resumeTimerRef.current = null;
+        }
         setIsSpeaking(false);
         setCurrentUtterance(null);
         return;
@@ -93,13 +104,32 @@ export default function useTextToSpeech() {
         .find(Boolean);
       if (selectedVoice) utterance.voice = selectedVoice;
 
-      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onstart = () => {
+        setIsSpeaking(true);
+        // Chrome bug fix: resume every 10 seconds to prevent auto-pause
+        resumeTimerRef.current = setInterval(() => {
+          if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+            window.speechSynthesis.pause();
+            window.speechSynthesis.resume();
+          }
+        }, 10000);
+      };
+
       utterance.onend = () => {
+        if (resumeTimerRef.current) {
+          clearInterval(resumeTimerRef.current);
+          resumeTimerRef.current = null;
+        }
         chunkIndex++;
         setTimeout(speakChunk, 300); // 300ms pause between chunks
       };
+
       utterance.onerror = (error) => {
         console.error('[TTS] Error:', error);
+        if (resumeTimerRef.current) {
+          clearInterval(resumeTimerRef.current);
+          resumeTimerRef.current = null;
+        }
         setIsSpeaking(false);
         setCurrentUtterance(null);
       };
@@ -124,10 +154,14 @@ export default function useTextToSpeech() {
     } else {
       speakChunk();
     }
-  }, []);
+  }, [voices]);
 
   const stop = useCallback(() => {
     if (!window.speechSynthesis) return;
+    if (resumeTimerRef.current) {
+      clearInterval(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
     setCurrentUtterance(null);

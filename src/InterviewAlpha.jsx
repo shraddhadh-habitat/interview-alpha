@@ -2023,18 +2023,32 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               }}
               title="Test speech synthesis"
               style={{
-                padding: '6px 12px',
-                background: C.yellow,
-                border: `1px solid ${C.yellow}`,
-                borderRadius: 6,
+                padding: '12px 24px',
+                background: C.success,
+                border: `1px solid ${C.success}`,
+                borderRadius: 12,
                 cursor: 'pointer',
-                fontSize: 12,
+                fontSize: 16,
+                fontWeight: 700,
                 color: '#fff',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: 'all 0.2s',
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = C.greenHover;
+                e.currentTarget.style.opacity = '0.9';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = C.success;
+                e.currentTarget.style.opacity = '1';
               }}
             >
-              🧪 Test TTS
+              🧪 Test Voice
             </button>
           </div>
         )}
