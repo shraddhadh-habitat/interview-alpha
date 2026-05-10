@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "./lib/supabase";
 import { useAuth } from "./contexts/AuthContext";
 import ReviewsDisplay from "./components/ReviewsDisplay";
-import Footer from "./components/Footer";
 import { pmQuestions as PM_QUESTIONS } from "./data/pmQuestions";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
@@ -1838,10 +1837,6 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               </div>
             </div>
           </div>
-
-
-          {/* Footer */}
-          <Footer />
         </div>
       );
     } else {
