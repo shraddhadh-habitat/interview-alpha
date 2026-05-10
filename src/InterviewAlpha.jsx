@@ -1516,6 +1516,68 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             </button>
           </div>
 
+          {/* Trust Strip */}
+          <div style={{
+            width: '100%',
+            padding: '48px 28px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            background: C.bg,
+          }}>
+            <div style={{
+              background: '#FFFFFF',
+              border: '0.5px solid #E8E6E1',
+              borderRadius: 16,
+              padding: '24px 28px',
+              maxWidth: 560,
+              width: '100%',
+            }}>
+              {/* Testimonial */}
+              <blockquote style={{
+                fontSize: 14,
+                fontStyle: 'italic',
+                color: '#1B1B18',
+                marginBottom: 0,
+                lineHeight: 1.7,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
+              </blockquote>
+
+              <p style={{
+                fontSize: 13,
+                color: '#5C5C57',
+                marginTop: 12,
+                marginBottom: 16,
+                fontWeight: 500,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                — Shrey C., Product Manager
+              </p>
+
+              {/* Divider */}
+              <div style={{
+                height: 1,
+                background: '#E8E6E1',
+                margin: '16px 0',
+              }} />
+
+              {/* Proof Points */}
+              <p style={{
+                fontSize: 13,
+                color: '#9C9C97',
+                marginTop: 16,
+                marginBottom: 0,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                letterSpacing: '0.5px',
+                textAlign: 'center',
+              }}>
+                150+ PMs signed up · 1,100+ questions · Google · Amazon · Meta · Flipkart prep
+              </p>
+            </div>
+          </div>
+
           {/* Guided Paths Section */}
           <div style={{
             width: '100%',
@@ -1777,35 +1839,6 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             </div>
           </div>
 
-          {/* Below Fold */}
-          <div style={{
-            padding: "64px 28px",
-            background: C.bgMuted,
-            textAlign: "center",
-          }}>
-            <div style={{ maxWidth: 680, margin: '0 auto', marginBottom: 40 }}>
-              <blockquote style={{
-                fontSize: 16,
-                fontStyle: 'italic',
-                color: C.text,
-                marginBottom: 20,
-                lineHeight: 1.7,
-                borderLeft: `3px solid ${C.green}`,
-                paddingLeft: 20,
-                textAlign: 'left',
-                maxWidth: 540,
-                margin: '0 auto 20px',
-              }}>
-                "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
-              </blockquote>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 16 }}>
-                — Shrey C.
-              </p>
-            </div>
-            <p style={{ fontSize: 13, color: '#9C9C97', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              PMs use InterviewAlpha to prep for Google · Amazon · Meta · Apple · Flipkart · Razorpay
-            </p>
-          </div>
 
           {/* Footer */}
           <Footer />
