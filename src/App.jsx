@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from './lib/supabase';
 import InterviewAlpha from './InterviewAlpha';
-import HomePage from './components/HomePage';
 import PastSessions from './pages/PastSessions';
 import PracticeQA from './pages/PracticeQA';
 import MyProgress from './pages/MyProgress';
@@ -359,7 +358,6 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [page, setPage] = useState('interview');
-  const [inSession, setInSession] = useState(false);
   const [showDemo, setShowDemo] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
@@ -393,13 +391,6 @@ export default function App() {
 
     return () => subscription.unsubscribe();
   }, []);
-
-  // Reset session state when user logs out
-  useEffect(() => {
-    if (!user) {
-      setInSession(false);
-    }
-  }, [user]);
 
   useEffect(() => {
     const handler = (e) => setPage(e.detail);
@@ -564,26 +555,6 @@ export default function App() {
     return false;
   }, [profile]);
 
-  const handleStartInterview = useCallback(() => {
-    if (!user) {
-      // Logged-out user - just start the session (they'll see login/signup flow in InterviewAlpha)
-      setInSession(true);
-      return;
-    }
-    // Logged-in user - check session limits first
-    if (checkSession()) {
-      setInSession(true);
-    }
-  }, [user, checkSession]);
-
-  const handleBrowseQuestions = useCallback(() => {
-    setPage('practice');
-  }, []);
-
-  const handleContinuePractice = useCallback(() => {
-    setPage('practice');
-  }, []);
-
   if (authLoading) return <LoadingScreen />;
   if (showResetPassword) return <ResetPasswordPage onDone={() => { setShowResetPassword(false); supabase.auth.signOut(); }} />;
 
@@ -620,22 +591,13 @@ export default function App() {
           isAdmin={isAdmin}
         />
         <div style={{ flex: 1 }}>
-          {page === 'interview' && !inSession && (
-            <HomePage
-              user={user}
-              onStartInterview={handleStartInterview}
-              onBrowse={handleBrowseQuestions}
-              onContinuePractice={handleContinuePractice}
-            />
-          )}
-          {page === 'interview' && inSession && (
+          {page === 'interview'   && (
             <InterviewAlpha
               user={user}
               profile={profile}
               checkSession={checkSession}
               onSessionUsed={onSessionUsed}
               onStartTour={user ? () => setShowDemo(true) : null}
-              onEndSession={() => setInSession(false)}
             />
           )}
           {page === 'practice'    && (
