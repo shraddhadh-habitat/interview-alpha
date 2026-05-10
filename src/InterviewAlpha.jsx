@@ -1330,13 +1330,27 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             </button>
           </div>
 
-          {/* 3-Step Preview */}
+          {/* How It Works Section */}
           <div style={{
             width: '100%',
             padding: '48px 28px',
             display: 'flex',
-            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}>
+            {/* Section Title */}
+            <div style={{
+              fontSize: 13,
+              letterSpacing: 2,
+              textTransform: 'uppercase',
+              color: C.textMuted,
+              marginBottom: 40,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 600,
+            }}>
+              See how it works
+            </div>
+
             <style>{`
               .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 900px; width: 100%; }
               @media (max-width: 768px) { .preview-grid { grid-template-columns: 1fr; } }
@@ -1370,23 +1384,18 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   fontSize: 15,
                   fontWeight: 600,
                   color: C.text,
-                  marginBottom: 16,
+                  marginBottom: 12,
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                 }}>
-                  You see a question
+                  Pick any question
                 </h3>
                 <div style={{
-                  background: '#F5F3EF',
-                  border: '0.5px solid #E8E6E1',
-                  borderRadius: 8,
-                  padding: '8px 12px',
                   fontSize: 13,
-                  fontStyle: 'italic',
                   color: '#5C5C57',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  lineHeight: 1.5,
+                  lineHeight: 1.6,
                 }}>
-                  How would you improve Uber's driver retention?
+                  1,100+ PM questions. Or let Alpha pick one for you.
                 </div>
               </div>
 
@@ -1417,10 +1426,10 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   fontSize: 15,
                   fontWeight: 600,
                   color: C.text,
-                  marginBottom: 16,
+                  marginBottom: 12,
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                 }}>
-                  You answer it
+                  Answer in your words
                 </h3>
                 <div style={{
                   fontSize: 13,
@@ -1428,7 +1437,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   lineHeight: 1.6,
                 }}>
-                  Type or speak — even 3 sentences is enough
+                  Type or speak. No prep needed. No right format.
                 </div>
               </div>
 
@@ -1459,28 +1468,52 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   fontSize: 15,
                   fontWeight: 600,
                   color: C.text,
-                  marginBottom: 16,
+                  marginBottom: 12,
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                 }}>
-                  Alpha scores you
+                  Get scored in seconds
                 </h3>
                 <div style={{
-                  background: '#F5F3EF',
-                  border: '0.5px solid #E8E6E1',
-                  borderRadius: 8,
-                  padding: '8px 12px',
-                  fontSize: 12,
+                  fontSize: 13,
                   color: '#5C5C57',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   lineHeight: 1.6,
-                  textAlign: 'left',
                 }}>
-                  <div>Structure: 7/10</div>
-                  <div>Trade-offs: 4/10</div>
-                  <div style={{ marginTop: 4, fontStyle: 'italic' }}>You missed supply-side economics</div>
+                  8 competencies. What you nailed. What to fix.
                 </div>
               </div>
             </div>
+
+            {/* Secondary CTA */}
+            <button
+              onClick={() => requireAuth('Sign up to get AI feedback', () => {})}
+              style={{
+                height: 40,
+                paddingLeft: 24,
+                paddingRight: 24,
+                background: '#1B1B18',
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: 12,
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                marginTop: 32,
+                transition: 'all 0.2s',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = '#0F0F0D';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = '#1B1B18';
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+              }}
+            >
+              Try it now →
+            </button>
           </div>
 
           {/* Below Fold */}
