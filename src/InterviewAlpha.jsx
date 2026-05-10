@@ -1198,352 +1198,316 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
 
   // ─── Landing ───
   if (phase === "landing") {
-    return (
-      <div style={{
-        minHeight: "100vh",
-        background: 'linear-gradient(180deg, #FAFAF8 0%, #F5F3EF 100%)',
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
-        color: C.text,
-        padding: 32,
-        paddingTop: NAV_H + 32,
-      }}>
-        <style>{globalStyles}</style>
-        <div style={{ position: "relative", zIndex: 1, textAlign: "center", maxWidth: 720, animation: "fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1)" }}>
-          {/* Hero */}
-          <div style={{ marginBottom: 48 }}>
-            <h1 className="ia-landing-h1" style={{
+    if (!user) {
+      // ─── Logged Out View ───
+      return (
+        <div style={{
+          minHeight: "100vh",
+          background: C.bg,
+          display: "flex",
+          flexDirection: "column",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          color: C.text,
+          paddingTop: NAV_H,
+        }}>
+          <style>{globalStyles}</style>
+
+          {/* Above Fold */}
+          <div style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "64px 28px",
+            textAlign: "center",
+          }}>
+            {/* Logo */}
+            <div style={{
               fontFamily: "'Instrument Serif', serif",
-              fontSize: 64, fontWeight: 400, lineHeight: 1.05,
-              letterSpacing: -1, color: C.text, marginBottom: 20
+              fontSize: 48,
+              fontWeight: 700,
+              marginBottom: 32,
+              letterSpacing: -1,
             }}>
-              Interview<span style={{ background: RAINBOW, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Alpha</span><sup style={{ fontSize: 12, verticalAlign: 'super', WebkitTextFillColor: C.textMuted, background: 'none' }}>™</sup>
-            </h1>
-            <p style={{ fontSize: 20, fontWeight: 500, color: C.textMuted, marginBottom: 10 }}>
-              Stop practicing. Start landing.
-            </p>
-            <p style={{ fontSize: 16, color: '#9C9C97', marginBottom: 36 }}>
-              Real-time AI coaching for PMs, not the fluff.
-            </p>
-
-            {/* ── Engagement features (logged-in users only) ── */}
-            {user && (() => {
-              const dayOfYear   = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-              const dailyQ      = ALL_QUESTIONS[dayOfYear % ALL_QUESTIONS.length];
-              const todayTip    = PRO_TIPS[new Date().getDay() % PRO_TIPS.length];
-              return (
-                <div style={{ marginBottom: 28, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, width: '100%' }}>
-                  {/* Streak badge */}
-                  {streak !== null && (
-                    streak > 0 ? (
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 16px', background: 'rgba(234,88,12,0.08)', border: '1px solid rgba(234,88,12,0.2)', borderRadius: 20, fontSize: 13, fontWeight: 700, color: '#EA580C', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        🔥 {streak} Day Streak
-                      </div>
-                    ) : (
-                      <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', background: '#FFF8E1', borderRadius: 8, fontSize: 20, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                          🔥 Start your streak today!
-                        </div>
-                      </div>
-                    )
-                  )}
-
-                  {/* Daily Question */}
-                  <div style={{ width: '100%', maxWidth: 480, background: '#fff', border: `1px solid ${C.border}`, borderRadius: 16, padding: '16px 20px', textAlign: 'left', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-                    <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>📅 Today's Challenge</div>
-                    <div style={{ fontSize: 14, fontWeight: 500, color: C.text, lineHeight: 1.55, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                      {dailyQ.q}
-                    </div>
-                    <button
-                      onClick={() => {
-                        sessionStorage.setItem('ia:quickQuestion', JSON.stringify({
-                          question: { q: dailyQ.q, a: dailyQ.a },
-                          questionId: 'daily-' + dayOfYear,
-                          designation: dailyQ._level || 'Senior PM',
-                          category: dailyQ._cat || 'product',
-                        }));
-                        window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
-                      }}
-                      style={{
-                        padding: '8px 18px', background: C.green, border: 'none',
-                        borderRadius: 10, color: '#fff', fontSize: 12, fontWeight: 600,
-                        cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                        transition: 'background 0.2s',
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
-                    >
-                      Try This Question →
-                    </button>
-                  </div>
-
-                  {/* Pro Tip */}
-                  <div style={{ width: '100%', maxWidth: 480, background: 'rgba(198,127,0,0.05)', border: '1px solid rgba(198,127,0,0.18)', borderRadius: 14, padding: '14px 18px', textAlign: 'left' }}>
-                    <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>💡 Pro Tip</div>
-                    <div style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.65, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{todayTip}</div>
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* Session status banner */}
-            {(() => {
-              const status = profile?.subscription_status ?? 'free';
-              if (status === 'active') {
-                const monthly = profile?.monthly_sessions_used ?? 0;
-                const atLimit = monthly >= PRO_SESSION_LIMIT;
-                return atLimit ? (
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red }}>
-                    🔒 100/100 sessions used this month. Sessions reset monthly from activation date.
-                  </div>
-                ) : (
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 20, fontSize: 12, color: C.green }}>
-                    ◆ Pro — {monthly}/100 sessions used this month
-                  </div>
-                );
-              }
-              if (status === 'pending') return (
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 12, color: C.yellow }}>
-                  ⏳ Payment pending — activate your account to start
-                </div>
-              );
-              if (status === 'expired') return (
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', marginBottom: 28, background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 20, fontSize: 12, color: C.red }}>
-                  Subscription expired — renew to continue
-                </div>
-              );
-              return null;
-            })()}
-
-            <div>
-              <button
-                onClick={() => requireAuth('Sign up to start your AI interview', () => setPhase("setup"))}
-                style={{
-                  padding: "16px 40px", background: RAINBOW, border: "none",
-                  color: "#fff", fontSize: 16,
-                  cursor: "pointer", borderRadius: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontWeight: 600, transition: "all 0.2s ease",
-                  boxShadow: "0 4px 20px rgba(22,163,74,0.3)"
-                }}
-              >
-                Begin Session — It's Free
-              </button>
-              <div style={{ marginTop: 12, fontSize: 13, color: C.textMuted }}>1 free AI session. No credit card needed.</div>
-              {onStartTour && (
-                <div style={{ marginTop: 10 }}>
-                  <button
-                    onClick={onStartTour}
-                    style={{
-                      background: 'none', border: 'none', padding: 0,
-                      fontSize: 16, color: '#E8650A', cursor: 'pointer',
-                      fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      fontWeight: 700, textDecoration: 'none',
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline'; }}
-                    onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none'; }}
-                  >
-                    Take a Quick Tour →
-                  </button>
-                </div>
-              )}
+              Interview<span style={{ color: C.green }}>Alpha</span><sup style={{ fontSize: 16, verticalAlign: 'super', color: C.textMuted }}>™</sup>
             </div>
 
-            {/* Quick Practice + Featured Question */}
-            <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+            {/* Headline */}
+            <h1 style={{
+              fontSize: 28,
+              fontWeight: 500,
+              marginBottom: 16,
+              lineHeight: 1.3,
+              maxWidth: 500,
+            }}>
+              Know exactly why you're getting rejected
+            </h1>
+
+            {/* Subhead */}
+            <p style={{
+              fontSize: 16,
+              color: C.textMuted,
+              marginBottom: 40,
+              lineHeight: 1.6,
+              maxWidth: 480,
+            }}>
+              Answer a PM question. Get instant AI feedback. 60 seconds.
+            </p>
+
+            {/* Primary Button */}
+            <button
+              onClick={() => requireAuth('Sign up to get AI feedback on your answer', () => {})}
+              style={{
+                height: 48,
+                paddingLeft: 32,
+                paddingRight: 32,
+                background: '#1B1B18',
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: 12,
+                fontSize: 16,
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                marginBottom: 16,
+                transition: 'all 0.2s',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                maxWidth: 320,
+                width: '100%',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = '#0F0F0D';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = '#1B1B18';
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+              }}
+            >
+              Answer a Question →
+            </button>
+
+            <p style={{
+              fontSize: 13,
+              color: C.textMuted,
+              marginBottom: 8,
+            }}>
+              No signup needed to browse
+            </p>
+
+            {/* Secondary Link */}
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: 14,
+                color: C.textMuted,
+                cursor: 'pointer',
+                padding: 0,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                textDecoration: 'none',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = C.green; }}
+              onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
+            >
+              or browse 1,100+ questions →
+            </button>
+          </div>
+
+          {/* Below Fold */}
+          <div style={{
+            padding: "64px 28px",
+            background: C.bgMuted,
+            textAlign: "center",
+          }}>
+            <div style={{ maxWidth: 680, margin: '0 auto' }}>
+              <blockquote style={{
+                fontSize: 16,
+                fontStyle: 'italic',
+                color: C.text,
+                marginBottom: 20,
+                lineHeight: 1.7,
+                borderLeft: `3px solid ${C.green}`,
+                paddingLeft: 20,
+                textAlign: 'left',
+                maxWidth: 540,
+                margin: '0 auto 20px',
+              }}>
+                "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
+              </blockquote>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 16 }}>
+                — Shrey C.
+              </p>
+              <p style={{ fontSize: 13, color: C.textMuted }}>
+                Trusted by 150+ PMs preparing for Google, Amazon, Meta, Flipkart
+              </p>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <Footer />
+        </div>
+      );
+    } else {
+      // ─── Logged In View ───
+      const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+      const dailyQ = ALL_QUESTIONS[dayOfYear % ALL_QUESTIONS.length];
+      const todayTip = PRO_TIPS[new Date().getDay() % PRO_TIPS.length];
+
+      return (
+        <div style={{
+          minHeight: "100vh",
+          background: C.bgSoft,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          color: C.text,
+          padding: "48px 28px",
+          paddingTop: NAV_H + 48,
+        }}>
+          <style>{globalStyles}</style>
+
+          <div style={{ maxWidth: 600, width: '100%', textAlign: 'center' }}>
+            {/* Logo */}
+            <div style={{
+              fontFamily: "'Instrument Serif', serif",
+              fontSize: 36,
+              fontWeight: 700,
+              marginBottom: 40,
+              letterSpacing: -1,
+            }}>
+              Interview<span style={{ color: C.green }}>Alpha</span><sup style={{ fontSize: 12, verticalAlign: 'super', color: C.textMuted }}>™</sup>
+            </div>
+
+            {/* Welcome */}
+            <h1 style={{
+              fontSize: 28,
+              fontWeight: 500,
+              marginBottom: 40,
+              fontFamily: "'Instrument Serif', serif",
+            }}>
+              Welcome back!
+            </h1>
+
+            {/* Engagement Features */}
+            <div style={{ marginBottom: 40, display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
+              {/* Streak */}
+              {streak !== null && (
+                streak > 0 ? (
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 16px', background: 'rgba(234,88,12,0.08)', border: '1px solid rgba(234,88,12,0.2)', borderRadius: 20, fontSize: 13, fontWeight: 700, color: '#EA580C', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    🔥 {streak} Day Streak
+                  </div>
+                ) : (
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', background: '#FFF8E1', borderRadius: 8, fontSize: 13, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    🔥 Start your streak today!
+                  </div>
+                )
+              )}
+
+              {/* Daily Challenge */}
+              <div style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16, padding: '16px 20px', textAlign: 'left', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>📅 Today's Challenge</div>
+                <div style={{ fontSize: 14, fontWeight: 500, color: C.text, lineHeight: 1.55, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  {dailyQ.q}
+                </div>
+                <button
+                  onClick={() => {
+                    sessionStorage.setItem('ia:quickQuestion', JSON.stringify({
+                      question: { q: dailyQ.q, a: dailyQ.a },
+                      questionId: 'daily-' + dayOfYear,
+                      designation: dailyQ._level || 'Senior PM',
+                      category: dailyQ._cat || 'product',
+                    }));
+                    window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
+                  }}
+                  style={{
+                    padding: '8px 18px', background: C.green, border: 'none',
+                    borderRadius: 10, color: '#fff', fontSize: 12, fontWeight: 600,
+                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    transition: 'background 0.2s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
+                >
+                  Try This Question →
+                </button>
+              </div>
+
+              {/* Pro Tip */}
+              <div style={{ width: '100%', background: 'rgba(198,127,0,0.05)', border: '1px solid rgba(198,127,0,0.18)', borderRadius: 14, padding: '14px 18px', textAlign: 'left' }}>
+                <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>💡 Pro Tip</div>
+                <div style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.65, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{todayTip}</div>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 32 }}>
+              <button
+                onClick={() => setPhase("setup")}
+                style={{
+                  height: 48,
+                  padding: '16px 32px',
+                  background: '#1B1B18',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: 12,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'all 0.2s',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = '#0F0F0D';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = '#1B1B18';
+                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                }}
+              >
+                Start Interview →
+              </button>
+
               <button
                 onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
                 style={{
-                  padding: '12px 28px', background: 'transparent',
-                  border: `1.5px solid ${C.border}`, borderRadius: 12,
-                  color: C.textSoft, fontSize: 14, fontWeight: 500,
-                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  height: 44,
+                  padding: '12px 28px',
+                  background: 'transparent',
+                  color: C.text,
+                  border: `1.5px solid ${C.border}`,
+                  borderRadius: 12,
+                  fontSize: 15,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
                   transition: 'all 0.2s',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textSoft; }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = C.text;
+                  e.currentTarget.style.background = C.bgMuted;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = C.border;
+                  e.currentTarget.style.background = 'transparent';
+                }}
               >
-                Quick Practice — No Resume Needed
+                Continue Practicing →
               </button>
-
             </div>
           </div>
 
-          {/* Stats row */}
-          <div className="ia-landing-steps" style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 64, flexWrap: 'wrap' }}>
-            {[["1,100+", "Expert Questions"], ["10", "PM Levels (APM → CPO)"], ["8", "Competency Scores"]].map(([num, label]) => (
-              <div key={num} style={{
-                background: '#FFFFFF', borderRadius: 16, padding: '24px 28px', textAlign: 'center',
-                border: `1px solid ${C.border}`, boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)',
-                minWidth: 160
-              }}>
-                <div style={{
-                  fontSize: 40, fontWeight: 700, lineHeight: 1, marginBottom: 8,
-                  background: RAINBOW, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'
-                }}>{num}</div>
-                <div style={{ fontSize: 13, color: '#9C9C97' }}>{label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Approved reviews */}
-          <ReviewsDisplay />
-
-          {/* How it works */}
-          <div style={{ marginBottom: 48 }}>
-            <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 24 }}>How It Works</div>
-            <div className="ia-landing-steps" style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: 'wrap' }}>
-              {[["📋", "Paste Resume & JD", "1"], ["🎯", "Choose Track & Company", "2"], ["📊", "Get Insightful Feedback", "3"]].map(([icon, label, step]) => (
-                <div key={step} style={{
-                  background: '#FFFFFF', borderRadius: 16, padding: '24px 20px', textAlign: 'center',
-                  border: `1px solid ${C.border}`, boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)',
-                  minWidth: 160, flex: '1 1 160px', maxWidth: 220
-                }}>
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: RAINBOW, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px', fontSize: 12, fontWeight: 700, color: '#fff' }}>{step}</div>
-                  <div style={{ fontSize: 24, marginBottom: 8 }}>{icon}</div>
-                  <div style={{ fontSize: 14, fontWeight: 500, color: C.text }}>{label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Social proof */}
-          <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 12 }}>Trusted by PMs preparing for</div>
-          <div style={{ fontSize: 16, fontWeight: 500, color: '#9C9C97', marginBottom: 8 }}>Google · Amazon · Meta · Apple · Flipkart · Razorpay</div>
-          <div style={{ fontSize: 13, color: C.green, fontWeight: 600 }}>Join 50+ PMs already practicing</div>
-
-          {/* ── SEO Content: crawlable, natural below-the-fold sections ── */}
-          <div style={{ marginTop: 80, borderTop: `1px solid ${C.border}`, paddingTop: 64, textAlign: 'left' }}>
-
-            {/* By Company */}
-            <div style={{ marginBottom: 56 }}>
-              <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400, color: C.text, marginBottom: 8 }}>
-                PM Interview Questions by Company
-              </h2>
-              <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.7, marginBottom: 32, maxWidth: 620 }}>
-                Practice company-specific PM interview questions with expert answer frameworks and AI-scored feedback.
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
-                {[
-                  { co: 'Google', blurb: 'Practice 50+ Google PM interview questions covering product sense, analytical estimation, execution, and Googleyness. Get AI-scored feedback on your answers.' },
-                  { co: 'Amazon', blurb: "Master Amazon's Leadership Principles with 50+ practice questions. Every answer evaluated against Customer Obsession, Ownership, Bias for Action, and Dive Deep." },
-                  { co: 'Meta', blurb: "Prepare for Meta's Product Sense, Execution, and Leadership & Drive rounds with AI-powered mock interviews and scored feedback." },
-                  { co: 'Apple', blurb: "Practice Apple PM interview questions focused on product design, creativity, and the Apple ecosystem. Includes product critique and design thinking questions." },
-                  { co: 'Microsoft', blurb: "Prepare for Microsoft PM interviews covering product design, strategy, estimation, and collaboration. Questions aligned to Microsoft's culture of growth mindset." },
-                  { co: 'Flipkart', blurb: "Practice Flipkart PM interview questions covering e-commerce product design, marketplace metrics, and India-specific execution challenges." },
-                  { co: 'Swiggy', blurb: "Swiggy PM interview questions on hyperlocal delivery, supply-demand balance, marketplace design, and growth strategy for quick commerce." },
-                  { co: 'Razorpay', blurb: "Razorpay PM interview questions covering fintech product design, payments infrastructure, developer tools, and merchant-facing growth." },
-                  { co: 'CRED', blurb: "CRED PM interview questions focused on premium user products, financial behavior, retention mechanics, and community-led growth strategies." },
-                ].map(({ co, blurb }) => (
-                  <div key={co} style={{
-                    background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16,
-                    padding: '24px 22px',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-                  }}>
-                    <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 10 }}>
-                      {co} Product Manager Interview Questions
-                    </h3>
-                    <p style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.65, marginBottom: 14 }}>{blurb}</p>
-                    <button
-                      onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'company' }))}
-                      style={{
-                        background: 'none', border: 'none', padding: 0,
-                        fontSize: 13, color: C.green, fontWeight: 600, cursor: 'pointer',
-                        fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      }}
-                    >
-                      Practice {co} Questions →
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* By Question Type */}
-            <div style={{ marginBottom: 56 }}>
-              <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400, color: C.text, marginBottom: 8 }}>
-                PM Interview Questions by Type
-              </h2>
-              <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.7, marginBottom: 32, maxWidth: 620 }}>
-                Master every question format you'll face in product manager interviews.
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
-                {[
-                  { title: 'Product Sense Interview Questions', blurb: "Product sense questions test your ability to design products, identify user needs, and articulate a clear value proposition. Practice the CIRCLES method and Jobs-to-be-Done frameworks with 200+ questions.", cat: 'design' },
-                  { title: 'PM Behavioral Interview Questions', blurb: "Behavioral questions assess leadership, collaboration, and decision-making under pressure. Practice STAR-method answers for stakeholder management, shipping under constraints, and data-driven decisions.", cat: 'behavioral' },
-                  { title: 'PM Metrics & Analytics Questions', blurb: "Metrics questions test your analytical thinking — defining North Star metrics, diagnosing metric drops, and designing A/B tests. Practice with real-world scenarios from top tech companies.", cat: 'data' },
-                  { title: 'AI Product Manager Interview Questions 2026', blurb: "AI PM questions cover ML product design, responsible AI, model evaluation, and building AI-native features. Essential preparation for PM roles at AI-first companies in 2026.", cat: 'technical' },
-                ].map(({ title, blurb, cat }) => (
-                  <div key={title} style={{
-                    background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16,
-                    padding: '24px 22px',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-                  }}>
-                    <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 10 }}>
-                      {title}
-                    </h3>
-                    <p style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.65, marginBottom: 14 }}>{blurb}</p>
-                    <button
-                      onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
-                      style={{
-                        background: 'none', border: 'none', padding: 0,
-                        fontSize: 13, color: C.green, fontWeight: 600, cursor: 'pointer',
-                        fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      }}
-                    >
-                      Practice These Questions →
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* By Level */}
-            <div style={{ marginBottom: 32 }}>
-              <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400, color: C.text, marginBottom: 8 }}>
-                PM Interview Questions by Level
-              </h2>
-              <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.7, marginBottom: 32, maxWidth: 620 }}>
-                Interview difficulty and question focus vary significantly by seniority. Practice questions calibrated for your target level.
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
-                {[
-                  { title: 'Associate Product Manager (APM) Interview Questions', blurb: "APM interviews test analytical thinking, product intuition, and learning agility. Questions focus on product design, estimation, and structured problem-solving — ideal for early-career candidates." },
-                  { title: 'Senior Product Manager Interview Questions', blurb: "Senior PM interviews assess strategic thinking, cross-functional leadership, and impact at scale. Expect complex trade-off decisions, OKR setting, and questions about managing without authority." },
-                  { title: 'Director of Product Interview Questions', blurb: "Director-level interviews focus on organizational design, portfolio prioritization, building PM teams, and long-term product strategy. Practice executive presence with AI-scored feedback." },
-                ].map(({ title, blurb }) => (
-                  <div key={title} style={{
-                    background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16,
-                    padding: '24px 22px',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-                  }}>
-                    <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 10 }}>
-                      {title}
-                    </h3>
-                    <p style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.65, marginBottom: 14 }}>{blurb}</p>
-                    <button
-                      onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
-                      style={{
-                        background: 'none', border: 'none', padding: 0,
-                        fontSize: 13, color: C.green, fontWeight: 600, cursor: 'pointer',
-                        fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      }}
-                    >
-                      Practice These Questions →
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-          {/* ── End SEO Content ── */}
-
+          {/* Footer */}
+          <Footer />
         </div>
-      </div>
-    );
+      );
+    }
   }
 
   // ─── Setup ───
