@@ -582,28 +582,27 @@ function MessageBubble({ msg, isFirstAssistant, tts }) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: 32,
-              height: 32,
-              background: isSpeakingThis ? C.red : C.borderLight,
-              border: `1px solid ${isSpeakingThis ? C.red : C.border}`,
-              borderRadius: 6,
+              gap: 6,
+              padding: '6px 12px',
+              minHeight: 44,
+              background: isSpeakingThis ? '#CF222E' : '#E8650A',
+              border: 'none',
+              borderRadius: 8,
               cursor: 'pointer',
               transition: 'all 0.2s',
-              color: isSpeakingThis ? '#fff' : C.textMuted,
-              fontSize: 14,
+              color: '#fff',
+              fontSize: 20,
+              fontWeight: 700,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}
             onMouseEnter={(e) => {
-              if (!isSpeakingThis) {
-                e.currentTarget.style.background = C.border;
-              }
+              e.currentTarget.style.background = isSpeakingThis ? '#B91C20' : '#D45800';
             }}
             onMouseLeave={(e) => {
-              if (!isSpeakingThis) {
-                e.currentTarget.style.background = C.borderLight;
-              }
+              e.currentTarget.style.background = isSpeakingThis ? '#CF222E' : '#E8650A';
             }}
           >
-            {isSpeakingThis ? '⏹' : '🔊'}
+            {isSpeakingThis ? '⏹ Stop' : '🔊 Listen'}
           </button>
         )}
       </div>
@@ -2023,29 +2022,27 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               }}
               title="Test speech synthesis"
               style={{
-                padding: '12px 24px',
-                background: C.success,
-                border: `1px solid ${C.success}`,
-                borderRadius: 12,
+                padding: '6px 12px',
+                background: '#E8650A',
+                border: 'none',
+                borderRadius: 8,
                 cursor: 'pointer',
-                fontSize: 16,
+                fontSize: 20,
                 fontWeight: 700,
                 color: '#fff',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: 'all 0.2s',
-                height: 48,
+                minHeight: 44,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 8,
+                gap: 6,
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = C.greenHover;
-                e.currentTarget.style.opacity = '0.9';
+                e.currentTarget.style.background = '#D45800';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = C.success;
-                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.background = '#E8650A';
               }}
             >
               🧪 Test Voice

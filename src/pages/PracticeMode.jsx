@@ -285,28 +285,24 @@ function FeedbackPanel({ result, attemptNumber }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 4,
-                  padding: '4px 10px',
-                  background: isSpeakingFeedback ? C.yellow : C.borderLight,
-                  border: `1px solid ${isSpeakingFeedback ? C.yellow : C.border}`,
-                  borderRadius: 6,
+                  gap: 6,
+                  padding: '6px 12px',
+                  background: isSpeakingFeedback ? '#CF222E' : '#E8650A',
+                  border: 'none',
+                  borderRadius: 8,
                   cursor: 'pointer',
-                  fontSize: 11,
-                  color: isSpeakingFeedback ? '#fff' : C.textMuted,
+                  fontSize: 20,
+                  fontWeight: 700,
+                  color: '#fff',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   transition: 'all 0.2s',
+                  minHeight: 44,
                 }}
                 onMouseEnter={(e) => {
-                  if (!isSpeakingFeedback) {
-                    e.currentTarget.style.background = C.border;
-                    e.currentTarget.style.color = C.text;
-                  }
+                  e.currentTarget.style.background = isSpeakingFeedback ? '#B91C20' : '#D45800';
                 }}
                 onMouseLeave={(e) => {
-                  if (!isSpeakingFeedback) {
-                    e.currentTarget.style.background = C.borderLight;
-                    e.currentTarget.style.color = C.textMuted;
-                  }
+                  e.currentTarget.style.background = isSpeakingFeedback ? '#CF222E' : '#E8650A';
                 }}
               >
                 {isSpeakingFeedback ? '⏹ Stop' : '🔊 Listen'}

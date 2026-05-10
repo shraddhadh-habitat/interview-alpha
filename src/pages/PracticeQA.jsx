@@ -371,32 +371,29 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '4px 8px',
-                background: isSpeakingQuestion ? C.yellow : C.borderLight,
-                border: `1px solid ${isSpeakingQuestion ? C.yellow : C.border}`,
-                borderRadius: 6,
+                gap: 6,
+                padding: '6px 12px',
+                background: isSpeakingQuestion ? '#CF222E' : '#E8650A',
+                border: 'none',
+                borderRadius: 8,
                 cursor: 'pointer',
-                fontSize: 12,
-                color: isSpeakingQuestion ? '#fff' : C.textMuted,
+                fontSize: 20,
+                fontWeight: 700,
+                color: '#fff',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: 'all 0.2s',
                 flexShrink: 0,
                 marginTop: 2,
+                minHeight: 44,
               }}
               onMouseEnter={(e) => {
-                if (!isSpeakingQuestion) {
-                  e.currentTarget.style.background = C.border;
-                  e.currentTarget.style.color = C.text;
-                }
+                e.currentTarget.style.background = isSpeakingQuestion ? '#B91C20' : '#D45800';
               }}
               onMouseLeave={(e) => {
-                if (!isSpeakingQuestion) {
-                  e.currentTarget.style.background = C.borderLight;
-                  e.currentTarget.style.color = C.textMuted;
-                }
+                e.currentTarget.style.background = isSpeakingQuestion ? '#CF222E' : '#E8650A';
               }}
             >
-              {isSpeakingQuestion ? '⏹' : '🔊'}
+              {isSpeakingQuestion ? '⏹ Stop' : '🔊 Listen'}
             </button>
           )}
         </div>
@@ -433,30 +430,27 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '4px 8px',
-                    background: isSpeakingAnswer ? C.yellow : C.borderLight,
-                    border: `1px solid ${isSpeakingAnswer ? C.yellow : C.border}`,
-                    borderRadius: 6,
+                    gap: 6,
+                    padding: '6px 12px',
+                    background: isSpeakingAnswer ? '#CF222E' : '#E8650A',
+                    border: 'none',
+                    borderRadius: 8,
                     cursor: 'pointer',
-                    fontSize: 12,
-                    color: isSpeakingAnswer ? '#fff' : C.textMuted,
+                    fontSize: 20,
+                    fontWeight: 700,
+                    color: '#fff',
                     fontFamily: "'Plus Jakarta Sans', sans-serif",
                     transition: 'all 0.2s',
+                    minHeight: 44,
                   }}
                   onMouseEnter={(e) => {
-                    if (!isSpeakingAnswer) {
-                      e.currentTarget.style.background = C.border;
-                      e.currentTarget.style.color = C.text;
-                    }
+                    e.currentTarget.style.background = isSpeakingAnswer ? '#B91C20' : '#D45800';
                   }}
                   onMouseLeave={(e) => {
-                    if (!isSpeakingAnswer) {
-                      e.currentTarget.style.background = C.borderLight;
-                      e.currentTarget.style.color = C.textMuted;
-                    }
+                    e.currentTarget.style.background = isSpeakingAnswer ? '#CF222E' : '#E8650A';
                   }}
                 >
-                  {isSpeakingAnswer ? '⏹' : '🔊'}
+                  {isSpeakingAnswer ? '⏹ Stop' : '🔊 Listen'}
                 </button>
               )}
             </div>
