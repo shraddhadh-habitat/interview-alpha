@@ -1200,29 +1200,23 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   // ─── Landing ───
   if (phase === "landing") {
     if (!user) {
-      // ─── Logged Out View ───
+      // ─── Logged Out View (above fold only) ───
       return (
         <div style={{
           minHeight: "100vh",
           background: C.bg,
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
           fontFamily: "'Plus Jakarta Sans', sans-serif",
           color: C.text,
+          padding: "48px 28px",
           paddingTop: NAV_H,
         }}>
           <style>{globalStyles}</style>
 
-          {/* Above Fold */}
-          <div style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "64px 28px",
-            textAlign: "center",
-          }}>
+          <div style={{ maxWidth: 540, width: '100%', textAlign: "center" }}>
             {/* Logo */}
             <div style={{
               fontFamily: "'Instrument Serif', serif",
@@ -1240,7 +1234,6 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               fontWeight: 500,
               marginBottom: 16,
               lineHeight: 1.3,
-              maxWidth: 500,
             }}>
               Know exactly why you're getting rejected
             </h1>
@@ -1251,7 +1244,6 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               color: C.textMuted,
               marginBottom: 40,
               lineHeight: 1.6,
-              maxWidth: 480,
             }}>
               Answer a PM question. Get instant AI feedback. 60 seconds.
             </p>
@@ -1274,8 +1266,6 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 marginBottom: 16,
                 transition: 'all 0.2s',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                maxWidth: 320,
-                width: '100%',
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.background = '#0F0F0D';
@@ -1286,16 +1276,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
               }}
             >
-              Answer a Question →
+              Try a PM Question →
             </button>
-
-            <p style={{
-              fontSize: 13,
-              color: C.textMuted,
-              marginBottom: 8,
-            }}>
-              No signup needed to browse
-            </p>
 
             {/* Secondary Link */}
             <button
@@ -1313,49 +1295,16 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               onMouseEnter={e => { e.currentTarget.style.color = C.green; }}
               onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
             >
-              or browse 1,100+ questions →
+              Browse questions without signing up →
             </button>
           </div>
-
-          {/* Below Fold */}
-          <div style={{
-            padding: "64px 28px",
-            background: C.bgMuted,
-            textAlign: "center",
-          }}>
-            <div style={{ maxWidth: 680, margin: '0 auto' }}>
-              <blockquote style={{
-                fontSize: 16,
-                fontStyle: 'italic',
-                color: C.text,
-                marginBottom: 20,
-                lineHeight: 1.7,
-                borderLeft: `3px solid ${C.green}`,
-                paddingLeft: 20,
-                textAlign: 'left',
-                maxWidth: 540,
-                margin: '0 auto 20px',
-              }}>
-                "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
-              </blockquote>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 16 }}>
-                — Shrey C.
-              </p>
-              <p style={{ fontSize: 13, color: C.textMuted }}>
-                Trusted by 150+ PMs preparing for Google, Amazon, Meta, Flipkart
-              </p>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <Footer />
         </div>
       );
     } else {
       // ─── Logged In View ───
+      const firstName = user?.user_metadata?.display_name?.split(' ')[0] || user?.email?.split('@')[0] || 'there';
       const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
       const dailyQ = ALL_QUESTIONS[dayOfYear % ALL_QUESTIONS.length];
-      const todayTip = PRO_TIPS[new Date().getDay() % PRO_TIPS.length];
 
       return (
         <div style={{
@@ -1372,18 +1321,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         }}>
           <style>{globalStyles}</style>
 
-          <div style={{ maxWidth: 600, width: '100%', textAlign: 'center' }}>
-            {/* Logo */}
-            <div style={{
-              fontFamily: "'Instrument Serif', serif",
-              fontSize: 36,
-              fontWeight: 700,
-              marginBottom: 40,
-              letterSpacing: -1,
-            }}>
-              Interview<span style={{ color: C.green }}>Alpha</span><sup style={{ fontSize: 12, verticalAlign: 'super', color: C.textMuted }}>™</sup>
-            </div>
-
+          <div style={{ maxWidth: 500, width: '100%', textAlign: 'center' }}>
             {/* Welcome */}
             <h1 style={{
               fontSize: 28,
@@ -1391,62 +1329,40 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               marginBottom: 40,
               fontFamily: "'Instrument Serif', serif",
             }}>
-              Welcome back!
+              Welcome back, {firstName}!
             </h1>
 
-            {/* Engagement Features */}
-            <div style={{ marginBottom: 40, display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
-              {/* Streak */}
-              {streak !== null && (
-                streak > 0 ? (
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 16px', background: 'rgba(234,88,12,0.08)', border: '1px solid rgba(234,88,12,0.2)', borderRadius: 20, fontSize: 13, fontWeight: 700, color: '#EA580C', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    🔥 {streak} Day Streak
-                  </div>
-                ) : (
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', background: '#FFF8E1', borderRadius: 8, fontSize: 13, fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    🔥 Start your streak today!
-                  </div>
-                )
-              )}
-
-              {/* Daily Challenge */}
-              <div style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16, padding: '16px 20px', textAlign: 'left', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-                <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>📅 Today's Challenge</div>
-                <div style={{ fontSize: 14, fontWeight: 500, color: C.text, lineHeight: 1.55, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  {dailyQ.q}
-                </div>
-                <button
-                  onClick={() => {
-                    sessionStorage.setItem('ia:quickQuestion', JSON.stringify({
-                      question: { q: dailyQ.q, a: dailyQ.a },
-                      questionId: 'daily-' + dayOfYear,
-                      designation: dailyQ._level || 'Senior PM',
-                      category: dailyQ._cat || 'product',
-                    }));
-                    window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
-                  }}
-                  style={{
-                    padding: '8px 18px', background: C.green, border: 'none',
-                    borderRadius: 10, color: '#fff', fontSize: 12, fontWeight: 600,
-                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    transition: 'background 0.2s',
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
-                >
-                  Try This Question →
-                </button>
+            {/* Today's Challenge */}
+            <div style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16, padding: '16px 20px', textAlign: 'left', marginBottom: 32, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>📅 Today's Challenge</div>
+              <div style={{ fontSize: 14, fontWeight: 500, color: C.text, lineHeight: 1.55, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                {dailyQ.q}
               </div>
-
-              {/* Pro Tip */}
-              <div style={{ width: '100%', background: 'rgba(198,127,0,0.05)', border: '1px solid rgba(198,127,0,0.18)', borderRadius: 14, padding: '14px 18px', textAlign: 'left' }}>
-                <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>💡 Pro Tip</div>
-                <div style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.65, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{todayTip}</div>
-              </div>
+              <button
+                onClick={() => {
+                  sessionStorage.setItem('ia:quickQuestion', JSON.stringify({
+                    question: { q: dailyQ.q, a: dailyQ.a },
+                    questionId: 'daily-' + dayOfYear,
+                    designation: dailyQ._level || 'Senior PM',
+                    category: dailyQ._cat || 'product',
+                  }));
+                  window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
+                }}
+                style={{
+                  padding: '8px 18px', background: C.green, border: 'none',
+                  borderRadius: 10, color: '#fff', fontSize: 12, fontWeight: 600,
+                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
+                onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
+              >
+                Try This Question →
+              </button>
             </div>
 
             {/* CTA Buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 32 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <button
                 onClick={() => setPhase("setup")}
                 style={{
@@ -1478,34 +1394,22 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               <button
                 onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
                 style={{
-                  height: 44,
-                  padding: '12px 28px',
-                  background: 'transparent',
-                  color: C.text,
-                  border: `1.5px solid ${C.border}`,
-                  borderRadius: 12,
-                  fontSize: 15,
-                  fontWeight: 600,
+                  background: 'none',
+                  border: 'none',
+                  fontSize: 14,
+                  color: C.textMuted,
                   cursor: 'pointer',
+                  padding: '12px 0',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  transition: 'all 0.2s',
+                  textDecoration: 'none',
                 }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = C.text;
-                  e.currentTarget.style.background = C.bgMuted;
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = C.border;
-                  e.currentTarget.style.background = 'transparent';
-                }}
+                onMouseEnter={e => { e.currentTarget.style.color = C.green; }}
+                onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
               >
                 Continue Practicing →
               </button>
             </div>
           </div>
-
-          {/* Footer */}
-          <Footer />
         </div>
       );
     }
