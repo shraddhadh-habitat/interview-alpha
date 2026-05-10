@@ -1541,8 +1541,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 — Shrey C.
               </p>
             </div>
-            <p style={{ fontSize: 13, color: C.textMuted }}>
-              Trusted by 150+ PMs
+            <p style={{ fontSize: 13, color: '#9C9C97', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              PMs use InterviewAlpha to prep for Google · Amazon · Meta · Apple · Flipkart · Razorpay
             </p>
           </div>
 
