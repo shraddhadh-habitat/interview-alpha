@@ -826,7 +826,7 @@ function calcStreak(sortedDates) {
 }
 
 // ─── Main Component ───
-export default function InterviewAlpha({ user, profile, checkSession, onSessionUsed, onStartTour }) {
+export default function InterviewAlpha({ user, profile, checkSession, onSessionUsed, onStartTour, onEndSession }) {
   const { requireAuth } = useAuth();
   const [phase, setPhase] = useState("landing");
   const [resume, setResume] = useState("");
@@ -853,6 +853,17 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   const tts = useTextToSpeech();
   const [autoSpeak, setAutoSpeak] = useState(false);
   const [streak, setStreak] = useState(null); // null = not yet loaded
+
+  // ─── End Session Handler ───
+  useEffect(() => {
+    if (interviewEnded && onEndSession) {
+      // Small delay to allow final scorecard to render before transitioning
+      const timer = setTimeout(() => {
+        onEndSession();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [interviewEnded, onEndSession]);
 
   // ─── Practice streak ───
   useEffect(() => {
