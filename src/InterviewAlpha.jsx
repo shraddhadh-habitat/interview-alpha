@@ -487,14 +487,13 @@ function ScoreDashboard({ data }) {
 }
 
 // ─── Message Bubble ───
-function MessageBubble({ msg, isFirstAssistant }) {
+function MessageBubble({ msg, isFirstAssistant, tts }) {
   const isUser = msg.role === "user";
   const scoreData = (msg.role === "assistant" && !msg._streaming) ? parseScoreFromResponse(msg.content) : null;
   const displayText = msg.role === "assistant"
     ? (msg._streaming ? msg.content : stripJsonBlock(msg.content))
     : msg.content;
   const isVoice = msg.fromVoice;
-  const tts = useTextToSpeech();
   const [isSpeakingThis, setIsSpeakingThis] = useState(false);
 
   if (isUser) {
@@ -2016,13 +2015,34 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             >
               🔊 {autoSpeak ? 'Auto-speak ON' : 'Auto-speak OFF'}
             </button>
+            {/* TEST BUTTON - Remove after confirming TTS works */}
+            <button
+              onClick={() => {
+                const utterance = new SpeechSynthesisUtterance('Hello, I am Alpha. Text to speech is working correctly.');
+                window.speechSynthesis.speak(utterance);
+              }}
+              title="Test speech synthesis"
+              style={{
+                padding: '6px 12px',
+                background: C.yellow,
+                border: `1px solid ${C.yellow}`,
+                borderRadius: 6,
+                cursor: 'pointer',
+                fontSize: 12,
+                color: '#fff',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                transition: 'all 0.2s',
+              }}
+            >
+              🧪 Test TTS
+            </button>
           </div>
         )}
 
         {messages.filter(m => !m.hidden).map((msg, i, arr) => {
           const isFirstAssistant = msg.role === "assistant" &&
             arr.slice(0, i).every(m => m.role !== "assistant");
-          return <MessageBubble key={i} msg={msg} isFirstAssistant={isFirstAssistant} />;
+          return <MessageBubble key={i} msg={msg} isFirstAssistant={isFirstAssistant} tts={tts} />;
         })}
         {loading && !messages.some(m => m._streaming) && <TypingIndicator />}
         <div ref={chatEndRef} />

@@ -1,8 +1,31 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 export default function useTextToSpeech() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [currentUtterance, setCurrentUtterance] = useState(null);
+  const [voices, setVoices] = useState([]);
+
+  // Load voices when component mounts
+  useEffect(() => {
+    if (!window.speechSynthesis) return;
+
+    const loadVoices = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      if (availableVoices.length > 0) {
+        setVoices(availableVoices);
+      }
+    };
+
+    // Load immediately in case voices are already cached
+    loadVoices();
+
+    // Listen for voices to load (on first use or after browser loads them)
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    return () => {
+      window.speechSynthesis.onvoiceschanged = null;
+    };
+  }, []);
 
   const cleanText = (text) => {
     if (!text) return '';
@@ -53,8 +76,7 @@ export default function useTextToSpeech() {
       utterance.pitch = 1.05;
       utterance.lang = 'en-US';
 
-      // Select best available voice
-      const voices = window.speechSynthesis.getVoices();
+      // Select best available voice from cached voices
       const preferredNames = [
         'Google UK English Female',
         'Google US English',
@@ -66,17 +88,18 @@ export default function useTextToSpeech() {
         'Microsoft Zira',
         'Microsoft David',
       ];
-      const voice = preferredNames
+      const selectedVoice = preferredNames
         .map((name) => voices.find((v) => v.name.includes(name)))
         .find(Boolean);
-      if (voice) utterance.voice = voice;
+      if (selectedVoice) utterance.voice = selectedVoice;
 
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => {
         chunkIndex++;
         setTimeout(speakChunk, 300); // 300ms pause between chunks
       };
-      utterance.onerror = () => {
+      utterance.onerror = (error) => {
+        console.error('[TTS] Error:', error);
         setIsSpeaking(false);
         setCurrentUtterance(null);
       };
@@ -85,7 +108,22 @@ export default function useTextToSpeech() {
       window.speechSynthesis.speak(utterance);
     };
 
-    speakChunk();
+    // If voices aren't loaded yet, wait for onvoiceschanged event
+    if (voices.length === 0) {
+      const waitForVoices = () => {
+        window.speechSynthesis.onvoiceschanged = () => {
+          const freshVoices = window.speechSynthesis.getVoices();
+          if (freshVoices.length > 0) {
+            setVoices(freshVoices);
+            speakChunk();
+            window.speechSynthesis.onvoiceschanged = null;
+          }
+        };
+      };
+      waitForVoices();
+    } else {
+      speakChunk();
+    }
   }, []);
 
   const stop = useCallback(() => {
