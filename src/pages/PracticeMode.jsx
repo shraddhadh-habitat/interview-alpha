@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import useTextToSpeech from '../hooks/useTextToSpeech';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -220,6 +221,24 @@ function FeedbackPanel({ result, attemptNumber }) {
     high_signal_keywords, missing_concepts, expert_rewrite, improvement_tips, feedback_text } = result;
 
   const scoreColor = score >= 70 ? C.success : score >= 40 ? C.yellow : C.red;
+  const tts = useTextToSpeech();
+  const [isSpeakingFeedback, setIsSpeakingFeedback] = useState(false);
+
+  const handleSpeakFeedback = () => {
+    if (tts.isSpeaking) {
+      tts.stop();
+      setIsSpeakingFeedback(false);
+    } else {
+      tts.speak(feedback_text);
+      setIsSpeakingFeedback(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!tts.isSpeaking) {
+      setIsSpeakingFeedback(false);
+    }
+  }, [tts.isSpeaking]);
 
   return (
     <div style={{ animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
@@ -255,9 +274,48 @@ function FeedbackPanel({ result, attemptNumber }) {
 
       {/* Narrative feedback */}
       {feedback_text && (
-        <div style={{ padding: '16px 20px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16, marginBottom: 20 }}>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Overall Feedback</div>
-          <p style={{ fontSize: 13, lineHeight: 1.8, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0 }}>{feedback_text}</p>
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Overall Feedback</div>
+            {tts.isSupported && (
+              <button
+                onClick={handleSpeakFeedback}
+                title={isSpeakingFeedback ? "Stop listening" : "Listen to feedback"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 4,
+                  padding: '4px 10px',
+                  background: isSpeakingFeedback ? C.yellow : C.borderLight,
+                  border: `1px solid ${isSpeakingFeedback ? C.yellow : C.border}`,
+                  borderRadius: 6,
+                  cursor: 'pointer',
+                  fontSize: 11,
+                  color: isSpeakingFeedback ? '#fff' : C.textMuted,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isSpeakingFeedback) {
+                    e.currentTarget.style.background = C.border;
+                    e.currentTarget.style.color = C.text;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSpeakingFeedback) {
+                    e.currentTarget.style.background = C.borderLight;
+                    e.currentTarget.style.color = C.textMuted;
+                  }
+                }}
+              >
+                {isSpeakingFeedback ? '⏹ Stop' : '🔊 Listen'}
+              </button>
+            )}
+          </div>
+          <div style={{ padding: '16px 20px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16 }}>
+            <p style={{ fontSize: 13, lineHeight: 1.8, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0 }}>{feedback_text}</p>
+          </div>
         </div>
       )}
 

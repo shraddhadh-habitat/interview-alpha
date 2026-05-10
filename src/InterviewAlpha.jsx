@@ -6,6 +6,7 @@ import { pmQuestions as PM_QUESTIONS } from "./data/pmQuestions";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import mammoth from "mammoth";
+import useTextToSpeech from "./hooks/useTextToSpeech";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
 
@@ -493,6 +494,8 @@ function MessageBubble({ msg, isFirstAssistant }) {
     ? (msg._streaming ? msg.content : stripJsonBlock(msg.content))
     : msg.content;
   const isVoice = msg.fromVoice;
+  const tts = useTextToSpeech();
+  const [isSpeakingThis, setIsSpeakingThis] = useState(false);
 
   if (isUser) {
     return (
@@ -517,6 +520,22 @@ function MessageBubble({ msg, isFirstAssistant }) {
   }
 
   // Alpha message
+  const handleSpeak = () => {
+    if (tts.isSpeaking) {
+      tts.stop();
+      setIsSpeakingThis(false);
+    } else {
+      tts.speak(displayText);
+      setIsSpeakingThis(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!tts.isSpeaking) {
+      setIsSpeakingThis(false);
+    }
+  }, [tts.isSpeaking]);
+
   return (
     <div style={{
       display: "flex",
@@ -533,7 +552,7 @@ function MessageBubble({ msg, isFirstAssistant }) {
         fontSize: 14, color: '#fff', fontWeight: 700, marginTop: 4
       }}>α</div>
 
-      <div className="chat-bubble-ai" style={{ maxWidth: "85%" }}>
+      <div className="chat-bubble-ai" style={{ maxWidth: "85%", position: 'relative' }}>
         <div style={{
           fontSize: 12, fontWeight: 600, color: C.green, marginBottom: 6,
           fontFamily: "'Plus Jakarta Sans', sans-serif"
@@ -551,6 +570,43 @@ function MessageBubble({ msg, isFirstAssistant }) {
           {displayText}
         </div>
         {scoreData && <ScoreDashboard data={scoreData} />}
+
+        {/* TTS Button */}
+        {tts.isSupported && (
+          <button
+            onClick={handleSpeak}
+            title={isSpeakingThis ? "Stop listening" : "Listen to Alpha's response"}
+            style={{
+              position: 'absolute',
+              bottom: 8,
+              right: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 32,
+              height: 32,
+              background: isSpeakingThis ? C.red : C.borderLight,
+              border: `1px solid ${isSpeakingThis ? C.red : C.border}`,
+              borderRadius: 6,
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              color: isSpeakingThis ? '#fff' : C.textMuted,
+              fontSize: 14,
+            }}
+            onMouseEnter={(e) => {
+              if (!isSpeakingThis) {
+                e.currentTarget.style.background = C.border;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isSpeakingThis) {
+                e.currentTarget.style.background = C.borderLight;
+              }
+            }}
+          >
+            {isSpeakingThis ? '⏹' : '🔊'}
+          </button>
+        )}
       </div>
     </div>
   );
@@ -790,6 +846,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
   const voice = useVoiceToText();
+  const tts = useTextToSpeech();
+  const [autoSpeak, setAutoSpeak] = useState(false);
   const [streak, setStreak] = useState(null); // null = not yet loaded
 
   // ─── Practice streak ───
@@ -820,6 +878,18 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         if (data?.job_description) setJd(data.job_description);
       });
   }, [user]);
+
+  // ─── Auto-speak when autoSpeak is enabled ───
+  useEffect(() => {
+    if (!autoSpeak || messages.length === 0) return;
+    const lastMsg = messages[messages.length - 1];
+    if (lastMsg?.role === "assistant" && !lastMsg?._streaming) {
+      const displayText = stripJsonBlock(lastMsg.content);
+      if (displayText && !tts.isSpeaking) {
+        tts.speak(displayText);
+      }
+    }
+  }, [autoSpeak, messages, tts]);
 
   // ─── File upload handler ───
   const handleFileUpload = useCallback(async (file, field) => {
@@ -1914,6 +1984,41 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
 
       {/* Chat Area */}
       <div className="ia-chat-area" style={{ flex: 1, overflow: "auto", padding: "24px 28px", paddingBottom: 140, maxWidth: 760, margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
+        {/* Auto-speak toggle */}
+        {tts.isSupported && messages.length > 0 && (
+          <div style={{ marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              onClick={() => setAutoSpeak(!autoSpeak)}
+              title={autoSpeak ? "Disable auto-speak" : "Enable auto-speak"}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                padding: '6px 12px',
+                background: autoSpeak ? C.greenLight : C.borderLight,
+                border: `1px solid ${autoSpeak ? C.greenBorder : C.border}`,
+                borderRadius: 6,
+                cursor: 'pointer',
+                fontSize: 12,
+                color: autoSpeak ? C.green : C.textMuted,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = autoSpeak ? C.green : C.border;
+                e.currentTarget.style.color = autoSpeak ? '#fff' : C.text;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = autoSpeak ? C.greenLight : C.borderLight;
+                e.currentTarget.style.color = autoSpeak ? C.green : C.textMuted;
+              }}
+            >
+              🔊 {autoSpeak ? 'Auto-speak ON' : 'Auto-speak OFF'}
+            </button>
+          </div>
+        )}
+
         {messages.filter(m => !m.hidden).map((msg, i, arr) => {
           const isFirstAssistant = msg.role === "assistant" &&
             arr.slice(0, i).every(m => m.role !== "assistant");
