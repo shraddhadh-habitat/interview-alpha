@@ -1286,7 +1286,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
               }}
             >
-              Try a PM Question →
+              Answer a question →
             </button>
 
             {/* Reassurance Copy - Line 1 */}
@@ -1482,37 +1482,6 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 </div>
               </div>
             </div>
-
-            {/* Secondary CTA */}
-            <button
-              onClick={() => requireAuth('Sign up to get AI feedback', () => {})}
-              style={{
-                height: 40,
-                paddingLeft: 24,
-                paddingRight: 24,
-                background: '#1B1B18',
-                color: '#FFFFFF',
-                border: 'none',
-                borderRadius: 12,
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: 'pointer',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                marginTop: 32,
-                transition: 'all 0.2s',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = '#0F0F0D';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = '#1B1B18';
-                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
-              }}
-            >
-              Try it now →
-            </button>
           </div>
 
           {/* Trust Strip */}
@@ -1658,7 +1627,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                     e.currentTarget.style.color = '#5C5C57';
                   }}
                 >
-                  Start prepping →
+                  Prep for my interview →
                 </button>
               </div>
 
@@ -1716,7 +1685,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                     e.currentTarget.style.color = '#5C5C57';
                   }}
                 >
-                  Test my skills →
+                  Try a product question →
                 </button>
               </div>
 
@@ -1774,7 +1743,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                     e.currentTarget.style.color = '#5C5C57';
                   }}
                 >
-                  Begin basics →
+                  Start with fundamentals →
                 </button>
               </div>
 
@@ -1832,7 +1801,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                     e.currentTarget.style.color = '#5C5C57';
                   }}
                 >
-                  Browse free →
+                  Browse all questions →
                 </button>
               </div>
             </div>
@@ -1952,7 +1921,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 onMouseEnter={e => { e.currentTarget.style.color = C.green; }}
                 onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
               >
-                Continue Practicing →
+                Practice questions →
               </button>
             </div>
           </div>
