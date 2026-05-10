@@ -1516,6 +1516,267 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             </button>
           </div>
 
+          {/* Guided Paths Section */}
+          <div style={{
+            width: '100%',
+            padding: '48px 28px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            background: C.bg,
+          }}>
+            {/* Section Title */}
+            <div style={{
+              fontSize: 16,
+              fontWeight: 500,
+              color: '#1B1B18',
+              marginBottom: 40,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              textAlign: 'center',
+            }}>
+              Where do you want to start?
+            </div>
+
+            <style>{`
+              .paths-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 800px; width: 100%; }
+              @media (max-width: 768px) { .paths-grid { grid-template-columns: 1fr; } }
+            `}</style>
+
+            <div className="paths-grid">
+              {/* Path 1 */}
+              <div style={{
+                background: '#FFFFFF',
+                border: '0.5px solid #E8E6E1',
+                borderRadius: 16,
+                padding: 20,
+                textAlign: 'center',
+                transition: 'border-color 0.2s',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = '#1B1B18'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = '#E8E6E1'}
+              >
+                <h3 style={{
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: '#1B1B18',
+                  marginBottom: 8,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  I have an interview coming up
+                </h3>
+                <p style={{
+                  fontSize: 13,
+                  color: '#5C5C57',
+                  marginBottom: 16,
+                  lineHeight: 1.5,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  Practice company-specific questions
+                </p>
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
+                  style={{
+                    background: 'transparent',
+                    border: `1.5px solid #E8E6E1`,
+                    borderRadius: 10,
+                    padding: '8px 16px',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: '#5C5C57',
+                    cursor: 'pointer',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.borderColor = '#1B1B18';
+                    e.currentTarget.style.color = '#1B1B18';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.borderColor = '#E8E6E1';
+                    e.currentTarget.style.color = '#5C5C57';
+                  }}
+                >
+                  Start prepping →
+                </button>
+              </div>
+
+              {/* Path 2 */}
+              <div style={{
+                background: '#FFFFFF',
+                border: '0.5px solid #E8E6E1',
+                borderRadius: 16,
+                padding: 20,
+                textAlign: 'center',
+                transition: 'border-color 0.2s',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = '#1B1B18'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = '#E8E6E1'}
+              >
+                <h3 style={{
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: '#1B1B18',
+                  marginBottom: 8,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  I want to check my product sense
+                </h3>
+                <p style={{
+                  fontSize: 13,
+                  color: '#5C5C57',
+                  marginBottom: 16,
+                  lineHeight: 1.5,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  Answer one question and see how you score
+                </p>
+                <button
+                  onClick={() => requireAuth('Sign up to get AI feedback', () => {})}
+                  style={{
+                    background: 'transparent',
+                    border: `1.5px solid #E8E6E1`,
+                    borderRadius: 10,
+                    padding: '8px 16px',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: '#5C5C57',
+                    cursor: 'pointer',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.borderColor = '#1B1B18';
+                    e.currentTarget.style.color = '#1B1B18';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.borderColor = '#E8E6E1';
+                    e.currentTarget.style.color = '#5C5C57';
+                  }}
+                >
+                  Test my skills →
+                </button>
+              </div>
+
+              {/* Path 3 */}
+              <div style={{
+                background: '#FFFFFF',
+                border: '0.5px solid #E8E6E1',
+                borderRadius: 16,
+                padding: 20,
+                textAlign: 'center',
+                transition: 'border-color 0.2s',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = '#1B1B18'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = '#E8E6E1'}
+              >
+                <h3 style={{
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: '#1B1B18',
+                  marginBottom: 8,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  I'm switching to PM
+                </h3>
+                <p style={{
+                  fontSize: 13,
+                  color: '#5C5C57',
+                  marginBottom: 16,
+                  lineHeight: 1.5,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  Start with APM level fundamentals
+                </p>
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
+                  style={{
+                    background: 'transparent',
+                    border: `1.5px solid #E8E6E1`,
+                    borderRadius: 10,
+                    padding: '8px 16px',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: '#5C5C57',
+                    cursor: 'pointer',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.borderColor = '#1B1B18';
+                    e.currentTarget.style.color = '#1B1B18';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.borderColor = '#E8E6E1';
+                    e.currentTarget.style.color = '#5C5C57';
+                  }}
+                >
+                  Begin basics →
+                </button>
+              </div>
+
+              {/* Path 4 */}
+              <div style={{
+                background: '#FFFFFF',
+                border: '0.5px solid #E8E6E1',
+                borderRadius: 16,
+                padding: 20,
+                textAlign: 'center',
+                transition: 'border-color 0.2s',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = '#1B1B18'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = '#E8E6E1'}
+              >
+                <h3 style={{
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: '#1B1B18',
+                  marginBottom: 8,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  Just browsing
+                </h3>
+                <p style={{
+                  fontSize: 13,
+                  color: '#5C5C57',
+                  marginBottom: 16,
+                  lineHeight: 1.5,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  1,100+ questions with expert answers
+                </p>
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
+                  style={{
+                    background: 'transparent',
+                    border: `1.5px solid #E8E6E1`,
+                    borderRadius: 10,
+                    padding: '8px 16px',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: '#5C5C57',
+                    cursor: 'pointer',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.borderColor = '#1B1B18';
+                    e.currentTarget.style.color = '#1B1B18';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.borderColor = '#E8E6E1';
+                    e.currentTarget.style.color = '#5C5C57';
+                  }}
+                >
+                  Browse free →
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* Below Fold */}
           <div style={{
             padding: "64px 28px",
