@@ -1330,6 +1330,159 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             </button>
           </div>
 
+          {/* 3-Step Preview */}
+          <div style={{
+            width: '100%',
+            padding: '48px 28px',
+            display: 'flex',
+            justifyContent: 'center',
+          }}>
+            <style>{`
+              .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 900px; width: 100%; }
+              @media (max-width: 768px) { .preview-grid { grid-template-columns: 1fr; } }
+            `}</style>
+
+            <div className="preview-grid">
+              {/* Step 1 */}
+              <div style={{
+                background: '#FFFFFF',
+                border: '0.5px solid #E8E6E1',
+                borderRadius: 16,
+                padding: 20,
+                textAlign: 'center',
+              }}>
+                <div style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  background: '#F5F3EF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#1B1B18',
+                }}>
+                  1
+                </div>
+                <h3 style={{
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: C.text,
+                  marginBottom: 16,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  You see a question
+                </h3>
+                <div style={{
+                  background: '#F5F3EF',
+                  border: '0.5px solid #E8E6E1',
+                  borderRadius: 8,
+                  padding: '8px 12px',
+                  fontSize: 13,
+                  fontStyle: 'italic',
+                  color: '#5C5C57',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  lineHeight: 1.5,
+                }}>
+                  How would you improve Uber's driver retention?
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div style={{
+                background: '#FFFFFF',
+                border: '0.5px solid #E8E6E1',
+                borderRadius: 16,
+                padding: 20,
+                textAlign: 'center',
+              }}>
+                <div style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  background: '#F5F3EF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#1B1B18',
+                }}>
+                  2
+                </div>
+                <h3 style={{
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: C.text,
+                  marginBottom: 16,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  You answer it
+                </h3>
+                <div style={{
+                  fontSize: 13,
+                  color: '#5C5C57',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  lineHeight: 1.6,
+                }}>
+                  Type or speak — even 3 sentences is enough
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div style={{
+                background: '#FFFFFF',
+                border: '0.5px solid #E8E6E1',
+                borderRadius: 16,
+                padding: 20,
+                textAlign: 'center',
+              }}>
+                <div style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  background: '#F5F3EF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#1B1B18',
+                }}>
+                  3
+                </div>
+                <h3 style={{
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: C.text,
+                  marginBottom: 16,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  Alpha scores you
+                </h3>
+                <div style={{
+                  background: '#F5F3EF',
+                  border: '0.5px solid #E8E6E1',
+                  borderRadius: 8,
+                  padding: '8px 12px',
+                  fontSize: 12,
+                  color: '#5C5C57',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  lineHeight: 1.6,
+                  textAlign: 'left',
+                }}>
+                  <div>Structure: 7/10</div>
+                  <div>Trade-offs: 4/10</div>
+                  <div style={{ marginTop: 4, fontStyle: 'italic' }}>You missed supply-side economics</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Below Fold */}
           <div style={{
             padding: "64px 28px",
