@@ -1200,29 +1200,35 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   // ─── Landing ───
   if (phase === "landing") {
     if (!user) {
-      // ─── Logged Out View (above fold only) ───
+      // ─── Logged Out View ───
       return (
         <div style={{
           minHeight: "100vh",
           background: C.bg,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
           fontFamily: "'Plus Jakarta Sans', sans-serif",
           color: C.text,
-          padding: "48px 28px",
           paddingTop: NAV_H,
         }}>
           <style>{globalStyles}</style>
 
-          <div style={{ maxWidth: 540, width: '100%', textAlign: "center" }}>
+          {/* Above Fold */}
+          <div style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "64px 28px",
+            textAlign: "center",
+          }}>
             {/* Logo */}
             <div style={{
               fontFamily: "'Instrument Serif', serif",
               fontSize: 48,
               fontWeight: 700,
-              marginBottom: 32,
+              marginBottom: 40,
               letterSpacing: -1,
             }}>
               Interview<span style={{ color: C.green }}>Alpha</span><sup style={{ fontSize: 16, verticalAlign: 'super', color: C.textMuted }}>™</sup>
@@ -1232,25 +1238,28 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             <h1 style={{
               fontSize: 28,
               fontWeight: 500,
-              marginBottom: 16,
+              marginBottom: 20,
               lineHeight: 1.3,
+              color: '#1B1B18',
+              maxWidth: 540,
             }}>
-              Know exactly why you're getting rejected
+              Get the interview feedback no company will give you
             </h1>
 
-            {/* Subhead */}
+            {/* Subheadline */}
             <p style={{
               fontSize: 16,
-              color: C.textMuted,
-              marginBottom: 40,
+              color: '#5C5C57',
+              marginBottom: 48,
               lineHeight: 1.6,
+              maxWidth: 480,
             }}>
-              Answer a PM question. Get instant AI feedback. 60 seconds.
+              One question. One answer. Instant feedback on what you nailed and what you missed.
             </p>
 
             {/* Primary Button */}
             <button
-              onClick={() => requireAuth('Sign up to get AI feedback on your answer', () => {})}
+              onClick={() => requireAuth('Sign up to get AI feedback', () => {})}
               style={{
                 height: 48,
                 paddingLeft: 32,
@@ -1266,6 +1275,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 marginBottom: 16,
                 transition: 'all 0.2s',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                maxWidth: 300,
+                width: '100%',
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.background = '#0F0F0D';
@@ -1279,6 +1290,15 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               Try a PM Question →
             </button>
 
+            {/* No Signup Text */}
+            <p style={{
+              fontSize: 13,
+              color: '#9C9C97',
+              marginBottom: 8,
+            }}>
+              No signup needed
+            </p>
+
             {/* Secondary Link */}
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
@@ -1286,25 +1306,59 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 background: 'none',
                 border: 'none',
                 fontSize: 14,
-                color: C.textMuted,
+                color: '#5C5C57',
                 cursor: 'pointer',
                 padding: 0,
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 textDecoration: 'none',
               }}
-              onMouseEnter={e => { e.currentTarget.style.color = C.green; }}
-              onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
+              onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline'; }}
+              onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none'; }}
             >
-              Browse questions without signing up →
+              or browse questions free →
             </button>
           </div>
+
+          {/* Below Fold */}
+          <div style={{
+            padding: "64px 28px",
+            background: C.bgMuted,
+            textAlign: "center",
+          }}>
+            <div style={{ maxWidth: 680, margin: '0 auto', marginBottom: 40 }}>
+              <blockquote style={{
+                fontSize: 16,
+                fontStyle: 'italic',
+                color: C.text,
+                marginBottom: 20,
+                lineHeight: 1.7,
+                borderLeft: `3px solid ${C.green}`,
+                paddingLeft: 20,
+                textAlign: 'left',
+                maxWidth: 540,
+                margin: '0 auto 20px',
+              }}>
+                "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
+              </blockquote>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 16 }}>
+                — Shrey C.
+              </p>
+            </div>
+            <p style={{ fontSize: 13, color: C.textMuted }}>
+              Trusted by 150+ PMs
+            </p>
+          </div>
+
+          {/* Footer */}
+          <Footer />
         </div>
       );
     } else {
       // ─── Logged In View ───
-      const firstName = user?.user_metadata?.display_name?.split(' ')[0] || user?.email?.split('@')[0] || 'there';
+      const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'there';
       const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
       const dailyQ = ALL_QUESTIONS[dayOfYear % ALL_QUESTIONS.length];
+      const todayTip = PRO_TIPS[new Date().getDay() % PRO_TIPS.length];
 
       return (
         <div style={{
@@ -1321,19 +1375,19 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         }}>
           <style>{globalStyles}</style>
 
-          <div style={{ maxWidth: 500, width: '100%', textAlign: 'center' }}>
+          <div style={{ maxWidth: 520, width: '100%', textAlign: 'center' }}>
             {/* Welcome */}
             <h1 style={{
-              fontSize: 28,
+              fontSize: 24,
               fontWeight: 500,
               marginBottom: 40,
               fontFamily: "'Instrument Serif', serif",
             }}>
-              Welcome back, {firstName}!
+              Welcome back, {displayName}!
             </h1>
 
             {/* Today's Challenge */}
-            <div style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16, padding: '16px 20px', textAlign: 'left', marginBottom: 32, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+            <div style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16, padding: '16px 20px', textAlign: 'left', marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
               <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>📅 Today's Challenge</div>
               <div style={{ fontSize: 14, fontWeight: 500, color: C.text, lineHeight: 1.55, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 {dailyQ.q}
@@ -1359,6 +1413,12 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               >
                 Try This Question →
               </button>
+            </div>
+
+            {/* Pro Tip */}
+            <div style={{ width: '100%', background: 'rgba(198,127,0,0.05)', border: '1px solid rgba(198,127,0,0.18)', borderRadius: 14, padding: '14px 18px', textAlign: 'left', marginBottom: 40 }}>
+              <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>💡 Pro Tip</div>
+              <div style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.65, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{todayTip}</div>
             </div>
 
             {/* CTA Buttons */}
