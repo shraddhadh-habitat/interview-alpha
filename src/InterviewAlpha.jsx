@@ -1272,7 +1272,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 fontWeight: 600,
                 cursor: 'pointer',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
-                marginBottom: 16,
+                marginBottom: 12,
                 transition: 'all 0.2s',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                 maxWidth: 300,
@@ -1290,13 +1290,24 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               Try a PM Question →
             </button>
 
-            {/* No Signup Text */}
+            {/* Reassurance Copy - Line 1 */}
+            <p style={{
+              fontSize: 14,
+              color: '#5C5C57',
+              marginBottom: 4,
+              margin: '0 0 4px 0',
+            }}>
+              No resume. No setup. Just one question.
+            </p>
+
+            {/* Reassurance Copy - Line 2 */}
             <p style={{
               fontSize: 13,
               color: '#9C9C97',
-              marginBottom: 8,
+              marginBottom: 16,
+              margin: '0 0 16px 0',
             }}>
-              No signup needed
+              Free. Takes 2 minutes.
             </p>
 
             {/* Secondary Link */}
