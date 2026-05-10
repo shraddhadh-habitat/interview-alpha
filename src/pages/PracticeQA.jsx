@@ -372,14 +372,14 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 6,
-                padding: '6px 12px',
-                background: isSpeakingQuestion ? '#CF222E' : '#E8650A',
-                border: 'none',
-                borderRadius: 8,
+                padding: isSpeakingQuestion ? '5px 12px' : '5px 12px',
+                background: isSpeakingQuestion ? '#1B1B18' : 'transparent',
+                border: `1.5px solid ${isSpeakingQuestion ? '#1B1B18' : '#E8E6E1'}`,
+                borderRadius: 20,
                 cursor: 'pointer',
-                fontSize: 20,
-                fontWeight: 700,
-                color: '#fff',
+                fontSize: 13,
+                fontWeight: 600,
+                color: isSpeakingQuestion ? '#fff' : '#5C5C57',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: 'all 0.2s',
                 flexShrink: 0,
@@ -387,13 +387,19 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                 minHeight: 44,
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = isSpeakingQuestion ? '#B91C20' : '#D45800';
+                if (!isSpeakingQuestion) {
+                  e.currentTarget.style.borderColor = '#1B1B18';
+                  e.currentTarget.style.color = '#1B1B18';
+                }
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = isSpeakingQuestion ? '#CF222E' : '#E8650A';
+                if (!isSpeakingQuestion) {
+                  e.currentTarget.style.borderColor = '#E8E6E1';
+                  e.currentTarget.style.color = '#5C5C57';
+                }
               }}
             >
-              {isSpeakingQuestion ? '⏹ Stop' : '🔊 Listen'}
+              {isSpeakingQuestion ? '■ Stop' : '▶ Listen'}
             </button>
           )}
         </div>
@@ -431,26 +437,32 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 6,
-                    padding: '6px 12px',
-                    background: isSpeakingAnswer ? '#CF222E' : '#E8650A',
-                    border: 'none',
-                    borderRadius: 8,
+                    padding: '5px 12px',
+                    background: isSpeakingAnswer ? '#1B1B18' : 'transparent',
+                    border: `1.5px solid ${isSpeakingAnswer ? '#1B1B18' : '#E8E6E1'}`,
+                    borderRadius: 20,
                     cursor: 'pointer',
-                    fontSize: 20,
-                    fontWeight: 700,
-                    color: '#fff',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: isSpeakingAnswer ? '#fff' : '#5C5C57',
                     fontFamily: "'Plus Jakarta Sans', sans-serif",
                     transition: 'all 0.2s',
                     minHeight: 44,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = isSpeakingAnswer ? '#B91C20' : '#D45800';
+                    if (!isSpeakingAnswer) {
+                      e.currentTarget.style.borderColor = '#1B1B18';
+                      e.currentTarget.style.color = '#1B1B18';
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = isSpeakingAnswer ? '#CF222E' : '#E8650A';
+                    if (!isSpeakingAnswer) {
+                      e.currentTarget.style.borderColor = '#E8E6E1';
+                      e.currentTarget.style.color = '#5C5C57';
+                    }
                   }}
                 >
-                  {isSpeakingAnswer ? '⏹ Stop' : '🔊 Listen'}
+                  {isSpeakingAnswer ? '■ Stop' : '▶ Listen'}
                 </button>
               )}
             </div>

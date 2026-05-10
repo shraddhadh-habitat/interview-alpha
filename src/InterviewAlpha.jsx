@@ -583,26 +583,32 @@ function MessageBubble({ msg, isFirstAssistant, tts }) {
               alignItems: 'center',
               justifyContent: 'center',
               gap: 6,
-              padding: '6px 12px',
+              padding: '5px 12px',
               minHeight: 44,
-              background: isSpeakingThis ? '#CF222E' : '#E8650A',
-              border: 'none',
-              borderRadius: 8,
+              background: isSpeakingThis ? '#1B1B18' : 'transparent',
+              border: `1.5px solid ${isSpeakingThis ? '#1B1B18' : '#E8E6E1'}`,
+              borderRadius: 20,
               cursor: 'pointer',
               transition: 'all 0.2s',
-              color: '#fff',
-              fontSize: 20,
-              fontWeight: 700,
+              color: isSpeakingThis ? '#fff' : '#5C5C57',
+              fontSize: 13,
+              fontWeight: 600,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = isSpeakingThis ? '#B91C20' : '#D45800';
+              if (!isSpeakingThis) {
+                e.currentTarget.style.borderColor = '#1B1B18';
+                e.currentTarget.style.color = '#1B1B18';
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = isSpeakingThis ? '#CF222E' : '#E8650A';
+              if (!isSpeakingThis) {
+                e.currentTarget.style.borderColor = '#E8E6E1';
+                e.currentTarget.style.color = '#5C5C57';
+              }
             }}
           >
-            {isSpeakingThis ? '⏹ Stop' : '🔊 Listen'}
+            {isSpeakingThis ? '■ Stop' : '▶ Listen'}
           </button>
         )}
       </div>
@@ -2022,14 +2028,14 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               }}
               title="Test speech synthesis"
               style={{
-                padding: '6px 12px',
-                background: '#E8650A',
-                border: 'none',
-                borderRadius: 8,
+                padding: '5px 12px',
+                background: 'transparent',
+                border: '1.5px solid #E8E6E1',
+                borderRadius: 20,
                 cursor: 'pointer',
-                fontSize: 20,
-                fontWeight: 700,
-                color: '#fff',
+                fontSize: 13,
+                fontWeight: 600,
+                color: '#5C5C57',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: 'all 0.2s',
                 minHeight: 44,
@@ -2039,10 +2045,12 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 gap: 6,
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#D45800';
+                e.currentTarget.style.borderColor = '#1B1B18';
+                e.currentTarget.style.color = '#1B1B18';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#E8650A';
+                e.currentTarget.style.borderColor = '#E8E6E1';
+                e.currentTarget.style.color = '#5C5C57';
               }}
             >
               🧪 Test Voice

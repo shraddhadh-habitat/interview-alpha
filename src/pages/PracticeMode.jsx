@@ -286,26 +286,32 @@ function FeedbackPanel({ result, attemptNumber }) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: 6,
-                  padding: '6px 12px',
-                  background: isSpeakingFeedback ? '#CF222E' : '#E8650A',
-                  border: 'none',
-                  borderRadius: 8,
+                  padding: '5px 12px',
+                  background: isSpeakingFeedback ? '#1B1B18' : 'transparent',
+                  border: `1.5px solid ${isSpeakingFeedback ? '#1B1B18' : '#E8E6E1'}`,
+                  borderRadius: 20,
                   cursor: 'pointer',
-                  fontSize: 20,
-                  fontWeight: 700,
-                  color: '#fff',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: isSpeakingFeedback ? '#fff' : '#5C5C57',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   transition: 'all 0.2s',
                   minHeight: 44,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = isSpeakingFeedback ? '#B91C20' : '#D45800';
+                  if (!isSpeakingFeedback) {
+                    e.currentTarget.style.borderColor = '#1B1B18';
+                    e.currentTarget.style.color = '#1B1B18';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = isSpeakingFeedback ? '#CF222E' : '#E8650A';
+                  if (!isSpeakingFeedback) {
+                    e.currentTarget.style.borderColor = '#E8E6E1';
+                    e.currentTarget.style.color = '#5C5C57';
+                  }
                 }}
               >
-                {isSpeakingFeedback ? '⏹ Stop' : '🔊 Listen'}
+                {isSpeakingFeedback ? '■ Stop' : '▶ Listen'}
               </button>
             )}
           </div>
