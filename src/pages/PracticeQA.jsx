@@ -3,6 +3,7 @@ import { pmQuestions, PM_LEVELS } from '../data/pmQuestions';
 import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
 import { useAuth } from '../contexts/AuthContext';
+import useTextToSpeech from '../hooks/useTextToSpeech';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -288,7 +289,39 @@ function ScoreBadge({ score, attempts }) {
   );
 }
 
-function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData, onReport }) {
+function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData, onReport, tts }) {
+  const [isSpeakingQuestion, setIsSpeakingQuestion] = useState(false);
+  const [isSpeakingAnswer, setIsSpeakingAnswer] = useState(false);
+
+  useEffect(() => {
+    if (!tts.isSpeaking) {
+      setIsSpeakingQuestion(false);
+      setIsSpeakingAnswer(false);
+    }
+  }, [tts.isSpeaking]);
+
+  const handleSpeakQuestion = (e) => {
+    e.stopPropagation();
+    if (tts.isSpeaking) {
+      tts.stop();
+      setIsSpeakingQuestion(false);
+    } else {
+      tts.speak(question.q);
+      setIsSpeakingQuestion(true);
+    }
+  };
+
+  const handleSpeakAnswer = (e) => {
+    e.stopPropagation();
+    if (tts.isSpeaking) {
+      tts.stop();
+      setIsSpeakingAnswer(false);
+    } else {
+      tts.speak(question.a);
+      setIsSpeakingAnswer(true);
+    }
+  };
+
   return (
     <div style={{
       background: '#FFFFFF',
@@ -320,15 +353,53 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           {index + 1}
         </div>
 
-        {/* Question text */}
-        <span style={{
-          flex: 1, fontSize: 15, lineHeight: 1.65,
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          color: C.text, fontWeight: isOpen ? 600 : 500,
-          transition: 'font-weight 0.1s',
-        }}>
-          {question.q}
-        </span>
+        {/* Question text + Listen button */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+          <span style={{
+            flex: 1, fontSize: 15, lineHeight: 1.65,
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            color: C.text, fontWeight: isOpen ? 600 : 500,
+            transition: 'font-weight 0.1s',
+          }}>
+            {question.q}
+          </span>
+          {tts.isSupported && (
+            <button
+              onClick={handleSpeakQuestion}
+              title={isSpeakingQuestion ? "Stop listening" : "Listen to question"}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '4px 8px',
+                background: isSpeakingQuestion ? C.yellow : C.borderLight,
+                border: `1px solid ${isSpeakingQuestion ? C.yellow : C.border}`,
+                borderRadius: 6,
+                cursor: 'pointer',
+                fontSize: 12,
+                color: isSpeakingQuestion ? '#fff' : C.textMuted,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                transition: 'all 0.2s',
+                flexShrink: 0,
+                marginTop: 2,
+              }}
+              onMouseEnter={(e) => {
+                if (!isSpeakingQuestion) {
+                  e.currentTarget.style.background = C.border;
+                  e.currentTarget.style.color = C.text;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isSpeakingQuestion) {
+                  e.currentTarget.style.background = C.borderLight;
+                  e.currentTarget.style.color = C.textMuted;
+                }
+              }}
+            >
+              {isSpeakingQuestion ? '⏹' : '🔊'}
+            </button>
+          )}
+        </div>
 
         {/* Score badge (if practiced) */}
         {practiceData && (
@@ -346,7 +417,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           animation: 'fadeUp 0.25s cubic-bezier(0.22,1,0.36,1)',
         }}>
           <div style={{ padding: '20px 22px 16px' }}>
-            <div style={{ marginBottom: 12 }}>
+            <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{
                 padding: '3px 10px', background: '#8250DF', color: '#fff',
                 borderRadius: 20, fontSize: 10, fontWeight: 600,
@@ -354,6 +425,40 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
               }}>
                 Expert Answer
               </span>
+              {tts.isSupported && (
+                <button
+                  onClick={handleSpeakAnswer}
+                  title={isSpeakingAnswer ? "Stop listening" : "Listen to answer"}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '4px 8px',
+                    background: isSpeakingAnswer ? C.yellow : C.borderLight,
+                    border: `1px solid ${isSpeakingAnswer ? C.yellow : C.border}`,
+                    borderRadius: 6,
+                    cursor: 'pointer',
+                    fontSize: 12,
+                    color: isSpeakingAnswer ? '#fff' : C.textMuted,
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSpeakingAnswer) {
+                      e.currentTarget.style.background = C.border;
+                      e.currentTarget.style.color = C.text;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSpeakingAnswer) {
+                      e.currentTarget.style.background = C.borderLight;
+                      e.currentTarget.style.color = C.textMuted;
+                    }
+                  }}
+                >
+                  {isSpeakingAnswer ? '⏹' : '🔊'}
+                </button>
+              )}
             </div>
             <BlurredAnswer text={question.a} />
           </div>
@@ -592,6 +697,7 @@ function FilterContent({
 
 export default function PracticeQA({ user, profile, checkSession, onSessionUsed }) {
   const { requireAuth } = useAuth();
+  const tts = useTextToSpeech();
 
   useEffect(() => {
     document.title = 'PM Interview Questions & Answers | 1,100+ Free Questions | InterviewAlpha';
@@ -979,6 +1085,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 }))}
                 practiceData={practiceStats[item.key] || null}
                 onReport={() => requireAuth('Sign up to report question issues', () => setReportTarget(item.key))}
+                tts={tts}
               />
             ))}
           </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import useTextToSpeech from '../hooks/useTextToSpeech';
 
 const TEASER_LEN = 120;
 
@@ -412,10 +413,42 @@ const COMPANIES_SORTED = [...COMPANIES].sort((a, b) => {
 
 // ── Components ────────────────────────────────────────────────────────────────
 
-function QuestionCard({ item, setPage }) {
+function QuestionCard({ item, setPage, tts }) {
   const [open, setOpen] = useState(false);
+  const [isSpeakingQuestion, setIsSpeakingQuestion] = useState(false);
+  const [isSpeakingAnswer, setIsSpeakingAnswer] = useState(false);
   const { requireAuth } = useAuth();
   const d = DIFF[item.difficulty] || DIFF.Medium;
+
+  useEffect(() => {
+    if (!tts.isSpeaking) {
+      setIsSpeakingQuestion(false);
+      setIsSpeakingAnswer(false);
+    }
+  }, [tts.isSpeaking]);
+
+  const handleSpeakQuestion = (e) => {
+    e.stopPropagation();
+    if (tts.isSpeaking) {
+      tts.stop();
+      setIsSpeakingQuestion(false);
+    } else {
+      tts.speak(item.q);
+      setIsSpeakingQuestion(true);
+    }
+  };
+
+  const handleSpeakAnswer = (e) => {
+    e.stopPropagation();
+    if (tts.isSpeaking) {
+      tts.stop();
+      setIsSpeakingAnswer(false);
+    } else {
+      tts.speak(item.answer);
+      setIsSpeakingAnswer(true);
+    }
+  };
+
   return (
     <div style={{
       background: C.card, borderRadius: 16,
@@ -435,12 +468,54 @@ function QuestionCard({ item, setPage }) {
           </span>
         </div>
 
-        {/* Question text */}
+        {/* Question text + Listen button */}
         <div style={{
-          fontSize: 15, fontWeight: 600, color: C.text, lineHeight: 1.5,
-          fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 14,
+          display: 'flex', alignItems: 'flex-start', gap: 8,
+          marginBottom: 14,
         }}>
-          {item.q}
+          <div style={{
+            flex: 1,
+            fontSize: 15, fontWeight: 600, color: C.text, lineHeight: 1.5,
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            {item.q}
+          </div>
+          {tts.isSupported && (
+            <button
+              onClick={handleSpeakQuestion}
+              title={isSpeakingQuestion ? "Stop listening" : "Listen to question"}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '4px 8px',
+                background: isSpeakingQuestion ? '#C67F00' : C.border,
+                border: `1px solid ${isSpeakingQuestion ? '#C67F00' : C.border}`,
+                borderRadius: 6,
+                cursor: 'pointer',
+                fontSize: 12,
+                color: isSpeakingQuestion ? '#fff' : C.textMuted,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                transition: 'all 0.2s',
+                flexShrink: 0,
+                marginTop: 2,
+              }}
+              onMouseEnter={(e) => {
+                if (!isSpeakingQuestion) {
+                  e.currentTarget.style.background = C.textMuted;
+                  e.currentTarget.style.color = C.card;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isSpeakingQuestion) {
+                  e.currentTarget.style.background = C.border;
+                  e.currentTarget.style.color = C.textMuted;
+                }
+              }}
+            >
+              {isSpeakingQuestion ? '⏹' : '🔊'}
+            </button>
+          )}
         </div>
 
         {/* Action row */}
@@ -473,6 +548,45 @@ function QuestionCard({ item, setPage }) {
       {/* Expandable answer */}
       {open && (
         <div style={{ borderTop: `1px solid ${C.border}`, padding: '16px 20px', background: C.bgMuted }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+            <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', color: C.textLight }}>
+              Expert Answer
+            </span>
+            {tts.isSupported && (
+              <button
+                onClick={handleSpeakAnswer}
+                title={isSpeakingAnswer ? "Stop listening" : "Listen to answer"}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '4px 8px',
+                  background: isSpeakingAnswer ? '#C67F00' : C.border,
+                  border: `1px solid ${isSpeakingAnswer ? '#C67F00' : C.border}`,
+                  borderRadius: 6,
+                  cursor: 'pointer',
+                  fontSize: 12,
+                  color: isSpeakingAnswer ? '#fff' : C.textMuted,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isSpeakingAnswer) {
+                    e.currentTarget.style.background = C.textMuted;
+                    e.currentTarget.style.color = C.card;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSpeakingAnswer) {
+                    e.currentTarget.style.background = C.border;
+                    e.currentTarget.style.color = C.textMuted;
+                  }
+                }}
+              >
+                {isSpeakingAnswer ? '⏹' : '🔊'}
+              </button>
+            )}
+          </div>
           <BlurredAnswer text={item.answer} />
         </div>
       )}
@@ -480,7 +594,7 @@ function QuestionCard({ item, setPage }) {
   );
 }
 
-function CompanyView({ company, data, setPage }) {
+function CompanyView({ company, data, setPage, tts }) {
   return (
     <div>
       <div style={{ marginBottom: 32 }}>
@@ -516,7 +630,7 @@ function CompanyView({ company, data, setPage }) {
             {round.round}
           </div>
           {round.questions.map((item, i) => (
-            <QuestionCard key={i} item={item} setPage={setPage} />
+            <QuestionCard key={i} item={item} setPage={setPage} tts={tts} />
           ))}
         </div>
       ))}
@@ -574,6 +688,7 @@ function AllCompaniesView({ setPage }) {
 export default function CompanyQuestions({ setPage }) {
   const [selectedCompany, setSelectedCompany] = useState('');
   const company = COMPANIES.find(c => c.id === selectedCompany);
+  const tts = useTextToSpeech();
 
   useEffect(() => {
     const companyTitle = company ? `${company.name} PM Interview Questions | InterviewAlpha` : 'Google, Amazon, Meta PM Interview Questions | InterviewAlpha';
@@ -645,6 +760,7 @@ export default function CompanyQuestions({ setPage }) {
             company={company}
             data={data || []}
             setPage={setPage}
+            tts={tts}
           />
         )}
 
