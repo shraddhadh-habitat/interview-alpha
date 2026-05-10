@@ -1325,7 +1325,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline'; }}
               onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none'; }}
             >
-              or browse questions free →
+              or browse 1,100+ questions free →
             </button>
           </div>
 
