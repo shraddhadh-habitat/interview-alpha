@@ -853,19 +853,62 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   const tts = useTextToSpeech();
   const [autoSpeak, setAutoSpeak] = useState(false);
   const [streak, setStreak] = useState(null); // null = not yet loaded
+  const [practiceAttempts, setPracticeAttempts] = useState([]);
+  const [lastScore, setLastScore] = useState(null);
+  const [weakestCompetency, setWeakestCompetency] = useState(null);
 
-  // ─── Practice streak ───
+  // ─── Fetch practice attempts and calculate metrics ───
   useEffect(() => {
-    if (!user) { setStreak(0); return; }
+    if (!user) { setStreak(0); setPracticeAttempts([]); return; }
     supabase
       .from('practice_attempts')
-      .select('created_at')
+      .select('created_at, overall_score, competency_breakdown')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .then(({ data }) => {
-        if (!data?.length) { setStreak(0); return; }
+        if (!data?.length) {
+          setStreak(0);
+          setPracticeAttempts([]);
+          setLastScore(null);
+          setWeakestCompetency(null);
+          return;
+        }
+
+        // Calculate streak
         const dates = [...new Set(data.map(r => r.created_at.split('T')[0]))].sort((a, b) => b.localeCompare(a));
         setStreak(calcStreak(dates));
+
+        // Store attempts
+        setPracticeAttempts(data);
+
+        // Get last score
+        if (data[0]?.overall_score) {
+          setLastScore(data[0].overall_score);
+        }
+
+        // Calculate weakest competency (lowest average)
+        if (data.length > 0 && data[0]?.competency_breakdown) {
+          const competencies = {};
+          data.forEach(attempt => {
+            if (attempt.competency_breakdown) {
+              Object.entries(attempt.competency_breakdown).forEach(([comp, score]) => {
+                if (!competencies[comp]) competencies[comp] = [];
+                competencies[comp].push(score);
+              });
+            }
+          });
+
+          let weakest = null;
+          let lowestAvg = Infinity;
+          Object.entries(competencies).forEach(([comp, scores]) => {
+            const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+            if (avg < lowestAvg) {
+              lowestAvg = avg;
+              weakest = comp;
+            }
+          });
+          setWeakestCompetency(weakest && lowestAvg < 5 ? weakest : null);
+        }
       });
   }, [user]);
 
@@ -1841,89 +1884,138 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               Welcome back, {displayName}!
             </h1>
 
-            {/* Today's Challenge */}
-            <div style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16, padding: '16px 20px', textAlign: 'left', marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-              <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>📅 Today's Challenge</div>
-              <div style={{ fontSize: 14, fontWeight: 500, color: C.text, lineHeight: 1.55, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                {dailyQ.q}
+            {/* Today's Challenge - only show if they have 1+ attempts */}
+            {practiceAttempts.length >= 1 && (
+              <div style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16, padding: '16px 20px', textAlign: 'left', marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>📅 Today's Challenge</div>
+                <div style={{ fontSize: 14, fontWeight: 500, color: C.text, lineHeight: 1.55, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  {dailyQ.q}
+                </div>
+                <button
+                  onClick={() => {
+                    sessionStorage.setItem('ia:quickQuestion', JSON.stringify({
+                      question: { q: dailyQ.q, a: dailyQ.a },
+                      questionId: 'daily-' + dayOfYear,
+                      designation: dailyQ._level || 'Senior PM',
+                      category: dailyQ._cat || 'product',
+                    }));
+                    window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
+                  }}
+                  style={{
+                    padding: '8px 18px', background: C.green, border: 'none',
+                    borderRadius: 10, color: '#fff', fontSize: 12, fontWeight: 600,
+                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    transition: 'background 0.2s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
+                >
+                  Answer a question →
+                </button>
               </div>
-              <button
-                onClick={() => {
-                  sessionStorage.setItem('ia:quickQuestion', JSON.stringify({
-                    question: { q: dailyQ.q, a: dailyQ.a },
-                    questionId: 'daily-' + dayOfYear,
-                    designation: dailyQ._level || 'Senior PM',
-                    category: dailyQ._cat || 'product',
-                  }));
-                  window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
-                }}
-                style={{
-                  padding: '8px 18px', background: C.green, border: 'none',
-                  borderRadius: 10, color: '#fff', fontSize: 12, fontWeight: 600,
-                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  transition: 'background 0.2s',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
-                onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
-              >
-                Answer a question →
-              </button>
-            </div>
+            )}
 
-            {/* Pro Tip */}
-            <div style={{ width: '100%', background: 'rgba(198,127,0,0.05)', border: '1px solid rgba(198,127,0,0.18)', borderRadius: 14, padding: '14px 18px', textAlign: 'left', marginBottom: 40 }}>
-              <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>💡 Pro Tip</div>
-              <div style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.65, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{todayTip}</div>
-            </div>
+            {/* Pro Tip - only show if they have 3+ attempts */}
+            {practiceAttempts.length >= 3 && (
+              <div style={{ width: '100%', background: 'rgba(198,127,0,0.05)', border: '1px solid rgba(198,127,0,0.18)', borderRadius: 14, padding: '14px 18px', textAlign: 'left', marginBottom: 40 }}>
+                <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, marginBottom: 8 }}>💡 Pro Tip</div>
+                <div style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.65, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{todayTip}</div>
+              </div>
+            )}
 
-            {/* CTA Buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <button
-                onClick={() => setPhase("setup")}
-                style={{
-                  height: 48,
-                  padding: '16px 32px',
-                  background: '#1B1B18',
-                  color: '#FFFFFF',
-                  border: 'none',
-                  borderRadius: 12,
-                  fontSize: 16,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  transition: 'all 0.2s',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = '#0F0F0D';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = '#1B1B18';
-                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
-                }}
-              >
-                Start Interview →
-              </button>
+            {/* Smart Context-Aware CTA */}
+            {(() => {
+              const attemptCount = practiceAttempts.length;
+              let ctaMessage = '';
+              let ctaButtonText = '';
+              let ctaAction = null;
 
-              <button
-                onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  fontSize: 14,
-                  color: C.textMuted,
-                  cursor: 'pointer',
-                  padding: '12px 0',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  textDecoration: 'none',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.color = C.green; }}
-                onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
-              >
-                Practice questions →
-              </button>
-            </div>
+              if (attemptCount === 0) {
+                ctaMessage = "You haven't tried a question yet";
+                ctaButtonText = "Answer your first question →";
+                ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
+              } else if (attemptCount >= 1 && attemptCount < 5) {
+                ctaMessage = `You've practiced ${attemptCount} ${attemptCount === 1 ? 'question' : 'questions'}. Keep building momentum.`;
+                ctaButtonText = "Practice next question →";
+                ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
+              } else if (attemptCount >= 5 && weakestCompetency) {
+                ctaMessage = `Your ${weakestCompetency.replace(/_/g, ' ')} needs work. Let's improve it.`;
+                ctaButtonText = `Work on ${weakestCompetency.replace(/_/g, ' ')} →`;
+                ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
+              } else if (attemptCount >= 10 && streak !== null && streak > 0) {
+                ctaMessage = `🔥 ${streak} day${streak === 1 ? '' : 's'} streak. Keep it alive.`;
+                ctaButtonText = "Practice today →";
+                ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
+              } else {
+                ctaMessage = `You've completed ${attemptCount} practice questions.`;
+                ctaButtonText = "Practice more questions →";
+                ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
+              }
+
+              return (
+                <>
+                  <div style={{
+                    background: '#FFFFFF',
+                    border: '0.5px solid #E8E6E1',
+                    borderRadius: 16,
+                    padding: '24px',
+                    maxWidth: '100%',
+                    marginBottom: 24,
+                  }}>
+                    <p style={{
+                      fontSize: 16,
+                      color: '#5C5C57',
+                      marginBottom: 16,
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      lineHeight: 1.6,
+                      textAlign: 'center',
+                    }}>
+                      {ctaMessage}
+                    </p>
+                    <button
+                      onClick={ctaAction}
+                      style={{
+                        width: '100%',
+                        height: 44,
+                        background: '#1B1B18',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        borderRadius: 12,
+                        fontSize: 15,
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
+                        transition: 'all 0.2s',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = '#0F0F0D';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = '#1B1B18';
+                        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                      }}
+                    >
+                      {ctaButtonText}
+                    </button>
+                  </div>
+
+                  {/* Stats row - only show if they have at least 1 attempt */}
+                  {attemptCount >= 1 && (
+                    <div style={{
+                      fontSize: 13,
+                      color: C.textMuted,
+                      textAlign: 'center',
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      marginTop: 16,
+                    }}>
+                      Last score: {lastScore !== null ? `${lastScore}/10` : 'N/A'} · Streak: {streak !== null ? `${streak} ${streak === 1 ? 'day' : 'days'}` : '0 days'} · Total: {attemptCount} {attemptCount === 1 ? 'question' : 'questions'}
+                    </div>
+                  )}
+                </>
+              );
+            })()}
           </div>
         </div>
       );
