@@ -498,8 +498,11 @@ export default function App() {
 
   // Show name prompt for existing users who haven't set a display_name yet.
   // Skip if user just signed up (flag set by LoginModal signup flow).
+  // Skip if user is an admin.
   useEffect(() => {
     if (!user || !profileLoaded) return;
+    const isAdmin = ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email?.toLowerCase());
+    if (isAdmin) return;
     if (!profile.display_name) {
       const justSignedUp = localStorage.getItem('ia:just_signed_up');
       if (justSignedUp) {
@@ -512,8 +515,11 @@ export default function App() {
 
   // Show phone prompt for existing users who haven't set a phone_number yet.
   // Skip if user just signed up (flag set by LoginModal signup flow).
+  // Skip if user is an admin.
   useEffect(() => {
     if (!user || !profileLoaded) return;
+    const isAdmin = ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email?.toLowerCase());
+    if (isAdmin) return;
     if (!profile.phone_number) {
       const justSignedUp = localStorage.getItem('ia:just_signed_up');
       if (justSignedUp) {
