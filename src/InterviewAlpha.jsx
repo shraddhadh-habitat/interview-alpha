@@ -1866,7 +1866,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
                 onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
               >
-                Try This Question →
+                Answer a question →
               </button>
             </div>
 
