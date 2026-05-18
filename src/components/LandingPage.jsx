@@ -19,7 +19,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
       background: C.bg,
       display: 'flex',
       alignItems: 'center',
-      paddingTop: '24px',
+      paddingTop: '32px',
       paddingBottom: '40px',
     }}>
       <style>{`
