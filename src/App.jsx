@@ -653,7 +653,7 @@ export default function App() {
           {page === 'sessions'    && <PastSessions user={user} />}
           {page === 'progress'    && <MyProgress user={user} />}
           {page === 'scorecard'   && <Scorecard user={user} />}
-          {page === 'salary'      && <SalaryGuide />}
+          {page === 'salary'      && <SalaryGuide user={user} onPracticeCTA={handleLandingPrimaryCTA} />}
           {page === 'resources'   && <LearningResources />}
           {page === 'upgrade'     && (
             <UpgradePage

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -155,7 +155,63 @@ function Section({ title, subtitle, children, defaultOpen = false }) {
   );
 }
 
-export default function SalaryGuide() {
+// ─── CTA Banner ───
+function CTABanner({ text, onClick }) {
+  return (
+    <div style={{
+      background: C.bgMuted,
+      borderRadius: '12px',
+      padding: '16px 24px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: '20px',
+      marginBottom: '32px',
+    }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .cta-banner { flex-direction: column !important; align-items: flex-start !important; }
+          .cta-banner-text { margin-bottom: 0 !important; }
+          .cta-banner-btn { width: 100% !important; }
+        }
+      `}</style>
+      <p style={{
+        fontSize: '15px',
+        fontWeight: 500,
+        color: C.text,
+        margin: 0,
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        flex: 1,
+      }}>
+        {text}
+      </p>
+      <button
+        onClick={onClick}
+        className="cta-banner-btn"
+        style={{
+          background: C.text,
+          color: '#fff',
+          border: 'none',
+          borderRadius: '8px',
+          fontSize: '13px',
+          fontWeight: 600,
+          padding: '10px 20px',
+          cursor: 'pointer',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          whiteSpace: 'nowrap',
+          transition: 'all 0.2s',
+          flexShrink: 0,
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
+        onMouseLeave={e => e.currentTarget.style.background = C.text}
+      >
+        Answer your first question →
+      </button>
+    </div>
+  );
+}
+
+export default function SalaryGuide({ user, onPracticeCTA }) {
   useEffect(() => {
     document.title = 'Product Manager Salary Guide 2026 | InterviewAlpha';
     return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
@@ -186,6 +242,12 @@ export default function SalaryGuide() {
             ))}
           </div>
         </div>
+
+        {/* ── TOP CTA BANNER ── */}
+        <CTABanner
+          text="Know your worth? Now practice your answers."
+          onClick={onPracticeCTA}
+        />
 
         {/* ── SECTION 1: Know Your Worth ── */}
         <Section title="Know Your Worth" subtitle="Salary ranges by level — India & United States" defaultOpen={true}>
@@ -346,6 +408,12 @@ export default function SalaryGuide() {
             </div>
           </div>
         </Section>
+
+        {/* ── BOTTOM CTA BANNER ── */}
+        <CTABanner
+          text="Ready to negotiate? Practice your interview answers first."
+          onClick={onPracticeCTA}
+        />
 
         <div style={{ height: 60 }} />
       </div>
