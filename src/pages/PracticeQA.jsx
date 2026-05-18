@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { pmQuestions, PM_LEVELS } from '../data/pmQuestions';
+import { pmQuestions, PM_LEVELS, DS_LEVELS } from '../data/pmQuestions';
 import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
 import { useAuth } from '../contexts/AuthContext';
@@ -68,6 +68,57 @@ const DOMAIN_CHIPS = [
   { id: 'aiml',          label: 'AI/ML' },
   { id: 'general',       label: 'General' },
 ];
+
+const ROLES = {
+  pm: {
+    id: 'pm',
+    label: 'Product Management',
+    levels: PM_LEVELS,
+    expLevelChips: [
+      { id: 'intern',    label: 'Intern',              levels: ['Associate PM'] },
+      { id: 'apm',       label: 'Associate PM',        levels: ['Associate PM'] },
+      { id: 'pm',        label: 'Product Manager',     levels: ['PM'] },
+      { id: 'spm',       label: 'Senior PM',           levels: ['Senior PM'] },
+      { id: 'lpm',       label: 'Lead PM',             levels: ['Lead PM'] },
+      { id: 'staff',     label: 'Staff/Principal PM',  levels: ['Staff/Principal PM'] },
+      { id: 'gpm',       label: 'Group PM',            levels: ['Group Product Manager'] },
+      { id: 'dir',       label: 'Director',            levels: ['Director of PM', 'Senior Director of PM'] },
+      { id: 'vp',        label: 'VP/Head of Product',  levels: ['VP of Product'] },
+      { id: 'cpo',       label: 'CPO',                 levels: ['Chief Product Officer (CPO)'] },
+      { id: 'tpm',       label: 'Technical PM',        levels: ['Technical PM'] },
+      { id: 'aipm',      label: 'AI PM',               levels: ['AI PM'] },
+    ],
+    titleSuffix: 'Product Management Interview Questions',
+  },
+  ds: {
+    id: 'ds',
+    label: 'Data Science',
+    levels: DS_LEVELS,
+    expLevelChips: [],
+    titleSuffix: 'Data Science Interview Questions',
+    comingSoon: false,
+  },
+  consulting: {
+    id: 'consulting',
+    label: 'Consulting',
+    comingSoon: true,
+  },
+  finance: {
+    id: 'finance',
+    label: 'Finance',
+    comingSoon: true,
+  },
+  sales: {
+    id: 'sales',
+    label: 'Sales & Marketing',
+    comingSoon: true,
+  },
+  general: {
+    id: 'general',
+    label: 'General Management',
+    comingSoon: true,
+  },
+};
 
 // Difficulty derived from PM level — the only reliable classification signal in the data
 function getDifficulty(level) {
@@ -593,6 +644,7 @@ function FilterContent({
   resultCount,
   onApply,
   onClearAll,
+  selectedRole,
 }) {
 
   const categoryOptions = [
@@ -604,18 +656,10 @@ function FilterContent({
     { id: 'technical', label: 'Technical/Estimation' },
   ];
 
+  const role = ROLES[selectedRole] || ROLES.pm;
   const expLevelOptions = [
     { id: '', label: 'All' },
-    { id: 'intern', label: 'Intern' },
-    { id: 'apm', label: 'Associate PM' },
-    { id: 'pm', label: 'Product Manager' },
-    { id: 'spm', label: 'Senior PM' },
-    { id: 'lpm', label: 'Lead PM' },
-    { id: 'staff', label: 'Staff/Principal PM' },
-    { id: 'gpm', label: 'Group PM' },
-    { id: 'dir', label: 'Director' },
-    { id: 'vp', label: 'VP/Head of Product' },
-    { id: 'cpo', label: 'CPO' },
+    ...(role.expLevelChips || []),
   ];
 
   const companyOptions = [
@@ -667,7 +711,9 @@ function FilterContent({
       {/* Scrollable sections */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px 20px' }}>
         <FilterDropdown label="Category" value={filterCategory} onChange={setFilterCategory} options={categoryOptions} />
-        <FilterDropdown label="Experience Level" value={filterExpLevel} onChange={setFilterExpLevel} options={expLevelOptions} />
+        {role.expLevelChips && role.expLevelChips.length > 0 && (
+          <FilterDropdown label="Experience Level" value={filterExpLevel} onChange={setFilterExpLevel} options={expLevelOptions} />
+        )}
         <FilterDropdown label="Company" value={filterCompany} onChange={setFilterCompany} options={companyOptions} />
         <FilterDropdown label="Domain" value={filterDomain} onChange={setFilterDomain} options={domainOptions} />
         <FilterDropdown label="Difficulty" value={filterDifficulty} onChange={setFilterDifficulty} options={difficultyOptions} />
@@ -705,10 +751,22 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const { requireAuth } = useAuth();
   const tts = useTextToSpeech();
 
+  const [selectedRole, setSelectedRole] = useState(() => {
+    const stored = sessionStorage.getItem('ia:selectedRole');
+    if (stored && ROLES[stored]) {
+      sessionStorage.removeItem('ia:selectedRole');
+      return stored;
+    }
+    return 'pm';
+  });
+
   useEffect(() => {
-    document.title = 'PM Interview Questions & Answers | 1,100+ Free Questions | InterviewAlpha';
-    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
-  }, []);
+    const role = ROLES[selectedRole];
+    const titlePrefix = selectedRole === 'pm' ? 'PM' : role?.titleSuffix?.split(' ')[0] || 'Interview';
+    const title = `${titlePrefix} Interview Questions & Answers | InterviewAlpha`;
+    document.title = title;
+    return () => { document.title = 'Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+  }, [selectedRole]);
 
   const [search, setSearch] = useState('');
   const [filterCategory, setFilterCategory] = useState(null);
@@ -778,13 +836,15 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       }
     }
 
-    let levelsToShow = PM_LEVELS;
-    if (filterExpLevel) {
-      const chip = EXP_LEVEL_CHIPS.find(c => c.id === filterExpLevel);
+    const role = ROLES[selectedRole] || ROLES.pm;
+    let levelsToShow = role.levels || PM_LEVELS;
+
+    if (filterExpLevel && role.expLevelChips && role.expLevelChips.length > 0) {
+      const chip = role.expLevelChips.find(c => c.id === filterExpLevel);
       if (chip) {
         const allowed = new Set(chip.levels);
-        allowed.add('Company Prep');
-        levelsToShow = PM_LEVELS.filter(l => allowed.has(l));
+        if (selectedRole === 'pm') allowed.add('Company Prep');
+        levelsToShow = (role.levels || PM_LEVELS).filter(l => allowed.has(l));
       }
     }
 
@@ -826,7 +886,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     }
 
     return results;
-  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, practiceStats]);
+  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, practiceStats, selectedRole]);
 
   // ── Applied filter tags ────────────────────────────────────────────────────
 
@@ -918,6 +978,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     resultCount: filtered.length,
     onApply: () => setShowFilters(false),
     onClearAll: clearAllFilters,
+    selectedRole,
   };
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -977,8 +1038,53 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             Practice Q&amp;A
           </h2>
           <p style={{ fontSize: 15, color: C.textMuted, margin: '6px 0 0' }}>
-            Expert questions across all PM levels
+            Expert questions across all {ROLES[selectedRole]?.label || 'PM'} levels
           </p>
+        </div>
+
+        {/* Role selector */}
+        <div style={{ marginBottom: 20 }}>
+          <label style={{ fontSize: 16, fontWeight: 500, color: C.text, display: 'block', marginBottom: 8, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            I'm preparing for
+          </label>
+          <select
+            value={selectedRole}
+            onChange={e => {
+              setSelectedRole(e.target.value);
+              setFilterExpLevel(null);
+              setFilterCategory(null);
+              setSearch('');
+              setExpandedKeys(new Set());
+            }}
+            style={{
+              width: isMobile ? '100%' : '100%',
+              maxWidth: isMobile ? '100%' : '400px',
+              height: 48,
+              fontSize: 16,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              padding: '12px 16px',
+              border: `1.5px solid ${C.border}`,
+              borderRadius: 12,
+              background: C.bg,
+              color: C.text,
+              cursor: 'pointer',
+              appearance: 'none',
+              backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='${C.textMuted.replace('#', '%23')}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'right 12px center',
+              backgroundSize: '20px',
+              paddingRight: 40,
+            }}
+          >
+            <option value="pm">{ROLES.pm.label}</option>
+            <option value="ds">{ROLES.ds.label}</option>
+            <optgroup label="Coming Soon">
+              <option value="consulting" disabled>{ROLES.consulting.label}</option>
+              <option value="finance" disabled>{ROLES.finance.label}</option>
+              <option value="sales" disabled>{ROLES.sales.label}</option>
+              <option value="general" disabled>{ROLES.general.label}</option>
+            </optgroup>
+          </select>
         </div>
 
         {/* 1. Search bar */}

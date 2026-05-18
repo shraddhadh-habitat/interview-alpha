@@ -17,6 +17,10 @@ export const PM_LEVELS = [
   "Company Prep",
 ];
 
+export const DS_LEVELS = [
+  "Data Scientist",
+];
+
 const PM_QUESTIONS = {
 
   // ─────────────────────────────────────────────
@@ -8938,6 +8942,16 @@ This tension sits at the heart of product management — and navigating it well 
         difficulty: "Medium",
       },
     ],
+  },
+
+  // ─────────────────────────────────────────────
+  // DATA SCIENTIST
+  // ─────────────────────────────────────────────
+  "Data Scientist": {
+    product: [],
+    behavioral: [],
+    ai: [],
+    ai_technical: [],
   },
 
 };
