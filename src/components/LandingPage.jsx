@@ -17,10 +17,10 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
   const HeroSection = () => (
     <div style={{
       background: C.bg,
-      minHeight: '80vh',
       display: 'flex',
       alignItems: 'center',
-      paddingTop: '40px',
+      paddingTop: '20px',
+      paddingBottom: '40px',
     }}>
       <style>{`
         @media (max-width: 768px) {
@@ -70,7 +70,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             maxWidth: '480px',
             fontFamily: "'Instrument Serif', serif",
           }}>
-            Get the interview feedback no company will give you
+            Answer one PM interview question. Get instant feedback.
           </h1>
 
           {/* Subheadline */}
@@ -82,7 +82,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             maxWidth: '420px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            One question. One answer. Instant feedback on what you nailed and what you missed.
+            Practice product sense, strategy, execution, analytics, and behavioral questions. See what worked, what didn't, and how to improve — in under 2 minutes.
           </p>
 
           {/* Primary CTA — inline-block, not full width */}
@@ -247,7 +247,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
 
   // Trust strip section
   const TrustSection = () => (
-    <div style={{ background: C.bg, paddingTop: '80px', paddingBottom: '80px' }}>
+    <div style={{ background: C.bg, paddingTop: '40px', paddingBottom: '48px' }}>
       <style>{`
         @media (max-width: 768px) {
           .trust-container { padding: 0 20px !important; }
@@ -317,7 +317,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
 
   // How it works section
   const HowItWorksSection = () => (
-    <div style={{ background: C.bg, paddingTop: '80px', paddingBottom: '80px' }}>
+    <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
       <style>{`
         @media (max-width: 768px) {
           .how-container { padding: 0 20px !important; }
@@ -497,7 +497,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
 
   // Guided paths section
   const GuidedPathsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '80px', paddingBottom: '80px' }}>
+    <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
       <style>{`
         @media (max-width: 768px) {
           .paths-container { padding: 0 20px !important; }
@@ -738,7 +738,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
 
   // Product proof section
   const ProductProofSection = () => (
-    <div style={{ background: C.bg, paddingTop: '80px', paddingBottom: '80px' }}>
+    <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '80px' }}>
       <style>{`
         @media (max-width: 768px) {
           .proof-container { padding: 0 20px !important; }
