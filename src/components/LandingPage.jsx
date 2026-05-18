@@ -57,7 +57,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             marginBottom: '16px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            AI-powered PM interview practice
+            AI-powered interview practice
           </div>
 
           {/* Headline */}
@@ -70,7 +70,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             maxWidth: '480px',
             fontFamily: "'Instrument Serif', serif",
           }}>
-            Answer one PM interview question. Get instant feedback.
+            Answer one interview question. Get instant feedback.
           </h1>
 
           {/* Subheadline */}
@@ -82,7 +82,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             maxWidth: '420px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            Practice product sense, strategy, execution, analytics, and behavioral questions. See what worked, what didn't, and how to improve — in under 2 minutes.
+            Practice real interview questions. See what worked, what didn't, and how to improve — in under 2 minutes.
           </p>
 
           {/* Primary CTA — inline-block, not full width */}
@@ -599,7 +599,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
             }}>
-              I want to check my product sense
+              I want to test my skills
             </h3>
             <p style={{
               fontSize: '13px',
@@ -650,7 +650,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
             }}>
-              I'm switching to PM
+              I'm switching roles
             </h3>
             <p style={{
               fontSize: '13px',
@@ -660,7 +660,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 16px 0',
             }}>
-              Start with APM level fundamentals
+              Start with fundamentals
             </p>
             <button style={{
               fontSize: '13px',
@@ -945,12 +945,54 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
     </div>
   );
 
+  // Coming soon section
+  const ComingSoonSection = () => (
+    <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .coming-container { padding: 0 20px !important; }
+        }
+      `}</style>
+      <div className="coming-container" style={{
+        maxWidth: '1080px',
+        width: '100%',
+        margin: '0 auto',
+        padding: '0 40px',
+        textAlign: 'center',
+      }}>
+        {/* Section label */}
+        <div style={{
+          fontSize: '13px',
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          color: C.textMuted,
+          fontWeight: 600,
+          marginBottom: '16px',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
+          Coming soon
+        </div>
+
+        <p style={{
+          fontSize: '16px',
+          color: C.textSoft,
+          lineHeight: 1.6,
+          margin: 0,
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
+          Software Engineering · Data Science · Product Design · Analytics
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <div>
       <HeroSection />
       <TrustSection />
       <HowItWorksSection />
       <GuidedPathsSection />
+      <ComingSoonSection />
       <ProductProofSection />
     </div>
   );

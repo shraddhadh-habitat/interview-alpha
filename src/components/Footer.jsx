@@ -46,7 +46,7 @@ export default function Footer() {
               InterviewAlpha™
             </div>
             <p style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.75, marginBottom: 20, maxWidth: 260 }}>
-              AI-powered PM interview preparation. Practice with a real-time interviewer, get scored, and level up.
+              AI-powered interview preparation. Practice with a real-time interviewer, get scored, and level up.
             </p>
             <div style={{ fontSize: 12, color: C.textMuted }}>
               Free to start.
