@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from './lib/supabase';
 import InterviewAlpha from './InterviewAlpha';
+import LandingPage from './components/LandingPage';
 import PastSessions from './pages/PastSessions';
 import PracticeQA from './pages/PracticeQA';
 import MyProgress from './pages/MyProgress';
@@ -14,6 +15,7 @@ import Nav from './components/Nav';
 import Footer from './components/Footer';
 import DemoTutorial from './components/DemoTutorial';
 import PaywallModal from './components/PaywallModal';
+import LoginModal from './components/LoginModal';
 import { AuthProvider } from './contexts/AuthContext';
 import QuickStart from './components/QuickStart';
 import ReviewWidget from './components/ReviewWidget';
@@ -362,6 +364,8 @@ export default function App() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [showQuickStart, setShowQuickStart] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [loginMessage, setLoginMessage] = useState('');
   const [profileLoaded, setProfileLoaded]   = useState(false);
   const quickStartCheckedRef = useRef(false);
 
@@ -561,6 +565,31 @@ export default function App() {
     return false;
   }, [profile]);
 
+  // LandingPage handlers
+  const handleLandingPrimaryCTA = useCallback(() => {
+    if (!user) {
+      setLoginMessage('Sign up to get AI feedback');
+      setShowLoginModal(true);
+    } else {
+      if (checkSession()) {
+        setPage('practice');
+      }
+    }
+  }, [user, checkSession]);
+
+  const handleLandingBrowse = useCallback(() => {
+    setPage('practice');
+  }, []);
+
+  const handleLandingPath = useCallback((pathType) => {
+    if (pathType === 'product-sense' && !user) {
+      setLoginMessage('Sign up to get AI feedback');
+      setShowLoginModal(true);
+    } else {
+      setPage('practice');
+    }
+  }, [user]);
+
   if (authLoading) return <LoadingScreen />;
   if (showResetPassword) return <ResetPasswordPage onDone={() => { setShowResetPassword(false); supabase.auth.signOut(); }} />;
 
@@ -598,13 +627,20 @@ export default function App() {
         />
         <div style={{ flex: 1 }}>
           {page === 'interview'   && (
-            <InterviewAlpha
-              user={user}
-              profile={profile}
-              checkSession={checkSession}
-              onSessionUsed={onSessionUsed}
-              onStartTour={user ? () => setShowDemo(true) : null}
-            />
+            !user ? (
+              <LandingPage
+                onStartPractice={handleLandingPrimaryCTA}
+                onBrowseQuestions={handleLandingBrowse}
+              />
+            ) : (
+              <InterviewAlpha
+                user={user}
+                profile={profile}
+                checkSession={checkSession}
+                onSessionUsed={onSessionUsed}
+                onStartTour={() => setShowDemo(true)}
+              />
+            )
           )}
           {page === 'practice'    && (
             <PracticeQA
@@ -643,6 +679,19 @@ export default function App() {
             lastSession
             onClose={() => setShowPaywall(false)}
             onUpgrade={() => { setShowPaywall(false); setPage('upgrade'); }}
+          />
+        )}
+        {showLoginModal && (
+          <LoginModal
+            message={loginMessage}
+            onClose={() => {
+              setShowLoginModal(false);
+              setLoginMessage('');
+            }}
+            onSuccess={() => {
+              setShowLoginModal(false);
+              setLoginMessage('');
+            }}
           />
         )}
       </div>
