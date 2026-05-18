@@ -451,11 +451,234 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
     </div>
   );
 
+  // Guided paths section
+  const GuidedPathsSection = () => (
+    <div style={{ background: C.bg, paddingTop: '64px', paddingBottom: '64px' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section heading */}
+        <h2 style={{
+          fontSize: '18px',
+          fontWeight: 500,
+          color: C.text,
+          textAlign: 'center',
+          marginBottom: '48px',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
+          Where do you want to start?
+        </h2>
+
+        {/* 2x2 grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-4">
+          {/* Card 1 */}
+          <div style={{
+            background: '#fff',
+            border: `0.5px solid ${C.border}`,
+            borderRadius: '16px',
+            padding: '20px',
+            transition: 'border-color 0.2s',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
+          onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+          >
+            <h3 style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              I have an interview coming up
+            </h3>
+            <p style={{
+              fontSize: '13px',
+              color: C.textSoft,
+              marginBottom: '16px',
+              margin: '0 0 16px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Practice company-specific questions
+            </p>
+            <button style={{
+              fontSize: '13px',
+              border: `0.5px solid ${C.border}`,
+              borderRadius: '8px',
+              padding: '8px 16px',
+              color: C.text,
+              background: 'none',
+              cursor: 'pointer',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 500,
+              transition: 'border-color 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
+            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+            >
+              Prep for my interview →
+            </button>
+          </div>
+
+          {/* Card 2 */}
+          <div style={{
+            background: '#fff',
+            border: `0.5px solid ${C.border}`,
+            borderRadius: '16px',
+            padding: '20px',
+            transition: 'border-color 0.2s',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
+          onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+          >
+            <h3 style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              I want to check my product sense
+            </h3>
+            <p style={{
+              fontSize: '13px',
+              color: C.textSoft,
+              marginBottom: '16px',
+              margin: '0 0 16px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Answer one question and see how you score
+            </p>
+            <button style={{
+              fontSize: '13px',
+              border: `0.5px solid ${C.border}`,
+              borderRadius: '8px',
+              padding: '8px 16px',
+              color: C.text,
+              background: 'none',
+              cursor: 'pointer',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 500,
+              transition: 'border-color 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
+            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+            >
+              Try a product question →
+            </button>
+          </div>
+
+          {/* Card 3 */}
+          <div style={{
+            background: '#fff',
+            border: `0.5px solid ${C.border}`,
+            borderRadius: '16px',
+            padding: '20px',
+            transition: 'border-color 0.2s',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
+          onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+          >
+            <h3 style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              I'm switching to PM
+            </h3>
+            <p style={{
+              fontSize: '13px',
+              color: C.textSoft,
+              marginBottom: '16px',
+              margin: '0 0 16px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Start with APM level fundamentals
+            </p>
+            <button style={{
+              fontSize: '13px',
+              border: `0.5px solid ${C.border}`,
+              borderRadius: '8px',
+              padding: '8px 16px',
+              color: C.text,
+              background: 'none',
+              cursor: 'pointer',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 500,
+              transition: 'border-color 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
+            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+            >
+              Start with fundamentals →
+            </button>
+          </div>
+
+          {/* Card 4 */}
+          <div style={{
+            background: '#fff',
+            border: `0.5px solid ${C.border}`,
+            borderRadius: '16px',
+            padding: '20px',
+            transition: 'border-color 0.2s',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
+          onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+          >
+            <h3 style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Just browsing
+            </h3>
+            <p style={{
+              fontSize: '13px',
+              color: C.textSoft,
+              marginBottom: '16px',
+              margin: '0 0 16px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              1,100+ questions with expert answers
+            </p>
+            <button style={{
+              fontSize: '13px',
+              border: `0.5px solid ${C.border}`,
+              borderRadius: '8px',
+              padding: '8px 16px',
+              color: C.text,
+              background: 'none',
+              cursor: 'pointer',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 500,
+              transition: 'border-color 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
+            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+            >
+              Browse all questions →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div>
       <HeroSection />
       <TrustSection />
       <HowItWorksSection />
+      <GuidedPathsSection />
     </div>
   );
 }
