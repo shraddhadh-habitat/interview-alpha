@@ -13,204 +13,231 @@ const C = {
 };
 
 export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
-  // Hero section
+  // Hero section — proper two-column layout with container
   const HeroSection = () => (
-    <div style={{ background: C.bg, minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        {/* Desktop: 60/40 side-by-side; Mobile: stacked */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+    <div style={{
+      background: C.bg,
+      minHeight: '80vh',
+      display: 'flex',
+      alignItems: 'center',
+      paddingTop: '40px',
+    }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .hero-container { padding: 0 20px !important; }
+          .hero-left { max-width: 100% !important; }
+          .hero-right { max-width: 100% !important; margin-top: 32px !important; }
+          .hero-headline { font-size: 26px !important; }
+          .hero-subheadline { font-size: 15px !important; }
+          .hero-cta { width: 100% !important; }
+        }
+      `}</style>
 
-          {/* LEFT SIDE — 60% */}
-          <div className="lg:col-span-7">
-            {/* Eyebrow */}
-            <div style={{
-              fontSize: '12px',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              color: C.textMuted,
-              fontWeight: 600,
-              marginBottom: '16px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              AI-powered PM interview practice
-            </div>
-
-            {/* Headline */}
-            <h1 style={{
-              fontSize: 'clamp(28px, 8vw, 48px)',
-              fontWeight: 500,
-              color: C.text,
-              lineHeight: 1.15,
-              marginBottom: '20px',
-              fontFamily: "'Instrument Serif', serif",
-            }}>
-              Get the interview feedback no company will give you
-            </h1>
-
-            {/* Subheadline */}
-            <p style={{
-              fontSize: '16px',
-              color: C.textSoft,
-              lineHeight: 1.6,
-              marginBottom: '32px',
-              maxWidth: '520px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              One question. One answer. Instant feedback on what you nailed and what you missed.
-            </p>
-
-            {/* Primary CTA */}
-            <button
-              onClick={onStartPractice}
-              style={{
-                width: '100%',
-                maxWidth: '360px',
-                height: '48px',
-                background: C.text,
-                color: '#fff',
-                border: 'none',
-                borderRadius: '12px',
-                fontSize: '15px',
-                fontWeight: 700,
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                transition: 'all 0.2s',
-                marginBottom: '20px',
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
-              onMouseLeave={e => e.currentTarget.style.background = C.text}
-            >
-              Answer your first question →
-            </button>
-
-            {/* Reassurance text */}
-            <p style={{
-              fontSize: '13px',
-              color: C.textMuted,
-              marginBottom: '16px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              No resume. No setup. Free. Takes 2 minutes.
-            </p>
-
-            {/* Secondary link */}
-            <button
-              onClick={onBrowseQuestions}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: C.textSoft,
-                fontSize: '14px',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                cursor: 'pointer',
-                textDecoration: 'underline',
-                padding: 0,
-                transition: 'color 0.2s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.color = C.text}
-              onMouseLeave={e => e.currentTarget.style.color = C.textSoft}
-            >
-              or browse questions free →
-            </button>
+      <div className="hero-container" style={{
+        maxWidth: '1080px',
+        width: '100%',
+        margin: '0 auto',
+        padding: '0 40px',
+        display: 'flex',
+        gap: '48px',
+        alignItems: 'center',
+      }}>
+        {/* LEFT COLUMN — 55% */}
+        <div className="hero-left" style={{
+          flex: '0 0 55%',
+          maxWidth: '100%',
+        }}>
+          {/* Eyebrow */}
+          <div style={{
+            fontSize: '12px',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: C.textMuted,
+            fontWeight: 600,
+            marginBottom: '16px',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            AI-powered PM interview practice
           </div>
 
-          {/* RIGHT SIDE — 40% (Feedback card) */}
-          <div className="lg:col-span-5">
-            {/* Card title */}
-            <div style={{
-              fontSize: '11px',
-              letterSpacing: '1px',
-              textTransform: 'uppercase',
-              color: C.textMuted,
+          {/* Headline */}
+          <h1 className="hero-headline" style={{
+            fontSize: '36px',
+            fontWeight: 600,
+            color: C.text,
+            lineHeight: 1.2,
+            marginBottom: '16px',
+            maxWidth: '480px',
+            fontFamily: "'Instrument Serif', serif",
+          }}>
+            Get the interview feedback no company will give you
+          </h1>
+
+          {/* Subheadline */}
+          <p className="hero-subheadline" style={{
+            fontSize: '16px',
+            color: C.textSoft,
+            lineHeight: 1.6,
+            marginBottom: '28px',
+            maxWidth: '420px',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            One question. One answer. Instant feedback on what you nailed and what you missed.
+          </p>
+
+          {/* Primary CTA — inline-block, not full width */}
+          <button
+            className="hero-cta"
+            onClick={onStartPractice}
+            style={{
+              display: 'inline-block',
+              height: '44px',
+              padding: '0 28px',
+              background: C.text,
+              color: '#fff',
+              border: 'none',
+              borderRadius: '10px',
+              fontSize: '15px',
               fontWeight: 600,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
+            onMouseLeave={e => e.currentTarget.style.background = C.text}
+          >
+            Answer your first question →
+          </button>
+
+          {/* Reassurance text */}
+          <p style={{
+            fontSize: '13px',
+            color: C.textMuted,
+            marginTop: '12px',
+            marginBottom: '0',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            No resume. No setup. Free. Takes 2 minutes.
+          </p>
+
+          {/* Secondary link */}
+          <button
+            onClick={onBrowseQuestions}
+            style={{
+              display: 'block',
+              marginTop: '8px',
+              background: 'none',
+              border: 'none',
+              color: C.textSoft,
+              fontSize: '14px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              padding: 0,
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = C.text}
+            onMouseLeave={e => e.currentTarget.style.color = C.textSoft}
+          >
+            or browse questions free →
+          </button>
+        </div>
+
+        {/* RIGHT COLUMN — 45% */}
+        <div className="hero-right" style={{
+          flex: '0 0 45%',
+          maxWidth: '340px',
+        }}>
+          {/* Card label */}
+          <div style={{
+            fontSize: '11px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: C.textMuted,
+            fontWeight: 600,
+            marginBottom: '12px',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            Sample feedback preview
+          </div>
+
+          {/* Card container */}
+          <div style={{
+            background: '#fff',
+            border: `1px solid ${C.border}`,
+            borderRadius: '16px',
+            padding: '24px',
+          }}>
+            {/* Question */}
+            <p style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '16px',
+              lineHeight: 1.6,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
+            }}>
+              How would you improve Uber's driver retention?
+            </p>
+
+            {/* Score */}
+            <div style={{
+              fontSize: '32px',
+              fontWeight: 600,
+              color: C.text,
               marginBottom: '16px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              Sample feedback preview
+              6.5<span style={{ fontSize: '18px', color: C.textMuted }}>/10</span>
             </div>
 
-            {/* Card container */}
-            <div style={{
-              background: '#fff',
-              border: `0.5px solid ${C.border}`,
-              borderRadius: '16px',
-              padding: '24px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-            }}>
-              {/* Question */}
-              <p style={{
-                fontSize: '14px',
-                fontWeight: 500,
-                color: C.text,
-                marginBottom: '20px',
-                lineHeight: 1.6,
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-              }}>
-                How would you improve Uber's driver retention?
-              </p>
-
-              {/* Score */}
+            {/* What worked */}
+            <div style={{ marginBottom: '12px' }}>
               <div style={{
-                fontSize: '28px',
-                fontWeight: 500,
-                color: C.text,
-                marginBottom: '24px',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#1A7F37',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                marginBottom: '4px',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
               }}>
-                6.5<span style={{ fontSize: '18px', color: C.textMuted }}>/10</span>
+                ✓ What worked
               </div>
+              <p style={{
+                fontSize: '13px',
+                color: C.textSoft,
+                lineHeight: 1.6,
+                margin: 0,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                Clear problem definition. Good user segmentation.
+              </p>
+            </div>
 
-              {/* What worked */}
-              <div style={{ marginBottom: '20px' }}>
-                <div style={{
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  color: C.green,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  marginBottom: '8px',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                }}>
-                  ✓ What worked
-                </div>
-                <p style={{
-                  fontSize: '13px',
-                  color: C.textSoft,
-                  lineHeight: 1.6,
-                  margin: 0,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                }}>
-                  Clear problem definition. Good user segmentation.
-                </p>
+            {/* What to improve */}
+            <div>
+              <div style={{
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#CF222E',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                marginBottom: '4px',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                → What to improve
               </div>
-
-              {/* What to improve */}
-              <div>
-                <div style={{
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  color: C.redWarm,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  marginBottom: '8px',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                }}>
-                  → What to improve
-                </div>
-                <p style={{
-                  fontSize: '13px',
-                  color: C.textSoft,
-                  lineHeight: 1.6,
-                  margin: 0,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                }}>
-                  Missing trade-off analysis. Metrics too vague.
-                </p>
-              </div>
+              <p style={{
+                fontSize: '13px',
+                color: C.textSoft,
+                lineHeight: 1.6,
+                margin: 0,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                Missing trade-off analysis. Metrics too vague.
+              </p>
             </div>
           </div>
         </div>
@@ -220,15 +247,25 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
 
   // Trust strip section
   const TrustSection = () => (
-    <div style={{ background: C.bg, paddingTop: '64px', paddingBottom: '64px' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div style={{ background: C.bg, paddingTop: '80px', paddingBottom: '80px' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .trust-container { padding: 0 20px !important; }
+        }
+      `}</style>
+      <div className="trust-container" style={{
+        maxWidth: '1080px',
+        width: '100%',
+        margin: '0 auto',
+        padding: '0 40px',
+      }}>
         <div style={{ maxWidth: '560px', margin: '0 auto' }}>
           {/* Testimonial card */}
           <div style={{
             background: '#fff',
-            border: `0.5px solid ${C.border}`,
+            border: `1px solid ${C.border}`,
             borderRadius: '16px',
-            padding: '24px 28px',
+            padding: '24px',
           }}>
             {/* Quote */}
             <p style={{
@@ -238,6 +275,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               lineHeight: 1.7,
               marginBottom: '16px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
             }}>
               "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
             </p>
@@ -247,9 +285,9 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontSize: '13px',
               fontWeight: 500,
               color: C.textSoft,
-              margin: 0,
               marginBottom: '16px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
             }}>
               — Shrey C., Product Manager
             </p>
@@ -279,8 +317,19 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
 
   // How it works section
   const HowItWorksSection = () => (
-    <div style={{ background: C.bg, paddingTop: '64px', paddingBottom: '64px' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div style={{ background: C.bg, paddingTop: '80px', paddingBottom: '80px' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .how-container { padding: 0 20px !important; }
+          .how-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+        }
+      `}</style>
+      <div className="how-container" style={{
+        maxWidth: '1080px',
+        width: '100%',
+        margin: '0 auto',
+        padding: '0 40px',
+      }}>
         {/* Section label */}
         <div style={{
           fontSize: '13px',
@@ -296,16 +345,19 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
         </div>
 
         {/* 3 cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4">
+        <div className="how-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '16px',
+        }}>
           {/* Card 1 */}
           <div style={{
             background: '#fff',
-            border: `0.5px solid ${C.border}`,
+            border: `1px solid ${C.border}`,
             borderRadius: '16px',
             padding: '20px',
             textAlign: 'center',
           }}>
-            {/* Number circle */}
             <div style={{
               width: '32px',
               height: '32px',
@@ -323,19 +375,17 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               1
             </div>
 
-            {/* Title */}
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               Pick any question
             </h3>
 
-            {/* Subtitle */}
             <p style={{
               fontSize: '13px',
               color: C.textSoft,
@@ -350,12 +400,11 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
           {/* Card 2 */}
           <div style={{
             background: '#fff',
-            border: `0.5px solid ${C.border}`,
+            border: `1px solid ${C.border}`,
             borderRadius: '16px',
             padding: '20px',
             textAlign: 'center',
           }}>
-            {/* Number circle */}
             <div style={{
               width: '32px',
               height: '32px',
@@ -373,19 +422,17 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               2
             </div>
 
-            {/* Title */}
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               Answer in your words
             </h3>
 
-            {/* Subtitle */}
             <p style={{
               fontSize: '13px',
               color: C.textSoft,
@@ -400,12 +447,11 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
           {/* Card 3 */}
           <div style={{
             background: '#fff',
-            border: `0.5px solid ${C.border}`,
+            border: `1px solid ${C.border}`,
             borderRadius: '16px',
             padding: '20px',
             textAlign: 'center',
           }}>
-            {/* Number circle */}
             <div style={{
               width: '32px',
               height: '32px',
@@ -423,19 +469,17 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               3
             </div>
 
-            {/* Title */}
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               Get scored in seconds
             </h3>
 
-            {/* Subtitle */}
             <p style={{
               fontSize: '13px',
               color: C.textSoft,
@@ -453,8 +497,19 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
 
   // Guided paths section
   const GuidedPathsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '64px', paddingBottom: '64px' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div style={{ background: C.bg, paddingTop: '80px', paddingBottom: '80px' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .paths-container { padding: 0 20px !important; }
+          .paths-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+        }
+      `}</style>
+      <div className="paths-container" style={{
+        maxWidth: '1080px',
+        width: '100%',
+        margin: '0 auto',
+        padding: '0 40px',
+      }}>
         {/* Section heading */}
         <h2 style={{
           fontSize: '18px',
@@ -468,11 +523,15 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
         </h2>
 
         {/* 2x2 grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-4">
+        <div className="paths-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '16px',
+        }}>
           {/* Card 1 */}
           <div style={{
             background: '#fff',
-            border: `0.5px solid ${C.border}`,
+            border: `1px solid ${C.border}`,
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -486,8 +545,8 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               I have an interview coming up
             </h3>
@@ -495,8 +554,9 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontSize: '13px',
               color: C.textSoft,
               marginBottom: '16px',
-              margin: '0 0 16px 0',
+              lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
             }}>
               Practice company-specific questions
             </p>
@@ -522,7 +582,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
           {/* Card 2 */}
           <div style={{
             background: '#fff',
-            border: `0.5px solid ${C.border}`,
+            border: `1px solid ${C.border}`,
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -536,8 +596,8 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               I want to check my product sense
             </h3>
@@ -545,8 +605,9 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontSize: '13px',
               color: C.textSoft,
               marginBottom: '16px',
-              margin: '0 0 16px 0',
+              lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
             }}>
               Answer one question and see how you score
             </p>
@@ -572,7 +633,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
           {/* Card 3 */}
           <div style={{
             background: '#fff',
-            border: `0.5px solid ${C.border}`,
+            border: `1px solid ${C.border}`,
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -586,8 +647,8 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               I'm switching to PM
             </h3>
@@ -595,8 +656,9 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontSize: '13px',
               color: C.textSoft,
               marginBottom: '16px',
-              margin: '0 0 16px 0',
+              lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
             }}>
               Start with APM level fundamentals
             </p>
@@ -622,7 +684,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
           {/* Card 4 */}
           <div style={{
             background: '#fff',
-            border: `0.5px solid ${C.border}`,
+            border: `1px solid ${C.border}`,
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -636,8 +698,8 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               Just browsing
             </h3>
@@ -645,8 +707,9 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontSize: '13px',
               color: C.textSoft,
               marginBottom: '16px',
-              margin: '0 0 16px 0',
+              lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
             }}>
               1,100+ questions with expert answers
             </p>
@@ -675,8 +738,19 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
 
   // Product proof section
   const ProductProofSection = () => (
-    <div style={{ background: C.bg, paddingTop: '64px', paddingBottom: '48px' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div style={{ background: C.bg, paddingTop: '80px', paddingBottom: '80px' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .proof-container { padding: 0 20px !important; }
+          .proof-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+        }
+      `}</style>
+      <div className="proof-container" style={{
+        maxWidth: '1080px',
+        width: '100%',
+        margin: '0 auto',
+        padding: '0 40px',
+      }}>
         {/* Section label */}
         <div style={{
           fontSize: '13px',
@@ -692,7 +766,12 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
         </div>
 
         {/* 4 feature cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-3 mb-12">
+        <div className="proof-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '16px',
+          marginBottom: '48px',
+        }}>
           {/* Card 1 */}
           <div style={{
             background: '#F5F3EF',
@@ -711,8 +790,8 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               Practice by category
             </h3>
@@ -745,8 +824,8 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               Prep by company
             </h3>
@@ -779,8 +858,8 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               Instant scored feedback
             </h3>
@@ -813,8 +892,8 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontWeight: 600,
               color: C.text,
               marginBottom: '8px',
-              margin: '0 0 8px 0',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
             }}>
               Expert rewrite included
             </h3>
@@ -857,7 +936,6 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             fontSize: '13px',
             color: C.textMuted,
             marginTop: '12px',
-            margin: '12px 0 0 0',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
             Free. No signup needed to browse.
