@@ -19,7 +19,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
       background: C.bg,
       display: 'flex',
       alignItems: 'center',
-      paddingTop: '20px',
+      paddingTop: '24px',
       paddingBottom: '40px',
     }}>
       <style>{`
@@ -158,7 +158,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             marginBottom: '12px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            Sample feedback preview
+            Sample Feedback Preview
           </div>
 
           {/* Card container */}
