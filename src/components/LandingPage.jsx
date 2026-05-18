@@ -218,9 +218,244 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
     </div>
   );
 
+  // Trust strip section
+  const TrustSection = () => (
+    <div style={{ background: C.bg, paddingTop: '64px', paddingBottom: '64px' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div style={{ maxWidth: '560px', margin: '0 auto' }}>
+          {/* Testimonial card */}
+          <div style={{
+            background: '#fff',
+            border: `0.5px solid ${C.border}`,
+            borderRadius: '16px',
+            padding: '24px 28px',
+          }}>
+            {/* Quote */}
+            <p style={{
+              fontSize: '14px',
+              fontStyle: 'italic',
+              color: C.text,
+              lineHeight: 1.7,
+              marginBottom: '16px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
+            </p>
+
+            {/* Attribution */}
+            <p style={{
+              fontSize: '13px',
+              fontWeight: 500,
+              color: C.textSoft,
+              margin: 0,
+              marginBottom: '16px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              — Shrey C., Product Manager
+            </p>
+
+            {/* Divider */}
+            <div style={{
+              height: '1px',
+              background: C.border,
+              margin: '16px 0',
+            }} />
+
+            {/* Proof line */}
+            <p style={{
+              fontSize: '13px',
+              color: C.textMuted,
+              textAlign: 'center',
+              margin: 0,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              150+ PMs signed up · Google · Amazon · Meta · Flipkart prep
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // How it works section
+  const HowItWorksSection = () => (
+    <div style={{ background: C.bg, paddingTop: '64px', paddingBottom: '64px' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section label */}
+        <div style={{
+          fontSize: '13px',
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          color: C.textMuted,
+          fontWeight: 600,
+          textAlign: 'center',
+          marginBottom: '48px',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
+          How it works
+        </div>
+
+        {/* 3 cards grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4">
+          {/* Card 1 */}
+          <div style={{
+            background: '#fff',
+            border: `0.5px solid ${C.border}`,
+            borderRadius: '16px',
+            padding: '20px',
+            textAlign: 'center',
+          }}>
+            {/* Number circle */}
+            <div style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              background: '#F5F3EF',
+              color: C.text,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '16px',
+              fontWeight: 600,
+              margin: '0 auto 16px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              1
+            </div>
+
+            {/* Title */}
+            <h3 style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Pick any question
+            </h3>
+
+            {/* Subtitle */}
+            <p style={{
+              fontSize: '13px',
+              color: C.textSoft,
+              margin: 0,
+              lineHeight: 1.6,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              1,100+ PM questions. Or let Alpha pick for you.
+            </p>
+          </div>
+
+          {/* Card 2 */}
+          <div style={{
+            background: '#fff',
+            border: `0.5px solid ${C.border}`,
+            borderRadius: '16px',
+            padding: '20px',
+            textAlign: 'center',
+          }}>
+            {/* Number circle */}
+            <div style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              background: '#F5F3EF',
+              color: C.text,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '16px',
+              fontWeight: 600,
+              margin: '0 auto 16px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              2
+            </div>
+
+            {/* Title */}
+            <h3 style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Answer in your words
+            </h3>
+
+            {/* Subtitle */}
+            <p style={{
+              fontSize: '13px',
+              color: C.textSoft,
+              margin: 0,
+              lineHeight: 1.6,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Type or speak. No prep needed. No right format.
+            </p>
+          </div>
+
+          {/* Card 3 */}
+          <div style={{
+            background: '#fff',
+            border: `0.5px solid ${C.border}`,
+            borderRadius: '16px',
+            padding: '20px',
+            textAlign: 'center',
+          }}>
+            {/* Number circle */}
+            <div style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              background: '#F5F3EF',
+              color: C.text,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '16px',
+              fontWeight: 600,
+              margin: '0 auto 16px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              3
+            </div>
+
+            {/* Title */}
+            <h3 style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Get scored in seconds
+            </h3>
+
+            {/* Subtitle */}
+            <p style={{
+              fontSize: '13px',
+              color: C.textSoft,
+              margin: 0,
+              lineHeight: 1.6,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              8 competencies. What you nailed. What to fix.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div>
       <HeroSection />
+      <TrustSection />
+      <HowItWorksSection />
     </div>
   );
 }
