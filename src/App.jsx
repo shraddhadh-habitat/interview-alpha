@@ -625,7 +625,7 @@ export default function App() {
           onUpgradeClick={() => setPage('upgrade')}
           isAdmin={isAdmin}
         />
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, paddingTop: 60 }}>
           {page === 'interview'   && (
             !user ? (
               <LandingPage
