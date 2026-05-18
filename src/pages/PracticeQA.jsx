@@ -1038,7 +1038,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             Practice Q&amp;A
           </h2>
           <p style={{ fontSize: 15, color: C.textMuted, margin: '6px 0 0' }}>
-            Expert questions across all {ROLES[selectedRole]?.label || 'PM'} levels
+            Expert questions across all levels
           </p>
         </div>
 
