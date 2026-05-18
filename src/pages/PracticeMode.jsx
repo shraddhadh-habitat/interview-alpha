@@ -519,7 +519,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
+            model: 'claude-sonnet-4-6',
             max_tokens: 1500,
             messages: [{ role: 'user', content: buildPrompt(answerText) }],
             stream: true,
@@ -533,7 +533,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
+            model: 'claude-sonnet-4-6',
             max_tokens: 1500,
             messages: [{ role: 'user', content: buildPrompt(answerText) }],
           }),
