@@ -673,12 +673,207 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
     </div>
   );
 
+  // Product proof section
+  const ProductProofSection = () => (
+    <div style={{ background: C.bg, paddingTop: '64px', paddingBottom: '48px' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section label */}
+        <div style={{
+          fontSize: '13px',
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          color: C.textMuted,
+          fontWeight: 600,
+          textAlign: 'center',
+          marginBottom: '48px',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
+          What you get with every practice session
+        </div>
+
+        {/* 4 feature cards grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-3 mb-12">
+          {/* Card 1 */}
+          <div style={{
+            background: '#F5F3EF',
+            borderRadius: '12px',
+            padding: '20px',
+            textAlign: 'center',
+          }}>
+            <div style={{
+              fontSize: '32px',
+              marginBottom: '12px',
+            }}>
+              📋
+            </div>
+            <h3 style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Practice by category
+            </h3>
+            <p style={{
+              fontSize: '12px',
+              color: C.textSoft,
+              margin: 0,
+              lineHeight: 1.5,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Product sense, strategy, behavioral, metrics, technical
+            </p>
+          </div>
+
+          {/* Card 2 */}
+          <div style={{
+            background: '#F5F3EF',
+            borderRadius: '12px',
+            padding: '20px',
+            textAlign: 'center',
+          }}>
+            <div style={{
+              fontSize: '32px',
+              marginBottom: '12px',
+            }}>
+              🏢
+            </div>
+            <h3 style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Prep by company
+            </h3>
+            <p style={{
+              fontSize: '12px',
+              color: C.textSoft,
+              margin: 0,
+              lineHeight: 1.5,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Google, Amazon, Meta, Apple, Flipkart, Razorpay
+            </p>
+          </div>
+
+          {/* Card 3 */}
+          <div style={{
+            background: '#F5F3EF',
+            borderRadius: '12px',
+            padding: '20px',
+            textAlign: 'center',
+          }}>
+            <div style={{
+              fontSize: '32px',
+              marginBottom: '12px',
+            }}>
+              📊
+            </div>
+            <h3 style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Instant scored feedback
+            </h3>
+            <p style={{
+              fontSize: '12px',
+              color: C.textSoft,
+              margin: 0,
+              lineHeight: 1.5,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              8 competencies scored on every answer you give
+            </p>
+          </div>
+
+          {/* Card 4 */}
+          <div style={{
+            background: '#F5F3EF',
+            borderRadius: '12px',
+            padding: '20px',
+            textAlign: 'center',
+          }}>
+            <div style={{
+              fontSize: '32px',
+              marginBottom: '12px',
+            }}>
+              ✏️
+            </div>
+            <h3 style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '8px',
+              margin: '0 0 8px 0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Expert rewrite included
+            </h3>
+            <p style={{
+              fontSize: '12px',
+              color: C.textSoft,
+              margin: 0,
+              lineHeight: 1.5,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              See how a senior PM would answer the same question
+            </p>
+          </div>
+        </div>
+
+        {/* Centered CTA */}
+        <div style={{ textAlign: 'center' }}>
+          <button
+            onClick={onStartPractice}
+            style={{
+              height: '44px',
+              paddingLeft: '32px',
+              paddingRight: '32px',
+              background: C.text,
+              color: '#fff',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '15px',
+              fontWeight: 700,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
+            onMouseLeave={e => e.currentTarget.style.background = C.text}
+          >
+            Answer your first question →
+          </button>
+          <p style={{
+            fontSize: '13px',
+            color: C.textMuted,
+            marginTop: '12px',
+            margin: '12px 0 0 0',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            Free. No signup needed to browse.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div>
       <HeroSection />
       <TrustSection />
       <HowItWorksSection />
       <GuidedPathsSection />
+      <ProductProofSection />
     </div>
   );
 }
