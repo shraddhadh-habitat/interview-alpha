@@ -11029,6 +11029,483 @@ Lesson learned: Ethics isn't a one-time checklist. It's continuous. I could've s
 
 This slowed deployment by 2 weeks and reduced accuracy by 2%, but it's the right call. As data scientists, we have power (our models affect people). With that power comes responsibility.`,
       },
+      {
+        q: "Tell me about a time you had to prioritize between multiple data requests from different teams.",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: I was the only data scientist on a small team. In Q2, I received urgent requests from Finance (revenue analysis, 1 week), Product (feature impact analysis, 2 weeks), and Engineering (infrastructure cost optimization, 1 week). All three teams said their requests were blocking.
+
+Task: I had 40 hours available that quarter for projects (after support work). I needed to prioritize.
+
+Action: I didn't just pick the loudest team. Instead, I met with each stakeholder and asked three questions:
+1. What's the business impact if this ships? (revenue change, cost savings, user impact?)
+2. What's the cost if it doesn't ship? (churn, missed revenue, broken feature?)
+3. When do you actually need it? (real deadline vs hoped-for deadline?)
+
+Finance: "We need monthly revenue breakdown by product. Impact: informs pricing strategy. Cost of delay: we miss board meeting in 3 weeks."
+
+Product: "Does feature X increase retention?" Impact: informs feature roadmap. Cost of delay: we make the decision based on gut-feel instead."
+
+Engineering: "Do we need all these databases?" Impact: save $500K/year in infrastructure. Cost of delay: we keep paying $500K/year."
+
+Analysis: Finance had a hard deadline (board meeting) + business impact (pricing). Engineering's impact was biggest ($500K/year) but no hard deadline. Product was medium impact, no hard deadline.
+
+I proposed: Finance (1 week) → Engineering (2 weeks, quarterly impact justifies investment) → Product (1 week). Finance gets their deadline. Engineering's big impact gets prioritized. Product gets their answer within the quarter.
+
+Result: All three shipped. Finance made board meeting. Engineering's analysis led to $500K/year cost reduction. Product got their insight for next quarter's roadmap.
+
+Lesson: Prioritization isn't about being fair to everyone. It's about maximizing business value subject to constraints (my time, hard deadlines). Making the tradeoff explicit and transparent earned buy-in.`,
+      },
+      {
+        q: "Describe a time you automated a manual reporting process. What was the impact?",
+        subcategory: "behavioral",
+        difficulty: "Easy",
+        a: `Situation: I noticed our Finance team was manually creating a weekly revenue report: downloading CSVs from three systems, copy-pasting into Excel, computing totals, formatting charts, emailing 20 people. Every Monday, 4 hours of tedious work.
+
+Task: Automate it.
+
+Action: I built a simple pipeline:
+1. Query the three data sources nightly (SQL)
+2. Compute aggregations (revenue by product, by region, trends)
+3. Generate a polished PDF report (using a template library)
+4. Email to the 20 recipients automatically
+
+The script ran every Monday morning at 6am. Finance team had the report before they arrived.
+
+Time investment: 8 hours to build. I tested on Finance team for 2 weeks (shadow mode), then deployed.
+
+Result: 4 hours/week × 50 weeks/year = 200 hours saved. That's one engineer-month freed up. Finance team loved it. They had time for deeper analysis instead of copy-pasting. Bonus: the automated report was more accurate (no manual typos) and more consistent (same format every week).
+
+I also built a simple dashboard so Finance could check reports anytime, not just Monday.
+
+Impact: Freed up real person-hours. But more importantly, it shifted the team from "making reports" to "analyzing the business."
+
+Lesson: Automation isn't glamorous, but it multiplies your impact. One small project freed a person for a month of higher-value work.`,
+      },
+      {
+        q: "Tell me about a time you had to make a recommendation with insufficient data.",
+        subcategory: "behavioral",
+        difficulty: "Hard",
+        a: `Situation: Our pricing team wanted to enter a new market (Southeast Asia). They asked: "Should we offer a discount to launch faster, or maintain current pricing?" The recommendation needed to go to the board in 2 days.
+
+Task: Problem: we had zero data from Southeast Asia. No customer cohorts to analyze, no historical demand curves. We couldn't run an A/B test (would take weeks to get enough users).
+
+Action: I couldn't say "we need more data." The business needed a decision. So I made a recommendation with caveats.
+
+I gathered what little data existed:
+- Competitor pricing in SE Asia (from web scraping, imperfect)
+- General price elasticity from other emerging markets (weak proxy)
+- Customer acquisition cost estimates (fuzzy)
+- Team expertise (product folks had gut feeling)
+
+I modeled three scenarios:
+
+Scenario 1 (Current pricing): Lower uptake, higher margin per user. Break-even in 18 months.
+
+Scenario 2 (20% discount): Faster uptake, lower margin. Break-even in 12 months.
+
+Scenario 3 (40% discount): Maximum uptake, minimal margin. Break-even in 9 months.
+
+I explicitly stated my confidence: "These are rough estimates based on limited data. Competitor pricing is uncertain (±20%). Price elasticity from other markets may not apply here."
+
+My recommendation: "Start with 20% discount. It balances risk (validate demand quickly) with returns (avoid cannibalizing margins). Plan to A/B test within 6 months once you have real data."
+
+I also recommended: "Monitor these metrics weekly: customer acquisition, customer LTV, pricing A/B test learnings. Be ready to adjust if data contradicts assumptions."
+
+Result: The team launched with 20% discount. After 6 months, they A/B tested pricing. Real data showed 20% discount was optimal. Board appreciated the decision-making framework even though the data was weak.
+
+Lesson: Sometimes you can't wait for perfect data. You make the best recommendation you can with what you have, communicate uncertainty clearly, and build feedback loops to update as you learn.`,
+      },
+      {
+        q: "How did you handle stakeholder expectations when a project took longer than promised?",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: I committed to delivering a customer segmentation model in 6 weeks. 4 weeks in, I realized the data quality was worse than expected (missing values, incorrect timestamps, inconsistent definitions). The project would need 10 weeks, not 6.
+
+Task: I had to tell my stakeholders they'd wait 4 extra weeks.
+
+Action: I didn't wait until week 6 to break the news. I flagged the issue at week 4 (before team started depending on my delivery).
+
+I prepared for the conversation:
+1. I diagnosed the root cause (data quality issues, not my incompetence or lack of effort)
+2. I quantified the impact (4 extra weeks needed, specific blockers identified)
+3. I proposed solutions: either spend 2 weeks cleaning data (pushes delivery to week 8), or release a weaker model on time (lower accuracy)
+4. I owned it: "I underestimated data quality risk upfront. That's on me."
+
+I presented three options:
+- Deliver on time (week 6) with 78% accuracy. Useful but mediocre.
+- Delay to week 8 with 88% accuracy. Worth the wait.
+- Delay to week 10 with 92% accuracy. Ideal, but costly.
+
+I recommended option 2. I explained: "The 10% accuracy improvement from perfect data costs 2 more weeks and has diminishing returns. Week 8 with 88% accuracy is the sweet spot."
+
+Stakeholders chose option 2. I also adjusted my process: "For future projects, I'm building in a 2-week data quality buffer upfront."
+
+Result: We delivered at week 8 with strong accuracy. Stakeholders appreciated the early flag and clear tradeoffs. The 2-week delay was manageable because we'd planned for it transparently, rather than them finding out at week 6.
+
+Lesson: Overpromise, then delay = broken trust. Early flag with options = manage expectations, show ownership, maintain trust.`,
+      },
+      {
+        q: "Describe a time you identified a data quality issue nobody else noticed. What did you do?",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: I was analyzing user engagement metrics and noticed something odd: our "daily active users" metric had a sudden 15% drop on a Tuesday, then rebounded Wednesday. The drop didn't correlate with any product changes or marketing campaigns.
+
+Task: Investigate.
+
+Action: I dug into the data. At first, it looked like users actually dropped (not a reporting bug). But I noticed the drop was uniform across all geographies and user cohorts — too uniform to be real user behavior.
+
+I traced the data pipeline:
+1. App logs user events (in UTC)
+2. ETL converts to local timezone
+3. Dashboard shows daily active users
+
+I discovered the bug: the ETL had a timezone offset error on Tuesday (applied UTC+5 instead of UTC+0 for one day). This shifted all event times by 5 hours, making some "Tuesday" events appear as "Monday", so the count was wrong.
+
+I verified: I recomputed the day's metrics using the raw logs, corrected the times, and got the expected ~same-as-normal DAU number.
+
+Root cause: The timezone library had a daylight-saving-time edge case. The code worked on other days but broke that one Tuesday.
+
+Action I took:
+1. Fixed the bug (updated the ETL)
+2. Retroactively corrected the metrics (recalculated Tuesday)
+3. Reported to the team: "We had a timezone bug that affected Tuesday's DAU. It's fixed and data is corrected."
+4. Added monitoring: "I added a daily sanity check that flags DAU changes > 10% with no explanation."
+
+Result: The team avoided making decisions on bad data (they'd been wondering why DAU dropped). The fix prevented future similar bugs. The monitoring caught issues faster.
+
+Lesson: Data quality issues are invisible unless you look for them. The most impactful analyses are ones where you catch the bug before it spreads to decisions.`,
+      },
+      {
+        q: "Tell me about a time two valid analytical approaches gave different results. How did you decide?",
+        subcategory: "behavioral",
+        difficulty: "Hard",
+        a: `Situation: I was analyzing which customers had the highest lifetime value (LTV). I used two methods:
+
+Method 1 (historical): Sum of all revenue from each customer to date. Customer A: $10K.
+
+Method 2 (cohort-based): Average revenue per customer, by cohort age. Customer A cohort (signed up 2 years ago): average $8K.
+
+These gave different rankings for LTV. Method 1 said "Customer A is high-value." Method 2 said "Customer A's cohort generates lower LTV on average."
+
+Task: Both methods were statistically valid. Which should I trust?
+
+Action: I didn't pick one and ignore the other. I investigated the difference.
+
+Method 1 problem: Historical revenue includes selection bias. High-spending customers stay longer, so old customers look more valuable than new customers (even if cohorts are comparable).
+
+Method 2 problem: Averaging across cohorts hides individual variation. Customer A might be an outlier within their cohort (high spender in a low-value cohort).
+
+I realized: they answer different questions.
+- Method 1: "How much has this customer spent?" (useful for account management)
+- Method 2: "What's the typical customer value for someone signed up 2 years ago?" (useful for forecasting, understanding cohort trends)
+
+Decision: Use both, for different purposes.
+
+For prioritizing customer retention: use Method 1 (Customer A has spent $10K, so losing them costs $10K).
+
+For evaluating product-market fit: use Method 2 (our 2-year-old cohorts average $8K LTV; declining LTV by cohort age = sign of trouble).
+
+I presented both to stakeholders: "These methods answer different questions. Here's when to use each."
+
+Result: The team appreciated understanding the nuance. They avoided the mistake of picking one approach and dismissing the other.
+
+Lesson: When two valid methods disagree, dig into why. Often they're answering different questions, and both are useful.`,
+      },
+      {
+        q: "Describe a time you had to say no to a stakeholder's data request. Why and how?",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: A VP from Sales asked me to analyze "why Customer X is churning." They wanted it in 24 hours, before a customer meeting.
+
+Task: The request seemed reasonable. But when I dug in, I found Customer X was a one-off deal that closed 4 months ago. They were never a recurring customer. The "churn" didn't make sense — they'd fulfilled their one-time contract.
+
+Action: I could've spent 24 hours pulling data and writing analysis. But it would've been noise (analyzing why a non-customer "left").
+
+I said no, but carefully:
+
+1. I understood the business need: Sales wanted to understand the customer situation before the meeting.
+
+2. I diagnosed the real issue: "There's a misunderstanding about Customer X's relationship. They weren't a recurring subscription. The contract was one-time. They didn't 'churn.'"
+
+3. I proposed alternatives:
+   - "I can clarify the contract timeline and revenue (1 hour)"
+   - "If you're worried about churn generally, I can analyze why similar one-time deals don't renew (3 days)"
+
+4. I explained the tradeoff: "Spending 24 hours analyzing a non-churn will delay my other committed projects (the Product team's analysis, due Friday). It's not the best use of time."
+
+The VP chose option 1. I spent 1 hour clarifying that Customer X was never a recurring customer. They went into the meeting with the right context.
+
+Result: VP appreciated the reality check. They avoided a misguided analysis. My committed projects stayed on track.
+
+Lesson: Saying no is part of prioritization. But you can't just say no. You have to understand what they really need and offer better alternatives.`,
+      },
+      {
+        q: "Tell me about your most impactful data science project. What made it impactful?",
+        subcategory: "behavioral",
+        difficulty: "Easy",
+        a: `Situation: Our e-commerce company had a high cart abandonment rate (~70%). The team thought it was a technical issue (site was slow). I was asked to investigate.
+
+Task: Analyze why users abandon carts.
+
+Action: Instead of assuming the problem, I did user research + analysis.
+
+I surveyed users who abandoned carts: 70% said "shipping costs were too high" (not technical issues). The team was solving the wrong problem.
+
+I analyzed: if we offered free shipping above a threshold, what would happen? I modeled:
+- Reduced margin per order (shipping subsidy)
+- Increased conversion (fewer abandoners)
+- Increased average order value (users buy more to hit the threshold)
+
+I found: free shipping on orders >$50 would increase revenue 12% despite the subsidy.
+
+The team launched it. Results: conversion increased 8%, average order value increased 15%, revenue increased 18%. Over a year: $5M incremental revenue.
+
+Why it was impactful:
+1. It solved the real problem (shipping cost, not site speed)
+2. It moved a key metric (conversion, revenue)
+3. It had measurable ROI ($5M)
+4. It shaped strategy (pricing team used this learning for future initiatives)
+
+Lesson: Impact comes from understanding the problem deeply, not just analyzing what you're handed. The best analysis starts with a question that matters.`,
+      },
+      {
+        q: "Describe a time you failed to deliver on a data project. What went wrong?",
+        subcategory: "behavioral",
+        difficulty: "Hard",
+        a: `Situation: I promised to deliver a machine learning model for predicting customer support ticket volume in 8 weeks. The business needed it to staff their support team.
+
+Task: I committed to weekly predictions of incoming tickets (so they could plan staffing).
+
+Action: I underestimated complexity. Week 1-2: Data seemed straightforward (historical tickets, timestamps). Week 3-4: Reality hit. Ticket volume depended on:
+- Product seasonality (back-to-school, holidays)
+- Marketing campaigns (product launches spike support tickets)
+- External events (outages, competitor announcements)
+- Temporal patterns (Monday busier than Friday)
+
+I tried a linear regression model: failed (didn't capture patterns). Tried ARIMA: better but still poor. Tried XGBoost: overfit (worked on training data, failed on new weeks).
+
+Week 7: I realized I was solving the wrong problem. I'd been chasing model accuracy (R² improvements) but the business didn't need a perfect model. They needed a simple, robust forecast.
+
+Week 8 (deadline): I had an overfit model that I couldn't confidently deploy. I missed the deadline.
+
+What went wrong:
+1. Overengineering: Chased complexity when simplicity would've served
+2. Poor communication: Didn't flag concerns until week 7. Should've updated stakeholders at week 4 when things got hard
+3. Wrong success metric: I optimized for model accuracy, not business accuracy (forecast error tolerance was ±10%, my model achieved ±8% but only on training data)
+
+What I learned:
+- Start simple. Validate it solves the business problem. Iterate.
+- Communicate early and often when reality differs from plan
+- Define success with the business ("forecast within ±10% is acceptable"), not just with metrics ("R² > 0.8")
+
+Impact: I eventually delivered a simple model (exponential smoothing + trend) that was 87% accurate and robust. It got deployed 6 weeks late. The learning: failure happens. Own it, learn from it, share the lesson.`,
+      },
+      {
+        q: "How did you onboard yourself into a new domain where you had no prior data expertise?",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: I joined a fintech company as their first data scientist. They worked in lending/credit, which I'd never touched. I didn't know the difference between a FICO score and a credit line.
+
+Task: Get up to speed and deliver value.
+
+Action: I structured my first 4 weeks carefully.
+
+Week 1: Read and listen, don't build.
+- Read the lending fundamentals (Wikipedia, SEC filings, company docs)
+- Shadowed the credit team: how do they underwrite loans, what data do they use, what decisions are they making?
+- Listened to customer calls: what questions do applicants ask, what confuses them?
+
+Week 2: Map the data.
+- Which data sources exist? (applications, credit bureau, transaction history)
+- Which metrics matter? (approval rate, default rate, revenue per loan)
+- What gaps exist? (we have no data on customer experience, support tickets)
+
+Week 3: Validate my understanding.
+- I presented a summary to the credit team: "Here's how I understand lending. Here's what I see in your data. What's wrong with my mental model?"
+- They corrected me (I'd misunderstood credit utilization's importance)
+
+Week 4: Deliver something small that moves a metric.
+- I analyzed which applicants were most likely to default
+- Not a fancy ML model, just patterns in the data
+- But it directly informed their credit decision process
+
+This approach worked because:
+1. Domain expertise is learnable. The credit team was the experts, I just connected their knowledge to data
+2. Asking questions early prevented big mistakes later
+3. Small wins build credibility
+4. Understanding the business first meant my technical work was relevant
+
+Result: I became a trusted part of the team. By month 3, I was leading projects. By month 6, I was advising credit strategy.
+
+Lesson: The hardest part of joining a new domain isn't learning the data tools. It's learning the business. Do that first.`,
+      },
+      {
+        q: "Tell me about a time you had to convince your team to adopt a new tool or methodology.",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: Our data team was using SQL + Excel for analytics. It was slow, error-prone, and hard to version control. I wanted to introduce dbt (data build tool) for our analytics layer.
+
+Task: Convince a skeptical team to adopt new tooling.
+
+Action: I didn't just say "dbt is better." Instead, I made a business case:
+
+1. Identified the pain: "We spend 10% of our time rewriting the same queries for different reports. We have no version control for SQL. When queries break, we don't know who to blame."
+
+2. Demonstrated value: I built a small POC using dbt on one project. Showed: "This project took 3 weeks with Excel. With dbt, it took 1 week (same analysis, better code)."
+
+3. Addressed concerns: "dbt adds a learning curve (1 week to learn). It requires discipline (forces documentation, testing). But it pays off in 2-3 projects."
+
+4. Proposed a trial: "Let's use dbt for new projects (not legacy ones). After 3 projects, we evaluate. If it's not working, we stop."
+
+5. Provided support: I did the initial setup. I did the training (2-hour workshop). I helped the first project.
+
+Result: The team adopted dbt. After 3 projects, time-to-delivery dropped 30%. We had fewer bugs (dbt's testing caught them early). The team loved it.
+
+Why it worked:
+- I validated their pain (didn't just want a shiny tool)
+- I proved it with a real example (not just theory)
+- I addressed their concerns (learning curve is real, but worth it)
+- I didn't force it (trial period, opt-in)
+- I provided support (wasn't their responsibility to figure it out)
+
+Lesson: Adoption isn't about the tool being good. It's about solving a real problem the team feels, proving it works, and supporting them through change.`,
+      },
+    ],
+    ai: [
+      {
+        q: "How do you handle multiple comparisons problem when running many A/B tests simultaneously?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Multiple comparisons problem: If you run 20 A/B tests at 95% significance, you expect ~1 false positive by chance (5% × 20). Running many tests inflates false discovery rate.
+
+Example: You test 20 new features. Without correction, you'll declare ~1 feature "significant" even if all are useless (pure noise).
+
+Solutions:
+
+1. Bonferroni correction: Divide significance threshold by number of tests. For 20 tests, use α = 0.05 / 20 = 0.0025 instead of 0.05. Conservative, but controls false positive rate. Downside: very strict, might miss real effects.
+
+2. False Discovery Rate (FDR) control: More nuanced. Instead of controlling probability of any false positive, control the proportion of false positives among all positives. Less conservative than Bonferroni. If you reject 10 hypotheses, expect ~1 false positive on average.
+
+3. Benjamini-Hochberg procedure: Implements FDR. Rank tests by p-value, apply adaptive threshold. Practical balance between sensitivity and specificity.
+
+4. Pre-registration: Decide which tests you'll run BEFORE seeing data. This prevents p-hacking (running many tests, reporting the ones that happen to be significant). If you register 5 tests, you have false positive inflation from those 5. If you run 100 tests but only register 5, you avoid the inflation problem.
+
+5. Hierarchical testing: Test a primary hypothesis first. Only if it passes, test secondary hypotheses. This controls false positives without being overly conservative.
+
+When to use each:
+
+- Bonferroni: Very few tests (3-5), strict control needed (medical trials)
+- FDR/Benjamini-Hochberg: Many exploratory tests (10+), balance sensitivity/specificity (A/B testing at tech companies)
+- Pre-registration: Any test, prevents p-hacking
+- Hierarchical: Clear primary goal with secondary questions
+
+Best practice: Pre-register your tests, use FDR for multiple comparisons, and report effect sizes (not just p-values). A small effect might be "statistically significant" but not practically important.`,
+      },
+      {
+        q: "Explain the difference between Type I and Type II errors using a business scenario.",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Type I error: False positive. You conclude there's an effect when there isn't. Reject the null hypothesis incorrectly.
+
+Type II error: False negative. You fail to detect an effect that exists. Fail to reject the null hypothesis incorrectly.
+
+Business example: You're testing a new checkout flow to increase conversion.
+
+Null hypothesis: The new checkout doesn't increase conversion (conversion rate is the same).
+
+Type I error: You conclude the new checkout increases conversion (p < 0.05), but it actually doesn't. In reality, the improvement was just noise. You deploy the "improved" checkout. Users are confused, conversion actually drops in the long run.
+
+Cost: Deploy a bad change, harm user experience, reduce revenue.
+
+Type II error: You conclude the new checkout doesn't increase conversion (fail to reject null), but it actually does. The true improvement exists, but your test didn't have enough power to detect it (small sample size, short duration). You don't deploy the checkout. You miss an opportunity to improve revenue.
+
+Cost: Miss a real improvement, leave revenue on the table.
+
+Trade-off: Setting α (significance level) = 0.05 means 5% chance of Type I error. But lowering α (becoming stricter) increases Type II error (you need more data to detect real effects). Raising α reduces Type II error but increases Type I error.
+
+Choosing which error matters:
+
+- Type I is worse: Deploying a change has high cost (user experience, engineering load). Be conservative (α = 0.01). Accept that you might miss improvements.
+
+- Type II is worse: Missing an improvement is costly (left revenue on the table). Be aggressive (α = 0.10). Accept more false positives, but catch real improvements.
+
+For checkout tests: Type I is usually worse (deploying a broken checkout damages trust). Use α = 0.05 or stricter.
+
+For exploratory feature tests: Type II is worse (don't want to miss promising features). Use α = 0.10, plan multiple tests.
+
+Key insight: You can't eliminate both errors. You choose which you can tolerate.`,
+      },
+      {
+        q: "When would you use bootstrapping instead of parametric tests?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Bootstrapping: Resample your data with replacement many times (1000+), compute the statistic each time, estimate the distribution. No assumptions about the underlying distribution needed.
+
+Parametric tests: Assume data follows a known distribution (normal, exponential, etc.). Faster, but breaks if assumptions violated.
+
+When to use bootstrapping:
+
+1. Data is non-normal. You have revenue data (skewed, with outliers). A t-test assumes normality. Bootstrapping doesn't.
+
+2. Sample size is small. Bootstrap works with n=20. Parametric tests need larger n to be reliable with non-normal data.
+
+3. You want confidence intervals for weird statistics. Example: "What's the confidence interval for the ratio of revenue/users?" Bootstrapping: resample, compute ratio 1000 times, find the 2.5th and 97.5th percentiles. Parametric: no closed-form solution.
+
+4. Distribution is multimodal or unknown. Bootstrapping empirically estimates the distribution.
+
+Example: You're testing if a new pricing increases revenue. Your revenue data has outliers (big customers spend way more than median). A parametric t-test might fail if outliers violate normality. Bootstrapping: resample your revenue data 1000 times, compute mean each time, see if the control and treatment distributions overlap.
+
+When to use parametric tests:
+
+1. Assumptions are met. Data is normally distributed, sample size is large (n > 30).
+
+2. Speed matters. Parametric tests are instant. Bootstrapping requires 1000 resamples.
+
+3. Data follows a known distribution (Poisson for counts, exponential for waiting times).
+
+Trade-off: Bootstrapping is more flexible but slower. Parametric tests are faster but require assumptions.
+
+My approach: Start parametric (fast). If assumptions seem violated (check with Q-Q plot or Shapiro-Wilk test), switch to bootstrap.
+
+Implementation: Use scipy.stats.bootstrap in Python. It's a few lines.`,
+      },
+      {
+        q: "Your data is not normally distributed. How does this affect your choice of statistical tests?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Many parametric tests (t-test, ANOVA, linear regression) assume normality. If your data violates this, the test might give misleading results.
+
+Impact of non-normality:
+
+1. T-test with non-normal data: Type I error rate increases (you declare significance more often than 5%, even with null hypothesis true). The test becomes unreliable. Example: your conversion rate data is binary (0/1, not normal). A t-test might say the difference is significant when it's not.
+
+2. Confidence intervals are wrong. They might not actually contain the true parameter 95% of the time, even though they claim to.
+
+3. P-values are inaccurate. A result reported as "significant, p=0.03" might actually be p=0.08 when accounting for non-normality.
+
+How to detect non-normality:
+
+- Visual: Q-Q plot (compare your data to a normal distribution). If it deviates from the diagonal line, non-normal.
+- Statistical: Shapiro-Wilk test (null hypothesis: data is normal). If p < 0.05, reject normality.
+
+What to do if data is non-normal:
+
+Option 1: Transform the data. Log-transform (for right-skewed, positive data like revenue). Box-Cox transformation (finds optimal transformation). After transforming, if data becomes normal, use parametric tests on the transformed data.
+
+Option 2: Use non-parametric tests. Mann-Whitney U test (replaces t-test), Kruskal-Wallis (replaces ANOVA). These don't assume normality. Tradeoff: less statistical power (harder to detect real effects). But more robust.
+
+Option 3: Bootstrap (resample your data, compute statistic). No normality assumption. Works well.
+
+Option 4: Larger sample size. Central Limit Theorem: with large n (n > 100), test results become robust to non-normality anyway.
+
+My approach:
+- Small sample (n < 30), non-normal: Use Mann-Whitney or bootstrap
+- Large sample (n > 100), non-normal: Parametric test is still reliable (by CLT)
+- Any sample size, skewed data: Log-transform, check if normal, then use parametric test
+
+Example: Customer revenue is skewed (right-tail, some big spenders). Raw data fails normality test. I log-transform, compute log(revenue), check for normality (better). Now I can use t-test on log-transformed data. Result: more reliable p-values.`,
+      },
     ],
   },
 
