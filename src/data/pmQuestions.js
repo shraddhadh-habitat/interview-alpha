@@ -11507,6 +11507,47 @@ My approach:
 Example: Customer revenue is skewed (right-tail, some big spenders). Raw data fails normality test. I log-transform, compute log(revenue), check for normality (better). Now I can use t-test on log-transformed data. Result: more reliable p-values.`,
       },
     ],
+    machine_learning: [
+      {
+        q: "What is overfitting and how do you prevent it?",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are we talking about diagnosing overfitting in a trained model, or preventing it during training? And do you care about interpretability as a tradeoff with reducing overfitting? Also, is this for a small dataset or large-scale production?
+
+For this answer, I'll cover both diagnosis and prevention strategies.
+
+---
+
+Overfitting happens when your model learns the training data too well — including its noise and quirks — rather than learning generalizable patterns. Result: high training accuracy, low test accuracy. Your model memorizes instead of understanding.
+
+How to detect overfitting:
+• Large gap between training and validation accuracy. Training: 95%, validation: 75%. That's a red flag.
+• Model performs great on training set but fails on new data.
+• Complex model, small dataset. High ratio of parameters to data points.
+
+How to prevent overfitting:
+
+1. More data: The simplest fix. More examples dilute the noise. But data is often expensive.
+
+2. Regularization: Add a penalty for complex models.
+• L1 (Lasso): Shrinks some coefficients to zero. Feature selection built-in.
+• L2 (Ridge): Shrinks all coefficients uniformly. Keeps all features.
+• Elastic Net: Combination of L1 and L2.
+Tradeoff: Regularization trades accuracy for generalization. Your training accuracy drops, but test accuracy improves.
+
+3. Early stopping: Train your model, monitor validation loss. Stop when validation loss starts increasing (overfitting starting). Don't wait for training loss to minimize.
+
+4. Cross-validation: Validate on multiple splits of data, not just one test set. More robust estimate of generalization.
+
+5. Feature reduction: Fewer features = simpler model = less overfitting risk. Use PCA or feature selection.
+
+6. Ensemble methods: Combine multiple models. Averaging reduces individual model's overfitting.
+
+My approach: Start with cross-validation (free and effective). If still overfitting, add L2 regularization. If that's not enough, collect more data or reduce features.
+
+Metric: Use validation curve to find the sweet spot between bias and variance.`,
+      },
+    ],
   },
 
 };
