@@ -10182,6 +10182,853 @@ Testing: Train your model, wait for month to pass, make real predictions on hold
 
 Leakage is insidious — you won't know you have it until production. Discipline and skepticism are your best defenses.`,
       },
+      {
+        q: "Write a query to find the top 10 users by revenue who signed up in the last 90 days and made at least 3 purchases. Explain your approach.",
+        subcategory: "sql_data",
+        difficulty: "Easy",
+        a: `I'd want to clarify: Is revenue total purchase amount or profit? Should I include cancelled purchases? Are we filtering by a specific region or product category?
+
+Assuming revenue = total order value, cancelled orders excluded, global dataset.
+
+Approach:
+
+Step 1: Define the cohort. Users who signed up in the last 90 days. Filter \`signup_date >= NOW() - 90 days\`.
+
+Step 2: Count purchases per user. Group by user_id, count orders. Filter for \`count >= 3\`.
+
+Step 3: Sum revenue per user. Group by user_id, sum(order_value). Only include users from Step 2.
+
+Step 4: Rank and sort. Order by revenue DESC, limit 10.
+
+SQL skeleton:
+
+\`\`\`
+WITH recent_users AS (
+  SELECT user_id FROM users WHERE signup_date >= NOW() - 90 days
+),
+user_purchases AS (
+  SELECT user_id, COUNT(*) as purchase_count, SUM(order_value) as revenue
+  FROM orders
+  WHERE user_id IN (SELECT user_id FROM recent_users)
+  AND status != 'cancelled'
+  GROUP BY user_id
+  HAVING COUNT(*) >= 3
+)
+SELECT user_id, revenue FROM user_purchases ORDER BY revenue DESC LIMIT 10;
+\`\`\`
+
+Optimization: If the users table is large, avoid IN subquery. Use JOIN instead for better performance. Index on (signup_date) and (user_id) speeds scans.
+
+Edge cases: What if two users have exactly the same revenue? Tie-breaking by user_id or signup_date. What if fewer than 10 users meet criteria? Return all. What about refunds? Subtract from revenue or exclude the order?
+
+This pattern extends: filter → aggregate → rank → limit.`,
+      },
+      {
+        q: "How would you design a data pipeline that processes 10TB of clickstream data daily?",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        a: `10TB daily means high volume, distributed processing required. I'd clarify: What's the SLA? (Real-time? Daily batch?) Do we need raw logs stored, or aggregated metrics? What transformations matter most?
+
+Assuming: Daily batch, key metrics (page views, user funnels, conversion rates), queries need to run within 2 hours.
+
+Architecture:
+
+Layer 1: Ingestion. Clickstream logs arrive from web servers (via logging service like Fluentd, Kafka). Store raw in data lake (S3) partitioned by date and hour. Compression (gzip) reduces storage.
+
+Layer 2: Processing. Spark job runs nightly. Read from S3, clean (remove bots, invalid clicks), dedup, transform into structured events (user_id, page, timestamp, action).
+
+Layer 3: Warehouse. Output to Snowflake/Redshift partitioned by date. Smaller, query-optimized format.
+
+Layer 4: Aggregation. Compute daily metrics (page views, bounce rate, conversion funnels) and cache in Redis for fast dashboard queries.
+
+Scaling strategy:
+- Spark: Distributed compute across 100+ nodes. Partition input by hour to parallelize.
+- Bottleneck: Network I/O. Keep compute close to data (Spark on S3-compatible storage).
+- Monitoring: Alert if pipeline runs >2 hours (SLA breach).
+
+Cost optimization: Archive raw logs to Glacier after 30 days. Only keep hot data in S3.
+
+Challenges: Handling late-arriving data (user clicks recorded 10 minutes late), deduplication (same click logged twice), handling schema changes (new fields in clickstream).
+
+Solution: Idempotent pipeline (safe to rerun). Late-arriving data triggers daily reprocessing of yesterday's data.`,
+      },
+      {
+        q: "Explain the difference between star schema and snowflake schema. When do you use each?",
+        subcategory: "sql_data",
+        difficulty: "Medium",
+        a: `Star schema: One fact table (central) surrounded by dimension tables. Denormalized dimensions. Simple, fast queries.
+
+Snowflake schema: Normalized dimensions (dimensions split into sub-dimensions). More tables, more joins, but less data duplication.
+
+Visual:
+- Star: Fact table → 5 dimension tables (direct)
+- Snowflake: Fact table → 5 dimension tables → sub-dimensions (hierarchical)
+
+When to use star: Fast OLAP queries. Data warehouse for business intelligence. Dimension tables are small and queries are frequent. Example: Sales warehouse with fact_sales, dim_customer, dim_product, dim_date. Users query daily.
+
+When to use snowflake: Storage efficiency matters. Dimension hierarchies are deep (geography: continent → country → state → city). Updates to dimensions are frequent (if you change a customer name in star, it updates one row; in snowflake, one row too, but less duplication elsewhere).
+
+Tradeoff: Star schema is denormalized (faster queries, more storage). Snowflake is normalized (slower queries from more joins, less storage).
+
+In practice: Most data warehouses use star schema because query speed > storage cost. Snowflake schema used when dimension tables are massive (millions of rows) and updates are frequent.
+
+Example: Sales company with 1M customers. In star, customer dimension has 1M rows. In snowflake, customer points to region, region to geography, etc. On a billion sales facts, snowflake saves duplicate region/geography data.
+
+Recommendation: Start with star. If dimension storage becomes a problem, convert to snowflake. Normalized dimensions can always be re-denormalized for reporting.`,
+      },
+      {
+        q: "Your dashboard shows different revenue numbers than the finance team's report. How do you investigate the discrepancy?",
+        subcategory: "sql_data",
+        difficulty: "Medium",
+        a: `Data discrepancies are common and frustrating. I'd systematically narrow it down.
+
+Step 1: Clarify definitions. Revenue could mean: gross (before refunds), net (after refunds), billed (invoiced), collected (paid). Finance might exclude pending orders, I might include. Get exact definitions from finance.
+
+Step 2: Match time periods. My dashboard shows "last 30 days." Finance report: "last fiscal month." Different date ranges = different numbers. Align on exact period.
+
+Step 3: Segment comparison. Compute revenue by revenue type (subscription, one-time, services). Compare each segment between my data and finance report. If only subscription revenue differs, it's a subscription-specific issue.
+
+Step 4: Data source check. Am I querying the source database, or a data warehouse? Finance uses the source system (system of truth). My warehouse might be stale (hourly sync lag) or have transformation bugs.
+
+Step 5: Trace the transaction. Pick a specific large customer. Find their orders in my data, in finance system. Do the individual order amounts match? If yes, aggregation bug. If no, field-level difference.
+
+Root causes often:
+- Timing: I include pending orders, finance doesn't
+- Exclusions: Finance excludes test orders, I don't
+- Transformations: My ETL has a bug (wrong date parsing, double-counting)
+- Currency: Different currency conversions
+- Timing of refunds: I count refund at request time, finance at execution time
+
+Fix: Once identified, update my query or data pipeline. Document the difference. Regular reconciliation prevents future divergence.
+
+Prevention: Daily automated reconciliation that flags >5% differences.`,
+      },
+      {
+        q: "How would you handle slowly changing dimensions in a data warehouse?",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        a: `Slowly Changing Dimensions (SCD): Dimensions that change slowly over time. Example: Customer address. Most customers keep the same address, but occasionally it updates.
+
+Question: When a dimension value changes, how do you track history in your warehouse?
+
+SCD Type 1: Overwrite. Update the dimension in-place. Old value lost. Fast, simple, but no history.
+
+SCD Type 2: Add new row. Keep old and new. Add effective_date and end_date columns. Fact tables reference the correct version at transaction time. Complex, preserves history.
+
+SCD Type 3: Add new column. Keep current and previous values in same row. Hybrid approach. Works for one level of history only.
+
+Example: Customer Jones moves from NYC to LA.
+
+Type 1: Update customer_city = "LA". No record of NYC.
+Type 2: Keep NYC row with end_date=2024-05-19, insert new LA row with start_date=2024-05-19.
+Type 3: Add columns current_city, previous_city. Update both when change happens.
+
+When to use:
+- Type 1: Dimensions rarely change, history not needed. Example: Product attributes.
+- Type 2: History critical for accurate reporting. Example: Sales by customer region over time.
+- Type 3: One level of history sufficient. Example: Customer status (current/previous).
+
+Challenges with Type 2:
+- Storage overhead (every change creates new row)
+- Fact table loads must reference correct dimension key at transaction time
+- Queries become complex (need to join fact to dimension on date ranges)
+
+Implementation:
+1. Detect changes: Compare new data to current dimension row (hash of all attributes)
+2. If changed: Mark old row end_date = today, insert new row with start_date = today
+3. Fact table loads: For each transaction, find dimension version valid at that transaction's date
+
+Tools: dbt, Talend, custom scripts all support SCD patterns.
+
+My recommendation: Type 2 for critical dimensions (customer, product). Type 1 for everything else. Type 3 rarely used.`,
+      },
+      {
+        q: "How would you optimize a Pandas script that takes 4 hours to process 50M rows?",
+        subcategory: "python",
+        difficulty: "Medium",
+        a: `4 hours for 50M rows = ~3.5 hours per billion rows. Likely bottleneck is memory or algorithmic inefficiency.
+
+I'd ask: What operation is slow? (Loading, filtering, aggregating, joining?) Is the bottleneck CPU or memory (swapping)?
+
+Debugging first:
+1. Profile the code. Use cProfile or line_profiler to identify the slow line.
+2. Check memory usage. Monitor if swap is happening (slows everything down).
+
+Optimization strategies:
+
+Option 1: Chunking. Read 10M rows at a time instead of 50M. Process each chunk, concatenate results. Reduces memory pressure.
+
+\`\`\`
+for chunk in pd.read_csv('file.csv', chunksize=10_000_000):
+    result = chunk[chunk['value'] > threshold]
+\`\`\`
+
+Option 2: Categorical dtypes. If a column has 100 unique values repeated 50M times, store as category (saves 10x memory).
+
+\`\`\`
+df['country'] = df['country'].astype('category')
+\`\`\`
+
+Option 3: Drop unnecessary columns. Only read columns you need.
+
+\`\`\`
+df = pd.read_csv('file.csv', usecols=['user_id', 'revenue'])
+\`\`\`
+
+Option 4: Use vectorized operations. Avoid loops.
+
+Wrong (slow):
+\`\`\`
+for i, row in df.iterrows():
+    df.loc[i, 'new_col'] = row['a'] + row['b']
+\`\`\`
+
+Right (fast):
+\`\`\`
+df['new_col'] = df['a'] + df['b']
+\`\`\`
+
+Option 5: Switch to Polars. Modern replacement for Pandas, 10-100x faster on large data.
+
+Option 6: Parallelize. Use Dask (distributed Pandas) for multi-core processing.
+
+Expected improvement: Chunking + dtypes = 3-5x speedup. Polars = 50x speedup. Target: <1 hour.`,
+      },
+      {
+        q: "Explain the difference between multiprocessing and multithreading in Python. When do you use each for data tasks?",
+        subcategory: "python",
+        difficulty: "Medium",
+        a: `Both allow concurrent execution, but differ fundamentally due to Python's GIL (Global Interpreter Lock).
+
+GIL: Only one thread can execute Python code at a time (even on multi-core systems). This makes multithreading inefficient for CPU-bound tasks.
+
+Multithreading: Multiple threads share the same memory space. Context switches between threads. Because of GIL, threads don't run in parallel for CPU work, but OS schedules them.
+
+Pros: Lightweight, good for I/O-bound work (network requests, file reads). One thread waits for I/O, another runs.
+
+Cons: Can't exploit multiple CPU cores for computation. Data sharing is easy but race conditions are risky.
+
+Multiprocessing: Multiple processes, each with own Python interpreter and GIL. True parallelism on multi-core CPUs. Processes communicate via queues or pipes.
+
+Pros: True parallelism, exploits multiple cores. Good for CPU-intensive tasks.
+
+Cons: Heavier (spawn process = overhead). Data sharing requires serialization (pickling), which is slow.
+
+When to use:
+
+Multithreading: I/O-bound tasks. Scraping web pages (network-bound), reading files, API calls. Example: Download 1000 URLs in parallel.
+
+Multiprocessing: CPU-bound tasks. Processing data, machine learning, numerical computations. Example: Train 4 ML models in parallel on 4-core CPU.
+
+For data tasks:
+
+Loading 100 CSV files from disk: Multithreading (I/O-bound).
+
+Computing statistics on 100 files: Multiprocessing (CPU-bound).
+
+Fetching data from 100 APIs: Multithreading (I/O-bound).
+
+Training 4 models: Multiprocessing (CPU-bound).
+
+Example: Read 10M rows, compute rolling average (CPU-bound).
+
+Wrong (slow): Single thread.
+Better: Multiprocessing. Split data into 4 chunks, process on 4 cores in parallel.
+
+\`\`\`
+from multiprocessing import Pool
+with Pool(4) as p:
+    results = p.map(compute_stats, chunks)
+\`\`\`
+
+Hybrid: I/O and CPU. Fetch data (multithreaded), process (multiprocessing). Chain them.
+
+Recommendation: For data pipelines, start with multiprocessing. For dashboards/APIs, multithreading.`,
+      },
+      {
+        q: "Write pseudocode for a function that detects outliers in a time series dataset. Explain your approach.",
+        subcategory: "python",
+        difficulty: "Medium",
+        a: `I'd clarify: What's the data? (Daily stock prices, website traffic, sensor readings?) Do we care about anomalies for alerting, or analysis?
+
+Assuming: Time series with trend, seasonality, occasional anomalies. Goal: flag unusual points without false positives.
+
+Approach: Decompose trend/seasonality, then detect anomalies in residuals.
+
+\`\`\`
+def detect_outliers(timeseries, window=30, threshold=3.0):
+  # Step 1: Smooth out trend with rolling average
+  trend = timeseries.rolling(window).mean()
+
+  # Step 2: Calculate residuals (actual - trend)
+  residuals = timeseries - trend
+
+  # Step 3: Compute rolling std of residuals
+  rolling_std = residuals.rolling(window).std()
+
+  # Step 4: Flag if residual > threshold * std (3-sigma rule)
+  outliers = abs(residuals) > threshold * rolling_std
+
+  return outliers
+\`\`\`
+
+Why this works:
+- Trend removal: Focuses detection on deviations from normal pattern, not absolute value
+- Rolling window: Adapts to time-varying variance
+- 3-sigma rule: ~99.7% of normal data within 3 std; outliers are rare
+
+Alternative approaches:
+
+Isolation Forest: ML-based. Partitions data into trees. Outliers isolated quickly. Handles high-dimensional data.
+
+ARIMA/Prophet: Time series model. Forecast next value. If actual >> predicted, anomaly.
+
+Seasonal decomposition: More sophisticated trend/seasonal/residual separation. Better for strong seasonality (daily, weekly patterns).
+
+Interquartile range (IQR): Find Q1, Q3. Outliers are > Q3 + 1.5*IQR.
+
+When to use each:
+- Rolling window: Simple, fast. Good for smooth trends.
+- Isolation Forest: Complex patterns, multiple anomaly types.
+- ARIMA: Strong seasonality (stock prices, web traffic).
+- IQR: Skewed distributions (income data).
+
+Trade-off: Simplicity vs accuracy. Rolling window catches obvious anomalies, Isolation Forest catches subtle ones.
+
+Validation: Compare flagged anomalies to actual anomalies (domain expert review). Tune threshold to minimize false positives/negatives.`,
+      },
+      {
+        q: "How would you build a reusable data validation framework in Python for incoming data feeds?",
+        subcategory: "python",
+        difficulty: "Hard",
+        a: `Data validation prevents bad data from corrupting pipelines. A reusable framework avoids duplicate validation logic across projects.
+
+Design principles: Declarative (define rules in config), pluggable (add custom validators), informative (report failures clearly).
+
+Architecture:
+
+\`\`\`
+class Validator:
+  def __init__(self, schema):
+    self.schema = schema  # Dict of column → rules
+
+  def validate(self, dataframe):
+    errors = []
+    for col, rules in self.schema.items():
+      for rule in rules:
+        if not rule.check(dataframe[col]):
+          errors.append(rule.error_message)
+    return errors
+
+class Rule:
+  def check(self, series):
+    # Override in subclasses
+    pass
+
+  def error_message(self):
+    pass
+
+class NotNull(Rule):
+  def check(self, series):
+    return series.notna().all()
+
+  def error_message(self):
+    return f"Column has {series.isna().sum()} nulls"
+
+class InRange(Rule):
+  def __init__(self, min_val, max_val):
+    self.min_val = min_val
+    self.max_val = max_val
+
+  def check(self, series):
+    return ((series >= self.min_val) & (series <= self.max_val)).all()
+
+  def error_message(self):
+    return f"Values outside [{self.min_val}, {self.max_val}]"
+
+# Usage
+schema = {
+  'user_id': [NotNull(), InRange(1, 999999)],
+  'revenue': [NotNull(), InRange(0, 1000000)],
+}
+validator = Validator(schema)
+errors = validator.validate(df)
+if errors:
+  raise ValueError(errors)
+\`\`\`
+
+Advanced features:
+
+1. Cross-column validation: "If status='active', revenue must be >0"
+2. Statistical checks: "Mean revenue within 10% of historical"
+3. Regex validation: "Email matches pattern"
+4. Schema evolution: "New columns detected, alert"
+5. Reporting: Output summary of violations
+
+Tools: Great Expectations, dbt tests, Pandera (typed DataFrame validation).
+
+Recommendation: Use Great Expectations for production. It's battle-tested, integrates with pipelines, has UI for monitoring.`,
+      },
+      {
+        q: "Explain generators in Python. How would you use them to process a dataset that doesn't fit in memory?",
+        subcategory: "python",
+        difficulty: "Easy",
+        a: `Generator: A function that yields values one at a time instead of returning a list. Lazy evaluation — computes on demand.
+
+Regular function (loads all data to memory):
+\`\`\`
+def read_data():
+  data = []
+  for line in open('huge_file.txt'):
+    data.append(line.strip())
+  return data
+
+result = read_data()  # Memory = entire file
+\`\`\`
+
+Generator (lazy, memory-efficient):
+\`\`\`
+def read_data():
+  for line in open('huge_file.txt'):
+    yield line.strip()
+
+result = read_data()  # Memory = one line at a time
+for row in result:
+  process(row)
+\`\`\`
+
+For 10GB file:
+- Regular function: Load 10GB into memory → OOM error
+- Generator: Load 1 line (~100 bytes) at a time → works
+
+Why generators help:
+1. Memory efficient. Only one item in memory at a time.
+2. Lazy. Don't compute until needed. If you break loop early, rest is never computed.
+3. Composable. Chain generators (one yields to another).
+
+Example: Processing large CSV
+
+\`\`\`
+def read_csv(filename):
+  with open(filename) as f:
+    header = next(f).strip().split(',')
+    for line in f:
+      yield dict(zip(header, line.strip().split(',')))
+
+def filter_rows(rows, condition):
+  for row in rows:
+    if condition(row):
+      yield row
+
+def transform(rows, func):
+  for row in rows:
+    yield func(row)
+
+# Chain: read → filter → transform → process
+rows = read_csv('huge.csv')
+rows = filter_rows(rows, lambda r: r['revenue'] > 100)
+rows = transform(rows, lambda r: {'user': r['user_id'], 'amount': float(r['revenue'])})
+for row in rows:
+  save_to_database(row)
+\`\`\`
+
+This processes a 100GB CSV without loading it all at once.
+
+Limitations:
+- Can't index (access random element)
+- Can't reuse (iterate once)
+- Harder to debug
+
+When to use: Processing huge files, streaming data, infinite sequences (e.g., Fibonacci), memory-constrained environments.`,
+      },
+      {
+        q: "Design an end-to-end ML pipeline for a credit scoring model. Include data ingestion, training, deployment, and monitoring.",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        a: `Credit scoring: Predict if a loan applicant will default. High stakes — regulatory requirements, fairness constraints.
+
+Architecture:
+
+Data Ingestion (daily batch):
+- Collect loan applications, credit bureau data, transaction history (from various sources)
+- Validation: Check for missing values, outliers, data quality
+- Feature engineering: Compute ratio features (debt-to-income), time features (account age), categorical encodings
+- Store in feature store (versioned, lineage tracked)
+
+Training (weekly):
+- Read features from feature store for past 2 years
+- Train logistic regression (interpretable, required for regulation)
+- Cross-validation: Time-based split (train on 2021, test on 2022) to avoid look-ahead bias
+- Evaluate: AUC-ROC, precision-recall (important for class imbalance), calibration
+- A/B test: Compare to baseline model (current production model)
+- If improved, register new model version
+
+Serving (real-time):
+- Applicant applies → request sent to scoring service
+- Fetch features for applicant (from cache, or compute real-time)
+- Load latest model, predict (probability of default)
+- Return decision: Approve/Decline/Manual review (if confidence low)
+- Log prediction + decision for monitoring
+
+Monitoring (continuous):
+- Prediction distribution: Are predictions drifting? (If yes, retrain)
+- Performance monitoring: Compare predicted vs actual defaults (after loan decision known)
+- Fairness monitoring: Approval rate by demographic (gender, race, age). Alert if disparities detected
+- Feature importance: Which features driving decisions? Regulatory requirement.
+- Model staleness: If model not retrained in 30 days, alert
+
+Feedback loop:
+- After 6 months, loan outcome known (default or paid). Label new data.
+- Compare predicted vs actual. If accuracy drops, retrain.
+
+Challenges:
+
+1. Regulatory: Model must be explainable (can't use neural network). Use SHAP to explain decisions.
+2. Fairness: Can't discriminate by protected attributes. Add constraints during training.
+3. Data latency: Real-time feature computation must be fast (<100ms).
+4. Model decay: Patterns change (economy shifts, fraud evolves). Monitor and retrain frequently.
+
+Deployment strategy:
+- Shadow mode: Run new model in parallel, log but don't act on predictions (1 week)
+- Canary: Serve 5% of requests with new model (1 week)
+- Full rollout: If no issues, 100%
+- Rollback: If performance drops, revert instantly`,
+      },
+      {
+        q: "How would you architect a feature store that serves both real-time and batch ML models?",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        a: `Feature store: Centralized repository for features (ML variables). Without it, teams rebuild features independently (waste, inconsistency).
+
+Architecture (offline + online):
+
+Offline (training):
+- Batch compute features every night (historical data)
+- Store in S3 (parquet), indexed by date
+- Example: For each user, compute "purchases_last_30_days" from transaction history
+- Versioned: v1, v2, v3. Easy to rollback if bug found.
+
+Online (serving):
+- Real-time features for inference
+- Low latency (<50ms required for real-time predictions)
+- Features served from cache (Redis) or computed on-the-fly
+- Example: "user's location right now" (real-time), "purchases_last_30_days" (batch, cached)
+
+Data flow:
+
+Raw events → Feature computation → Offline store (S3) + Online store (Redis/Cassandra) → Models (training + serving)
+
+Key components:
+
+1. Feature registry: Catalog of all features (name, owner, description, creation date, lineage). CRITICAL for governance.
+
+2. Feature computation engine: Spark jobs that generate features. Can't have different computation for batch vs online (training-serving skew).
+
+3. Offline store: Historical features for training. Parquet in S3, partitioned by date and feature name. Version control.
+
+4. Online store: Real-time features for serving. Redis or DynamoDB. Low latency. Subset of features that change frequently.
+
+5. SDK: Library for ML engineers. \`get_features(['user_purchases_30d', 'user_location'])\` returns features from online/offline store.
+
+Example (demand forecasting):
+
+Batch (offline): Compute "user_purchase_history" from transaction DB (daily, nightly)
+Real-time (online): User's "last_click" (computed as events stream in)
+
+Tradeoff: Accuracy vs latency.
+- Use recent (real-time) features for highest accuracy, but need real-time computation
+- Use batch features for simplicity, but they're stale (hourly old)
+
+Common problems:
+
+1. Training-serving skew: Online and offline features computed differently. Example: Batch uses average purchase value, online uses last purchase. Models trained on batch but served on online data underperform.
+
+Fix: Use same code for both. Batch: historical data through online code. Online: recent data through same code.
+
+2. Feature staleness: Batch feature "purchases_last_30_days" is good, but "user's status_right_now" is stale.
+
+Fix: Mark features by freshness requirement. Refresh Redis cache every 5 min for "status", every 24h for "purchase_history".
+
+3. Feature explosion: 100 models, each needs 50 features. 5000 features total. Which ones matter? Feature governance gets hard.
+
+Fix: Feature registry with usage tracking. Deprecate unused features.
+
+Tools: Feast (open source), Tecton (enterprise), DoorDash's Palette.
+
+Recommendation: Start simple (batch only), add online caching as you scale.`,
+      },
+      {
+        q: "Design a model monitoring system that detects data drift and triggers retraining automatically.",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        a: `Models degrade over time (concept drift). Sales model trained on 2022 data fails in 2024 (customer behavior changed). Monitoring catches this and triggers retraining.
+
+Data drift vs concept drift:
+- Data drift: Input distribution changes (traffic shifted to different countries → different feature distributions)
+- Concept drift: Relationship changes (same features, but their predictive power changed)
+
+Monitoring architecture:
+
+1. Prediction logging: Every prediction logged with: inputs, predicted value, predicted probability, timestamp.
+
+2. Ground truth capture: Actual outcome logged once known. Example: "predicted churn=no, actual=yes (churned)."
+
+3. Drift detection (batch, daily):
+
+Data drift detector:
+- Compute feature statistics (mean, std) for last 1000 predictions
+- Compare to baseline (statistics from training data)
+- If Kolmogorov-Smirnov test p-value < 0.05, drift detected
+
+Example: Model trained on avg_user_age=32. Last week's predictions have avg_user_age=28. Drift detected.
+
+Performance degradation detector:
+- Once ground truth available, compute metrics: accuracy, precision, recall, AUC
+- Compare to baseline (train set metrics)
+- If degradation > 5%, alert
+
+Concept drift detector:
+- Train a secondary model to classify: is this prediction from "old" or "new" distribution?
+- High classification accuracy = distributions are different = drift
+
+4. Alerting:
+
+If data drift detected:
+- Alert data science team
+- Pause serving new model (optional)
+- Investigate root cause
+
+If performance degradation detected:
+- Alert data science team
+- Trigger retraining pipeline
+
+If both: highest priority (both data and concept shifted)
+
+5. Automatic retraining:
+
+Trigger conditions:
+- Data drift detected for 5+ consecutive days
+- Performance degradation > 10%
+- Scheduled (retrain weekly/monthly regardless)
+
+Retraining pipeline:
+- Fetch recent data (last 30 days, labels available)
+- Train new model on recent + historical data
+- Validate on holdout set
+- If performance > baseline, deploy
+- If performance < baseline, don't deploy (investigate)
+
+Shadow mode: Run new model in parallel for 1 week before full deployment.
+
+Implementation:
+
+\`\`\`
+# Daily monitoring job
+def monitor_model():
+  recent_preds = get_predictions(last_n_days=7)
+  baseline_stats = get_baseline_stats()
+
+  drift = detect_drift(recent_preds, baseline_stats)
+  perf = compute_metrics(recent_preds)
+
+  if drift or perf_degraded(perf, baseline):
+    alert_team()
+    if perf_degraded_severe():
+      trigger_retraining()
+
+# Retraining pipeline
+def retrain():
+  new_data = get_recent_data(last_n_days=60)
+  new_model = train(new_data)
+
+  val_perf = evaluate(new_model, holdout_set)
+  old_perf = get_baseline_perf()
+
+  if val_perf > old_perf:
+    deploy(new_model)
+  else:
+    log_failure("new model worse than baseline")
+\`\`\`
+
+Key metrics to monitor:
+- Input feature distributions (data drift)
+- Model accuracy, precision, recall (performance)
+- Feature importance (are we using the same features?)
+- Prediction distribution (are we making the same predictions?)
+- Inference latency (has serving degraded?)
+
+Challenges:
+1. Labeling delay: Some outcomes take weeks to know. For fraud, months for chargebacks.
+2. Seasonality: Sales model should expect higher volume in Dec. Need to account for expected changes.
+3. Multiple drift types: Data + concept drift require different fixes.`,
+      },
+      {
+        q: "Your ML model serves 50K predictions per second. Design the serving infrastructure.",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        a: `50K predictions/sec = 4.3B/day. Need low latency (<50ms), high availability, autoscaling.
+
+Infrastructure:
+
+Load balancer → Multiple prediction servers (stateless) → Model cache → Feature store
+
+Prediction servers:
+- Stateless: No session state, can scale horizontally
+- Container-based: Docker, Kubernetes for orchestration
+- Auto-scaling: If latency > 50ms, spin up more instances (scale up in 30 sec)
+
+Model serving:
+- Load model into memory (avoid disk I/O)
+- Use optimized serving framework: TensorFlow Serving, KServe, Seldon
+- Batch predictions when possible (10-20 requests at a time) for GPU efficiency
+
+Feature fetching (bottleneck):
+- Cache hot features in Redis (<5ms access)
+- For cold features, query database (slower, ~50ms)
+- Parallel fetches: Don't wait for one feature, fetch all in parallel
+
+Example latency breakdown (50ms total):
+- Request ingestion: 1ms
+- Feature fetch (parallel): 20ms (Redis cache)
+- Model inference: 10ms
+- Post-processing: 5ms
+- Response: 14ms
+
+Scaling strategy:
+
+At 50K RPS:
+- 10 servers × 5K RPS each = feasible
+- Each server: 8-core CPU, 64GB RAM, GPU (optional)
+- Kubernetes cluster: auto-scale pods based on CPU/latency
+
+Monitoring:
+- Latency percentiles: P50, P99, P99.9 (P99.9 worst-case)
+- Throughput: requests/sec served
+- Model accuracy: compare predictions to ground truth
+- Cache hit rate: % of features from cache vs database
+
+High availability:
+
+- Multi-region deployment: If US East fails, US West takes traffic
+- Model versioning: Can roll back instantly if new model bad
+- Circuit breaker: If feature store unavailable, use stale features (degrade gracefully)
+- Health checks: Kill unhealthy servers, replace
+
+Cost optimization:
+
+- Batch prediction: For non-real-time use cases (e.g., daily email recommendations), use batch instead of serving (cheaper)
+- Model quantization: Reduce model size 10x, faster inference, less memory
+- Spot instances: Use cheaper ephemeral instances for non-critical predictions
+
+Database caching:
+
+Cache layer: Hot users/products cached in Redis. Others fetched from database.
+
+Example: Top 1M users (80% of traffic) cached. Remaining 1B users fetched from DB.
+
+Result: 99% requests hit cache (fast), 1% hit DB (slower but acceptable).
+
+Deployment:
+
+- Canary: 5% traffic on new model
+- Monitor latency/accuracy
+- If good, ramp to 100%
+- If bad, instant rollback
+
+Expected: 50K RPS, P99 latency <50ms, 99.99% uptime.`,
+      },
+    ],
+    behavioral: [
+      {
+        q: "Tell me about a time your analysis contradicted what the business team believed.",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: I was working on pricing optimization for a subscription product. The business team believed customers would churn if we raised prices more than 10%, so they were hesitant to test higher increases.
+
+Task: I was tasked with analyzing historical data to inform pricing strategy without the guesswork.
+
+Action: I analyzed cohort data from our last three price increases and found that price sensitivity wasn't linear. Customers in our mid-tier were more sensitive (15% churn on 15% increase), but enterprise customers were inelastic — a 25% increase only caused 5% churn because switching costs were high.
+
+I built a segment-specific analysis showing we could raise enterprise pricing 20-25% with minimal churn while mid-tier should stay conservative. The key was presenting data visually: showing the actual cohort outcomes alongside the business team's 10% assumption. The data was hard to argue with.
+
+Result: The team agreed to the tiered approach. We increased enterprise pricing by 20% (generating 30% more revenue from 5% of customers) while keeping mid-tier stable. A/B tests validated the segment-specific models. The company gained $2M in annual revenue with negligible churn.
+
+Lesson learned: Contradicting stakeholders works when you lead with data, not opinion. I showed what actually happened, not what I thought should happen. I also acknowledged their concern (churn is real) but showed it was segment-dependent. Building trust through evidence and meeting them halfway (tiered approach, not just "raise prices globally") made them partners, not skeptics.`,
+      },
+      {
+        q: "Tell me about a time you had to decide between shipping a good-enough model now vs waiting 3 months for a significantly better one.",
+        subcategory: "behavioral",
+        difficulty: "Hard",
+        a: `Situation: We were building a churn prediction model for our subscription product. The business needed it urgently to launch a retention campaign in 2 weeks. I had a simple logistic regression model (85% AUC) ready. A team member was developing a gradient boosting model (91% AUC) that would take 3 months.
+
+Task: Decide: ship the good-enough model now, or wait for the better one?
+
+Action: I didn't choose either extreme. Instead, I analyzed the business case. A 6% AUC improvement meant catching ~8% more churners (in our cohort). If we wait 3 months, we miss 3M in retention revenue. If we ship now with 85% AUC, we capture most of the value.
+
+I proposed a hybrid: Ship the 85% AUC model immediately (unblock the campaign), but plan to replace it in 3 months when the better model is ready. Set up monitoring to track performance, document known limitations, and prepare for model swap.
+
+The team agreed. We shipped the simple model, it performed better than random (baseline), and the business validated that churn prediction drove retention. When the boosted model launched 3 months later, we swapped it in and performance improved further.
+
+Result: We captured 100% of the early value (retention campaign started on time), and improved it later. If we'd waited, we'd have 0% value for 3 months then 100%.
+
+Lesson learned: The right call is rarely "perfection now" or "good enough now." It's a sequence: ship something useful, measure impact, iterate. Time-to-value matters as much as model quality. Sometimes 85% now beats 91% later.`,
+      },
+      {
+        q: "Describe a time you had to build a data science team's roadmap. How did you prioritize projects?",
+        subcategory: "behavioral",
+        difficulty: "Hard",
+        a: `Situation: I was promoted to lead a data science team of 4 people. We inherited a backlog of 20 project requests from engineering, product, finance, and operations teams. Each team claimed their project was critical.
+
+Task: Build a roadmap. What should the team focus on?
+
+Action: I didn't just rank by stakeholder loudness. Instead, I:
+
+1. Quantified impact. For each project, I asked: "If this succeeds, what metric improves? By how much?" Finance's credit risk model could reduce fraud losses $5M/year. Product's recommendation engine could increase engagement 8%. Operations' supply chain forecasting could reduce waste 10%.
+
+2. Estimated effort. How long for each team member? Credit risk model: 8 weeks. Recommendation engine: 12 weeks. Supply chain: 6 weeks.
+
+3. Ranked by impact-per-quarter. Credit risk: $5M over 8 weeks = $1.25M/week. Recommendation engine: 8% engagement = harder to monetize, maybe $500K. Supply chain: $2M over 6 weeks = $667K/week.
+
+4. Proposed sequence. Q1: Credit risk (biggest impact, medium effort). Q2: Supply chain (quick win), Recommendation (started in parallel). Q3: Operations' project.
+
+But I also communicated trade-offs. I told each team: "Your project is valuable, but we can't do everything. Here's the sequence. If you disagree with the ranking, show me better impact estimates or offer to fund additional headcount."
+
+Result: Finance was happy (credit risk shipped on time). Product was initially disappointed but accepted the sequence. We discovered that 2-3 projects were nice-to-haves, not critical (dropped them entirely). The team shipped 6 projects that year aligned to business impact.
+
+Lesson learned: Roadmaps aren't about being perfect. They're about transparency. By making the trade-off explicit (this project vs that project), stakeholders understand constraints and trade-offs become negotiable rather than arbitrary.`,
+      },
+      {
+        q: "Tell me about a time your model created an ethical concern. How did you handle it?",
+        subcategory: "behavioral",
+        difficulty: "Hard",
+        a: `Situation: I built a credit approval model using 3 years of historical loan data. Model performance was excellent (90% AUC). But during fairness review, I discovered the model systematically approved loans for male applicants 15% more than female applicants, even after controlling for credit-relevant features.
+
+Task: The bias was real. What do I do?
+
+Action: This was uncomfortable because the bias was subtle and the model was already approved for deployment. But I escalated immediately to leadership (not silently hoping it'd go away).
+
+I investigated the root cause. The training data had historical bias: lenders had approved more male loans in the past (due to discrimination). My model learned this bias from the data.
+
+Options:
+1. Deploy as-is (acknowledges risk but ignores fairness)
+2. Add "gender" as a feature to explicitly balance (illegal in lending)
+3. Retrain without correlated features, accept lower accuracy
+4. Use fairness constraints during training (find Pareto optimal: fair + accurate)
+
+I recommended option 4. I retrained the model with a fairness constraint: "Approval rate for males and females must differ by <5%." Result: 88% AUC (2% drop), but approval rates equalized.
+
+I presented to legal, compliance, product. They signed off. We deployed the constrained model.
+
+But I also built monitoring: Every week, check approval rates by gender/race/age. If disparities appear, investigate immediately.
+
+Lesson learned: Ethics isn't a one-time checklist. It's continuous. I could've shipped the 90% AUC model and hoped no one noticed. Instead, I:
+1. Actively looked for bias (fairness audit)
+2. Escalated when found
+3. Proposed solutions with trade-offs
+4. Built monitoring to catch future issues
+
+This slowed deployment by 2 weeks and reduced accuracy by 2%, but it's the right call. As data scientists, we have power (our models affect people). With that power comes responsibility.`,
+      },
     ],
   },
 
