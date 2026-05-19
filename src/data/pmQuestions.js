@@ -8948,10 +8948,554 @@ This tension sits at the heart of product management — and navigating it well 
   // DATA SCIENTIST
   // ─────────────────────────────────────────────
   "Data Scientist": {
-    product: [],
-    behavioral: [],
+    product: [
+      {
+        q: "Walk me through how you would build a recommendation system for an e-commerce platform.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `Before diving in, I'd want to clarify: Are we optimizing for conversion revenue, user engagement, or diverse product discovery? Is this personalized (per user) or catalog-wide? What's the expected traffic volume?
+
+I'd start by defining the problem. Most e-commerce platforms struggle with balancing relevance and serendipity — too narrow and users get bored, too diverse and conversion drops.
+
+For a streaming recommendation system, I'd consider collaborative filtering initially (user-item interactions are usually plentiful). But this fails on new users and cold products, so I'd layer in content-based features (product attributes, category, price).
+
+The architecture: offline training on historical interactions (purchases, clicks, dwell time), then online serving with ranking. For cold-start, I'd use popularity + contextual bandit approaches (Thompson sampling) to explore.
+
+Key metrics matter: I'd track CTR (click-through), conversion rate, and revenue per session. But I'd also monitor diversity (catalog coverage) and novelty (are we introducing users to new products?). A/B testing is essential — you need business impact, not just model performance.
+
+The tradeoff: complex models (deep learning) can capture subtle patterns but are expensive to retrain and explain. Simpler models (logistic regression on handcrafted features) deploy faster and are easier to debug.
+
+I'd start simple — collaborative filtering + popularity, measure baseline, then iterate. Monitoring model staleness is critical: user preferences shift, new products arrive, seasonal trends emerge.`,
+      },
+      {
+        q: "Your model accuracy is 95% but business stakeholders say it's not working. What's going wrong?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `This is a classic gap between model metrics and business value. I'd immediately ask: What does "not working" mean? Are conversions flat? Are false positives costing money? Is user experience degraded?
+
+Accuracy is misleading. If your task is fraud detection and 99% of transactions are legitimate, a model that predicts "no fraud" all the time gets 99% accuracy but has zero value.
+
+I'd first check precision and recall. In fraud, you might accept lower precision (some false alarms) because each missed fraud is expensive. In recommendation, false positives (bad recommendations) hurt engagement.
+
+Then I'd look at business metrics: Is the model actually moving the needle? A/B test shows whether deployed predictions change user behavior. Sometimes a 95% accurate model doesn't change decisions because the baseline heuristic already captures 90% of variance.
+
+I'd also investigate the data. Is your test set representative of production? Does the model perform well on segments that matter (high-value customers, certain geographies)? Model performance can vary dramatically across slices.
+
+Finally, consider the cost-benefit. Even if the model works technically, is it worth maintaining? Engineering overhead, monitoring burden, and retraining costs must justify the business lift.
+
+The fix: align metrics with business goals before building. Use A/B testing to validate impact. Monitor across user segments, not just aggregate accuracy.`,
+      },
+      {
+        q: "Design a churn prediction system for a subscription product.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `First, I'd define churn operationally: Is it non-renewal at contract end, or cancellation mid-cycle? Different definitions require different models.
+
+I'd structure this as a classification problem: For each customer at time T, predict if they'll churn in the next 30/90 days. Historical data: customers who did/didn't renew, with their activity history.
+
+Key features: I'd look at engagement (login frequency, feature usage), billing issues (failed payments, disputes), product fit (time-to-core-action, feature adoption), and cohort signals (age of account, customer segment). Temporal features matter: Did engagement drop recently? Is that a signal?
+
+Model choice depends on latency. Logistic regression is fast, interpretable, and often works well. Gradient boosting (XGBoost) captures non-linear patterns but is slower to retrain. For real-time scoring, I'd use batch predictions updated daily.
+
+The tradeoff: predicting churn early (90 days out) gives time for intervention but has higher false positives. Predicting closer to churn date is more accurate but leaves no time to act.
+
+I'd focus on a two-tier approach: high-confidence at-risk segment for intervention (emails, discounts), lower-confidence for monitoring.
+
+Evaluation: Use precision-recall, not just accuracy. Recall matters — missing at-risk customers defeats the purpose. I'd also measure intervention lift: Among predicted churners, did retention campaigns actually prevent churn?
+
+Finally, I'd implement monitoring: Track prediction distribution over time. If suddenly 50% of users look "at-risk," the model may have drifted.`,
+      },
+      {
+        q: "Your model performs well in testing but poorly in production. How do you diagnose this?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `This is the most common gap in real ML systems. I'd systematically check three layers: data, model, and infrastructure.
+
+Data first: Is training data representative of production? If I trained on 2022 data and deployed in 2024, user behavior has shifted. I'd compute distribution statistics (feature means, quantiles) for training vs production. If they diverge significantly, that's data drift.
+
+Feature engineering differences matter too. Did preprocessing match? Are categorical encodings consistent? A common error: training used historical data, production uses fresh data with different timestamps or missing values handled differently.
+
+Model-level: I'd check model staleness. If the model trained months ago and user patterns shift, performance degrades. I'd also verify the model in production is actually the one I tested — version mismatches happen.
+
+Infrastructure issues are sneaky. Is latency causing problems? If feature computation times out, does the model use stale features? Does serving infrastructure handle scale differently than my testing environment?
+
+I'd implement monitoring: Track prediction distribution (is it shifting?), prediction confidence, feature statistics, and most importantly, business metrics (not just model accuracy). Alert if any diverge from baseline.
+
+Then I'd run a canary: Deploy to 5% of traffic, compare predictions vs baseline heuristics. This catches production issues before full rollout.
+
+The fix usually involves retraining frequently (weekly/daily depending on drift), automated monitoring, and version control of features and models.`,
+      },
+      {
+        q: "How would you design an A/B test to measure the impact of a new search ranking algorithm?",
+        subcategory: "case_study",
+        difficulty: "Medium",
+        a: `I'd start by asking: What are we optimizing for? Click-through rate? Conversion revenue? User satisfaction? And what's the risk tolerance — can we tolerate search quality degradation in the test?
+
+Hypothesis: The new algorithm increases relevance, driving higher conversion per search. Null hypothesis: no change.
+
+Sample size calculation: I'd estimate baseline conversion (say 5%), desired lift (10%), and significance level (95%, power 80%). This tells me how many searches I need in each group. For high-traffic products, this is days. For niche products, weeks.
+
+Design: Random 50/50 split by user (or session, depending on learning effects). Important — if users see both algorithms, they'll compare and notice; per-user assignment avoids this.
+
+Duration matters. I'd run at least one full week to smooth day-of-week effects. Longer if we expect learning effects (users improving their search skills).
+
+Metrics: Primary (conversion rate), secondary (CTR, click-to-conversion latency, result diversity). I'd also track unexpected negatives: Do users exit search faster? Do they search more to compensate?
+
+Statistical testing: Two-sample t-test for proportions. But I'd be careful about multiple comparisons — testing too many metrics inflates false positive risk.
+
+Canary first: Deploy to 1% for 24 hours, check for crashes, then ramp to full test. This catches infrastructure issues.
+
+If significant lift: Measure business impact. A 2% lift might be thousands in monthly revenue, justifying deployment. But consider maintenance burden too.`,
+      },
+      {
+        q: "How would you measure the success of a fraud detection model in production?",
+        subcategory: "case_study",
+        difficulty: "Medium",
+        a: `Success isn't just "catches fraud." I'd measure across three dimensions: detection performance, business impact, and user experience.
+
+Detection metrics: Precision (of flagged transactions, how many are actually fraud?) and recall (of actual fraud, how many did we catch?). These tradeoff — stricter thresholds catch more fraud but have more false alarms. I'd report both, not accuracy.
+
+Business impact is what matters: How much fraud loss did we prevent? If the model catches $10K in fraud monthly but the business lost $1M to fraud, success is incomplete. I'd also track cost — false positives (blocking legitimate transactions) have a cost too. Blocked customers churn.
+
+User experience: Monitor false positive rate from the customer perspective. If 5% of legitimate transactions are flagged, that's frustrating. I'd track support tickets related to "why was I blocked?" and user complaints.
+
+Operationally, I'd measure: Precision, recall, F1 score (balances both), and area under the precision-recall curve (better for imbalanced data than ROC AUC).
+
+For production monitoring: Track prediction distribution — if suddenly 50% of transactions are flagged, the model drifted. Check performance on segments: Does the model work equally well for new users vs established? International vs domestic?
+
+Lastly, measure intervention effectiveness. If a transaction is flagged, what happens? Does a customer verification step resolve it? Do repeat offenders eventually get stopped? These reveal operational effectiveness beyond the model itself.
+
+I'd set a framework: Model catches 80% of fraud with <2% false positive rate for legitimate users. Review and iterate quarterly.`,
+      },
+      {
+        q: "Your stakeholder wants a model that is both accurate AND fully explainable. How do you navigate this tradeoff?",
+        subcategory: "case_study",
+        difficulty: "Hard",
+        a: `This is a real tension. I'd start with a clarifying question: Which matters more if we have to choose — catching 95% of the target or explaining every decision? The answer shapes the path.
+
+Often, stakeholders don't realize the tradeoff exists. A linear logistic regression is fully explainable but might achieve 75% accuracy. A deep neural network gets 92% but is a black box. You rarely get both.
+
+I'd propose a tiered approach: Start with interpretable models (logistic regression, decision trees, rule-based). If performance is acceptable, stop there. Explainability is built-in.
+
+If performance is inadequate, I'd layer explanation on top. SHAP (SHapley Additive exPlanations) or LIME can explain a complex model's decisions post-hoc. Not perfect, but better than nothing. For each prediction, I can show: "This transaction was flagged because amount was $5K (unusual for this user) and geographic location was new."
+
+The business context matters. For high-stakes decisions (loan approvals, medical diagnosis), explainability is non-negotiable even if accuracy suffers. For recommendation systems, a black-box model that works is acceptable.
+
+I'd also discuss regulatory context. Some industries (finance, healthcare) legally require explanations. Others don't.
+
+My recommendation: Start simple (explainable), measure gap to acceptable accuracy. If needed, justify complexity with A/B test results showing business lift. An interpretable model that stakeholders trust and use beats an unexplainable one they distrust.
+
+Also, "explainability" is subjective. Ask what level of detail stakeholders need. Sometimes "this user segment is high-risk" is sufficient; sometimes you need per-feature breakdowns.`,
+      },
+      {
+        q: "Explain the bias-variance tradeoff using a business example.",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Imagine you're predicting which customers will convert on a product page. High bias means your model is too simple — it assumes all users behave the same, missing individual quirks. You'd predict 30% of everyone will convert, whether they're new users or repeat customers. You're underfit. The model is consistently wrong.
+
+High variance means your model overfits — it memorizes peculiarities of your training data. It fits noise. In production, patterns don't repeat and predictions fail. Like fitting a wiggly curve through a few data points; the curve passes through each point perfectly but doesn't generalize.
+
+Tradeoff: Simpler models (linear regression) have high bias, low variance. Complex models (neural networks) have low bias, high variance. The sweet spot minimizes total error.
+
+In practice: I'd start simple (logistic regression, high bias). If training error is high, the model underfits — add features, increase model complexity. If training error is low but test error is high, you're overfitting (high variance) — simplify, regularize, or get more data.
+
+Regularization is the tool: L1/L2 penalties prevent extreme weights, reducing variance at the cost of small bias increase. Early stopping in neural networks does the same.
+
+For our conversion model: A simple rule like "users from mobile convert 20%, desktop 35%" has high bias but low variance (stable across months). A model with 50 features fit to 100 users will overfit. The right balance: 5-10 meaningful features, regularization, cross-validation to catch overfitting early.
+
+The key: Monitor both training and validation error. If they diverge, you're overfitting.`,
+      },
+      {
+        q: "Your classification model has high precision but low recall. When is this acceptable?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `High precision, low recall means: "When I predict positive, I'm usually right, but I miss a lot of positives." Whether that's acceptable depends entirely on business cost.
+
+Fraud detection example: High precision is great. False positives (blocking a legitimate transaction) hurt customer experience and trust. False negatives (missing fraud) cost the business money directly. If false positives have a lower cost, high precision is acceptable. You'd rather block 5 legitimate transactions to catch 1 fraud than let fraud through.
+
+Compare to cancer screening: High precision is bad. If the test predicts cancer but you miss early-stage cases (low recall), patients die. You'd rather have false alarms (biopsies) than false negatives (missed cancers). Here, you need high recall even if precision suffers.
+
+In recommendation systems: High precision means "recommendations I show are good." Low recall means "I miss recommendations the user would like." Acceptable if your goal is trust (don't annoy users with bad recs). Unacceptable if your goal is engagement (need to show diverse options).
+
+The framework: Calculate the business cost of false positives (FP) and false negatives (FN). Cost = (FP count × cost per FP) + (FN count × cost per FN). Optimize the model's decision threshold to minimize total cost, not maximize accuracy.
+
+For fraud, FN cost is high (fraud loss); FP cost is medium (customer irritation). So high precision is good.
+
+For medical screening, FN cost is critical (disease progression); FP cost is manageable (additional testing). So high recall is essential.
+
+Ask your stakeholder: If you make 100 positive predictions, what's acceptable? 90 true positives, 10 false positives? Or 50 true positives, 50 false positives? Their answer reveals the cost tradeoff.`,
+      },
+      {
+        q: "How would you handle significant class imbalance in your training data?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Class imbalance means one class dominates. Fraud is 0.1% of transactions, 99.9% are legitimate. If your model predicts "no fraud" for everything, it gets 99.9% accuracy but is useless.
+
+First, I'd confirm the imbalance is real, not an artifact. Then I'd choose a strategy based on data volume.
+
+Small dataset (few positives)? I'd use oversampling: artificially replicate minority class samples until balanced. Simple but risks overfitting. Alternatively, SMOTE (Synthetic Minority Oversampling Technique) creates synthetic samples by interpolating between existing minority samples. More robust than duplication.
+
+Large dataset (even imbalanced, lots of minority samples)? I'd use undersampling: randomly discard majority class samples. You lose data, but with large volumes, this is acceptable and faster to train.
+
+Best approach: balanced combination. Oversample minorities 2-3x, undersample majority. Use stratified cross-validation to maintain class distribution in train/test splits.
+
+Critically, change your evaluation metric. Accuracy is meaningless. Use precision-recall curve, F1 score, or area under the precision-recall curve. These reveal whether you're actually capturing the minority class.
+
+Class weights: In many algorithms, you can weight samples — minority class samples count more. This penalizes misclassifying rare events. In logistic regression: \`class_weight='balanced'\` automatically adjusts.
+
+Finally, adjust decision thresholds. Default is 0.5 (predict positive if probability > 0.5), but with imbalance, you might need 0.1. Lower threshold catches more positives at the cost of false alarms.
+
+Monitor what matters: If fraud is 0.1%, a model catching 80% with 1% false positive rate is good. If 99.9% legitimate, that 1% FP rate still means 1 in 100 legitimate transactions are flagged.`,
+      },
+    ],
+    behavioral: [
+      {
+        q: "Tell me about a time your analysis contradicted what the business team believed.",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: I was working on pricing optimization for a subscription product. The business team believed customers would churn if we raised prices more than 10%, so they were hesitant to test higher increases.
+
+Task: I was tasked with analyzing historical data to inform pricing strategy without the guesswork.
+
+Action: I analyzed cohort data from our last three price increases and found that price sensitivity wasn't linear. Customers in our mid-tier were more sensitive (15% churn on 15% increase), but enterprise customers were inelastic — a 25% increase only caused 5% churn because switching costs were high.
+
+I built a segment-specific analysis showing we could raise enterprise pricing 20-25% with minimal churn while mid-tier should stay conservative. The key was presenting data visually: showing the actual cohort outcomes alongside the business team's 10% assumption. The data was hard to argue with.
+
+Result: The team agreed to the tiered approach. We increased enterprise pricing by 20% (generating 30% more revenue from 5% of customers) while keeping mid-tier stable. A/B tests validated the segment-specific models. The company gained $2M in annual revenue with negligible churn.
+
+Lesson learned: Contradicting stakeholders works when you lead with data, not opinion. I showed what actually happened, not what I thought should happen. I also acknowledged their concern (churn is real) but showed it was segment-dependent. Building trust through evidence and meeting them halfway (tiered approach, not just "raise prices globally") made them partners, not skeptics.`,
+      },
+      {
+        q: "Describe a time you had to explain a complex model to a non-technical stakeholder.",
+        subcategory: "behavioral",
+        difficulty: "Easy",
+        a: `Situation: I built a neural network churn prediction model for our VP of Customer Success. She's brilliant on business strategy but not technical. I had to present the model in her monthly board meeting.
+
+Task: Explain how the model works and why it should drive intervention strategy, without losing her in activation functions and backpropagation.
+
+Action: I stopped trying to explain the model itself and focused on what it predicts and how to use it. I said: "Imagine we have three signals that predict churn: if a customer logs in less than once a month (signal 1), hasn't used their core feature in 30 days (signal 2), and has had a failed billing issue (signal 3), they're at very high risk."
+
+I showed actual examples from our data: "This customer hit two signals. We sent a win-back email and she re-engaged. This one hit all three — we should have intervened faster."
+
+The model is essentially finding these signal combinations automatically from thousands of patterns we can't see manually. I used a confusion matrix to show: "Out of 100 customers we predict will churn, 85 actually do. Out of 100 we predict won't churn, 95 don't." Real business terms.
+
+Result: She understood immediately and asked the right questions: "Can we intervene before they hit all three signals?" That led to our intervention strategy. She trusted the model because I focused on outcomes, not mechanics.
+
+Lesson: Translate technical work into business language. Use real examples. Don't apologize for the model's complexity — own the business value.`,
+      },
+      {
+        q: "Tell me about a project where you had to work with messy, incomplete data.",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: I was asked to build a customer lifetime value (CLV) model. Our data came from three different systems (billing, product usage, support ticketing) with inconsistent schemas, duplicate records, and missing timestamps.
+
+Task: Create a reliable CLV model despite data quality issues that would make data engineers cringe.
+
+Action: First, I quantified the mess. About 15% of customer IDs were duplicated across systems (same person, different IDs). 30% of usage records had timestamps that conflicted with billing records. 40% of customers had zero support data (indicating missing, not no support).
+
+I couldn't fix it all, so I prioritized: For duplicates, I merged based on email/phone matching. For timeline conflicts, I used billing as the source of truth (it's more reliable). For missing data, I excluded that feature rather than impute — guessing support volume would bias CLV.
+
+I built the model on "clean enough" data, then tested robustly. I used cross-validation but also held out an old time period to check if predictions aged well (they didn't, indicating some data quality issue). That led me to discover newer data had better schemas.
+
+I documented assumptions clearly: "This model is built on 70% of customers with sufficient data. Enterprise customers are slightly underrepresented due to missing data." Transparency matters.
+
+Result: The CLV model ranked customers reasonably well (R² = 0.65, good for messy data). We used it for prioritization, not precise revenue prediction. Engineering fixed data pipeline issues over time.
+
+Lesson: Perfect data is rare. Be transparent about limitations. Build with what you have, validate aggressively, and iterate as data improves.`,
+      },
+      {
+        q: "Describe a time you pushed back on shipping a model you weren't confident in.",
+        subcategory: "behavioral",
+        difficulty: "Hard",
+        a: `Situation: Our product team wanted to launch a personalized recommendation model that had been trained for weeks. Stakeholders were excited — board meeting was next week, and they wanted to announce the feature.
+
+Task: I was asked to prepare the model for production. But my testing revealed issues I couldn't ignore.
+
+Action: The model had 88% accuracy in testing, which sounded good. But when I analyzed by segment, performance was much worse for new users (65% accuracy, since we had limited data on them). We also had zero production monitoring set up — if the model drifted, we wouldn't know for weeks.
+
+I pushed back in the deployment meeting. Not "the model isn't ready" (too vague), but specific: "If we ship this, new user experience will be worse for 65% accuracy. We'll also deploy blind — we won't detect when the model degrades in production until user complaints come in."
+
+I proposed: "Let's do a 5% canary rollout first. Monitor for two weeks. If performance is acceptable, ramp gradually. If not, we'll have caught issues before affecting all users." This delayed the board announcement by a few weeks, but the product team understood the risk.
+
+Result: During canary, we discovered the model had 2x latency for certain product categories. We fixed the feature pipeline. Full rollout went smoothly.
+
+If we'd shipped blindly: The board announcement would've been followed by complaints about slow load times and poor recs for new users. That's career-damaging.
+
+Lesson: Confidence means more than accuracy metrics. You need to understand failure modes, have a rollout strategy, and be able to monitor. Speaking up costs short-term velocity but saves long-term credibility. Smart teams appreciate it.`,
+      },
+      {
+        q: "How did you handle a disagreement with an engineer about the right approach?",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: I was building a real-time churn prediction system. The engineer advocated for a complex streaming architecture with Apache Kafka and model serving at 10ms latency. I wanted to start simpler: daily batch predictions with 1-hour stale ness, no streaming overhead.
+
+Task: We had to decide before architecture was locked in. Disagreements early are cheaper than rework.
+
+Action: We didn't just argue. I asked: "What's the business requirement?" Turns out, we needed to identify churn risk daily to trigger interventions. Hourly was overkill; daily batch absolutely worked. But the engineer worried about "technical debt" — if we built batch first, refactoring to streaming later would be painful.
+
+I proposed a test: "Let's implement batch predictions, measure the actual churn intervention flow, and see if 1-hour staleness is a problem. If we get pressure from product, we upgrade then. If not, batch is cheaper to maintain."
+
+We also aligned on guardrails: if batch ever showed latency >30min or failed to run, we'd escalate.
+
+Result: Six months of batch predictions. We never had a business request for real-time. When we eventually built streaming (for a different use case), we didn't regret the batch decision because it was never a bottleneck.
+
+Lesson: Disagreements are about tradeoffs, not right/wrong. Engineer was right about technical purity; I was right about simplicity and ROI. We found middle ground with a testable hypothesis and clear escalation criteria. That's collaboration.`,
+      },
+      {
+        q: "Tell me about a time you had to balance speed vs rigor in an analysis.",
+        subcategory: "behavioral",
+        difficulty: "Medium",
+        a: `Situation: Our VP of Product had a hypothesis: "If we make the signup form 2 fields instead of 5, conversion will jump." She wanted analysis urgently — board meeting in 48 hours.
+
+Task: Give her an answer quickly without compromising validity.
+
+Action: I couldn't do a full A/B test in 48 hours. So I segmented my analysis by speed/rigor tradeoff. I ran a quick-and-dirty version: looked at historical data from users who completed 2-field vs 5-field forms. Found 12% higher completion on 2-field.
+
+But that's confounded — different user cohorts might've seen different forms. I flagged this uncertainty: "This data suggests 12% lift, but we can't isolate cause from correlation with 48 hours."
+
+I recommended: "Let's tell the board this is preliminary, we're running an A/B test to validate. If you need a decision now, 12% is our best guess with low confidence. If you need high confidence, wait 1 week."
+
+The VP chose: "Let me present the hypothesis and the caveat." She made the decision to run the test rather than assume lift.
+
+Result: A/B test showed 15% lift (our estimate was close!), and we shipped the 2-field form.
+
+Lesson: Speed and rigor aren't enemies, they're a spectrum. I gave her what was possible in 48 hours with transparent uncertainty. That's more useful than either "sorry, can't analyze in time" or "here's an answer I'm not confident in." She made a good decision with imperfect information, which is the real world.`,
+      },
+      {
+        q: "Describe a project where your initial hypothesis was wrong.",
+        subcategory: "behavioral",
+        difficulty: "Easy",
+        a: `Situation: I hypothesized that users who clicked our "upgrade to pro" button were the most engaged and would be easiest to convert. So I built a model to predict who'd click that button, thinking engagement = purchase intent.
+
+Task: Validate the hypothesis with data.
+
+Action: I analyzed 10,000 users and their behavior: I found that users who clicked "upgrade to pro" had slightly higher engagement than average. But when I looked at conversion rates (actually becoming paying customers), clickers converted at 8%, while a different segment (heavy feature users who never clicked the button) converted at 12%.
+
+Turns out, the button was poorly positioned or confusing. Heavy users never saw it because they were in a different flow. The button-clickers were mostly tire-kickers exploring features, not serious buyers.
+
+Result: We repositioned the CTA to reach heavy feature users (not button-clickers). Conversion improved 40% from the new segment. My model for predicting button clicks was technically accurate but operationally useless.
+
+Lesson: Your data hypothesis can be right, but business logic matters. I was measuring the wrong proxy. The good outcome: I caught this before we built complex infrastructure around the wrong signal. Validate early.`,
+      },
+      {
+        q: "How did you handle a situation where a deployed model caused unintended negative outcomes?",
+        subcategory: "behavioral",
+        difficulty: "Hard",
+        a: `Situation: I deployed a search ranking model that optimized for click-through rate. It worked — CTR increased 5%. But after two weeks, support tickets spiked. Users complained search results were "too aggressive" — showing controversial or sensationalist content to drive clicks, but not what they actually wanted.
+
+Task: Damage control and understanding root cause.
+
+Action: I immediately flagged the issue to the product team. We couldn't just revert — we'd already made promises to leadership. But leaving it was unacceptable.
+
+First, I analyzed what happened. The model learned that certain content (clickbait-y headlines, polarizing topics) drove clicks. So it ranked those higher. Technically accurate, but misaligned with user satisfaction. I'd optimized for the wrong metric.
+
+I ran a quick analysis on a holdout: If I used engagement quality (time spent reading, return to search) instead of just clicks, the ranking changed. Different content ranked higher.
+
+We deployed a hybrid: 70% of ranking weight on clicks (the new model), 30% on dwell time (quality signal). CTR went from +5% back to +1%, but support tickets dropped 70%. Net positive.
+
+Result: We learned to always test user satisfaction alongside conversion metrics. Started collecting survey feedback on search quality. Model performance improved to +3% CTR with positive satisfaction.
+
+Lesson: Unintended consequences are inevitable in ML. Speed of detection and fix matter more than prevention (you can't predict everything). I owned the issue, explained the root cause, and proposed a solution quickly. That preserved trust.`,
+      },
+    ],
     ai: [],
-    ai_technical: [],
+    ai_technical: [
+      {
+        q: "What is the difference between a data lake and a data warehouse? When do you use each?",
+        subcategory: "sql_data",
+        difficulty: "Easy",
+        a: `A data warehouse is structured, cleaned, and organized for analysis. A data lake is raw, flexible, and stores everything.
+
+Data warehouse: Schema-on-write. You define structure before loading data. Data is cleansed, integrated from multiple sources, and optimized for fast queries. Think Redshift, Snowflake, BigQuery. Fast for dashboards and reports because structure is known.
+
+Data lake: Schema-on-read. You store raw data (logs, images, videos, JSON) and decide how to interpret it later. More flexible, can pivot to new use cases without reloading. Think S3, HDFS. Requires more processing power to query effectively.
+
+When to use each: Data warehouse for business intelligence (finance reports, dashboards, KPIs that are stable). You want speed, simplicity, and accountability.
+
+Data lake for exploratory analysis, machine learning, and archival storage. You don't know the exact schema yet, and you want flexibility. But beware: lakes become "swamps" — data engineers waste time cleaning raw data repeatedly. You need governance.
+
+In practice: Most companies use both. Data flows: Raw sources → data lake → transformations → data warehouse. The lake is flexible, the warehouse is fast.
+
+Cost tradeoff: Lakes are cheaper to store (raw data takes less space). Warehouses cost more but queries are efficient. If you query data constantly, warehouse is cheaper overall.
+
+For ML: Start with lake (raw features available), but organize it. Define clear schemas, document lineage, version datasets. A well-organized lake is worth more than an organized warehouse for iteration.`,
+      },
+      {
+        q: "Explain the CAP theorem and how it affects data pipeline design.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        a: `CAP theorem: In a distributed system, you can guarantee Consistency, Availability, and Partition tolerance — pick two.
+
+Consistency: All nodes see the same data at the same time. Availability: The system responds to requests even if nodes fail. Partition tolerance: The system works even if the network splits (some nodes can't talk to others).
+
+Real-world: Network partitions happen (not theoretical). So you pick between Consistency and Availability.
+
+CA systems (no partition tolerance): Traditional SQL databases. They're consistent and available until the network fails. Rare in modern architecture.
+
+CP systems (sacrifice availability): Prioritize consistency. Example: HBase. If nodes lose contact, they may refuse requests to guarantee all data is consistent. Banks often choose this — correctness matters more than uptime.
+
+AP systems (sacrifice consistency): Prioritize availability. Example: DynamoDB, Cassandra. They'll respond even if partitioned, but nodes might have stale data. Users might see different values temporarily.
+
+Impact on ML pipelines: If you're training a model on data from an AP system, you might have stale features. Acceptable for batch training (minor staleness is fine). For real-time serving, staleness can cause distribution shift.
+
+Example: Recommendation system using Apache Cassandra (AP). User features might be 5 seconds stale. During an A/B test, user A sees feature version 1, user B sees version 2. Adds noise to results.
+
+Design decision: For critical pipelines (fraud detection, medic decisions), choose CP — consistency matters, brief unavailability is acceptable. For best-effort (recommendations, feed ranking), AP is fine — availability and speed matter.
+
+The right architecture: Often, hybrid. Use CP for critical customer data, AP for less critical features. Accept tradeoffs based on business requirements.`,
+      },
+      {
+        q: "How would you design a feature store for a company with 20 ML models in production?",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        a: `A feature store is a centralized repository for features (variables computed from raw data) that models use. Without it, each model team recomputes the same features independently, wasting compute and creating inconsistency.
+
+Design layers: Offline and online.
+
+Offline: Historical features for training. Store them (e.g., Parquet in S3, tables in Redshift). Each feature versioned (feature_user_age_v2 vs v1). Training pipeline loads features at specific timestamps, preventing look-ahead bias.
+
+Online: Real-time features for serving. When predicting, you need fresh features with <50ms latency. Some features come from cache (Redis), others computed on-the-fly. Example: user's last 5 actions (cached), user's country (static), and inferred intent (computed in real-time).
+
+Architecture: Central compute engine generates features nightly (offline). A subset replicate to cache (online). When serving, model queries both sources.
+
+Key problems to solve:
+
+1. Feature naming and discovery. 100+ features across teams. You need a catalog (who owns feature X? When was it last updated?).
+
+2. Versioning. If feature_click_rate_v3 breaks downstream, you need to rollback. Store versions.
+
+3. Training-serving skew. Features computed differently offline vs online will cause performance degradation. Ensure consistency.
+
+4. Staleness. Real-time features decay. A "last_action_timestamp" becomes useless if pipeline is 10 minutes behind. Monitor freshness.
+
+Example: User feature "has_purchased_before" (offline = batch computed nightly). Online = cached in Redis, updated when purchase happens. Both should agree.
+
+Challenges: Maintaining consistency across 20 models, handling feature dependencies (feature_A depends on feature_B; when B updates, A updates), managing compute cost (recomputing 1000 features nightly is expensive).
+
+Solution: Invest in good tooling (Tecton, Feast, Chip) to abstract complexity. Without it, feature pipelines become technical debt.`,
+      },
+      {
+        q: "Walk me through the architecture of a real-time ML serving system.",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        a: `Real-time serving means: Request arrives → model predicts → response sent, all in <50ms.
+
+Architecture layers, in order:
+
+1. Request ingestion. API endpoint receives input. Validation happens here. If input is malformed, reject fast.
+
+2. Feature fetching. The slow part. You need features from multiple sources: cache (Redis for hot features, <5ms latency), database (cold features, slower), and computed features (real-time transformations). Parallelize requests to multiple sources.
+
+3. Model inference. The model itself is fast (milliseconds), but loading the model every request is not. Load once, keep in memory. If model is large (GB), use model serving systems (KServe, Seldon) that handle batching.
+
+4. Post-processing. Model outputs probabilities; apply business logic (threshold adjustments, ranking). Example: churn model returns 0-1; apply threshold 0.3 to decide intervention.
+
+5. Response. Return prediction + metadata (confidence, features used, model version).
+
+Latency breakdown example (50ms total):
+- Request → 1ms
+- Feature fetch → 25ms (bottleneck!)
+- Model inference → 5ms
+- Post-processing → 2ms
+- Response → 17ms
+
+Optimizations: Cache frequently-used features. Pre-compute batch features offline. Use approximate inference (quantization, distillation) to speed inference.
+
+Availability: Models fail. What happens? Use a fallback (default heuristic). Example: if model inference times out, return "recommend popular items" instead of erroring.
+
+Monitoring: Track latency percentiles (p99 matters, not just average). Alert if latency exceeds SLA. Monitor prediction distribution (is model drifting?).
+
+Versioning: Multiple model versions in parallel (canary). 95% traffic to stable version, 5% to candidate. Compare performance before full rollout.
+
+Scaling: If a single server can't handle traffic, use load balancing. Shard by user or request ID for consistent caching.
+
+Key tradeoff: Real-time requires fresh features (expensive) vs batch allows staleness (cheap). Design based on business tolerance for staleness.`,
+      },
+      {
+        q: "Explain the difference between L1 and L2 regularization. When would you use each?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Both L1 and L2 regularization prevent overfitting by penalizing large weights in the model. They differ in how they penalize.
+
+L1 (Lasso) regularization: Adds penalty proportional to the absolute value of weights. If weight is 0.5, penalty is 0.5. If weight is 10, penalty is 10. This drives weights toward exactly zero.
+
+Effect: Some weights become exactly zero, eliminating those features. Automatic feature selection. If you have 100 features, L1 might kill 50 of them (zero weights = ignored features). Sparse model.
+
+L2 (Ridge) regularization: Adds penalty proportional to the square of weights. If weight is 0.5, penalty is 0.25. If weight is 10, penalty is 100. This discourages large weights but doesn't zero them.
+
+Effect: Weights shrink but rarely reach zero. All features stay in the model. Smooth model.
+
+When to use L1: You have many features and suspect most are irrelevant. L1 automatically selects important ones. Example: text classification with 10,000 words — L1 might keep only 500 words. Also useful when interpretability matters: "This model uses these 20 features, not 1000."
+
+When to use L2: You believe most features are useful, just with small effects. You want stable predictions across different datasets. Example: predicting house price from 50 real estate features — all matter, but with different weights.
+
+Computational tradeoff: L1 is harder to optimize (not differentiable at zero). L2 is smooth and fast. But L1 can save compute downstream (fewer features to store/compute).
+
+In practice: Start with L2 (easier, more stable). If model is too complex or interpretability matters, try L1. Elastic Net uses both (αL1 + βL2 penalty), getting benefits of both.
+
+Data efficiency: L1 is better when data is scarce (forces the model to focus on key features). L2 is better with lots of data (more features help).`,
+      },
+      {
+        q: "How does SHAP work for model interpretability? What are its limitations?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `SHAP (SHapley Additive exPlanations) explains individual predictions by attributing each feature's contribution to the prediction.
+
+How it works: SHAP uses Shapley values from game theory. Imagine a prediction is a pie that needs to be divided among features. Shapley value assigns each feature a "fair share" of the pie by considering all possible feature coalitions.
+
+Simple example: Predicting loan approval. Model outputs 80% approval. SHAP breaks it down: credit score contributed +30%, income contributed +25%, employment history -5%, age -2%. Each feature shows its impact on that specific prediction.
+
+Calculation: SHAP computes marginal contribution of each feature by removing it and seeing how prediction changes. Do this for all feature combinations, average the results. Computationally expensive but theoretically sound.
+
+Advantages: Model-agnostic (works on any model), theoretically principled (game theory), locally accurate (explains individual predictions), and globally consistent (respects Shapley properties).
+
+Limitations:
+
+1. Computational cost. Computing true Shapley values requires evaluating 2^n feature coalitions (exponential). For 100 features, infeasible. SHAP uses approximations (TreeSHAP for trees, sampling for others), which are faster but inexact.
+
+2. Correlated features confuse SHAP. If two features are highly correlated, SHAP might split credit arbitrarily between them. The explanation is technically correct but hard to interpret.
+
+3. Human interpretation isn't guaranteed. SHAP shows feature importance, but humans might misinterpret. Example: "income +40%" doesn't mean income caused the approval; it means income was predictive. Causality is different.
+
+4. Not actionable for all questions. SHAP explains predictions, not decisions. If a model denies a loan, SHAP shows why, but doesn't suggest what the applicant should do.
+
+When to use: For regulatory explanation (explaining model decisions in finance/lending), debugging unexpected predictions, or understanding feature importance. Not ideal for feature engineering (which features matter for the model generally — use permutation importance instead).
+
+Comparison: LIME (another method) is faster but less principled. Deep SHAP handles neural networks but is still approximate.`,
+      },
+      {
+        q: "What is data leakage and how do you prevent it?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Data leakage: Using information in training that wouldn't be available at prediction time. Your model looks brilliant in testing but fails in production because it cheated.
+
+Two types:
+
+Target leakage: Using the target variable indirectly. Example: Predicting hospital mortality, and your features include "length of stay." But if patients who die leave the hospital faster (recorded as lower length of stay), using this feature is cheating — you're using an effect of the target.
+
+Temporal leakage: Using future information to predict the past. Example: Predicting churn for June, and your features include "cancelled in July." You've accidentally included information from the future.
+
+Real-world example: Building a fraud detection model. You include feature "was_reported_as_fraud" (whether support team flagged it). This leaks the target! At prediction time, you won't know if it's fraud yet.
+
+Prevention strategies:
+
+1. Timeline discipline. If predicting at time T, use only data available before time T. Example: Predict churn on June 30; features use data through June 29 only.
+
+2. Remove target proxies. Don't use features that directly correlate with the outcome because of the outcome. Example: Remove "was_flagged_as_fraud" if you're building a fraud model.
+
+3. Domain knowledge. Understand what information is available when. Ask engineers: "Is this feature available at serving time?" If not, remove it.
+
+4. Cross-validation discipline. If predicting churn in time period T using historical data, don't mix training and test periods. Use time-based split: train on periods 1-6, test on period 7.
+
+Example of wrong CV: Mix all data, randomly split 80/20. Your test set includes future data that training set can use for leakage. Results look great, production fails.
+
+Correct CV: Train on Jan-Jun, test on Jul. Train on Feb-Jul, test on Aug. Never look forward in time.
+
+Testing: Train your model, wait for month to pass, make real predictions on hold-out period. If performance drops, leakage likely. Investigate what information shouldn't have been available.
+
+Leakage is insidious — you won't know you have it until production. Discipline and skepticism are your best defenses.`,
+      },
+    ],
   },
 
 };
