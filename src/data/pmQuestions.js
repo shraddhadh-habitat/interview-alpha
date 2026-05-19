@@ -9835,156 +9835,6 @@ Bias: Don't systematically disadvantage certain drivers (e.g., new drivers have 
 Privacy: Don't expose prediction to driver (no "this ride has high cancel probability"). Use internally for ops only.`,
       },
     ],
-    behavioral: [
-      {
-        q: "Tell me about a time your analysis contradicted what the business team believed.",
-        subcategory: "behavioral",
-        difficulty: "Medium",
-        a: `Situation: I was working on pricing optimization for a subscription product. The business team believed customers would churn if we raised prices more than 10%, so they were hesitant to test higher increases.
-
-Task: I was tasked with analyzing historical data to inform pricing strategy without the guesswork.
-
-Action: I analyzed cohort data from our last three price increases and found that price sensitivity wasn't linear. Customers in our mid-tier were more sensitive (15% churn on 15% increase), but enterprise customers were inelastic — a 25% increase only caused 5% churn because switching costs were high.
-
-I built a segment-specific analysis showing we could raise enterprise pricing 20-25% with minimal churn while mid-tier should stay conservative. The key was presenting data visually: showing the actual cohort outcomes alongside the business team's 10% assumption. The data was hard to argue with.
-
-Result: The team agreed to the tiered approach. We increased enterprise pricing by 20% (generating 30% more revenue from 5% of customers) while keeping mid-tier stable. A/B tests validated the segment-specific models. The company gained $2M in annual revenue with negligible churn.
-
-Lesson learned: Contradicting stakeholders works when you lead with data, not opinion. I showed what actually happened, not what I thought should happen. I also acknowledged their concern (churn is real) but showed it was segment-dependent. Building trust through evidence and meeting them halfway (tiered approach, not just "raise prices globally") made them partners, not skeptics.`,
-      },
-      {
-        q: "Describe a time you had to explain a complex model to a non-technical stakeholder.",
-        subcategory: "behavioral",
-        difficulty: "Easy",
-        a: `Situation: I built a neural network churn prediction model for our VP of Customer Success. She's brilliant on business strategy but not technical. I had to present the model in her monthly board meeting.
-
-Task: Explain how the model works and why it should drive intervention strategy, without losing her in activation functions and backpropagation.
-
-Action: I stopped trying to explain the model itself and focused on what it predicts and how to use it. I said: "Imagine we have three signals that predict churn: if a customer logs in less than once a month (signal 1), hasn't used their core feature in 30 days (signal 2), and has had a failed billing issue (signal 3), they're at very high risk."
-
-I showed actual examples from our data: "This customer hit two signals. We sent a win-back email and she re-engaged. This one hit all three — we should have intervened faster."
-
-The model is essentially finding these signal combinations automatically from thousands of patterns we can't see manually. I used a confusion matrix to show: "Out of 100 customers we predict will churn, 85 actually do. Out of 100 we predict won't churn, 95 don't." Real business terms.
-
-Result: She understood immediately and asked the right questions: "Can we intervene before they hit all three signals?" That led to our intervention strategy. She trusted the model because I focused on outcomes, not mechanics.
-
-Lesson: Translate technical work into business language. Use real examples. Don't apologize for the model's complexity — own the business value.`,
-      },
-      {
-        q: "Tell me about a project where you had to work with messy, incomplete data.",
-        subcategory: "behavioral",
-        difficulty: "Medium",
-        a: `Situation: I was asked to build a customer lifetime value (CLV) model. Our data came from three different systems (billing, product usage, support ticketing) with inconsistent schemas, duplicate records, and missing timestamps.
-
-Task: Create a reliable CLV model despite data quality issues that would make data engineers cringe.
-
-Action: First, I quantified the mess. About 15% of customer IDs were duplicated across systems (same person, different IDs). 30% of usage records had timestamps that conflicted with billing records. 40% of customers had zero support data (indicating missing, not no support).
-
-I couldn't fix it all, so I prioritized: For duplicates, I merged based on email/phone matching. For timeline conflicts, I used billing as the source of truth (it's more reliable). For missing data, I excluded that feature rather than impute — guessing support volume would bias CLV.
-
-I built the model on "clean enough" data, then tested robustly. I used cross-validation but also held out an old time period to check if predictions aged well (they didn't, indicating some data quality issue). That led me to discover newer data had better schemas.
-
-I documented assumptions clearly: "This model is built on 70% of customers with sufficient data. Enterprise customers are slightly underrepresented due to missing data." Transparency matters.
-
-Result: The CLV model ranked customers reasonably well (R² = 0.65, good for messy data). We used it for prioritization, not precise revenue prediction. Engineering fixed data pipeline issues over time.
-
-Lesson: Perfect data is rare. Be transparent about limitations. Build with what you have, validate aggressively, and iterate as data improves.`,
-      },
-      {
-        q: "Describe a time you pushed back on shipping a model you weren't confident in.",
-        subcategory: "behavioral",
-        difficulty: "Hard",
-        a: `Situation: Our product team wanted to launch a personalized recommendation model that had been trained for weeks. Stakeholders were excited — board meeting was next week, and they wanted to announce the feature.
-
-Task: I was asked to prepare the model for production. But my testing revealed issues I couldn't ignore.
-
-Action: The model had 88% accuracy in testing, which sounded good. But when I analyzed by segment, performance was much worse for new users (65% accuracy, since we had limited data on them). We also had zero production monitoring set up — if the model drifted, we wouldn't know for weeks.
-
-I pushed back in the deployment meeting. Not "the model isn't ready" (too vague), but specific: "If we ship this, new user experience will be worse for 65% accuracy. We'll also deploy blind — we won't detect when the model degrades in production until user complaints come in."
-
-I proposed: "Let's do a 5% canary rollout first. Monitor for two weeks. If performance is acceptable, ramp gradually. If not, we'll have caught issues before affecting all users." This delayed the board announcement by a few weeks, but the product team understood the risk.
-
-Result: During canary, we discovered the model had 2x latency for certain product categories. We fixed the feature pipeline. Full rollout went smoothly.
-
-If we'd shipped blindly: The board announcement would've been followed by complaints about slow load times and poor recs for new users. That's career-damaging.
-
-Lesson: Confidence means more than accuracy metrics. You need to understand failure modes, have a rollout strategy, and be able to monitor. Speaking up costs short-term velocity but saves long-term credibility. Smart teams appreciate it.`,
-      },
-      {
-        q: "How did you handle a disagreement with an engineer about the right approach?",
-        subcategory: "behavioral",
-        difficulty: "Medium",
-        a: `Situation: I was building a real-time churn prediction system. The engineer advocated for a complex streaming architecture with Apache Kafka and model serving at 10ms latency. I wanted to start simpler: daily batch predictions with 1-hour stale ness, no streaming overhead.
-
-Task: We had to decide before architecture was locked in. Disagreements early are cheaper than rework.
-
-Action: We didn't just argue. I asked: "What's the business requirement?" Turns out, we needed to identify churn risk daily to trigger interventions. Hourly was overkill; daily batch absolutely worked. But the engineer worried about "technical debt" — if we built batch first, refactoring to streaming later would be painful.
-
-I proposed a test: "Let's implement batch predictions, measure the actual churn intervention flow, and see if 1-hour staleness is a problem. If we get pressure from product, we upgrade then. If not, batch is cheaper to maintain."
-
-We also aligned on guardrails: if batch ever showed latency >30min or failed to run, we'd escalate.
-
-Result: Six months of batch predictions. We never had a business request for real-time. When we eventually built streaming (for a different use case), we didn't regret the batch decision because it was never a bottleneck.
-
-Lesson: Disagreements are about tradeoffs, not right/wrong. Engineer was right about technical purity; I was right about simplicity and ROI. We found middle ground with a testable hypothesis and clear escalation criteria. That's collaboration.`,
-      },
-      {
-        q: "Tell me about a time you had to balance speed vs rigor in an analysis.",
-        subcategory: "behavioral",
-        difficulty: "Medium",
-        a: `Situation: Our VP of Product had a hypothesis: "If we make the signup form 2 fields instead of 5, conversion will jump." She wanted analysis urgently — board meeting in 48 hours.
-
-Task: Give her an answer quickly without compromising validity.
-
-Action: I couldn't do a full A/B test in 48 hours. So I segmented my analysis by speed/rigor tradeoff. I ran a quick-and-dirty version: looked at historical data from users who completed 2-field vs 5-field forms. Found 12% higher completion on 2-field.
-
-But that's confounded — different user cohorts might've seen different forms. I flagged this uncertainty: "This data suggests 12% lift, but we can't isolate cause from correlation with 48 hours."
-
-I recommended: "Let's tell the board this is preliminary, we're running an A/B test to validate. If you need a decision now, 12% is our best guess with low confidence. If you need high confidence, wait 1 week."
-
-The VP chose: "Let me present the hypothesis and the caveat." She made the decision to run the test rather than assume lift.
-
-Result: A/B test showed 15% lift (our estimate was close!), and we shipped the 2-field form.
-
-Lesson: Speed and rigor aren't enemies, they're a spectrum. I gave her what was possible in 48 hours with transparent uncertainty. That's more useful than either "sorry, can't analyze in time" or "here's an answer I'm not confident in." She made a good decision with imperfect information, which is the real world.`,
-      },
-      {
-        q: "Describe a project where your initial hypothesis was wrong.",
-        subcategory: "behavioral",
-        difficulty: "Easy",
-        a: `Situation: I hypothesized that users who clicked our "upgrade to pro" button were the most engaged and would be easiest to convert. So I built a model to predict who'd click that button, thinking engagement = purchase intent.
-
-Task: Validate the hypothesis with data.
-
-Action: I analyzed 10,000 users and their behavior: I found that users who clicked "upgrade to pro" had slightly higher engagement than average. But when I looked at conversion rates (actually becoming paying customers), clickers converted at 8%, while a different segment (heavy feature users who never clicked the button) converted at 12%.
-
-Turns out, the button was poorly positioned or confusing. Heavy users never saw it because they were in a different flow. The button-clickers were mostly tire-kickers exploring features, not serious buyers.
-
-Result: We repositioned the CTA to reach heavy feature users (not button-clickers). Conversion improved 40% from the new segment. My model for predicting button clicks was technically accurate but operationally useless.
-
-Lesson: Your data hypothesis can be right, but business logic matters. I was measuring the wrong proxy. The good outcome: I caught this before we built complex infrastructure around the wrong signal. Validate early.`,
-      },
-      {
-        q: "How did you handle a situation where a deployed model caused unintended negative outcomes?",
-        subcategory: "behavioral",
-        difficulty: "Hard",
-        a: `Situation: I deployed a search ranking model that optimized for click-through rate. It worked — CTR increased 5%. But after two weeks, support tickets spiked. Users complained search results were "too aggressive" — showing controversial or sensationalist content to drive clicks, but not what they actually wanted.
-
-Task: Damage control and understanding root cause.
-
-Action: I immediately flagged the issue to the product team. We couldn't just revert — we'd already made promises to leadership. But leaving it was unacceptable.
-
-First, I analyzed what happened. The model learned that certain content (clickbait-y headlines, polarizing topics) drove clicks. So it ranked those higher. Technically accurate, but misaligned with user satisfaction. I'd optimized for the wrong metric.
-
-I ran a quick analysis on a holdout: If I used engagement quality (time spent reading, return to search) instead of just clicks, the ranking changed. Different content ranked higher.
-
-We deployed a hybrid: 70% of ranking weight on clicks (the new model), 30% on dwell time (quality signal). CTR went from +5% back to +1%, but support tickets dropped 70%. Net positive.
-
-Result: We learned to always test user satisfaction alongside conversion metrics. Started collecting survey feedback on search quality. Model performance improved to +3% CTR with positive satisfaction.
-
-Lesson: Unintended consequences are inevitable in ML. Speed of detection and fix matter more than prevention (you can't predict everything). I owned the issue, explained the root cause, and proposed a solution quickly. That preserved trust.`,
-      },
-    ],
     ai: [],
     ai_technical: [
       {
@@ -22110,7 +21960,1849 @@ My approach: SCM for policy evaluation at aggregate level (country, state, firm)
       },
     ],
   },
+  domain_specific: [
+    {
+      q: "Design a credit scoring model for thin-file customers with less than 6 months of financial history.",
+      subcategory: "machine_learning",
+      domain: "fintech",
+      difficulty: "Hard",
+      a: `What alternative data sources are available (telecom, utilities, rental)? How do you validate predictions with sparse history?
 
+Thin-file credit presents a classic high-uncertainty problem. Limited behavioral data means traditional bureau scores fail. I'd build a multi-signal model:
+
+1. Alternative data: Telecom payment history (on-time ratio), utility bills, rental history via third-party APIs. These predict payment discipline better than income alone.
+
+2. Feature engineering: Payment punctuality score, account age distribution, credit mix (phone + utilities + prior credit). Recency-weighted since old data is less predictive.
+
+3. Model strategy: Logistic regression with strong regularization—avoids overfit on small datasets. Gradient boosting as secondary to capture non-linear patterns in utility data.
+
+4. Validation challenge: Can't use standard bureau outcomes (they're 0). Use lender-observed defaults from alternative data cohorts. Backtest on matched thin-file customers.
+
+5. Risk management: Start conservative—higher approval threshold for thin-file (lower approval rate initially). Monitor actual default rates quarterly. Adjust cutoffs based on realized performance.
+
+6. Fairness check: Ensure alternative data isn't correlated with protected attributes. If telecom data skews by region, add fairness constraint.
+
+Real example: SoFi uses telecom + rental data for millennials with no credit history. Default rate ~2% vs 4% traditional underwriting on similar income.
+
+My approach: Multi-signal model with alternative data, conservative deployment with quarterly monitoring, fairness validation at each step.`,
+    },
+    {
+      q: "How would you build a real-time transaction fraud detection system that processes 10K transactions per second?",
+      subcategory: "system_design",
+      domain: "fintech",
+      difficulty: "Hard",
+      a: `What's your latency budget (block decision <50ms)? How do you balance false positives vs missed fraud? Can you update models online?
+
+Real-time fraud at 10K TPS requires rethinking traditional ML. Here's the architecture:
+
+1. Feature computation: Pre-computed features (user history, merchant profile) cached in Redis. Real-time features (time-since-last-transaction, device fingerprint) computed in-stream. Target <10ms total.
+
+2. Model serving: Keep decision tree or logistic regression in-memory (sub-1ms inference). Neural nets too slow. Use feature store (Feast) for consistency.
+
+3. Streaming pipeline: Kafka ingests transactions. Spark/Flink computes features and calls model in microseconds. Decision logged immediately.
+
+4. Risk tiers: Low-risk transactions pass instantly. Medium-risk triggers soft friction (SMS OTP). High-risk blocks with callback.
+
+5. Feedback loop: False positives tracked via user feedback. Retrain models daily on fresh labels. Deploy new model via canary (5% traffic first).
+
+6. Scale handling: Use consistent hashing to partition transactions by user_id across servers. Each server maintains user-specific cache.
+
+Real example: Stripe's fraud model runs in <50ms, uses 20 key features (device, velocity, merchant category). Updates weekly.
+
+My approach: Pre-computed features + in-memory model + risk-based friction. Daily retraining on fresh labels. Canary deployment to minimize impact.`,
+    },
+    {
+      q: "Your anti-money laundering model has a 60% false positive rate. How do you reduce it without increasing risk?",
+      subcategory: "case_studies",
+      domain: "fintech",
+      difficulty: "Hard",
+      a: `What's the cost per false positive (analyst review hours)? What's the regulatory minimum for true positive rate? Can you tier alerts?
+
+60% FPR means 6 of 10 alerts are false—analysts overwhelmed, investigation quality drops. I'd attack this systematically:
+
+1. Diagnose root cause: Which rule fires most (structuring deposits? cross-border transfers?)? Pull top 20 rule combinations driving alerts.
+
+2. Tiered rules: Replace single threshold with risk tiers. Low-risk (0.3-0.5): log only. Medium (0.5-0.7): enrich with external data. High (>0.7): alert analyst.
+
+3. Feature refinement: If structuring rule overfires, add context—is customer a legitimate business? Check against known SAR patterns. Add merchant category data.
+
+4. Ensemble approach: Combine SAR model with sanctions screening, PEP checks, and behavioral analysis. Individual signals weaker but together more specific.
+
+5. Cost-benefit tuning: Calculate cost per analyst hour vs regulatory penalty. If penalty $100K and each analyst review costs $50, you can afford 2000 reviews per penalty. Tune threshold to hit that target.
+
+6. Feedback: Analyst labels on past alerts (true positive vs false positive). Retrain monthly on ground truth.
+
+Real example: FinCEN data shows ~98% of AML alerts are false positives. SWIFT uses ensemble: sanctions + structuring + behavioral. Reduces FP to ~40%.
+
+My approach: Diagnosis of high-fire rules, tiered threshold framework, feature engineering for context, feedback loop with analyst labels.`,
+    },
+    {
+      q: "Design an A/B test for a new loan pricing strategy. What are the ethical and statistical considerations?",
+      subcategory: "statistics",
+      domain: "fintech",
+      difficulty: "Medium",
+      a: `Who bears the cost of the test (lenders or borrowers)? Can you guarantee fairness across income levels? How long to measure?
+
+A/B testing pricing is ethically complex—test groups pay different rates. Framework:
+
+1. Ethical guardrails: Control arm gets current best rate (not a worse rate). Test arm gets new pricing. Both fair to borrower. Regulatory approval first (CFPB oversees fair lending).
+
+2. Sample size: Assume 3% conversion difference detectable with n=5000 per arm (90% power). Run 4-week test to capture weekly seasonality.
+
+3. Fairness constraint: Stratify by income, credit score. Ensure test group isn't skewed to lower-income. Use ANOVA by strata to confirm balance.
+
+4. Metric selection:
+   - Primary: Loan approval rate (financial impact)
+   - Secondary: Default rate (risk). Run 12-month follow-up on originations.
+   - Guardrail: No adverse impact on protected class (race, gender) measured via 80% rule.
+
+5. Stopping rule: Pre-commit to 4 weeks or 10K customers. Don't peek. If test group defaults spike by week 2, escalate to fraud team (not a pricing issue).
+
+6. Analysis: Logistic regression (approval ~ pricing + income + credit_score). Report intent-to-treat (everyone assigned, regardless of final action).
+
+Real example: LendingClub tested rate reductions. Found elasticity = 0.8 (1% rate cut → 0.8% more approvals). Test confirmed by 12M+ book.
+
+My approach: Ethical guardrails (no worse rate), stratified randomization, 4-week run, 12M follow-up for defaults, ANOVA for fairness.`,
+    },
+    {
+      q: "How would you build a customer lifetime value prediction model for a neobank?",
+      subcategory: "machine_learning",
+      domain: "fintech",
+      difficulty: "Medium",
+      a: `What's your time horizon (1-year, 3-year, lifetime)? How do you define value (net margin, fees, deposits)? How do you handle churn?
+
+CLV in neobanking is margin per customer minus acquisition cost. I'd build a 3-year forward model:
+
+1. Definition: CLV = sum of monthly net margin * customer retention probability. Month 1-36. Margin includes fees (ATM, transfers), interest earned on deposits, minus operating cost.
+
+2. Data: Transaction history (deposits, spending), product usage (savings account, investment), engagement (app opens), onboarding cohort.
+
+3. Features:
+   - Behavioral: Monthly transaction count, avg balance, product count (2+ products = higher CLV)
+   - Demographic: Age, signup source (paid vs organic—organic stickier)
+   - Cohort: Signup month (cohort effects on retention)
+
+4. Model: Gradient boosting with regression targets: (a) 12-month spending, (b) retention probability. Combine into CLV = spending_pred * margin_rate * retention_prob_36m.
+
+5. Calibration: Split cohorts by signup date. Train on 2022, validate on 2023. Compare predicted CLV to actual 36-month realized margin.
+
+6. Use case: CLV > $500? Worth $100 marketing spend. CLV < $200? Organic only.
+
+Real example: Chime predicts CLV at signup. High-CLV customers get premium onboarding. Reduces churn by 15%.
+
+My approach: 3-year forward CLV combining spending + retention. Calibrated by cohort. Used for acquisition channel optimization.`,
+    },
+    {
+      q: "Your payment success rate prediction model is biased against users from certain regions. How do you fix it?",
+      subcategory: "machine_learning",
+      domain: "fintech",
+      difficulty: "Hard",
+      a: `What's driving the bias (network quality, bank integration, or feature representation)? Can you collect regional-specific features? Are your training labels biased?
+
+Model bias against regions is a data or feature problem, not just algorithm. Diagnostic first:
+
+1. Root cause analysis: Is it the model or labels? Compare:
+   - Actual payment success rate by region (from production data)
+   - Predicted success rate by model
+   - If model predicts 95% success but actual is 70%, model is optimistic on that region. Likely training data underrepresents that region.
+
+2. Data audit: Stratify training set by region. What's the distribution? If North region is only 5% of training but 25% of traffic, model hasn't learned that region's patterns.
+
+3. Feature engineering for region: Add region-specific signals—network provider reliability scores, bank-to-processor integration time, time-zone-specific peak hours. These explain variance.
+
+4. Rebalancing: Oversample under-represented regions in training. Or use class weights (higher weight on minority region failures).
+
+5. Fairness constraint: Retrain with demographic parity—ensure model's false positive rate is similar across regions. Use scikit-fairness or Fairlearn library.
+
+6. Validation: Hold out each region. Measure AUC per region. Should be within 5pp of overall AUC.
+
+Real example: Square found payment success was 85% in rural areas vs 92% urban. Root cause: rural banks integrated later. Solution: added bank_integration_age feature. Regional AUC gap closed to 2pp.
+
+My approach: Stratified audit, region-specific features, training rebalancing, fairness validation per region.`,
+    },
+    {
+      q: "Design a data pipeline that processes UPI transaction data for merchant analytics in real-time.",
+      subcategory: "sql_data",
+      domain: "fintech",
+      difficulty: "Hard",
+      a: `How many merchants (thousands, millions)? What's your query latency requirement (sub-second, minutes)? Do you need 100% accuracy or eventual consistency?
+
+UPI processes 100M+ txns daily in India. Real-time merchant analytics requires streaming + OLAP. Architecture:
+
+1. Ingestion: UPI clearing house provides txn feed via Kafka. Schema: merchant_id, txn_amount, timestamp, vpa_id (identifier), status.
+
+2. Stream processing: Kafka → Spark Streaming or Flink. Compute per-merchant aggregates every minute:
+   - Txn count, total volume, success rate, avg ticket size
+   - State stored in Kafka (stateful stream)
+
+3. OLAP store: Stream outputs to ClickHouse or Druid (columnar DB for real-time analytics). Partitioned by merchant_id and hour.
+
+4. Query layer: API serves aggregated merchant dashboard. Queries like "top 10 merchants by volume in last hour" answer in <100ms via Druid.
+
+5. Recomputation: Daily batch job (Spark SQL) recalculates 30-day rolling metrics for ML features (churn models, settlement amounts). Materialized in Postgres for serving.
+
+6. Governance: Raw txn data (PII) dropped after 7 days. Analytics tables retained 12 months. Audit logging on all access.
+
+Real example: Google Pay India processes merchant dashboards with 5min latency using BigTable for state, ClickHouse for OLAP.
+
+My approach: Kafka ingestion → Spark streaming minute aggregates → Druid OLAP → API serving <100ms queries.`,
+    },
+    {
+      q: "How would you detect credit card churners before they leave? What features would you engineer?",
+      subcategory: "machine_learning",
+      domain: "fintech",
+      difficulty: "Medium",
+      a: `How do you define churn (zero txns for 90 days)? What's your intervention window (30 days before, 60 days)? How do you handle seasonal users?
+
+Churn detection hinges on behavioral signals 60+ days before actual churn. I'd engineer:
+
+1. Velocity features (last 90 days):
+   - Txn count (trend: declining slope?)
+   - Avg transaction size
+   - Merchant diversity (count of unique merchants)
+   - Usage recency (days since last txn)
+
+2. Engagement drop:
+   - Month-over-month change in txn count (if -50% last month, at risk)
+   - Days between txns (widening gaps = churn signal)
+   - Diversity drop (stopped using certain merchants → consolidating to fewer)
+
+3. Product lifecycle:
+   - Card age (older cards higher churn)
+   - Balance trend (declining balance sometimes precedes churn)
+   - Reward redemption rate (dormant rewards = churn signal)
+
+4. Cohort effect:
+   - Acquisition channel (promo users churn faster than organic)
+   - Initial offer redemption (did they use the signup bonus? If yes, lower churn risk)
+
+5. Model: Gradient boosting on 90-day feature window. Predict churn in days 91-180. Binary target: 1 if zero txns in days 91-180.
+
+6. Intervention: If churn probability >60% and txn_count declining, trigger email with special offer or rewards multiplier.
+
+Real example: Capital One uses 60-day feature window. Intervention via email reduces churn by 12%.
+
+My approach: Velocity + engagement + product lifecycle features. 60-day lookback. Gradient boosting. Intervention at >60% risk threshold.`,
+    },
+    {
+      q: "Build a collections optimization model that maximizes recovery while minimizing customer harassment.",
+      subcategory: "case_studies",
+      domain: "fintech",
+      difficulty: "Hard",
+      a: `What's the recovery rate by contact frequency? What's the complaint rate (CFPB)? How many contacts per account is legal (FDCPA compliance)?
+
+Collections is a multi-objective problem: maximize recovery, minimize contacts, satisfy regulations. Tradeoff framework:
+
+1. Constraint: FDCPA limits contact to 1 per 7 days, no more than 1 per day, no excessively late calls. Build this into contact strategy.
+
+2. Outcome data: Historical recovery rate by contact pattern. Collect: account balance, days past due, number of contacts, recovery rate within 90 days.
+
+3. Segmentation: Risk-based contact frequency:
+   - Tier 1 (recent, <30 DPD): 2 calls/week + SMS. High recovery rate (40%+)
+   - Tier 2 (60+ DPD, no payment): 1 call/week. Recovery rate ~20%
+   - Tier 3 (180+ DPD): Letter only. Recovery rate <5%
+
+4. Optimization: For each account, estimate recovery elasticity—what's the ROI of one additional contact? If recovery increases 1% with 1 more call, and call costs $5, expected value = $X. Only contact if EV positive.
+
+5. Harassment metric: Track complaint rate (complaints / accounts contacted). Target <0.5%. If spike above 1%, dial back contact frequency (shift to SMS, which feels less invasive).
+
+6. Feedback: Monthly analysis of recovery by contact channel. Refine contact strategy.
+
+Real example: SoFi's collections model segments by financial hardship signals (income drop via credit report). Contacts hardship customers via SMS (less intrusive). Recovers 8pp more than uniform strategy.
+
+My approach: Tier-based contact strategy aligned to FDCPA. Elasticity-based ROI threshold. Complaint rate monitoring. Monthly refinement.`,
+    },
+    {
+      q: "How would you validate a credit risk model to meet regulatory requirements?",
+      subcategory: "statistics",
+      domain: "fintech",
+      difficulty: "Medium",
+      a: `Which regulatory body (OCC, Basel III, RBI)? What's your validation horizon (1 year, through-the-cycle)? How do you handle data limitations?
+
+Credit model validation is heavily regulated. Framework:
+
+1. Regulatory baseline: Basel III requires models validated over full business cycle (5-7 years ideally). Gini coefficient >0.6 for discrimination. Stability across time, cohorts.
+
+2. Backtesting: Divide historical data into training cohort (2010-2015) and validation cohort (2016-2020). Predict default in validation period. Compare predicted default rate to actual.
+
+3. Discrimination power: Calculate Gini coefficient. Formula: (% bads in top 20% - % bads in bottom 20%) / overall bad rate. Target >0.6.
+
+4. Stability tests:
+   - Time stability: Reestimate model yearly. Are coefficients stable? If coefficient for "income" swings 30%, model is unstable. Flag for retraining.
+   - Population stability: Test on different loan products (prime vs subprime). Model should generalize.
+
+5. Stress testing: Simulate recession (unemployment +5%, home prices -20%). Does model's default rate prediction align with recession data?
+
+6. Documentation: Regulatory report includes model assumptions, data sources, validation results, limitations. Submit to regulator annually.
+
+Real example: JPMorgan's credit model validated on 2008-2009 financial crisis data. Gini 0.68. Stress test: model predicted 12% default rate in 2008. Actual: 14%. Within tolerance.
+
+My approach: Training/validation split by time. Gini >0.6. Yearly stability tests. Recession stress test. Annual regulatory report.`,
+    },
+    {
+      q: "Design a patient readmission prediction model for a hospital network. What features matter most?",
+      subcategory: "machine_learning",
+      domain: "healthcare",
+      difficulty: "Hard",
+      a: `What's your readmission window (30 days, 60 days)? Are you predicting emergency readmission or planned? Do you have prior admission history?
+
+Hospital readmission costs CMS $17B annually. Predicting 30-day emergency readmission helps target interventions. Key features:
+
+1. Clinical signals:
+   - Admission diagnosis (heart failure, COPD = high readmission)
+   - Comorbidities (count, Charlson score)
+   - Lab results at discharge (low albumin = poor nutrition = readmission risk)
+   - Procedure type (surgery vs medical)
+
+2. Social determinants:
+   - Age (>65 much higher)
+   - Discharge destination (home with support vs home alone)
+   - Insurance (uninsured patients readmit more)
+   - Neighborhood poverty index
+
+3. Process signals:
+   - Length of stay (longer = sicker, higher readmission)
+   - Days since discharge (first 7 days highest risk)
+   - Medication count (polypharmacy = adherence issues)
+   - Follow-up appointment scheduled? (yes = lower readmission)
+
+4. Model: Gradient boosting on 30K historical admissions. Predict binary: readmitted within 30 days. Feature importance shows: diagnosis + comorbidities + discharge destination top 3.
+
+5. Intervention: Patients in top decile (readmission risk >40%) get 48-hour post-discharge call, home health referral. Reduces readmission by 12%.
+
+6. Fairness: Validate model doesn't bias by race/ethnicity. Stratified evaluation by race shows AUC within 3pp. If gap >5pp, add fairness constraint.
+
+Real example: ReadmissionMI model (Michigan) deployed in 100+ hospitals. AUC 0.73. Intervention reduced readmission 8%.
+
+My approach: Clinical + social + process features. 30-day prediction horizon. Gradient boosting. Top decile intervention with phone + home health. Fairness validation by race.`,
+    },
+    {
+      q: "How would you build an AI triage system that prioritizes emergency room patients by severity?",
+      subcategory: "system_design",
+      domain: "healthcare",
+      difficulty: "Hard",
+      a: `What's your latency requirement (decision in <2 minutes)? How many patients per hour? Can you integrate with EHR in real-time?
+
+ER triage at scale requires real-time ML deployed at registration. Architecture:
+
+1. Feature collection at intake: Vital signs (BP, heart rate, O2), chief complaint (free text), past history (from EHR), medication list. Target: features in <5 minutes.
+
+2. NLP on chief complaint: Pneumonia, severe chest pain, altered mental status = red flags. Use BioBERT (biomedical BERT) to extract clinical entities. ~100ms inference.
+
+3. Severity score: Gradient boosting model trained on 50K ER visits with outcomes (admission, ICU, length of stay). Predict probability of admission. Ranks patients 1-5 (1=minimal, 5=emergent).
+
+4. Real-time serving: Model runs at intake kiosk (offline) or mobile tablet. No network latency.
+
+5. Human override: Nurse reviews score, can override. Logs override for feedback. Monthly retraining on new labels.
+
+6. Fairness: Ensure model isn't biased by insurance status (uninsured may present sicker). Stratified validation shows AUC consistent across insurance types.
+
+Real example: MIT Lincoln Lab's MIMIC-based triage model. Predicts 30-day mortality risk. AUC 0.81. Deployed in Boston Medical Center. Reduced wait time for high-risk patients by 45%.
+
+My approach: Vital signs + NLP on chief complaint. Gradient boosting severity score. Offline model at kiosk. Nurse override with feedback loop. Monthly retraining.`,
+    },
+    {
+      q: "Your diagnostic model has different accuracy across age groups and genders. How do you ensure fairness?",
+      subcategory: "machine_learning",
+      domain: "healthcare",
+      difficulty: "Hard",
+      a: `How large is the disparity (5pp, 20pp AUC gap)? Is it a data or feature problem? Can you add fairness constraints without hurting overall accuracy?
+
+Fairness in diagnostics is critical—a model that misses disease in women or elderly is harmful. Diagnostic framework:
+
+1. Audit: Stratify validation set by age group and gender. Calculate AUC, sensitivity, specificity per group.
+   - Example: Model achieves 92% AUC overall but 88% AUC in women >65 (disparity = 4pp).
+
+2. Root cause: Is it data skew or feature bias?
+   - If dataset is 70% men, retrain with balanced classes (oversample women)
+   - If features are biased (e.g., symptom description trained on male prevalence), add female-specific features (e.g., pregnancy status, hormone-related symptoms)
+
+3. Fairness constraint: Retrain model with fairness objective. Use Fairlearn (Microsoft) or Themis (fairness-aware ML). Target: equal opportunity (TPR gap <2pp across groups).
+
+4. Tradeoff: Fairness constraint might reduce overall AUC by 1-2%. Is that acceptable? Stakeholder discussion.
+
+5. Threshold optimization: Instead of retraining, adjust decision threshold per group. If women have lower score distribution, lower threshold for women to match TPR. Increases sensitivity in women.
+
+6. Monitoring: Post-deployment, track AUC and sensitivity by age/gender monthly. If gap widens, investigate.
+
+Real example: NIH Heart.org's chest pain risk model showed lower sensitivity in women. Retraining with female-specific symptoms (jaw pain, fatigue) reduced AUC gap from 6pp to 1pp.
+
+My approach: Stratified audit. Balance training data. Add demographic-specific features. Fairness constraint retraining. Threshold per group if needed. Monthly monitoring.`,
+    },
+    {
+      q: "Design an A/B test for a new telemedicine feature. What are the ethical constraints?",
+      subcategory: "statistics",
+      domain: "healthcare",
+      difficulty: "Medium",
+      a: `What population (insured, uninsured, rural)? Can you withhold telemedicine from control group? How do you ensure non-inferiority to in-person care?
+
+Telemedicine A/B tests must meet ethical and clinical standards. Framework:
+
+1. Non-inferiority design: Control arm gets standard in-person care. Test arm gets telemedicine for same condition. Primary outcome: diagnosis agreement rate between telemedicine and in-person diagnosis by specialist.
+
+2. Non-inferiority margin: Assume in-person diagnosis is gold standard (95% accuracy). Test arm must be ≥90% agreement (non-inferior by 5pp margin). Sample size: n=2000 per arm (80% power).
+
+3. Ethical guardrails:
+   - Exclude acute/emergency conditions (telemedicine risky)
+   - Include only chronic disease management, follow-ups, routine visits
+   - Both arms see a provider (no care denial)
+   - Control can cross over to telemedicine after test period (ethical)
+
+4. Stratification: Randomize by patient age, condition type. Ensure telemedicine equally accessible to rural patients (broadband availability stratified).
+
+5. Stopping rules: If diagnosis disagreement >15% by week 4, stop test and investigate root cause (video quality? provider experience?).
+
+6. Analysis: Non-inferiority t-test. If 90% CI for agreement rate is >90%, declare non-inferiority. Secondary: patient satisfaction, time to diagnosis.
+
+Real example: Teladoc's JAMA study tested telemedicine vs in-person for UTI diagnosis. Non-inferiority achieved (92% vs 94% antibiotic accuracy). Test passed.
+
+My approach: Non-inferiority design with 5pp margin. Exclude acute conditions. Stratify by age and condition. Stop rule at 15% disagreement. JAMA-style publication.`,
+    },
+    {
+      q: "How would you build a drug interaction prediction system using medical knowledge graphs?",
+      subcategory: "machine_learning",
+      domain: "healthcare",
+      difficulty: "Hard",
+      a: `Do you have a curated drug interaction database (FDA, DrugBank)? How many nodes in your knowledge graph (drugs, side effects, pathways)? Can you validate against clinical outcomes?
+
+Drug interaction prediction prevents adverse events. Knowledge graph approach:
+
+1. Knowledge graph structure: Nodes = drugs, proteins, side effects, pathways. Edges = interactions (inhibits, competes). Data from DrugBank (20K drugs, 1M interactions) + FAERS (adverse event reports).
+
+2. Graph embedding: Use TransE or RotatE to learn 100-dim embeddings. Each drug represented as vector. Similar drugs (same targets) have similar embeddings.
+
+3. Prediction model: For pair (drug A, drug B), extract:
+   - Embedding similarity
+   - Shared targets (e.g., both inhibit CYP3A4)
+   - Known interaction label (1 if documented, 0 otherwise)
+
+4. Supervised model: Logistic regression on interaction features. Train on 500K known drug pairs, validate on held-out 100K. AUC target >0.85.
+
+5. Rare interaction detection: Knowledge graphs help find novel interactions. If two drugs share a pathway but interaction not documented, flag as potential risk. Prioritize for experimental validation.
+
+6. Clinical validation: Deploy to EHR. Flag high-risk pairs at prescription time. Pharmacist review. Track false positives (flaged but safe), false negatives (not flagged but adverse event reported). Refine weekly.
+
+Real example: Stanford's DeepDrug system uses knowledge graphs. Predicted 300+ novel interactions. 12 validated in lab. AUC 0.88 on known interactions.
+
+My approach: Knowledge graph (DrugBank + FAERS). TransE embeddings. Supervised model on interaction features. Clinical validation at prescription time. Weekly refinement.`,
+    },
+    {
+      q: "Your NLP model extracts medical entities from doctor notes with 78% accuracy. Is that good enough to deploy?",
+      subcategory: "case_studies",
+      domain: "healthcare",
+      difficulty: "Hard",
+      a: `What entities are you extracting (medications, diagnoses, dosages)? What's the cost of false positives vs false negatives? Who uses the extracted data?
+
+78% accuracy on NLP entity extraction depends entirely on use case and error analysis. Decision framework:
+
+1. Error breakdown: Analyze 200 false positives and false negatives. Is model missing:
+   - Implicit medications (patient takes "the usual dose")?
+   - Abbreviations (HTN vs hypertension)?
+   - Negations ("patient denies pain")?
+
+   Example: If 40% of errors are missed implicit medications, accuracy can't be improved without clinical domain knowledge.
+
+2. Cost of errors: Map to clinical impact.
+   - False negative on allergy (missed penicillin): Anaphylaxis risk. CRITICAL. Requires >95% recall.
+   - False positive on medication (extracted "aspirin" but not actually prescribed): Low risk. 78% acceptable.
+
+   Different entities have different thresholds.
+
+3. Use case:
+   - If output goes to EHR display (human reviews): 78% accuracy sufficient (human catches errors)
+   - If output feeds into automated decision (e.g., drug interaction checker): Need >95% precision (no false positives flagging safe combinations)
+
+4. Improvement:
+   - Gather more training data (doctor notes annotated with entities). Retrain.
+   - Add domain knowledge (drug list, diagnosis codes). Improve recall on known entities.
+   - Use ensemble (rule-based + ML). Rule catches obvious cases, ML handles edge cases.
+
+5. Deployment strategy: Start with high-precision entities (medications). Exclude low-confidence predictions. Audit false positives monthly. Retrain quarterly.
+
+Real example: Google Cloud Healthcare NLP extracted medical conditions with 82% F1. Deployed with human review. False negatives discovered in follow-up. Retrained on missed cases. Improved to 88% F1.
+
+My approach: Entity-level cost analysis. 95% threshold for safety-critical entities (allergies). 78% acceptable for review-only outputs. Ensemble model. Quarterly retraining.`,
+    },
+    {
+      q: "Design a HIPAA-compliant data pipeline for training ML models on patient data across multiple hospitals.",
+      subcategory: "sql_data",
+      domain: "healthcare",
+      difficulty: "Hard",
+      a: `How many hospitals, how many patients, what's the data volume? Do you have a central data lake or federated approach? What's your latency requirement?
+
+HIPAA compliance in multi-hospital ML requires governance layers. Architecture:
+
+1. De-identification: Remove 18 HIPAA identifiers (name, MRN, DOB, contact info). Replace with patient_id (hash of original MRN + salt). Keep only minimum needed (age, gender, visit date).
+
+2. Data governance: Central data lake with access controls. Only approved researchers can access. All queries logged (audit trail).
+
+3. Data sharing agreement: Each hospital signs DUA (Data Use Agreement). Specifies permitted uses (ML training vs clinical care). HIPAA authorization obtained from patients (or waiver if retrospective research).
+
+4. Pipeline architecture:
+   - Hospital 1: Extract visits, labs, notes (de-id). Encrypt at rest. Send to central Snowflake.
+   - Hospital 2: Same process. All data encrypted in transit (TLS 1.2).
+   - Central lake: Data from N hospitals, merged by patient_id. Access via query layer (no direct table access).
+
+5. Model training: Data scientists write queries (SELECT * FROM visits WHERE diagnosis='CHF'). Runs in secure environment. Model exported, but not raw data.
+
+6. Audit: Monthly review of access logs. Any unusual queries flagged. Quarterly risk assessment.
+
+Real example: FDA's sentinel program aggregates claims from 100M patients across healthcare plans. Strictly de-identified. Models train on this data to detect adverse drug events.
+
+My approach: De-identification (18 identifiers removed). Central encrypted lake. DUA + access controls. Query-based (no direct data export). Audit logging. Quarterly risk assessment.`,
+    },
+    {
+      q: "How would you measure the real-world effectiveness of an AI diagnostic tool after deployment?",
+      subcategory: "statistics",
+      domain: "healthcare",
+      difficulty: "Medium",
+      a: `How long post-deployment (3 months, 1 year)? What's your control group (clinicians without AI, older AI version)? How do you measure clinical outcomes?
+
+Post-deployment measurement differs from validation. Effectiveness framework:
+
+1. Observational cohort: Track all patients who used the AI diagnostic tool over 6 months. Compare to matched cohort from 12 months prior (before deployment).
+
+2. Primary outcome: 30-day diagnosis confirmation rate. Did patient get diagnosed correctly within 30 days? Compare AI-assisted cohort (diagnosis in <1 day, guided by AI) to historical cohort (diagnosis in avg 3 days).
+
+3. Secondary outcomes:
+   - False positive rate: % of AI positive cases that were negative after confirmation
+   - Time to treatment initiation: Days from first visit to starting treatment
+   - Patient satisfaction: Survey post-visit
+
+4. Matching: Use propensity score matching to control for selection bias. Patients who opted in to use AI might be different (more tech-savvy, earlier disease stage). Match on age, comorbidities, symptom severity.
+
+5. Statistical test: Regression with controls (age, comorbidities). Estimate causal effect of AI use on diagnosis time. Report 95% CI.
+
+6. Confounding: Acknowledge limitations. If AI implementation coincided with new clinical guideline, can't disentangle effects. Sensitivity analysis: what if confounding changes estimates by 20%?
+
+Real example: MIT study of AI chest X-ray model. Post-deployment: 8 hospitals, 2000 patients. AI-assisted diagnosis was 12% faster (2.1 days vs 2.4 days). Statistically significant but clinically modest impact.
+
+My approach: 6-month observational cohort vs historical matched controls. Propensity score matching. Time-to-diagnosis primary outcome. Confounding sensitivity analysis.`,
+    },
+    {
+      q: "Build a clinical trial patient matching system. What data sources and features would you use?",
+      subcategory: "system_design",
+      domain: "healthcare",
+      difficulty: "Hard",
+      a: `How many trial criteria (5 inclusion, 10 exclusion)? How many enrolled patients (100, 1000)? Do you need real-time matching or batch matching?
+
+Clinical trial patient matching automates enrollment. System design:
+
+1. Data sources:
+   - EHR (diagnoses, medications, labs, vital signs)
+   - Genetic data (if trial requires genotyping)
+   - Claims data (to infer past treatments)
+   - Patient registry (for rare diseases)
+
+2. Inclusion criteria example (Alzheimer's trial):
+   - Age 50-80
+   - Diagnosis of mild cognitive impairment (MCI)
+   - MMSE score 20-26
+   - English speaker
+
+3. Exclusion criteria:
+   - Prior Alzheimer's treatment (ruled out by med history)
+   - Kidney disease (eGFR <30)
+   - Recent stroke (within 6 months)
+
+4. Feature extraction:
+   - Discrete: Age, gender, diagnosis codes (ICD-10)
+   - Continuous: MMSE score from EHR, lab results
+   - Temporal: Date of last visit, disease duration
+   - Derived: Days since last treatment, progression rate
+
+5. Algorithm: Rule-based matching first (inclusion/exclusion filters). Then score matching:
+   - For marginal candidates, calculate match score (e.g., how close to target MMSE range)
+   - Rank candidates by score
+   - Clinician reviews top N (5-10) candidates
+
+6. System: Query EHR daily for new patients meeting criteria. Trigger alert to research coordinator. Coordinator screens top 5. Enroll if eligible.
+
+Real example: TrialMatch (MIT/Partners) matched 10K patients to 50 clinical trials. Enrollment rate 3x faster vs manual screening.
+
+My approach: Multi-source data (EHR, claims, registry). Rule-based inclusion/exclusion. Scoring for marginal cases. Daily batch matching. Clinician review of top N.`,
+    },
+    {
+      q: "How do you handle the interpretability requirement for ML models used in clinical decisions?",
+      subcategory: "case_studies",
+      domain: "healthcare",
+      difficulty: "Medium",
+      a: `Which stakeholder needs interpretability (clinician, patient, regulator)? How much transparency vs accuracy tradeoff acceptable? Can you use post-hoc explanations?
+
+Clinical ML interpretability is non-negotiable—clinicians need to trust model decisions. Framework:
+
+1. Inherent interpretability: Start with interpretable model classes (decision trees, logistic regression, linear models). Trade-off: slightly lower accuracy (AUC 0.82 vs 0.85 for neural net), but clinician understands coefficients.
+
+   Example: Logistic regression for sepsis risk. Coefficient for lactate level = +0.8 (log odds). Clinician reads: "each 1 mmol/L increase in lactate increases sepsis risk by e^0.8 = 2.2x."
+
+2. Rule-based: Convert model to readable rules.
+   - If age >65 AND lactate >2 AND vasopressor_use=yes, risk = HIGH
+   - Else if age >50 AND lactate >4, risk = MEDIUM
+
+   Clinicians verify rules against domain knowledge.
+
+3. Post-hoc explanations: If using neural net, apply SHAP (SHapley Additive exPlanations). For each prediction, show contribution of top 5 features.
+   - Example: "This patient's sepsis risk of 75% is driven by: lactate (+30%), age (+20%), heart rate (+15%)..."
+
+4. Fairness transparency: Show model performance across age groups, genders. If model is biased, clinician aware.
+
+5. Uncertainty quantification: Report prediction confidence interval. "Sepsis risk 75% ± 12%" is more honest than "75%."
+
+6. Validation with clinicians: Show 50 model explanations to ICU doctors. Ask: "Does this explanation match your clinical intuition?" If <80% agree, model isn't interpretable enough. Retrain.
+
+Real example: FDA approved chest X-ray AI models only if vendors provided SHAP-based explanations. Clinician feedback led to model improvements (identifying pneumonia-mimics the net missed).
+
+My approach: Logistic regression + rule-based for inherent interpretability. SHAP for complex models. Fairness transparency by group. Clinician validation of explanations. Uncertainty quantification.`,
+    },
+    {
+      q: "Design a churn prediction model for a telecom company with 100M subscribers. What features matter?",
+      subcategory: "machine_learning",
+      domain: "telecom",
+      difficulty: "Hard",
+      a: `What's your churn definition (30-day inactivity, plan cancellation)? What's your intervention window (30 days pre-churn)? Do you have CDR (call detail records)?
+
+Telecom churn at 100M scale requires careful feature engineering. Key signals:
+
+1. Usage features (last 30 days):
+   - Outgoing minutes (declining trend = risk)
+   - Incoming calls (abandoned if no incoming)
+   - Data usage in MB (switching to competitors if data-heavy user)
+   - SMS count
+   - Recharge frequency (widening gaps = weakening engagement)
+
+2. Network quality signals (where available):
+   - Call drop rate (high drops correlate with churn)
+   - Network latency
+   - 4G availability (customer in area with weak signal)
+
+3. Commercial signals:
+   - Plan type (prepaid vs postpaid; prepaid churn faster)
+   - Tenure (new customers first year churn higher)
+   - ARPU (low-ARPU customers churn faster)
+   - Loyalty program status (enrolled vs non-enrolled)
+
+4. Competitor proxy:
+   - If customer starts using competitor's number (can infer from incoming call patterns), at risk
+   - Best friends list: are close contacts also churning?
+
+5. Seasonality: Year-end, holidays see higher churn. Control for month.
+
+6. Model: XGBoost on 5M sampled subscribers over 60 days. Predict 30-day churn. Feature importance: usage_trend (15%), outgoing_minutes (12%), plan_type (10%).
+
+7. Intervention: Churn probability >40% → incentive offer (data voucher, plan discount). Measure offer redemption.
+
+Real example: Vodafone India built model on 200M subscribers. Identified that 20% subscribers were dormant (no outgoing, only incoming). Targeted with "stay active" bonus. Reduced churn by 8%.
+
+My approach: Usage trend + network quality + commercial signals. Competitor proxy via calling patterns. Seasonal adjustment. Intervention at >40% risk. Offer redemption tracking.`,
+    },
+    {
+      q: "How would you build a network anomaly detection system that monitors 50K cell towers in real-time?",
+      subcategory: "system_design",
+      domain: "telecom",
+      difficulty: "Hard",
+      a: `What's your latency budget (seconds, minutes)? What percentage of towers send metrics (100%, sample)? How do you define anomaly (traffic spike, dropped calls)?
+
+Real-time anomaly detection across 50K towers requires streaming ML. Architecture:
+
+1. Metrics ingestion: Each tower reports (every 5 minutes): traffic volume (Erlang), call drop rate, blocked calls, handover success rate. Send via MQTT or Kafka.
+
+2. Feature engineering stream: For each tower, compute 1-hour rolling metrics:
+   - Traffic trend (current vs 1-hour rolling avg)
+   - % change from historical avg (same day last week)
+   - Z-score: (current - mean) / stddev
+
+3. Anomaly detection model: Two-tier approach:
+   - Tier 1: Rule-based thresholds. If traffic >3x avg OR drop rate >5%, flag as anomaly.
+   - Tier 2: Isolation Forest on streaming features (traffic, drop rate, blocked calls). Detect multivariate outliers.
+
+4. Streaming implementation: Apache Flink or Kafka Streams. Stateful operator maintains per-tower rolling stats. Process time: <1 second per tower.
+
+5. Alerting: Anomaly score >0.8 triggers alert to NOC (Network Operations Center) with top 3 anomaly reasons (e.g., "unusual traffic spike" or "drop rate above threshold").
+
+6. Feedback: NOC confirms if anomaly is real (equipment failure, network attack) or false positive (scheduled maintenance, peak hour). Label and retrain model weekly.
+
+Real example: Telefónica Spain monitors 20K towers. Isolation Forest detects 95% of real faults (equipment failures, fiber cuts). False positive rate 15% (maintenance not flagged by operators). Model refined quarterly.
+
+My approach: MQTT/Kafka metrics ingestion. 1-hour rolling stats. Hybrid rule-based + Isolation Forest. Flink streaming. NOC feedback for weekly retraining.`,
+    },
+    {
+      q: "Your customer segmentation model groups all prepaid users into one segment. How do you improve granularity?",
+      subcategory: "machine_learning",
+      domain: "telecom",
+      difficulty: "Medium",
+      a: `How many prepaid customers (millions)? What's your current segmentation (RFM: recency, frequency, monetary)? Do you have behavioral data beyond usage?
+
+Low granularity suggests feature poverty. Improvement strategy:
+
+1. Diagnose: Check current model. If using only ARPU + tenure for prepaid, no wonder coarse clusters. Expand features:
+   - Recharge patterns: Frequent small recharges vs infrequent large ones (behavioral profile)
+   - Data vs voice preference: Data-heavy users, voice-heavy users, balanced
+   - Time of day usage: Night users (potentially younger, different needs)
+
+2. Feature engineering:
+   - Entropy of recharge amounts: Low entropy = consistent behavior (value-seeking). High = opportunistic recharges.
+   - Top service ratio: (data usage) / (total usage). High = data-first user.
+   - Engagement score: Composite of daily active days, session frequency.
+   - Social signal: Roaming usage (travel frequency).
+
+3. Clustering algorithm: K-means + silhouette analysis to find optimal k. Start with k=3 (low-value, mid-value, high-value). Silhouette score might suggest k=6 is better (finer segments).
+
+4. Segmentation result:
+   - Segment 1: Low-engagement, low-recharge frequency
+   - Segment 2: High-engagement, data-heavy (students)
+   - Segment 3: Low-engagement, voice-only (older demographic)
+   - Segment 4: High-value, roaming frequent (business travelers)
+
+5. Validation: Assign segments and check:
+   - Are segments actionable? Can I offer different plans to each?
+   - Stability: Re-run on last month's data. Do same customers land in same segment? If only 60% stability, clusters are unstable.
+
+6. Action: Customize offers per segment. Data-heavy users → unlimited data plan. Voice-only → talk bundle.
+
+Real example: Jio (India) has 6 prepaid segments ranging from rural (Rs 99/month) to urban professionals (Rs 999+). Separate offers per segment. Improved ARPU by 12%.
+
+My approach: Feature expansion (recharge patterns, service mix, engagement). K-means with silhouette analysis. Stability check (60%+). Segment-specific offers. Quarterly re-clustering.`,
+    },
+    {
+      q: "Design an experiment to test whether a new data plan pricing structure reduces churn.",
+      subcategory: "statistics",
+      domain: "telecom",
+      difficulty: "Medium",
+      a: `How many prepaid vs postpaid customers? What's the current churn rate? Can you randomize pricing or only offer new plan to new cohorts?
+
+A/B testing pricing in telecom requires careful design. Framework:
+
+1. Randomization: Randomly assign 50% of new customers to "new pricing" (test), 50% to "old pricing" (control). Randomize at signup to avoid selection bias.
+
+2. Pricing variation: Old plan: 2GB for Rs 250. New plan: 3GB for Rs 250 (same price, more data). Or test: 2GB for Rs 199 (lower price, same data).
+
+3. Sample size: Assume 35% churn rate in control, expect 30% churn in test (5pp improvement). N=5000 per arm for 90% power.
+
+4. Run period: 90 days to capture 3-month churn. Churn typically happens within first 30 days; also capture longer-term effects.
+
+5. Primary outcome: Binary churn indicator (1 if no recharge in 90 days). Compare churn rates.
+
+6. Secondary outcomes:
+   - ARPU (revenue per user): Does new plan change spending?
+   - Plan upgrade rate: % upgrading to higher tier
+   - Customer satisfaction (NPS if available)
+
+7. Confounders: Month of signup matters (holiday season, back-to-school). Stratify by month.
+
+8. Statistical test: Chi-square test for churn rates. Report 95% CI on difference.
+
+   Example: Control churn 35%, Test churn 31%. Difference 4pp (95% CI: 2pp-6pp). Statistically significant. Recommend rollout.
+
+Real example: Airtel tested unlimited data plan vs metered. Test group churn 28% vs control 35%. Rolled out nationwide. Reduced churn by 6pp.
+
+My approach: Randomize at signup. 5000/arm for 90% power. 90-day churn window. Stratify by signup month. Chi-square test with 95% CI.`,
+    },
+    {
+      q: "How would you build a call drop prediction model using CDR and network performance data?",
+      subcategory: "machine_learning",
+      domain: "telecom",
+      difficulty: "Hard",
+      a: `Do you have CDR (call detail records) and network metrics (radio quality, handover success)? What's your prediction window (predict drop in next call)? How frequent is call drops (1%, 5%)?
+
+Call drop prediction helps identify problem networks. Features:
+
+1. CDR features:
+   - Tower origin and destination
+   - Call duration (ongoing calls have different drop patterns than short calls)
+   - Time of day
+   - Caller + callee history (repeat callers, frequent droppers)
+
+2. Network performance at call start:
+   - Signal strength (RSRP) at caller location
+   - Radio link failure count (previous hour)
+   - Handover success rate (% handovers completing)
+   - Traffic load (Erlang utilization at tower)
+
+3. Contextual:
+   - Tower age (old towers drop more)
+   - Weather (heavy rain = signal degradation)
+   - Network congestion (busy hour effects)
+
+4. Model: Gradient boosting on 100M calls. Predict drop probability. Imbalanced (1% drop rate), use class weights.
+
+5. Feature importance: Signal strength (20%), handover success rate (18%), call duration (12%), traffic load (10%).
+
+6. Deployment: Real-time scoring. At call initiation, score drop probability. If >50% risk, proactively suggest callback or alert network team.
+
+7. Validation: Hold out 1 week of calls. Predict drops. Measure:
+   - Recall: % of actual drops detected (target >80%)
+   - Precision: % of high-risk calls that actually drop (target >40%)
+   - Cost-benefit: Cost of proactive callback (customer experience) vs cost of drop
+
+Real example: Vodafone Germany predicted call drops using signal + handover data. AUC 0.78. Identified 2% of calls at extreme risk (signal <-100dBm). Offers WiFi calling alternative. Reduces customer complaints by 25%.
+
+My approach: CDR + network performance features. Gradient boosting on 100M calls with class weighting. Real-time scoring at call initiation. Proactive callback for high-risk. Quarterly refinement.`,
+    },
+    {
+      q: "Build a recommendation engine for telecom plan upselling that doesn't annoy low-ARPU customers.",
+      subcategory: "case_studies",
+      domain: "telecom",
+      difficulty: "Medium",
+      a: `How many plan options (5, 20)? What's your upsell lift goal (10%, 20%)? How do you define annoyance (complaint rate, opt-out rate)?
+
+Upselling low-ARPU customers is delicate—aggressive targeting alienates them. Strategy:
+
+1. Segmentation:
+   - Low-ARPU (<100): New customers, price-sensitive. Risk of churn from over-messaging.
+   - Mid-ARPU (100-500): Stable, open to upgrades if value clear.
+   - High-ARPU (500+): Engaged, less churn risk.
+
+2. Recommendation logic:
+   - Low-ARPU: Recommend conservatively. Only push 1-2 relevant plans per quarter. Example: if customer near 2GB cap, suggest 3GB plan (+50 rupees). Justify: "You're running out of data."
+   - Mid-ARPU: Monthly recommendations. Match plan to usage pattern.
+   - High-ARPU: Can recommend frequently.
+
+3. Personalization:
+   - If customer heavy voice user, recommend talk bundle (not data bundle).
+   - If customer has never roamed, don't aggressively push roaming plans.
+   - Timing: Push recommendations post-recharge (when customer paying attention), not pre-expiry (when irritated).
+
+4. Engagement threshold: Track how many recommendations customer receives. After 3 recommendations in a month, suppress further (avoid annoyance).
+
+5. Opt-out: Customer can unsubscribe from recommendations. Respect it (regulatory + UX).
+
+6. Metrics:
+   - Upsell conversion rate (% clicking recommendation → upgrading)
+   - Churn impact: Did recommendation correlate with churn? Stratified analysis.
+   - Annoyance metric: Complaint mentions "too many offers" / total recommendations sent. Target <2%.
+
+7. Feedback: Low-ARPU customers who receive recommendations and churn within 30 days—those are signals of over-targeting. Adjust.
+
+Real example: Jio tested aggressive upselling (5 recommendations/month) to low-ARPU. Churn increased 2pp vs control. Shifted to conservative strategy (1/quarter for low-ARPU). Churn reduced. Upsell rate 8% vs 12% aggressive, but better long-term LTV.
+
+My approach: Segmentation by ARPU. Conservative recommendations for low-ARPU (1-2/quarter). Engagement throttling (max 3/month). Opt-out respected. Churn monitoring. Quarterly tuning.`,
+    },
+    {
+      q: "Design a data warehouse for telecom customer analytics handling 500M CDR records daily.",
+      subcategory: "sql_data",
+      domain: "telecom",
+      difficulty: "Hard",
+      a: `What's your query latency requirement (seconds, minutes)? How long retention (3 months, 2 years)? Do you need real-time or batch analytics?
+
+500M CDRs daily = ~5.8K TPS. Warehouse design:
+
+1. Schema:
+   - Fact table: call_detail_records (caller_id, callee_id, call_start_time, duration, tower_origin, tower_destination, call_status)
+   - Dimension tables: customer (profile, plan, segment), tower (location, equipment), time
+
+2. Partitioning:
+   - Partition by call_date (YYYYMMDD). Each day = ~500M rows.
+   - Subpartition by hour (24 partitions per day). Enables quick queries like "calls in 14:00-15:00 on 2024-05-19."
+
+3. Storage:
+   - Columnar format (Parquet). 500M rows * 10 columns ≈ 50GB raw. Compressed: 5GB per day.
+   - 90 days: 450GB hot data (SSD). 2 years: 3.6TB total (archive to cheaper storage).
+
+4. Warehouse platform: Snowflake or BigQuery.
+   - Snowflake: Shared storage (S3). Scales independently. Good for variable queries.
+   - BigQuery: Serverless. Automatic scaling. No cluster management.
+
+5. Typical queries:
+   - "Calls by customer segment today" → GROUP BY customer.segment. Scans day partition (5GB compressed → 1s).
+   - "Call drop rate by tower" → Filter on call_status='dropped'. Scan full 90 days (450GB). Index on call_status needed.
+
+6. Materialized views:
+   - Daily_summary: Per-customer daily metrics (call count, duration, cost). Pre-computed, stored in Postgres for real-time dashboards.
+   - Hourly_tower_metrics: Per-tower hourly health. Feeds network ops dashboards.
+
+7. Governance: Access control (only analysts can query). Audit logging (who queried what). GDPR compliance (caller/callee PII deleted after 30 days, only aggregates retained).
+
+Real example: Telefónica processes 50B CDRs annually (137M/day). Uses Hadoop + Hive. Query latency: <5 min for complex joins. Processes revenue assurance, network optimization.
+
+My approach: Parquet in columnar format. Partition by date, subpartition by hour. Materialized views for dashboards. Snowflake/BigQuery for scalability. 90-day hot storage, 2-year archive.`,
+    },
+    {
+      q: "Your 5G rollout data shows adoption varies wildly by city. How do you analyze and prioritize expansion?",
+      subcategory: "statistics",
+      domain: "telecom",
+      difficulty: "Medium",
+      a: `How many cities (100, 1000)? What's the adoption metric (% customers with 5G-capable phones, % using 5G)? What's your expansion budget?
+
+Rollout variance suggests city-level factors. Analysis framework:
+
+1. Data: For each city, collect:
+   - 5G adoption rate (% 5G connections / total)
+   - Population density
+   - Competitive 5G coverage (are competitors present?)
+   - Customer demographics (age, income)
+   - Current network congestion (4G overload?)
+   - Cost to rollout (site acquisition, fiber backhaul)
+
+2. Exploratory analysis: Correlate adoption with city factors.
+   - Are high-income cities adopting faster? (yes, typically)
+   - Are dense cities adopting faster? (yes, economies of scale)
+   - Is adoption higher where competitors absent? (yes, less cannibalization risk)
+
+3. Segmentation: Cluster cities into groups:
+   - Tier 1: High demand, low cost (dense, high income, high current congestion). Expand aggressively.
+   - Tier 2: High demand, high cost (rural, moderate income). Selective expansion (metro areas only).
+   - Tier 3: Low demand (low income, low congestion). Hold for 2-3 years.
+
+4. Forecasting: For Tier 1 cities, forecast adoption trajectory (logistic curve). Estimate saturation point (when does adoption plateau at 80%?). Expansion ROI: revenue from new customers vs capex.
+
+5. Prioritization: Rank cities by:
+   - Payback period = capex / incremental annual revenue
+   - Target <2 years payback
+
+6. Sensitivity analysis: If 5G adoption elasticity to coverage is lower than assumed (demand pullback), which cities become unprofitable? Stress test.
+
+Real example: Verizon's 5G rollout prioritized Manhattan (high density, high-income). NYC adoption hit 60% within 12 months. Rural areas (Tier 3) held for later. Payback: 18 months in NYC, >4 years in rural.
+
+My approach: Correlation analysis (density, income, competition, cost). Tiered segmentation. Logistic forecasting of adoption. Payback period ranking (<2 years priority). Sensitivity to demand elasticity.`,
+    },
+    {
+      q: "Design a product recommendation system that works for new users with zero purchase history.",
+      subcategory: "machine_learning",
+      domain: "ecommerce",
+      difficulty: "Hard",
+      a: `How many products in catalog (1M, 100K)? What's your recommendation frequency (every visit, once)? Can you use web session data?
+
+Cold start for recommendations requires non-collaborative approaches. Strategy:
+
+1. Content-based: If you don't have user history, use product similarity.
+   - Product embeddings from descriptions (TF-IDF or BERT). Products with similar embeddings similar users might like.
+   - Example: User browsing "running shoes." Recommend "athletic socks," "moisture-wicking shirts" (content similarity).
+
+2. Explore-exploit: Randomized exploration.
+   - First visit: Show diverse products (different categories). Track clicks/views.
+   - Second visit: Exploit top-performing categories from first visit.
+   - Gradually shift from 50% explore (week 1) to 90% exploit (week 4).
+
+3. Contextual bandits: Use session context (time of day, device, traffic source) + product features to predict click-through.
+   - At each recommendation, choose product maximizing estimated CTR | context.
+   - Thompson Sampling: balance exploration (try uncertain products) and exploitation (recommend high-CTR products).
+
+4. Traffic source signals:
+   - If user came from search (keyword "laptop"), recommend related products (laptop bags, external hard drives).
+   - If user came from category browse (electronics), stay in that category.
+
+5. Popular products + recency:
+   - New users see "trending now" and "popular" sections. Avoids personalized recommendations if signal weak.
+
+6. Feedback loop:
+   - Track clicks, cart additions, purchases. Every action updates belief about user preferences.
+   - By visit 10, enough data to transition to collaborative filtering (if user has viewed/bought 5+ products).
+
+7. A/B test variants:
+   - Control: Show popular products only
+   - Test 1: Content-based + contextual bandits
+   - Test 2: Popular products + contextual bandits
+   - Metric: Click-through rate, conversion rate
+
+Real example: Amazon's cold-start handles new users with popularity (bestsellers) + category affinity (traffic source). Contextual bandits tune recommendations per session. Cold-start CTR 3-5%, warm-start (100+ interactions) CTR 8-12%.
+
+My approach: Content-based via product embeddings. Explore-exploit lifecycle. Contextual bandits (Thompson Sampling). Traffic source signals. Popular products as fallback. Transition to collaborative filtering post-10 interactions.`,
+    },
+    {
+      q: "Your search ranking model shows great offline metrics but users complain results are irrelevant. What's wrong?",
+      subcategory: "case_studies",
+      domain: "ecommerce",
+      difficulty: "Hard",
+      a: `What offline metrics (AUC, NDCG, CTR)? How are user complaints collected (surveys, search feedback)? Are training labels biased?
+
+Offline-online mismatch is common. Diagnosis:
+
+1. Label bias: Offline evaluation uses clicked results as positives. But clicks can be misleading:
+   - User clicks #1 result not because it's best, but because it's first (position bias).
+   - User clicks #3 result but bounces (not actually relevant, just explored).
+   - Solution: Collect explicit relevance labels (crowd rating "relevant," "somewhat," "not relevant"). Retrain on explicit labels, not clicks.
+
+2. Distribution shift: Offline data (past queries, clicks) ≠ current user intents.
+   - Offline trained on 2023 clicks. Deployed in 2024. New products, trends, seasonal shifts. Model hasn't seen them.
+   - Solution: Online evaluation. A/B test new model on live traffic. Track actual CTR, bounce rate, dwell time.
+
+3. Evaluation metric mismatch: NDCG (offline) doesn't match user satisfaction (online).
+   - Offline: Model ranks [product_A, product_B, product_C] as #1-3. All relevant. NDCG = good.
+   - Online: User searches "laptop." Sees [gaming_laptop, business_laptop, old_laptop]. Frustrated—they wanted gaming laptop but no gaming-specific ranking.
+   - Solution: Move to user-centric metrics. Measure: 1-click relevance (% users satisfied with top 3 results), dwell time (time on result page).
+
+4. Training data sample bias: If training on desktop searches but model deployed on mobile, performance gap.
+   - Mobile users have different intent (quick answers, local results).
+   - Solution: Retrain on mobile-specific data.
+
+5. Real-time signal loss: Offline model doesn't capture freshness.
+   - New products launched. Offline model ranks old products. Users want new.
+   - Solution: Add freshness signal to features (days since product launch, recent reviews).
+
+6. Fixing:
+   - Collect explicit relevance labels (crowd + user feedback)
+   - Retrain on recent data (last 30 days, not historical)
+   - Online A/B test (track CTR, dwell time, bounce rate)
+   - Monitor online metrics weekly; alert if CTR drops >5%
+
+Real example: Alibaba's search ranking model: offline NDCG 0.75, but 30% user complaints. Root cause: position bias in labels. Switched to explicit crowd labels. Retrained. Online CTR improved 8%, complaints dropped to 12%.
+
+My approach: Audit label quality (explicit relevance vs clicks). Detect distribution shift (retrain on recent data). Online A/B testing (CTR, dwell time, bounce). Weekly monitoring. Explicit feedback collection.`,
+    },
+    {
+      q: "How would you build a dynamic pricing model for flash sales?",
+      subcategory: "machine_learning",
+      domain: "ecommerce",
+      difficulty: "Hard",
+      a: `What's your demand elasticity (how much does price impact quantity)? How frequently do flash sales run (weekly, daily)? How many products?
+
+Flash sales require real-time pricing optimization. Framework:
+
+1. Demand curve estimation: Use historical sales data. For each product, estimate demand elasticity:
+   - Elasticity = % change in quantity / % change in price
+   - Example: If price cut 10%, quantity increases 15%. Elasticity = 1.5.
+   - Use regression: log(quantity) ~ beta * log(price) + controls. Beta = elasticity.
+
+2. Inventory constraints:
+   - Flash sale limited quantity (e.g., 100 units). Price high enough to sell out in allocated time window.
+   - If inventory > target, lower price to accelerate sell-through.
+   - If inventory < target, raise price (protect margin on limited stock).
+
+3. Competitor monitoring:
+   - Scrape competitor prices. If competitor lowers price on similar product, match or undercut slightly.
+   - Real-time price parity feeds into pricing model.
+
+4. Real-time pricing algorithm:
+   - Input: Current inventory, demand forecast (first 1 hour, next 2 hours), competitor price, elasticity
+   - Optimize: Maximize revenue (price * quantity_sold) subject to inventory constraint
+   - Update price every 15 minutes
+
+5. Demand forecast: Use previous flash sale events (same product, time of day, day of week). Train gradient boosting model on historical demand.
+   - Features: Hour, day_of_week, category, competitor_discount, current_inventory
+   - Predict: Units sold in next hour
+
+6. ML pricing: For N products, solve N independent optimization problems. Price = argmax(price * demand(price)).
+
+7. Monitoring: Track conversion rate, avg price, inventory at end of sale window. Adjust elasticity estimates monthly.
+
+Real example: Amazon Prime Day: 48-hour sale with 100K+ products. Dynamic pricing every 15 min. Elasticity varies (toys: 0.8, electronics: 1.5). Algorithm optimizes sell-through. Average price discount 25%, revenue uplift 18% vs static sale prices.
+
+My approach: Elasticity estimation via regression. Inventory-driven price optimization. Demand forecasting (gradient boosting on historical flash sales). 15-minute price updates. Real-time competitor monitoring. Monthly elasticity recalibration.`,
+    },
+    {
+      q: "Design an A/B test for a redesigned checkout page. How do you handle the novelty effect?",
+      subcategory: "statistics",
+      domain: "ecommerce",
+      difficulty: "Medium",
+      a: `What's your current conversion rate (1%, 5%)? How many users per day? How long to run test (1 week, 4 weeks)?
+
+Checkout redesigns often show inflated initial lift due to novelty (users curious about new design). Framework:
+
+1. Novelty effect awareness: Users in test arm see new design → curious → higher engagement initially. But after 1-2 weeks, novelty wears off. Conversion rates stabilize or regress.
+
+2. Run period: Minimum 4 weeks to dilute novelty. First week: novelty lift (5-10%). Weeks 2-4: stabilization. Report weeks 2-4 lift (true effect).
+
+3. Novelty detection: Compare week 1 vs weeks 2-4 conversion separately.
+   - Week 1 conversion (test): 3.0%
+   - Weeks 2-4 conversion (test): 2.2%
+   - Drop: 0.8pp (novelty effect identified)
+   - True lift: 2.2% - 2.0% (control) = 0.2pp (modest)
+
+4. Traffic source stratification:
+   - New users: See design for first time. Novelty might apply more.
+   - Returning users: Already familiar. Less novelty effect.
+   - Compare uplift across both groups. If true improvement, both should benefit.
+
+5. Segment by device:
+   - Mobile users might notice design changes more than desktop (smaller screen). Mobile-specific novelty effect.
+   - Monitor conversion by device. Ensure improvement consistent.
+
+6. Sample size: Assume 2% baseline conversion, expect 0.3pp lift (true + novelty). N=10K per arm for 90% power, detecting 0.3pp lift. But run 4 weeks (not 1 week) to control novelty.
+
+7. Statistical test: ANCOVA with week as covariate (adjust for weekly trends). Estimate treatment effect holding week constant.
+
+   Example: "Controlling for week effects, new design increases conversion 0.3pp (95% CI: 0.1pp-0.5pp)."
+
+8. Decision: If true effect (post-novelty) is positive and statistically significant, recommend rollout. If not significant, revert.
+
+Real example: Stripe tested new checkout flow. Week 1: 2.5% → 3.1% (0.6pp uplift, novelty inflated). Weeks 2-4: 2.1% (0.1pp vs control, within noise). Re-examined design. Issue: new flow added an extra page (seemed novel, but actually friction). Redesigned. Retest: true 0.4pp lift. Rolled out.
+
+My approach: 4-week test minimum. Analyze weeks 2-4 separately (dilute novelty). Stratify by new/returning users and device. ANCOVA with week covariate. Decision based on post-novelty effect.`,
+    },
+    {
+      q: "Build a fake review detection system for an e-commerce marketplace.",
+      subcategory: "machine_learning",
+      domain: "ecommerce",
+      difficulty: "Hard",
+      a: `How many reviews daily (millions, thousands)? Do you have ground truth labels (human moderation, merchant reports)? What's acceptable false positive rate?
+
+Fake reviews are a cat-and-mouse game. Multi-signal approach:
+
+1. Linguistic features:
+   - Review length distribution (fake reviews often very short or suspiciously long)
+   - Sentiment consistency (review text says "excellent," rating = 1 star → fake)
+   - Language quality (fake reviews often grammatically poor or repetitive)
+   - Rare word frequency (if review contains 10% rare words, likely copy-pasted)
+
+2. Behavioral signals:
+   - Reviewer history: New accounts with first review being 5 stars suspicious
+   - Review timing: 10 reviews in 1 hour by same user → likely botnet
+   - Rating skew: Reviewer always gives 5 stars OR always 1 star → biased
+   - Product skew: Reviewer only reviews one brand → paid reviewer
+
+3. Product anomalies:
+   - Rating distribution: Product has 95% 5-star, 5% 1-star (no 3-star). Suspicious polarity (fake 5-stars + competitor fake 1-stars).
+   - Spike detection: Product rated 10 times yesterday, 0 times in prior month → purchase attack
+
+4. Network analysis:
+   - Multiple reviewers leaving same comments (common text overlap >70%)
+   - Multiple reviewers posting within same hour
+   - Reviewer-product bipartite graph: detect cliques (same group of reviewers rating same set of products)
+
+5. Model: Gradient boosting on 100K labeled reviews (human moderated). Features: linguistic (5), behavioral (5), product-level (4), network (3). Target: binary fake/authentic.
+
+6. Precision-recall tradeoff:
+   - High precision (few false positives) for auto-removal. False positive = removing legit review = user frustration.
+   - Lower precision acceptable for manual review queue (humans verify).
+   - Typical: Remove automatically if probability >95%. Manual review 70-95%. No action <70%.
+
+7. Feedback: Merchants can flag reviews as fake. Users can report. Both feed retraining data.
+
+Real example: Amazon detects 200K fake reviews daily (Amazon Security). Uses NLP + reviewer history. Enforcement: remove review + warn reviewer. Repeat offenders banned.
+
+My approach: Linguistic NLP features + behavioral signals + product anomalies + network analysis. Gradient boosting. Precision-recall calibrated: 95% for auto-remove, 70-95% for manual review.`,
+    },
+    {
+      q: "How would you design a customer segmentation model that updates in real-time as users browse?",
+      subcategory: "system_design",
+      domain: "ecommerce",
+      difficulty: "Hard",
+      a: `How many concurrent users (thousands, millions)? What's latency requirement (sub-second)? Do you need model retraining real-time or batch updates?
+
+Real-time segmentation enables dynamic recommendations. Architecture:
+
+1. Feature store: Pre-computed user features cached (browsing history, purchase history, average order value). Refreshed every 15 minutes via batch job.
+
+2. Session features: Real-time computed as user browses:
+   - Current category (category of product viewing now)
+   - Browsing velocity (how many products viewed in last minute)
+   - Time spent on category (total seconds browsing electronics)
+   - Cart value (current cart total)
+
+3. Segmentation logic: Decision tree (interpretable, fast):
+   - If browsing high-value items (>$500) AND average_aov > $200 → VIP segment
+   - Else if browsing items >10/min AND low dwell time → Deal-seeker segment
+   - Else if browsing accessories after purchase → Repeat customer segment
+
+4. Real-time serving: User loads product page. Frontend JavaScript sends browsing event to backend. Backend:
+   - Fetches cached features (user_id from cookie)
+   - Computes session features from last 5 events
+   - Runs decision tree (< 1ms)
+   - Returns segment ID
+
+5. Recommendation adjustment: Based on segment:
+   - VIP: Premium recommendations (high-margin, exclusive items)
+   - Deal-seeker: Discounts, bundle offers
+   - Repeat: Complementary products to past purchases
+
+6. Learning: Monthly retraining. Collect user segments assigned vs actual conversion/AOV. Retrain tree to maximize business metric (e.g., AOV).
+
+7. Monitoring: Track segment distribution daily. If VIP segment shrinks 20% week-over-week, alert (potential data issue or behavior change).
+
+Real example: Alibaba's real-time segmentation serves 500M users daily. Decision tree on browsing patterns. Segments: price-sensitive (40%), brand-loyal (25%), deal-hunters (20%), explorers (15%). Personalized recommendations per segment. Conversion lift 12%.
+
+My approach: Feature store (batch-updated every 15 min) + session features (real-time). Decision tree for fast segmentation (<1ms). Monthly retraining. Recommendation adjustment per segment. Daily distribution monitoring.`,
+    },
+    {
+      q: "Your return rate prediction model has 70% accuracy. Is it worth deploying? What's the business case?",
+      subcategory: "case_studies",
+      domain: "ecommerce",
+      difficulty: "Medium",
+      a: `What's your baseline return rate (10%, 30%)? What's the cost of a return (processing, shipping, restocking)? What's your intervention cost?
+
+70% accuracy depends on context. Business case analysis:
+
+1. Baseline: Assume 20% of orders get returned (baseline return rate).
+
+2. Model accuracy breakdown: 70% accuracy doesn't distinguish high-accuracy on positive class vs negative class.
+   - Detailed metrics: Precision (% predicted returns that actually return) and Recall (% actual returns detected).
+   - Example: Precision 60%, Recall 50% is worse than Precision 40%, Recall 75%.
+
+3. Model confusion matrix:
+   - True Positive (TP): Predicted return, actually returned. Valuable—can intervene.
+   - False Positive (FP): Predicted return, didn't return. Intervention wasted.
+   - True Negative (TN): Predicted no return, didn't return. No action needed.
+   - False Negative (FN): Predicted no return, actually returned. Missed opportunity.
+
+4. Intervention ROI:
+   - Cost of identifying high-risk return: Pre-return outreach (email/SMS) = $0.50
+   - Intervention: 10% discount code, "change your mind?" prompt
+   - Outcome: Converts some returns → keeps = 30% intervention success rate (7% of at-risk orders kept)
+   - Value per kept order: $80 (avg order value) * (1 - 30% merchandise cost) = $56 saved
+
+5. Expected value per order:
+   - If model precision = 60%: 60 true returns per 100 predictions. Intervene cost: 100 * $0.50 = $50. Success: 60 * 7% * $56 = $237. Net: $187 per 100 predictions.
+   - ROI: $187 / $50 = 3.7x
+
+6. Deployment threshold: If ROI positive (>1x), worth deploying. Monitor performance post-launch.
+
+7. Monitoring: Track actual vs predicted returns by segment. If precision drifts below 50%, model degraded. Retrain.
+
+Real example: Shein tested return prediction with 68% accuracy. Precision 55%, Recall 72%. Intervention: "Free returns" removal for low-risk. ROI 2.1x (prevented $5M returns annually). Deployed.
+
+My approach: Break down accuracy into precision/recall. Model confusion matrix. Calculate ROI (intervention cost vs value saved). If ROI >1x, deploy with monitoring. Retrain if precision drifts <50%.`,
+    },
+    {
+      q: "Design a data pipeline for real-time product catalog analytics across 10M SKUs.",
+      subcategory: "sql_data",
+      domain: "ecommerce",
+      difficulty: "Hard",
+      a: `How many new/updated SKUs daily (thousands, millions)? What's your query latency requirement (seconds, minutes)? Do you need 100% accuracy or eventual consistency?
+
+10M SKU real-time analytics requires streaming + OLAP. Architecture:
+
+1. Ingestion: Product catalog service publishes events (Kafka):
+   - Product created: {sku, name, category, price, stock}
+   - Product updated: {sku, price_delta, stock_delta, timestamp}
+   - Purchase: {sku, quantity, timestamp, region}
+
+2. Stream processing (Kafka Streams or Spark Streaming):
+   - Compute per-SKU aggregates every minute:
+     - Sales velocity (units sold in last hour)
+     - Inventory status (current stock)
+     - Price changes (price now vs 1 hour ago)
+     - Views/clicks (from website analytics)
+   - State stored in Kafka changelog (can replay)
+
+3. OLAP store:
+   - Write stream aggregates to ClickHouse (columnar OLAP, handles 100K+ QPS).
+   - Partition by (date, category). Allows "All electronics sales today" query on subset of data.
+   - Retention: 30 days hot, 2 years archive.
+
+4. Query layer: API serves:
+   - Top 100 SKUs by sales today (sub-second from ClickHouse)
+   - Inventory status by category (seconds)
+   - Price trends (days)
+
+5. Real-time dashboard: Updates every 5 minutes. Shows:
+   - Top trending SKUs
+   - Stock-outs in real-time
+   - Regional demand
+
+6. Data quality:
+   - Monitor lag (Kafka lag). Alert if >5 minutes behind.
+   - Volume anomaly: If SKU sales spike 10x, flag for manual check (data quality or real event?).
+
+7. Scale: 10M SKUs * 3 aggregates per minute = 30M metric updates/minute. ClickHouse ingests at 500K TPS easily. Partitioning by category ensures queries scan subset.
+
+Real example: Amazon product analytics: 350M SKUs. Real-time pricing, inventory dashboards. Uses proprietary system. External: Databricks Lakehouse (10M SKU case study). Sub-second latency on hot queries.
+
+My approach: Kafka ingestion of product events. Kafka Streams minute aggregates. ClickHouse OLAP store partitioned by date + category. Query API. 5-minute dashboard refresh. Lag monitoring (alert >5min).`,
+    },
+    {
+      q: "Design an adaptive learning system that adjusts difficulty based on student performance.",
+      subcategory: "machine_learning",
+      domain: "edtech",
+      difficulty: "Hard",
+      a: `How many students (thousands, millions)? How many questions per course? What's your success rate target (70%, 80%)?
+
+Adaptive learning tailors content to individual learner pace. Framework:
+
+1. Ability estimation: Use Item Response Theory (IRT). Each question has:
+   - Difficulty (theta)
+   - Discrimination (how well it differentiates ability)
+   - Guessing parameter (probability of guessing correctly)
+
+2. Student state: Track estimated ability (theta) for each student, updated after each answer.
+   - Correct answer → increase ability estimate
+   - Incorrect → decrease (but not below zero)
+   - Convergence: Ability estimate stabilizes after 20-30 questions
+
+3. Question selection algorithm:
+   - Goal: Present questions where success rate ≈ 70% (optimal learning zone, Vygotsky's ZPD)
+   - Select question with difficulty closest to current ability
+   - Avoid repeating same difficulty (learner bored or frustrated)
+
+4. Difficulty progression:
+   - Questions 1-5: Warm-up (easy)
+   - Questions 6-20: Adaptive (difficulty matches ability)
+   - Questions 21+: Assessment (mixed difficulty to refine ability estimate)
+
+5. Reinforcement of weak areas:
+   - Track student errors by topic (e.g., "fractions" error rate 40%)
+   - Intersperse questions from weak topics (20% of questions)
+   - Once error rate on topic drops <20%, move on
+
+6. Model: Gradient boosting to predict next question's success probability given (student_ability, question_difficulty, topic). Used for question selection.
+
+7. Engagement: If student answers 5 questions correctly, show encouraging message. If 3 in a row wrong, offer hint.
+
+Real example: Khan Academy's Mastery system. Adaptive questions by topic. Students progress at own pace. Mastery requirement: 3/3 correct. Learning time 15% faster than fixed-paced. User engagement +25%.
+
+My approach: IRT for ability estimation. 70% success rate target question selection. Topic-based error tracking with 20% interleaving. Engagement prompts. Gradient boosting for success prediction.`,
+    },
+    {
+      q: "How would you predict student dropout risk in an online course platform?",
+      subcategory: "machine_learning",
+      domain: "edtech",
+      difficulty: "Medium",
+      a: `What's your dropout definition (stop engaging for 7 days, never complete course)? What's your baseline dropout rate (20%, 50%)? Do you have student background data?
+
+Dropout prediction enables timely intervention. Features:
+
+1. Engagement features (first 2 weeks):
+   - Video views per week (declining = risk)
+   - Quiz completion rate (low = struggling, likely to drop)
+   - Time between logins (widening gaps = disengagement)
+   - Percentage of course completed (lagging = behind peers, at risk)
+
+2. Performance signals:
+   - Quiz score trend (declining scores = frustration)
+   - Correctness on first attempt (low = struggling)
+
+3. Demographic signals:
+   - Age (younger students drop more in online courses)
+   - Prior education (college-educated more likely to complete)
+   - Employment status (employed students drop more due to time pressure)
+
+4. Interaction signals:
+   - Forum posts (active = engaged)
+   - Help-seeking (good signal if asking questions)
+   - Study group participation (if feature exists)
+
+5. Cohort effect:
+   - Course difficulty (some courses have 50% dropout, others 10%)
+   - Instructor (some instructors have higher completion rates)
+
+6. Model: Logistic regression or gradient boosting on 5K student cohorts. Predict dropout in weeks 3-5 based on week 1-2 features.
+
+7. Intervention: Dropout probability >60% → send motivational email, suggest peer mentor, offer deadline extension.
+
+8. Validation: Track intervention impact. Do students who receive messages dropout less? Measure causal effect via propensity matching.
+
+Real example: Coursera predicts dropout risk. Intervention: Email encouraging students to set study goals. Reduces dropout by 8-12% in week 3 cohort.
+
+My approach: Engagement trend (video views, quiz completion, login gaps). Performance signals (score trends). Demographics + course effects. Logistic regression. Intervention at >60% risk. Propensity-matched evaluation.`,
+    },
+    {
+      q: "Build a content recommendation system for a learning platform with 50K courses.",
+      subcategory: "machine_learning",
+      domain: "edtech",
+      difficulty: "Medium",
+      a: `What's your user base (students, professionals)? Are you recommending courses or individual lessons? Do you have user ratings/completion data?
+
+50K course recommendation requires handling cold start and course diversity. Approach:
+
+1. Content-based features:
+   - Course category (ML, data science, Python)
+   - Difficulty level (beginner, intermediate, advanced)
+   - Instructor reputation (rating, prior students)
+   - Course length (hours to complete)
+   - Review sentiment
+
+2. Student features:
+   - Prior courses taken
+   - Completion rate (if 90% of courses completed, reliable learner)
+   - Learning pace (fast vs slow)
+   - Goal (career change, skill development)
+
+3. Collaborative filtering (if data available):
+   - Students who completed course A often take course B next
+   - Matrix factorization on (student, course) → completion/rating
+
+4. Cold-start handling:
+   - New users: Show popular courses in high-intent categories (if student looking for Python, show top Python courses)
+   - New courses: Content-based similarity (if course A is "Python basics" and course B is "Python for data science," recommend B to students who completed A)
+
+5. Diversity constraint:
+   - Without diversity, system recommends same category (Python → more Python). Boring.
+   - Force diversity: Top 3 recommendations from different categories or skill levels.
+
+6. Ranking model: Gradient boosting to predict course completion probability given (student, course) pair.
+   - Features: Category match, difficulty match, instructor quality, course length, student prior completion rate
+   - Ranking: Recommend courses with highest completion probability
+
+7. Online feedback:
+   - Track completion rate per recommendation. If recommendation has low completion, downrank.
+   - Weekly model retrain.
+
+Real example: Udemy recommends courses based on browsing history + completion. If student watches ML course but doesn't complete, recommends easier ML course. If student completes, recommends advanced course. Completion rates 15% higher than baseline.
+
+My approach: Collaborative filtering + content-based features. Difficulty/category matching. Diversity constraint (top 3 from different categories). Gradient boosting ranking. Online feedback loop.`,
+    },
+    {
+      q: "Design an A/B test to measure whether AI-generated quiz questions improve learning outcomes.",
+      subcategory: "statistics",
+      domain: "edtech",
+      difficulty: "Medium",
+      a: `How many students (thousands, millions)? What's your learning outcome metric (quiz score, course completion, retention)? How long post-intervention (immediately, 1 month)?
+
+A/B testing AI-generated content for learning requires careful outcome measurement. Framework:
+
+1. Randomization: Randomly assign students to:
+   - Control: Instructor-written quiz questions (curated, varied)
+   - Test: AI-generated quiz questions (consistent quality, scaled)
+
+2. Sample size: Assume 70% baseline quiz score (control). Expect 5pp improvement with AI (75% test). N=1000 per arm for 90% power.
+
+3. Primary outcome: Post-test quiz score (numeric, 0-100).
+
+4. Secondary outcomes:
+   - Course completion rate (did student finish course?)
+   - Retention (did student return 1 month later?)
+   - Satisfaction (survey: "Were quiz questions helpful?")
+
+5. Confounders: Control for student ability (proxy: pre-test score on diagnostic). Use ANCOVA: Final score ~ treatment + pre_test_score.
+
+6. Question quality check: Sample 30 AI-generated and 30 instructor-written questions. Send to independent evaluator (educator blind to treatment). Rate clarity, difficulty, educational value. If AI scores consistently lower, question whether test is fair.
+
+7. Long-term effect: Follow students 1 month post-course. Measure knowledge retention (short quiz on course content). AI-generated content might help short-term exam performance but not long-term retention.
+
+   Example: AI-generated quiz score +5pp (short-term), but retention 1 month later similar between groups. Suggests AI helps quiz prep, not deeper learning.
+
+8. Subgroup analysis: Does effect vary by student ability?
+   - High-ability students: might benefit less from AI (less novel)
+   - Low-ability students: might benefit more (scaffolding helps)
+
+Real example: Carnegie Mellon tested AI-generated explanations in cognitive tutor. Short-term quiz scores improved 6pp. Retention (6 weeks): no difference. Conclusion: AI explanations help immediate understanding, not deep learning.
+
+My approach: ANCOVA on post-test score controlling for pre-test. 1000/arm for 90% power. Secondary: completion, 1-month retention. Question quality blind review. Subgroup analysis by ability.`,
+    },
+    {
+      q: "How would you measure the effectiveness of an AI tutoring system vs human tutors?",
+      subcategory: "case_studies",
+      domain: "edtech",
+      difficulty: "Hard",
+      a: `What subject (math, writing, language)? What's your student population (high school, adult learners)? What's effectiveness metric (test scores, assignment quality)?
+
+Comparing AI vs human tutoring requires careful study design. Framework:
+
+1. Study design: Randomized controlled trial (RCT), not observational.
+   - Control: Human tutor (1-on-1, 1 hour/week)
+   - Test: AI tutoring system (students interact with chatbot, same 1 hour/week)
+   - Randomize at student level. Run 12 weeks.
+
+2. Primary outcome: Standardized test score (e.g., SAT math or learning outcome test specific to subject).
+
+3. Challenges:
+   - Tutor quality varies (good human tutors > good AI > mediocre tutors). Need consistent tutor quality in control.
+   - AI system improves with updates. If you update AI mid-study, confounds effect.
+   - Expectancy bias: Students told "you're in AI group" might try less (or try harder, if novel).
+
+4. Measurement controls:
+   - Pre-test both groups (ensure baseline equivalent)
+   - Post-test (primary outcome)
+   - Blind assessor: Independent evaluator scores written work without knowing student group
+   - Double-blind if possible (hard for tutoring format)
+
+5. Engagement measurement:
+   - Both groups should spend similar time. Track session logs.
+   - If AI system gets less engagement, unfair comparison.
+
+6. Mechanism of action:
+   - Qualitative: Interview students in both groups. What helped? Specific feedback from tutor vs AI?
+   - Quantitative: Track tutor-student interactions (AI logs all interactions). Compare dialogue quality, feedback type.
+
+7. Subgroup analysis:
+   - Does AI work better for visual learners, worse for kinesthetic?
+   - Does gender matter?
+   - Prior ability (AI might help low-ability more)
+
+8. Long-term effect: Follow students 6 months post-intervention. Measure knowledge retention. Which tutoring type produces deeper learning?
+
+Real example: Stanford study (2023): AI tutoring vs human for statistics. 20-week RCT. Post-test: AI=74, human=76 (2pp difference, not significant). Engagement: AI students spent 90 min/week, human spent 95 min/week (similar). Retention (6mo): no significant difference. Conclusion: AI tutoring as effective as human, more scalable/cheaper.
+
+My approach: RCT with pre/post-test. Standardized human tutor (control for quality variation). Blinded outcome assessment. Engagement tracking (time spent). Qualitative interviews. Subgroup analysis by ability. 6-month retention follow-up.`,
+    },
+    {
+      q: "Your plagiarism detection model flags 25% false positives. How do you improve it?",
+      subcategory: "machine_learning",
+      domain: "edtech",
+      difficulty: "Medium",
+      a: `What plagiarism detection method (text similarity, stylometric, ML model)? What's your false positive definition (flagged plagiarism, actually legitimate)? Can you collect ground truth labels?
+
+25% false positive rate on plagiarism is frustrating for students. Improvement path:
+
+1. Root cause analysis: Examine 100 false positives. Common causes:
+   - Common phrases (students writing "the study found that" → similarity algorithm flags as plagiarism when phrasing is common knowledge)
+   - Legitimate paraphrasing (student reworded source but cited—algorithm shouldn't flag)
+   - Common terminology (domain-specific phrasing in biology assignments, all students use similar language)
+
+2. Feature diagnosis:
+   - If FP occurs on short common phrases (1-2 words), algorithm threshold too sensitive
+   - If FP occurs on paraphrased passages, algorithm can't distinguish paraphrasing from plagiarism
+
+3. Improve detection:
+   - Raise similarity threshold: Instead of flagging 70% similar, require 85% similar. Reduces FP but increases false negatives (some plagiarism missed).
+   - Ignore common phrases: Use stopword list (common in domain) + allow low-similarity matches on common terms.
+   - Stylometry: Beyond text similarity, analyze writing style (sentence length, word choice patterns). Plagiarized sections often have stylistic breaks. Combine similarity + stylometry.
+
+4. Human-in-the-loop review:
+   - Don't auto-flag as plagiarism. Instead, score suspicion (0-100).
+   - 80-100: Auto-flag. Instructor review.
+   - 50-80: Manual review queue (instructor checks 5-minute sample)
+   - 0-50: No action.
+
+5. Context awareness:
+   - Some assignments intentionally require synthesis (literature review). High similarity expected and legitimate.
+   - Short answer: Low similarity expected. 50% match might be plagiarism.
+   - Long essay: 70% match might be legitimate (extensive citations).
+
+6. Feedback to students:
+   - Don't just flag plagiarism. Show which passages matched + source. Help student understand what needs attribution vs paraphrasing.
+   - Educational: 50% of false positives are students who didn't understand citation rules.
+
+Real example: Turnitin's plagiarism detector: 98% true positive rate on obvious plagiarism, but 20% FP on paraphrased passages. Newer version uses ML + stylometry. FP reduced to 8%. Still manual review for 50-70% similarity zone.
+
+My approach: Raise similarity threshold (85% vs 70%). Ignore common phrases (stopwords). Add stylometry (writing style analysis). Human review tiers (0-50: no action, 50-80: manual review, 80-100: auto-flag). Context by assignment type. Student feedback.`,
+    },
+    {
+      q: "Design a learner analytics dashboard for instructors. What metrics actually predict success?",
+      subcategory: "case_studies",
+      domain: "edtech",
+      difficulty: "Medium",
+      a: `What's success (course completion, passing grade, learning gain)? What's instructor's role (design course, support students)? How many students per instructor?
+
+Learner analytics dashboards can overwhelm or guide. Design principles:
+
+1. Define success metric:
+   - Course completion (did student finish?)
+   - Learning gain (improvement from pre to post?)
+   - Engagement (activity level, consistent participation?)
+   - Different courses have different success definitions. Clarify with instructor.
+
+2. Predictive metrics that matter:
+   - First quiz score: Early indicator of success. If student fails quiz 1, intervention needed.
+   - Engagement velocity: Days active in week 1 vs week 2. Declining engagement = dropout risk.
+   - Help-seeking: Students who post questions on forum are at lower risk of dropout (engaged).
+   - Time spent: Students spending <2 hours/week likely to drop.
+
+3. Less predictive (but often shown):
+   - Total logins: High logins doesn't guarantee understanding.
+   - Video watched: Watching video ≠ learning. Consider watch time + quiz performance together.
+
+4. Dashboard design for instructor:
+   - "At-risk students" list: Name, dropout risk score, reason (low first quiz, no engagement). Actionable.
+   - Time series: Engagement trend per student over weeks. Shows who's falling behind.
+   - Cohort comparison: "Class average quiz score 72%. Your top third: 88%, bottom third: 55%." Contextualizes performance.
+
+5. Interventions:
+   - If student at-risk, suggest intervention: email encouraging message, assign peer mentor, extend deadline.
+   - Track outcome: Did at-risk student improve? Measure intervention effectiveness.
+
+6. Avoid:
+   - Vanity metrics (total views, total logins) without context
+   - Too much data (overwhelming dashboard)
+   - Privacy concerns: Don't compare students publicly (could shame low performers)
+
+7. Validation: Run study.
+   - Group 1 instructors: Get analytics dashboard
+   - Group 2 instructors: Control (no dashboard)
+   - Measure: Instructor intervention frequency, student completion rates, learning gain.
+   - Do dashboards actually improve outcomes?
+
+Real example: University of Michigan learner analytics dashboard shows at-risk flags (based on logistic regression predicting failure). Instructors using dashboard increased interventions 3x. Student completion improved 8%.
+
+My approach: Predictive metrics (first quiz, engagement trend, help-seeking). Avoid vanity metrics. At-risk student list. Actionable interventions. Cohort context. Instructor study validation. Privacy-respecting design.`,
+    },
+    {
+      q: "Build a lead scoring model for a B2B SaaS company. What signals matter most?",
+      subcategory: "machine_learning",
+      domain: "saas",
+      difficulty: "Medium",
+      a: `How many leads per month (hundreds, thousands)? What's conversion rate to customer (5%, 20%)? How long sales cycle (1 month, 6 months)?
+
+Lead scoring prioritizes sales effort toward high-conversion prospects. Signals:
+
+1. Firmographic signals (company-level):
+   - Company size (employees): Mid-market (50-500) often converts better than SMB or enterprise
+   - Industry: Some industries convert better (e.g., fintech > nonprofits)
+   - Funding: Well-funded startups convert faster (budget available)
+   - Revenue: Correlates with ability to pay
+
+2. Behavioral signals (engagement with product):
+   - Website visits: Browsing pricing, product pages = intent
+   - Free trial signup: Strong signal (converted to trial)
+   - Trial feature usage: If trial user accesses core features (not just browsing), likely to buy
+   - Feature adoption: Tries multiple features = deeper exploration = higher conversion
+
+3. Engagement signals (sales outreach):
+   - Email opens: Reads your outreach (engaged)
+   - Demo requests: High-intent action
+   - Response to sales contact: Engaged
+   - Meeting scheduled: Very high intent
+
+4. Negative signals (disqualifiers):
+   - Company size too small (can't afford)
+   - No budget authority (decision-maker not involved)
+   - Competitor mention: Looking elsewhere
+   - Industry mismatch (e.g., SaaS targeting retail, but lead is nonprofit)
+
+5. Model: Logistic regression on 1000 historical leads (converted vs not). Features: company size, industry, trial usage, feature count, email opens, demo requests.
+
+6. Scoring formula:
+   - Score = P(convert) * 100
+   - 80-100: Hot (sales calls immediately)
+   - 50-80: Warm (sales nurture sequence)
+   - 0-50: Cold (marketing nurture)
+
+7. Validation: Track conversion rate by score tier. Should show: higher score → higher conversion.
+
+Real example: HubSpot lead scoring model: Firmographic (company size, industry) + behavioral (website activity, email engagement) + engagement (demo request, sales calls). Score 70+ = 25% close rate. Score <30 = 2% close rate. 8x difference.
+
+My approach: Firmographic (company size, industry, funding). Behavioral (trial signup, feature usage). Engagement (email opens, demo requests). Negative signals (budget, authority, competitor). Logistic regression. Score tiers mapped to sales action. Validation by close rate.`,
+    },
+    {
+      q: "How would you predict which SaaS customers will churn in the next 90 days?",
+      subcategory: "machine_learning",
+      domain: "saas",
+      difficulty: "Medium",
+      a: `What's your baseline churn rate (2%, 10%)? What's your customer tenure (months, years)? Do you have product usage data?
+
+SaaS churn prediction enables proactive retention. Features:
+
+1. Product usage signals (last 30 days):
+   - Monthly active users (MAU): If MAU declining, at-risk
+   - Feature usage breadth: Single-feature users churn faster than multi-feature users
+   - Login frequency: Infrequent logins = disengagement
+   - Days since last action: Long gaps = churn signal
+
+2. Commercial signals:
+   - Contract renewal date: Predict churn relative to renewal
+   - Plan type: Month-to-month higher churn than annual
+   - Price increase: Did customer get price hike? Churn risk post-increase
+   - Support interactions: High-support customers (many tickets) might be struggling (churn risk) or engaged (lower churn)
+
+3. Customer success metrics:
+   - Health score (proprietary metric combining usage + NPS + support)
+   - Goal achievement: Did customer achieve stated goal in signup?
+   - Training completion: Trained customers lower churn
+
+4. Cohort effects:
+   - Tenure: First 6 months higher churn (time to value). After 18 months, stabilizes.
+   - Segment: SMB higher churn than enterprise
+   - Acquisition source: Self-serve higher churn than sales-assisted
+
+5. Model: Gradient boosting on 5000 historical customers. Predict 90-day churn based on 30-day feature window (last 30 days of usage before churn event).
+
+6. Feature importance: MAU trend (15%), feature breadth (12%), login frequency (10%), days since last action (9%).
+
+7. Intervention: Churn probability >60% → customer success check-in (free, proactive). Measure: Do at-risk customers retained by intervention?
+
+Real example: Slack predicts churn. High-engagement users (daily active, multi-channel usage) 1% churn. Low-engagement (<1 login/week) 15% churn. Intervention: Slack sends tips on underused features. Reduces churn by 3-5%.
+
+My approach: Usage trend (MAU, login frequency). Feature breadth (multi-feature users lower churn). Recency (days since last action). Commercial signals (plan type, renewal date). Tenure/cohort effects. Gradient boosting. Churn >60% intervention via customer success.`,
+    },
+    {
+      q: "Design an experiment to measure the impact of a free trial extension on conversion.",
+      subcategory: "statistics",
+      domain: "saas",
+      difficulty: "Medium",
+      a: `What's current trial length (7 days, 14 days)? What's baseline conversion (30%, 50%)? What's the cost of extra trial days?
+
+Free trial extensions test whether more time = more conversions. Framework:
+
+1. Randomization: Randomly assign new trial signups to:
+   - Control: 14-day trial (current)
+   - Test: 21-day trial (extension)
+
+2. Sample size: Assume 35% baseline conversion (control). Expect 5pp lift (40% test, 42% if optimistic). N=5000 per arm for 90% power, detecting 5pp difference.
+
+3. Primary outcome: Trial-to-paid conversion within 30 days of trial signup.
+
+4. Secondary outcomes:
+   - Time to conversion: Do extended trial users convert faster or slower?
+   - Discount acceptance: Are they willing to pay full price or do they expect discounts?
+   - Customer quality: Do extended trial users have higher churn post-purchase? (Longer trial might attract low-commitment users)
+
+5. Confounders: Track feature usage during trial. If test group uses more features (due to extra time), might convert more not because of time, but because they explored deeper. Use ANCOVA controlling for feature usage.
+
+6. Long-term outcome: 12-month churn rate. Do extended trial users churn more? (If so, conversion lift is temporary; customer quality worse).
+
+   Example: 21-day trial converts 5pp more (40% vs 35%). But 12-month churn: 21-day cohort 18% vs 14-day cohort 15%. Net: more customers, but lower quality. Decision: unclear ROI.
+
+7. Cost-benefit:
+   - Incremental revenue: 5pp more customers * average LTV = additional revenue
+   - Cost: 7 extra days of service (cloud infrastructure, support)
+   - Calculate payback period
+
+Real example: Slack tested 14-day vs 30-day free trial. 30-day cohort converted 8% higher (44% vs 40%). But 12-month churn: 30-day = 20%, 14-day = 16%. Net LTV after churn: similar. Slack kept 14-day (lower cost, same LTV).
+
+My approach: Randomize at trial signup. ANCOVA controlling for feature usage. Primary: 30-day conversion. Secondary: time-to-conversion, discount acceptance, 12-month churn. Cost-benefit analysis.`,
+    },
+    {
+      q: "Your product usage data shows power users and dormant users but nothing in between. How do you activate the middle?",
+      subcategory: "case_studies",
+      domain: "saas",
+      difficulty: "Hard",
+      a: `What's power user definition (10+ logins/month)? What's dormant (0-2 logins/month)? Is the middle gap real or data artifact?
+
+Bimodal distribution (power + dormant, no middle) suggests activation barrier. Diagnosis:
+
+1. Investigate the gap:
+   - Is there really no middle (segmentation is natural) or is it selection bias?
+   - Example: Customers who find value quickly become power users. Others bounce (dormant). No middle because there's a "cliff" of difficulty.
+   - Or: Dormant users are SMBs (low usage), power users are power-seekers. Real market segmentation.
+
+2. Middle-ground users analysis:
+   - Who are the users with 3-5 logins/month? Demographics, use case?
+   - Are they profitable? (Some dormant users on yearly contracts pay full price despite low usage)
+   - Why aren't they using more? Friction, lack of value, limited time?
+
+3. Activation hypothesis: Design intervention to move dormant → middle.
+   - Hypothesis 1: They don't understand value. Intervention: Onboarding video or in-app tutorial.
+   - Hypothesis 2: Feature discovery issue. They don't know what to do. Intervention: Feature highlights via in-app messaging.
+   - Hypothesis 3: Lack of use case. They signed up but don't have immediate problem. Intervention: Email with use case examples.
+
+4. Experiment:
+   - Segment dormant users (0-2 logins in first month)
+   - Randomly assign to:
+     - Control: No intervention
+     - Test 1: Onboarding video
+     - Test 2: In-app feature guide
+     - Test 3: Email use case examples
+   - Measure: % moving to 3+ logins in month 2
+
+5. Expected outcome: If onboarding works, you'll see shift from power+dormant to power+middle+dormant (activation in middle).
+
+6. Root cause if nothing works:
+   - Maybe there is no middle because the product is bimodal (either you need it, or you don't)
+   - Or acquisition is wrong (acquiring wrong customer segment)
+   - Solution: Fix acquisition to target power users, or redesign product to be easier for dormant segment
+
+Real example: Notion (note-taking SaaS) had power users (daily) and dormant. Reason: Steep learning curve (complex templates). Intervention: Pre-built templates library. New middle segment emerged (2-3x/week users). Dormant cohort reduced 20%.
+
+My approach: Analyze middle-ground users (if any exist). Diagnose barrier (onboarding, feature discovery, use case). Test interventions (video, in-app guide, email examples). Measure shift from dormant to middle. If no middle emerges, reconsider acquisition or product design.`,
+    },
+    {
+      q: "Build a health score model for enterprise SaaS accounts that predicts renewal likelihood.",
+      subcategory: "machine_learning",
+      domain: "saas",
+      difficulty: "Hard",
+      a: `What's baseline renewal rate (85%, 95%)? How many accounts (hundreds, thousands)? What data sources (product usage, support, NPS)?
+
+Health score synthesizes signals into renewal prediction. Framework:
+
+1. Signal categories:
+   - Product engagement: Weekly active users (WAU), feature breadth, core feature adoption
+   - Support: Ticket volume (high = struggling), resolution time, CSAT score
+   - Commercial: Usage vs plan (under-utilizing?), expansion revenue (upsells), payment compliance
+   - Relationship: Executive sponsor presence, training completion, user growth
+
+2. Feature engineering:
+   - Engagement score: Composite of WAU, feature count, login frequency (0-100)
+   - Health score: 0.4 * engagement + 0.3 * support_health + 0.2 * commercial + 0.1 * relationship
+   - Trend: Is engagement improving or declining month-over-month?
+
+3. Model: Gradient boosting to predict renewal (binary: renews vs churns) 90 days pre-renewal.
+   - Training: Historical accounts 12 months pre-renewal. Predict actual renewal outcome.
+   - Features: Current health score, trend (slope), account tenure, industry, plan tier
+
+4. Segmentation:
+   - High-risk (health <40): Immediate CSM intervention. Quarterly business review (QBR).
+   - Medium-risk (40-70): Standard quarterly check-in
+   - Low-risk (>70): Annual QBR
+
+5. Intervention effectiveness:
+   - Track: Do high-risk accounts that get QBR have higher renewal than high-risk without?
+   - Measure causal impact via propensity matching
+
+6. Monitoring:
+   - Track health score vs actual renewal. Model should be predictive.
+   - If health >70 but customer churns, debug: was metric wrong or unforeseeable event?
+
+7. Feature importance: Typically engagement (40%), support (30%), commercial (20%), relationship (10%). Can vary by segment.
+
+Real example: Salesforce predicts renewal via health score. Components: feature adoption (Einstein usage), support (case resolution time), NPS. High-health accounts: 96% renewal. Low-health: 65% renewal. 31pp difference. CSMs use to prioritize at-risk accounts.
+
+My approach: Engagement + support + commercial + relationship signals. Weighted composite health score (0-100). Gradient boosting for renewal prediction. Risk tiers. QBR intervention for high-risk. Propensity-matched validation.`,
+    },
+    {
+      q: "How would you design a data pipeline that tracks product usage events for 1M daily active users?",
+      subcategory: "sql_data",
+      domain: "saas",
+      difficulty: "Hard",
+      a: `What's event volume (10M events/day, 100M+)? What's latency requirement (real-time seconds, batch hourly)? Do you need 100% accuracy or can you sample?
+
+1M DAU with deep product tracking requires streaming architecture. Design:
+
+1. Event collection:
+   - Frontend SDK captures user actions: page_view, feature_click, form_submit
+   - Backend logs: API calls, data changes
+   - Both send to event collection (Kafka, Segment, custom endpoint)
+   - Target: <100ms event delivery
+
+2. Streaming pipeline:
+   - Kafka: Ingest events. 1M DAU * 10 events/day = ~116 events/second (small for Kafka).
+   - Stream processor (Kafka Streams, Spark Streaming):
+     - Deduplication (same event fired twice due to network retry)
+     - Sessionization (group events by user_session_id)
+     - Real-time aggregations: user_daily_active, feature_usage_today
+     - State stored in local RocksDB (fast, durable)
+
+3. Storage:
+   - Hot: Last 7 days raw events (Elasticsearch or Druid). Query: "events by user last 7 days" = <1s
+   - Warm: 30 days aggregated (hourly summaries) in Postgres. Query: "feature usage by day" = <5s
+   - Cold: 12+ months raw in S3/Parquet for analytics/ML training. Query: batch (minutes)
+
+4. Queries enabled:
+   - Real-time: "Is user currently active?" (check last event timestamp) = sub-second
+   - Daily: "Top features used today" = Druid query = 1s
+   - Weekly/monthly: Health score for account = Postgres aggregates = <100ms
+
+5. Data quality:
+   - Monitor event latency (P99 should be <500ms)
+   - Check for missing events: user_id present in event but not in user table → data quality alert
+   - Duplicate detection: Same event_id fired twice → deduplicate
+
+6. Governance:
+   - PII handling: Event payload can contain user identifiers. Mask sensitive fields (email, IP).
+   - Retention: Raw events after 12 months are deleted (GDPR/privacy).
+
+7. Scale: 1M DAU → 100M events/day. Kafka can handle 1M events/sec easily. Druid can ingest 500K events/sec. No bottleneck.
+
+Real example: Amplitude (product analytics): Processes 100B events/month (3.8M events/min). Uses Kafka → custom pipeline → Druid OLAP. Sub-second queries for users, features, cohorts.
+
+My approach: Kafka event ingestion. Kafka Streams for deduplication + sessionization. Druid for hot queries (7-day raw). Postgres for warm (30-day aggregates). S3 for cold storage. PII masking. 12-month raw retention.`,
+    },
+    {
+      q: "Design a pricing optimization model for a SaaS product with multiple tiers.",
+      subcategory: "case_studies",
+      domain: "saas",
+      difficulty: "Hard",
+      a: `What's current pricing (tier 1: $50/mo, tier 2: $200/mo, tier 3: enterprise)? What's revenue goal (grow 20%, maintain margin)? How price-sensitive are customers?
+
+SaaS pricing optimization balances volume, margin, and churn. Framework:
+
+1. Demand estimation:
+   - Historical data: At each price point, how many customers signed up?
+   - Estimate elasticity per tier.
+     - Starter tier (price-sensitive): elasticity 1.2 (1% price cut → 1.2% more customers)
+     - Pro tier (less sensitive): elasticity 0.8 (1% price cut → 0.8% more customers)
+     - Enterprise (low sensitivity): elasticity 0.3 (price cuts don't drive volume)
+
+2. Current revenue analysis:
+   - Assume distribution: 50% Starter, 30% Pro, 20% Enterprise
+   - Current: Starter $50 (10K customers) = $500K/mo. Pro $200 (6K customers) = $1.2M/mo. Enterprise $1000 (2K customers) = $2M/mo. Total = $3.7M/mo
+
+3. Optimization scenarios:
+   - Scenario A: Raise Starter to $75 (elasticity 1.2 → lose 1.8% customers). 10K - 180 = 9,820 customers. Revenue: 9,820 * $75 = $737K (up 47% from $500K).
+   - Scenario B: Lower Pro to $150 (elasticity 0.8 → gain 1.6% customers). 6K + 96 = 6,096 customers. Revenue: 6,096 * $150 = $915K (down 24% from $1.2M).
+   - Scenario C: Mix (raise Starter $60, lower Pro $175). Calculate blended revenue.
+
+4. Churn impact:
+   - Price increase can increase churn. Track cohort churn rates by price.
+   - If raising Starter to $75 increases 12-month churn from 5% to 7%, recalculate LTV.
+   - LTV = (monthly margin) / churn_rate. Higher churn = lower LTV. Might offset revenue lift.
+
+5. Expansion coefficient:
+   - Some customers expand (upgrade tier, add seats, buy add-ons).
+   - If Starter tier has high expansion rate (many upgrade to Pro), lower Starter price to acquire more, expand later.
+
+6. Competitor analysis:
+   - If competitor raises price, you might raise too (market follows).
+   - If competitor lowers, pressure to match or differentiate.
+
+7. A/B test optimal price:
+   - Test Starter at $50, $60, $75 with random assignment (or geographic split).
+   - Measure: conversion rate, churn rate, expansion rate.
+   - Optimize for revenue per customer over 12 months (accounting for churn).
+
+Real example: Stripe tested pricing tiers. Originally: $50, $500, custom. Introduced $29 tier. Attracted SMBs, high expansion rate to $500. Net revenue increased 15% (more customers, lower churn from expansion opportunities).
+
+My approach: Estimate elasticity per tier (historical data). Scenario analysis (raise, lower, mix). Churn impact on LTV. Expansion coefficient. Competitor positioning. A/B test optimal price. Measure 12-month cohort revenue (accounting for churn + expansion).`,
+    },
+  ],
 };
 
 export { PM_QUESTIONS as pmQuestions };
