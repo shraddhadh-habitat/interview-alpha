@@ -11547,6 +11547,699 @@ My approach: Start with cross-validation (free and effective). If still overfitt
 
 Metric: Use validation curve to find the sweet spot between bias and variance.`,
       },
+      {
+        q: "Explain the difference between supervised and unsupervised learning with examples.",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about the conceptual difference, or how to choose between them for a specific problem? And do you want to know about semi-supervised learning too?
+
+For this, I'll focus on the core distinction with practical examples.
+
+---
+
+Supervised learning: You have labeled data (inputs and correct answers). Train on pairs (X, y). Goal: predict y for new X.
+
+Unsupervised learning: You have only inputs (X). No labels. Goal: find hidden structure or patterns.
+
+Supervised learning examples:
+
+Email spam detection. Input: email content. Output: spam or not spam. Train on thousands of labeled emails. Then classify new emails.
+
+House price prediction. Input: house features (size, location, age). Output: price. Train on labeled houses. Predict price for new house.
+
+Medical diagnosis. Input: patient symptoms. Output: disease. Train on patients with known diagnoses. Predict for new patients.
+
+Unsupervised learning examples:
+
+Customer segmentation. Input: customer purchase history, browsing behavior. No labels. Algorithm finds natural groups (bargain hunters, luxury buyers, occasional shoppers).
+
+Anomaly detection. Input: credit card transactions. Find unusual patterns (fraud) without labeled fraud examples. Most normal, algorithm spots outliers.
+
+Image compression. Input: images. No labels. Reduce dimensionality while keeping important information (PCA).
+
+Key tradeoff:
+
+Supervised: Requires labeled data (expensive), but usually more accurate. You're directly training on what you care about.
+
+Unsupervised: Cheaper (no labeling), but results harder to evaluate. Is this segmentation actually useful?
+
+When to use:
+Supervised: You have clear goal and labeled data. Classification, regression problems.
+Unsupervised: You're exploring, don't know what to look for. Discovery, compression, clustering.`,
+      },
+      {
+        q: "What is cross-validation and why is it important?",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about k-fold specifically, or all cross-validation strategies? And do you need to know about time-series cross-validation?
+
+For this, I'll cover standard k-fold and why it matters.
+
+---
+
+Cross-validation: Instead of splitting data once (train/test), split it k times. Train on k-1 folds, test on 1 fold. Repeat k times. Average the results.
+
+Why it matters:
+
+1. More robust estimate of real performance. With single train/test split, you might get lucky or unlucky. k-fold averages this out. Your reported accuracy is more reliable.
+
+2. Use all data. Single 80/20 split wastes 20% of data for testing. k-fold trains on more data each time, uses all data eventually.
+
+3. Detect overfitting across folds. If fold 1 scores 95% and fold 5 scores 60%, that's a red flag for overfitting or instability.
+
+4. Better for small datasets. With limited data, you can't afford to waste 20% on a test set. k-fold maximizes training data.
+
+How it works: k=5 typically. Split data into 5 equal parts. Fold 1: Train on parts 2-5, test on 1. Accuracy: 85%. Fold 2: Train on 1, 3-5, test on 2. Accuracy: 87%. Repeat for folds 3, 4, 5. Average: 86%.
+
+Tradeoff: k-fold costs k times more computation. More folds = more reliable but slower.
+
+Metric: Report mean accuracy ± std dev across folds. Tight std dev = consistent, reliable model. Wide std dev = unstable.
+
+When to use: Always, unless you have huge amounts of data. For datasets n < 10,000, k-fold is standard practice.
+
+My approach: Start with k=5. If compute allows, k=10.`,
+      },
+      {
+        q: "Explain the difference between classification and regression.",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are we talking about conceptual difference, or tradeoff between using one vs the other? And when to convert between them?
+
+For this, I'll explain both and when each applies.
+
+---
+
+Classification: Predict a category. Output is discrete. Examples: spam/not spam, cat/dog/bird, credit risk (low/medium/high).
+
+Regression: Predict a continuous value. Output is a number. Examples: house price, temperature, stock price, click-through rate.
+
+Classification examples:
+
+Email classification: spam or not spam (binary classification)
+Image recognition: dog, cat, bird, rabbit (multiclass)
+Customer churn: will customer cancel in next 3 months? Yes or no.
+Disease diagnosis: patient has disease A, B, C, or none.
+
+Regression examples:
+
+House price prediction: 350000 (continuous value)
+Sales forecasting: expect 1250 units sold next month
+Time series: predict CPU temperature in 5 minutes. Answer: 72.3 degrees Celsius.
+Recommendation scoring: how likely is user to click this ad? 0.68 (probability).
+
+Key difference:
+
+Classification metrics: accuracy, precision, recall, F1 score, ROC-AUC
+Regression metrics: R-squared, RMSE (root mean squared error), MAE (mean absolute error)
+
+When to use:
+
+Classification: Output is categorical. You care about the class. Email is spam or not spam, period.
+Regression: Output is numeric. Magnitude matters. House price of 100000 is very different from 200000.
+
+Blurry line: Sometimes you can convert between them. Regression for probability (0.0-1.0), then threshold (>0.5 = class 1). Or treat classification as regression (assign numeric scores), then round to classes.
+
+Tradeoff: Classification is simpler conceptually (outputs discrete labels), but regression is more flexible.
+
+My approach: If output is naturally categorical, classification. If numeric, regression. When unsure, regression first (you can always threshold).`,
+      },
+      {
+        q: "What is a confusion matrix? Walk through precision, recall, and F1 score.",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about binary classification, or how to extend confusion matrices to multiclass? And when to optimize for precision vs recall vs F1?
+
+For this, I'll focus on binary classification and practical tradeoffs.
+
+---
+
+Confusion matrix: A 2x2 table comparing predicted vs actual labels.
+
+TP (True Positive): Correctly predicted positive. Example: email is spam, model says spam.
+FN (False Negative): Missed positive. Email is spam, model says not spam.
+FP (False Positive): Wrong positive. Email is not spam, model says spam.
+TN (True Negative): Correctly predicted negative. Email is not spam, model says not spam.
+
+From the confusion matrix, compute three metrics:
+
+Precision: Of all positives we predicted, how many were correct?
+Precision = TP / (TP + FP)
+Example: Our model predicted 100 emails as spam. 90 were actually spam, 10 were false alarms. Precision = 90 / 100 = 90%. When we say spam, we're right 90% of the time.
+
+Recall: Of all actual positives, how many did we catch?
+Recall = TP / (TP + FN)
+Example: There are 100 actual spam emails. Our model caught 90. Missed 10. Recall = 90 / 100 = 90%. We catch 90% of spam.
+
+F1 Score: Harmonic mean of precision and recall.
+F1 = 2 * (Precision * Recall) / (Precision + Recall)
+Example: Precision 80%, Recall 60%. F1 approximately 69%. Balances both metrics.
+
+When to optimize:
+
+High precision: You care about false positives. Example: fraud detection. False alarm costs money (legitimate transaction blocked). Precision = catch only certain fraud, miss some others.
+
+High recall: You care about false negatives. Example: cancer detection. Miss a case = patient dies. Recall = catch all cancer, accept some false alarms (further testing).
+
+F1: You care equally about both. Balanced dataset, balanced cost.
+
+Tradeoff: Precision and recall are inverse. Increase precision, recall drops (stricter threshold). Increase recall, precision drops (looser threshold).
+
+My approach: Understand your cost of FP vs FN, then optimize accordingly.`,
+      },
+      {
+        q: "When would you use a decision tree vs logistic regression?",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about a single decision tree or ensemble methods like random forests? And interpretability vs accuracy tradeoff?
+
+For this, I'll compare simple decision tree vs logistic regression.
+
+---
+
+Decision tree: Splits data recursively based on features. Produces a tree of decisions. Example: If age > 30, go left. If age <= 30, go right.
+
+Logistic regression: Linear model. Fits a line (hyperplane) to separate classes. Outputs probability.
+
+When to use decision tree:
+
+1. Non-linear relationships. Decision trees handle curves naturally. Logistic regression assumes linear boundary.
+
+2. Mixed feature types. Decision trees handle categorical and continuous naturally. Logistic regression requires encoding.
+
+3. Feature interactions. Decision trees capture interactions automatically. If feature A = X and feature B = Y, then class Z. Logistic regression requires you to engineer interaction terms.
+
+4. Interpretability. Decision trees are readable. If income > 50K and age > 35, approve loan. Logistic regression coefficients harder to explain.
+
+5. Handling missing data. Decision trees can split on missing values. Logistic regression needs imputation.
+
+When to use logistic regression:
+
+1. Linear relationship. Logistic regression simpler and often works when data is roughly linearly separable.
+
+2. Feature importance. Logistic regression coefficients directly tell you feature importance (weight). Decision trees don't.
+
+3. Probability calibration. Logistic regression outputs well-calibrated probabilities. Decision trees output class proportions, less reliable.
+
+4. Speed. Logistic regression faster to train and predict.
+
+5. Regularization. Built-in L1/L2 regularization prevents overfitting naturally. Decision trees need careful pruning.
+
+Tradeoff:
+
+Decision trees: Interpretable, flexible, but prone to overfitting (need pruning/ensemble methods like random forests).
+Logistic regression: Simple, fast, but limited to linear relationships.
+
+In practice:
+
+Start with logistic regression (baseline). If it performs poorly, try decision tree or random forest.
+For interpretability, decision tree. For simplicity, logistic regression.
+For production systems, ensemble methods (random forests, XGBoost) often beat both.
+
+My approach: Understand your features first. If they seem linearly separable, logistic regression. If complex patterns, decision tree or ensemble.`,
+      },
+      {
+        q: "What is feature engineering? Give 3 examples of useful features for a retail dataset.",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about the general philosophy of feature engineering, or specific techniques like binning and encoding? And do you need examples for a particular retail prediction problem?
+
+For this, I'll cover the concept and three practical retail examples.
+
+---
+
+Feature engineering: Creating new features from raw data to improve model performance. Raw data is rarely optimal for ML. You craft features that highlight patterns relevant to your prediction goal.
+
+Why it matters: Garbage in, garbage out. A sophisticated model trained on poorly engineered features underperforms a simple model with great features.
+
+Three examples for retail dataset:
+
+Example 1: Recency-Frequency-Monetary (RFM)
+Raw data: list of transactions with date, amount.
+Engineered features:
+- Recency: Days since last purchase (0-365 days). Recent buyers more likely to buy again.
+- Frequency: Number of purchases in last year. Loyal customers buy repeatedly.
+- Monetary: Average purchase amount. High-value customers matter.
+Result: RFM incredibly predictive for customer lifetime value or churn.
+
+Example 2: Seasonality
+Raw data: purchase date.
+Engineered features:
+- Month of year (1-12). Sales spike in December (holidays).
+- Is holiday week? (Binary). Shopping behavior changes around Thanksgiving, Christmas.
+- Days to next major holiday. Customer urgency varies.
+Result: Captures seasonal patterns that raw date doesn't.
+
+Example 3: Customer behavior
+Raw data: shopping history.
+Engineered features:
+- Average time between purchases. Loyal customers have consistent intervals.
+- Purchase category diversity. Customer buys many categories (diverse) or few (focused)?
+- Discount sensitivity. Does customer only buy on sale (price-sensitive) or full-price purchases too?
+Result: Reveals behavioral patterns predictive of future purchases.
+
+General approach:
+
+1. Understand the prediction problem. What are you predicting?
+2. Brainstorm features that directly relate. What signals would I look for manually?
+3. Create and validate. Build features, measure impact on model.
+
+Tradeoff: More features = more computation, risk of overfitting. 10 great features beat 100 mediocre ones.
+
+My approach: Start with domain knowledge (what matters in retail?), then data exploration (what patterns exist?), then validation (do these features improve the model?).`,
+      },
+      {
+        q: "Explain the difference between bagging and boosting.",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about conceptual difference or specific algorithms (random forests vs XGBoost)? And computational costs?
+
+For this, I'll explain the core mechanics of both.
+
+---
+
+Bagging (Bootstrap Aggregating): Train multiple models independently on random subsets of data, then average their predictions.
+
+Boosting: Train models sequentially. Each new model focuses on mistakes from previous models, then combine all predictions.
+
+Bagging example (random forest):
+
+1. Sample the data with replacement, multiple times (bootstrap samples).
+2. Train a decision tree on each sample independently. Each tree is deep, may overfit its sample.
+3. Prediction: average output from all trees.
+Result: Combining many overfitted models (high variance) cancels out variance. Low bias, low variance.
+
+Boosting example (XGBoost):
+
+1. Train first model on all data. Some examples are mispredicted.
+2. Train second model focusing on those mispredicted examples (higher weight).
+3. Train third model focusing on remaining mistakes.
+4. Prediction: weighted sum of all model outputs.
+Result: Each subsequent model patches previous mistakes. Reduces bias primarily.
+
+Key differences:
+
+Bagging:
+- Independence: Models trained in parallel, independently.
+- Reduces variance (overfitting).
+- Works well when base models are high-variance (e.g., deep decision trees).
+- Examples: Random Forest, Bagging Decision Trees.
+
+Boosting:
+- Sequential: Models depend on previous models' mistakes.
+- Reduces bias (underfitting).
+- Works well when base models are high-bias (e.g., shallow trees, weak learners).
+- Examples: XGBoost, AdaBoost, Gradient Boosting.
+
+Tradeoff:
+
+Bagging: Easy to parallelize (faster), less prone to overfitting.
+Boosting: Harder to parallelize, can overfit if you boost too many rounds, but often achieves higher accuracy.
+
+When to use:
+
+Start with random forest (bagging). Simple, fast, robust.
+If accuracy matters more than speed, try XGBoost (boosting).
+
+Metric: Bagging reduces variance (gap between different random seeds). Boosting reduces bias (training vs test accuracy gap).
+
+My approach: Random forest for simplicity and robustness. XGBoost for maximum accuracy in competitions or production when accuracy is critical.`,
+      },
+      {
+        q: "What is the curse of dimensionality? How does it affect model performance?",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about the conceptual curse or its practical impact on your specific model? And strategies to mitigate it?
+
+For this, I'll explain the phenomenon and practical solutions.
+
+---
+
+Curse of dimensionality: As the number of features (dimensions) increases, model performance paradoxically decreases. More information seems good, but it backfires.
+
+Why it happens:
+
+1. Sparsity: In high dimensions, data points are very far apart. With 1 feature, 100 data points fill a line densely. With 50 features, 100 points scatter sparsely in 50D space. Models struggle to find patterns in sparse data.
+
+2. Overfitting: More features = more parameters to learn. With 100 features and 100 data points, model can memorize. Perfect training accuracy, poor test accuracy.
+
+3. Computational cost: More features = longer training, more memory.
+
+4. Irrelevant features: Some features are noise. They add variance (randomness) without signal. Model learns to fit noise.
+
+Example:
+
+10 features, 1000 data points: Ratio 1:100. Model has room to learn patterns.
+100 features, 1000 data points: Ratio 1:10. Each feature gets little data. Overfitting risk.
+
+How it affects performance:
+
+Training accuracy: Increases with more features (model memorizes).
+Test accuracy: Decreases with too many features (overfitting).
+The sweet spot: Somewhere in the middle.
+
+Solutions:
+
+1. Feature selection: Keep only most important features. Use correlation analysis, mutual information, or LASSO regularization.
+
+2. Dimensionality reduction: PCA, t-SNE. Compress 50 dimensions into 10 while keeping variance.
+
+3. Regularization: L1/L2 penalizes complexity. Prevents overfitting from extra features.
+
+4. More data: With huge amounts of data, curse weakens. But data is expensive.
+
+Metric: Use learning curve. Plot train vs test accuracy against number of features. Find the peak of test accuracy.
+
+My approach: Start with domain knowledge (which features matter?). Remove obvious noise. Use regularization. If still underperforming, apply dimensionality reduction.`,
+      },
+      {
+        q: "Explain train/test/validation split. Why is it important?",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about the conceptual purpose or how to decide the split ratio? And about stratification for imbalanced datasets?
+
+For this, I'll explain the purpose and common ratios.
+
+---
+
+Three data splits:
+
+Training set (60-80%): Data you train the model on. Model learns patterns here.
+
+Validation set (10-20%): Data you use during training to tune hyperparameters (learning rate, tree depth, regularization). Model doesn't train on this, but you use it to decide when to stop.
+
+Test set (10-20%): Data held completely separate. You never touch it during training or hyperparameter tuning. Only evaluate final performance here.
+
+Why it matters:
+
+1. Prevent overfitting: If you train and test on the same data, you overestimate performance. Model memorizes training data, test accuracy looks great but breaks on new data.
+
+2. Honest evaluation: Test set is truly unseen. Performance on test set = realistic performance on production data.
+
+3. Hyperparameter tuning: Tune on validation set without contaminating test set. If you tune on test set, you're cheating.
+
+Example of doing it wrong:
+
+Train on all data. Evaluate on same data. Get 95% accuracy. Deploy. Real-world performance: 60%. You overfitted!
+
+Example of doing it right:
+
+Train on 80%. Monitor validation accuracy. Test on holdout 20%. Get 70% on validation, 72% on test. That's honest — close means your validation metrics are trustworthy.
+
+Common ratios:
+
+Large dataset (n > 100000): 80/10/10 (train/val/test)
+Small dataset (n < 10000): 70/15/15 or k-fold validation instead of single split
+Imbalanced data: Use stratified split — maintain class ratio in all three sets
+
+Tradeoff: Larger training set = better model. Larger test set = more reliable performance estimate. Choose based on data availability.
+
+My approach: With large data, 80/10/10. With small data, k-fold cross-validation (forget validation set, use all data for training/testing).`,
+      },
+      {
+        q: "What are hyperparameters? How do you tune them?",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about hyperparameter tuning for a specific model, or the general strategy? And about grid search vs random search vs Bayesian optimization?
+
+For this, I'll explain the concept and practical tuning strategies.
+
+---
+
+Hyperparameters: Settings you choose before training. Model learns other parameters (weights, coefficients) during training, but hyperparameters you set manually.
+
+Examples:
+
+Learning rate: Controls step size in gradient descent. Too high = overshoots optimum. Too low = converges slowly.
+Tree depth: Maximum depth of decision tree. Deeper = more complex, higher overfitting risk.
+Number of trees: In random forest, how many trees to train. More trees = better (usually), but slower.
+Regularization strength (lambda): Penalty for complex models. Higher lambda = simpler model, higher bias.
+Batch size: In neural networks, how many examples to process before updating weights.
+
+Why tune them:
+
+Hyperparameters control the bias-variance tradeoff. Wrong choices lead to underfitting (high bias) or overfitting (high variance).
+
+How to tune:
+
+1. Grid Search: Try all combinations of hyperparameters. Example: learning_rate in [0.01, 0.1, 1.0], depth in [3, 5, 7]. Train model for each combo (9 models). Pick the combo with best validation accuracy.
+Tradeoff: Exhaustive, but slow with many hyperparameters.
+
+2. Random Search: Sample random hyperparameter combinations. Less exhaustive than grid search, but often finds good solutions faster.
+
+3. Bayesian Optimization: Use past results to guide which hyperparameters to try next. Smart, efficient. Requires more setup.
+
+4. Manual tuning: Based on domain knowledge and intuition. Slow but educational.
+
+Practical approach:
+
+1. Use reasonable defaults. Most libraries have sensible defaults.
+2. Use validation set. Train on training set, evaluate on validation set.
+3. Identify which hyperparameters matter most. Learning rate usually matters more than batch size.
+4. Tune most important ones first via grid/random search.
+5. Fine-tune promising ranges.
+
+Metric: Plot validation accuracy against each hyperparameter. Find the sweet spot (peak).
+
+My approach: Random search first (faster). If time allows, grid search around promising region. Use cross-validation to average results (more robust).`,
+      },
+      {
+        q: "Explain the difference between parametric and non-parametric models.",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about the conceptual difference or when to choose each? And about semi-parametric models?
+
+For this, I'll focus on the core distinction and practical implications.
+
+---
+
+Parametric model: Assumes data follows a specific form/distribution. Has fixed number of parameters.
+
+Examples: Linear regression, logistic regression, Gaussian Naive Bayes. All have parameters (weights, means, variances) that fully describe the model after training.
+
+Non-parametric model: Makes no assumptions about data distribution. Number of parameters grows with data size.
+
+Examples: k-nearest neighbors (KNN), decision trees, random forests. They adapt to data structure flexibly.
+
+Key differences:
+
+Parametric:
+- Requires strong assumptions about data. Data is normally distributed, relationship is linear.
+- Fixed number of parameters. Linear regression with 50 features = exactly 50 weights. That's it.
+- Faster to train. Fewer parameters to learn.
+- Interpretable. You can read off coefficients, understand feature importance.
+- Can generalize from small data. Assumptions guide learning.
+
+Non-parametric:
+- Flexible. No assumptions. Adapt to whatever data looks like.
+- Growing parameters. More data = more complex model. k-means with 100 data points might have 10 cluster centers. With 10000 points, maybe 50 centers.
+- Slower to train. More parameters.
+- Less interpretable. How did this forest of 100 trees decide? Harder to explain.
+- Need more data. Without structure from assumptions, they need lots of examples.
+
+Example:
+
+Predicting house price.
+
+Parametric (linear regression): Assume price = w1*sqft + w2*bedrooms + w3*location + b. Train to find weights. Fast, interpretable, but misses non-linear patterns.
+
+Non-parametric (random forest): No assumptions. Trees adapt to data. Capture non-linear patterns naturally. Slower, less interpretable, but often more accurate.
+
+Tradeoff:
+
+Parametric: Fast, interpretable, works with small data if assumptions hold. Fails if assumptions don't match reality.
+Non-parametric: Flexible, no assumptions, but slower and need more data.
+
+When to use:
+
+Small data, need interpretability: Parametric.
+Large data, need accuracy: Non-parametric.
+Unknown relationship: Non-parametric (safer).
+
+My approach: Start parametric (linear regression) for baseline. If it underperforms, try non-parametric (random forest). Ensemble both if time allows.`,
+      },
+      {
+        q: "What is one-hot encoding? When does it cause problems?",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about one-hot encoding specifically, or should I cover other encoding strategies like ordinal encoding? And handle high-cardinality categorical features?
+
+For this, I'll focus on one-hot encoding and when to use alternatives.
+
+---
+
+One-hot encoding: Convert categorical feature into binary columns, one per category.
+
+Example: Color feature with values [Red, Green, Blue].
+Original: Color = [Red, Green, Blue, Red, ...]
+One-hot encoded:
+Is_Red: [1, 0, 0, 1, ...]
+Is_Green: [0, 1, 0, 0, ...]
+Is_Blue: [0, 0, 1, 0, ...]
+
+Why use it: Many ML algorithms (linear regression, neural networks, XGBoost) require numeric features. One-hot encoding converts categories to numbers while preserving information.
+
+When one-hot encoding causes problems:
+
+1. High-cardinality features: Feature with many unique values. Example: customer ID (millions of unique values). One-hot creates millions of columns. Wastes memory, slows training, causes overfitting.
+
+2. Dummy variable trap: If you include all k categories, you have k columns. But one-hot means exactly one column is 1, others are 0. Multicollinearity: columns are linearly dependent. Solution: drop one column (k-1 encoding), or use regularization.
+
+3. Curse of dimensionality: More columns = sparser data = overfitting risk.
+
+4. Memory explosion: 100 categories = 100 new columns. With 10000 rows, you've created 1M cells of data.
+
+Solutions for high-cardinality features:
+
+1. Target encoding: Replace category with its target mean. Example: instead of one-hot for State, use average income by state. One column instead of 50.
+
+2. Frequency encoding: Replace with frequency of that category.
+
+3. Hashing: Hash category into fixed number of bins (e.g., always 100 columns, regardless of cardinality).
+
+4. Ordinal encoding: Treat as ordered. Color = [Red=1, Green=2, Blue=3]. Assumes ordering matters (works for size, doesn't for color).
+
+Example:
+
+E-commerce dataset. Categorical feature: city (500 unique values). One-hot creates 500 columns. Instead, use target encoding: replace each city with average purchase amount in that city. One column, much more informative.
+
+Tradeoff: One-hot is safe (works for most algorithms) but can explode dimensionality. Target encoding is space-efficient but risks overfitting if cardinality is low.
+
+My approach: One-hot for low-cardinality (< 10 categories). Target encoding or frequency for high-cardinality. Always drop one column to avoid dummy variable trap.`,
+      },
+      {
+        q: "Explain gradient descent in simple terms. What is learning rate?",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about basic gradient descent or advanced variants like momentum and Adam? And about local minima problems?
+
+For this, I'll explain vanilla gradient descent and learning rate's role.
+
+---
+
+Gradient descent: Optimization algorithm to find the best weights for a model. Iteratively adjusts weights to minimize loss (prediction error).
+
+How it works:
+
+1. Start with random weights.
+2. Compute loss (how wrong are your predictions?).
+3. Compute gradient (which direction to move weights to reduce loss?).
+4. Update weights: move them in the negative gradient direction (downhill).
+5. Repeat until loss stops improving.
+
+Analogy: You're lost in fog on a mountainside. You want to descend to the valley (minimize elevation = minimize loss). You can't see far, so you check the slope beneath your feet. Take a step downhill. Repeat.
+
+Learning rate: Step size. How much to adjust weights each iteration.
+
+Example with a single weight:
+
+Loss = (weight - 3)^2   [Optimal weight is 3]
+Start: weight = 0
+Gradient at weight=0: -6 (slope pointing left, should move right)
+
+With learning_rate = 0.1:
+Update: weight = 0 + 0.1 * 6 = 0.6
+Repeat: weight = 0.6 + 0.1 * 4.8 = 1.08
+Repeat: weight = 1.08 + 0.1 * 3.84 = 1.464
+Eventually converges to 3
+
+Learning rate too small (0.001):
+Tiny steps. Takes forever to reach optimal weight. Slow.
+Very stable, unlikely to overshoot.
+
+Learning rate too large (1.0):
+Giant steps. Might overshoot the optimum and oscillate around it, never converging.
+Fast but unstable.
+
+Learning rate just right (0.01 to 0.1 typically):
+Decent speed, stable convergence.
+
+Tradeoff: Speed vs stability. Larger rate = faster but less stable. Smaller rate = slower but stable.
+
+Visual: Imagine descending a mountain. Large steps cover ground fast but you might jump off a cliff. Tiny steps are safe but take forever.
+
+In practice:
+
+Start with 0.01 or 0.1.
+Monitor training loss. If it oscillates wildly, reduce learning rate.
+If it decreases slowly, increase learning rate.
+
+Advanced note: Modern optimizers (Adam, RMSprop) adapt learning rate automatically. Start with those if available.
+
+My approach: Use Adam optimizer (learning rate adaptation). If tuning manually, start with 0.01 and monitor.`,
+      },
+      {
+        q: "What is the difference between batch, mini-batch, and stochastic gradient descent?",
+        subcategory: "machine_learning",
+        difficulty: "Easy",
+        a: `Are you asking about computational tradeoffs, or when each is appropriate? And convergence properties?
+
+For this, I'll explain all three and practical considerations.
+
+---
+
+All three are variants of gradient descent. Difference: how many examples to process before updating weights.
+
+Batch gradient descent (BGD): Use ALL training data to compute loss and gradient. Then update weights once.
+
+Process:
+1. Forward pass on all 10000 examples.
+2. Compute loss across all 10000.
+3. Compute gradient across all 10000.
+4. Update weights once.
+5. Repeat.
+
+Pros: Stable, converges smoothly, guaranteed improvement each iteration.
+Cons: Slow. With 10000 examples, huge computation before one update. Memory-intensive.
+
+Stochastic gradient descent (SGD): Use ONE example per update.
+
+Process:
+1. Forward pass on example 1.
+2. Compute loss and gradient for example 1.
+3. Update weights.
+4. Forward pass on example 2.
+5. Update weights again.
+6. Repeat for all 10000 examples.
+
+Pros: Fast. Updates happen constantly, progress quick.
+Cons: Noisy. Updates based on one example, might go wrong direction. Converges messily with oscillations.
+
+Mini-batch gradient descent: Sweet spot. Use K examples (e.g., K=32) per update.
+
+Process:
+1. Forward pass on examples 1-32.
+2. Compute loss and gradient across these 32.
+3. Update weights.
+4. Forward pass on examples 33-64.
+5. Update weights.
+6. Repeat.
+
+Pros: Balanced. Faster than BGD (not waiting for 10000 examples), more stable than SGD (using 32 examples averages out noise).
+Cons: Hyperparameter to tune (batch size).
+
+Visual comparison:
+
+BGD: Smooth, steady descent. Few updates but big jumps.
+SGD: Jittery descent. Many updates, lots of zigzagging. Eventually reaches bottom but messily.
+Mini-batch: Reasonable descent. Frequent updates, less jitter than SGD.
+
+Tradeoff:
+
+BGD: Stable but slow.
+SGD: Fast but unstable, noisy.
+Mini-batch: Balanced.
+
+In practice:
+
+Mini-batch is standard. Most libraries default to batch_size=32.
+With huge data and limited memory, smaller batches (16, 32).
+With small data, larger batches (128, 256) or BGD.
+SGD almost never used alone. But SGD often used colloquially to mean mini-batch SGD.
+
+Metric: Training loss over time. BGD is smooth. SGD zigzags. Mini-batch is jagged but overall downward trend.
+
+My approach: Use mini-batch with default batch size. Only tune if training is unstable (loss oscillating).`,
+      },
     ],
   },
 
