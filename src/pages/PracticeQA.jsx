@@ -921,7 +921,9 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const role = ROLES[selectedRole] || ROLES.pm;
     const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
 
-    let dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
+    let dataCats = selectedRole === 'ds'
+      ? ['product', 'behavioral', 'ai', 'ai_technical', 'machine_learning', 'statistics', 'domain_specific']
+      : ['product', 'behavioral', 'ai', 'ai_technical'];
     let subcategoryFilter = null;
     if (filterCategory) {
       const chip = categoryChips.find(c => c.id === filterCategory);
