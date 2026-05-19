@@ -9147,6 +9147,693 @@ Finally, adjust decision thresholds. Default is 0.5 (predict positive if probabi
 
 Monitor what matters: If fraud is 0.1%, a model catching 80% with 1% false positive rate is good. If 99.9% legitimate, that 1% FP rate still means 1 in 100 legitimate transactions are flagged.`,
       },
+      {
+        q: "Google Search quality dropped 5% in a specific country. How would you investigate using data?",
+        company: "google",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        a: `First, I'd clarify: Is the 5% drop in organic traffic, engagement (clicks), or some quality metric we track internally? Is it country-wide or specific to mobile/desktop or certain search types?
+
+I'd start by segmenting the data. A 5% drop is significant and usually has a root cause.
+
+Step 1: Verify the signal. Is this real or measurement noise? I'd check multiple metrics: search impressions, clicks, average position of our results, click-through rate. If all are down, it's real. If only one metric moved, it might be a calculation error or algorithm change.
+
+Step 2: Isolate the cause. Country-specific drops are usually algorithmic (an algorithm update that rolled out), infrastructure (latency spike, indexing delay), or competitive (competitor gained market share). I'd check deploy logs for our week — any algorithm changes, infrastructure changes, or indexing issues?
+
+Step 3: Segment deeper. Break down by device (mobile/desktop), query type (commercial vs informational), content category. Search usually affects some verticals first. Example: If news results dropped but e-commerce stable, a news indexing issue is likely.
+
+Step 4: Compare historically. Did we see similar drops before? If so, what was the cause? If this is a new pattern, it's more novel.
+
+Step 5: User data. Did user engagement drop (dwell time, follow-up queries)? That indicates quality. If users stayed longer and did more queries, they might be exploring more (good). If they left quickly, quality dropped (bad).
+
+Tradeoff: Speed vs depth. I could revert recent changes (fast, safe) or investigate root cause (slower, gives us knowledge for next time). Both matter.
+
+The framework: Signal → verification → segmentation → historical comparison → remediation.`,
+      },
+      {
+        q: "Design a ML model to detect spam in Gmail. Walk through your approach from data to deployment.",
+        company: "google",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `I'd clarify first: Are we focusing on phishing, promotional spam, or both? What's the tolerance for false positives (legitimate emails marked spam)?
+
+Data: Gmail has billions of emails daily. I'd use: user behavior (did they report as spam?), email headers (spoofing signals), body text (phishing keywords), sender reputation, recipient engagement (opened/replied/deleted).
+
+Model approach: Start simple — logistic regression on 50 high-signal features. A spam email often has: suspicious sender, urgency language, links to credential harvesting. This gets 90% accuracy. But it's expensive and brittle.
+
+Scale to tree-based ensemble (XGBoost). It captures non-linear patterns: "urgent language + unknown sender + link to tiny URL = spam" even if each alone is weak.
+
+Real-time constraints matter. Gmail needs <50ms latency per email. I'd use batch retraining (hourly) with a cached model, online serving from in-memory store.
+
+Key signals: sender reputation (known good/bad), text patterns (urgent language, "verify account"), link analysis (shortened URLs, known phishing domains), user behavior (did similar users mark this sender as spam?).
+
+Challenges: Adversarial users (spammers constantly adapt). Concept drift is real. I'd retrain frequently and monitor FP rate (users complaining about emails in spam).
+
+Tradeoff: Precision vs recall. Miss a phishing email (recall) and users get hacked. Flag legitimate email (precision) and users get annoyed. For Gmail, I'd favor precision — it's worse to block legitimate than to miss one spam.
+
+Evaluation: Precision-recall curve, not accuracy. Test on holdout data, but also on real production traffic (A/B test).`,
+      },
+      {
+        q: "How would you measure the success of YouTube's recommendation algorithm?",
+        company: "google",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        a: `Success isn't just engagement. I'd measure across multiple dimensions.
+
+Primary metric: Watch time. YouTube's North Star. If users watch longer, the algorithm worked. I'd track daily watch time per user, weekly retention (do they return?).
+
+Secondary: Diversity. An algorithm that recommends the same video forever has high engagement but is brittle. I'd measure: percentage of users watching different creators, genre diversity, language diversity. This indicates healthy recommendations.
+
+Tertiary: User satisfaction. I'd measure NPS (Net Promoter Score) on recommendation quality, explicit feedback (thumbs up/down on recommendations), and implicit (do users click recommended videos?).
+
+Business metric: Revenue (ads watched). But this lags engagement and can be gamed.
+
+Operational metrics: Novelty (fraction of videos users haven't seen), serendipity (did the recommendation surprise them?), coverage (percentage of catalog that gets recommended).
+
+Monitoring: Track all of these weekly. If watch time up but diversity down, the algorithm became narrower (might cause churn). If diversity up but watch time flat, it's optimizing the wrong goal.
+
+A/B testing: When improving the algorithm, test against baseline in production. Measure all metrics above before declaring success.
+
+Tradeoff: Engagement vs healthy behavior. Maximizing one (highly addictive content) might hurt the other (burning out users). YouTube must balance.
+
+This multi-metric approach prevents optimizing for the wrong proxy and catching unintended consequences early.`,
+      },
+      {
+        q: "Google Ads revenue per click dropped 8% this quarter. Diagnose using data.",
+        company: "google",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Revenue per click = (Total ad revenue) / (Total clicks). An 8% drop is significant. I'd immediately ask: Is this from fewer high-value ads being shown, or lower CPM (cost-per-thousand-impressions)?
+
+Decomposition: Revenue = CPM × impressions + CPC × clicks. If revenue/click dropped, either CPM fell, CPC fell, or click composition changed (lower-value ads getting more clicks).
+
+Step 1: Segment by advertiser type. Enterprise advertisers pay more than SMBs. Did enterprise advertiser share drop? Did Google's ad quality score drop (affecting ad placement)?
+
+Step 2: Check seasonality. Q3 is often weaker than Q4 (holiday spending). Is this expected seasonal drop, or anomalous?
+
+Step 3: Segment by geography. Some countries have higher CPMs. Did traffic shift to lower-CPM countries?
+
+Step 4: Check auction dynamics. More ad inventory (more impressions) with fixed demand decreases price. Did Google increase ad placements (new ad formats, more sidebar ads)?
+
+Step 5: Competitor analysis (if possible). Did competitors raise prices (lower Google's effective rate)?
+
+Step 6: User behavior. Did users click more but on cheaper ads (less commercial intent)? Did click fraud decrease (fewer low-quality clicks, higher-quality remaining)?
+
+Root cause often: a mix. Maybe enterprise budgets tightened (Step 1) + seasonal dip (Step 2) + increased inventory (Step 4). Each contributes 2-3%.
+
+Fix depends on cause. If inventory issue, optimize placement. If enterprise drop, sales needs to address churn. If geography shift, that's normal.
+
+Tradeoff: If you reduce inventory to raise CPM, you lose volume. Growth vs profitability.
+
+The key: Decompose the metric, segment relentlessly, and distinguish causes from symptoms.`,
+      },
+      {
+        q: "Design an anomaly detection system for Google Cloud that monitors millions of servers.",
+        company: "google",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        a: `Scale is the challenge. Millions of servers, each reporting hundreds of metrics (CPU, memory, disk, latency). Real-time detection needed.
+
+Architecture: Time series database (e.g., Prometheus) ingests metrics. I'd use two-tier detection.
+
+Tier 1 (real-time): Streaming statistical detection. For each metric, track rolling mean and standard deviation. Flag if value exceeds mean + 3σ. Fast (<1s latency) but catches extreme outliers only.
+
+Tier 2 (batch, hourly): ML-based detection. Train isolation forests on historical data to learn normal behavior. An anomaly detector flags points deviating from learned patterns. Catches subtle problems.
+
+Feature engineering: Raw metrics are noisy. I'd compute derived features: "CPU spike while memory flat" (healthy?), "network latency up 50% (network issue)" vs "latency up 5% (normal load)".
+
+Handling scale: You can't train one model on all servers (heterogeneous). Instead, cluster servers by type/region, train separate models per cluster. This captures cluster-specific behavior.
+
+Alerting: High false positive rate is death (alert fatigue). I'd use rule-based thresholds for critical alerts (disk full), ML-based for exploratory (unusual pattern). Only escalate high-confidence anomalies.
+
+Feedback loop: When an anomaly is investigated, label it (true positive, false positive, expected maintenance). Retrain monthly with feedback to reduce false positives.
+
+Tradeoff: Sensitivity vs false positives. Stricter thresholds catch more real issues but generate noise. Use A/B testing or feedback to tune.
+
+Deployment: Canary the detection on 5% of servers first, measure false positive rate, then roll out. Prevent alert storms.`,
+      },
+      {
+        q: "How would you build a demand forecasting model for Amazon's warehouse inventory?",
+        company: "amazon",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `I'd clarify first: Are we forecasting SKU-level (specific product) or category-level demand? What's the planning horizon (days ahead)?
+
+Demand forecasting for inventory is high-stakes. Underforecast = stockouts (lost sales). Overforecast = overstock (carrying costs, markdowns).
+
+Data: Historical sales (quantity sold, date), seasonality (holidays, back-to-school), external signals (weather, promotions, competitor actions), inventory (stock on hand, discounts applied).
+
+Model approach: Start with ARIMA/exponential smoothing for baseline. These capture trend and seasonality well for stable products.
+
+For complex products, use gradient boosting (XGBoost). Features: previous 4 weeks' sales (recent demand), day of week, week of year (seasonality), price, promotion indicator, competitor price (if available), customer reviews/rating (quality signal).
+
+Key signals: seasonality (Q4 is huge, January quiet), promotions (an item on sale sees 3-5x demand spike), supply constraints (if supply is limited, demand is censored), external (weather affects jackets, rain boots).
+
+Challenges: Sparse data for new products (cold-start). Use similar product's history as prior.
+
+Tradeoff: Global vs local. Global model works across all products but misses nuances. Local models capture SKU specifics but need more data. Compromise: hierarchical model (global trend + local adjustment).
+
+Evaluation: RMSE or MAPE (mean absolute percentage error). But also penalize misses asymmetrically: underforecasting costs more than overforecasting.
+
+Serving: Batch forecast daily/weekly. Update as new orders arrive. Use quantile regression (not just point estimates) — give 10th and 90th percentile demand, not just mean.`,
+      },
+      {
+        q: "Design an A/B test framework for Amazon's checkout page. What metrics would you track?",
+        company: "amazon",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        a: `Checkout is revenue-critical. A small change can impact millions of dollars.
+
+Framework: Random assignment by user ID (ensures consistency). 50/50 split between control (current checkout) and treatment (new design).
+
+Duration: Minimum 2 weeks to smooth day-of-week effects. Longer if small expected lift.
+
+Metrics: Primary (revenue): Conversion rate (% who complete purchase), revenue per user, average order value. These directly impact business.
+
+Secondary (health): Cart abandonment rate (did adding friction cause more people to leave?), page load time (did new design slow the page?), error rate (broken checkout buttons?).
+
+Tertiary (user experience): NPS on checkout flow, return rate (do users regret and return items from this cohort?), customer support tickets related to checkout.
+
+Monitoring: Check metrics daily for anomalies. If conversion drops 10% on day 1, it might be a bug — investigate immediately rather than waiting 2 weeks.
+
+Statistical rigor: Calculate sample size upfront. With 5M checkout attempts/day, detecting 0.5% lift takes 3 days. With 50K attempts/day, takes 30 days.
+
+Guardrails: I'd set stopping rules. If conversion drops >5%, stop the test immediately (protect revenue). If it improves >2%, declare winner early (faster time-to-launch).
+
+Pitfalls: Novelty effects (new design looks better temporarily). Control by running long enough. Multiple comparisons (testing 10 new variants risks false positives).
+
+Implementation: Use in-house experimentation platform. Randomly assign, log user events, run stats.
+
+Tradeoff: Speed (declare winner fast) vs certainty (let test run longer to confirm). Amazon often picks certainty — losing a sale is expensive.`,
+      },
+      {
+        q: "Amazon's delivery promise accuracy dropped from 95% to 88%. How do you investigate?",
+        company: "amazon",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `That 7-point drop is severe and likely has a single root cause or a few compounded issues.
+
+First, define the metric: If promised 2-day delivery, did the package arrive on day 3 or later? Other definitions: did it arrive within promised window?
+
+Step 1: Timeline. When did the drop occur? Was it gradual or sudden? Sudden drops (within hours) suggest system changes (algorithm, deployment). Gradual drops suggest growing problems (demand surge, carrier issues).
+
+Step 2: Geographic breakdown. Is the drop nationwide or region-specific? If specific regions dropped (West Coast, rural areas), it's likely logistics: a fulfillment center went down, carrier performance degraded, or demand spiked in that region.
+
+Step 3: Product segmentation. Did all products drop equally, or specific categories? Prime Now (1-2 hours) likely saw worse impact than standard shipping. Categories like groceries and hazmat have different constraints.
+
+Step 4: Shipping method. Ground vs air vs 2-day Prime. Did one carrier's performance drop? UPS, FedEx, Amazon's own fleet each have different SLAs.
+
+Step 5: External factors. Did Amazon run a major sale (demand spike)? Did staffing drop (holidays)? Did weather delay shipments? Did a carrier go on strike?
+
+Root causes often: demand spike during sales → fulfillment centers overwhelmed → cannot pick/pack in time → packages miss carrier cutoffs → late delivery.
+
+Fix: Short-term: adjust promises (don't promise 2-day if you can't deliver). Long-term: scale fulfillment, negotiate carrier capacity, improve demand forecasting.
+
+Tradeoff: Accuracy vs customer satisfaction. If Amazon can't keep promises, it's better to promise longer and deliver faster. Builds trust.
+
+The key: Timeline (when), geography (where), and product (what) narrow down root cause fast.`,
+      },
+      {
+        q: "Build a customer review authenticity detection model for Amazon marketplace.",
+        company: "amazon",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `Fake reviews are a pervasive problem. Sellers post positive fake reviews to boost rankings, or post negative reviews for competitors.
+
+I'd clarify: What fraction of reviews are fake (base rate)? What's the tolerance for false positives (legitimate reviews mistakenly flagged)?
+
+Data: Historical reviews labeled as authentic or fake (from reports, manual review, lawsuits). Features: review text, metadata (reviewer account age, review count, purchase history), product metadata (category, price, reviews per day).
+
+Signals of authenticity: Reviewer history (established accounts with diverse review history are more trustworthy), linguistic patterns (genuine reviews have specific details, fake reviews are generic), timing (sudden burst of reviews from new accounts suggests coordinated fakes), account behavior (accounts created just before reviews, no other activity, likely fake), purchase verification (did this account actually buy the product?).
+
+Model: Start with gradient boosting on 30-50 features. Key features: account age, review count, review rate, text length, presence of specific keywords, verification status, sentiment consistency.
+
+For text, use TF-IDF (term frequency) to capture linguistic patterns. Fake reviews often have repeated phrases.
+
+Evaluation: Precision-recall matters more than accuracy. False positives (hiding legitimate reviews) hurt users. False negatives (missing fakes) hurt sellers.
+
+Challenge: Sophisticated fake reviews mimic genuine ones. Collusion: coordinated campaigns are harder to detect than solo fakers.
+
+Serving: Real-time scoring for new reviews (flag if risk score >0.7). Hide risky reviews, quarantine for manual review, or apply lower weight in ranking algorithm.
+
+Feedback: Reviews you flag and users report as "helpful anyway" → retrain to reduce that false positive pattern.`,
+      },
+      {
+        q: "How would you design a personalization engine for Amazon's homepage for 300M users?",
+        company: "amazon",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        a: `Scale is immense. 300M concurrent users, homepage must load <2 seconds, and each user sees a personalized feed.
+
+Architecture (offline + online): Offline: Nightly, compute user embeddings (learned from purchase history, searches, clicks). Also compute item embeddings. Use collaborative filtering or deep learning (matrix factorization, RNNs).
+
+For 300M users, you can't compute embeddings for everyone. Cluster users into segments (500K segments maybe). Compute segment-level recommendations. Within segment, use rules for fine-tuning.
+
+Online (real-time serving): User logs in. Fetch their segment, fetch pre-computed recommendations for that segment (from cache), blend with real-time signals (items in their cart, items viewed today).
+
+Ranking: Blending strategy. 40% "people like you bought", 30% "trending in your category", 20% "new arrivals", 10% "personalization wildcard" (explore diverse items). This balances accuracy (personalization) with discovery.
+
+Caching: Pre-compute top 100 items for each segment hourly. Serve from in-memory cache (Redis). Avoids real-time ML calls which are expensive.
+
+Cold-start: New users have no history. Use popularity + category priors until you have signal.
+
+Diversity: Prevent showing only electronics to a tech shopper. Enforce category diversity in the feed.
+
+A/B testing: Canary new personalization algorithms on 5% of users first. Measure CTR, conversion, and crucially, long-term engagement (do they return next week?).
+
+Tradeoff: Personalization depth vs computational cost. A super-complex model is more accurate but slower to compute. Use simpler models in production, save complex ones for offline analysis.
+
+Infrastructure: Microservices for different components (embeddings service, ranking service, cache service). Load balance across regions.`,
+      },
+      {
+        q: "How would you detect and measure the spread of misinformation on Facebook using data science?",
+        company: "meta",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        a: `Misinformation is hard to define (opinion vs false fact). I'd clarify: Are we detecting obvious falsehoods (2+2=5), misleading claims (missing context), or conspiracy theories?
+
+Detection: Content-based: Flag posts with keywords associated with known false narratives. This is brittle (easily evaded) but catches obvious cases.
+
+Network-based: Misinformation spreads differently than truth. Misinformation shows unusual network patterns: sudden spikes (coordinated shares), cross-partisan shares (designed to polarize), bot amplification (many low-follower accounts sharing simultaneously).
+
+Source credibility: Posts from known reliable sources (major news outlets) are less likely to be misinformation than from random accounts.
+
+User behavior: Users who share misinformation often have specific patterns (frequent shares, engagement with conspiracy content).
+
+Model: Gradient boosting on features like post virality (shares/hour), account age, follower count, historical accuracy of account, share momentum (accelerating vs stable), linguistic patterns (all caps, urgency language, emotional language).
+
+Measurement of spread: Reach (how many people saw it?), virality (shares per view), velocity (how fast did it spread?), cross-partisan (did it reach across political divides?).
+
+Tradeoff: False positives (flagging true posts as misinformation) are dangerous. If you suppress true stories, you've created censorship. False negatives (missing actual misinformation) let lies spread.
+
+I'd err on the side of caution: low-confidence flags trigger warnings ("multiple fact checkers say this is disputed"), not removal.
+
+Fact-checking: Scale issues. You can't fact-check 500M posts daily. Partner with fact-checkers. Use their labels as training data for your ML model. Once trained, model can flag posts for human review at scale.
+
+Monitoring: Track misinformation metric weekly. If it spikes (election, crisis), prioritize resources.`,
+      },
+      {
+        q: "Design a friend recommendation algorithm for Instagram. What features would you use?",
+        company: "meta",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Friend recommendations are crucial for network growth. Cold-start users need to quickly find people to follow.
+
+I'd clarify: Are we recommending accounts to follow (public) or friend requests (private)? Different products, different metrics.
+
+Signals: Explicit: Mutual friends (if A and C are friends, and B and C are friends, recommend B to A). Strong signal but limited reach.
+
+Implicit activity: Users who engage with same content (like same posts, comment on same photos). This indicates shared interests.
+
+Network topology: Graph clustering. Users in the same "cluster" (tightly connected sub-graph) are likely to know each other.
+
+Profile similarity: Location, age, interests (extracted from bios, follow patterns). Someone from your city interested in photography is likely a good match.
+
+Temporal: Recent activity (people you interacted with recently are good recommendations).
+
+Model: Collaborative filtering (user-user similarity) + content-based (profile similarity). Start simple: "users similar to you (by engagement) who you're not yet following". Graduate to graph-based (random walk on friendship graph finds similar users).
+
+For scale: Pre-compute recommendations offline (daily). For each user, find top 100 potential friends. Serve from cache.
+
+Ranking: Blend signals. 30% mutual friends, 30% similar engagement, 20% similar profile, 20% new people (serendipity).
+
+Evaluation: Click-through rate (did they click the recommendation?), conversion (did they follow?), retention (did they re-engage?).
+
+Cold-start: New users have no history. Use geographic (nearby users) + demographic (similar age) + trending (popular local accounts).
+
+Tradeoff: Relevance vs novelty. Recommending their existing friends (high relevance) isn't useful. Too much novelty (random accounts) leads to poor experience.
+
+Privacy: Don't expose the full network graph. Recommendations should feel serendipitous, not creepy.`,
+      },
+      {
+        q: "Instagram Reels engagement dropped 12% among 18-24 year olds. Investigate using data.",
+        company: "meta",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `A 12% drop in engagement is significant, especially for a key demographic. This is likely an algorithmic or product change.
+
+Step 1: Define engagement. Views, likes, shares, watch time? If it's watch time (more important for ads), the drop is more serious. If it's just likes, less critical.
+
+Step 2: Timeline. When did the drop start? Was it sudden (a/b test, algorithm change) or gradual (changing user preferences)?
+
+Step 3: Geographic scope. Is this global or region-specific? Some regions have different algorithm versions.
+
+Step 4: Content type. Did all Reels drop equally, or specific categories? Music Reels, comedy Reels, educational Reels might respond differently.
+
+Step 5: Compare to benchmarks. Did competitor TikTok engagement increase? Did Meta's overall Reels engagement held flat while Instagram dropped, it's Instagram-specific.
+
+Step 6: User cohort. Did power users (frequent engagers) maintain engagement while casual users dropped? Or vice versa?
+
+Root causes: Algorithm change: Most likely. If Reels algorithm was updated and heavy engagement dropped, it's backfired. Competing features: Instagram Stories, regular feed posts might've become more engaging. Content supply: If fewer Reels are being created, engagement drops (fewer good options). Platform changes: Removal of features (swipe-up links, duets) might've reduced sharing. Seasonality: Jan-Feb sometimes see lower engagement.
+
+Fix: If algorithm change is the culprit, revert and investigate why it failed. If competing features, rebalance feed ranking. If supply issue, incentivize creators.
+
+Tradeoff: Short-term metric optimization (views) vs long-term health (retention, monetization).`,
+      },
+      {
+        q: "How would you build a content ranking model for Facebook News Feed?",
+        company: "meta",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `News Feed ranking is Meta's core product. Billions of posts, personalized for each user.
+
+I'd clarify: Are we ranking posts (most relevant first) or stories (vertical format)? Are we optimizing for engagement or user satisfaction?
+
+Signal engineering: User-content: Does user follow the poster? Have they interacted with this poster before? Do they engage with this type of content?
+
+Content quality: Spam? Misleading? Reported by users? Fact-checked as false? Quality score from classifiers.
+
+Engagement signals: Likes, comments, shares in first hour (strong predictor of long-term engagement). Not all engagement is good (some posts generate angry comments).
+
+Social signals: How many of user's friends engaged with this post? (Recommendations from trusted sources matter more.)
+
+Diversity: Avoid showing only one creator's content. Rank diverse content.
+
+Recency: Fresh content gets boost, but not at the expense of relevance.
+
+Model: Learning-to-rank (LTR). Rank 1000 candidate posts using a gradient boosted tree model. Features: engagement rate, creator follower count, user-creator affinity, post age, topic diversity.
+
+For each user, score all posts, rank top 10-20, show in feed.
+
+Optimization: What are we optimizing? Engagement (clicks, likes) is easy to measure but can be gamed (inflammatory posts drive engagement). Satisfaction (would you recommend this feed?) is harder to measure.
+
+I'd use proxy metrics: watch time (longer is better), return rate (do they come back?), content diversity (don't bore with same content), and minimize "regret clicks" (users who immediately unlike or leave the app).
+
+Tradeoff: Personalization (each user sees unique feed) vs feed consistency (two users talking about the same post see it identically). Meta leans toward personalization.
+
+Serving: Real-time ranking. When user opens app, retrieve 1000 candidate posts, rank them in <100ms. Cache heavy items.
+
+Monitoring: Track engagement daily. Alert if engagement drops. A/B test new ranking approaches before full rollout.`,
+      },
+      {
+        q: "Design a real-time A/B testing platform that handles Meta's scale of 3B users.",
+        company: "meta",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        a: `At 3B users, even 1% changes matter (30M users affected). A/B testing infrastructure must handle massive scale and speed.
+
+Architecture: Data layer: Assign users to experiments via randomization service. User hash determines if they're in control or treatment. Deterministic (same user always sees same variant). Low latency (<1ms). Store in fast key-value store (Redis, memcached).
+
+Event ingestion: Log all user events (views, clicks, conversions) with experiment assignment. Stream events to distributed log (Kafka). Billions of events/day.
+
+Real-time analysis: Dashboard computes test statistics in real-time. For each metric (CTR, engagement, revenue), compute current p-value. Alert if significant difference detected early (stopping rule).
+
+Statistical rigor: Frequentist approach (p-values) or Bayesian? Frequentist needs fixed sample size upfront (lock in duration). Bayesian allows peeking (checking results mid-test). Meta likely uses Bayesian.
+
+Variance reduction: To detect small effects (0.5% difference) with billions of users, use CUPED (Controlled Experiments Using Pre-Experiment Data). Adjust for user's historical baseline. Reduces variance.
+
+Heterogeneous effects: Different user cohorts might respond differently to treatment. Track experiment effect by user segment (new users, power users, geo, device). Catch interaction effects.
+
+Guardrails: Monitor for unexpected side effects. An experiment improving primary metric (engagement) might hurt secondary (retention). Alert if guardrail metric drops.
+
+Infrastructure: Isolate experiments (running 1000 tests simultaneously, ensure orthogonality). Use experiment config service that coordinates overlapping tests.
+
+Deployment: Canary experiments to 1% of users first. Monitor for issues (crashes, errors), then ramp.
+
+Tradeoff: Speed (get results in 1 day) vs statistical power (need longer for small effects). With huge user base, even tiny effects hit significance quickly.`,
+      },
+      {
+        q: "Build a pricing optimization model for Flipkart's Big Billion Days sale.",
+        company: "flipkart",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `Big Billion Days is Flipkart's mega sale. Pricing is strategic: too low = margin erosion, too high = lost sales volume.
+
+I'd clarify: Are we optimizing category-wide prices or SKU-specific? Do we have competitor pricing data?
+
+Demand model: First, understand price elasticity. For each product, estimate: if I lower price 10%, how much does demand increase?
+
+Historical data: Past sales at different price points, seasonality, competitor prices (if available), inventory levels.
+
+Model: Gradient boosting to predict quantity sold given price, category, time of day, day of sale.
+
+Feature engineering: Price relative to normal price (discount depth), competitor price (if available), inventory level (low inventory = constrain discount to avoid stockout), category (different categories have different elasticity), time of sale (early day vs peak evening has different demand).
+
+Optimization: Given a product, demand curve (price → quantity), and margin target, choose price that maximizes profit (margin × quantity).
+
+Constraints: Minimum margin (don't sell at loss), inventory limit (don't offer more than available), competitive parity (don't price yourself out of market).
+
+Big Billion Days specifics: This is a 3-day event. Demand is front-loaded (day 1). Model needs to account for stockouts (once you run out, can't sell more).
+
+Dynamic pricing: Update prices as the sale progresses. If demand is lower than expected on day 1, drop price further on day 2. If stockout imminent, raise price to maximize margin on remaining inventory.
+
+Tradeoff: Volume vs margin. Deep discounts drive volume but erode per-unit profit. The goal is profit (margin × volume), not volume alone.
+
+Evaluation: Compare predicted profit under optimized pricing vs actual pricing used historically. Also A/B test on a category.
+
+Challenges: Cannibalization (deep discount on product A might reduce sales of product B). Account for this in the model.`,
+      },
+      {
+        q: "How would you design a delivery time prediction system for Flipkart's logistics?",
+        company: "flipkart",
+        subcategory: "system_design",
+        difficulty: "Medium",
+        a: `Delivery time prediction is key for customer satisfaction. Promise 2 days, deliver in 3 = unhappy customer.
+
+I'd clarify: Are we predicting delivery time at order time (for customer expectations) or after shipment (for ops)?
+
+Data: Historical orders: order date, delivery address (zip code, region), seller location, product (weight, category), carrier, actual delivery time.
+
+Features: Geographic distance (haversine distance from seller to buyer), region type (urban = faster, rural = slower), product category (fragile items might need extra handling, heavy items slower), seller/carrier characteristics (some carriers faster than others), time of order (weekend orders might ship slower), seasonality (peak season = congestion = delays), weather (monsoons in India slow delivery).
+
+Model: Gradient boosting. Predict delivery days as a function of above features.
+
+Evaluation: RMSE, but also percentile accuracy. For customer promise, I care about 95th percentile (how late do you get in worst case?). For ops, I care about median.
+
+At order time: Use pre-computed model to predict. Add safety margin (predict 95th percentile) to avoid disappointing customers.
+
+Post-shipment: Real-time prediction. As package progresses through fulfillment centers, refine prediction based on current status (picked up, in transit, out for delivery).
+
+Serving: Pre-compute predictions for all order combinations daily (batch). Serve from cache at order time (<10ms).
+
+Tradeoff: Optimistic vs pessimistic prediction. Promise 3 days, deliver in 2 = happy customer. Promise 2 days, deliver in 3 = upset customer. Lean pessimistic.
+
+Handling exceptions: Weather delays, carrier strikes, sorting errors. These are hard to predict. Monitor prediction error, retrain frequently.`,
+      },
+      {
+        q: "Flipkart's search relevance scores dropped. Walk through your investigation approach.",
+        company: "flipkart",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        a: `Search relevance dropping directly impacts discoverability and conversion. I'd investigate systematically.
+
+Define the metric: Are we using CTR (did users click the top result?), conversion rate (did they buy?), or a trained relevance score (ML model)?
+
+Step 1: Timeline. When did the drop occur? Look at deployment logs, search algorithm changes, or indexing issues.
+
+Step 2: Segment by query type. Did all queries drop equally, or specific categories? Branded searches ("iPhone 12") usually work well, so if they dropped, it's serious. Generic searches ("black shirt") are harder and might have higher volatility.
+
+Step 3: Decomposition. Search ranking has components: term matching (does the product description contain the search terms?), ranking (which top-ranked products are most relevant?), and presentation (are we showing the right information to users?).
+
+If relevance dropped but term matching is fine, it's a ranking problem. If term matching broke, it's indexing.
+
+Step 4: A/B testing status. Was a new search ranking algorithm deployed? If yes, immediately compare old vs. new on a holdout group. If new is worse, revert.
+
+Step 5: User feedback. Are users explicitly reporting bad results (clicking "not relevant" button)? That's strong signal.
+
+Step 6: Competitive check. Did Flipkart lose market share to Amazon or others? If yes, their search might be better. Investigate why.
+
+Root causes often: new ranking algorithm that optimized for wrong metric, indexing lag (new products not showing up), or algorithm update from vendor (if Elasticsearch or similar, check version).
+
+Fix: Revert bad changes, improve ranking algorithm, increase index freshness.
+
+Monitoring: Track relevance weekly. Also track downstream metrics (conversion rate, average order value) to see business impact.`,
+      },
+      {
+        q: "How would you improve Netflix's content recommendation for users who watch in multiple languages?",
+        company: "netflix",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `Multi-language users present a challenge. They're interested in content from different cultures and languages. A simple recommendation model might focus on one language and miss good content in another.
+
+I'd clarify: Do we treat multi-language preferences as one user or multiple profiles (which Netflix already offers)?
+
+Problem: If user watches 30% Spanish content, 20% English, 50% Korean, a model trained on the full history might learn "average" preferences and miss niche gems in any language.
+
+Approach: Separate embeddings per language. Instead of one user embedding, create 3 (Spanish, English, Korean). Each captures preferences within that language community. This respects within-language relevance.
+
+Cross-language discovery: Some genres transcend language (action movies, comedies). Use genre-based recommendations as well. If user likes action in Spanish, recommend action in English too.
+
+User signaling: Track explicit language preference (user sets preferred languages). Combine with implicit (which language do they watch at time X).
+
+Moderation: Users watch Korean content at night, English during day — temporal patterns matter.
+
+Model: Multi-task learning. Jointly predict engagement for Spanish, English, Korean content. Shared layers capture universal patterns (all users like good cinematography). Language-specific layers capture preferences within community.
+
+Cold-start: New multi-language user. Use language+region (Korean user likely watches Korean content) as prior.
+
+Evaluation: For each language, separately measure recall@50 (percentage of liked content recommended). Then compute average across languages. If one language is ignored, average suffers — forces model to balance.
+
+Tradeoff: One global model (simple, scalable) vs language-specific (complex, better accuracy). Use hierarchical: global base model + language-specific fine-tuning.
+
+Serving: Predict for each language separately, merge ranked lists, present to user.`,
+      },
+      {
+        q: "Design an experiment to test whether Netflix should auto-play trailers. What metrics matter?",
+        company: "netflix",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        a: `Auto-play trailers can increase engagement (users watch trailers, learn about content) or decrease engagement (noisy, distracting, battery drain).
+
+Hypothesis: Auto-play trailers increase time spent browsing and conversion to viewing (user clicks "watch now" after trailer).
+
+Experimental design: Control: Manual play (user clicks to play trailer). Treatment: Auto-play (trailer starts automatically when title highlighted). Randomization: User-level (consistent experience). Duration: 2-3 weeks (smooth weekday/weekend effects).
+
+Metrics: Primary: Click-through rate (did auto-play increase likelihood of starting a title?), conversion rate (% users who watched ≥ 5 min after seeing title).
+
+Secondary: Time in browsing (did users spend longer exploring vs. committing to a title?), session length (total viewing time in a session), device impact (does auto-play hurt battery/data on mobile?).
+
+Tertiary: User satisfaction (NPS on recommendation experience), return rate (do users return the next day? Long-term retention).
+
+Guardrails: Support ticket volume (did auto-play cause confusion?), app crash rate (did auto-play cause performance issues?).
+
+Segmentation: Mobile vs desktop (auto-play wastes data on mobile), high-bandwidth vs low-bandwidth (important for video streaming), frequent users vs casual (power users might tolerate auto-play; casuals find it annoying).
+
+Tradeoff: Short-term engagement (more clicks) vs user satisfaction (feels pushy). A/B tests reveal the tradeoff.
+
+Analysis: If auto-play increases conversion but decreases NPS, you've found the tradeoff. Then decide: is the conversion lift worth the satisfaction hit?
+
+Recommendation: Likely test auto-play on desktop only, exclude mobile (battery/data concern). Or make it an opt-in user preference.`,
+      },
+      {
+        q: "Netflix's subscriber churn increased 15% in Q3. Use data to diagnose and recommend actions.",
+        company: "netflix",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `A 15% increase in churn is alarming. Q3 is July-Sept, so seasonality might play a role (back-to-school, summer ends). But this magnitude suggests an underlying problem.
+
+Define churn: Cancellations per month. A 15% increase means 15% more people are canceling.
+
+Step 1: Decomposition. Which segments churned more? Geography (is this global or specific regions?), plan type (did Basic churn more than Premium?), tenure (are new subscribers churning, or long-term subscribers?), activity (did low-engagement users churn more? This is expected).
+
+Step 2: External factors: Price increase (did Netflix raise prices in Q3? Price elasticity is real), content (did a major franchise end?), macroeconomics (recession, inflation → consumers cut discretionary spending), competition (new streaming services launched?).
+
+Step 3: Engagement analysis. Churn is often preceded by low engagement (last month watched <2 hrs/week). Did this cohort grow in Q3?
+
+Step 4: Churn reasons. If Netflix collects exit survey data (why are you leaving?), analyze. Top reasons: "too much content I don't want to watch" (discovery problem), "price too high" (price), "no new content I like" (content).
+
+Root causes likely: Content drought (no major releases in Q3 for certain genres), price increase (if prices went up and customers are price-sensitive), competitive pressure (competitors launched better shows), fatigue (some users exhausted catalog in their genre).
+
+Actions: Short-term: Discount offer to at-risk users (identified by low engagement). Reactivate stopped subscriptions with "come back for new season" offers.
+
+Medium-term: Accelerate content releases. If drought caused churn, invest in more shows for Q4.
+
+Long-term: Improve content discovery (recommendation algorithm) to reduce "nothing to watch" feeling. Expand content library breadth.
+
+Retention focus: Monitor churn weekly going forward. If it continues, the fix was insufficient.`,
+      },
+      {
+        q: "Design a surge pricing model that balances driver supply with rider demand in real-time.",
+        company: "uber",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `Surge pricing is critical: too high and riders leave, too low and drivers don't show up. Real-time balance is essential.
+
+I'd clarify: Are we setting prices per request or per area (zone-level)? Uber likely uses zone-level dynamic pricing updated every 2-5 minutes.
+
+Data: Real-time rider requests (number of people requesting rides, time, location), driver supply (number of available drivers), historical demand patterns, competitor pricing (Lyft).
+
+Model: Predict demand for next 15 min. If demand > supply, raise price (incentivize more drivers to go online). If supply > demand, lower price (encourage more riders).
+
+Supply-demand equilibrium: Define a target ratio (e.g., 1.2 drivers per request). If current ratio < 1.2, raise surge multiplier (1.1x base → 1.3x base) to attract drivers. If > 1.2, lower multiplier.
+
+Price elasticity: Raising price reduces demand. Model: at 1.5x surge, 20% fewer rides are requested. At 1.2x, maybe 5% fewer. Balance demand reduction with driver incentive.
+
+Features for demand prediction: Time of day (rush hour = high demand), day of week (Friday > Tuesday), weather (rain increases demand, snow might decrease), location (bars, airport, business district have different patterns), historical trends (is demand increasing, decreasing, stable?).
+
+Model: Gradient boosting or time series (LSTM). Predict next 15-min demand per zone.
+
+Real-time pricing: For each zone, compute current supply/demand ratio. If demand > supply: increase surge (multiplicative, e.g., multiply base price by 1.2). Update every 5 min. Smoothing: Don't jump prices wildly (1.1x → 2.0x) in 5 min (seems unfair). Gradual changes.
+
+Tradeoff: Driver pay vs rider affordability. High surge helps drivers earn more but prices out price-sensitive riders. Uber needs both sides happy.
+
+Fairness: Don't exploit during emergencies (price-gouging). Set surge multiplier caps (max 2.0x during normal times, maybe 2.5x during natural disaster).
+
+Monitoring: Track wait times (if > 15 min consistently, surge too low). Track cancellation rate (if riders cancel after seeing surge, price too high).`,
+      },
+      {
+        q: "How would you build a fraud detection system for fake Uber rides?",
+        company: "uber",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `Fake rides (fraudsters creating rides, not actually taking them) waste driver time and platform resources. Common fraud: create ride, collect surge pricing subsidy, cancel. Repeat.
+
+Data: Historical rides labeled as fraud or legitimate. Features: rider history, trip details, behavior patterns.
+
+Signals of fraud: Account age (new accounts are riskier), ride history (frequent cancellations, especially post-surge, is suspicious), geography (creating rides far from stated location is odd), payment method (new credit cards, pre-paid cards riskier than linked bank accounts), device (emulated devices or suspicious IPs are red flags), timing (some fraudsters operate in patterns), trip characteristics (cancellations within 30 sec are suspicious), rating (new riders with zero reviews are riskier).
+
+Model: Gradient boosting on 50+ features. Predict probability this ride is fraudulent.
+
+Real-time scoring: When ride is created, score it instantly. If score > threshold, flag for review or require additional verification (payment confirmation).
+
+Cold-start: New users. Use geography + device + payment method to assess risk. Low-trust users might be required to wait longer for ride (pool instead of direct booking) or pay upfront.
+
+Tradeoff: False positives (legitimate new user blocked) hurt user experience. False negatives (fraudster goes through) hurt the platform. For fraud, usually better to accept more false positives and inconvenience legit users.
+
+Feedback loop: When a ride is marked fraud, retrain model with this label. When a blocked user complains, investigate if it was truly fraud (reduce false positives).
+
+Evaluation: Precision-recall. Catch 80% of fraud with 5% false positive rate (Uber considers this good).
+
+Handling: Suspend fraudulent accounts, claw back subsidies, report to law enforcement if severe.`,
+      },
+      {
+        q: "Uber's ETA prediction accuracy dropped in a specific city. How do you investigate?",
+        company: "uber",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        a: `ETA (Estimated Time of Arrival) is critical for rider expectations and driver pay. A drop in accuracy in one city is location-specific and diagnostic.
+
+Define the metric: How is accuracy measured? Mean absolute error (MAE = average |predicted - actual| minutes) or percentage error (MAPE)?
+
+Step 1: Confirm the drop. Is it real or measurement noise? Check multiple metrics: average ETA error, median error, 95th percentile (worst cases). If all are up, it's real.
+
+Step 2: Geographic isolation. Is this city-specific or broader? If just one city, it points to local factors. If multiple cities, it's global (algorithm issue).
+
+Step 3: Time segmentation. Did accuracy drop during rush hour, late night, or all day? Rush hour might have higher error due to unpredictable congestion.
+
+Step 4: Trip type. Did accuracy drop for short trips (hard to predict, high variance) or long trips? Or all trips?
+
+Root causes (city-specific): Infrastructure (road work, closed roads, construction in a specific neighborhood), traffic patterns (a major employer opened/closed, changing traffic flow), events (concert, sports event, protest blocking traffic), weather (unusual weather in that region), data quality (GPS data for that city became noisy), algorithm (if the ETA model was trained on historical data, and city traffic patterns changed, predictions are stale).
+
+Step 5: Check deploy logs. Did a new ETA model version roll out? If yes, immediately AB test old vs. new model on holdout data.
+
+Step 6: Traffic data. Do external traffic APIs (Google Maps, Waze) show worsening conditions? If yes, it's real traffic, not a model issue.
+
+Fix: Short-term: Revert to previous model if new one failed. Increase ETA estimate (over-promise) to avoid disappointing riders. Medium-term: Retrain model on recent data (traffic patterns change). Long-term: Incorporate real-time traffic data (not just historical) into model.
+
+Monitoring: Track ETA accuracy per city weekly. Alert if any city drops >10%.`,
+      },
+      {
+        q: "Design an ML pipeline that predicts driver cancellations before they happen.",
+        company: "uber",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        a: `Driver cancellations hurt riders (lost rides, wait time) and platform economics. If I can predict who will cancel, I can intervene (incentivize them to stay, find backup driver, warn rider).
+
+Definition: Cancellation = driver accepted ride, then cancelled before pickup.
+
+Data: Historical driver behavior: acceptance pattern (do they accept most rides?), cancellation history (do they frequently cancel?), earnings (satisfied drivers are less likely to cancel), engagement (active vs inactive).
+
+Features: Driver history (cancellation rate, acceptance rate, response time), trip characteristics (trip duration, pickup location, destination), earnings (expected trip payment, driver's daily earnings so far), context (time of day, weather, driver location relative to pickup), driver state (how long since last completed trip - fatigue signal), rider (rider rating - drivers avoid low-rating riders).
+
+Model: Gradient boosting. When a driver accepts a ride, immediately predict: what's the probability they'll cancel?
+
+Prediction timing: Critical. Predict as soon as driver accepts (< 1 sec). Allocation engine can then decide: assign this ride to this driver if cancellation risk is low, find backup driver if risk is high.
+
+Actions if high cancellation risk: Increase incentive (offer driver a bonus ($0.50 extra) to complete the ride), find backup (simultaneously assign to 2nd driver in case first cancels), warn rider ("Driver might be delayed" - manage expectations).
+
+Real-time serving: When driver accepts, score instantly from cache. Return score + recommended action.
+
+Evaluation: Precision-recall. Predict 100 drivers who will cancel, 70 actually do → precision 70%. This is acceptable.
+
+Training: Weekly batch retraining. Incorporate new cancellations as ground truth.
+
+Tradeoff: Incentivizing drivers costs money (reduces margin), but losing a ride costs more (lost revenue, rider churn). Balance the cost.
+
+Bias: Don't systematically disadvantage certain drivers (e.g., new drivers have higher cancellation rate naturally). Use fairness constraints in model training.
+
+Privacy: Don't expose prediction to driver (no "this ride has high cancel probability"). Use internally for ops only.`,
+      },
     ],
     behavioral: [
       {
