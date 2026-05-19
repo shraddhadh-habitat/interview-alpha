@@ -15434,6 +15434,6681 @@ Which?
 My approach: Default to Ridge for stability. If need feature selection, Lasso. If unsure, Elastic Net with l1_ratio = 0.5 (balanced).`,
       },
     ],
+    statistics: [
+      {
+        q: "Explain the central limit theorem. Why does it matter for data science?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about the mathematical definition, or why it matters practically? And do you know about the sampling distribution?
+
+For this, I'll explain the concept and its practical impact.
+
+---
+
+Central Limit Theorem (CLT): No matter what distribution your data comes from (normal, skewed, uniform, whatever), if you take many random samples and compute their means, those sample means form a normal distribution.
+
+Example:
+
+Imagine customer order sizes. Raw distribution is skewed (some customers buy $10, others buy $10,000, most buy $100-$300). Highly non-normal.
+
+Now take random samples of 30 customers, compute average order per sample. Do this 1000 times. Plot those 1000 averages. They form a bell curve (normal distribution) even though raw data is skewed.
+
+Why this matters for data science:
+
+1. Statistical testing: t-tests, confidence intervals assume normal distributions. With CLT, even non-normal data works. Large enough samples (n > 30) let you use parametric tests safely.
+
+2. Prediction intervals: When you predict the average, CLT guarantees your uncertainty follows normal distribution. Calculate confidence intervals reliably.
+
+3. Aggregation: Any time you average data (revenue per customer, page load time per day), CLT applies. Your aggregates are normal, even if raw data isn't.
+
+4. Sample size: CLT converges faster with symmetric data, slower with skewed data. But larger n always helps.
+
+Practical implication:
+
+You have sales data (highly skewed). Client asks for confidence interval on average daily revenue. You don't have exact distribution. CLT says: with enough daily samples (each day is a sample), average is normal. Use t-test, compute CI. Reliable.
+
+Tradeoff:
+
+CLT requires "large enough" samples. Depends on skewness. For nearly normal data: n > 30 works. For very skewed data: n > 100+ needed.
+
+My approach: Always check raw data distribution. If skewed, ensure large sample sizes. Trust CLT for aggregation and testing.`,
+      },
+      {
+        q: "What is a normal distribution? Give a real-world example where data is NOT normally distributed.",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about properties of normal distribution, or how to identify when data isn't normal? And how to handle non-normal data?
+
+For this, I'll explain normal distribution and common non-normal patterns.
+
+---
+
+Normal distribution: Bell-shaped curve, symmetric around mean. Defined by mean μ and standard deviation σ. Properties:
+- 68% of data within 1 standard deviation of mean
+- 95% within 2 standard deviations
+- 99.7% within 3 standard deviations
+
+Examples of data that ARE normally distributed:
+
+Heights of adult humans in a population: Most cluster around average, few very tall or very short.
+Test scores (with good test design): Students' performance centers around average, symmetric tails.
+Measurement errors: When measuring repeatedly, errors cluster around zero.
+
+Examples of data that are NOT normally distributed:
+
+1. Income distribution: Highly right-skewed. Most people earn $20k-$80k. Few billionaires pull the tail out far right. Mean > median. Asymmetric.
+
+2. Web page load times: Right-skewed. Most pages load fast (0.5-2 seconds). Few time out (10+ seconds). The tail extends right.
+
+3. Company employee count: Right-skewed. Most companies small (10-100 employees). Few tech giants (100000+ employees). Can't have negative employees (floor at 0).
+
+4. Product inventory: Often bimodal (two peaks). Popular items have high inventory. Slow-moving items have low inventory. Two distinct groups.
+
+5. Customer purchase amounts: Right-skewed. Many small purchases ($5-$50). Few large purchases ($500+). Exponential-like tail.
+
+Why this matters:
+
+Many statistical tests (t-test, ANOVA) assume normal distribution. If data is heavily skewed, test results unreliable. Your p-values wrong.
+
+How to detect non-normality:
+
+Visual: Histogram should be bell-shaped. QQ-plot points should follow diagonal line.
+Test: Shapiro-Wilk test, Kolmogorov-Smirnov test (statistical tests for normality).
+
+My approach: Always visualize your data first. If non-normal, either transform (log-transform, square root) or use non-parametric tests (Mann-Whitney U instead of t-test).`,
+      },
+      {
+        q: "Explain the difference between population and sample. When does this distinction matter?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about the conceptual difference, or how sampling affects your conclusions? And about representative sampling?
+
+For this, I'll explain both and when it matters.
+
+---
+
+Population: Entire group you care about. All possible observations.
+
+Examples:
+- All US adults (studying election preferences)
+- All customers of your company (studying churn)
+- All produced items (studying defect rate)
+
+Sample: Subset of population you actually observe and measure.
+
+Examples:
+- 1000 randomly selected US adults (can't survey all 250 million)
+- 500 randomly selected customers (can't contact all 5 million)
+- 100 items from today's production run (can't test all 10000 produced)
+
+Key distinction:
+
+Population parameter: True value (usually unknown).
+Sample statistic: Estimated value from sample (what you actually compute).
+
+Example: Population mean salary (true, unknown) = $65,000. You survey 200 employees, compute sample mean = $62,400. The $62,400 estimates the true $65,000.
+
+When this distinction matters:
+
+1. Inference: Sample statistics are estimates. They have uncertainty. Confidence intervals capture this: "Sample mean is $62,400 ± $3,000 with 95% confidence." The range accounts for sampling variability.
+
+2. Sample size: Larger samples give tighter estimates, closer to true population value. n=100 vs n=10000 gives very different precision.
+
+3. Bias: If sample is not representative (selection bias), estimate is wrong even with large sample. Example: Survey only wealthy customers, estimate average income too high.
+
+4. Generalization: Results from sample apply to population only if sample is representative. Random sampling usually ensures this.
+
+Practical example:
+
+Your company measures average customer lifetime value from 500 random customers = $2000. Is the true population average $2000? Probably not exactly. With random sampling, true average likely between $1900-$2100 (approximate 95% CI).
+
+If you sampled only premium customers (not random), estimate biased high. True average might be $1500.
+
+Tradeoff:
+
+Larger sample = more accurate estimate but more costly.
+Smaller sample = cheaper but less precise.
+
+My approach: Always note whether you're reporting population parameter or sample statistic. Use confidence intervals to express uncertainty. Ensure sampling is random to avoid bias.`,
+      },
+      {
+        q: "What is standard deviation vs standard error? When do you use each?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about the mathematical difference, or when to report which? And how they relate to sample size?
+
+For this, I'll explain both and when each applies.
+
+---
+
+Standard deviation (SD): Measures spread of individual data points around the mean.
+
+Formula: SD = sqrt( sum( (x - mean)^2 ) / (n-1) )
+
+Example: Customer ages {25, 30, 35, 40, 45}. Mean = 35. SD ≈ 7.9 years. Tells you: typical customer is ±7.9 years from average age.
+
+Standard error (SE): Measures uncertainty of the sample mean. How much would the sample mean vary if you repeated sampling?
+
+Formula: SE = SD / sqrt(n)
+
+Example: Sample 100 customers, compute mean age = 35, SD = 7.9. SE = 7.9 / sqrt(100) = 0.79 years. Tells you: if you sampled another 100 customers, their mean likely within ±0.79 of 35.
+
+Key insight:
+
+SD doesn't change with sample size. SE shrinks as sample size grows. SE = SD / sqrt(n), so bigger n = smaller SE.
+
+When to use each:
+
+Standard deviation:
+
+1. Describing your data. "Customer ages have SD of 7.9 years. Typical customer is 35 ±7.9 years old."
+
+2. Comparing spread between groups. Group A: SD $200. Group B: SD $50. Group A more variable.
+
+3. Quality control. Manufacturing: product weights should have low SD.
+
+Standard error:
+
+1. Confidence intervals. "Sample mean is 35 years. 95% CI = 35 ± 1.96*SE = 35 ± 1.55 = [33.45, 36.55]."
+
+2. Hypothesis testing. Test whether population mean differs from hypothesized value using SE.
+
+3. Reporting estimate precision. "We estimate average customer age at 35 years (SE = 0.79)."
+
+Common mistake:
+
+People report SD when they should report SE. If reporting sample mean, use SE (or confidence interval). SE reflects precision of your estimate.
+
+Practical example:
+
+You measure reaction time on 25 subjects. Mean = 400 ms. SD = 50 ms. SE = 50 / sqrt(25) = 10 ms.
+
+Report to client: "Average reaction time is 400 ms. 95% CI = [380, 420] ms." (using SE)
+
+Don't report: "Reaction time is 400 ± 50 ms." (that's SD, about individual variation, not estimate precision)
+
+My approach: Report SD for describing data variability. Report SE or CI when reporting sample means and their precision.`,
+      },
+      {
+        q: "Explain null hypothesis and alternative hypothesis with a business example.",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about how to set them up, or how to interpret test results? And about one-sided vs two-sided tests?
+
+For this, I'll explain with a clear business example.
+
+---
+
+Null hypothesis (H0): Status quo. No effect. No difference. What you assume true until proven otherwise.
+
+Alternative hypothesis (H1 or Ha): What you're trying to prove. There is an effect or difference.
+
+Business example:
+
+Your company considers launching a new website redesign. Current conversion rate = 3%. You think the redesign will improve conversion.
+
+H0: Redesign has no effect. New conversion rate = 3%. (status quo)
+H1: Redesign improves conversion. New conversion rate > 3%. (what you hope to prove)
+
+You run A/B test: 50% traffic to redesign, 50% to old website. Collect data.
+
+Result: Redesign converts at 4.2%. Question: Is 4.2% actually different from 3%, or just random variation?
+
+Statistical test (one-tailed test, since H1 is directional: ">"):
+
+p-value = 0.03 (small)
+
+Interpretation: If H0 true (no effect), probability of seeing 4.2% by chance is 3%. That's unlikely. Reject H0. Conclude redesign does improve conversion.
+
+Practical decision: Launch redesign.
+
+Another example (two-sided test):
+
+You test whether a new ad campaign affects click-through rate. Current rate = 5%. You don't know if it will increase or decrease.
+
+H0: Campaign has no effect. CTR = 5%.
+H1: Campaign affects CTR. CTR ≠ 5%. (could be higher or lower)
+
+Result: CTR = 5.8%. p-value = 0.22 (large).
+
+Interpretation: If H0 true, probability of seeing this variation is 22%. That's common (not unusual). Fail to reject H0. Conclude campaign has no effect on CTR.
+
+Practical decision: Campaign doesn't move the needle. Don't invest further.
+
+Common mistakes:
+
+1. Confusing H0 and H1. H0 is always "no effect" or "equals status quo."
+
+2. p-value < 0.05 means "difference is real." Not quite. It means: "If there's no real difference, probability of this data is < 5%. So probably there is a difference."
+
+3. Accepting H0 (very wrong language). You "fail to reject H0" or "find insufficient evidence against H0." Never say you "accept" or "proved" H0.
+
+My approach: Clearly define H0 (status quo) and H1 (what you want to prove). Use one-tailed if directional, two-tailed otherwise. Report p-value and decision clearly.`,
+      },
+      {
+        q: "What is a confidence interval? How do you explain a 95% CI to a business stakeholder?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about interpretation, or how to compute it? And how to explain to non-technical stakeholders?
+
+For this, I'll focus on interpretation and practical explanation.
+
+---
+
+Confidence interval (CI): Range of values likely to contain true population parameter. Computed from sample data.
+
+Example: Sample 400 customers, measure satisfaction (0-100 scale). Sample mean = 72. Compute 95% CI = [68, 76].
+
+What it means: We're 95% confident the true population average satisfaction is between 68 and 76.
+
+How to explain to business stakeholder (non-technical):
+
+"We surveyed 400 customers. Average satisfaction was 72 out of 100. Based on this sample, the true satisfaction for our entire customer base is probably between 68 and 76. We're 95% confident in this range. The range accounts for sampling variability."
+
+What NOT to say:
+
+"There's 95% probability true mean is in [68, 76]." (Wrong. True mean either is or isn't in the range. We can't assign probability to unknown parameter.)
+
+Why CI matters:
+
+1. It shows precision of your estimate. Narrow CI [71, 73] = precise. Wide CI [50, 90] = imprecise. Width depends on sample size and variability.
+
+2. Decision-making. If CI is [68, 76], all values in range are plausible true values. If you need to be 77+, this sample doesn't prove it.
+
+3. Beats single point estimate. Saying "satisfaction is 72" is incomplete. "Satisfaction is 72 [68, 76]" is complete.
+
+Practical example:
+
+You A/B test a pricing change. Control group: average purchase = $100. Test group: average = $110.
+
+95% CI for test group = [$95, $125].
+
+What can you conclude?
+
+- True lift might be anywhere from -$5 to +$25.
+- If you implement this pricing, average might go up $25 (best case) or even down $5 (worst case).
+- You're 95% confident the true average is in this range.
+
+Compare to CI = [$108, $112]:
+
+- Test group average is tightly estimated.
+- True lift probably $8-$12.
+- You can confidently say this pricing change is profitable.
+
+How sample size affects CI:
+
+n = 100: CI might be [$105, $115] (wide)
+n = 1000: CI might be [$108, $112] (narrow)
+n = 10000: CI might be [$109, $111] (very narrow)
+
+Larger sample = narrower CI = more precise estimate.
+
+My approach: Always report CI or error bars, not just point estimates. Explain to stakeholders: "Range where true value likely lies. Accounts for sample variability."`,
+      },
+      {
+        q: "What is the law of large numbers? How does it apply to A/B testing?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about the statistical principle, or how it applies to experiment design? And about running time and sample size?
+
+For this, I'll explain the principle and its direct impact on A/B testing.
+
+---
+
+Law of Large Numbers (LLN): As sample size increases, sample mean converges to population mean. With enough data, your sample mean equals true population mean.
+
+Example:
+
+Fair coin flip. True probability of heads = 0.5. Flip 10 times, get 6 heads (60%). Flip 100 times, get 51 heads (51%). Flip 10000 times, get 5001 heads (50.01%). Converges to true 50%.
+
+Similarly with A/B test metrics: Revenue per user, click-through rate, conversion rate, etc.
+
+How it applies to A/B testing:
+
+1. Sample size drives precision. The more users you test on, the more confident you are in results.
+
+Example: Test a new button color. Control: 5% conversion. Test: 5.2% conversion. Is that real improvement or noise?
+
+With n = 1000 users per variant: 5.2% might be noise. Confidence interval [4.2%, 6.2%]. Too wide.
+
+With n = 50000 users per variant: 5.2% more trustworthy. CI [5.0%, 5.4%]. Much narrower.
+
+With n = 500000: CI [5.15%, 5.25%]. Very precise.
+
+2. Running time matters. LLN says you need sufficient samples. Can't trust results after 1 day of data. Run test long enough to accumulate enough users.
+
+Example: Your website gets 1000 users/day. Testing button color.
+
+After 1 day: 2000 users. Result: 5.5% vs 5.8%. Too little data, meaningless difference.
+
+After 7 days: 14000 users. Result: 5.3% vs 5.2%. Is this real? Still uncertain.
+
+After 30 days: 60000 users. Result: 5.4% vs 5.8%. Difference is 0.4 percentage points. With this sample size, likely real.
+
+3. Seasonality and external factors. The longer you run, the more representative your sample. Running test 1 day might catch unusual day. Running 4 weeks smooths out weekday/weekend variation, weather effects, etc.
+
+LLN guarantee: Eventually, with enough data, true effect reveals itself (if it exists).
+
+Tradeoff:
+
+Larger sample = higher confidence but longer test time.
+Shorter test = faster decision but less confidence.
+
+Practical example:
+
+Email subject line test. Control: 22% open rate. Test: 24% open rate. 2 percentage point improvement.
+
+But with n = 500 people per group, this difference is noise. CI [±3%].
+
+With n = 5000 per group, this difference is likely real. CI [±0.9%].
+
+This is why you see "run test for 2 weeks minimum" recommendations. Depends on traffic. High-traffic site: 2 days sufficient. Low-traffic site: months needed.
+
+My approach: Compute required sample size upfront (using power analysis). Don't stop test early just because first few days show difference. LLN needs time and data.`,
+      },
+      {
+        q: "Explain the difference between discrete and continuous probability distributions.",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about conceptual difference, or examples of each? And when to use which in modeling?
+
+For this, I'll explain both and practical applications.
+
+---
+
+Discrete distribution: Probability distribution where outcomes are countable, distinct values. You can list them.
+
+Examples:
+- Number of customer calls per day: 0, 1, 2, 3, ... (whole numbers only)
+- Coin flips: heads or tails (two outcomes)
+- Customer type: new, returning, VIP (categories)
+- Defects in batch: 0, 1, 2, 3, ... (whole numbers)
+
+Continuous distribution: Outcomes can be any value in a range. Infinite possibilities between any two numbers.
+
+Examples:
+- Customer age: 25.3 years, 25.31 years, 25.312 years (any decimal)
+- Product weight: 500.2 grams, 500.25 grams (any value)
+- Time to complete task: 5.5 seconds, 5.52 seconds (continuous)
+- Revenue: $1000.50, $1000.501 (any value)
+
+Key difference in probability:
+
+Discrete: P(X = 5) is meaningful. Probability of exactly 5 calls.
+Continuous: P(X = 5.0) is essentially zero (infinite precision). Instead use P(X between 5.0 and 5.1).
+
+Common discrete distributions:
+
+1. Poisson: Number of events in fixed time. Calls per day, typos per page, website visits per hour. Useful for count data.
+
+2. Binomial: Number of successes in n trials. Did 10 ads convert? How many? Range 0-10. Useful for pass/fail scenarios.
+
+3. Geometric: Number of trials until first success. How many ads until first click? Useful for "time to event" when events are discrete.
+
+Common continuous distributions:
+
+1. Normal: Bell curve. Heights, test scores, measurement errors. Most common.
+
+2. Exponential: Time between events. Customer service wait time, time until machine breaks. Skewed right.
+
+3. Uniform: Equal probability across range. Random number between 0-1.
+
+When to use which:
+
+Discrete: Modeling counts, integers. Number of customer complaints, defects, orders.
+
+Continuous: Modeling measurements. Time, weight, revenue, distance.
+
+Practical example:
+
+Your e-commerce site. Two different problems:
+
+1. How many orders per day? Discrete. Orders are integers (0, 1, 2, ...). Use Poisson or Binomial. Forecast 150 orders/day with 95% range [130, 170].
+
+2. What is average order value? Continuous. Revenue is any decimal ($99.99, $100.01, etc). Use Normal distribution. Average $105 with 95% range [$102, $108].
+
+Tradeoff:
+
+Discrete models simpler conceptually but less precise for non-integer data.
+Continuous models flexible but can't directly model count data.
+
+My approach: Count data → discrete distribution. Measurement data → continuous. Choose distribution matching your data type and shape.`,
+      },
+      {
+        q: "What is conditional probability? Explain with Bayes theorem using a real example.",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about conditional probability concept, or how Bayes theorem works? And how to apply to real business problems?
+
+For this, I'll explain conditional probability and walk through Bayes with a concrete example.
+
+---
+
+Conditional probability: Probability of event A given that event B already happened. Written P(A | B).
+
+Example: P(purchase | email opened) = probability customer purchases given they opened our email.
+
+Bayes theorem: Mathematical relationship between conditional probabilities.
+
+P(A | B) = P(B | A) * P(A) / P(B)
+
+Rearranged: Probability of A given B = (Probability of B given A * Probability of A) / Probability of B.
+
+Real business example:
+
+A customer received a promotional email. Question: What's the probability they made a purchase?
+
+Data:
+- 30% of customers open emails. P(open) = 0.30.
+- 20% of those who open make purchase. P(purchase | open) = 0.20.
+- 5% of those who don't open still make purchase (other touchpoints). P(purchase | no-open) = 0.05.
+
+Problem: Customer made a purchase. What's probability they opened the email?
+
+Answer: P(open | purchase) = ?
+
+Using Bayes:
+
+P(purchase) = P(purchase | open) * P(open) + P(purchase | no-open) * P(no-open)
+           = 0.20 * 0.30 + 0.05 * 0.70
+           = 0.06 + 0.035
+           = 0.095 (9.5% of customers purchase)
+
+P(open | purchase) = P(purchase | open) * P(open) / P(purchase)
+                   = 0.20 * 0.30 / 0.095
+                   = 0.06 / 0.095
+                   = 0.63 (63%)
+
+Interpretation: If customer made a purchase, there's 63% chance they opened the email.
+
+Why this matters in business:
+
+Without Bayes: You'd think "20% of email openers purchase, so email must drive 20% of purchases." Wrong.
+
+With Bayes: You learn 63% of purchasers came through email. Email is important channel.
+
+Another example: Disease testing.
+
+A disease has 1% prevalence in population. Test is 99% accurate (catches 99% of sick, false positive rate 5%).
+
+Patient tests positive. Question: How likely is patient actually sick?
+
+P(sick | positive) = P(positive | sick) * P(sick) / P(positive)
+
+P(positive) = P(positive | sick) * P(sick) + P(positive | not sick) * P(not sick)
+           = 0.99 * 0.01 + 0.05 * 0.99
+           = 0.0099 + 0.0495
+           = 0.0594
+
+P(sick | positive) = 0.99 * 0.01 / 0.0594
+                   = 0.00099 / 0.0594
+                   = 0.167 (17%)
+
+Surprising: Patient tests positive on 99% accurate test but only 17% likely to be sick. Why? Disease is rare, so false positives common.
+
+Key insight: Prior probability P(sick) = 1% dominates. Even a good test can't overcome rare baseline.
+
+My approach: Use Bayes when you want to flip conditional probabilities. Know posterior probability given new evidence. Useful for diagnosis, classification, updating beliefs.`,
+      },
+      {
+        q: "What is expected value? How would you use it to evaluate a business decision?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about how to compute it, or how to make decisions with it? And how to handle uncertainty?
+
+For this, I'll explain expected value and show how to use it for business decisions.
+
+---
+
+Expected value (EV): Average outcome you expect if you repeat a decision many times. Weighted average of all possible outcomes.
+
+Formula: EV = (Probability1 * Outcome1) + (Probability2 * Outcome2) + ...
+
+Simple example:
+
+Play a game. Roll die. Get $10 if you roll 6, pay $2 otherwise.
+
+EV = P(roll 6) * $10 + P(roll other) * (-$2)
+   = (1/6) * $10 + (5/6) * (-$2)
+   = $1.67 - $1.67
+   = $0
+
+EV = 0 means game is fair. Over many plays, you break even.
+
+If you play once: You might win $10 or lose $2. Single outcome uncertain. But over many plays, average is $0.
+
+Business decision example:
+
+You consider launching a new product. Two scenarios:
+
+Success (prob 60%): Profit $5 million.
+Failure (prob 40%): Loss $2 million.
+
+EV = 0.60 * $5M + 0.40 * (-$2M)
+   = $3M - $0.8M
+   = $2.2M
+
+Interpretation: On average, expect to make $2.2 million. If you did many projects with this risk profile, average profit $2.2M per project.
+
+Decision: Launch. Positive EV.
+
+Another example: Should you do A/B test?
+
+Scenario 1: Don't test, launch current design.
+Profit = $1 million (for sure).
+EV = $1 million.
+
+Scenario 2: Test for 2 weeks (costs $50k). Then launch.
+If control wins (prob 70%): Stick with current design, profit $1M.
+If test wins (prob 30%): Launch new design, profit $3M.
+
+EV = 0.70 * $1M + 0.30 * $3M - $50k
+   = $0.7M + $0.9M - $0.05M
+   = $1.55M
+
+Decision: Test. EV of testing ($1.55M) beats no test ($1M). Testing is worth $550k extra expected value.
+
+Key insight: Expected value incorporates both probability and magnitude. High probability low gain might lose to low probability high gain.
+
+Tradeoff:
+
+EV assumes you repeat decision many times (law of large numbers). For one-off decisions, think about risk tolerance too.
+
+Example: EV of $2.2M is great, but if company capital is $5M total and failure costs $2M, you risk bankruptcy. Might choose safer option.
+
+How to estimate probabilities:
+
+Historical data: What fraction of past launches succeeded? 60%?
+Expert judgment: Gut estimate if data unavailable. Biased but actionable.
+Simulation: Run 1000 scenarios, estimate success rate.
+
+My approach: Compute EV for major decisions (product launch, infrastructure investment, marketing spend). Choose highest EV option. Update probabilities as you learn.`,
+      },
+      {
+        q: "Explain the difference between mean, median, and mode. When is median better than mean?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about when to use each, or how they behave differently? And what skewness tells you?
+
+For this, I'll explain all three and when each is appropriate.
+
+---
+
+Mean: Average. Sum of values divided by count. (2 + 4 + 6) / 3 = 4.
+
+Median: Middle value when data sorted. (2, 4, 6) → median is 4. If even count, average of two middle values.
+
+Mode: Most frequent value. In {2, 4, 4, 6}, mode is 4 (appears twice).
+
+Example with same data:
+
+Dataset: {2, 4, 6}. Mean = 4, Median = 4, Mode = none (all appear once).
+
+Dataset: {2, 4, 4, 6}. Mean = 4, Median = 4, Mode = 4. All three agree.
+
+When they disagree:
+
+Dataset: {1, 2, 3, 4, 100}. (outlier at 100)
+- Mean = (1+2+3+4+100)/5 = 110/5 = 22
+- Median = 3 (middle value)
+- Mode = none
+
+This shows how outliers affect mean!
+
+When median is better than mean:
+
+1. Skewed distributions. Outliers pull mean away from typical value.
+
+Example: Salaries in startup. 9 employees earn $60k. 1 founder earns $1M. Mean = (9*60k + 1M) / 10 = $150k. But typical employee earns $60k. Median = $60k is more honest.
+
+2. Extreme values. House prices. Most homes $300-400k. One mansion $10M. Mean inflated. Median reflects typical home.
+
+3. Non-normal data. Anything skewed. Customer revenue (right-skewed), product defects (left-skewed).
+
+4. Ordinal data or limited precision. Survey ratings (1-5 scale). "Median rating 4" more meaningful than "Mean rating 3.7."
+
+Real business examples:
+
+Income distribution: Use median. Most people care about typical income, not affected by billionaires.
+
+Student test scores (normal distribution): Use mean. Most scores bell-curved.
+
+Web page load times (right-skewed): Use median. Most pages fast, few slow. Median is 0.5 seconds. Mean is 2 seconds (skewed by outliers). Which better describes typical experience? Median 0.5 seconds.
+
+E-commerce order value (right-skewed): Use median for "typical order" ($50). Use mean for total revenue projections ($75 average).
+
+How skewness matters:
+
+Right-skewed (long tail right): Mean > Median. Example: income, home prices, company size.
+Left-skewed (long tail left): Mean < Median. Example: test scores (if floor effect).
+Symmetric: Mean ≈ Median. Example: heights, weights, normally distributed metrics.
+
+Mode use cases:
+
+Finding most popular category. Product type: 40% apparel, 30% electronics, 30% home. Mode = apparel.
+
+Peak of distribution. When distribution is multimodal (multiple peaks), modes identify peaks.
+
+Categorical data. Can compute mode but not mean or median on {red, blue, green}.
+
+My approach: Visualize data first. If normal: report mean. If skewed: report median. Always report sample size and standard deviation for context.`,
+      },
+      {
+        q: "What is a probability density function vs cumulative distribution function?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about conceptual difference, or how to use each? And their relationship?
+
+For this, I'll explain both and show their connection.
+
+---
+
+Probability Density Function (PDF): Shows probability density at each value. Height of curve = relative likelihood of that value. Area under curve = probability.
+
+Example: Normal distribution bell curve. Peak at mean (most likely). Tails thin out (less likely).
+
+Property: Integrating PDF over range gives probability in that range.
+P(5 < X < 10) = integral of PDF from 5 to 10 = area under curve between 5 and 10.
+
+Total area under PDF = 1 (100% probability).
+
+Cumulative Distribution Function (CDF): Shows cumulative probability up to each value. Height = P(X ≤ x).
+
+Example: Normal CDF at x=0 (mean) = 0.5. Meaning 50% of probability is below mean. At x=1 (one std dev above mean) ≈ 0.84. Meaning 84% below that point.
+
+CDF is monotonically increasing (never decreases). Starts at 0 (far left), ends at 1 (far right).
+
+Relationship:
+
+CDF is integral of PDF. If you integrate PDF from -infinity to x, you get CDF(x).
+
+Conversely, derivative of CDF is PDF.
+
+Visual example:
+
+Normal distribution:
+- PDF: Bell curve, centered at 0, peaks at 0.4.
+- CDF: S-shaped curve, crosses 0.5 at x=0, goes from 0 (left) to 1 (right).
+
+Practical use cases:
+
+PDF: Understanding shape of distribution. "Where are values most likely?" Bell curve PDF shows clustering around mean.
+
+CDF: Answering percentile questions. "What fraction of customers spend less than $100?" Look at CDF($100).
+
+Example: Customer spending.
+
+PDF: Most customers spend $20-$100. Peak around $50. Few spend >$200.
+
+CDF: 25% spend <$30. 50% spend <$60. 75% spend <$120. 95% spend <$300.
+
+Business question: What spending threshold separates bottom 80% from top 20%?
+
+Answer: Use CDF. Find x where CDF(x) = 0.8. That's the 80th percentile. 80% below, 20% above.
+
+Confidence intervals using CDF:
+
+95% confidence interval means 2.5% in left tail, 2.5% in right tail, 95% in middle.
+
+Using standard normal CDF:
+- P(Z < -1.96) = 0.025 (from CDF)
+- P(Z > 1.96) = 0.025
+- P(-1.96 < Z < 1.96) = 0.95
+
+So 95% CI ≈ [mean - 1.96*SD, mean + 1.96*SD].
+
+When to use each:
+
+PDF: Visualizing distribution. Understanding likelihood of values.
+
+CDF: Computing probabilities. "What % below threshold?" Percentiles. Confidence intervals.
+
+My approach: For visualization, plot PDF (histogram, density curve). For calculations, use CDF (percentiles, probabilities).`,
+      },
+      {
+        q: "Explain independent vs dependent events. Why does this matter for modeling?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about the definition, or how to detect dependence? And how it affects modeling?
+
+For this, I'll explain both and show practical impact.
+
+---
+
+Independent events: Outcome of one doesn't affect outcome of other. Probability unchanged.
+
+P(A and B) = P(A) * P(B)
+
+Example:
+- Coin flip 1: heads or tails
+- Coin flip 2: heads or tails
+- Result of flip 1 doesn't affect flip 2. Independent.
+- P(two heads) = 0.5 * 0.5 = 0.25
+
+Dependent events: Outcome of one affects outcome of other. Probabilities linked.
+
+P(A and B) ≠ P(A) * P(B)
+
+Example:
+- Draw card 1 from deck: probability of ace = 4/52.
+- Draw card 2: If card 1 was ace, only 3 aces left. Probability 3/51. Dependent on card 1.
+
+Business example:
+
+Customer A receives email, opens it, makes purchase.
+Customer B receives email, opens it, makes purchase.
+
+Are these independent?
+
+Probably not. Email was sent at same time, to similar audience, about same product. Both openings and purchases linked to email quality, customer segment, product appeal. Dependent.
+
+Independence assumption would be wrong. Leads to underestimated variance, overconfident conclusions.
+
+Why dependence matters for modeling:
+
+1. Sample size calculations: Assume independence when computing required sample size. If data actually dependent, sample size calculation too optimistic. Underestimate required n.
+
+Example: A/B test. Assume each user independent. Compute need 1000 users per group. But users are dependent (same day, same traffic source, same seasonality). Actually need 2000 users.
+
+2. Confidence intervals: CI computation assumes independence. Dependent data = wider true CI than calculated.
+
+3. Correlation affects regression. If predictors correlated, standard errors inflated. Coefficients unstable.
+
+4. Time series: Observations over time usually dependent (autocorrelation). Violates independence assumption of many tests.
+
+Detecting dependence:
+
+Visual: Scatter plot. If points show pattern (cluster, trend), likely dependent.
+
+Statistical: Correlation coefficient. Non-zero correlation = dependence.
+
+Autocorrelation: For time series, compute correlation between X(t) and X(t+1). If high, series dependent.
+
+How to handle dependence:
+
+1. Acknowledgment: Use dependent samples analysis.
+
+Example: Paired t-test for before/after measurements on same subjects. Accounts for dependence.
+
+2. Clustering: If data clusters (e.g., multiple users per company), use clustered standard errors. Wider SE, more honest.
+
+3. Time series methods: ARIMA, exponential smoothing account for autocorrelation.
+
+4. Independence assumption: Sometimes assume independence despite dependence if effect small.
+
+Example: A/B test with clustered data. Users within company might be correlated. But effect small if testing across many companies. Assuming independence gives conservative estimates (wider CI than deserved, but honest).
+
+Practical example:
+
+Test pricing on website. Two groups: control (old price), treatment (new price).
+
+Independence assumption: Each purchase independent, unaffected by other users.
+
+Reality: Users talk. New price spreads by word-of-mouth within user group. Treatment group users talk to control group users. Dependence!
+
+Impact: Estimated treatment effect and confidence interval wrong. True effect larger than calculated.
+
+My approach: Always think about dependence. Visualize data, check for patterns. If independence violated and effect large, use appropriate statistical methods.`,
+      },
+      {
+        q: "What is variance? How do you interpret high variance in a dataset?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about variance as statistical measure, or variance in machine learning context? And how to interpret it?
+
+For this, I'll explain statistical variance and its implications.
+
+---
+
+Variance: Measure of spread. How far data points scatter from mean on average.
+
+Formula: Variance = Average of squared deviations from mean.
+σ² = sum((x - mean)²) / n
+
+High variance: Data spread out far from mean. Big differences between values.
+Low variance: Data clustered near mean. Small differences between values.
+
+Example:
+
+Dataset A: {8, 9, 10, 11, 12}. Mean = 10. Values within ±2 of mean. Variance = 2.
+
+Dataset B: {1, 5, 10, 15, 19}. Mean = 10. Values within ±9 of mean. Variance = 58.
+
+Dataset B has much higher variance. More spread out.
+
+How to interpret high variance:
+
+1. Inconsistency: High variance = unpredictable. Hard to forecast.
+
+Example: Customer wait time. Average 10 minutes. High variance = sometimes 2 minutes, sometimes 30 minutes. Unreliable service.
+
+Low variance = always around 9-11 minutes. Predictable, reliable.
+
+2. Quality issues: Manufacturing. High variance in product weight = quality problems.
+
+Target weight 500g. Low variance = consistently 499-501g (good). High variance = sometimes 480g, sometimes 520g (bad).
+
+3. Model underperformance: High variance in predictions = bad model fit or high randomness in data.
+
+Data: Customer lifetime value. If some customers very loyal (high LTV), others churn quickly (low LTV), variance high. Hard to predict individual customer value.
+
+4. Opportunity for improvement: High variance often means something controllable is varying.
+
+Example: Sales rep performance. Variance in monthly sales might mean:
+- Some reps are better (trainable)
+- Market varies (external)
+- Seasonal effect (external)
+
+Investigate variance source, find controllable factors.
+
+High variance with low mean vs high mean:
+
+Coefficient of variation (CV) = Variance / Mean. Accounts for scale.
+
+Example: Revenue variance $1M and cost variance $100k both seem different. But:
+- Revenue: mean $10M, variance $1M, CV = 10%
+- Cost: mean $500k, variance $100k, CV = 20%
+
+Cost more volatile relative to its mean. CV helps compare.
+
+When high variance is OK:
+
+1. Uncertainty unavoidable. Some domains inherently uncertain. Stock returns high variance. That's normal.
+
+2. Individual-level data. Customers differ. High variance in customer spend is natural. Aggregating (average spend per segment) reduces variance.
+
+3. You care about distribution. If testing fairness, high variance might be feature not bug. "All voices heard" = more variance.
+
+Reducing variance:
+
+1. Better measurement: Noise in data causes variance. Improve data quality, reduce variance.
+
+2. Segmentation: High variance often means mixing different groups. Segment data, variance within each group lower.
+
+Example: Product quality high variance. Check: older machines vs new machines? Different raw materials? Different shifts? Segment by source, variance within each segment drops.
+
+3. Aggregation: Individual-level variance high, aggregate-level low.
+
+Example: Individual user engagement varies wildly. Aggregate to daily active users, variance lower.
+
+4. Control factors: Variance from uncontrolled variables. Fix or control them.
+
+Example: Marketing spend variance. If weather affects foot traffic, control for weather.
+
+My approach: Compute variance (or standard deviation). Compare to mean (using CV). Interpret as inconsistency or unpredictability. Investigate root causes. Segment or control factors to reduce.`,
+      },
+      {
+        q: "Explain percentiles and quartiles. How do you use them to detect outliers?",
+        subcategory: "statistics",
+        difficulty: "Easy",
+        a: `Are you asking about definitions, or how to use them for outlier detection? And how to decide thresholds?
+
+For this, I'll explain both and show practical outlier detection.
+
+---
+
+Percentile: Value below which a given percentage of observations fall.
+
+Example: 90th percentile = value where 90% of data is below it, 10% above it.
+
+Percentiles from 0 (minimum) to 100 (maximum).
+
+Quartile: Special percentiles dividing data into quarters.
+
+Q1 (25th percentile): 25% below, 75% above.
+Q2 (50th percentile): Median. 50% below, 50% above.
+Q3 (75th percentile): 75% below, 25% above.
+
+Example with ages {20, 25, 30, 35, 40, 45, 50, 55, 60}:
+
+Q1 ≈ 27.5 (25th percentile)
+Q2 = 40 (median)
+Q3 ≈ 52.5 (75th percentile)
+
+Interquartile range (IQR): Q3 - Q1 = 52.5 - 27.5 = 25. Middle 50% of data spans 25 years.
+
+Using percentiles for outlier detection:
+
+Method 1: Percentile threshold.
+
+Define outliers as values < 5th percentile or > 95th percentile.
+
+Example: Customer spending. 5th percentile = $10 (very cheap customers). 95th percentile = $500 (big spenders).
+
+Flag purchases < $10 or > $500 as outliers.
+
+Method 2: IQR method (most common).
+
+Lower bound = Q1 - 1.5 * IQR
+Upper bound = Q3 + 1.5 * IQR
+
+Outliers: Values outside [lower, upper].
+
+Example (using age data):
+
+IQR = 25
+Lower = 27.5 - 1.5*25 = -10 (no negative ages, so floor is 0)
+Upper = 52.5 + 1.5*25 = 90
+
+Outliers: Anyone < 0 or > 90 years old. In dataset {20, ..., 60}, no outliers.
+
+Example with revenue:
+
+Q1 = $500
+Q3 = $5000
+IQR = $4500
+Lower = $500 - 1.5*$4500 = -$6250 (impossible, floor at 0)
+Upper = $5000 + 1.5*$4500 = $11750
+
+Outliers: Revenue > $11750. Flag transactions $12000+.
+
+Practical business use:
+
+Fraud detection: Transaction amounts usually clustered. Outliers might be fraud or mistakes.
+Example: Typical transaction $20-$200. Outlier threshold $1000+. Flag for review.
+
+Quality control: Product weight should consistent. Q1 = 498g, Q3 = 502g, IQR = 4g.
+Lower = 498 - 6 = 492g
+Upper = 502 + 6 = 508g
+
+Products < 492g or > 508g are defects.
+
+Performance monitoring: API response time usually <100ms. Q3 = 80ms. Outliers > 200ms signal problems.
+
+Handling outliers:
+
+Option 1: Remove. Delete outliers before analysis. Risk: losing real data.
+
+Option 2: Cap. Replace outliers with threshold. Revenue > $10000 capped at $10000. Preserves count, limits extreme values.
+
+Option 3: Keep but note. Include in analysis, report separately. "Main dataset $20-$200. Outliers $1000+ flagged."
+
+Option 4: Investigate. Outliers often interesting. Why is that customer different? Why that defect?
+
+Common mistake:
+
+Blindly removing outliers. Outliers might be real patterns, not errors.
+
+Example: E-commerce. $5000 purchase looks like outlier. But it's bulk order from business customer. Real, valuable data.
+
+My approach: Compute Q1, Q3, IQR. Flag outliers using IQR method. Visualize (box plot). Investigate before removing. Understand if outliers signal problems or real patterns.`,
+      },
+      {
+        q: "How do you test whether two groups are statistically different? Walk through the process.",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about t-test specifically, or the general hypothesis testing framework? And how to handle different data types?
+
+For this, I'll walk through the complete process.
+
+---
+
+Testing if two groups differ: Hypothesis test. Does observed difference reflect real difference or just noise?
+
+Example: Control group avg = $100. Treatment group avg = $105. Difference = $5. Is it real or noise?
+
+Step-by-step process:
+
+Step 1: Define hypotheses.
+
+H0 (null): Two groups have same mean. Difference = 0.
+H1 (alternative): Two groups differ. Difference ≠ 0. (two-tailed test)
+
+Or: H1: Treatment > Control. Difference > 0. (one-tailed test, if directional)
+
+Step 2: Choose test.
+
+If both groups normally distributed, similar variance: t-test.
+If non-normal or unequal variance: Mann-Whitney U test (non-parametric).
+If categorical (yes/no): Chi-square test.
+If paired (before/after same subjects): Paired t-test.
+
+For this example, independent samples t-test.
+
+Step 3: Collect data.
+
+Control: n=50, mean=$100, SD=$20.
+Treatment: n=50, mean=$105, SD=$22.
+
+Step 4: Compute test statistic.
+
+t-statistic = (mean1 - mean2) / sqrt(variance1/n1 + variance2/n2)
+            = ($105 - $100) / sqrt($20²/50 + $22²/50)
+            = $5 / sqrt(400/50 + 484/50)
+            = $5 / sqrt(8 + 9.68)
+            = $5 / sqrt(17.68)
+            = $5 / 4.2
+            ≈ 1.19
+
+Step 5: Compute p-value.
+
+Use t-distribution with df = n1 + n2 - 2 = 98.
+
+p-value ≈ 0.23 (two-tailed test).
+
+Interpretation: If H0 true (no real difference), probability of seeing difference this large or larger = 23%.
+
+Step 6: Decision.
+
+Compare p-value to significance level α = 0.05 (standard).
+
+p-value = 0.23 > 0.05. Fail to reject H0.
+
+Conclusion: No statistical evidence of difference. $5 difference likely due to noise.
+
+Alternative example (significant result):
+
+Control: mean=$100, SD=$20, n=100.
+Treatment: mean=$112, SD=$22, n=100.
+
+t = ($112 - $100) / sqrt($20²/100 + $22²/100)
+  = $12 / sqrt(4 + 4.84)
+  = $12 / 2.97
+  ≈ 4.04
+
+p-value ≈ 0.0001 (very small).
+
+p-value < 0.05. Reject H0.
+
+Conclusion: Strong evidence treatment differs from control. $12 difference is real.
+
+Key considerations:
+
+1. Sample size matters. Larger n makes even small differences significant.
+
+With n=10: t=1.19, p=0.25 (not significant).
+With n=100: t=2.66, p=0.008 (significant).
+Same 5% difference, different conclusion!
+
+2. Practical significance vs statistical significance.
+
+Statistically significant: p < 0.05 (real difference exists).
+Practically significant: Difference is meaningful to business.
+
+Example: A/B test of website button color. Treatment has 0.01% higher conversion. Statistically significant (large n). But 0.01% = negligible for business.
+
+3. Effect size complements p-value.
+
+Cohen's d = (mean1 - mean2) / pooled_SD
+
+d > 0.8: Large effect.
+d 0.5-0.8: Medium effect.
+d 0.2-0.5: Small effect.
+d < 0.2: Negligible.
+
+Example: p=0.001 (highly significant) but d=0.1 (tiny effect). Real but tiny. Not worth implementing.
+
+4. Assumptions of t-test.
+
+Normality: Both groups normally distributed (check histogram or Shapiro-Wilk test).
+Equal variance: SD similar between groups (Levene's test).
+Independence: Observations independent (not paired).
+
+If violated, use Mann-Whitney U (non-parametric).
+
+Practical example:
+
+Email A vs Email B. Control (A): 1000 recipients, 50 open (5%). Treatment (B): 1000 recipients, 65 open (6.5%).
+
+Difference: 1.5 percentage points. Real or noise?
+
+Use Chi-square test (proportions, not t-test).
+
+Chi-square statistic ≈ 3.1.
+p-value ≈ 0.08.
+
+p-value > 0.05. Not significant. Insufficient evidence to say B better than A.
+
+Recommendation: Run longer test (more samples) or accept A and B equivalent.
+
+My approach: Define H0 and H1 clearly. Choose test based on data type. Compute test stat and p-value. Report p-value AND effect size. Interpret both statistical and practical significance.`,
+      },
+      {
+        q: "Explain the difference between one-tailed and two-tailed tests. When do you use each?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about how they differ, or when to choose? And how choice affects p-value and power?
+
+For this, I'll explain both and selection criteria.
+
+---
+
+Two-tailed test: Tests if two values are different (either direction).
+
+H0: μ1 = μ2 (means equal)
+H1: μ1 ≠ μ2 (means different, could be higher or lower)
+
+Alpha = 0.05 split into both tails: 2.5% each tail.
+
+Example: Test if treatment affects conversion. Don't know if it increases or decreases conversion.
+
+One-tailed test: Tests if one value is specifically higher or lower.
+
+H0: μ1 = μ2 (means equal, or treatment ≤ control)
+H1: μ1 > μ2 (treatment HIGHER than control)
+
+Alpha = 0.05 all in one tail.
+
+Example: Test if new production method increases output. You don't care if it decreases; that fails.
+
+Key difference:
+
+Two-tailed: 2x critical value. Harder to reach significance. More conservative.
+
+One-tailed: 1x critical value. Easier to reach significance. Less conservative.
+
+Example with same data:
+
+Control: mean 100, SD 20, n 50.
+Treatment: mean 106, SD 20, n 50.
+
+t-statistic = (106 - 100) / sqrt(20²/50 + 20²/50) ≈ 1.5
+
+Two-tailed test:
+p-value ≈ 0.135 (not significant at α=0.05)
+
+One-tailed test (H1: treatment > control):
+p-value ≈ 0.068 (still not significant at α=0.05, but closer)
+
+Same data, different conclusions depending on test type!
+
+When to use two-tailed:
+
+1. Don't know direction. "Does treatment affect outcome?" Could increase or decrease.
+
+2. Exploratory. Early-stage testing. Open to any effect.
+
+3. Conservative. Two-tailed is more stringent. Protects against claiming victory by chance.
+
+4. Default. If unsure, use two-tailed.
+
+Examples:
+- Does new website design affect bounce rate? Unknown direction.
+- Does competitor's new pricing affect our sales? Could go either way.
+- Does caffeine affect athletic performance? Could enhance or impair.
+
+When to use one-tailed:
+
+1. Directional hypothesis. "Treatment INCREASES conversion." Specific prediction.
+
+2. Only care about one direction. "New method should improve quality." Don't care if it worsens (failure anyway).
+
+3. Cost-benefit asymmetric. Improvement valuable, worsening already understood as bad.
+
+Examples:
+- Does weight loss program reduce weight? Only care if it decreases (increases weight = failure).
+- Does marketing campaign increase sales? Only valuable if increases.
+- Does safety improvement reduce accidents? Only care if reduces.
+
+Practical example:
+
+A/B test: New email subject line.
+
+Scenario 1: Exploratory. Don't know if new subject helps or hurts.
+→ Two-tailed test. "Does subject affect open rate?"
+
+Result: p=0.08. Marginal difference, too uncertain.
+
+Scenario 2: Confident. You hired expert copywriter. Expect improvement.
+→ One-tailed test. "Does subject INCREASE open rate?"
+
+Result: p=0.04 (one-tailed). Significant!
+
+Same data, different test choice, different conclusion.
+
+Warning:
+
+HARKing (Hypothesizing After Results are Known): Run test two-tailed, p=0.08 (not significant). Then say "Oh, I meant one-tailed, p=0.04 (significant)!" Cheating. Called "p-hacking." Misleading.
+
+Fix: Pre-register hypothesis before analyzing data. Can't change mid-stream.
+
+Tradeoff:
+
+One-tailed: More power to detect effect in predicted direction. But risky if effect goes opposite way (you miss it, and p-value misleading).
+
+Two-tailed: Less power. But safe. Catches effects in any direction.
+
+My approach: Plan hypothesis before looking at data. Two-tailed unless strong directional prior. Pre-register in A/B test platforms to prevent p-hacking.`,
+      },
+      {
+        q: "What is statistical power? How does it affect your experiment design?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about definition and calculation, or how it guides experiment design? And the tradeoff with Type II error?
+
+For this, I'll explain power and its practical impact.
+
+---
+
+Statistical power: Probability of detecting a real effect if it exists. Ability to avoid Type II error (false negative).
+
+Power = 1 - β, where β = probability of Type II error.
+
+Typical target: 80% power (20% Type II error). Some use 90%.
+
+Two types of errors:
+
+Type I error (false positive): Claim difference exists when it doesn't. Prob = α = 0.05 (usually).
+
+Type II error (false negative): Claim no difference when one exists. Prob = β = 1 - power.
+
+Example:
+
+You have a real treatment effect (true in population): 5% improvement in conversion.
+
+If power = 80%: 80% chance your test detects this 5% improvement. 20% chance you miss it (random noise prevents you from seeing real effect).
+
+If power = 50%: 50% chance you detect it. Coin flip. Bad!
+
+What affects power:
+
+1. Effect size: Larger real effect = higher power to detect it.
+
+Example: 0.5% improvement easy to miss. 5% improvement easy to detect.
+
+2. Sample size: Larger n = higher power.
+
+With n=100: Harder to detect small effects.
+With n=10000: Easy to detect small effects.
+
+3. Significance level (α): Lower α = lower power.
+
+α=0.01 (stringent) = harder to reach significance. Lower power.
+α=0.05 (standard) = easier. Higher power.
+
+4. Variability in data: Higher SD = lower power.
+
+Noisy data = harder to detect signal.
+Clean data = easier.
+
+Example: Conversion testing.
+
+Baseline: 2% conversion rate.
+Hypothesis: Treatment increases to 2.5%. Improvement = 0.5 percentage points.
+
+Sample size needed for 80% power:
+
+Using power calculator (or statistical formula):
+
+n ≈ 15000 per group (30000 total).
+
+Why so large? Effect size small (0.5 pp on 2% baseline). Noisy proportion data. Requires large sample.
+
+Contrast: Testing 20% improvement (baseline 2%, treatment 2.4%... wait, that's 0.4pp, still small).
+
+Actually, if baseline 5%, treatment 10% (100% relative improvement):
+
+n ≈ 500 per group (1000 total).
+
+Much smaller! Larger effect detected with fewer samples.
+
+How power guides experiment design:
+
+1. Sample size calculation: Decide minimum effect size you care about. Use power calculator to compute required n.
+
+Example: "We need 80% power to detect 2% absolute improvement in conversion."
+
+Power calculator: n = 3200 per group.
+
+Interpretation: Run test on 3200 users per group. If real 2% improvement exists, 80% chance we detect it. 20% chance we miss it due to random noise.
+
+2. Run time: Know n, know traffic, calculate runtime.
+
+Example: 100 users/day per group. Need 3200. Runtime = 32 days.
+
+Decision: Worth 1-month test? If improvement valuable, yes. If improvement marginal, maybe no.
+
+3. Trade-offs:
+
+Can't afford 32 days? Options:
+- Accept lower power (e.g., 60% power, n=2000, 20 days).
+- Look for larger effect. If improvement 4% not 2%, n smaller.
+- Increase traffic (buy ads to accelerate users).
+
+4. Baseline metrics: High variance data = need larger n.
+
+Low-frequency event (0.1% of users)? Need huge sample to detect change.
+High-frequency event (50% of users)? Need smaller sample.
+
+Practical example:
+
+Marketing test: Does discount code increase purchases?
+
+Baseline: 20% of visitors purchase (no code).
+Hypothesis: Code increases to 25%.
+
+Power analysis (α=0.05, power=0.80):
+
+Effect size = 0.05 (5 pp change).
+Sample size ≈ 1000 per group.
+
+You have 500 visitors/week per group. Runtime = 2 weeks per group.
+
+Decision: Can you run 2 weeks? If yes, proceed. If company needs faster answer, either (a) increase traffic (buy ads), or (b) accept lower power.
+
+If accept 60% power instead of 80%:
+
+n ≈ 650 per group → 1.3 weeks. Faster!
+
+But 40% chance you miss real effect.
+
+Practical consequence: Launch feature anyway (optimistic), or abandon it (pessimistic). Higher risk.
+
+My approach: Always compute power before running test. Know your minimum detectable effect. Ensure sample size sufficient for 80% power on that effect. Report power in experiment results.`,
+      },
+      {
+        q: "How would you calculate the required sample size for an A/B test with 80% power?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about the formula, or practical application? And how to adjust for different scenarios?
+
+For this, I'll show the formula and walk through examples.
+
+---
+
+Sample size formula for comparing two proportions (most common for A/B tests):
+
+n = 2 * (z_{α/2} + z_β)² * p(1-p) / (p1 - p2)²
+
+Where:
+- z_{α/2} = critical value for significance level (α=0.05, z=1.96 for two-tailed)
+- z_β = critical value for power (80% power, z=0.84; 90% power, z=1.28)
+- p = pooled proportion (average of p1 and p2)
+- p1, p2 = conversion rates for control and treatment
+- n = required sample size per group
+
+Example calculation:
+
+Control baseline: p1 = 3% (0.03)
+Treatment expected: p2 = 4% (0.04)
+Power: 80% (z_β = 0.84)
+Significance: α = 0.05 (z_{α/2} = 1.96)
+
+Pooled: p = (0.03 + 0.04) / 2 = 0.035
+
+n = 2 * (1.96 + 0.84)² * 0.035 * (1 - 0.035) / (0.04 - 0.03)²
+  = 2 * (2.8)² * 0.035 * 0.965 / (0.01)²
+  = 2 * 7.84 * 0.0338 / 0.0001
+  = 2 * 0.265 / 0.0001
+  = 0.530 / 0.0001
+  = 5300
+
+Required n ≈ 5300 per group (10600 total).
+
+Interpretation: Run test on 5300 users per variant. If true conversion rate is 4% vs 3%, 80% chance you detect difference. 20% chance you miss it.
+
+Real-world example:
+
+Your website: 1% conversion baseline.
+Goal: Detect 20% relative improvement (1% → 1.2%).
+
+n = 2 * (1.96 + 0.84)² * 0.011 * 0.989 / (0.012 - 0.01)²
+  = 2 * 7.84 * 0.01089 / 0.000004
+  ≈ 42,500 per group
+
+Wow! 85000 total. Why? Small baseline conversion (1%), small effect (0.2pp on 1%). Needs huge sample.
+
+If you get 100 visitors/day per variant: 425 days per variant! That's over a year.
+
+Options:
+- Accept lower power (60%, z_β=0.25): n ≈ 27,000. 270 days. Still long.
+- Look for larger effect. 50% improvement (1% → 1.5%): n ≈ 15,000. 150 days. Better.
+- Combine metrics. Test conversion + revenue. Larger effect size. Smaller n.
+
+Practical workflow:
+
+Step 1: Know your baseline.
+Example: Email click rate = 5%.
+
+Step 2: Define minimum effect worth detecting.
+Example: 20% relative improvement = 5% → 6%.
+
+Step 3: Use power calculator tool (online, free).
+Input: p1=0.05, p2=0.06, α=0.05, power=0.80.
+Output: n ≈ 7000 per group.
+
+Step 4: Calculate runtime.
+Visitors/day: 500 per group.
+Runtime: 7000 / 500 = 14 days.
+
+Decision: Can run 2 weeks? If yes, proceed. If company needs answer this week, either add more traffic or accept lower power.
+
+Step 5: Run test.
+
+Adjustments for real scenarios:
+
+1. Multiple comparisons: Testing 5 different pages? Each needs 80% power individually.
+
+n_total ≈ 5 * n_per_test.
+
+Or use Bonferroni correction (adjust α downward). More conservative.
+
+2. Unequal allocation: Testing control vs 3 treatments (not 50/50 split)?
+
+Use ratio-adjusted formula. More complex.
+
+3. Continuous metrics (not proportions): Example: Revenue per user.
+
+Use different formula:
+
+n = 2 * (z_{α/2} + z_β)² * σ² / (μ1 - μ2)²
+
+Where σ = pooled standard deviation.
+
+Example: Revenue per user.
+Control: mean=$50, SD=$30.
+Treatment: mean=$55, SD=$30.
+
+n = 2 * (1.96 + 0.84)² * 30² / (55 - 50)²
+  = 2 * 7.84 * 900 / 25
+  ≈ 565 per group
+
+Much smaller than proportion example! Continuous metrics often require fewer samples.
+
+Tools:
+
+Online calculators: Optimizely, VWO, G*Power (free software).
+Code: Python (statsmodels.stats), R (pwr package).
+
+My approach: Always calculate required sample size before test. Know runtime. Decide if acceptable. If not, increase effect size (look for bigger improvements) or use better metrics (lower variance).`,
+      },
+      {
+        q: "Explain the difference between parametric and non-parametric tests. Give examples of each.",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about assumptions, or when to use each? And power tradeoffs?
+
+For this, I'll explain both and selection criteria.
+
+---
+
+Parametric test: Assumes data follows specific distribution (usually normal). Uses distribution parameters (mean, variance).
+
+Examples: t-test, ANOVA, linear regression.
+
+Non-parametric test: Makes no distribution assumptions. Uses ranks or order of data, not actual values.
+
+Examples: Mann-Whitney U, Wilcoxon signed-rank, Kruskal-Wallis.
+
+Key differences:
+
+Parametric:
+- Assumes normality (data from bell curve distribution).
+- Uses actual values in calculation.
+- More powerful (detects effects better).
+- Efficient with small samples.
+- Sensitive to outliers.
+
+Non-parametric:
+- No distribution assumptions.
+- Uses ranks (1st, 2nd, 3rd, ...) or order.
+- Less powerful.
+- Robust to outliers.
+- Good for non-normal data.
+
+Parametric examples:
+
+1. t-test: Compare means of two groups.
+
+Assumptions: Both groups normal, similar variance.
+Example: Email A: avg open time 2 min. Email B: avg 2.1 min. Are they different?
+
+Data: [2.0, 1.8, 2.2, 2.1] vs [2.1, 2.3, 1.9, 2.0]
+
+t-test uses actual values to compute test statistic.
+
+2. ANOVA: Compare means across 3+ groups.
+
+Example: Website A, B, C. Does layout affect bounce rate?
+Assumes each group normal, equal variance across groups.
+
+3. Linear regression: Predict continuous outcome from continuous predictor.
+
+Assumes residuals (prediction errors) normal.
+
+Non-parametric examples:
+
+1. Mann-Whitney U: Compare medians of two groups (non-normal data).
+
+Alternative to t-test.
+Example: Customer spending (right-skewed, not normal). Is group A median spending different from group B?
+
+Data: [2.0, 1.8, 2.2, 2.1] vs [2.1, 2.3, 1.9, 2.0]
+
+Mann-Whitney converts to ranks: [2.0→2, 1.8→1, 2.2→6, 2.1→3.5] vs [2.1→3.5, 2.3→8, 1.9→5, 2.0→4]
+
+Uses ranks, not actual values.
+
+2. Wilcoxon signed-rank: Paired comparison (before/after).
+
+Alternative to paired t-test.
+Example: Customer satisfaction before/after service change. Is median satisfaction different?
+
+3. Kruskal-Wallis: Compare 3+ groups (non-normal data).
+
+Alternative to ANOVA.
+
+When to use parametric:
+
+1. Data is normal. Check histogram or normality test (Shapiro-Wilk).
+
+2. Large sample. With n>30, Central Limit Theorem makes even non-normal data safe for parametric tests.
+
+3. Continuous data, similar variance between groups.
+
+4. You want more power (detect smaller effects).
+
+When to use non-parametric:
+
+1. Data clearly non-normal. Histogram shows skew, outliers, or other deviation.
+
+2. Small sample (n<30) and non-normal.
+
+3. Ordinal data (ranks, ratings). Example: 1-5 satisfaction scale.
+
+4. Extreme outliers. Non-parametric robust to them.
+
+5. Data is skewed. Median more meaningful than mean.
+
+Practical example:
+
+Customer retention analysis. Control (n=50): Retention rates.
+
+Data: [0.8, 0.85, 0.9, 0.75, ..., 0.88]
+
+Histogram: Roughly normal-ish. No extreme skew. n=50 (large).
+
+Use parametric: t-test. Higher power.
+
+Alternative scenario:
+
+Product price sensitivity. Survey 20 customers. Ask: "Would you buy at $100?" Yes/No responses converted to ranks (some say yes only if <$80).
+
+Data: [20, 35, 50, 15, 60, ...] (willingness to pay, non-normal distribution, n=20 small).
+
+Histogram: Heavily skewed. Might see cluster at high end (few price-sensitive customers).
+
+Use non-parametric: Mann-Whitney U. Safer. Avoids distributional assumptions.
+
+Power tradeoff:
+
+If both parametric assumptions met: Parametric ≥ 15-20% more powerful than non-parametric. Detect smaller effects.
+
+If assumptions violated: Non-parametric actually more powerful (avoids bias from violated assumptions). Parametric gives misleading p-values.
+
+My approach: Check normality first (visual + test). If normal: parametric (more power). If non-normal: non-parametric (honest). With large n, parametric usually safe even if slightly non-normal.`,
+      },
+      {
+        q: "What is the chi-squared test? When would you use it in a business context?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about how it works, or when to apply it? And how to interpret results?
+
+For this, I'll explain chi-squared and practical business applications.
+
+---
+
+Chi-squared test: Tests independence between two categorical variables. Are they associated or independent?
+
+Formula: χ² = sum((Observed - Expected)² / Expected)
+
+Compares observed frequencies to expected frequencies (if variables independent).
+
+Example:
+
+Question: Does customer gender affect product category preference?
+
+Data: Cross-tabulation.
+
+                Male    Female  Total
+Electronics      40      25     65
+Clothing        30      50     80
+Home            20      35     55
+Total          90     110    200
+
+Observed: Males prefer Electronics (40/90=44%). Females prefer Clothing (50/110=45%).
+
+Chi-squared test: Is this observed difference significant, or just noise?
+
+Calculation:
+
+For each cell, compute expected frequency = (row total * column total) / grand total.
+
+Expected males buying electronics = (65 * 90) / 200 = 29.25.
+
+Compute all expected frequencies, then:
+
+χ² = (40-29.25)² / 29.25 + (25-35.75)² / 35.75 + ... (all 6 cells)
+
+χ² ≈ 12.5
+
+Degrees of freedom = (rows - 1) * (cols - 1) = 2 * 1 = 2.
+
+From chi-squared table, p-value ≈ 0.002 (highly significant).
+
+Conclusion: Gender and product preference are associated. Not independent.
+
+When to use chi-squared in business:
+
+1. Association testing. Are two categorical variables related?
+
+Example: Does marketing channel (email, social, search) affect customer churn (yes/no)?
+
+                Churned  Not Churned  Total
+Email            50         150       200
+Social          30          170       200
+Search          40          160       200
+Total          120         480       600
+
+Chi-squared test: p < 0.05? If yes, channel affects churn.
+
+Interpretation: Some channels have higher churn. Email worse than Social.
+
+2. Goodness of fit. Does observed distribution match expected?
+
+Example: You have 4 product categories. Expect equal popularity (25% each).
+
+Observed: Category A 35%, B 28%, C 22%, D 15%.
+
+Chi-squared test: Is 35% vs 25% significant, or noise?
+
+Chi-squared goodness-of-fit test: χ² ≈ 5.2, p=0.16.
+
+Conclusion: Not significant. Observed matches expected (sales distributed fairly equally).
+
+3. Homogeneity. Do proportions match across groups?
+
+Example: Email open rate by time of day.
+
+           Opened  Not Opened  Total
+Morning      30        70       100
+Afternoon    45        55       100
+Evening      35        65       100
+
+Chi-squared test: Does time of day affect open rate?
+
+p < 0.05? If yes, timing matters (morning/afternoon differ). If no, timing irrelevant.
+
+Assumptions of chi-squared:
+
+1. Expected frequency ≥ 5 in all cells. (If violated, use Fisher's exact test).
+
+2. Observations independent (each customer counted once).
+
+3. Both variables categorical.
+
+Practical example:
+
+A/B test website button colors.
+
+                Clicked  Not Clicked  Total
+Red Button        45         155       200
+Blue Button       52         148       200
+Total             97         303       400
+
+Chi-squared test: Does button color affect click rate?
+
+Expected (if independent):
+Red clicked = (200 * 97) / 400 = 48.5
+Blue clicked = (200 * 97) / 400 = 48.5
+
+χ² = (45-48.5)² / 48.5 + (52-48.5)² / 48.5 + ...
+
+χ² ≈ 0.4, p ≈ 0.53.
+
+Conclusion: Not significant. Button color doesn't affect clicks.
+
+What if results were:
+
+                Clicked  Not Clicked  Total
+Red Button        70         130       200
+Blue Button       27         173       200
+
+χ² ≈ 20.3, p < 0.0001 (highly significant).
+
+Conclusion: Red button significantly affects clicks (higher CTR).
+
+Reporting:
+
+Report chi-squared statistic, df, and p-value.
+
+"Chi-squared(1) = 20.3, p < 0.0001. Red button drives significantly higher CTR than blue."
+
+Also report proportions/percentages for intuition.
+
+Red: 70/200 = 35% click rate.
+Blue: 27/200 = 13.5% click rate.
+
+Difference: 21.5 percentage points.
+
+Tradeoff:
+
+Chi-squared can test multiple variables at once (3-way, 4-way tables). But harder to interpret. Binary comparison easier.
+
+My approach: Chi-squared for categorical associations. Always visualize as cross-tabulation. Report proportions alongside p-values for clarity.`,
+      },
+      {
+        q: "Your A/B test ran for 2 weeks but didn't reach significance. What do you do?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about statistical options, or business decision-making? And how to avoid p-hacking?
+
+For this, I'll walk through legitimate options.
+
+---
+
+Situation: A/B test running 2 weeks. Control: 5% conversion. Test: 5.3% conversion. p-value = 0.12 (not significant at α=0.05).
+
+Option 1: Stop and accept null hypothesis.
+
+Interpretation: Insufficient evidence to claim difference. Test doesn't improve conversion.
+
+Action: Don't implement test. Roll back or keep control.
+
+Pros: Fast decision, avoid false positive.
+Cons: Maybe true effect exists, but test underpowered (sample size too small). Type II error.
+
+Confidence interval: 5.3% ± 1.8% = [3.5%, 7.1%]. Wide! Includes control baseline 5%. Not confident in improvement.
+
+Option 2: Continue running test.
+
+Rationale: Week 2 might have been unlucky (bad luck, external factor). More data might resolve uncertainty.
+
+Action: Run test longer (week 3, week 4). Monitor p-value.
+
+Pros: More data, tighter confidence intervals, higher power.
+Cons: Risky. Looks like p-hacking if you keep running until p<0.05. (It is!)
+
+Warning: Continuous monitoring inflates false positive risk. If you peek at p-value repeatedly, α shifts from 0.05 to much higher (0.10+). Solution: Pre-specify stopping rule before test.
+
+Safe approach: Decide upfront "Run test for 4 weeks or 10000 samples, whichever first." Then execute without peeking.
+
+Option 3: Check power.
+
+Calculate power for detected effect size.
+
+Effect: 0.3 pp on 5% baseline. Power = ?
+
+If n=2000 per group (week 2 results): power ≈ 30%. Very low!
+
+Interpretation: Test underpowered to detect this effect size. Expected miss 70% of the time (high Type II error).
+
+Action: This was predictable! Should have done power analysis upfront.
+
+Moving forward:
+- If effect size meaningful (0.3pp valuable): Increase sample (run longer to reach n=8000+).
+- If effect size negligible (0.3pp not worth implementing): Stop, don't implement.
+
+Option 4: Evaluate practical significance.
+
+Is 0.3 pp improvement practically important?
+
+Example: $1M/year revenue at current conversion. 0.3% lift = $3k/year. Cost to implement: $50k engineering.
+
+ROI: -$47k (net loss). Not worth it even if effect real.
+
+Action: Don't implement. Move to testing other ideas.
+
+Option 5: Check for external factors.
+
+Did anything weird happen during test?
+
+- Week 1: Normal traffic.
+- Week 2: Traffic spike (campaign), or traffic drop (outage)?
+- Seasonality: Back-to-school, holidays?
+- Competitors: Competitor launched, stole traffic?
+
+If external factors, their impact confounds true test effect.
+
+Action: Adjust analysis (control for traffic volume, compare same days of week). Or extend test to smooth out noise.
+
+Option 6: Check if test is implemented correctly.
+
+Did treatment group actually see new version?
+
+Possible issues:
+- Tracking broken (showing control instead of test).
+- Sample contamination (same user sees both versions).
+- Implementation bug (feature partially working).
+
+Action: Audit test setup. Verify treatment implemented.
+
+Option 7: Reconsider success metric.
+
+Maybe conversion not right metric. Test might affect other metrics differently.
+
+Example: Test changes checkout flow. Conversion unchanged (0.3% lift, not significant). But bounce rate drops 2% (significant!). Flow reduces friction earlier.
+
+Action: Report secondary metrics. Consider primary metric might need time to compound (long-term customer value, repeat purchase).
+
+Practical decision framework:
+
+Step 1: Check power.
+
+If power < 50%: Sample too small. Extend test if possible.
+
+If power 50-70%: Marginal power. Extend to 80% threshold.
+
+If power 80%+: Adequate power. Effect truly small (or non-existent).
+
+Step 2: Evaluate practical significance.
+
+Is 0.3pp lift worth engineering effort? Revenue impact? Customer experience impact?
+
+If "no": Stop. Don't implement.
+If "yes": Continue (either extend test or implement anyway, monitor).
+
+Step 3: Check implementation and external factors.
+
+Any issues? If yes, fix and retest.
+
+Step 4: Decide.
+
+Implement (if practical significance + believable effect).
+Extend test (if underpowered but effect seems real).
+Stop (if effect negligible or power adequate and result null).
+
+Common mistake:
+
+"p=0.12 is close to 0.05, maybe I should keep testing!" This is p-hacking. You're chasing significance.
+
+Once test runs to pre-specified sample size, stop. If not significant, accept null. Don't peek repeatedly.
+
+My approach: Pre-specify sample size (power analysis). Run test to that size. Report results (p-value + confidence interval + effect size). Decide based on practical significance, not p-value alone. Don't continue testing to chase significance.`,
+      },
+      {
+        q: "Explain ANOVA. When would you use it instead of multiple t-tests?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about how ANOVA works, or why it's better than multiple t-tests? And assumptions?
+
+For this, I'll explain both.
+
+---
+
+ANOVA (Analysis of Variance): Tests if means differ across 3+ groups.
+
+H0: All group means equal. μ1 = μ2 = μ3 = ...
+H1: At least one group mean differs.
+
+Example: You test 4 website layouts (A, B, C, D). Does layout affect conversion?
+
+Layout A: 5% conversion, n=100
+Layout B: 5.2% conversion, n=100
+Layout C: 4.8% conversion, n=100
+Layout D: 5.5% conversion, n=100
+
+ANOVA tests: Are these 4 means statistically different?
+
+Why not just do multiple t-tests?
+
+If you do 4 t-tests (A vs B, A vs C, A vs D, B vs C, ...), you get 6 comparisons total.
+
+Each t-test has α=0.05 false positive rate. With 6 tests, false positive risk compounds (multiple testing problem).
+
+Probability of at least one false positive ≈ 1 - (0.95)^6 ≈ 26%.
+
+With 6 tests, 26% chance you falsely claim some difference is significant!
+
+ANOVA solution: Single overall test with α=0.05. Tests all group means at once. Avoids false positive inflation.
+
+ANOVA mechanics:
+
+Partitions variance into two sources:
+
+1. Between-group variance: How much group means differ from overall mean.
+2. Within-group variance: How much individuals vary within each group.
+
+F-statistic = Between-group variance / Within-group variance
+
+Large F: Group means differ a lot (compared to within-group noise). Evidence for difference.
+Small F: Group means similar (compared to within-group noise). No evidence.
+
+Example calculation (conceptual):
+
+Overall mean across all groups: 5.125%
+
+Layout A: 5.0% (0.125% below overall)
+Layout B: 5.2% (0.075% above overall)
+Layout C: 4.8% (0.325% below overall)
+Layout D: 5.5% (0.375% above overall)
+
+Between-group variance: Variance of {5.0, 5.2, 4.8, 5.5} ≈ 0.105
+
+Within-group variance: Average variance within each group ≈ 2.5 (example, depends on individual variation)
+
+F = 0.105 / 2.5 = 0.042
+
+Small F suggests group means not different. p-value > 0.05.
+
+Conclusion: No significant difference between layouts.
+
+When to use ANOVA:
+
+1. Comparing 3+ groups.
+
+2. Want single overall test (avoids multiple testing inflation).
+
+3. Assumptions met:
+   - Groups normally distributed.
+   - Equal variance across groups (Levene's test).
+   - Independent observations.
+
+4. Continuous outcome (not categorical).
+
+Real-world example:
+
+Sales by region. Four regions: North, South, East, West.
+
+North: avg sales $50k (n=20)
+South: avg sales $48k (n=20)
+East: avg sales $52k (n=20)
+West: avg sales $51k (n=20)
+
+ANOVA: F ≈ 0.5, p ≈ 0.68.
+
+Conclusion: No significant difference in average sales by region. All regions comparable.
+
+If significant result:
+
+Example:
+
+North: avg sales $60k
+South: avg sales $48k
+East: avg sales $52k
+West: avg sales $51k
+
+ANOVA: F ≈ 5.2, p ≈ 0.003 (significant).
+
+Conclusion: Regions differ significantly.
+
+Post-hoc test: Which regions differ? (Use Tukey's HSD test).
+
+Tukey results:
+- North vs South: $12k difference (significant)
+- North vs East: $8k difference (not significant)
+- North vs West: $9k difference (not significant)
+- South vs East: $4k difference (not significant)
+- South vs West: $3k difference (not significant)
+- East vs West: $1k difference (not significant)
+
+Interpretation: North is significantly higher than South. Other comparisons not different.
+
+Non-parametric alternative:
+
+If assumptions violated (non-normal, unequal variance):
+
+Use Kruskal-Wallis test (non-parametric ANOVA).
+
+ANOVA variants:
+
+1. One-way ANOVA: One grouping variable (e.g., region).
+
+2. Two-way ANOVA: Two grouping variables (e.g., region + time period).
+
+Example: Sales by region and season.
+
+           Spring  Summer  Fall   Winter
+North      50      60      48     52
+South      45      50      46     49
+East       52      55      50     54
+West       51      54      49     52
+
+Two-way ANOVA tests:
+- Region effect (North vs South vs East vs West)?
+- Season effect (Spring vs Summer vs Fall vs Winter)?
+- Interaction effect (Does season affect North differently than South)?
+
+3. Repeated measures ANOVA: Same subjects measured multiple times.
+
+Example: Before/during/after training, measure employee productivity.
+
+My approach: 3+ groups? Use ANOVA instead of multiple t-tests. Avoids false positive inflation. Check assumptions. If violated, use Kruskal-Wallis.`,
+      },
+      {
+        q: "What is heteroscedasticity? How does it affect regression results?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about what it is, how to detect it, or how to fix it?
+
+For this, I'll explain the concept, detection, and solutions.
+
+---
+
+Heteroscedasticity: Variance of errors changes across predictor values. Variance isn't constant.
+
+Homoscedasticity: Variance constant (what we assume).
+
+Example with real data:
+
+Predicting salary from years of experience.
+
+Junior (0-5 years): Salaries cluster tightly. Junior roles standardized. Range $40-50k. Low variance.
+Senior (10-20 years): Salaries widely spread. Career paths diverge. Some $80k (slow track), others $150k (fast track). High variance.
+
+Plot prediction error (residual) vs experience: Spread increases with experience. Heteroscedastic!
+
+Why it matters:
+
+1. Confidence intervals and p-values wrong.
+
+Regression assumes constant variance. If variance increases with X, standard errors wrong. Confidence intervals too narrow. p-values misleading.
+
+Example: Your model estimates coefficient β=0.5 with SE=0.1. Confidence interval [0.3, 0.7].
+
+But if true SE=0.2 (due to heteroscedasticity), real CI [0.1, 0.9]. Much wider. Effect less certain than reported.
+
+2. Hypothesis tests unreliable.
+
+p < 0.05 might be false positive. Type I error inflated.
+
+3. Predictions less efficient.
+
+You give too much weight to high-variance observations. Low-variance observations (which are more precise) underweighted.
+
+How to detect heteroscedasticity:
+
+1. Visual: Residual plot.
+
+Plot residuals vs predicted values. If residuals spread is wider on right side, heteroscedastic.
+
+2. Test: Breusch-Pagan test.
+
+Statistical test for heteroscedasticity.
+H0: Variance constant (homoscedastic).
+H1: Variance not constant (heteroscedastic).
+
+If p < 0.05: Evidence of heteroscedasticity.
+
+3. Visual: Scale-location plot.
+
+Square root of standardized residuals vs fitted values. If trend upward, heteroscedastic.
+
+Real-world example:
+
+Predicting house price from square footage.
+
+Small house (1000 sqft): Prices $150-200k. Small range.
+Large house (5000 sqft): Prices $500-1500k. Huge range.
+
+Why? Standardized components (kitchen, bathroom) fixed cost. Large houses have customizations (luxury finishes, lot quality). More variation.
+
+Heteroscedasticity common in:
+
+- Finance: Return variance increases during crises.
+- Salary: Senior roles more variance than junior roles.
+- Sales: Large customers more volatile than small customers.
+
+How to fix:
+
+1. Transformation: Transform Y (outcome).
+
+Example: Instead of predicting salary directly, predict log(salary).
+
+Log transformation compresses scale. High values compressed more. Reduces heteroscedasticity.
+
+Result: Residuals more homoscedastic.
+
+2. Weighted least squares (WLS).
+
+Weight observations inversely to variance. High-variance observations (less precise) get lower weight. Low-variance observations (more precise) get higher weight.
+
+Example:
+
+Junior employee salaries (low variance): Weight = 1.0 (full weight).
+Senior employee salaries (high variance): Weight = 0.5 (half weight).
+
+Fit regression with weights. Lower weight on unreliable observations.
+
+Result: Better coefficient estimates. More accurate standard errors.
+
+3. Robust standard errors.
+
+Don't fix heteroscedasticity. Accept it exists. Adjust standard errors (compute Huber-White robust SEs instead of ordinary SEs).
+
+Result: Confidence intervals and p-values correct even with heteroscedasticity.
+
+Most practical and widely used.
+
+4. Quantile regression.
+
+Instead of predicting mean, predict median (or other quantile).
+
+Quantile regression more robust to heteroscedasticity.
+
+Example: Predicting salary given experience.
+
+OLS (ordinary): Predicts mean salary. Affected by heteroscedasticity.
+Quantile regression: Predicts median salary. More robust.
+
+Example result:
+
+Junior (5 years): Median salary $42k.
+Senior (20 years): Median salary $95k.
+
+Quantile regression gives more reliable estimates, less affected by heteroscedasticity.
+
+Practical workflow:
+
+Step 1: Fit regression model.
+
+Step 2: Plot residuals vs predictions. Check for heteroscedasticity visually.
+
+Step 3: Run Breusch-Pagan test. Confirm statistical significance.
+
+Step 4: If heteroscedastic:
+
+Option A (quickest): Use robust standard errors. Adjust SEs in output.
+
+Option B (transform): Log-transform outcome if applicable. Refit model.
+
+Option C (weight): Use weighted least squares if you understand variance structure.
+
+Step 5: Recheck residuals. Verify heteroscedasticity reduced.
+
+My approach: Always visualize residuals (residual plot). If heteroscedasticity evident, use robust standard errors (one-line fix in most software). Report both original and robust SEs if discrepancy large.`,
+      },
+      {
+        q: "Explain the difference between maximum likelihood estimation and method of moments.",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about when to use each, or the mathematical difference? And how they compare in practice?
+
+For this, I'll explain both and when each applies.
+
+---
+
+Maximum Likelihood Estimation (MLE): Find parameter values that maximize probability of observing your data. Answer: "What parameters make our observed data most likely?"
+
+Example: You flip coin 10 times, get 7 heads, 3 tails. What's probability of heads (p)?
+
+MLE: Find p that maximizes probability of 7H, 3T outcome. Computation: p = 0.7.
+
+Interpretation: p=0.7 makes this outcome most likely.
+
+Method of Moments (MM): Match sample moments (mean, variance) to theoretical moments.
+
+Example: Coin flip, 7H, 3T. Sample proportion heads = 0.7. Set this equal to theoretical probability p. So p=0.7.
+
+In this example, MLE and MM give same answer.
+
+Real example (they differ):
+
+Normal distribution data: {1, 2, 3, 4, 5}.
+
+Two parameters: mean μ and variance σ².
+
+Method of Moments:
+- Sample mean = 3. Set μ = 3.
+- Sample variance = 2.5. Set σ² = 2.5.
+
+Maximum Likelihood Estimation:
+- Likelihood function: L(μ, σ²) = probability of observing {1,2,3,4,5} given parameters.
+- Solve: Take derivative, set to zero. Find μ and σ² that maximize L.
+- Result: μ = 3, σ² = 2.0 (slightly different!).
+
+Why the difference? MLE accounts for information in data distribution shape. MM only uses moments.
+
+When to use MLE:
+
+1. Maximum efficiency (smallest standard errors). MLE uses all information in data.
+
+2. Complex distributions. Gamma, exponential, beta distributions. MLE more tractable.
+
+3. Theoretical guarantees. MLE has nice properties (consistent, asymptotically normal, efficient).
+
+4. Missing data. MLE can handle incomplete data via expectation-maximization (EM).
+
+Cons: Computationally harder. Requires iterative numerical solving.
+
+When to use Method of Moments:
+
+1. Simplicity. MM quick to compute. Closed-form solution (no iteration).
+
+2. Robustness. MM less sensitive to distribution misspecification.
+
+Example: Assume normal, but data slightly skewed. MLE estimates suffer. MM still reasonable.
+
+3. No computational resources. MM works with pencil and paper.
+
+4. Historical/tradition. Sometimes MM conventional in field.
+
+Cons: Less efficient (larger standard errors). Uses limited information (only first few moments).
+
+Practical example:
+
+Estimating Poisson parameter λ (mean number of events).
+
+Data: Customer calls per day {5, 3, 7, 4, 6, 8}.
+
+Mean = 5.5.
+
+Method of Moments:
+- Theoretical mean = λ.
+- Set λ = 5.5.
+
+Maximum Likelihood:
+- Likelihood = P(X=5) * P(X=3) * ... * P(X=8), where P(X=k) = e^(-λ) * λ^k / k!.
+- Maximize. Result: λ = 5.5.
+
+Again, same answer! For simple cases, often agree.
+
+Difference shows up with complex models:
+
+Mixture distributions (two underlying groups). MLE estimates each component. MM can't.
+
+Heavy-tailed distributions (outliers). MLE estimates tail weight. MM sensitive to outliers.
+
+My approach: Default to MLE in modern statistics (software available, efficient). Use MM for simplicity and robustness if MLE hard to compute or data suspect.`,
+      },
+      {
+        q: "What is a Poisson distribution? Give a real business use case.",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about properties, or how to apply it? And when to use it vs normal?
+
+For this, I'll explain the distribution and business applications.
+
+---
+
+Poisson distribution: Models number of events occurring in fixed time/space, when events independent and rare.
+
+Properties:
+- Discrete (counts: 0, 1, 2, 3, ...)
+- Parameter λ (lambda) = mean and variance
+- Skewed (right tail)
+
+Example: Number of customer support tickets per day. λ = 5 (avg 5 tickets/day).
+
+Possible outcomes: 0 tickets (rare), 1, 2, ..., 10, 15 (very rare).
+
+Probability: P(X=k) = e^(-λ) * λ^k / k!
+
+Real business use cases:
+
+1. Call center volume.
+
+Data: Customer service calls per hour. Average 20 calls/hour.
+
+Poisson (λ=20): Probability of 25 calls? P(X=25) ≈ 4%. Probability of 15 calls? P(X=15) ≈ 8%.
+
+Planning: Forecast staffing. On average 20 calls, but sometimes 25, sometimes 15. How many reps needed to handle demand 95% of time?
+
+Poisson quantile: 95th percentile ≈ 28 calls. Need capacity for 28 calls (rare but possible).
+
+2. Website traffic (pageviews, events per second).
+
+Data: Pageviews per minute. Average 100/min.
+
+Poisson (λ=100): Forecast traffic spikes. 99th percentile ≈ 125 pageviews. Server capacity 150/min sufficient.
+
+3. Defects per batch (quality control).
+
+Data: Defects in 1000-unit batch. Average 3 defects per batch.
+
+Poisson (λ=3): Probability of 0 defects? P(X=0) = e^(-3) ≈ 5%. Probability of 5+ defects? P(X≥5) ≈ 18%.
+
+Action: If batch has 5+ defects, investigate quality control (unusual).
+
+4. Rare events (fraud, accidents).
+
+Data: Fraudulent transactions per 10000 transactions. Average 5 frauds/10k.
+
+Poisson (λ=0.0005 per transaction): Probability of seeing 2+ frauds on 1000 transactions? Use Poisson.
+
+5. Arrivals (customers, data packets).
+
+Data: Customers arriving at checkout per minute. Average 3/min.
+
+Poisson (λ=3): Forecast wait times. If 2 cashiers serve 2/min, queue builds when traffic >2/min. Probability of >2 arrivals = 1 - P(X≤2) = 1 - 0.42 = 58%.
+
+Decision: On average, 58% of minutes have backlog. Need 3rd cashier.
+
+When to use Poisson:
+
+1. Counting events in fixed interval (time or space).
+
+2. Events independent (one customer call doesn't cause another).
+
+3. Events rare (low probability each occurrence).
+
+4. Uniformity (constant rate across time).
+
+When NOT to use Poisson:
+
+1. Events clustered (calls come in batches = not independent). Use negative binomial.
+
+2. Rate varies over time (call volume different peak vs off-peak). Use separate Poisson per time segment.
+
+3. High frequency (event common). Normal distribution better (Poisson ≈ normal when λ > 30).
+
+Poisson vs Normal:
+
+Poisson(λ=20) ≈ Normal(mean=20, SD=√20≈4.5).
+
+Poisson(λ=100) ≈ Normal(mean=100, SD=10).
+
+With large λ, Poisson approaches normal. Use normal for simplicity if λ > 30.
+
+Practical forecasting:
+
+Call center example:
+
+Average 20 calls/hour. λ=20.
+
+Forecast hourly call distribution:
+- P(10-15 calls) = 20%
+- P(15-25 calls) = 65%
+- P(25+ calls) = 15%
+
+Plan staffing: 2 reps handle 25 calls (5% buffertail) → capacity 12.5 calls/rep/hour. Needed 2 reps/hour on average, 3 reps during peak hours.
+
+My approach: Poisson for count data (events per time/space). Check independence and constant rate assumptions. When λ>30, use normal approximation for speed.`,
+      },
+      {
+        q: "How would you test if your data follows a specific distribution?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about normality specifically, or any distribution? And how to choose tests?
+
+For this, I'll cover multiple distribution tests.
+
+---
+
+Goal: Does my data come from distribution X (normal, exponential, Poisson)?
+
+H0: Data follows distribution X.
+H1: Data doesn't follow distribution X.
+
+Visual tests (first check):
+
+1. Histogram: Plot and compare to distribution shape.
+
+Normal: Bell-shaped, symmetric. Data histogram matches bell curve.
+Exponential: Right-skewed tail. Long right tail, sharp left.
+Poisson: Discrete spikes, right-skewed.
+
+2. Q-Q plot (Quantile-Quantile):
+
+Plot sample quantiles vs theoretical quantiles. If points follow diagonal line, distribution matches.
+
+Example (normal Q-Q): Points should follow diagonal. If points curve up at ends, distribution right-skewed (not normal).
+
+3. Probability plot:
+
+Similar to Q-Q. Goodness of fit visual check.
+
+Statistical tests:
+
+1. Shapiro-Wilk test (normality):
+
+Most powerful test for normality. Works well for small-medium samples (n<5000).
+
+H0: Data normal.
+p < 0.05: Reject, data not normal.
+
+Example: Customer ages {25, 30, 35, 40, 80}. Histogram shows cluster around 35, outlier at 80.
+
+Shapiro-Wilk p=0.02. Not normal.
+
+2. Kolmogorov-Smirnov test (any distribution):
+
+Compare empirical CDF to theoretical CDF.
+
+H0: Data from distribution X.
+p < 0.05: Data doesn't match distribution.
+
+Works for any distribution (normal, exponential, uniform, etc).
+
+Example: Test if data exponential.
+
+Theoretical exponential CDF: F(x) = 1 - e^(-λx).
+Empirical CDF: Actual proportion ≤ each value.
+
+KS statistic: Maximum distance between curves.
+
+If distance large: p < 0.05, data not exponential.
+
+3. Anderson-Darling test (any distribution):
+
+Similar to KS but weights tails more. More sensitive to tail departures.
+
+Better than KS when tail behavior matters.
+
+Example: Testing for normal. Anderson-Darling more sensitive if data has outliers.
+
+4. Chi-squared goodness-of-fit (any discrete distribution):
+
+For discrete distributions (Poisson, binomial).
+
+Split data into bins. Compare observed frequency to theoretical frequency.
+
+χ² = sum((Observed - Expected)^2 / Expected).
+
+If χ² large: p < 0.05, data doesn't match.
+
+Example: Test if daily call count Poisson(λ=20).
+
+Theoretical: P(X=15) = 10%, P(X=20) = 9%, etc.
+Observed: Over 100 days, X=15 occurred 12%, X=20 occurred 8%.
+
+Compute χ². If too large, data not Poisson.
+
+Practical workflow:
+
+Step 1: Visualize.
+
+Histogram + Q-Q plot. Get intuition.
+
+Step 2: Choose test based on distribution suspected.
+
+Normality? Shapiro-Wilk or Anderson-Darling.
+Any continuous? Kolmogorov-Smirnov.
+Discrete? Chi-squared.
+
+Step 3: Run test.
+
+Report statistic and p-value.
+
+Step 4: Interpret.
+
+p < 0.05: Data doesn't match distribution. Reject H0.
+p > 0.05: Insufficient evidence against distribution. Can't reject H0.
+
+Note: Can't prove distribution matches, only fail to reject.
+
+Example (normality):
+
+Revenue per customer: {$50, $75, $100, $125, $150}.
+
+Histogram: Roughly uniform, not bell-shaped.
+Shapiro-Wilk p=0.8 (high, not significant).
+
+Interpretation: With p=0.8, no evidence against normality. Data consistent with normal (even though n small and distribution looks uniform).
+
+Issue: Small sample (n=5), low power. Type II error possible.
+
+Practical approach:
+
+For applied work (ML, forecasting):
+- Distribution exact shape rarely critical.
+- "Approximately normal" often sufficient.
+- Check visually (histogram/Q-Q). Don't rely on tests alone.
+
+For research (hypothesis testing):
+- Test rigorously.
+- If distribution violated, use non-parametric alternatives.
+
+My approach: Plot histogram and Q-Q first. If visually close to theoretical, trust it. If suspicious, run Shapiro-Wilk (normality) or KS (other). Don't obsess over perfect match.`,
+      },
+      {
+        q: "Explain multivariate testing vs A/B testing. When is multivariate better?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about when to use each, or complexity tradeoffs? And sample size implications?
+
+For this, I'll explain both and selection criteria.
+
+---
+
+A/B testing: Test two versions (control vs treatment). Isolate single variable.
+
+Example: Button color red vs blue. Everything else identical.
+
+Result: 3% conversion (red) vs 4% conversion (blue). Blue wins.
+
+Multivariate testing: Test multiple variables simultaneously. Each in multiple versions.
+
+Example: Button color (red, blue, green) AND button text (\"Buy Now\", \"Add to Cart\") AND position (top, bottom).
+
+Total combinations: 3 * 2 * 2 = 12 variants.
+
+Test all 12 concurrently (or subset).
+
+Result: Identify best combination (e.g., blue button, \"Buy Now\", bottom position).
+
+When to use A/B testing:
+
+1. Single variable. Clear hypothesis. Button color matters.
+
+2. Simplicity. Easier to interpret. Red vs blue, which won?
+
+3. Quick decisions. Smaller sample size. Fast to statistical significance.
+
+4. Sequential testing. Test A vs B. Winning variant becomes control. Next test A vs C.
+
+5. Resource constraints. Fewer test variants = less traffic needed.
+
+Pros:
+- Clear causation. Change only one thing.
+- Smaller sample size needed.
+- Easier to communicate results.
+
+Cons:
+- Serial testing slow (sequential, not parallel).
+- Misses interaction effects.
+
+Example: Button color red wins in A/B test. Then test text. But interaction possible: red + \"Buy Now\" better than red + \"Add to Cart\". A/B testing wouldn't find this.
+
+When to use multivariate testing:
+
+1. Multiple variables. Website has many elements (button, text, image, layout).
+
+2. Interactions suspected. Variables might interact. Button color might interact with text.
+
+3. Efficiency. Test all simultaneously. Faster than sequential A/B tests.
+
+4. Optimization. Find optimal combination across multiple variables.
+
+5. Exploration. Early-stage optimization. Lots of unknowns.
+
+Pros:
+- Parallel testing (all variants live together).
+- Detects interactions.
+- Efficiency (same traffic tests more hypotheses).
+
+Cons:
+- Complex interpretation. Many results.
+- Larger sample size needed (traffic spread across variants).
+- Risk of false positives (more tests = inflation).
+
+Sample size comparison:
+
+A/B test: 2 variants. Sample size ≈ 1000 per variant.
+
+Multivariate (same 1000 per variant minimum):
+- 3 * 2 * 2 = 12 variants. Need 12000 total traffic to test properly.
+- Same traffic budget (1000 total) spread across variants: Too sparse, low power.
+
+Decision:
+
+High traffic site (100000+ users/week)? Multivariate efficient.
+Low traffic site (1000 users/week)? A/B testing sequential approach.
+
+Practical example:
+
+E-commerce checkout.
+
+Variables:
+- Call-to-action button text: \"Complete Purchase\", \"Place Order\", \"Checkout\"
+- Urgency message: \"Limited stock\", None, \"Ships today\"
+- Guarantee: \"30-day money back\", None
+
+Multivariate: 3 * 2 * 2 = 12 variants.
+
+A/B approach:
+- Week 1: Test button text (3 variants vs control). Winner: \"Complete Purchase\".
+- Week 2: Test urgency (3 variants with winning button).
+- Week 3: Test guarantee (with winners).
+
+Sequential takes 3 weeks. Multivariate takes 1 week (if traffic sufficient).
+
+But multivariate, with 12 variants, conversion varies wildly by variant. Some combinations flop. Others work great.
+
+Multivariate identifies: \"Complete Purchase\" + \"Limited stock\" + \"30-day money back\" = best combination.
+
+A/B might miss this combination, depending on testing order.
+
+Interaction example:
+
+Button text matters on desktop. Image matters on mobile.
+
+A/B test button (desktop only) finds winner.
+A/B test image (mobile only) finds winner.
+But interaction: Winning button on desktop might lose on mobile. Winning image on mobile irrelevant on desktop.
+
+Multivariate catches: Optimal is device-specific combination.
+
+Tradeoffs:
+
+A/B testing: Simple, fast for 1-2 variables. Sequential allows learning and adaptation.
+
+Multivariate: Efficient for 3+ variables. Parallel testing faster. But requires more traffic. Complex interpretation.
+
+Sample size rule of thumb:
+
+Multivariate useful when:
+(Traffic per week) > (Number of variants) * (Minimum sample per variant for power).
+
+Example:
+Traffic 10000/week. Testing 4 variants. Need 500 per variant.
+
+10000 / 4 = 2500 per variant. Plenty! Use multivariate.
+
+Traffic 1000/week. Testing 4 variants. Need 500 per variant.
+
+1000 / 4 = 250 per variant. Too sparse. Use A/B sequential.
+
+My approach: Start A/B for clarity. Once confident in what matters, test interactions via multivariate if traffic sufficient.`,
+      },
+      {
+        q: "What is survivorship bias? Give an example in business analytics.",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about definition, how it skews analysis, or how to avoid it?
+
+For this, I'll explain and show business impact.
+
+---
+
+Survivorship bias: Focusing on observations that \"survived\" (met criteria) while ignoring those that didn't. Incomplete sample misleads conclusion.
+
+Classic example: WWII aircraft survival.
+
+Researchers analyzed bullet holes on returned bombers. Bullets concentrated on wings, fuselage (high frequency). Few on engine.
+
+Conclusion: Reinforce wings and fuselage, not engine.
+
+But survivorship bias! Returned planes are planes that survived (returned home). Planes shot down in engine didn't return to be analyzed!
+
+Reality: Engine hits were deadly (planes crashed). Wing hits non-fatal (planes returned).
+
+Fix: Protect engines, not wings.
+
+Business analytics examples:
+
+1. Successful company analysis.
+
+Startup study: \"Successful startups spent 3 years in stealth before launch. They focused on product, not marketing.\"
+
+Survivorship bias: Analyzed only successful startups (survived). Ignored failed startups (didn't survive analysis).
+
+Reality: Many failed startups also spent 3 years in stealth and focused on product. They failed anyway.
+
+Conclusion from biased analysis: Wrong. Can't attribute success to stealth + product focus. Need to compare survivors vs non-survivors.
+
+2. E-commerce customer analysis.
+
+\"High-value customers buy from us 10+ times per year. They have large order values.\"
+
+Survivorship bias: Analyzed only current customers (survived to today). Ignored churned customers.
+
+Incomplete picture: Maybe churned customers also had large order values initially. They left for other reasons (poor service, shipping speed, price).
+
+Better analysis: Compare 10+ buyers (survived) to customers who bought once and left (churned). What differs? Root cause of churn.
+
+3. Investment portfolio analysis.
+
+\"Fund A beat market by 15% over 10 years.\"
+
+Survivorship bias: Fund A survived 10 years. Many funds closed, were excluded from analysis.
+
+Reality: Average of closed + surviving funds often underperforms market. Closing due to poor performance creates bias.
+
+Better metric: Include dead funds in returns calculation (assume 0% if closed).
+
+4. Sales team performance.
+
+\"Top sales reps average $2M in annual revenue.\"
+
+Survivorship bias: Analyzed current top reps (survived to top). Ignored reps who left or were fired.
+
+Incomplete: Maybe many reps started with similar traits (coachability, drive), then diverged. Analyzed only the subset that succeeded.
+
+Better: Track cohort of reps hired same year. Compare those who thrived vs left/underperformed. What differs?
+
+5. Product usage analytics.
+
+\"Users who install feature X have 2x higher lifetime value.\"
+
+Survivorship bias: Analyzed current users (survived). Excluded users who churned.
+
+Confounding: Maybe feature X attracts certain customer type. Or users who install feature X are already engaged (would have high LTV anyway).
+
+Better: Random experiment. Force feature X on some users, not others. Compare LTV.
+
+How survivorship bias skews decision-making:
+
+Wrong conclusion: \"To succeed, do X\" (based on survivors).
+Reality: Many did X and failed. Many succeeded without X. X not cause of success.
+
+Impact: Company invests in wrong initiatives.
+
+How to avoid survivorship bias:
+
+1. Include non-survivors.
+
+Compare survivors AND non-survivors. What's different?
+
+Example: Analyze successful products (survived market) AND failed products (didn't survive).
+
+2. Random experiments.
+
+Can't analyze selection, run A/B test instead.
+
+Assign feature randomly to users (half get it, half don't). Compare outcomes.
+
+Eliminates confounding from choice.
+
+3. Prospective studies.
+
+Track cohorts forward in time (don't look backward at survivors).
+
+Hire 100 sales reps. Follow them all 5 years. Track who thrives, who leaves. Compare traits upfront.
+
+4. Propensity score matching.
+
+If can't randomize, match non-survivors to survivors on observable traits.
+
+Matched pair comparison is closer to causal.
+
+5. Acknowledge bias.
+
+If data clearly incomplete, state it. \"Analysis limited to surviving customers. Non-customers excluded.\"
+
+Example (corrected):
+
+Startup success study (revised):
+
+Studied 100 funded startups. 50 succeeded (raised Series A+). 50 failed (shutdown).
+
+Compared: Pre-launch strategy (stealth vs public, product vs marketing focus).
+
+Result: Both groups had similar splits. Success not predicted by early strategy.
+
+Conclusion: Success random? No. But early stealth + product focus not differentiators.
+
+What did differ: Founders' network size, capital efficiency, market timing.
+
+My approach: When analyzing success patterns, always ask: \"What about the failures?\" Include non-survivors in analysis. Better yet, run prospective studies (track forward) or experiments (randomize) to avoid survivorship bias entirely.`,
+      },
+      {
+        q: "How do you handle outliers in statistical analysis? When should you NOT remove them?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about detection methods, or decision-making? And when they're real signal vs noise?
+
+For this, I'll explain when to keep vs remove outliers.
+
+---
+
+Outliers: Data points far from others. Extreme values.
+
+Example: Customer spending: {$50, $60, $70, $80, $500}. The $500 is outlier.
+
+Detection methods:
+
+1. IQR method (covered earlier): Q1 - 1.5*IQR, Q3 + 1.5*IQR. Points outside = outliers.
+
+2. Z-score: Points > 3 SD from mean. |Z| > 3 ≈ outlier.
+
+3. Visual: Scatter plot, box plot. Outliers obvious.
+
+When to REMOVE outliers:
+
+1. Data entry error.
+
+Example: Customer age = 350 years (typo: 35 mistyped 350). Impossible. Remove.
+
+2. Measurement error.
+
+Example: Scale broken, recorded weight -100 kg (negative, impossible). Remove.
+
+3. Out-of-scope.
+
+Example: Analyzing product A users. Customer bought product B only (wrong data). Remove.
+
+4. Non-representative population.
+
+Example: Studying typical customer spending. Outlier = Bill Gates' purchase. Not representative of typical customer. Remove for understanding typical behavior.
+
+When to KEEP outliers:
+
+1. Real phenomenon.
+
+Example: Revenue data. \"Outlier\" = big customer. Real and valuable. Keep!
+
+If you remove, underestimate total revenue. Biased forecast.
+
+2. Informative signal.
+
+Example: Network traffic. Outlier = traffic spike = DDoS attack or viral content. Important to understand!
+
+Removing outliers masks the spikes you need to prepare for.
+
+3. Rare but important.
+
+Example: Product defects. Most batches 0-2 defects. Rare batch with 20 defects (outlier). Keep! Quality signal.
+
+4. Business-relevant.
+
+Example: Insurance claims. Outlier = high-cost claim. Important for pricing and risk management.
+
+5. Tail behavior matters.
+
+Example: Predicting extreme events (floods, market crashes). Outliers the whole point. Keep to understand tail risk.
+
+Hybrid approaches (don't delete):
+
+1. Cap outliers.
+
+Instead of removing, replace with threshold.
+
+Example: Revenue outliers >$10000 capped at $10000.
+
+Preserves count (still 1 transaction) but limits extreme value.
+
+Pros: Keeps data but reduces influence.
+Cons: Artificial. Distorts true values.
+
+2. Separate analysis.
+
+Keep but analyze separately.
+
+Example: Revenue analysis: \"Main group $20-$200\" and \"Outliers >$200\".
+
+Report both. Stakeholders understand full picture.
+
+3. Transformation.
+
+Log-transform to compress scale. Outliers less extreme after transformation.
+
+Example: Log($50) = 3.9. Log($500) = 6.2. Gap reduced from $450 to 2.3 (log scale).
+
+Pros: Outliers still present but less influential.
+Cons: Interpretation on log scale harder.
+
+4. Robust statistics.
+
+Use statistics resistant to outliers.
+
+Example: Median instead of mean. Median unaffected by one extreme value.
+
+If outlier removed, mean and median differ. Report both to show outlier influence.
+
+Example:
+
+Customer spending: {$50, $60, $70, $80, $500}.
+
+Mean = $152 (inflated by outlier).
+Median = $70 (ignores outlier).
+
+Story: \"Median customer spends $70. But one big customer spends $500, driving mean up.\"
+
+Decision framework:
+
+Step 1: Identify outliers (IQR, visual, domain knowledge).
+
+Step 2: Investigate.
+
+Is it error (typo, broken measurement)? Or real?
+
+Step 3a (if error): Remove.
+
+Step 3b (if real): Keep. Maybe cap or separate analysis.
+
+Step 4: Report impact.
+
+\"Analysis includes/excludes outliers. Results robust/sensitive to outliers.\"
+
+Example workflow:
+
+Product quality: Defects per batch.
+
+Data: {0, 1, 1, 2, 2, 2, 3, 3, 4, 100}.
+
+Outlier: Batch with 100 defects.
+
+Investigate: Batch 10 = new production facility, training week. Real but non-representative.
+
+Decision: Keep for understanding variability. But note: \"Main facility has 0-4 defects. New facility (1 week old) had 100 defects during training. Excluded new facility, statistics below.\"
+
+Result: Median = 2 defects (excluding training). Training period (100) separate.
+
+stakeholders understand: Normal facility = 2, training facility = 100. Expected to improve.
+
+My approach: Don't auto-remove. Investigate source. If error, remove. If real but unusual, keep but flag. Report statistics with and without outliers. Let stakeholders see sensitivity.`,
+      },
+      {
+        q: "Explain the birthday paradox. What does it teach about probability intuition?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about the math, or the intuition behind why it surprises us?
+
+For this, I'll explain both and the lesson.
+
+---
+
+Birthday paradox: In a group of 23 random people, probability that at least 2 share a birthday ≈ 50%.
+
+Intuition says: 23 people out of 365 days, ~6% chance someone shares your birthday.
+
+Reality: 50% chance two people share a birthday (any pair, not just with you).
+
+The math:
+
+Easier to compute complement: Probability that all different.
+
+P(all different) = 365/365 * 364/365 * 363/365 * ... * 343/365
+
+= 1 * 0.997 * 0.992 * ... ≈ 0.493
+
+P(at least 2 same) = 1 - 0.493 = 0.507 ≈ 50%.
+
+Why our intuition fails:
+
+1. We think pair-wise vs yourself.
+
+Wrong: \"23 people. What's probability someone shares my birthday?\" Answer: ~6% (23/365).
+
+Right: \"23 people. How many pair-wise comparisons?\" Answer: C(23,2) = 253 comparisons!
+
+253 chances for matches, not just 23.
+
+2. Many opportunities for match.
+
+Each comparison has small probability (1/365), but 253 comparisons compound.
+
+With enough comparisons, unlikely event becomes likely.
+
+3. Hindsight bias.
+
+After random pairing found, we say \"Oh, only 2 people out of 23, makes sense.\"
+
+But before checking, we didn't realize how many pairs possible.
+
+Business application (why this matters):
+
+The birthday paradox teaches: **With many comparisons, false positives inevitable.**
+
+Example: Your company runs 100 A/B tests simultaneously.
+
+Each test: α = 0.05 (5% false positive rate).
+
+If all tests null (no real effects), probability of at least one false positive?
+
+By birthday paradox logic: P(at least 1) ≈ 1 - (0.95)^100 ≈ 99%.
+
+With 100 tests, nearly certain to falsely claim at least one significant result.
+
+This is multiple testing problem!
+
+Real example:
+
+Marketing: 100 customer segments tested for response to email.
+
+Each segment: \"Does this segment respond better than others?\" p=0.05 threshold.
+
+If no real difference, 99% chance you find a spurious difference somewhere.
+
+You pick top segment (false positive), invest in targeting it, waste resources.
+
+Solution to multiple testing:
+
+1. Bonferroni correction: α' = α / number of tests.
+
+100 tests: α' = 0.05 / 100 = 0.0005.
+
+Now P(at least 1 false positive) ≈ 5%. Back to target.
+
+Cons: Very stringent. Might miss real effects.
+
+2. False discovery rate (FDR).
+
+Allow some false positives (expected). But control proportion.
+
+Example: \"Expected 10% of claimed significant results are false.\"
+
+Easier to achieve than Bonferroni.
+
+3. Pre-register hypothesis.
+
+Plan tests before analyzing data. No peeking at all 100 results, then claiming top one.
+
+Pre-specify: \"We'll test segment X for response. Alpha = 0.05.\"
+
+This one test, single hypothesis. No multiple testing inflation.
+
+Lesson for data science:
+
+\"With enough data and enough tests, you'll find something 'significant' even if nothing real.\"
+
+Example: Data mining.
+
+Test 10000 features for correlation with outcome. If truly uncorrelated, expect 50 false positives (0.5% of 10000).
+
+You pick top 50 correlated features, build model. Claim: \"These features predict!\"
+
+Reality: Random noise. No predictive power. Overfitting.
+
+Fix: Hold-out test set. Validate features on new data (not used for selection).
+
+Another lesson: **Explore data but confirm with held-out test set.**
+
+My approach: Whenever running multiple tests (many features, many segments, many experiments), correct for multiple testing. Use Bonferroni (simple but stringent) or FDR (practical). Or pre-register single hypothesis before peeking at data.`,
+      },
+      {
+        q: "What is Markov chain? Give a business application.",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about the concept, or how to apply it? And what assumptions matter?
+
+For this, I'll explain Markov chains and business use.
+
+---
+
+Markov chain: Model for sequences of events. Future state depends only on current state, not history. \"Memoryless.\"
+
+Formal: P(state_t+1 | state_t, state_t-1, ..., state_1) = P(state_t+1 | state_t)
+
+Example: Weather.
+
+States: Sunny, Cloudy, Rainy.
+
+Transition probabilities:
+- If today sunny: P(sunny tomorrow) = 0.8, P(cloudy) = 0.15, P(rainy) = 0.05.
+- If today cloudy: P(sunny) = 0.2, P(cloudy) = 0.6, P(rainy) = 0.2.
+- If today rainy: P(sunny) = 0.1, P(cloudy) = 0.3, P(rainy) = 0.6.
+
+Markov property: Tomorrow's weather depends only on today's, not yesterday's weather.
+
+Business application: Customer lifecycle.
+
+States: New, Returning, Lapsed, Churned.
+
+New → Returning (customer makes second purchase).
+Returning → Lapsed (customer inactive >6 months).
+Lapsed → Returning (reactive purchase) or Churned (finally left).
+Churned → Terminal (can't recover).
+
+Transition probabilities (estimated from data):
+
+From New:
+- P(New → Returning) = 0.5 (50% of new customers make 2nd purchase).
+- P(New → Lapsed) = 0.3 (30% buy once then inactive).
+- P(New → Churned) = 0.2 (20% disappear).
+
+From Returning:
+- P(Returning → Returning) = 0.7 (70% stay active).
+- P(Returning → Lapsed) = 0.2 (20% become inactive).
+- P(Returning → Churned) = 0.1.
+
+From Lapsed:
+- P(Lapsed → Returning) = 0.1 (10% reactivate).
+- P(Lapsed → Lapsed) = 0.7 (70% stay inactive).
+- P(Lapsed → Churned) = 0.2.
+
+From Churned:
+- P(Churned → Churned) = 1.0 (absorbing state, can't recover).
+
+Predictions:
+
+New customer: What's probability they're returning after 2 years?
+
+Start: New (probability 1).
+After 1 period: Returning 0.5, Lapsed 0.3, Churned 0.2.
+After 2 periods: Compute again from each state.
+
+Using matrix multiplication (Markov matrix approach):
+
+After 10 periods, most customers absorbed into Churned (1.0).
+
+Result: \"Only 20% of new customers still active (Returning + Lapsed) after 10 periods.\"
+
+Business decision: High churn. Invest in retention (reduce churn transitions).
+
+Another application: Website visit sequence.
+
+States: Home, Product, Checkout, Exit.
+
+Customer journey:
+
+Home → Product: 80% (customer browses).
+Home → Exit: 20% (leaves).
+
+Product → Checkout: 30% (adds to cart).
+Product → Product: 50% (browses more).
+Product → Exit: 20% (leaves).
+
+Checkout → Exit: 100% (checkout completes or abandons).
+
+Question: What fraction of visitors reach checkout?
+
+Markov model: Start Home. Trace paths. Probability of reaching Checkout.
+
+Calculation:
+- Home → Checkout: Not direct. Must go Home → Product → Checkout.
+- P = 0.8 * 0.3 = 0.24 (24% of home visitors reach checkout).
+
+Business use:
+
+Optimize funnel. If 24% conversion is low, improve Product → Checkout transition (e.g., simplify checkout, reduce friction).
+
+Limitations:
+
+1. Memoryless assumption.
+
+History might matter. \"New customer making 2nd purchase\" might have different retention than \"Returning customer after 1 year.\"
+
+Reality: Time in state matters.
+
+Fix: Add time to state. (New_month1, New_month2, ..., Returning_month1, ...).
+
+2. Stationary transition probabilities.
+
+Assumes P(tomorrow|today) constant forever.
+
+Reality: Seasonality, trends. Transition probabilities change.
+
+Fix: Time-varying Markov models.
+
+3. Unobserved heterogeneity.
+
+Different customer types have different transitions. Hidden Markov Model (HMM).
+
+Application: Subscription retention.
+
+States: Active, Inactive, Churned.
+
+Goal: Predict churn and intervene.
+
+Markov model: Transition probabilities from data.
+
+Result: \"Inactive customers have 30% reactivation rate. Active customers 95% retention.\"
+
+Intervention: Target inactive (cheaper, higher upside). Retention campaigns.
+
+Pros:
+- Simple to understand and implement.
+- Scales well (many states, time horizons).
+- Good for sequential decision-making.
+
+Cons:
+- History ignored.
+- Assumes constant transitions.
+- Needs good state definitions.
+
+My approach: Markov models for customer lifecycle (onboarding, retention, churn). Estimate transition probabilities from data. Identify high-risk transitions. Intervene to improve.`,
+      },
+      {
+        q: "How do you test for independence between two categorical variables?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about chi-squared specifically, or other methods? And what to do if dependent?
+
+For this, I'll explain chi-squared and interpretation.
+
+---
+
+Goal: Are two categorical variables independent (unrelated) or associated?
+
+Example: Is gender (Male, Female) independent of product preference (Electronics, Clothing, Home)?
+
+H0: Variables independent.
+H1: Variables associated.
+
+Method 1: Chi-squared test (most common).
+
+Covered earlier. Create contingency table, compute χ² statistic, get p-value.
+
+p < 0.05: Reject H0. Variables associated.
+
+Example contingency table:
+
+                Electronics  Clothing  Home  Total
+Male            40          30        20    90
+Female          25          50        35    110
+Total           65          80        55    200
+
+Chi-squared test: χ² ≈ 12.5, p ≈ 0.002.
+
+Conclusion: Gender and product preference associated. Not independent.
+
+Method 2: Cramér's V (effect size).
+
+Chi-squared tells yes/no (associated?). Cramér's V tells strength.
+
+Formula: V = sqrt(χ² / (n * (min(rows, cols) - 1)))
+
+V ranges 0 to 1.
+
+V ≈ 0: Weak association.
+V ≈ 0.5: Moderate association.
+V ≈ 1: Strong association.
+
+Example: χ² = 12.5, n = 200, min(2,3) - 1 = 1.
+
+V = sqrt(12.5 / (200 * 1)) = sqrt(0.0625) = 0.25 (weak-moderate).
+
+Interpretation: Gender and preference weakly associated. Gender explains little of preference variation.
+
+Method 3: Phi coefficient (binary variables).
+
+If both variables binary (2x2 table), use Phi instead of Cramér's V.
+
+Phi = sqrt(χ² / n)
+
+Phi ranges -1 to 1 (negative means inverse relationship).
+
+Method 4: Goodman and Kruskal's lambda.
+
+Measures: \"How much can I reduce prediction error of Y knowing X?\"
+
+Example: Predicting product preference. Without knowing gender, error = 35% (misclassify 35%).
+
+Knowing gender, error = 25% (gender narrows choices).
+
+Lambda = (35% - 25%) / 35% = 29% (knowing gender reduces error by 29%).
+
+High lambda: Knowing X helps predict Y. Association strong.
+Low lambda: X doesn't help predict Y. Weak association.
+
+When to use each:
+
+Chi-squared: Does association exist? (Yes/No)
+
+Cramér's V: How strong? (Weak/moderate/strong)
+
+Phi: Two binary variables. Special case.
+
+Lambda: Predictive focus. \"How much does X help predict Y?\"
+
+Practical example:
+
+E-commerce: Do customer segments (Premium, Regular, Budget) prefer different shipping speeds (Standard, Express, Overnight)?
+
+Data (n=1000 customers):
+
+                Standard  Express  Overnight  Total
+Premium         50        100      150        300
+Regular         200       200      100        500
+Budget          300       50       50         200
+Total           550       350      100        1000
+
+Chi-squared test:
+
+χ² ≈ 150, p < 0.0001 (highly significant).
+
+Conclusion: Segment and shipping preference associated.
+
+Cramér's V = sqrt(150 / (1000 * 1)) = 0.387 (moderate-strong).
+
+Interpretation: Customer segment moderately explains shipping preference. Premium customers prefer Express/Overnight. Budget customers prefer Standard.
+
+Business decision: Dynamic shipping defaults. Premium tier defaults to Express. Budget defaults to Standard.
+
+Lambda:
+
+Without segment: Error predicting shipping = 45% (most choose Standard).
+
+With segment: Error = 25% (segment narrows choice).
+
+Lambda = (45% - 25%) / 45% = 44% (knowing segment reduces error by 44%).
+
+High lambda justifies using segment for personalization.
+
+What if dependent?
+
+If variables associated, investigate causation:
+
+Does X cause Y? Y cause X? Confounding variable?
+
+Example: Premium customers prefer Express. Is it causality (premium status drives preference) or correlation (high-income customers premium + prefer fast)?
+
+Experiment: Randomize offering. Give budget customers Express option (normally not offered). Do they choose Express?
+
+If yes: Express attractive regardless of segment (no causality, just correlation).
+If no: Premium status enables/encourages Express choice (possible causality).
+
+My approach: Chi-squared for \"associated yes/no\". Cramér's V for strength. If associated, investigate causation with experiments.`,
+      },
+      {
+        q: "Explain the Bonferroni correction. When is it too conservative?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about how it works, or when to use alternatives? And the power/false positive tradeoff?
+
+For this, I'll explain Bonferroni and when it overkills.
+
+---
+
+Bonferroni correction: Adjust significance level to control false positive rate across multiple tests.
+
+Problem: Running m tests with α=0.05 each.
+
+P(at least 1 false positive) = 1 - (1-α)^m ≈ m*α (for small α).
+
+Example: 20 tests, α=0.05 each.
+
+P(at least 1 false positive) ≈ 1 - 0.95^20 ≈ 64%.
+
+Two-thirds chance of at least one false positive!
+
+Bonferroni solution: α' = α / m.
+
+Adjusted α' = 0.05 / 20 = 0.0025.
+
+Now P(at least 1) = 1 - (1-0.0025)^20 ≈ 4.8% (close to target 5%).
+
+Controls family-wise error rate (FWER): Probability of ANY false positive across all m tests.
+
+Example interpretation:
+
+20 A/B tests. Each needs p < 0.0025 to be significant (vs 0.05).
+
+Much harder to reach significance. Miss real effects (Type II error).
+
+When Bonferroni appropriate:
+
+1. Few tests (m < 10).
+
+Adjustment modest. α' = 0.05 / 5 = 0.01. Still achievable.
+
+2. FWER critical.
+
+Space exploration. Any false positive catastrophic. Use Bonferroni.
+
+Medical trials. Any false positive harms patients. Use Bonferroni.
+
+3. Important hypothesis.
+
+Test single pre-registered hypothesis. No correction needed.
+
+But testing 3-4 confirmatory hypotheses: Bonferroni reasonable (α' ≈ 0.015).
+
+When Bonferroni too conservative:
+
+1. Many tests (m > 100).
+
+α' = 0.05 / 100 = 0.0005. Astronomically hard.
+
+Example: 100 features tested for association with outcome. Need p < 0.0005 per feature.
+
+No feature reaches significance (even real ones). Power ≈ 1%.
+
+Alternative: False discovery rate (FDR) control.
+
+2. Exploratory research.
+
+Goal: Discover signals, not confirm hypotheses.
+
+Bonferroni suppresses exploration.
+
+Alternative: FDR. \"Expected 10% of discoveries false,\" more lenient.
+
+3. Testing many related hypotheses (not independent).
+
+Bonferroni assumes independence. If tests correlated, correction overkill.
+
+Example: Testing 50 SNPs in same gene region. Tests correlated (SNPs in linkage disequilibrium).
+
+Bonferroni treats as independent: m = 50, α' = 0.05/50 = 0.001.
+
+Reality: Effective m ≈ 5 (due to correlation). Optimal α' ≈ 0.01.
+
+Bonferroni wastes power.
+
+Alternative: FDR or permutation test (accounts for correlation).
+
+Alternatives to Bonferroni:
+
+1. False Discovery Rate (FDR) control (Benjamini-Hochberg procedure).
+
+Controls: Expected proportion of false discoveries among all discoveries.
+
+Example: \"Among 10 significant results, expect 1 false (10% FDR).\"
+
+Less stringent than FWER.
+
+Procedure: Sort p-values. Find largest i where p(i) ≤ (i/m) * α.
+
+Threshold = p(i). Reject all tests with p ≤ p(i).
+
+Result: ~10% of discoveries false (on average).
+
+Advantage: More powerful. Detects more real effects.
+
+2. Holm-Bonferroni (step-down).
+
+Variant of Bonferroni. Adaptive.
+
+Start with most significant test. α' = α / m.
+If significant, next test α' = α / (m-1).
+Continue.
+
+Less stringent than Bonferroni, controls FWER.
+
+3. Permutation tests.
+
+Empirically determine null distribution. Accounts for correlation automatically.
+
+Data shuffled many times. Permutation p-value = proportion of permutations with more extreme result.
+
+No correction needed (naturally accounts for multiple testing).
+
+4. Pre-registration.
+
+Plan hypotheses before analyzing data.
+
+Single hypothesis: α = 0.05 (no correction).
+
+Confirmatory tests only.
+
+Example workflow:
+
+Biomarker discovery (exploratory): 10000 genes tested for association.
+
+Step 1: Use FDR control. α_FDR = 0.1 (10% false discovery expected).
+
+Genes with p < 0.001 pass: ~50 genes.
+
+Expected 5 false positives (10% of 50).
+
+Step 2: Validate top genes in independent cohort.
+
+Those replicating likely true. Those not replicating likely false.
+
+Step 3: Confirm winners in randomized experiment (gold standard).
+
+Compare: Bonferroni vs FDR
+
+Bonferroni: 10000 tests, α' = 0.05/10000 = 0.000005.
+
+Almost nothing reaches significance. Power near zero. False negatives.
+
+FDR: α_FDR = 0.1.
+
+~50 discoveries (expected 5 false). Power much higher.
+
+Risk: Some false positives. Mitigated by validation step.
+
+My approach: Bonferroni for few important tests (confirm hypotheses). FDR for many exploratory tests (discover signals). Always validate discoveries in independent data.`,
+      },
+      {
+        q: "What is a likelihood ratio test? When would you use it?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        a: `Are you asking about how it works, or when it's better than alternatives? And connection to p-values?
+
+For this, I'll explain mechanism and practical applications.
+
+---
+
+Likelihood ratio test (LRT): Compare goodness of fit of two models.
+
+Simpler model (fewer parameters) vs complex model (more parameters).
+
+Question: Does complex model fit significantly better?
+
+Test statistic: LR = L(complex) / L(simple)
+
+Where L = likelihood (probability of data given model).
+
+LR > 1: Complex model fits better.
+LR >> 1: Complex model fits much better (significantly).
+LR ≈ 1: Models fit similarly (no improvement from complexity).
+
+Hypothesis test:
+
+H0: Simple model adequate. (Complex model unnecessary parameters.)
+H1: Complex model better. (Extra parameters improve fit.)
+
+Test statistic: -2 * log(LR) ≈ chi-squared distribution (under H0).
+
+p-value from chi-squared CDF.
+
+Example: Predicting customer churn.
+
+Simple model: Logistic regression with 3 features (age, tenure, revenue).
+
+Complex model: Logistic regression with 10 features (add many behavioral features).
+
+Fit both models. Compute likelihoods.
+
+Simple L = 0.8.
+Complex L = 0.85.
+
+LR = 0.85 / 0.8 = 1.0625.
+
+-2*log(1.0625) ≈ 0.12.
+
+chi-squared(df=7) test: p ≈ 0.99.
+
+p > 0.05: Complex model not significantly better. Stick with simple model (fewer features, easier interpretation).
+
+Alternative example (significant result):
+
+Simple L = 0.7.
+Complex L = 0.95.
+
+LR = 0.95 / 0.7 = 1.36.
+
+-2*log(1.36) ≈ 6.2.
+
+chi-squared(df=7) test: p ≈ 0.05.
+
+p < 0.05: Complex model significantly better. Extra features improve fit. Use complex model.
+
+When to use LRT:
+
+1. Model selection. Choose between nested models (simple vs complex).
+
+2. Parameter significance. Does including a parameter improve fit?
+
+3. Non-linear models. Works for any model (logistic, GLM, etc).
+
+4. Direct likelihood comparison. When models have explicit likelihoods.
+
+Advantages vs alternatives:
+
+LRT vs F-test (linear regression):
+
+F-test: Simple linear regression.
+LRT: More general. Works for any model (logistic, Poisson, survival, etc).
+
+LRT vs AIC (information criterion):
+
+AIC: Model selection with penalty for complexity.
+AIC = -2*log(L) + 2*k (k=number of parameters).
+
+Lower AIC better. Balances fit and complexity.
+
+Comparison: AIC(simple) vs AIC(complex).
+
+LRT: Direct statistical test. p-value.
+
+AIC: Relative comparison. No p-value, but intuitive.
+
+LRT more rigorous statistically. AIC more practical (compares many models easily).
+
+Practical example:
+
+Medical diagnosis model.
+
+Simple: Logistic regression, 5 symptoms.
+
+Complex: Logistic + interaction terms (symptom combinations matter).
+
+Data: 1000 patients, 500 with disease, 500 healthy.
+
+Simple model likelihood: L = 0.80.
+Complex model likelihood: L = 0.85.
+
+LR = 0.85 / 0.80 = 1.0625.
+
+Test: -2*log(1.0625) ≈ 0.12.
+
+chi-squared(df=5, interaction terms added) ≈ p = 0.99.
+
+Conclusion: Interaction terms not significant. Simple model adequate.
+
+Decision: Use simple model. Fewer parameters easier to interpret, implement, explain to doctors.
+
+Another example (interactive terms matter):
+
+Simple L = 0.70.
+Complex L = 0.92.
+
+LR = 1.31.
+
+-2*log(1.31) ≈ 5.4.
+
+chi-squared(df=5): p ≈ 0.36.
+
+Hmm, still not significant. Maybe need more data or bigger interactions.
+
+Conditions for LRT:
+
+1. Models must be nested.
+
+Complex must include simple as special case.
+
+Example: y = a + b*x (simple), y = a + b*x + c*x² (complex). Nested. LR valid.
+
+Non-nested: y = a + b*x vs y = a + c*z. Can't use LRT.
+
+2. Sample size large.
+
+Test assumes -2*log(LR) ≈ chi-squared (asymptotic). Small samples: approximation poor.
+
+3. Parameters well-identified.
+
+Parameters shouldn't be on boundary (e.g., variance σ² ≥ 0).
+
+Violations: Use bootstrap or permutation test.
+
+My approach: LRT for comparing nested models (simpler vs complex). Test if extra parameters significant. Use p-value for decision. If p < 0.05, complex better. If p > 0.05, simple adequate (Occam's razor).`,
+      },
+      {
+        q: "Design an experimentation framework for a company running 100 A/B tests simultaneously.",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about statistical rigor, or practical implementation? And how to balance speed vs accuracy?
+
+For this, I'll design a complete framework.
+
+---
+
+Challenge: 100 concurrent A/B tests. Multiple testing problem inflates false positives. Also, resource constraints, learning, adaptation.
+
+Framework design:
+
+1. Governance & planning.
+
+Assign test owners. Each owner specifies: hypothesis, success metric, sample size, runtime.
+
+Central review: Approve tests before launch. Reject weak hypotheses or duplicates.
+
+Roadmap: Prioritize tests by impact (revenue, engagement, cost). High-impact first.
+
+Resource allocation: Allocate traffic (users, pageviews) to tests. Prevent over-allocation.
+
+2. Statistical control.
+
+Multiple testing correction: Use FDR (False Discovery Rate) not Bonferroni.
+
+FDR: \"Expected 10% of discoveries false.\"
+
+Procedure: Benjamini-Hochberg.
+- Collect p-values from 100 tests.
+- Sort p-values.
+- Find critical threshold such that expected false discoveries = 10%.
+- Declare significant all tests below threshold.
+
+Example: 100 tests, FDR = 10%. Expected 10 false positives among discoveries.
+
+Bonferroni would require p < 0.0005 (p=0.05/100). FDR allows p < 0.01. Much more power.
+
+Alternative: Bayesian approach.
+
+Assign prior probability to each test (95% null, 5% signal).
+
+Compute posterior probability each test has effect.
+
+Threshold: posterior > 0.95.
+
+Advantage: Naturally weights prior (weak hypothesis less likely significant).
+
+3. Sample size standardization.
+
+Each test powered at 80% for minimum detectable effect (MDE).
+
+MDE: Smallest effect business cares about.
+
+Example: 5% baseline conversion. MDE = 10% relative lift (0.5pp absolute).
+
+Compute required n for this MDE.
+
+All tests run to n, regardless of early stopping.
+
+Prevents p-hacking (sequential peeking).
+
+Pre-register: Sample size, MDE, success metric before test launch.
+
+4. Traffic allocation (sequential allocation).
+
+Allocate traffic over time. Don't assign all 100 tests simultaneously (starves each).
+
+Week 1-2: Tests 1-20 (highest priority). Full traffic to these 20.
+
+Week 3-4: Tests 21-40.
+
+Etc.
+
+Advantage: Tests reach power faster (more users per test per week). Earlier decisions.
+
+Disadvantage: Sequential results, not parallel.
+
+Tradeoff: Run highest-impact tests in parallel. Lower-impact sequentially.
+
+5. Monitoring & adaptation.
+
+Weekly check: Monitor p-value progress, detect early winners.
+
+Interim analysis: After 50% of planned samples, compute p-value.
+
+- If p < 0.01: Declare winner (stopping for efficacy).
+- If p > 0.30: Declare loser (stopping for futility).
+- If 0.01 < p < 0.30: Continue.
+
+Timing: Pre-specified interim analysis. Not peeking (pre-registered).
+
+Adjust final α for interim: α' = 0.048 (vs 0.05) due to interim look. (O'Brien-Fleming boundary.)
+
+6. Validation & replication.
+
+Winners from batch 1: Validate on batch 2 (holdout test set).
+
+Run confirmatory test on new users. Does effect replicate?
+
+Risk: Winner in batch 1 by luck. Replication catches false positives.
+
+Reported result: \"Treatment A beat control (p=0.02). Replicated in independent sample (p=0.03).\"
+
+Much more credible than single test.
+
+7. Learning & adaptation.
+
+Losing tests: Investigate before discarding.
+
+\"Test increased friction, conversion dropped.\" Learning: Friction costs.
+
+Winning tests: Analyze mechanism.
+
+\"Test A beat control. Hypothesis: Better copy. Dig deeper: UX or copy?\"
+
+Iterative testing: Test A wins → Test B builds on A → Test C improves further.
+
+8. Reporting & communication.
+
+Report p-values, effect sizes, confidence intervals.
+
+Example: \"Treatment lifted conversion 0.3pp [0.1, 0.5] (95% CI). FDR-adjusted p=0.008.\"
+
+Avoid p-hacking language: \"Reached significance.\" Instead: \"Effect detected with 90% confidence after correction for multiple testing.\"
+
+Report failures too.
+
+\"Test X didn't improve metric. Here's why [mechanism]. Learning for future.\"
+
+9. Infrastructure.
+
+Real-time monitoring: Dashboard showing p-values, CIs, sample sizes updating.
+
+Alert system: \"Test X reached power. Declare winner.\"
+
+Variance reduction: Stratify by user segment (mobile vs desktop, new vs returning). Reduces required sample size.
+
+Experimentation platform: (Optimizely, VWO, Statsig). Built-in power calculations, multiple testing correction, dashboards.
+
+10. Resource allocation formula.
+
+Traffic = 1000 users/week.
+
+Test priority scores: (Expected impact) / (Execution cost).
+
+Allocate proportionally to priority.
+
+Example: Test A priority=10. Test B priority=5. Test C priority=2.
+
+A gets 10/(10+5+2) = 59% traffic. B gets 29%. C gets 12%.
+
+Specific example: E-commerce company.
+
+100 tests planned over year.
+
+Tests: Homepage design (high impact), button colors (low impact), email copy (medium impact), etc.
+
+Framework:
+
+Month 1: 20 high-impact tests. Q1 critical business decisions.
+Traffic: 2000 users/week → 100/week per test → 2000 samples per test → power ~70%.
+Interim analysis: After 1000 samples (week 2), early stop winners/losers.
+
+Month 2: 20 medium-impact tests (validation of month 1 winners).
+Traffic: 1000 users/week → lower baseline (don't need same power, validating not discovering).
+
+Months 3-12: Continuous stream of tests (60 total). Lower priority, sequential.
+
+Multi-testing control: FDR 10% across all 100 tests.
+
+Reporting: Weekly dashboard. Monthly summary to leadership.
+
+Result: Avoid the 100-test false positive avalanche. Reach honest conclusions. Build knowledge iteratively.
+
+My approach: FDR control (not Bonferroni), pre-specified power, interim analyses with stopping boundaries, replication, and continuous learning. Infrastructure-heavy but essential for 100 parallel tests.`,
+      },
+      {
+        q: "How do you estimate causal effects when you cannot run a randomized experiment?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about methods, or when to use each? And validity assumptions?
+
+For this, I'll explain the main causal inference techniques.
+
+---
+
+Challenge: Randomized experiment (gold standard) infeasible or unethical. But need to estimate causal effect.
+
+Observational data only: X (treatment) and Y (outcome), but not randomized.
+
+Problem: Confounding. Third variable Z affects both X and Y, creating spurious correlation.
+
+Example: Does coffee drinking (X) cause heart disease (Y)?
+
+Observational: Coffee drinkers have higher heart disease. Conclude: Coffee causes disease.
+
+Confounding: Smokers drink more coffee AND have higher heart disease (smoking = Z).
+
+Coffee not cause; smoking is. Confounding bias.
+
+Solution: Control for confounders statistically.
+
+Method 1: Regression control.
+
+Fit model: Y = β0 + β1*X + β2*Z1 + β3*Z2 + ... + error
+
+Coefficient β1 = causal effect of X on Y (after controlling for Z's).
+
+Assumption: Unconfoundedness. All confounders Z measured and included in model.
+
+Risk: Unmeasured confounders (Z not measured). Bias remains.
+
+Example: Coffee and heart disease.
+
+Y = heart disease, X = coffee, Z = smoking, alcohol use, exercise, diet.
+
+Fit regression. β1 = causal effect of coffee.
+
+Result: β1 ≈ 0 (coffee doesn't cause disease after controlling for confounders).
+
+Conclusion: Coffee safe.
+
+Limitation: If unmeasured confounder exists (genetics, stress), result biased.
+
+Method 2: Propensity score matching (PSM).
+
+Simulate randomization using observational data.
+
+Idea: Match coffee drinkers and non-drinkers on likelihood of drinking coffee (propensity score).
+
+Propensity score: P(X=1 | Z1, Z2, ..., Zp) = predicted probability of treatment given confounders.
+
+Fit model (logistic regression): logit(P(X=1)) = α + β1*age + β2*smoking + ...
+
+Compute propensity score for each subject.
+
+Match drinkers and non-drinkers with similar propensity scores.
+
+Compare outcomes within matched pairs.
+
+Rationale: Within matched pairs, treatment assignment approximately random (conditional on propensity).
+
+Example: 1000 coffee drinkers (X=1), 1000 non-drinkers (X=0).
+
+Compute propensity scores for all.
+
+Match drinker to non-drinker with similar propensity (balanced on confounders).
+
+End up with 1000 matched pairs, balanced on age, smoking, etc.
+
+Compare heart disease in matched pairs: Causal effect.
+
+Advantage: More robust than regression (handles non-linear relationships).
+
+Assumption: Unconfoundedness (same as regression). Must measure all confounders.
+
+Method 3: Instrumental variables (IV).
+
+Use instrument Z: affects X but not Y directly (only through X).
+
+Example: Distance to hospital (Z). Affects whether patient gets surgery (X). Doesn't directly affect outcome (Y), only through surgery.
+
+Estimate: Effect of surgery on outcome using Z as instrument.
+
+Advantage: Can handle unmeasured confounders (between X and Y).
+
+Disadvantage: Requires valid instrument (hard to find, needs justification).
+
+Example: Effect of college on earnings.
+
+X = college attendance, Y = earnings.
+
+Confounding: Ability (Z) affects both (smart people go to college AND earn more).
+
+Unmeasured ability biases naive regression.
+
+Instrument: Proximity to college (distance). Affects college attendance but not earnings directly.
+
+Use IV regression: college effect on earnings estimated via proximity instrument.
+
+Result: Unbiased causal effect despite unmeasured ability.
+
+Method 4: Difference-in-differences (DiD).
+
+Use two time periods (before/after). Two groups (treatment/control).
+
+Rationale: Parallel trends assumption. Without treatment, both groups trend similarly.
+
+Treatment group: Before treatment, Y_t. After treatment, Y_{t+1}.
+
+Control group: Before, Y_t. After, Y_{t+1} (no treatment applied).
+
+DiD = (Y_treatment,after - Y_treatment,before) - (Y_control,after - Y_control,before).
+
+Removes common time trends (Y_t → Y_{t+1} for both groups), isolates treatment effect.
+
+Example: New minimum wage in state A, not state B (control).
+
+Before: Unemployment state A = 5%, state B = 5.2%.
+After: Unemployment state A = 5.5%, state B = 5.3%.
+
+Naive: Wage increase caused 0.5pp unemployment increase in A.
+
+But state B also increased 0.1pp (common trend).
+
+DiD: (5.5 - 5) - (5.3 - 5.2) = 0.5 - 0.1 = 0.4pp.
+
+Wage increase caused 0.4pp unemployment increase (after removing common trend).
+
+Assumption: Parallel trends (without treatment, both groups trend together).
+
+Method 5: Synthetic control.
+
+Build counterfactual: \"What would treatment group look like without treatment?\"
+
+Use control group to construct synthetic treatment group (weighted average).
+
+Example: Effect of new policy in state A.
+
+Collect data from states B, C, D, ... (control states, similar to A pre-policy).
+
+Fit weights: w_B, w_C, w_D such that weighted average of controls matches state A pre-policy.
+
+Project synthetic control forward post-policy.
+
+Compare actual state A to synthetic control. Difference = causal effect.
+
+Advantage: Transparent. Shows your constructed counterfactual.
+
+Assumption: Common support (controls similar to treatment pre-treatment).
+
+Method 6: Causal trees / random forests.
+
+Use machine learning to estimate heterogeneous treatment effects (effects vary by subgroup).
+
+Advantage: Flexible, captures non-linearities.
+
+Assumption: Unconfoundedness (still need to control for confounders).
+
+Practical selection:
+
+Few confounders (< 5), simple causal structure: Regression control.
+
+Many confounders (10+), complex: Propensity score matching or double/debiased ML.
+
+Valid instrument available: Instrumental variables (powerful but requires instrument).
+
+Before/after data, parallel trends: Difference-in-differences.
+
+Unconfoundedness violated, no good instrument: Sensitivity analysis (test how much unmeasured confounding would change conclusion).
+
+Example: Effect of hospitalization on mortality.
+
+Patients hospitalized (X) have worse outcomes (Y = mortality).
+
+Confounding: Sicker patients hospitalized AND die more (severity = Z).
+
+Methods:
+- Regression: Control for severity measures.
+- PSM: Match hospitalized to non-hospitalized on propensity (severity and others).
+- IV: Use distance to hospital as instrument.
+
+Result all three: Hospitalization doesn't increase mortality; sicker patients benefit most.
+
+Conclusion: Confounding explained apparent harmful effect.
+
+My approach: Start with regression + visualization (residuals, confounder balance). If many confounders, PSM. If concerned unmeasured confounding, sensitivity analysis or IV. Always report assumptions explicitly.`,
+      },
+      {
+        q: "Explain propensity score matching. Design a study using it for a real business problem.",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about mechanics, or end-to-end study design? And common pitfalls?
+
+For this, I'll explain and design a complete application.
+
+---
+
+Propensity score matching (PSM): Create quasi-randomized sample from observational data.
+
+Goal: Estimate causal effect when randomization impossible.
+
+Mechanics:
+
+Step 1: Estimate propensity score.
+
+Fit logistic regression: Pr(X=1 | Z1, Z2, ..., Zp) = propensity.
+
+X = treatment indicator (receive intervention or not).
+Z = confounders (variables affecting both X and Y).
+
+Example: Does premium membership (X) increase retention (Y)?
+
+Confounders: Initial engagement (Z1), account age (Z2), customer value (Z3).
+
+Fit logistic regression:
+
+Pr(Premium=1 | engagement, age, value) = logistic function.
+
+For each customer, compute propensity = predicted probability of being premium.
+
+Step 2: Match on propensity.
+
+Stratify by propensity score.
+
+Within each stratum, match premium customers to non-premium with similar propensity.
+
+Exact match (hard): Impossible if propensity continuous.
+
+Caliper match: Premium to non-premium within distance δ on propensity (e.g., 0.01).
+
+Nearest neighbor: Premium to closest non-premium propensity.
+
+One-to-one or one-to-many.
+
+Example: 500 premium (X=1), 5000 non-premium (X=0).
+
+Propensity ranges 0 to 1.
+
+Within stratum [0.4, 0.45]: 20 premium, 50 non-premium.
+
+Match 20 premium to 20 closest non-premium.
+
+Repeat for all strata.
+
+End: Matched sample (500 premium, 500 non-premium matched pairs).
+
+Step 3: Check balance.
+
+Compare confounders in matched premium vs non-premium.
+
+Engagement: Premium mean 0.7, non-premium mean 0.69 (balanced!).
+Account age: Premium 3 years, non-premium 3.1 years (balanced!).
+
+If imbalanced: Matching failed. Re-match with tighter caliper or higher-order terms.
+
+Step 4: Estimate treatment effect.
+
+Compare retention within matched pairs.
+
+Premium retention: 85%.
+Non-premium retention: 80%.
+
+Causal effect: Premium increases retention 5pp.
+
+Why matching works:
+
+Before matching: Selection bias. Premium customers more engaged (self-selected). Can't tell if premium causes retention or engagement does.
+
+After matching: Premium and non-premium have same engagement (matched on it). Difference in retention = causal (engagement equalized).
+
+Real business application:
+
+Problem: Does free trial (X=1) convert more than cold outreach (X=0)?
+
+Direct comparison: Trial users convert 20%, cold users 5%. Difference: 15pp.
+
+Confounding: Trial users self-selected (more interested). Selection bias inflates effect.
+
+Solution: PSM.
+
+Data: 1000 trial users, 10000 cold users.
+
+Confounders:
+
+Prior interest in product (from website activity score).
+Company size (larger companies buy more).
+Industry (certain industries more conversion-prone).
+
+Step 1: Fit logistic regression.
+
+Pr(Trial=1 | interest, size, industry).
+
+Propensity scores: Trial users propensity 0.4-0.9. Cold users 0.01-0.3.
+
+Little overlap! Matching will be limited.
+
+Step 2: Match within overlap region (common support).
+
+Matched 400 trial users (those with lower propensity) to 400 cold users (those with higher propensity, rare but exist).
+
+In overlap region, groups comparable on confounders.
+
+Step 3: Check balance.
+
+Before matching:
+- Trial users: avg interest 0.8, size $50M, tech industry 40%.
+- Cold users: avg interest 0.2, size $10M, tech industry 10%.
+
+Imbalanced! Selection bias.
+
+After matching (same 400-400 subset):
+- Trial users: avg interest 0.4, size $25M, tech industry 25%.
+- Cold users: avg interest 0.42, size $26M, tech industry 26%.
+
+Balanced! Trial and cold groups now comparable on confounders.
+
+Step 4: Estimate effect.
+
+Trial conversion: 15%.
+Cold conversion: 12%.
+
+Causal effect: Trial increases conversion 3pp.
+
+(Much smaller than 15pp naive effect, because naive included self-selection bias.)
+
+Interpretation: Free trial works, but effect modest. Self-selection accounted for 12pp of apparent gain.
+
+Assumptions of PSM:
+
+1. Unconfoundedness: All confounders measured and included.
+
+Risk: Unmeasured confounder (e.g., sales rep quality). Bias remains.
+
+Mitigation: Sensitivity analysis. \"How much unmeasured confounding would reverse conclusion?\"
+
+2. Common support (overlap):
+
+Treatment and control overlap on propensity.
+
+If trial propensity 0.8-0.9 and cold 0.01-0.1, almost no overlap.
+
+Matched sample tiny, limited generalizability.
+
+Mitigation: Restrict to common support region. Report external validity limitations.
+
+3. No interference:
+
+Treatment on one unit doesn't affect another.
+
+Risk: Viral referral (trial users refer, affect cold users). Interference.
+
+Mitigation: Separate treatment and control units in space/time.
+
+Advantages over regression control:
+
+Regression: β1 = effect from linear fit. Can extrapolate outside data (risky).
+
+PSM: Effect only within common support (matched region). Avoids extrapolation.
+
+Visual: Regression fits line through sparse data. PSM compares dense matched subsets.
+
+Disadvantages of PSM:
+
+Loss of sample: Matching excludes units outside common support.
+
+Example: 1000 trial, 10000 cold. After matching 400-400. Discarded 600 trial, 9600 cold.
+
+Efficiency: Fewer units = larger standard errors. Less power.
+
+Alternative: Double/debiased ML.
+
+Use ML to fit propensity (flexible). Estimate effect via regression residuals.
+
+Keeps all data (no discarding). More efficient than PSM.
+
+My approach: PSM for causal inference when: (1) unconfoundedness reasonable, (2) common support exists, (3) clarity matters (transparent matching visualizable). Otherwise, double ML or IV.`,
+      },
+      {
+        q: "What is instrumental variable regression? When would you need it?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about mechanics, or how to identify valid instruments? And when essential?
+
+For this, I'll explain both and application.
+
+---
+
+Instrumental variable (IV) regression: Handle endogeneity (treatment correlated with error).
+
+Problem: X affects Y, but X also affected by unobserved confounder U.
+
+Example: Does CEO tenure (X) affect firm performance (Y)?
+
+Confounding: Unobserved CEO ability (U) affects both (more capable CEOs hired longer, better firm performance).
+
+Naive regression: β1 = effect of tenure. But β1 biased (includes ability effect).
+
+Solution: Find instrument Z.
+
+Z affects X (tenure) but not Y directly (not through ability, only through tenure).
+
+Example: Forced CEO retirement at age 65 (legal requirement).
+
+Z = age approaching 65 (binary: approaching or not).
+
+Affects X: Age 64 → likely retire soon → shorter tenure.
+Doesn't affect Y directly: Your age doesn't affect performance unless it affects tenure.
+
+Valid instrument satisfies:
+
+1. Relevance: Z affects X.
+   - Age affects tenure (YES).
+
+2. Exogeneity: Z doesn't affect Y except through X.
+   - Age doesn't affect performance except through tenure (YES, assuming other age effects minimal).
+
+IV regression:
+
+Step 1: Fit first-stage regression.
+
+X = α + β*Z + error.
+
+Predict X using Z (tenure predicted from retirement age).
+
+Step 2: Fit second-stage regression.
+
+Y = α + β'*(predicted X) + error.
+
+Regress Y on predicted X (not actual X).
+
+β' = causal effect (unbiased).
+
+Why it works:
+
+Actual X correlated with error (endogeneity).
+
+Predicted X from Z uncorrelated with error (Z exogenous).
+
+Using predicted X purges endogeneity.
+
+Example calculation:
+
+Data: 100 CEOs, tenure, age, firm performance.
+
+First-stage: Tenure = 2 + 0.5*age (years of tenure increases with age).
+
+Predicted tenure for 60-year-old: 2 + 0.5*60 = 32 years.
+Predicted tenure for 64-year-old: 2 + 0.5*64 = 34 years.
+
+Second-stage: Performance = β0 + β1*(predicted tenure).
+
+If β1 = 0.1 (causal): Each additional year tenure increases performance 0.1 units.
+
+Business interpretation: Longer-tenured CEOs perform better (causally, not just selection).
+
+When you need IV:
+
+1. Unmeasured confounding.
+
+Confounder exists but not measured (can't control with regression).
+
+IV solves this (doesn't require measuring confounder).
+
+2. Reverse causality.
+
+X affects Y, but Y also affects X (simultaneous equations).
+
+Example: Price (X) affects quantity sold (Y), but quantity also affects price (supply-demand feedback).
+
+OLS biased (includes reverse causality).
+
+IV breaks feedback loop using exogenous instrument.
+
+3. Measurement error in treatment.
+
+X measured with error. Regression biased.
+
+IV can reduce bias if Z measured accurately.
+
+Practical business examples:
+
+1. Effect of education on earnings.
+
+X = years of education, Y = earnings.
+
+Confounder: Ability (Z, unmeasured). Smart people get more education AND earn more.
+
+Instrument: Proximity to college (distance to nearest university).
+
+Affects education (close to college → more education).
+Doesn't affect earnings directly (distance shouldn't affect earnings except through education).
+
+IV regression: Causal effect of education on earnings.
+
+Result: Each year education increases earnings $5000 (causal, not ability selection).
+
+2. Effect of competitor pricing on your demand.
+
+X = competitor price, Y = your sales.
+
+Reverse causality: Your sales affect competitor pricing (if they match).
+
+Instrument: Competitor's cost changes (fuel costs, labor costs).
+
+Affects competitor price (cost up → price up).
+Doesn't affect your sales directly (competitor costs irrelevant to demand except through pricing).
+
+IV regression: Causal effect of competitor price on your demand.
+
+Result: 10% competitor price increase decreases your sales 5% (causal elasticity).
+
+3. Effect of firm leverage on value.
+
+X = debt level, Y = firm value.
+
+Endogeneity: Valuable firms borrow more. High value firms use more debt.
+
+Instrument: Tax changes (tax credit for debt interest).
+
+Affects leverage (tax credit increases debt attractiveness).
+Doesn't affect firm value directly (tax code doesn't improve business).
+
+IV regression: Causal effect of debt on firm value.
+
+Result: Debt has no causal effect (once reverse causality removed).
+
+Validity of instrument:
+
+Instrument must be:
+
+1. Relevant: First-stage F-stat > 10 (rule of thumb).
+
+If F < 10, weak instrument. Estimates unreliable (large standard errors).
+
+2. Exogenous: Z uncorrelated with error.
+
+Hard to test (error unobserved). Requires judgment.
+
+Sensitivity analysis: \"If Z correlated with error (slightly), how much does β1 change?\"
+
+Common mistakes:
+
+1. Using bad instrument.
+
+\"Instrument\" affects Y directly (violates exogeneity).
+
+Example: Using proximity to university as instrument for earnings. But geography directly affects earnings (cost of living). Bad instrument.
+
+Fix: Choose instrument with no direct effect on Y.
+
+2. Weak instrument.
+
+Z weakly related to X.
+
+F-stat < 10. Estimates unreliable.
+
+Example: Monthly noise as instrument for annual trend. Weak.
+
+Fix: Find stronger instrument (related to X more strongly).
+
+3. Multiple instruments (many Z).
+
+Can over-fit. More instruments = more parameters estimated.
+
+Use test: J-test (overidentification test). Tests whether extra instruments valid.
+
+Trade-offs:
+
+IV: Solves unmeasured confounding, reverse causality. But requires valid instrument (hard to find, justify).
+
+Regression control: Easier (control measurable confounders). But biased if unmeasured confounding.
+
+Experiment: Gold standard. No instrument needed. But often infeasible.
+
+My approach: IV when unmeasured confounding or reverse causality suspected, and valid instrument exists. Check first-stage F-stat (relevance). Justify exogeneity. Report sensitivity to weak instrument.`,
+      },
+      {
+        q: "Explain difference-in-differences. Design a study to measure the impact of a policy change.",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about mechanics, or full study design? And when parallel trends assumption holds?
+
+For this, I'll explain mechanics and design a complete study.
+
+---
+
+Difference-in-differences (DiD): Estimate causal effect of policy using before-after comparison and treatment-control comparison.
+
+Idea: Remove confounders by comparing two differences.
+
+Setup:
+
+Two time periods (before, after policy).
+Two groups (treatment receives policy, control doesn't).
+
+Four combinations: Before-treatment, before-control, after-treatment, after-control.
+
+DiD = (Y_after,treatment - Y_before,treatment) - (Y_after,control - Y_before,control)
+
+Interpretation:
+
+Before-treatment change: Y_after - Y_before treatment group.
+Before-control change: Y_after - Y_before control group.
+
+DiD: Difference between these trends.
+
+Why it works:
+
+Removes common time trends. If both groups trend due to economic growth, weather, etc., DiD removes this.
+
+Isolates treatment effect: The extra change in treatment group (beyond control trend).
+
+Example: Minimum wage increase in state A (treatment), not state B (control).
+
+Before: Unemployment state A = 5%, state B = 4.9%.
+After: Unemployment state A = 5.4%, state B = 5.1%.
+
+Trends:
+- State A: 5% → 5.4% (0.4pp increase).
+- State B: 4.9% → 5.1% (0.2pp increase).
+
+DiD = 0.4pp - 0.2pp = 0.2pp.
+
+Wage increase caused 0.2pp unemployment (after removing common trend).
+
+Assumptions:
+
+1. Parallel trends (key assumption).
+
+Without treatment, both groups trend identically.
+
+State A unemployment would have increased 0.2pp (same as B) if no wage increase.
+
+Increase to 0.4pp = wage increase effect (0.2pp).
+
+Testable: Compare pre-periods. If trends parallel pre-treatment, assumption likely holds.
+
+2. No anticipation.
+
+Subjects don't change behavior in advance (knowing policy coming).
+
+Example: Workers don't quit before wage increase (anticipating effects).
+
+3. No policy spillover (SUTVA).
+
+Policy in A doesn't affect B (no interference).
+
+Example: Workers don't migrate from A to B.
+
+Case study: Measure impact of new return policy.
+
+Company A: Introduces 30-day return policy (treatment).
+Company B: Keeps old 14-day policy (control).
+
+Question: Does longer return window increase revenue?
+
+Study design:
+
+Step 1: Define periods.
+
+Pre-treatment: Jan-Jun (before A introduces new policy).
+Post-treatment: Jul-Dec (after policy live in A, B unchanged).
+
+Step 2: Define outcome.
+
+Y = monthly revenue per customer (dollars).
+
+Step 3: Collect data.
+
+Monthly data, both companies, both periods.
+
+Example:
+
+Company A:
+- Pre: $80 (Jan-Jun average).
+- Post: $95 (Jul-Dec average).
+- Change: +$15.
+
+Company B:
+- Pre: $75 (Jan-Jun average).
+- Post: $80 (Jul-Dec average).
+- Change: +$5.
+
+DiD = $15 - $5 = $10.
+
+Interpretation: Return policy increase caused $10 monthly revenue increase per customer.
+
+Mechanism: Longer return window reduces purchase hesitation → more purchases, higher AOV, repeat rate.
+
+Step 4: Check parallel trends assumption.
+
+Plot monthly revenue over time for both companies.
+
+Pre-treatment: Do they trend together?
+
+If A and B diverge pre-treatment (A growing faster), parallel trends violated.
+
+Conclusion doubtful.
+
+Step 5: Report results.
+
+\"30-day return policy increased revenue $10/customer/month ($120/year). 95% CI [$8, $12].\"
+
+Heterogeneous effects:
+
+DiD estimates average effect. But effect might vary by subgroup.
+
+Example: Return policy effect larger for new customers (less brand loyalty) than loyal customers.
+
+Subgroup DiD:
+
+Fit separate DiDs for new and loyal customers.
+
+New customers DiD = $15 (policy very effective).
+Loyal customers DiD = $5 (policy less effective).
+
+Implication: Target new customer acquisition (return policy most valuable).
+
+Threats to validity:
+
+1. Parallel trends violated.
+
+A growing faster than B pre-treatment. Trends diverge.
+
+Mitigation: Compare longer pre-period. Adjust for pre-trends via regression.
+
+2. Timing coincidence.
+
+Policy in A same time as external shock (competitor exits, economy changes).
+
+Shock affects A more than B (unrelated to policy).
+
+Mitigation: Choose control group carefully (geographically, economically similar to treatment).
+
+3. Spillover.
+
+Customers in B switch to A (new return policy advantage).
+
+B affected indirectly. Confounds comparison.
+
+Mitigation: Geographically distant treatment and control. Or separate customer base.
+
+Regression formulation:
+
+Fit model: Y = β0 + β1*(post) + β2*(treatment) + β3*(post × treatment) + error.
+
+β3 = DiD estimate.
+
+Interpretation:
+- β1: Common time trend (post-period effect on control group).
+- β2: Treatment group pre-treatment difference (baseline difference).
+- β3: Treatment effect (DiD).
+
+Example:
+
+Y = revenue.
+post = 1 if Jul-Dec, 0 if Jan-Jun.
+treatment = 1 if company A, 0 if company B.
+
+Y = 75 + 5*post + 5*treatment + 10*(post × treatment).
+
+β3 = 10.
+
+Interpretation: Return policy increased revenue $10/month.
+
+Multiple treatment dates:
+
+If different companies adopt policy at different times, use event-study DiD.
+
+Plot outcome around policy adoption date.
+
+Before: Should be flat (no effect).
+After: Should show jump (effect).
+
+Example: Company A (Jan), B (Mar), C (Jul).
+
+Combined DiD: Estimate effect controlling for adoption timing.
+
+Advantages:
+
+Requires less assumptions than IV (don't need instrument).
+
+Exploits natural experiments (policy imposed externally).
+
+Robust to time-invariant confounders (constant within companies).
+
+Disadvantages:
+
+Parallel trends hard to verify (must assume).
+
+If violated, results biased.
+
+Limited to two periods (or complications with multiple periods).
+
+My approach: DiD for policy impact. Check parallel trends visually (plot pre-periods). Use regression with continuous covariates to adjust for minor violations. Report robustness (varying pre-period, choice of control group).`,
+      },
+      {
+        q: "How would you handle interference effects in an A/B test where users influence each other?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about types of interference, detection, or mitigation? And how to estimate effects?
+
+For this, I'll explain interference and solutions.
+
+---
+
+Interference (spillover): Treatment on one user affects outcome of other users.
+
+Violates SUTVA (Stable Unit Treatment Value Assumption). Test results biased.
+
+Example: Social network experiment.
+
+You randomize showing ad (treatment) to 50% of users.
+
+User A gets ad. Talks to friend B (control group). B buys product influenced by A's discussion.
+
+B's outcome affected by A's treatment. Interference!
+
+Naive A/B test: Compares ad-shown vs not-shown. But control group partially affected (through treated friends).
+
+Result: Treatment effect underestimated (control inflated).
+
+Types of interference:
+
+1. Direct communication.
+
+Users talk to each other. Treatment on A affects B's behavior directly.
+
+Example: Referral program. Treated user A refers friend B. B joins. Control group partially affected.
+
+2. Network effects.
+
+Treatment changes platform utility for others.
+
+Example: Video streaming. Add new feature to 50% users. Platform more valuable for all (users in treatment have better features). Control group benefits.
+
+3. Market equilibrium.
+
+Treatment on sellers affects buyers and vice versa.
+
+Example: Pricing experiment on sellers. Lower price in treatment attracts buyers. Control buyers have less choice.
+
+Detection of interference:
+
+1. Residual imbalance.
+
+If interference exists, control group outcomes correlated with treatment neighbors.
+
+Check: Regression of control outcome on neighbor treatment. If coefficient significant → interference.
+
+2. Geographic/temporal variation.
+
+If interference local, test in separate markets/times.
+
+Compare within-market spillover to between-market (no spillover).
+
+3. Network structure.
+
+If interference via network, analyze which pairs are connected.
+
+Estimate network-based interference models.
+
+Solutions:
+
+1. Separation / Isolation.
+
+Test in isolated population.
+
+Example: Referral experiment. Test with users in different geographic regions (minimal cross-region referrals).
+
+Or use different time periods (no communication across time).
+
+Advantage: Eliminates interference.
+Disadvantage: May reduce relevance (real-world has network effects).
+
+2. Cluster randomization (treatment at group level).
+
+Instead of randomizing individuals, randomize groups.
+
+Example: Referral program. Randomize by geographical region or social groups.
+
+All users in treatment region get treatment. All in control region get control.
+
+No interference within treatment/control (boundary between groups).
+
+Advantage: Captures network effects within groups.
+Disadvantage: Fewer clusters = larger variance. More power needed.
+
+3. Model interference.
+
+Estimate interference effects empirically.
+
+Assume treatment effect varies by neighbor treatment.
+
+Y_i = β0 + β1*X_i + β2*Neighbors_Treated + β3*(X_i × Neighbors_Treated) + error.
+
+Estimates:
+- Direct effect (β1): Effect of own treatment.
+- Spillover effect (β2): Effect of neighbor treatment on control.
+- Interaction (β3): Does own treatment amplify neighbor effects?
+
+Example: Social feature test.
+
+Y_i = engagement of user i.
+X_i = 1 if shown new feature.
+Neighbors_Treated = proportion of user i's friends with feature.
+
+β1 = 0.2 (direct: feature increases engagement 20%).
+β2 = 0.1 (spillover: having 1 friend with feature increases engagement 10%).
+β3 = 0.05 (interaction: feature + friend with feature = additional 5%).
+
+Interpretation: Network effects exist. 50% treatment on users → 50% direct + 25% indirect = 75% total benefit (not just 50%).
+
+4. Design to minimize interference.
+
+Choose outcome resistant to interference.
+
+Example: Instead of testing social engagement (prone to network effects), test privacy settings (users control independently).
+
+5. Debiasing estimators.
+
+Use specialized inference methods to correct for interference.
+
+Example: If interference predictable (e.g., referral effects), use instrumental variable approach.
+
+Estimate effect of treatment corrected for spillover.
+
+Practical example:
+
+E-commerce: Testing free shipping on conversion.
+
+Setup: 10% baseline conversion. Test free shipping on 50% of customers.
+
+Naive A/B test:
+- Treatment group conversion: 12%.
+- Control group conversion: 11%.
+- Effect: 1pp.
+
+But interference: Treatment customers buy more → refer friends (via word-of-mouth, social media).
+
+Some referred friends are in control group. Their conversion boosted by referrals.
+
+True causal effect of free shipping: Maybe 1.5pp (without referral boost to control).
+
+Solution:
+
+Design test with isolation:
+
+Test in isolated cohorts (new customers from different channels, less cross-channel referral).
+
+Or use cluster randomization: Randomize by referring source (organic vs paid). All organic referral clusters treated together.
+
+Or model interference: Estimate effect of referred friend treatment on non-referred control.
+
+My approach: Check for interference visually (control group trends when treatment changes). If detected, either isolate treatment/control or estimate interference effects explicitly.`,
+      },
+      {
+        q: "Explain the bootstrap method. When is it better than analytical confidence intervals?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about mechanics, or when bootstrap wins? And computational vs analytical tradeoffs?
+
+For this, I'll explain bootstrap and when to use it.
+
+---
+
+Bootstrap: Resample your data with replacement. Recompute statistic for each resample. Build empirical distribution of statistic.
+
+Idea: Your sample represents population. Resampling approximates sampling distribution without assuming distribution shape.
+
+Procedure:
+
+Step 1: Start with sample of n observations.
+
+Step 2: Resample n observations with replacement (some repeat, some excluded).
+
+Step 3: Compute statistic (mean, median, correlation, anything).
+
+Step 4: Repeat steps 2-3 many times (1000, 10000, ...).
+
+Step 5: Analyze distribution of computed statistics.
+
+Example: Customer spending {$50, $60, $70, $80, $100}.
+
+Mean = $72.
+
+Bootstrap:
+- Resample 1: {$60, $100, $50, $70, $80}. Mean = $72.
+- Resample 2: {$50, $50, $60, $70, $100}. Mean = $66.
+- Resample 3: {$80, $80, $80, $100, $70}. Mean = $82.
+- ...
+- Resample 1000: {...}. Mean = $71.
+
+Distribution of 1000 means: 95th percentile $85, 5th percentile $60.
+
+95% confidence interval: [$60, $85].
+
+Advantages of bootstrap:
+
+1. No distribution assumptions.
+
+Analytical CI (e.g., t-distribution) assumes normality. Bootstrap doesn't.
+
+If data non-normal (skewed, heavy-tailed), bootstrap more robust.
+
+2. Works for any statistic.
+
+Mean, median, correlation, ratios, anything.
+
+Analytical methods exist for mean (easy), but median (hard).
+
+Bootstrap works for all equally.
+
+3. Captures asymmetry.
+
+Sampling distribution of non-normal statistics non-symmetric.
+
+Bootstrap captures asymmetry naturally.
+
+Analytical CI assumes symmetry.
+
+Example: Median of skewed data.
+
+Analytical CI (assuming symmetry): [35, 45] (symmetric around 40).
+
+Bootstrap CI: [33, 50] (asymmetric, captures skew).
+
+Reality: Asymmetric CI correct.
+
+When bootstrap is better:
+
+1. Non-normal data.
+
+Data clearly skewed, heavy-tailed, or multimodal.
+
+Example: Company size distribution (right-skewed). Bootstrap better.
+
+2. Small samples.
+
+n < 30. Normal approximation unreliable.
+
+Bootstrap more accurate (resamples actual data, not assumptions).
+
+3. Complex statistics.
+
+Median, trimmed mean, Gini coefficient.
+
+Analytical formula non-existent or complicated.
+
+Bootstrap: Compute for each resample.
+
+4. Quantiles and extremes.
+
+Want 99th percentile. Analytical formula tricky.
+
+Bootstrap: Just look at 99th percentile of bootstrap replicates.
+
+When analytical CI better:
+
+1. Large samples (n > 100).
+
+Central Limit Theorem. Sampling distribution approximately normal.
+
+Analytical formula faster, simpler.
+
+Bootstrap unnecessary computation.
+
+2. Computational resources scarce.
+
+Bootstrap needs 1000-10000 resamples. May be slow for huge datasets.
+
+Analytical formula instant.
+
+3. Distribution known.
+
+If you're confident data normal or exponential, analytical formula efficient.
+
+Practical example:
+
+Web analytics: Median pageviews per user.
+
+Data: {1, 2, 3, 5, 8, 1000} (right-skewed, one power user).
+
+Mean = 170 (inflated by outlier).
+Median = 4 (typical).
+
+Analytical 95% CI for median: Difficult formula, assumes symmetry.
+
+Bootstrap:
+- Resample 1: {1, 1, 3, 5, 8, 1000}. Median = 4.
+- Resample 2: {2, 3, 5, 8, 1000, 1}. Median = 5.
+- Resample 3: {1, 2, 3, 5, 8, 1000}. Median = 4.
+- ...
+- Bootstrap distribution of medians: 2.5th to 97.5th percentile = [3, 6].
+
+95% CI: [3, 6] (asymmetric, captures data).
+
+Interpretation: Median pageviews 4 [3, 6] (very wide, indicates variability).
+
+Bootstrap variants:
+
+1. Percentile bootstrap.
+
+Simple. Sort bootstrap replicates, take percentiles.
+
+Pro: Simple, intuitive.
+Con: Doesn't account for bias.
+
+2. BCa bootstrap (bias-corrected, accelerated).
+
+Adjusts for bias in bootstrap distribution.
+
+More accurate but complex.
+
+3. Block bootstrap (time series).
+
+For dependent data (time series, clusters), resample blocks (time windows).
+
+Preserves autocorrelation.
+
+Computational cost:
+
+Bootstrap 1000 resamples, n=1000 observations each.
+
+Computing mean 1000 times: Fast (< 1 second).
+
+Computing complex statistic 1000 times: Slower.
+
+For dataset millions: Parallelizable.
+
+Tradeoff: Speed vs accuracy.
+
+My approach: n < 30, non-normal, or complex statistic → bootstrap. n > 100, normal data, simple statistic → analytical (faster). When unsure, bootstrap (robust, no assumptions).`,
+      },
+      {
+        q: "Design a sequential testing framework that allows early stopping without inflating false positives.",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about mechanics, or full implementation? And tradeoff between speed and validity?
+
+For this, I'll design a complete framework.
+
+---
+
+Challenge: Want to stop test early if winner clear. But peeking (checking p-value repeatedly) inflates false positive rate.
+
+Standard A/B test: Run to planned sample size, check p-value once. α = 0.05.
+
+Sequential test with peeking: Check p-value daily. Stop when p < 0.05.
+
+Problem: P(false positive) > 5% (maybe 15% with daily peeking for 20 days).
+
+Solution: Sequential testing with group sequential design (GSD).
+
+Framework design:
+
+Step 1: Pre-specify stopping rules.
+
+Interim analysis points: Time 1, 2, 3, ... (every 1000 samples, every week, etc).
+
+At each interim, decide: Continue, Stop for efficacy, Stop for futility.
+
+Boundaries: Upper bound (declare winner), Lower bound (declare loser), Continue zone.
+
+Step 2: Allocate alpha across looks.
+
+Overall α = 0.05 across all interim analyses.
+
+Don't use α = 0.05 at each interim (would inflate to 15%+).
+
+Allocate smaller α to each interim.
+
+Methods:
+
+A. O'Brien-Fleming boundary (conventional).
+
+First interim: α1 = 0.001 (very stringent).
+Mid-point: α2 = 0.014.
+Final: α3 = 0.048 (less stringent later).
+
+Rationale: Early, with limited data, set high bar. Later, with more data, relax.
+
+B. Pocock boundary.
+
+Equal α at each interim: α = 0.016 (for 3 looks, total 5%).
+
+Uniform allocation. Simpler but less efficient (harder to stop early).
+
+C. Alpha spending function.
+
+Smooth allocation of α over time (not discrete looks).
+
+Efficient and flexible.
+
+Example:
+
+Total α = 0.05.
+
+Planned looks at 25%, 50%, 75%, 100% of sample size.
+
+O'Brien-Fleming boundaries:
+
+At 25%: If Z-stat > 2.96, stop (efficacy). P-value < 0.0015 (extremely strong evidence).
+
+At 50%: If Z-stat > 2.15, stop. P-value < 0.016.
+
+At 100%: If Z-stat > 1.96, stop. P-value < 0.05.
+
+If Z never exceeds boundary: Continue to next interim.
+
+Step 3: Implement futility stopping.
+
+Lower boundary: If effect small (unlikely to win), stop and save resources.
+
+Example: Baseline 5% conversion.
+
+At 50% sample size (n=2000 per group):
+
+Actual results: Control 5.0%, Treatment 5.1% (0.1pp improvement).
+
+Predicted final result at current trend: Control 5.0%, Treatment 5.2% (0.2pp improvement).
+
+Futility: Small effect, power to detect it only 20% (underpowered).
+
+Decision: Stop test, don't expect significance.
+
+Step 4: Design for power under interim analyses.
+
+Standard A/B test: n = 2000 per group (achieves 80% power).
+
+Sequential test: Need larger final sample (due to earlier stopping possibility and repeated looks).
+
+Adjusted sample size: n = 2400 per group (accounts for efficiency loss from sequential looks).
+
+Example design:
+
+Baseline conversion 3%. MDE = 20% relative (3% → 3.6% = 0.6pp).
+
+Standard A/B test: n = 1500 per group (80% power, 5% α).
+
+Sequential test with 3 looks (25%, 50%, 100%):
+
+O'Brien-Fleming boundaries: α1=0.001, α2=0.014, α3=0.048.
+
+Adjusted n = 1600 per group (minimal increase for sequential looks).
+
+Interim analysis schedule:
+
+Look 1 (n=400/group): Does treatment show strong early promise? (needs p < 0.0015 to stop). Unlikely.
+
+Look 2 (n=800/group): Evidence accumulating? (needs p < 0.016 to stop). Maybe.
+
+Look 3 (n=1600/group): Final analysis (needs p < 0.048 to stop). Standard threshold.
+
+Practical implementation:
+
+Process:
+
+Week 1: Randomize 500 users per group.
+
+Week 2: 1000 users per group (interim 1). Check Z-stat.
+
+Z = 1.5 (p = 0.13). Below efficacy boundary (2.96). Continue.
+
+Check futility: Expected final effect 0.3pp. Still promising. Continue.
+
+Week 4: 2000 users per group (interim 2). Check Z-stat.
+
+Z = 2.1 (p = 0.018). Between boundaries. Continue.
+
+Check futility: Expected final effect 0.4pp. Likely to win at final. Continue.
+
+Week 6: 3200 users per group (interim 3, final). Check Z-stat.
+
+Z = 2.5 (p = 0.006). Exceeds efficacy boundary. STOP.
+
+Declare treatment winner. Effect = 0.5pp with p < 0.05.
+
+Advantage: Stopped early (saved 1600 user samples per group, real cost saved).
+
+Alternative scenario:
+
+Week 1: Z = 0.5 (p = 0.62). Continue.
+
+Week 2: Z = 0.8 (p = 0.42). Continue.
+
+Week 3: Z = 1.0 (p = 0.32). Check futility: Expected final effect 0.15pp (tiny). Probability detecting significant = 15%. Too low.
+
+Stop for futility. Don't implement treatment. No significant effect expected.
+
+Advantage: Saved resources (didn't complete full test).
+
+Adaptive designs (advanced):
+
+Pre-specified flexibility to adapt the design.
+
+Example: Mid-trial, realize initial sample size estimate wrong (either optimistic or pessimistic).
+
+Adaptive: Re-estimate sample size needed based on interim data.
+
+Increase sample if underpowered, or stop if clearly won.
+
+Preserves Type I error if adaptive rules pre-specified.
+
+Software:
+
+rpact (R package): Implements group sequential designs, adaptive designs, sample size calculations.
+
+Syntax: Specify interim time points, alpha boundaries, power. rpact computes operating characteristics.
+
+gsDesign (R package): Alternative.
+
+Reporting:
+
+\"A/B test with sequential analysis. Pre-specified interim looks at 50%, 100% of samples. O'Brien-Fleming boundaries. Results:
+
+- Interim 1 (n=1000): p=0.13, no evidence. Continue.
+- Final (n=2000): p=0.008, significant at adjusted α=0.048. Effect = 0.5pp [0.1, 0.9].\"
+
+Tradeoffs:
+
+Sequential: Faster decisions (stop early), resource-efficient.
+
+Trade-off: Slightly larger final sample if continue to end (due to efficiency loss from multiple looks).
+
+Power: 80% (same as standard, with careful boundary selection).
+
+My approach: For time-sensitive decisions (customer impact urgent), use sequential testing with O'Brien-Fleming boundaries. Pre-specify looks and boundaries. Use software to design and analyze. Report boundaries and adjusted p-values.`,
+      },
+      {
+        q: "What is regression discontinuity design? Give a business application.",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about mechanics, or full application? And when it works as causal inference?
+
+For this, I'll explain RDD and design an example.
+
+---
+
+Regression discontinuity (RDD): Causal inference at a threshold.
+
+Idea: Treatment assigned based on crossing a threshold. Causal effect estimated from discontinuity (sharp jump) at threshold.
+
+Simple example:
+
+Policy: Government grants $1000 to workers earning < $40k/year.
+
+Earnings distribution: Some earn $39.5k, others $40.5k.
+
+Those at $39.5k receive grant (treatment).
+Those at $40.5k don't (control).
+
+Workers just below and above threshold similar except for grant.
+
+Treatment assigned by rule (earnings threshold), not self-selection.
+
+Estimate causal effect: Outcome jump at $40k threshold = grant effect.
+
+Sharp vs fuzzy RDD:
+
+Sharp RDD: Treatment deterministically assigned by threshold.
+
+Example: Students scoring ≥ 80 admitted to honors program (treatment). < 80 not admitted.
+
+Causal inference: Jump in outcome at 80 = program effect.
+
+Fuzzy RDD: Treatment probabilistically assigned (threshold affects likelihood, not deterministic).
+
+Example: Students scoring ≥ 80 eligible for program. But some don't enroll (non-compliance).
+
+Causal inference trickier (must account for non-compliance).
+
+Business application: Discount threshold.
+
+Company offers 10% discount to customers spending ≥ $500 (annual).
+
+Question: Does discount increase loyalty (repeat purchase rate)?
+
+Data: Customers near threshold ($450-$550 annual spending).
+
+Those at $500+: Receive discount (treatment).
+Those < $500: No discount (control).
+
+RDD approach:
+
+Plot repeat purchase rate vs annual spending.
+
+Pre-$500: Customer spending $450-500, no discount. Repeat purchase rate gradually increases with spending (more loyal customers spend more).
+
+Post-$500: Same relationship might continue, OR jump up (discount causes increase).
+
+Estimate discontinuity: The sharp jump at $500 threshold.
+
+Visual: 45-degree trend line pre-$500. Same trend post-$500 but shifted up? Jump = treatment effect.
+
+Regression:
+
+Y_i = β0 + β1*(X_i - threshold) + β2*T_i + β3*T_i*(X_i - threshold) + error.
+
+Where:
+- Y_i = repeat purchase rate.
+- X_i = annual spending.
+- Threshold = $500.
+- T_i = 1 if X_i ≥ $500 (receives discount).
+- (X_i - threshold) = distance from threshold (continuous).
+
+β2 = discontinuity = causal effect of discount.
+
+β1 = slope pre-threshold.
+β3 = slope change post-threshold (if treatment affects trend).
+
+Example results:
+
+β0 = 30% (intercept at $500 spending, no discount).
+β1 = 0.05 (repeat rate increases 0.5pp per $100 spending).
+β2 = 5% (discontinuity = discount increases repeat rate 5pp).
+β3 = 0.02 (slope increases post-discount, but marginal).
+
+Interpretation:
+
+Customers at $500 spending: 30% repeat rate (no discount).
+
+With discount (estimated from jump): 35% repeat rate.
+
+Causal effect of discount: 5pp increase.
+
+Assumptions of RDD:
+
+1. Continuity (sharp RDD).
+
+Potential outcomes continuous at threshold.
+
+If only treatment assigned at threshold (no other policy change), outcomes continuous.
+
+Violation: If company also changes support/service at $500 (correlated with discount), discontinuity includes both effects.
+
+2. No manipulation of running variable (X).
+
+Customers can't perfectly manipulate spending to cross threshold.
+
+Example: Customer spending $475 intentionally pushes to $510 to get discount.
+
+If widespread, the similarity of $490 and $510 customers breaks down.
+
+Detection: Plot density of X. If sharp drop just below threshold → manipulation.
+
+3. Relevant threshold.
+
+Threshold must affect treatment meaningfully.
+
+Example: Discount offered at $500 but all customers informed, eligible. Then threshold less relevant (those below know they could spend more).
+
+Threat: Customers below threshold anticipate discount (future).
+
+4. Single running variable.
+
+RDD assumes treatment based on one threshold. Multiple thresholds or dimensions complicate inference.
+
+Advantages of RDD:
+
+Natural experiment. Treatment assigned by policy rule, not self-selection.
+
+Low risk of unmeasured confounding (at threshold, treatment nearly random).
+
+Doesn't require randomization (infeasible for policies).
+
+High internal validity if assumptions met.
+
+Disadvantages:
+
+Local estimate only. Effect at threshold, not elsewhere.
+
+Example: Discount effect at $500 might not generalize to $2000 spenders (different customer type).
+
+Smaller sample. Only customers near threshold valid for inference.
+
+Example: To study $500 threshold, use $400-$600 customers (tight bandwidth). Excludes most data.
+
+Sensitivity to bandwidth (how far from threshold to include).
+
+If bandwidth ±$50, get different effect than ±$100.
+
+Practical robustness:
+
+Vary bandwidth: Estimate effect with ±$50, ±$75, ±$100. Do results consistent?
+
+If yes, robust. If effect disappears with different bandwidth, fragile.
+
+Placebo test:
+
+Estimate discontinuity at false thresholds (where no treatment).
+
+Example: Analyze repeat purchase rate at $300 threshold (no policy threshold).
+
+Should see no discontinuity (parallel lines).
+
+If discontinuity exists at placebo threshold, RDD assumption violated (confounding at threshold).
+
+Fuzzy RDD example:
+
+Policy: Students scoring ≥ 1500 on SAT eligible for scholarship. But not all eligible enroll (some decline).
+
+Question: Does scholarship increase graduation?
+
+Fuzzy RDD:
+
+Probability of receiving scholarship jumps at 1500 (90% below, 80% above due to eligibility and non-compliance).
+
+Estimate: Causal effect of scholarship on graduation at threshold (using receipt as instrument).
+
+More complex but handles real-world non-compliance.
+
+My approach: RDD for policy thresholds (eligibility rules, eligibility changes). Plot data around threshold visually. Check for continuity/manipulation. Estimate discontinuity via regression. Vary bandwidth for robustness. Report local effect (at threshold).`,
+      },
+      {
+        q: "How do you handle the multiple testing problem in a company that runs hundreds of experiments per year?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about statistical corrections, or operational framework? And how to scale across the organization?
+
+For this, I'll design a scalable system.
+
+---
+
+Challenge: Run 300 experiments/year across teams. Each team independently testing. Without central control, false positives explode.
+
+Problem: Each experiment α=0.05. With 300 tests, expected false positives ≈ 15.
+
+Conclusion: ~15 'discoveries' are noise. Costly to implement noise.
+
+Operational framework:
+
+Layer 1: Centralized approval & registration.
+
+All experiments pre-registered before launch.
+
+Central review: Approve hypothesis, success metric, sample size.
+
+Reject weak hypotheses (e.g., unclear mechanism, unrealistic effect size).
+
+Goal: Reduce unnecessary testing. Quality > Quantity.
+
+Register to prevent p-hacking (can't change hypothesis mid-stream).
+
+Layer 2: Shared traffic allocation.
+
+Single traffic pool. Allocate across all experiments.
+
+Algorithm: Allocate proportional to expected value.
+
+EV = (Estimated effect size × Effect value) / Sample size needed.
+
+Prioritize tests with high EV (large expected impact, small sample needed).
+
+Prevents resource waste on low-value tests.
+
+Layer 3: Statistical control - FDR.
+
+Use False Discovery Rate (FDR) across all experiments.
+
+FDR 10%: Among all discoveries (p < threshold), 10% false on average.
+
+Procedure: Collect p-values from all 300 tests. Apply Benjamini-Hochberg FDR control.
+
+Threshold: p < threshold_FDR (computed to achieve 10% FDR).
+
+Instead of p < 0.05 (which would allow ~15 false positives), use p < 0.001 (more stringent, ~10% of discoveries false).
+
+Example:
+
+300 experiments, 50 have p < 0.05.
+
+Naive: Declare all 50 winners (expect 2.5 false).
+
+FDR 10%: Declare those with p < 0.001 (~15 tests). Expect 1.5 false.
+
+Advantage: Catches most true positives, controls false discovery rate.
+
+Layer 4: Hierarchical testing.
+
+Tier 1: High-impact tests (revenue, engagement). Higher standard (p < 0.01).
+
+Tier 2: Medium-impact. Standard (p < 0.05).
+
+Tier 3: Exploratory, low-stakes. Lenient (p < 0.10).
+
+Allocate correction by tier.
+
+Tier 1: Bonferroni over 50 tests → α' = 0.0005 each (very stringent, only strongest effects).
+
+Tier 2: FDR 10% over 150 tests → adjust threshold to achieve FDR.
+
+Tier 3: Exploratory, no correction (just report caveats).
+
+Advantage: Important tests scrutinized heavily. Exploratory tests faster.
+
+Layer 5: Replication requirement.
+
+Winners from first cohort (Jan-Mar) replicated in second cohort (Apr-Jun) on fresh users.
+
+Only declare definitive winner if both cohorts significant.
+
+Reduces false positives (must fool twice, unlikely).
+
+Tradeoff: Slower conclusions, but higher confidence.
+
+Example:
+
+First cohort: 100 tests. 10 winners (p < 0.05).
+
+Second cohort: Re-test same 10 on new users.
+
+Expected: 5 replicate (true effects). 5 don't (false positives).
+
+Only declare 5 winners as definitive.
+
+Layer 6: Effect size requirement.
+
+Not just p-value. Also require meaningful effect size.
+
+Example: Button color test shows p < 0.05 but effect size 0.01% lift.
+
+Tiny effect. Not worth implementing (cost > benefit).
+
+Rule: Declare winner only if:
+(1) p < threshold AND
+(2) Effect size > MDE (minimum detectable effect).
+
+MDE pre-specified. Based on business value.
+
+Example: Discount feature. MDE = 2% revenue lift (less not worth engineering cost).
+
+Button color test: Effect = 0.01%. Below MDE. Don't implement despite p < 0.05.
+
+Layer 7: Continuous monitoring.
+
+Dashboard: All 300 experiments. Real-time p-values, effect sizes, sample sizes.
+
+Alert: If large batch of tests declare significance simultaneously (unusual), investigate.
+
+May indicate data quality issue, seasonal confound, or just noise.
+
+Monitor for temporal clustering of false positives.
+
+Layer 8: Infrastructure.
+
+Experimentation platform (Optimizely, Statsig, Eppo): Built-in power calc, multiple testing control, dashboards.
+
+Standardizes methodology across teams.
+
+Prevents rogue teams from p-hacking.
+
+Sample operational example:
+
+Q1 planning:
+
+100 experiments submitted.
+
+Central review approves 70 (reject 30 low-quality hypotheses).
+
+Prioritized by EV: Top 20 tests allocated 50% traffic. Next 30 tests 30%. Remaining 20 tests 20%.
+
+Execution:
+
+Week 1-4: Run all 70 tests concurrently.
+
+Weekly dashboard: P-values updating.
+
+Early wins (p < 0.001 by week 2): Flag as strong evidence.
+
+Mid-test: Some tests reach futility threshold (0.3 failure probability). Stop, save traffic.
+
+Results analysis:
+
+70 tests, 15 have p < 0.05.
+
+FDR control: Adjust threshold to achieve FDR 10%.
+
+15 tests: Expected 1.5 false discoveries. Declare 12 as winners (discard 3 with weakest p-values as likely false).
+
+Replication phase:
+
+Q2: Re-test same 12 on new users.
+
+6 replicate. 6 don't (false positives caught!).
+
+Declare 6 definitive.
+
+Implementation:
+
+6 winners engineered, deployed.
+
+Est. combined impact: $2M annual revenue.
+
+Cost of false positive: ~$100k engineering + opportunity cost.
+
+With replication: Avoided 6 false implementations = $600k saved.
+
+Reporting:
+
+\"Q1: 70 experiments, 6 winners. 12 validated, 6 failed replication. Estimated impact $2M. Multiple testing control: FDR 10%, replication required.\"
+
+Tradeoffs:
+
+Stringent control: Fewer false positives, but fewer true discoveries (power loss).
+
+Loose control: More false positives, but faster innovation (type I error inflation).
+
+Optimal: Tier the standard. Important features stringent. Exploratory lenient.
+
+My approach: FDR control (not Bonferroni) across portfolio. Pre-register tests. Require replication on new users. Effect size + p-value both needed. Platform-based for consistency.`,
+      },
+      {
+        q: "Explain empirical Bayes. When would you use it instead of frequentist methods?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about mechanics, or when Bayes outperforms frequentist? And computational aspects?
+
+For this, I'll explain empirical Bayes and selection criteria.
+
+---
+
+Empirical Bayes (EB): Use data to estimate prior distribution, then apply Bayes theorem.
+
+Combines frequentist (data-driven) and Bayesian (prior-based) approaches.
+
+Standard Bayes: Specify prior P(θ) + likelihood P(data | θ) → posterior P(θ | data).
+
+Problem: Prior often subjective. Different people, different priors, different posteriors.
+
+Empirical Bayes: Estimate prior from data empirically.
+
+Procedure:
+
+Step 1: Assume prior distribution form (e.g., normal, beta).
+
+Step 2: Estimate prior parameters from data empirical distribution.
+
+Example: Estimate prior mean μ and variance σ² from data marginal distribution.
+
+Step 3: Use estimated prior in Bayes theorem.
+
+Posterior ∝ Likelihood × Prior (using estimated prior).
+
+Example: Estimating treatment effects across many experiments.
+
+Data: 100 A/B tests. Each test has estimated effect ± SE.
+
+Test 1: effect = 5%, SE = 2%.
+Test 2: effect = -1%, SE = 2%.
+Test 3: effect = 8%, SE = 2%.
+...
+
+Frequentist approach: Each test standalone. Confidence interval for each effect.
+
+Problem: Some 'significant' (p < 0.05) are likely false positives. With 100 tests, ~5 false.
+
+Empirical Bayes:
+
+Step 1: Estimate prior on true effect distribution.
+
+Marginal distribution of all 100 estimated effects: Mean = 2%, SD = 6%.
+
+Prior ~ Normal(mean=2%, SD=6%).
+
+Interpretation: Before seeing individual test, believe effect ~2% (typical across company).
+
+Step 2: Apply Bayes for each test.
+
+Test 1: Estimate = 5%, SE = 2%.
+
+Posterior = (Likelihood × Prior) / Evidence
+
+Combines prior belief (effect ~2%) with observed data (effect 5%).
+
+Posterior mean ≈ 3.5% (between prior 2% and observed 5%, weighted by precision).
+
+Posterior SD ≈ 1.5% (narrower than SE 2%, prior knowledge helps).
+
+Interpretation: More likely effect is 3.5% than 5% (prior pulls estimate down).
+
+Test 2: Estimate = -1%, SE = 2%.
+
+Posterior mean ≈ 1% (between prior 2% and observed -1%). Posterior SD ≈ 1.5%.
+
+Interpretation: Observed negative effect surprising given prior. Prior pulls up to 1%.
+
+Advantage: Shrinkage estimator. Extreme values shrunk toward prior.
+
+Reduces variance at cost of bias (but net improvement when prior good).
+
+When empirical Bayes better than frequentist:
+
+1. Many related estimates.
+
+Many tests (100+) estimated independently. Some noisy (large SE). Prior helps.
+
+Empirical Bayes shrinks noisy estimates toward overall mean. Reduces false positives.
+
+2. Resource constraints.
+
+Prior information available (e.g., past tests, domain knowledge, hierarchical structure).
+
+Prior summarizes this knowledge. EB leverages it.
+
+Frequentist ignores prior, recomputes from scratch (wasteful).
+
+3. Decision-making with uncertainty.
+
+Want posterior probability P(effect > threshold), not just p-value.
+
+Bayesian naturally provides posterior (frequentist p-value indirect proxy).
+
+Example: \"Probability effect > 2% (business meaningful)\" = 73%.
+
+Business decision: Implement if P(effect > 2%) > 70%. Easy threshold.
+
+4. Small samples.
+
+Few observations, large uncertainty.
+
+Prior knowledge essential. EB combines data + prior optimally.
+
+Frequentist standard error large, estimate unreliable.
+
+When frequentist better:
+
+1. No good prior available.
+
+Prior unspecified, subjective.
+
+Frequentist doesn't assume prior (more objective).
+
+Risk: EB with bad prior biases toward prior. Frequentist more robust.
+
+2. Adversarial setting.
+
+Someone challenges your analysis.
+
+Frequentist: \"I didn't assume anything, just data and standard test.\"
+
+Bayesian: \"I assumed prior here.\" Easier to challenge prior.
+
+Frequentist more defensible in adversarial contexts.
+
+3. Computational complexity.
+
+Empirical Bayes requires fitting prior (optimization step).
+
+Frequentist: Closed-form, instant.
+
+EB: Iterative fitting, slower (minor issue with modern computing).
+
+Practical example: Personalization in e-commerce.
+
+Company tests 1000 product variants. Each variant shown to 50 users.
+
+Measure conversion rate for each variant.
+
+Observed: Variant A 10%, B 8%, C 15%, ...
+
+Frequentist approach:
+
+95% CI for each variant. Some narrow (precise), some wide (noisy).
+
+Declare winners based on p < 0.05 (highest p).
+
+Problem: Variant C observed 15% (7 conversions / 50). But with small sample, high variance.
+
+True conversion might be 10%. Declare winner falsely.
+
+Empirical Bayes:
+
+Estimate prior on true conversion rates across all variants.
+
+Marginal distribution of observed rates: Mean = 10%, SD = 5%.
+
+Prior ~ Beta(mean=10%, SD=5%).
+
+For variant C:
+
+Posterior mean ≈ 12% (between prior 10% and observed 15%, more conservative than observed).
+
+Posterior SD ≈ 3% (narrower than observed SE, benefited from prior).
+
+Interpretation: Best estimate is 12%, not 15%.
+
+Variant A (observed 10%):
+
+Posterior mean = 10% (observed matches prior).
+
+No shrinkage.
+
+Result: Use posterior means for ranking variants.
+
+Best variant: Posterior mean 12%, not observed 15%.
+
+Risk of deploying Variant C (true conv 10%, waste) reduced.
+
+Hierarchical models (related to EB):
+
+Multilevel model: Groups (variants, customers, stores) with nested structure.
+
+Prior on group means (hierarchical prior).
+
+EB estimates group-specific effects + overall mean simultaneously.
+
+Example: Customer lifetime value (LTV).
+
+1000 customers. Estimate each customer LTV.
+
+Hierarchical: LTV_i ~ N(μ, σ²).
+
+μ = overall mean LTV.
+σ² = variance between customers.
+
+EB estimates μ and σ² from data.
+
+Individual customer LTV shrunk toward μ (avoid overfitting noisy customers).
+
+My approach: Empirical Bayes when many related estimates (100+ experiments, variants, cohorts) with varying sample sizes. Reduces false discoveries, leverages prior knowledge. Frequentist when prior unavailable or adversarial context. For most applications, empirical Bayes wins.`,
+      },
+      {
+        q: "Design a Bayesian A/B testing system. What are the advantages over frequentist testing?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about the system design, or frequentist comparison? And practical implementation?
+
+For this, I'll design a complete Bayesian system and contrast.
+
+---
+
+Bayesian A/B testing:
+
+System flow:
+
+1. Pre-specify priors.
+
+Prior on control conversion rate: Beta(α0=10, β0=90).
+
+Interpretation: Prior belief: control ≈ 10% conversion (α0 successes, β0 failures observed).
+
+Prior on treatment effect: Normal(mean=0, SD=2%).
+
+Interpretation: Prior belief: treatment effect ≈ 0% (skeptical of improvements).
+
+Why priors matter: Encode domain knowledge. Reduce sample size needed.
+
+Example: Company has 100 past experiments. Treatment avg effect = 2% (sometimes positive, sometimes negative, overall neutral).
+
+This 100-experiment history → prior (2% mean, 5% SD).
+
+New test: Prior pulls estimate toward 2%. Reduces samples needed to reach conclusion.
+
+2. Run experiment, update as you go.
+
+As data arrives (daily), update posterior.
+
+Day 1: 100 users control (11 convert), 100 treatment (14 convert).
+
+Posterior control: Beta(10+11, 90+89) = Beta(21, 179). Mean ≈ 10.5%.
+
+Posterior treatment: Beta(10+14, 90+86) = Beta(24, 176). Mean ≈ 12%.
+
+Posterior effect: Treatment 12% - Control 10.5% = 1.5%.
+
+Day 7: 700 users each.
+
+Posterior control: Beta(10+70, 90+630) = Beta(80, 720). Mean ≈ 10%.
+
+Posterior treatment: Beta(10+95, 90+605) = Beta(105, 695). Mean ≈ 13%.
+
+Effect: 13% - 10% = 3%.
+
+3. Decision rule.
+
+Frequentist: Check p-value. If p < 0.05, declare winner.
+
+Bayesian: Check posterior probability. If P(treatment > control | data) > 95%, declare winner.
+
+Or: P(treatment effect > 1% [meaningful]) > 90%, declare winner.
+
+Example:
+
+Posterior samples (1000 MCMC draws):
+
+Treatment effect: Mean 3%, SD 1.5%.
+
+P(effect > 2%) = 72% (posterior probability effect meaningful).
+
+P(effect > 0%) = 88% (posterior probability effect positive).
+
+Decision rule: \"If P(effect > 0%) > 95% AND P(effect > 2%) > 70%, implement treatment.\"
+
+Day 30: P(effect > 0%) = 97%, P(effect > 2%) = 72%.
+
+Both thresholds met → Implement.
+
+4. Stop rule.
+
+Frequentist: Run to pre-specified sample size (n=2000 per group).
+
+Bayesian: Flexible. Stop when:
+- P(treatment > control) > 95% (posterior certainty), OR
+- P(treatment > control) < 5% (treatment worse), OR
+- Loss from further testing > benefit.
+
+Example:
+
+After 1500 samples per group: P(effect > 0%) = 98%.
+
+Very confident treatment positive. Stop. Don't need 2000.
+
+Savings: 500 samples = 2-4 weeks faster.
+
+Full system design:
+
+Step 1: Architecture.
+
+Dashboard: Real-time posterior updates.
+
+Experiment pipeline: Randomize users → Log conversions → Update posteriors daily.
+
+Automation: If stopping rule met, alert team. Can stop/implement automatically.
+
+Step 2: Priors.
+
+Establish prior committee: Data scientists, product managers.
+
+For each metric type (conversion, engagement, revenue), define prior.
+
+Metric: Email open rate.
+
+Historical data: 100 past campaigns. Mean open 25%, SD 5%.
+
+Prior: Beta(α, β) fit to mean 25%, SD 5%.
+
+α = 50, β = 150. Beta(50, 150). Mean = 25%.
+
+Store in platform. All email tests use this prior by default.
+
+Step 3: Posterior computation.
+
+For binary outcome (conversion yes/no): Conjugate prior (Beta) + likelihood (Binomial) → posterior (Beta).
+
+Closed-form. No MCMC needed. Fast.
+
+For continuous outcome (revenue per user): Non-conjugate. Use MCMC (Markov Chain Monte Carlo).
+
+Slower but necessary.
+
+Step 4: Decision rules.
+
+Different rules for different contexts.
+
+High-stakes (major product change): Strict rule. P(effect > 0%) > 99% AND effect > $10 per user.
+
+Low-stakes (button color): Lenient. P(effect > 0%) > 85%.
+
+Step 5: Monitoring.
+
+Dashboard shows:
+
+- Posterior mean effect.
+- 95% Credible Interval (Bayesian equivalent of CI).
+- P(effect > 0%).
+- P(effect > MDE).
+- Expected stopping date.
+
+Update every hour (not just at final analysis).
+
+Advantages of Bayesian vs Frequentist:
+
+1. Intuitive decisions.
+
+Frequentist: p < 0.05 → significant. Hard to interpret (p-value is P(data | null), not P(null | data)).
+
+Bayesian: P(effect > 0% | data) = 95%. Direct. \"95% probability effect is positive.\"
+
+Business stakeholders grasp Bayesian easily.
+
+2. Sequential analysis without p-hacking inflation.
+
+Frequentist: Peeking inflates false positive rate. Must pre-specify sample size.
+
+Bayesian: Check posterior anytime. No inflation. Posterior valid at any sample size.
+
+Why: Bayesian uses all information (prior + data). No multiple testing problem.
+
+Frequency interpretation of Bayesian: If you repeated experiment with many different data, 95% of posteriors contain true effect (valid regardless of peeking).
+
+3. Flexible stopping.
+
+Frequentist: Run to fixed n. Wastes time if effect obvious early.
+
+Bayesian: Stop early if confident, or stop late if uncertain. Maximize efficiency.
+
+Example: Test obvious winner (large effect). Bayesian declares winner in 2 weeks. Frequentist forces 4 weeks.
+
+4. Incorporate prior knowledge.
+
+Frequentist: Ignores domain knowledge. Re-learns from scratch each test.
+
+Bayesian: Prior encodes knowledge. Reduces sample size.
+
+Example: New email test. Company knows email typical effect +2-3% from 50 past tests.
+
+Prior: Normal(2.5%, SD=2%).
+
+Bayesian test: n=800 per group (prior knowledge helps, smaller sample).
+
+Frequentist: n=1200 per group (ignores prior, needs larger sample for same power).
+
+5. Posterior provides full distribution.
+
+Frequentist: p-value (single number). Minimal info.
+
+Bayesian: Full posterior distribution. Can answer any question.
+
+\"What's P(effect between 1% and 3%)?\" → Integrate posterior. Easy.
+
+Frequentist: p-value doesn't answer this.
+
+Example: Treatment effect posterior Normal(2%, 1%).
+
+P(effect > 2%) = 50%.
+P(1% < effect < 3%) = 68%.
+P(effect < 0%) = 2%.
+
+Disadvantages of Bayesian:
+
+1. Prior subjectivity.
+
+Frequentist: No prior (objective).
+
+Bayesian: Must specify prior. Choice affects results.
+
+Mitigation: Sensitivity analysis. Test with different priors. If conclusion robust, prior doesn't matter. If prior-sensitive, state assumption.
+
+2. Computational complexity.
+
+Frequentist: Closed-form p-value (instant).
+
+Bayesian: MCMC for complex models (slow, must verify convergence).
+
+Mitigation: Use conjugate priors (closed-form) when possible. Software optimized (Stan, PyMC).
+
+3. Unfamiliar to teams.
+
+Frequentist: Standard in business (p < 0.05 widely understood).
+
+Bayesian: Less familiar. Training required.
+
+Mitigation: Good platform/visualization. Posterior probability intuitive once explained.
+
+Practical implementation example:
+
+E-commerce: Button color test (red vs blue).
+
+Prior:
+
+Button color past experiments: Mean effect 0.5%, SD 1.5% (usually negligible).
+
+Prior: Normal(0.5%, 1.5%).
+
+Experiment:
+
+Week 1: 500 users per group.
+
+Red: 22 conversions (4.4%).
+Blue: 28 conversions (5.6%).
+Observed effect: 1.2%.
+
+Posterior: Normal(1.0%, 0.8%) (pulled toward prior 0.5%, updated by observed data).
+
+P(blue > red) = 75%.
+
+Decision: Not confident enough. Continue.
+
+Week 2: 1500 users per group.
+
+Red: 66 conversions (4.4%).
+Blue: 84 conversions (5.6%).
+Observed effect: 1.2% (same as week 1).
+
+Posterior: Normal(1.15%, 0.5%) (confident due to larger sample, effect consistent).
+
+P(blue > red) = 92%.
+
+Decision: Still not meeting threshold (need > 95%). Continue.
+
+Week 3: 2500 users per group.
+
+Effect stable 1.2%. Posterior: Normal(1.18%, 0.4%).
+
+P(blue > red) = 96%.
+
+Decision: Threshold met. Stop. Declare blue winner.
+
+Question: Is 1.2% effect business-valuable?
+
+P(effect > 2%) = 15% (unlikely strong effect).
+
+Business: Implement if effect > 0.5% acceptable. P(effect > 0.5%) = 91%.
+
+Implement blue. Estimated $0.5M annual uplift (1.2% × revenue × margin).
+
+Comparison to frequentist:
+
+Frequentist: Fixed n=2000 per group.
+
+Week 3: n=2000 reached. p-value = 0.038 (significant at p < 0.05).
+
+Declare blue winner. Same conclusion, but took 3 weeks to reach pre-specified sample.
+
+Bayesian: Reached decision in 2.5 weeks (2500 users, almost 1/4 samples, similar timeline but more efficient interpretation).
+
+Bigger savings on tests with larger effects (Bayesian stops much earlier).
+
+My approach: Bayesian for business A/B testing (intuitive decisions, flexible stopping, prior knowledge). Frequentist for research (objectivity valued over efficiency) or adversarial contexts. Platform should support both.`,
+      },
+      {
+        q: "How do you estimate the long-term effect of a feature when your A/B test only ran for 2 weeks?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about mechanisms, or practical estimation methods? And when short-term predicts long-term?
+
+For this, I'll explain challenges and solutions.
+
+---
+
+Problem: A/B test runs 2 weeks. But feature impact matters over 6-12 months (habit formation, network effects, seasonality).
+
+Can 2-week result predict 6-month result?
+
+Sometimes yes, sometimes no. Depends on mechanism.
+
+Example 1 (short-term predictive):
+
+Free shipping on first order.
+
+2-week test: 5% increase in purchases (immediate effect).
+
+6-month follow-up: 5% increase sustained (behavior became habit).
+
+Why: Shipping cost benefit immediate and persistent. Short-term predicts long-term.
+
+Example 2 (short-term not predictive):
+
+Referral bonus ($10 per friend).
+
+2-week test: 20% increase in referrals (people motivated by bonus).
+
+6-month follow-up: 10% increase (novelty wore off, bonus fatigue).
+
+Why: Behavioral response (bonus excitement) fades. Short-term ≠ long-term.
+
+Example 3 (long-term differs from short-term):
+
+Complex feature (new dashboard).
+
+2-week test: No effect (learning curve, adoption slow).
+
+6-month follow-up: 8% engagement increase (users learned feature, now use it).
+
+Why: Network/learning effects take time. Short-term worse than long-term.
+
+Methods to estimate long-term:
+
+Method 1: Extend test duration.
+
+Best: Run test 6 months if feasible.
+
+Pros: Direct measurement. No extrapolation risk.
+Cons: Long time to decision. Business can't wait. Seasonality (e.g., holiday effects) interfere.
+
+Practical: Run 4 weeks (compromise). Capture most short-term, some medium-term effects.
+
+Method 2: Proxy metrics.
+
+Short-term: Usage, engagement (easy to measure, immediate effect).
+
+Long-term: Retention, LTV, churn (hard to measure early, but better predictive).
+
+Example: Notification feature test (2 weeks).
+
+Short-term metric: Click-through rate (CTR) on notifications (40% increase).
+
+Long-term proxy: Email engagement (opened emails, clicked links).
+
+If notification CTR ↑ AND email engagement ↑, likely retention improves (notifications complement engagement habit).
+
+Relationship: Short-term CTR + email engagement → 6-month retention impact.
+
+Method 3: Cohort analysis.
+
+Compare early users (long history) to recent users.
+
+Ask: Do early users (exposed longer to feature) have better LTV than recent users?
+
+Example: Referral feature launched 6 months ago. Early users exposed 6 months. Recent users exposed 2 weeks.
+
+Cohort LTV:
+- Early cohort: $500 LTV.
+- Recent cohort: $450 LTV.
+- Difference: $50 (potential long-term impact, but confounded by selection bias and market changes).
+
+Use DiD (difference-in-differences) to remove confounds: Compare early vs recent, treatment vs control.
+
+Method 4: Observational model.
+
+Model: LTV = f(usage, engagement, time_since_feature_adoption, cohort, other features).
+
+Use observational data (past feature adoptions) to estimate long-term impact.
+
+Example: Company introduced 10 features past year.
+
+For each feature, model: LTV = β0 + β1*adoption + β2*usage + ... + error.
+
+β1 = long-term causal effect of adoption (estimate from past data).
+
+Assume new feature has similar long-term effect (risky assumption).
+
+Pros: Faster (use past data, don't wait).
+Cons: Confounding bias (adoption + heavy usage → selection bias).
+
+Method 5: Theoretical model / Mechanism.
+
+Think through mechanism.
+
+How does feature drive long-term value?
+
+(a) Network effects: Value grows with adoption. 2-week test can't capture full network benefit (small group). Extrapolate: 50% adoption → 2x value.
+
+(b) Habit formation: Usage → habit → sticky. 2-week test captures early habit. Assume stabilizes in 4 weeks.
+
+(c) Novelty decay: Initial boost fades. 2-week ↑20%. Decay factor 10% per month → 6-month ↓ 10%.
+
+Build model: LTV_6month = LTV_2week * multiplier(mechanism).
+
+Example: Gamification feature (points, badges).
+
+Mechanism: Habit formation + novelty decay.
+
+2-week effect: +15% engagement.
+
+Habit curve: Stabilizes 80% of effect after 6 weeks. Decay: -2% per month after stabilization.
+
+6-month LTV: +15% * 0.8 (habit retention) * (1 - 2% * 5 months) ≈ +9.6% engagement.
+
+Method 6: A/A test with historical data.
+
+Split users: Those exposed to feature X weeks ago vs recently.
+
+If short-term = long-term, effect consistent across time horizons.
+
+If effect decays, effect smaller for early adopters (exposed longer).
+
+Example: Free trial feature (removed paywall for week 1).
+
+2-week test: 30% increase in sign-ups.
+
+Cohorts:
+- Exposed 1 month ago: Conversion 8% (before free trial).
+- Exposed 1 week ago: Conversion 8% (before free trial) → 10% (during free trial).
+
+After free trial removed:
+- Exposed 1 month ago: Conversion 7% (return to baseline, trial effect gone).
+- Exposed 1 week ago: Conversion 8% (still in trial window).
+
+Extrapolation: Effect temporary. Estimate 6-month impact: 0% (trial ends, reversion).
+
+Tradeoffs:
+
+Method 1 (extend test): Most accurate, but slow.
+
+Method 2 (proxy): Fast, but depends on proxy quality.
+
+Method 3 (cohort): Fast, but confounded.
+
+Method 4 (observational model): Leverages past data, but selection bias.
+
+Method 5 (mechanism): Transparent, but requires domain knowledge.
+
+Method 6 (A/A test): Data-driven, but requires historical cohort data.
+
+Practical strategy:
+
+Combine methods:
+
+1. Run 4-week test (vs 2-week). Better short-term estimate.
+
+2. Identify mechanism (habit vs novelty vs network).
+
+3. Collect proxy metrics (engagement, retention early signals).
+
+4. Compare to similar past features (cohort analysis).
+
+5. Model: Short-term 4-week effect * multiplier(mechanism, proxies) = long-term estimate.
+
+Example decision:
+
+Feature test 4 weeks. Effect +3% revenue.
+
+Mechanism: Checkout optimization (reduced friction). → Likely sticky (not novelty-driven).
+
+Proxies: Abandon rate (improved), repeat purchase (improved).
+
+Past features: Similar friction-removal had 0.9 sustained rate (90% of effect persists).
+
+Long-term estimate: 3% * 0.9 = 2.7% revenue impact.
+
+Decision: Implement. Expected $2.7M annual impact (conservatively).
+
+When short-term predicts long-term:
+
+✓ Value from friction reduction (speed, convenience).
+✓ Value from quality improvement (feature better).
+✓ Value from recurring tasks (habit-forming).
+
+✗ Value from novelty (excitement wears off).
+✗ Value from behavioral incentives (temporary motivation).
+✗ Value with network effects (full benefit needs scale).
+
+My approach: Run test 3-4 weeks (better than 2). Measure proxies (engagement, retention early indicators). Identify mechanism. Compare to similar past features. Estimate long-term as short-term * adjustment(mechanism, evidence).`,
+      },
+      {
+        q: "Your experiment shows a statistically significant negative result. The PM wants to ship anyway because qualitative feedback is positive. What do you recommend?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about arbitration process, or statistical / business framework? And how to resolve disagreement?
+
+For this, I'll provide a decision framework.
+
+---
+
+Scenario:
+
+A/B test results: Treatment 4.8% conversion, Control 5.2% conversion. Difference -0.4pp. p < 0.05 (statistically significant harm).
+
+PM feedback: \"Users loved it. Survey feedback 9/10. Let's ship anyway.\"
+
+Your job: Recommend yes/no, with evidence and reasoning.
+
+Core tension:
+
+Quantitative (experiment): Negative effect.
+
+Qualitative (survey, interviews): Positive sentiment.
+
+Who's right?
+
+Both. But different.
+
+Experiments measure behavior (what users actually do).
+
+Surveys measure sentiment (what users say they like).
+
+Humans often do and say different things.
+
+Example: Diet app.
+
+Experiment: Users with app have lower weight loss (cohort using app lost 2 lbs, control 4 lbs). Feature failing.
+
+Survey: Users love app (\"Makes tracking fun, motivates me\").
+
+Explanation: App fun but ineffective. Gamification entertains, doesn't change behavior. Or placebo (users expect app to work, report positive feeling, but doesn't change actual weight loss).
+
+Decision framework:
+
+Step 1: Understand the disagreement.
+
+Different metrics?
+
+Experiment measures: Conversion (revenue metric).
+
+Survey measures: User delight (engagement metric).
+
+Possible: Feature reduces conversion but increases engagement. No contradiction. Both true.
+
+Example: Add ads (annoying but monetizable). Engagement ↓ (users hate ads), Revenue ↑ (ad revenue). Trade-off, not disagreement.
+
+Different populations?
+
+Experiment: Sample 5000 users (representative average).
+
+Survey: Sample 100 (self-selected enthusiasts, biased).
+
+Enthusiasts love feature. Average user doesn't. Survey biased.
+
+Different time horizons?
+
+Experiment: 2-week test (short-term harm).
+
+Survey: User expectations (positive long-term promise).
+
+Feature might improve after learning curve. Short-term pain, long-term gain.
+
+Different mechanisms?
+
+Experiment: Direct effect measured (conversion).
+
+Survey: Indirect effect (sentiment).
+
+Feature might hurt conversion directly, but improve sentiment (NPS). Different levers.
+
+Step 2: Test the hypothesis.
+
+Experiment shows harm. Survey shows love. Why?
+
+Hypothesis A: Survey biased (self-selection).
+
+Test: Survey broader population (random, not volunteers). If true bias, broader survey shows lower enthusiasm. If false, broader survey confirms 9/10.
+
+Hypothesis B: Short-term pain, long-term gain.
+
+Test: Extend experiment 4 more weeks. If feature learning curve, conversion recovers after 2 weeks. If not, stays negative.
+
+Hypothesis C: Feature good for engagement, bad for conversion.
+
+Test: Measure engagement (time on site, pages visited, etc). If high engagement but low conversion, confirmed.
+
+Step 3: Business trade-off.
+
+If confirmed: Feature increases engagement, decreases conversion.
+
+Question: Which matters more?
+
+Revenue critical (conversion matters): Don't ship.
+
+User retention critical (engagement matters): Ship (sacrifice revenue for retention).
+
+Example: B2B SaaS.
+
+Conversion = paying customers (revenue).
+
+Engagement = active usage (retention, expansion revenue).
+
+Maybe engagement → retention → LTV increase > conversion decrease.
+
+Trade-off: Lose immediate conversion for future LTV.
+
+Calculation:
+
+Immediate loss: -0.4pp conversion * $X per conversion * N users = -$50k/month.
+
+Delayed gain: +10% engagement → +5% retention (assume) → +2% LTV over 2 years = +$200k LTV over cohort.
+
+Net: +$150k over 2 years. Ship.
+
+Step 4: Red flags (when to be cautious).
+
+Disagreement between experiment and survey is common. Usually explainable. But red flags:
+
+(a) Experiment broken?
+
+Check: Random assignment (treatment/control balance)?
+
+Check: Logging correct (did treatment group see feature)?
+
+Check: Metric definition (expected direction, no inversion)?
+
+If experiment broken, results unreliable. Don't trust negative result.
+
+(b) Survey obviously biased?
+
+Survey only asked: \"Do you love the feature?\" (leading). Not: \"Would you still use without this feature?\"
+
+Biased survey. Don't trust positive sentiment.
+
+(c) Mechanism unclear?
+
+\"Conversion down but survey positive.\" Why? Can't explain. Maybe confound.
+
+Example: Ran experiment during holiday (users less interested in purchases regardless). Conversion down not due to feature. Control: Measure non-seasonal metric.
+
+(d) Effect tiny?
+
+Experiment: p < 0.05 but effect -0.1pp (0.1% harm, 2% relative). Tiny. Practical significance questionable.
+
+Survey: 9/10 sentiment (strong love).
+
+Ambiguity: Effect real but negligible. Sentiment real. Ship (effect too small to worry).
+
+Step 5: Decision rule.
+
+Ship if:
+
+(a) Experiment shows harm, but:
+  - Harm tiny (< 1% effect), AND sentiment positive (survey valid, not biased), OR
+  - Different metrics explain (engagement up, conversion down, LTV analysis positive), OR
+  - Mechanism identified and justified (learning curve, supply/demand shift), OR
+  - Experiment validity questioned (broken logging, seasonal confound).
+
+Don't ship if:
+
+(b) Experiment shows clear harm (> 2% effect), AND:
+  - Harm affects primary metric (revenue, retention critical), AND
+  - Survey doesn't explain harm (engagement unchanged, no mechanism), AND
+  - Experiment appears valid (balanced randomization, metric correct).
+
+Practical example resolution:
+
+Scenario: Conversion down 0.4pp (significant harm). PM wants to ship based on 9/10 survey.
+
+Your investigation:
+
+1. Check experiment: Randomization balanced (yes). Logging verified (yes). Metric correct (yes). Experiment valid ✓
+
+2. Extend test 2 more weeks: Harm persists (-0.4pp still). No learning curve recovery ✓
+
+3. Measure engagement: Engagement unchanged (time on site, pages visited same). Feature doesn't drive engagement ✓
+
+4. Survey analysis: Surveyed 100 users (volunteers, biased). Broader survey (random n=500) shows 6/10 enthusiasm (lower). Survey biased ✗
+
+5. Mechanism unclear: Can't explain why users "love" feature but don't use it (purchase). Suspicious ✓
+
+6. Discuss with PM: \"Experiment valid. Harm real, not explained. Survey biased (volunteers enthusiastic). Evidence suggests feature decreases conversion without compensating gain in engagement or retention. Recommend don't ship unless we can identify why survey positive but behavior negative.\"
+
+Counter-argument from PM: \"But users will be happier. Long-term retention might improve.\"
+
+You: \"Possible. But conversion down now, and we haven't measured retention impact yet. Propose: (a) Measure retention 3 months post-test on treatment cohort. If retention up despite conversion down, ship as retention bet. (b) Or, redesign feature to improve conversion without sacrificing user sentiment.\"
+
+PM: \"I'll check retention data and get back to you.\" (Data-driven resolution)
+
+Alternative scenario (ship it):
+
+Different facts:
+
+Experiment: Conversion down 0.4pp BUT engagement up 5% (significant).
+
+Survey: 9/10 sentiment (valid, broad random survey).
+
+Mechanism: Feature adds engagement (more pages, longer sessions) but reduces immediate conversion (distraction during checkout).
+
+Analysis: Feature trades conversion for engagement. Engagement valuable for retention.
+
+Your recommendation: \"Experiment shows trade-off (conversion down, engagement up). Recommend ship if retention impact positive. Propose: (1) Measure retention; (2) If retention > conversion loss in LTV terms, ship; (3) If not, iterate on feature to improve conversion without sacrificing engagement.\"
+
+Outcome: Data supports ship (retention + engagement combo valuable).
+
+Ethical dimension:
+
+If data suggests harm and PM wants ship anyway (ignoring data), escalate.
+
+\"I recommend against shipping based on statistical evidence and no explanation for survey-behavior mismatch. If you choose to ship, please document decision and reasons. I want to revisit in 3 months to measure impact (retention, churn). Let's be data-driven.\"
+
+My approach: Validate experiment, explain disagreement (different metrics, populations, or bias), quantify trade-offs, propose measurements to resolve. Defer to PM if business trade-off clear (engagement > conversion) and data supports. Escalate if evidence ignored.`,
+      },
+      {
+        q: "Explain synthetic control methods. When would you use them?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        a: `Are you asking about mechanics, how to construct synthetic controls, or when they apply? And tradeoffs vs other methods?
+
+For this, I'll explain synthetic controls and when they excel.
+
+---
+
+Synthetic control method (SCM): Create a counterfactual (comparison group) using weighted combination of control units.
+
+Idea: Treatment unit (region, company, store) affected by policy. Can't randomize. Find control units similar to treatment unit pre-policy. Build weighted average (synthetic control) that matches treatment unit pre-policy.
+
+Compare actual treatment post-policy to synthetic control post-policy. Difference = causal effect.
+
+Why needed:
+
+Standard comparison (treatment vs single control unit): Single control might differ from treatment pre-policy (not valid comparison).
+
+SCM: Construct counterfactual matching treatment unit's pre-treatment characteristics exactly.
+
+Example:
+
+California (treatment): Passes strict environmental regulation (2005).
+
+Question: Does regulation reduce manufacturing output?
+
+Control units: Texas, Nevada, Arizona (nearby states, no regulation).
+
+Pre-regulation (2000-2004): California manufacturing similar to these states.
+
+Post-regulation (2005-2010): California manufacturing changes. Did regulation cause it, or did other factors?
+
+Synthetic control:
+
+Weights: w_Texas=0.5, w_Nevada=0.3, w_Arizona=0.2.
+
+Synthetic California pre-regulation: 0.5*Texas + 0.3*Nevada + 0.2*Arizona output = matches actual California output 2000-2004.
+
+Post-regulation:
+
+Actual California output 2005-2010: Down 10% (due to regulation + other national trends).
+
+Synthetic California output (no regulation): Predict with same weights. Down 5% (national trends only).
+
+Causal effect of regulation: 10% - 5% = 5% output reduction.
+
+Mechanics:
+
+Step 1: Identify pre-treatment period (outcome data before intervention).
+
+Step 2: Fit weights minimizing difference between treatment unit and weighted control average (pre-treatment).
+
+Optimization: w = argmin||Y_treatment,pre - Σ w_j * Y_control_j,pre||²
+
+Step 3: Apply same weights post-treatment. Compute counterfactual.
+
+Step 4: Compare actual to counterfactual. Effect = actual - synthetic.
+
+Advantages:
+
+1. Transparent counterfactual.
+
+You see weighted average of controls. Intuitive.
+
+Other methods (IV, DiD): Black box. Can't visualize counterfactual.
+
+2. Multiple pre-treatment periods.
+
+Tests parallel trends assumption explicitly. If synthetic control matches pre-treatment, assumption likely holds.
+
+3. Flexible for complex scenarios.
+
+Multiple treatment units, staggered timing, continuous exposure.
+
+4. Handles unobserved confounding (if weights right).
+
+If synthetic controls similar on unobserved dimensions (correlated with observed), causal effect unbiased.
+
+When to use SCM:
+
+1. Aggregate data (states, countries, firms).
+
+Example: Country-level policy change. Few units (countries). Can't randomize.
+
+SCM uses other countries as controls (weighted average).
+
+2. Staggered policy rollout.
+
+Policy rolls out to different regions at different times.
+
+SCM: For each region, use regions without policy yet as controls.
+
+3. Few treatment units.
+
+Standard comparison requires many controls (for power).
+
+SCM: Combine information from multiple controls efficiently.
+
+4. Long pre-period available.
+
+SCM needs rich pre-treatment data to fit weights.
+
+If pre-period short, poor synthetic fit.
+
+Example: Policy 2020, data back to 2010 (10 years). Good.
+
+Policy 2020, data back to 2019 (1 year). Bad.
+
+Disadvantages:
+
+1. Requires good control units.
+
+If no control units similar to treatment pre-policy, synthetic control won't match.
+
+Poor pre-treatment fit → unreliable causal estimate.
+
+Example: California (large, diverse economy). Synthetic from Texas, Nevada (different economies).
+
+Weights struggle to match California structure. Fit poor.
+
+2. Limited extrapolation post-treatment.
+
+Assumes treatment doesn't change relationship between treatment and controls.
+
+Example: California regulation. If regulation causes capital flight to Texas, synthetic extrapolation invalid (Texas no longer comparable post-policy).
+
+3. Statistical inference tricky.
+
+How confident in effect estimate? Standard errors hard to compute.
+
+Solution: Placebo tests (test false policy dates, should show no effect).
+
+If many placebo tests show effects ≥ true effect, causal estimate questionable.
+
+4. Computationally intensive.
+
+Fitting weights + optimization + cross-validation. More complex than DiD.
+
+5. Requires subjective decisions.
+
+Which control units to include? Pre-period length? Outcome variable?
+
+Different choices → different estimates.
+
+Robustness check: Vary choices, see if results sensitive.
+
+Practical example: Company policy impact.
+
+Scenario: Company A (treatment) implements new HR policy (remote work allowed) in 2020.
+
+Other companies: B, C, D, E don't implement.
+
+Question: Does remote work increase retention?
+
+Data: Employee retention rate, 2010-2025.
+
+Pre-policy (2010-2019): Company A retention ≈ 75%.
+
+Control companies: B 76%, C 74%, D 73%, E 77%.
+
+SCM fit: w_B=0.3, w_C=0.2, w_D=0.2, w_E=0.3.
+
+Synthetic A (2010-2019): 0.3*76 + 0.2*74 + 0.2*73 + 0.3*77 = 75.4% (close to actual 75%).
+
+Post-policy:
+
+Actual A (2020-2025): Retention 82% (up 7pp).
+
+Synthetic A (2020-2025): 0.3*76 + 0.2*74 + 0.2*73 + 0.3*77 = 75.4% (no policy, no change, trending same as controls).
+
+Causal effect: 82% - 75.4% = 6.6pp retention increase due to remote work.
+
+Robustness:
+
+Placebo tests:
+
+Pretend policy in 2015 (false date). Does SCM detect effect?
+
+Synthetic A (2015): Should match actual A (no policy). If SCM shows effect at 2015 (false), method suspect.
+
+If placebo shows no effect, true policy effect more credible.
+
+Sensitivity:
+
+Try different control companies. Do weights change? Effect change?
+
+If robust to different choices, confident.
+
+If fragile, caveat findings.
+
+When to use other methods:
+
+DiD (difference-in-differences): Multiple treatment and control units. Treatment binary, sudden.
+
+Example: Minimum wage varies by state, multiple states adopt at different times.
+
+IV (instrumental variables): Causal relationship, endogenous treatment, valid instrument available.
+
+Regression discontinuity: Treatment assigned by threshold (continuous running variable).
+
+SCM: Aggregate units, policy varies geographically, long pre-period, seeking transparent counterfactual.
+
+My approach: SCM for policy evaluation at aggregate level (country, state, firm) with rich pre-treatment data. Check pre-treatment fit and placebo tests for validity. Compare to synthetic post-policy. Report weights (shows which controls similar to treatment).`,
+      },
+    ],
   },
 
 };
