@@ -24,12 +24,32 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
     }}>
       <style>{`
         @media (max-width: 768px) {
-          .hero-container { padding: 0 20px !important; }
-          .hero-left { max-width: 100% !important; }
-          .hero-right { max-width: 100% !important; margin-top: 32px !important; }
+          .hero-container {
+            padding: 0 20px !important;
+            flex-direction: column !important;
+            gap: 24px !important;
+          }
+          .hero-left {
+            flex: 1 !important;
+            max-width: 100% !important;
+          }
+          .hero-right {
+            flex: 1 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            margin-top: 0 !important;
+          }
           .hero-headline { font-size: 26px !important; }
           .hero-subheadline { font-size: 15px !important; }
-          .hero-cta { width: 100% !important; }
+          .hero-cta {
+            display: block !important;
+            width: 100% !important;
+            text-align: center !important;
+          }
+          .hero-card-label {
+            font-size: 10px !important;
+            letter-spacing: 1px !important;
+          }
         }
       `}</style>
 
@@ -149,7 +169,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
           maxWidth: '340px',
         }}>
           {/* Card label */}
-          <div style={{
+          <div className="hero-card-label" style={{
             fontSize: '11px',
             letterSpacing: '2px',
             textTransform: 'uppercase',
