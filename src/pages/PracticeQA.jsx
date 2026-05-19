@@ -15,12 +15,22 @@ const C = {
   success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
 };
 
-const CATEGORY_CHIPS = [
+const PM_CATEGORY_CHIPS = [
   { id: 'behavioral',       label: 'Behavioral',           dataKeys: ['behavioral'], subcategory: null },
   { id: 'product_design',   label: 'Product Design',       dataKeys: ['product'],    subcategory: 'product_design' },
   { id: 'product_strategy', label: 'Product Strategy',     dataKeys: ['product'],    subcategory: 'product_strategy' },
   { id: 'analytical',       label: 'Analytical/Metrics',   dataKeys: ['ai'],         subcategory: null },
   { id: 'technical',        label: 'Technical/Estimation', dataKeys: ['ai_technical'], subcategory: null },
+];
+
+const DS_CATEGORY_CHIPS = [
+  { id: 'machine_learning',  label: 'Machine Learning',      dataKeys: ['ai'], subcategory: 'machine_learning' },
+  { id: 'statistics',        label: 'Statistics & Probability', dataKeys: ['ai'], subcategory: 'statistics' },
+  { id: 'sql',               label: 'SQL & Data Manipulation', dataKeys: ['ai_technical'], subcategory: 'sql' },
+  { id: 'case_studies',      label: 'Case Studies & Business Problems', dataKeys: ['product'], subcategory: 'case_studies' },
+  { id: 'python',            label: 'Python/Coding',        dataKeys: ['ai_technical'], subcategory: 'python' },
+  { id: 'system_design',     label: 'System Design (ML)',    dataKeys: ['ai_technical'], subcategory: 'system_design' },
+  { id: 'behavioral',        label: 'Behavioral',           dataKeys: ['behavioral'], subcategory: null },
 ];
 
 const EXP_LEVEL_CHIPS = [
@@ -40,7 +50,7 @@ const EXP_LEVEL_CHIPS = [
 
 const DIFFICULTY_CHIPS = ['Easy', 'Medium', 'Difficult'];
 
-const COMPANY_CHIPS = [
+const PM_COMPANY_CHIPS = [
   { id: 'Google',    label: 'Google' },
   { id: 'Amazon',    label: 'Amazon' },
   { id: 'Meta',      label: 'Meta' },
@@ -53,7 +63,20 @@ const COMPANY_CHIPS = [
   { id: 'Zepto',     label: 'Zepto' },
 ];
 
-const DOMAIN_CHIPS = [
+const DS_COMPANY_CHIPS = [
+  { id: 'Google',    label: 'Google' },
+  { id: 'Amazon',    label: 'Amazon' },
+  { id: 'Meta',      label: 'Meta' },
+  { id: 'Apple',     label: 'Apple' },
+  { id: 'Microsoft', label: 'Microsoft' },
+  { id: 'Flipkart',  label: 'Flipkart' },
+  { id: 'Swiggy',    label: 'Swiggy' },
+  { id: 'Razorpay',  label: 'Razorpay' },
+  { id: 'Netflix',   label: 'Netflix' },
+  { id: 'Uber',      label: 'Uber' },
+];
+
+const PM_DOMAIN_CHIPS = [
   { id: 'fintech',       label: 'Fintech' },
   { id: 'healthcare',    label: 'Healthcare' },
   { id: 'telecom',       label: 'Telecom' },
@@ -67,6 +90,16 @@ const DOMAIN_CHIPS = [
   { id: 'marketplace',   label: 'Marketplace' },
   { id: 'aiml',          label: 'AI/ML' },
   { id: 'general',       label: 'General' },
+];
+
+const DS_DOMAIN_CHIPS = [
+  { id: 'fintech',    label: 'Fintech' },
+  { id: 'healthcare', label: 'Healthcare' },
+  { id: 'telecom',    label: 'Telecom' },
+  { id: 'ecommerce',  label: 'E-commerce' },
+  { id: 'edtech',     label: 'Edtech' },
+  { id: 'saas',       label: 'SaaS' },
+  { id: 'general',    label: 'General' },
 ];
 
 const ROLES = {
@@ -94,7 +127,13 @@ const ROLES = {
     id: 'ds',
     label: 'Data Science',
     levels: DS_LEVELS,
-    expLevelChips: [],
+    expLevelChips: [
+      { id: 'junior_ds', label: 'Junior Data Scientist', levels: ['Data Scientist'] },
+      { id: 'mid_ds', label: 'Data Scientist', levels: ['Data Scientist'] },
+      { id: 'senior_ds', label: 'Senior Data Scientist', levels: ['Data Scientist'] },
+      { id: 'lead_ds', label: 'Lead/Principal DS', levels: ['Data Scientist'] },
+      { id: 'head_ds', label: 'Head of Data Science', levels: ['Data Scientist'] },
+    ],
     titleSuffix: 'Data Science Interview Questions',
     comingSoon: false,
   },
@@ -635,6 +674,52 @@ function FilterDropdown({ label, value, onChange, options }) {
   );
 }
 
+// ─── Helper: Count matching questions for a filter state ───────────────────
+function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM_LEVELS, DS_LEVELS) {
+  const { category, expLevel, company, difficulty, domain } = filterState;
+
+  const role = ROLES[selectedRole] || ROLES.pm;
+  const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
+  let dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
+  let subcategoryFilter = null;
+  if (category) {
+    const chip = categoryChips.find(c => c.id === category);
+    if (chip) {
+      dataCats = chip.dataKeys;
+      subcategoryFilter = chip.subcategory;
+    }
+  }
+
+  let levelsToShow = role.levels || PM_LEVELS;
+  if (expLevel && role.expLevelChips && role.expLevelChips.length > 0) {
+    const chip = role.expLevelChips.find(c => c.id === expLevel);
+    if (chip) {
+      const allowed = new Set(chip.levels);
+      if (selectedRole === 'pm') allowed.add('Company Prep');
+      levelsToShow = (role.levels || PM_LEVELS).filter(l => allowed.has(l));
+    }
+  }
+
+  let count = 0;
+  for (const level of levelsToShow) {
+    const bank = pmQuestions[level];
+    if (!bank) continue;
+    for (const cat of dataCats) {
+      const questions = bank[cat] || [];
+      for (let i = 0; i < questions.length; i++) {
+        const q = questions[i];
+        const effectiveDifficulty = q.difficulty || getDifficulty(level);
+        if (difficulty && effectiveDifficulty !== difficulty) continue;
+        if (company && (!q.company || q.company.toLowerCase() !== company.toLowerCase())) continue;
+        if (domain && (!q.domain || q.domain.toLowerCase() !== domain.toLowerCase())) continue;
+        if (subcategoryFilter && q.subcategory && q.subcategory !== subcategoryFilter) continue;
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
 function FilterContent({
   filterCategory, setFilterCategory,
   filterExpLevel, setFilterExpLevel,
@@ -647,48 +732,54 @@ function FilterContent({
   selectedRole,
 }) {
 
+  const role = ROLES[selectedRole] || ROLES.pm;
+  const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
+
   const categoryOptions = [
     { id: '', label: 'All' },
-    { id: 'behavioral', label: 'Behavioral' },
-    { id: 'product_design', label: 'Product Design' },
-    { id: 'product_strategy', label: 'Product Strategy' },
-    { id: 'analytical', label: 'Analytical/Metrics' },
-    { id: 'technical', label: 'Technical/Estimation' },
-  ];
+    ...categoryChips.map(c => ({ id: c.id, label: c.label })),
+  ].filter(opt =>
+    opt.id === '' ||
+    countQuestionsForFilterState(selectedRole, { category: opt.id, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS) > 0
+  );
 
-  const role = ROLES[selectedRole] || ROLES.pm;
-  const expLevelOptions = [
-    { id: '', label: 'All' },
-    ...(role.expLevelChips || []),
-  ];
+  const expLevelOptions = !role.expLevelChips || role.expLevelChips.length === 0
+    ? []
+    : [
+        { id: '', label: 'All' },
+        ...(role.expLevelChips || []),
+      ].filter(opt =>
+        opt.id === '' ||
+        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: opt.id, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS) > 0
+      );
 
+  const companyChips = selectedRole === 'ds' ? DS_COMPANY_CHIPS : PM_COMPANY_CHIPS;
   const companyOptions = [
     { id: '', label: 'All' },
-    { id: 'Amazon', label: 'Amazon' },
-    { id: 'Apple', label: 'Apple' },
-    { id: 'CRED', label: 'CRED' },
-    { id: 'Flipkart', label: 'Flipkart' },
-    { id: 'Google', label: 'Google' },
-    { id: 'Meta', label: 'Meta' },
-    { id: 'Microsoft', label: 'Microsoft' },
-    { id: 'Razorpay', label: 'Razorpay' },
-    { id: 'Swiggy', label: 'Swiggy' },
-    { id: 'Zepto', label: 'Zepto' },
-  ];
+    ...companyChips,
+  ].filter(opt =>
+    opt.id === '' ||
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: opt.id, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS) > 0
+  );
 
+  const domainChips = selectedRole === 'ds' ? DS_DOMAIN_CHIPS : PM_DOMAIN_CHIPS;
   const domainOptions = [
     { id: '', label: 'All' },
-    { id: 'fintech', label: 'Fintech' },
-    { id: 'healthcare', label: 'Healthcare' },
-    { id: 'telecom', label: 'Telecom' },
-  ];
+    ...domainChips,
+  ].filter(opt =>
+    opt.id === '' ||
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: opt.id }, pmQuestions, PM_LEVELS, DS_LEVELS) > 0
+  );
 
   const difficultyOptions = [
     { id: '', label: 'All' },
     { id: 'Easy', label: 'Easy' },
     { id: 'Medium', label: 'Medium' },
     { id: 'Difficult', label: 'Difficult' },
-  ];
+  ].filter(opt =>
+    opt.id === '' ||
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS) > 0
+  );
 
   const activeCount = (filterCategory ? 1 : 0) + (filterExpLevel ? 1 : 0) + (filterCompany ? 1 : 0) + (filterDomain ? 1 : 0) + (filterDifficulty ? 1 : 0);
 
@@ -711,7 +802,7 @@ function FilterContent({
       {/* Scrollable sections */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px 20px' }}>
         <FilterDropdown label="Category" value={filterCategory} onChange={setFilterCategory} options={categoryOptions} />
-        {role.expLevelChips && role.expLevelChips.length > 0 && (
+        {expLevelOptions.length > 1 && (
           <FilterDropdown label="Experience Level" value={filterExpLevel} onChange={setFilterExpLevel} options={expLevelOptions} />
         )}
         <FilterDropdown label="Company" value={filterCompany} onChange={setFilterCompany} options={companyOptions} />
@@ -826,20 +917,23 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   // ── Filtering ──────────────────────────────────────────────────────────────
 
   const filtered = useMemo(() => {
+    const role = ROLES[selectedRole] || ROLES.pm;
+    const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
+
     let dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
     let subcategoryFilter = null;
     if (filterCategory) {
-      const chip = CATEGORY_CHIPS.find(c => c.id === filterCategory);
+      const chip = categoryChips.find(c => c.id === filterCategory);
       if (chip) {
         dataCats = chip.dataKeys;
         subcategoryFilter = chip.subcategory;
       }
     }
 
-    const role = ROLES[selectedRole] || ROLES.pm;
     let levelsToShow = role.levels || PM_LEVELS;
 
-    if (filterExpLevel && role.expLevelChips && role.expLevelChips.length > 0) {
+    // For DS, ignore expLevel filter and show all levels (they all map to "Data Scientist")
+    if (selectedRole !== 'ds' && filterExpLevel && role.expLevelChips && role.expLevelChips.length > 0) {
       const chip = role.expLevelChips.find(c => c.id === filterExpLevel);
       if (chip) {
         const allowed = new Set(chip.levels);
@@ -891,14 +985,19 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   // ── Applied filter tags ────────────────────────────────────────────────────
 
   const appliedFilterTags = useMemo(() => {
+    const role = ROLES[selectedRole] || ROLES.pm;
+    const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
+    const domainChips = selectedRole === 'ds' ? DS_DOMAIN_CHIPS : PM_DOMAIN_CHIPS;
+
     const tags = [];
-    if (filterCategory) tags.push({ key: `cat-${filterCategory}`, label: CATEGORY_CHIPS.find(c => c.id === filterCategory)?.label || filterCategory, prefix: 'cat', val: filterCategory });
-    if (filterExpLevel) tags.push({ key: `exp-${filterExpLevel}`, label: EXP_LEVEL_CHIPS.find(e => e.id === filterExpLevel)?.label || filterExpLevel, prefix: 'exp', val: filterExpLevel });
+    if (filterCategory) tags.push({ key: `cat-${filterCategory}`, label: categoryChips.find(c => c.id === filterCategory)?.label || filterCategory, prefix: 'cat', val: filterCategory });
+    // For DS, don't show expLevel in tags since we ignore that filter (show all DS questions regardless)
+    if (filterExpLevel && selectedRole !== 'ds') tags.push({ key: `exp-${filterExpLevel}`, label: role.expLevelChips?.find(e => e.id === filterExpLevel)?.label || filterExpLevel, prefix: 'exp', val: filterExpLevel });
     if (filterCompany) tags.push({ key: `cmp-${filterCompany}`, label: filterCompany, prefix: 'cmp', val: filterCompany });
-    if (filterDomain) tags.push({ key: `dom-${filterDomain}`, label: DOMAIN_CHIPS.find(d => d.id === filterDomain)?.label || filterDomain, prefix: 'dom', val: filterDomain });
+    if (filterDomain) tags.push({ key: `dom-${filterDomain}`, label: domainChips.find(d => d.id === filterDomain)?.label || filterDomain, prefix: 'dom', val: filterDomain });
     if (filterDifficulty) tags.push({ key: `dif-${filterDifficulty}`, label: filterDifficulty, prefix: 'dif', val: filterDifficulty });
     return tags;
-  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty]);
+  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, selectedRole]);
 
   const removeFilterTag = (prefix, val) => {
     if (prefix === 'sort') setSortBy(null);
