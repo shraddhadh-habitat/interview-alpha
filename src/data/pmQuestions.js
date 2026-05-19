@@ -8966,6 +8966,8 @@ Key metrics matter: I'd track CTR (click-through), conversion rate, and revenue 
 The tradeoff: complex models (deep learning) can capture subtle patterns but are expensive to retrain and explain. Simpler models (logistic regression on handcrafted features) deploy faster and are easier to debug.
 
 I'd start simple — collaborative filtering + popularity, measure baseline, then iterate. Monitoring model staleness is critical: user preferences shift, new products arrive, seasonal trends emerge.`,
+      level: "lead_ds",
+      level: "lead_ds",
       },
       {
         q: "Your model accuracy is 95% but business stakeholders say it's not working. What's going wrong?",
@@ -8984,6 +8986,8 @@ I'd also investigate the data. Is your test set representative of production? Do
 Finally, consider the cost-benefit. Even if the model works technically, is it worth maintaining? Engineering overhead, monitoring burden, and retraining costs must justify the business lift.
 
 The fix: align metrics with business goals before building. Use A/B testing to validate impact. Monitor across user segments, not just aggregate accuracy.`,
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "Design a churn prediction system for a subscription product.",
@@ -9004,6 +9008,8 @@ I'd focus on a two-tier approach: high-confidence at-risk segment for interventi
 Evaluation: Use precision-recall, not just accuracy. Recall matters — missing at-risk customers defeats the purpose. I'd also measure intervention lift: Among predicted churners, did retention campaigns actually prevent churn?
 
 Finally, I'd implement monitoring: Track prediction distribution over time. If suddenly 50% of users look "at-risk," the model may have drifted.`,
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Your model performs well in testing but poorly in production. How do you diagnose this?",
@@ -9024,6 +9030,8 @@ I'd implement monitoring: Track prediction distribution (is it shifting?), predi
 Then I'd run a canary: Deploy to 5% of traffic, compare predictions vs baseline heuristics. This catches production issues before full rollout.
 
 The fix usually involves retraining frequently (weekly/daily depending on drift), automated monitoring, and version control of features and models.`,
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "How would you design an A/B test to measure the impact of a new search ranking algorithm?",
@@ -9046,6 +9054,8 @@ Statistical testing: Two-sample t-test for proportions. But I'd be careful about
 Canary first: Deploy to 1% for 24 hours, check for crashes, then ramp to full test. This catches infrastructure issues.
 
 If significant lift: Measure business impact. A 2% lift might be thousands in monthly revenue, justifying deployment. But consider maintenance burden too.`,
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "How would you measure the success of a fraud detection model in production?",
@@ -9066,6 +9076,8 @@ For production monitoring: Track prediction distribution — if suddenly 50% of 
 Lastly, measure intervention effectiveness. If a transaction is flagged, what happens? Does a customer verification step resolve it? Do repeat offenders eventually get stopped? These reveal operational effectiveness beyond the model itself.
 
 I'd set a framework: Model catches 80% of fraud with <2% false positive rate for legitimate users. Review and iterate quarterly.`,
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "Your stakeholder wants a model that is both accurate AND fully explainable. How do you navigate this tradeoff?",
@@ -9086,6 +9098,8 @@ I'd also discuss regulatory context. Some industries (finance, healthcare) legal
 My recommendation: Start simple (explainable), measure gap to acceptable accuracy. If needed, justify complexity with A/B test results showing business lift. An interpretable model that stakeholders trust and use beats an unexplainable one they distrust.
 
 Also, "explainability" is subjective. Ask what level of detail stakeholders need. Sometimes "this user segment is high-risk" is sufficient; sometimes you need per-feature breakdowns.`,
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Explain the bias-variance tradeoff using a business example.",
@@ -9104,6 +9118,8 @@ Regularization is the tool: L1/L2 penalties prevent extreme weights, reducing va
 For our conversion model: A simple rule like "users from mobile convert 20%, desktop 35%" has high bias but low variance (stable across months). A model with 50 features fit to 100 users will overfit. The right balance: 5-10 meaningful features, regularization, cross-validation to catch overfitting early.
 
 The key: Monitor both training and validation error. If they diverge, you're overfitting.`,
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "Your classification model has high precision but low recall. When is this acceptable?",
@@ -9124,6 +9140,8 @@ For fraud, FN cost is high (fraud loss); FP cost is medium (customer irritation)
 For medical screening, FN cost is critical (disease progression); FP cost is manageable (additional testing). So high recall is essential.
 
 Ask your stakeholder: If you make 100 positive predictions, what's acceptable? 90 true positives, 10 false positives? Or 50 true positives, 50 false positives? Their answer reveals the cost tradeoff.`,
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "How would you handle significant class imbalance in your training data?",
@@ -9146,6 +9164,8 @@ Class weights: In many algorithms, you can weight samples — minority class sam
 Finally, adjust decision thresholds. Default is 0.5 (predict positive if probability > 0.5), but with imbalance, you might need 0.1. Lower threshold catches more positives at the cost of false alarms.
 
 Monitor what matters: If fraud is 0.1%, a model catching 80% with 1% false positive rate is good. If 99.9% legitimate, that 1% FP rate still means 1 in 100 legitimate transactions are flagged.`,
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "Google Search quality dropped 5% in a specific country. How would you investigate using data?",
@@ -9169,6 +9189,8 @@ Step 5: User data. Did user engagement drop (dwell time, follow-up queries)? Tha
 Tradeoff: Speed vs depth. I could revert recent changes (fast, safe) or investigate root cause (slower, gives us knowledge for next time). Both matter.
 
 The framework: Signal → verification → segmentation → historical comparison → remediation.`,
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Design a ML model to detect spam in Gmail. Walk through your approach from data to deployment.",
@@ -9192,6 +9214,8 @@ Challenges: Adversarial users (spammers constantly adapt). Concept drift is real
 Tradeoff: Precision vs recall. Miss a phishing email (recall) and users get hacked. Flag legitimate email (precision) and users get annoyed. For Gmail, I'd favor precision — it's worse to block legitimate than to miss one spam.
 
 Evaluation: Precision-recall curve, not accuracy. Test on holdout data, but also on real production traffic (A/B test).`,
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "How would you measure the success of YouTube's recommendation algorithm?",
@@ -9217,6 +9241,8 @@ A/B testing: When improving the algorithm, test against baseline in production. 
 Tradeoff: Engagement vs healthy behavior. Maximizing one (highly addictive content) might hurt the other (burning out users). YouTube must balance.
 
 This multi-metric approach prevents optimizing for the wrong proxy and catching unintended consequences early.`,
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "Google Ads revenue per click dropped 8% this quarter. Diagnose using data.",
@@ -9246,6 +9272,8 @@ Fix depends on cause. If inventory issue, optimize placement. If enterprise drop
 Tradeoff: If you reduce inventory to raise CPM, you lose volume. Growth vs profitability.
 
 The key: Decompose the metric, segment relentlessly, and distinguish causes from symptoms.`,
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Design an anomaly detection system for Google Cloud that monitors millions of servers.",
@@ -9271,6 +9299,8 @@ Feedback loop: When an anomaly is investigated, label it (true positive, false p
 Tradeoff: Sensitivity vs false positives. Stricter thresholds catch more real issues but generate noise. Use A/B testing or feedback to tune.
 
 Deployment: Canary the detection on 5% of servers first, measure false positive rate, then roll out. Prevent alert storms.`,
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "How would you build a demand forecasting model for Amazon's warehouse inventory?",
@@ -9296,6 +9326,8 @@ Tradeoff: Global vs local. Global model works across all products but misses nua
 Evaluation: RMSE or MAPE (mean absolute percentage error). But also penalize misses asymmetrically: underforecasting costs more than overforecasting.
 
 Serving: Batch forecast daily/weekly. Update as new orders arrive. Use quantile regression (not just point estimates) — give 10th and 90th percentile demand, not just mean.`,
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Design an A/B test framework for Amazon's checkout page. What metrics would you track?",
@@ -9325,6 +9357,8 @@ Pitfalls: Novelty effects (new design looks better temporarily). Control by runn
 Implementation: Use in-house experimentation platform. Randomly assign, log user events, run stats.
 
 Tradeoff: Speed (declare winner fast) vs certainty (let test run longer to confirm). Amazon often picks certainty — losing a sale is expensive.`,
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "Amazon's delivery promise accuracy dropped from 95% to 88%. How do you investigate?",
@@ -9352,6 +9386,8 @@ Fix: Short-term: adjust promises (don't promise 2-day if you can't deliver). Lon
 Tradeoff: Accuracy vs customer satisfaction. If Amazon can't keep promises, it's better to promise longer and deliver faster. Builds trust.
 
 The key: Timeline (when), geography (where), and product (what) narrow down root cause fast.`,
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Build a customer review authenticity detection model for Amazon marketplace.",
@@ -9377,6 +9413,8 @@ Challenge: Sophisticated fake reviews mimic genuine ones. Collusion: coordinated
 Serving: Real-time scoring for new reviews (flag if risk score >0.7). Hide risky reviews, quarantine for manual review, or apply lower weight in ranking algorithm.
 
 Feedback: Reviews you flag and users report as "helpful anyway" → retrain to reduce that false positive pattern.`,
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "How would you design a personalization engine for Amazon's homepage for 300M users?",
@@ -9404,6 +9442,8 @@ A/B testing: Canary new personalization algorithms on 5% of users first. Measure
 Tradeoff: Personalization depth vs computational cost. A super-complex model is more accurate but slower to compute. Use simpler models in production, save complex ones for offline analysis.
 
 Infrastructure: Microservices for different components (embeddings service, ranking service, cache service). Load balance across regions.`,
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "How would you detect and measure the spread of misinformation on Facebook using data science?",
@@ -9431,6 +9471,8 @@ I'd err on the side of caution: low-confidence flags trigger warnings ("multiple
 Fact-checking: Scale issues. You can't fact-check 500M posts daily. Partner with fact-checkers. Use their labels as training data for your ML model. Once trained, model can flag posts for human review at scale.
 
 Monitoring: Track misinformation metric weekly. If it spikes (election, crisis), prioritize resources.`,
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Design a friend recommendation algorithm for Instagram. What features would you use?",
@@ -9464,6 +9506,8 @@ Cold-start: New users have no history. Use geographic (nearby users) + demograph
 Tradeoff: Relevance vs novelty. Recommending their existing friends (high relevance) isn't useful. Too much novelty (random accounts) leads to poor experience.
 
 Privacy: Don't expose the full network graph. Recommendations should feel serendipitous, not creepy.`,
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "Instagram Reels engagement dropped 12% among 18-24 year olds. Investigate using data.",
@@ -9489,6 +9533,8 @@ Root causes: Algorithm change: Most likely. If Reels algorithm was updated and h
 Fix: If algorithm change is the culprit, revert and investigate why it failed. If competing features, rebalance feed ranking. If supply issue, incentivize creators.
 
 Tradeoff: Short-term metric optimization (views) vs long-term health (retention, monetization).`,
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "How would you build a content ranking model for Facebook News Feed?",
@@ -9524,6 +9570,8 @@ Tradeoff: Personalization (each user sees unique feed) vs feed consistency (two 
 Serving: Real-time ranking. When user opens app, retrieve 1000 candidate posts, rank them in <100ms. Cache heavy items.
 
 Monitoring: Track engagement daily. Alert if engagement drops. A/B test new ranking approaches before full rollout.`,
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Design a real-time A/B testing platform that handles Meta's scale of 3B users.",
@@ -9551,6 +9599,8 @@ Infrastructure: Isolate experiments (running 1000 tests simultaneously, ensure o
 Deployment: Canary experiments to 1% of users first. Monitor for issues (crashes, errors), then ramp.
 
 Tradeoff: Speed (get results in 1 day) vs statistical power (need longer for small effects). With huge user base, even tiny effects hit significance quickly.`,
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Build a pricing optimization model for Flipkart's Big Billion Days sale.",
@@ -9582,6 +9632,8 @@ Tradeoff: Volume vs margin. Deep discounts drive volume but erode per-unit profi
 Evaluation: Compare predicted profit under optimized pricing vs actual pricing used historically. Also A/B test on a category.
 
 Challenges: Cannibalization (deep discount on product A might reduce sales of product B). Account for this in the model.`,
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "How would you design a delivery time prediction system for Flipkart's logistics?",
@@ -9609,6 +9661,8 @@ Serving: Pre-compute predictions for all order combinations daily (batch). Serve
 Tradeoff: Optimistic vs pessimistic prediction. Promise 3 days, deliver in 2 = happy customer. Promise 2 days, deliver in 3 = upset customer. Lean pessimistic.
 
 Handling exceptions: Weather delays, carrier strikes, sorting errors. These are hard to predict. Monitor prediction error, retrain frequently.`,
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "Flipkart's search relevance scores dropped. Walk through your investigation approach.",
@@ -9638,6 +9692,8 @@ Root causes often: new ranking algorithm that optimized for wrong metric, indexi
 Fix: Revert bad changes, improve ranking algorithm, increase index freshness.
 
 Monitoring: Track relevance weekly. Also track downstream metrics (conversion rate, average order value) to see business impact.`,
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "How would you improve Netflix's content recommendation for users who watch in multiple languages?",
@@ -9667,6 +9723,8 @@ Evaluation: For each language, separately measure recall@50 (percentage of liked
 Tradeoff: One global model (simple, scalable) vs language-specific (complex, better accuracy). Use hierarchical: global base model + language-specific fine-tuning.
 
 Serving: Predict for each language separately, merge ranked lists, present to user.`,
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Design an experiment to test whether Netflix should auto-play trailers. What metrics matter?",
@@ -9694,6 +9752,8 @@ Tradeoff: Short-term engagement (more clicks) vs user satisfaction (feels pushy)
 Analysis: If auto-play increases conversion but decreases NPS, you've found the tradeoff. Then decide: is the conversion lift worth the satisfaction hit?
 
 Recommendation: Likely test auto-play on desktop only, exclude mobile (battery/data concern). Or make it an opt-in user preference.`,
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "Netflix's subscriber churn increased 15% in Q3. Use data to diagnose and recommend actions.",
@@ -9721,6 +9781,8 @@ Medium-term: Accelerate content releases. If drought caused churn, invest in mor
 Long-term: Improve content discovery (recommendation algorithm) to reduce "nothing to watch" feeling. Expand content library breadth.
 
 Retention focus: Monitor churn weekly going forward. If it continues, the fix was insufficient.`,
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Design a surge pricing model that balances driver supply with rider demand in real-time.",
@@ -9750,6 +9812,8 @@ Tradeoff: Driver pay vs rider affordability. High surge helps drivers earn more 
 Fairness: Don't exploit during emergencies (price-gouging). Set surge multiplier caps (max 2.0x during normal times, maybe 2.5x during natural disaster).
 
 Monitoring: Track wait times (if > 15 min consistently, surge too low). Track cancellation rate (if riders cancel after seeing surge, price too high).`,
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "How would you build a fraud detection system for fake Uber rides?",
@@ -9775,6 +9839,8 @@ Feedback loop: When a ride is marked fraud, retrain model with this label. When 
 Evaluation: Precision-recall. Catch 80% of fraud with 5% false positive rate (Uber considers this good).
 
 Handling: Suspend fraudulent accounts, claw back subsidies, report to law enforcement if severe.`,
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Uber's ETA prediction accuracy dropped in a specific city. How do you investigate?",
@@ -9802,6 +9868,8 @@ Step 6: Traffic data. Do external traffic APIs (Google Maps, Waze) show worsenin
 Fix: Short-term: Revert to previous model if new one failed. Increase ETA estimate (over-promise) to avoid disappointing riders. Medium-term: Retrain model on recent data (traffic patterns change). Long-term: Incorporate real-time traffic data (not just historical) into model.
 
 Monitoring: Track ETA accuracy per city weekly. Alert if any city drops >10%.`,
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "Design an ML pipeline that predicts driver cancellations before they happen.",
@@ -9833,6 +9901,8 @@ Tradeoff: Incentivizing drivers costs money (reduces margin), but losing a ride 
 Bias: Don't systematically disadvantage certain drivers (e.g., new drivers have higher cancellation rate naturally). Use fairness constraints in model training.
 
 Privacy: Don't expose prediction to driver (no "this ride has high cancel probability"). Use internally for ops only.`,
+      level: "head_ds",
+      level: "lead_ds",
       },
     ],
     ai: [],
@@ -9856,6 +9926,9 @@ In practice: Most companies use both. Data flows: Raw sources → data lake → 
 Cost tradeoff: Lakes are cheaper to store (raw data takes less space). Warehouses cost more but queries are efficient. If you query data constantly, warehouse is cheaper overall.
 
 For ML: Start with lake (raw features available), but organize it. Define clear schemas, document lineage, version datasets. A well-organized lake is worth more than an organized warehouse for iteration.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain the CAP theorem and how it affects data pipeline design.",
@@ -9880,6 +9953,9 @@ Example: Recommendation system using Apache Cassandra (AP). User features might 
 Design decision: For critical pipelines (fraud detection, medic decisions), choose CP — consistency matters, brief unavailability is acceptable. For best-effort (recommendations, feed ranking), AP is fine — availability and speed matter.
 
 The right architecture: Often, hybrid. Use CP for critical customer data, AP for less critical features. Accept tradeoffs based on business requirements.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
       },
       {
         q: "How would you design a feature store for a company with 20 ML models in production?",
@@ -9910,6 +9986,9 @@ Example: User feature "has_purchased_before" (offline = batch computed nightly).
 Challenges: Maintaining consistency across 20 models, handling feature dependencies (feature_A depends on feature_B; when B updates, A updates), managing compute cost (recomputing 1000 features nightly is expensive).
 
 Solution: Invest in good tooling (Tecton, Feast, Chip) to abstract complexity. Without it, feature pipelines become technical debt.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
       },
       {
         q: "Walk me through the architecture of a real-time ML serving system.",
@@ -9947,6 +10026,9 @@ Versioning: Multiple model versions in parallel (canary). 95% traffic to stable 
 Scaling: If a single server can't handle traffic, use load balancing. Shard by user or request ID for consistent caching.
 
 Key tradeoff: Real-time requires fresh features (expensive) vs batch allows staleness (cheap). Design based on business tolerance for staleness.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
       },
       {
         q: "Explain the difference between L1 and L2 regularization. When would you use each?",
@@ -9971,6 +10053,9 @@ Computational tradeoff: L1 is harder to optimize (not differentiable at zero). L
 In practice: Start with L2 (easier, more stable). If model is too complex or interpretability matters, try L1. Elastic Net uses both (αL1 + βL2 penalty), getting benefits of both.
 
 Data efficiency: L1 is better when data is scarce (forces the model to focus on key features). L2 is better with lots of data (more features help).`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "How does SHAP work for model interpretability? What are its limitations?",
@@ -9999,6 +10084,9 @@ Limitations:
 When to use: For regulatory explanation (explaining model decisions in finance/lending), debugging unexpected predictions, or understanding feature importance. Not ideal for feature engineering (which features matter for the model generally — use permutation importance instead).
 
 Comparison: LIME (another method) is faster but less principled. Deep SHAP handles neural networks but is still approximate.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
       },
       {
         q: "What is data leakage and how do you prevent it?",
@@ -10031,6 +10119,9 @@ Correct CV: Train on Jan-Jun, test on Jul. Train on Feb-Jul, test on Aug. Never 
 Testing: Train your model, wait for month to pass, make real predictions on hold-out period. If performance drops, leakage likely. Investigate what information shouldn't have been available.
 
 Leakage is insidious — you won't know you have it until production. Discipline and skepticism are your best defenses.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Write a query to find the top 10 users by revenue who signed up in the last 90 days and made at least 3 purchases. Explain your approach.",
@@ -10072,6 +10163,9 @@ Optimization: If the users table is large, avoid IN subquery. Use JOIN instead f
 Edge cases: What if two users have exactly the same revenue? Tie-breaking by user_id or signup_date. What if fewer than 10 users meet criteria? Return all. What about refunds? Subtract from revenue or exclude the order?
 
 This pattern extends: filter → aggregate → rank → limit.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "How would you design a data pipeline that processes 10TB of clickstream data daily?",
@@ -10101,6 +10195,9 @@ Cost optimization: Archive raw logs to Glacier after 30 days. Only keep hot data
 Challenges: Handling late-arriving data (user clicks recorded 10 minutes late), deduplication (same click logged twice), handling schema changes (new fields in clickstream).
 
 Solution: Idempotent pipeline (safe to rerun). Late-arriving data triggers daily reprocessing of yesterday's data.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
       },
       {
         q: "Explain the difference between star schema and snowflake schema. When do you use each?",
@@ -10125,6 +10222,9 @@ In practice: Most data warehouses use star schema because query speed > storage 
 Example: Sales company with 1M customers. In star, customer dimension has 1M rows. In snowflake, customer points to region, region to geography, etc. On a billion sales facts, snowflake saves duplicate region/geography data.
 
 Recommendation: Start with star. If dimension storage becomes a problem, convert to snowflake. Normalized dimensions can always be re-denormalized for reporting.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Your dashboard shows different revenue numbers than the finance team's report. How do you investigate the discrepancy?",
@@ -10152,6 +10252,9 @@ Root causes often:
 Fix: Once identified, update my query or data pipeline. Document the difference. Regular reconciliation prevents future divergence.
 
 Prevention: Daily automated reconciliation that flags >5% differences.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "How would you handle slowly changing dimensions in a data warehouse?",
@@ -10191,6 +10294,9 @@ Implementation:
 Tools: dbt, Talend, custom scripts all support SCD patterns.
 
 My recommendation: Type 2 for critical dimensions (customer, product). Type 1 for everything else. Type 3 rarely used.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
       },
       {
         q: "How would you optimize a Pandas script that takes 4 hours to process 50M rows?",
@@ -10243,6 +10349,9 @@ Option 5: Switch to Polars. Modern replacement for Pandas, 10-100x faster on lar
 Option 6: Parallelize. Use Dask (distributed Pandas) for multi-core processing.
 
 Expected improvement: Chunking + dtypes = 3-5x speedup. Polars = 50x speedup. Target: <1 hour.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Explain the difference between multiprocessing and multithreading in Python. When do you use each for data tasks?",
@@ -10294,6 +10403,9 @@ with Pool(4) as p:
 Hybrid: I/O and CPU. Fetch data (multithreaded), process (multiprocessing). Chain them.
 
 Recommendation: For data pipelines, start with multiprocessing. For dashboards/APIs, multithreading.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Write pseudocode for a function that detects outliers in a time series dataset. Explain your approach.",
@@ -10346,6 +10458,9 @@ When to use each:
 Trade-off: Simplicity vs accuracy. Rolling window catches obvious anomalies, Isolation Forest catches subtle ones.
 
 Validation: Compare flagged anomalies to actual anomalies (domain expert review). Tune threshold to minimize false positives/negatives.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "How would you build a reusable data validation framework in Python for incoming data feeds?",
@@ -10418,6 +10533,9 @@ Advanced features:
 Tools: Great Expectations, dbt tests, Pandera (typed DataFrame validation).
 
 Recommendation: Use Great Expectations for production. It's battle-tested, integrates with pipelines, has UI for monitoring.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
       },
       {
         q: "Explain generators in Python. How would you use them to process a dataset that doesn't fit in memory?",
@@ -10490,6 +10608,9 @@ Limitations:
 - Harder to debug
 
 When to use: Processing huge files, streaming data, infinite sequences (e.g., Fibonacci), memory-constrained environments.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Design an end-to-end ML pipeline for a credit scoring model. Include data ingestion, training, deployment, and monitoring.",
@@ -10543,6 +10664,9 @@ Deployment strategy:
 - Canary: Serve 5% of requests with new model (1 week)
 - Full rollout: If no issues, 100%
 - Rollback: If performance drops, revert instantly`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
       },
       {
         q: "How would you architect a feature store that serves both real-time and batch ML models?",
@@ -10606,6 +10730,9 @@ Fix: Feature registry with usage tracking. Deprecate unused features.
 Tools: Feast (open source), Tecton (enterprise), DoorDash's Palette.
 
 Recommendation: Start simple (batch only), add online caching as you scale.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
       },
       {
         q: "Design a model monitoring system that detects data drift and triggers retraining automatically.",
@@ -10711,6 +10838,9 @@ Challenges:
 1. Labeling delay: Some outcomes take weeks to know. For fraud, months for chargebacks.
 2. Seasonality: Sales model should expect higher volume in Dec. Need to account for expected changes.
 3. Multiple drift types: Data + concept drift require different fixes.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
       },
       {
         q: "Your ML model serves 50K predictions per second. Design the serving infrastructure.",
@@ -10786,6 +10916,9 @@ Deployment:
 - If bad, instant rollback
 
 Expected: 50K RPS, P99 latency <50ms, 99.99% uptime.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
       },
     ],
     behavioral: [
@@ -10804,6 +10937,10 @@ I built a segment-specific analysis showing we could raise enterprise pricing 20
 Result: The team agreed to the tiered approach. We increased enterprise pricing by 20% (generating 30% more revenue from 5% of customers) while keeping mid-tier stable. A/B tests validated the segment-specific models. The company gained $2M in annual revenue with negligible churn.
 
 Lesson learned: Contradicting stakeholders works when you lead with data, not opinion. I showed what actually happened, not what I thought should happen. I also acknowledged their concern (churn is real) but showed it was segment-dependent. Building trust through evidence and meeting them halfway (tiered approach, not just "raise prices globally") made them partners, not skeptics.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Tell me about a time you had to decide between shipping a good-enough model now vs waiting 3 months for a significantly better one.",
@@ -10822,6 +10959,10 @@ The team agreed. We shipped the simple model, it performed better than random (b
 Result: We captured 100% of the early value (retention campaign started on time), and improved it later. If we'd waited, we'd have 0% value for 3 months then 100%.
 
 Lesson learned: The right call is rarely "perfection now" or "good enough now." It's a sequence: ship something useful, measure impact, iterate. Time-to-value matters as much as model quality. Sometimes 85% now beats 91% later.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
       },
       {
         q: "Describe a time you had to build a data science team's roadmap. How did you prioritize projects?",
@@ -10846,6 +10987,10 @@ But I also communicated trade-offs. I told each team: "Your project is valuable,
 Result: Finance was happy (credit risk shipped on time). Product was initially disappointed but accepted the sequence. We discovered that 2-3 projects were nice-to-haves, not critical (dropped them entirely). The team shipped 6 projects that year aligned to business impact.
 
 Lesson learned: Roadmaps aren't about being perfect. They're about transparency. By making the trade-off explicit (this project vs that project), stakeholders understand constraints and trade-offs become negotiable rather than arbitrary.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
       },
       {
         q: "Tell me about a time your model created an ethical concern. How did you handle it?",
@@ -10878,6 +11023,10 @@ Lesson learned: Ethics isn't a one-time checklist. It's continuous. I could've s
 4. Built monitoring to catch future issues
 
 This slowed deployment by 2 weeks and reduced accuracy by 2%, but it's the right call. As data scientists, we have power (our models affect people). With that power comes responsibility.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
       },
       {
         q: "Tell me about a time you had to prioritize between multiple data requests from different teams.",
@@ -10905,6 +11054,10 @@ I proposed: Finance (1 week) → Engineering (2 weeks, quarterly impact justifie
 Result: All three shipped. Finance made board meeting. Engineering's analysis led to $500K/year cost reduction. Product got their insight for next quarter's roadmap.
 
 Lesson: Prioritization isn't about being fair to everyone. It's about maximizing business value subject to constraints (my time, hard deadlines). Making the tradeoff explicit and transparent earned buy-in.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Describe a time you automated a manual reporting process. What was the impact?",
@@ -10931,6 +11084,10 @@ I also built a simple dashboard so Finance could check reports anytime, not just
 Impact: Freed up real person-hours. But more importantly, it shifted the team from "making reports" to "analyzing the business."
 
 Lesson: Automation isn't glamorous, but it multiplies your impact. One small project freed a person for a month of higher-value work.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Tell me about a time you had to make a recommendation with insufficient data.",
@@ -10965,6 +11122,10 @@ I also recommended: "Monitor these metrics weekly: customer acquisition, custome
 Result: The team launched with 20% discount. After 6 months, they A/B tested pricing. Real data showed 20% discount was optimal. Board appreciated the decision-making framework even though the data was weak.
 
 Lesson: Sometimes you can't wait for perfect data. You make the best recommendation you can with what you have, communicate uncertainty clearly, and build feedback loops to update as you learn.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
       },
       {
         q: "How did you handle stakeholder expectations when a project took longer than promised?",
@@ -10994,6 +11155,10 @@ Stakeholders chose option 2. I also adjusted my process: "For future projects, I
 Result: We delivered at week 8 with strong accuracy. Stakeholders appreciated the early flag and clear tradeoffs. The 2-week delay was manageable because we'd planned for it transparently, rather than them finding out at week 6.
 
 Lesson: Overpromise, then delay = broken trust. Early flag with options = manage expectations, show ownership, maintain trust.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Describe a time you identified a data quality issue nobody else noticed. What did you do?",
@@ -11025,6 +11190,10 @@ Action I took:
 Result: The team avoided making decisions on bad data (they'd been wondering why DAU dropped). The fix prevented future similar bugs. The monitoring caught issues faster.
 
 Lesson: Data quality issues are invisible unless you look for them. The most impactful analyses are ones where you catch the bug before it spreads to decisions.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Tell me about a time two valid analytical approaches gave different results. How did you decide?",
@@ -11061,6 +11230,10 @@ I presented both to stakeholders: "These methods answer different questions. Her
 Result: The team appreciated understanding the nuance. They avoided the mistake of picking one approach and dismissing the other.
 
 Lesson: When two valid methods disagree, dig into why. Often they're answering different questions, and both are useful.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
       },
       {
         q: "Describe a time you had to say no to a stakeholder's data request. Why and how?",
@@ -11089,6 +11262,10 @@ The VP chose option 1. I spent 1 hour clarifying that Customer X was never a rec
 Result: VP appreciated the reality check. They avoided a misguided analysis. My committed projects stayed on track.
 
 Lesson: Saying no is part of prioritization. But you can't just say no. You have to understand what they really need and offer better alternatives.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Tell me about your most impactful data science project. What made it impactful?",
@@ -11118,6 +11295,10 @@ Why it was impactful:
 4. It shaped strategy (pricing team used this learning for future initiatives)
 
 Lesson: Impact comes from understanding the problem deeply, not just analyzing what you're handed. The best analysis starts with a question that matters.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Describe a time you failed to deliver on a data project. What went wrong?",
@@ -11150,6 +11331,10 @@ What I learned:
 - Define success with the business ("forecast within ±10% is acceptable"), not just with metrics ("R² > 0.8")
 
 Impact: I eventually delivered a simple model (exponential smoothing + trend) that was 87% accurate and robust. It got deployed 6 weeks late. The learning: failure happens. Own it, learn from it, share the lesson.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
       },
       {
         q: "How did you onboard yourself into a new domain where you had no prior data expertise?",
@@ -11189,6 +11374,10 @@ This approach worked because:
 Result: I became a trusted part of the team. By month 3, I was leading projects. By month 6, I was advising credit strategy.
 
 Lesson: The hardest part of joining a new domain isn't learning the data tools. It's learning the business. Do that first.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Tell me about a time you had to convince your team to adopt a new tool or methodology.",
@@ -11220,6 +11409,10 @@ Why it worked:
 - I provided support (wasn't their responsibility to figure it out)
 
 Lesson: Adoption isn't about the tool being good. It's about solving a real problem the team feels, proving it works, and supporting them through change.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
     ],
     ai: [
@@ -11251,6 +11444,11 @@ When to use each:
 - Hierarchical: Clear primary goal with secondary questions
 
 Best practice: Pre-register your tests, use FDR for multiple comparisons, and report effect sizes (not just p-values). A small effect might be "statistically significant" but not practically important.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
       },
       {
         q: "Explain the difference between Type I and Type II errors using a business scenario.",
@@ -11285,6 +11483,11 @@ For checkout tests: Type I is usually worse (deploying a broken checkout damages
 For exploratory feature tests: Type II is worse (don't want to miss promising features). Use α = 0.10, plan multiple tests.
 
 Key insight: You can't eliminate both errors. You choose which you can tolerate.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "When would you use bootstrapping instead of parametric tests?",
@@ -11319,6 +11522,11 @@ Trade-off: Bootstrapping is more flexible but slower. Parametric tests are faste
 My approach: Start parametric (fast). If assumptions seem violated (check with Q-Q plot or Shapiro-Wilk test), switch to bootstrap.
 
 Implementation: Use scipy.stats.bootstrap in Python. It's a few lines.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "Your data is not normally distributed. How does this affect your choice of statistical tests?",
@@ -11355,6 +11563,11 @@ My approach:
 - Any sample size, skewed data: Log-transform, check if normal, then use parametric test
 
 Example: Customer revenue is skewed (right-tail, some big spenders). Raw data fails normality test. I log-transform, compute log(revenue), check for normality (better). Now I can use t-test on log-transformed data. Result: more reliable p-values.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
     ],
     machine_learning: [
@@ -11396,6 +11609,12 @@ Tradeoff: Regularization trades accuracy for generalization. Your training accur
 My approach: Start with cross-validation (free and effective). If still overfitting, add L2 regularization. If that's not enough, collect more data or reduce features.
 
 Metric: Use validation curve to find the sweet spot between bias and variance.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain the difference between supervised and unsupervised learning with examples.",
@@ -11436,6 +11655,12 @@ Unsupervised: Cheaper (no labeling), but results harder to evaluate. Is this seg
 When to use:
 Supervised: You have clear goal and labeled data. Classification, regression problems.
 Unsupervised: You're exploring, don't know what to look for. Discovery, compression, clustering.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is cross-validation and why is it important?",
@@ -11468,6 +11693,12 @@ Metric: Report mean accuracy ± std dev across folds. Tight std dev = consistent
 When to use: Always, unless you have huge amounts of data. For datasets n < 10,000, k-fold is standard practice.
 
 My approach: Start with k=5. If compute allows, k=10.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain the difference between classification and regression.",
@@ -11512,6 +11743,12 @@ Blurry line: Sometimes you can convert between them. Regression for probability 
 Tradeoff: Classification is simpler conceptually (outputs discrete labels), but regression is more flexible.
 
 My approach: If output is naturally categorical, classification. If numeric, regression. When unsure, regression first (you can always threshold).`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is a confusion matrix? Walk through precision, recall, and F1 score.",
@@ -11555,6 +11792,12 @@ F1: You care equally about both. Balanced dataset, balanced cost.
 Tradeoff: Precision and recall are inverse. Increase precision, recall drops (stricter threshold). Increase recall, precision drops (looser threshold).
 
 My approach: Understand your cost of FP vs FN, then optimize accordingly.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "When would you use a decision tree vs logistic regression?",
@@ -11606,6 +11849,12 @@ For interpretability, decision tree. For simplicity, logistic regression.
 For production systems, ensemble methods (random forests, XGBoost) often beat both.
 
 My approach: Understand your features first. If they seem linearly separable, logistic regression. If complex patterns, decision tree or ensemble.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is feature engineering? Give 3 examples of useful features for a retail dataset.",
@@ -11656,6 +11905,12 @@ General approach:
 Tradeoff: More features = more computation, risk of overfitting. 10 great features beat 100 mediocre ones.
 
 My approach: Start with domain knowledge (what matters in retail?), then data exploration (what patterns exist?), then validation (do these features improve the model?).`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain the difference between bagging and boosting.",
@@ -11713,6 +11968,12 @@ If accuracy matters more than speed, try XGBoost (boosting).
 Metric: Bagging reduces variance (gap between different random seeds). Boosting reduces bias (training vs test accuracy gap).
 
 My approach: Random forest for simplicity and robustness. XGBoost for maximum accuracy in competitions or production when accuracy is critical.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is the curse of dimensionality? How does it affect model performance?",
@@ -11760,6 +12021,12 @@ Solutions:
 Metric: Use learning curve. Plot train vs test accuracy against number of features. Find the peak of test accuracy.
 
 My approach: Start with domain knowledge (which features matter?). Remove obvious noise. Use regularization. If still underperforming, apply dimensionality reduction.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain train/test/validation split. Why is it important?",
@@ -11804,6 +12071,12 @@ Imbalanced data: Use stratified split — maintain class ratio in all three sets
 Tradeoff: Larger training set = better model. Larger test set = more reliable performance estimate. Choose based on data availability.
 
 My approach: With large data, 80/10/10. With small data, k-fold cross-validation (forget validation set, use all data for training/testing).`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What are hyperparameters? How do you tune them?",
@@ -11851,6 +12124,12 @@ Practical approach:
 Metric: Plot validation accuracy against each hyperparameter. Find the sweet spot (peak).
 
 My approach: Random search first (faster). If time allows, grid search around promising region. Use cross-validation to average results (more robust).`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain the difference between parametric and non-parametric models.",
@@ -11906,6 +12185,12 @@ Large data, need accuracy: Non-parametric.
 Unknown relationship: Non-parametric (safer).
 
 My approach: Start parametric (linear regression) for baseline. If it underperforms, try non-parametric (random forest). Ensemble both if time allows.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is one-hot encoding? When does it cause problems?",
@@ -11955,6 +12240,12 @@ E-commerce dataset. Categorical feature: city (500 unique values). One-hot creat
 Tradeoff: One-hot is safe (works for most algorithms) but can explode dimensionality. Target encoding is space-efficient but risks overfitting if cardinality is low.
 
 My approach: One-hot for low-cardinality (< 10 categories). Target encoding or frequency for high-cardinality. Always drop one column to avoid dummy variable trap.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain gradient descent in simple terms. What is learning rate?",
@@ -12016,6 +12307,12 @@ If it decreases slowly, increase learning rate.
 Advanced note: Modern optimizers (Adam, RMSprop) adapt learning rate automatically. Start with those if available.
 
 My approach: Use Adam optimizer (learning rate adaptation). If tuning manually, start with 0.01 and monitor.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is the difference between batch, mini-batch, and stochastic gradient descent?",
@@ -12089,6 +12386,12 @@ SGD almost never used alone. But SGD often used colloquially to mean mini-batch 
 Metric: Training loss over time. BGD is smooth. SGD zigzags. Mini-batch is jagged but overall downward trend.
 
 My approach: Use mini-batch with default batch size. Only tune if training is unstable (loss oscillating).`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "How do you handle missing data - MCAR vs MAR vs MNAR strategies?",
@@ -12115,6 +12418,12 @@ Common strategies:
 Validation: If imputing, evaluate on test set with synthetic missingness. Remove values randomly, impute, check if reconstructed values match.
 
 My approach: Check missingness pattern first. If MCAR and < 5%, delete. If < 20%, use KNN. If > 20%, use MICE (multiple imputation) or add missing indicators.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Random forests vs single decision trees - why does ensemble reduce variance?",
@@ -12147,6 +12456,12 @@ Limits:
 - Still prone to outliers (each tree overfits independently).
 
 My approach: Use random forest for non-linear data with many features. For highly imbalanced data, tune class_weight. Monitor out-of-bag error to detect overfitting early.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "What is XGBoost and why is it so popular in Kaggle and production?",
@@ -12185,6 +12500,12 @@ When to use:
 - Not good for: Images/NLP (use deep learning), tiny datasets (use simpler model).
 
 My approach: Start with xgboost.XGBClassifier(max_depth=3, learning_rate=0.1). Use cross-validation to tune. Monitor eval_set loss for early stopping.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "How do you detect multicollinearity in your data?",
@@ -12226,6 +12547,12 @@ How to remove:
 - PCA: Project correlated features into uncorrelated components.
 
 My approach: Calculate VIF for all features. Remove highest VIF > 10. Recompute. Iterate until all VIF < 5. For production, keep list of removed features.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Explain ROC curves, AUC, and when AUC is misleading.",
@@ -12259,6 +12586,12 @@ Better alternatives:
 - Cost-sensitive metrics: Assign cost to FP/FN. Choose threshold that minimizes expected cost.
 
 My approach: Use ROC-AUC for balanced data. Use PR-AUC for imbalanced data. Always plot curve, not just number. Set threshold based on business cost, not AUC.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Generative vs discriminative models - P(Y|X) vs P(X|Y), tradeoffs?",
@@ -12301,6 +12634,12 @@ When to use:
 - Imbalanced data: Discriminative (can weight classes).
 
 My approach: Start with discriminative (logistic or RF). If accuracy saturates or explainability required, try Naive Bayes or calibrate logistic regression with Platt scaling.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Walk through your feature selection process for a new dataset.",
@@ -12347,6 +12686,12 @@ Tools: sklearn SelectKBest, RFE, permutation importance, SHAP.
 Common mistakes: Overfitting during selection (leak target info), removing useful but correlated features (use VIF), forgetting to validate.
 
 My approach: Start with domain knowledge + variance check. Use iterative RF importance removal until stable. Validate on holdout test set.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "K-means limitations - how do you handle them in practice?",
@@ -12388,6 +12733,12 @@ Better alternatives:
 - Gaussian Mixture Models: Probabilistic, handles different cluster sizes.
 
 My approach: Start with DBSCAN for unknown structure. If k is known, use K-means with k-means++ init. Always validate with silhouette score. Plot results to check sanity.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "PCA vs t-SNE for dimensionality reduction - when to use each?",
@@ -12431,6 +12782,12 @@ When to use:
 - Both: Use PCA to reduce 100 → 50, then t-SNE on 50 features (faster).
 
 My approach: Always PCA first for preprocessing. For visualization, use t-SNE if < 10k samples, UMAP if larger (faster, better preserves structure).`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "How do you evaluate clustering quality when you have no labels?",
@@ -12483,6 +12840,12 @@ Limitations:
 - High metric ≠ useful clusters. Validate against business problem.
 
 My approach: Compute all 4 metrics. If they agree, trust it. If disagree, plot and validate manually. Use silhouette for final tuning.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "How do neural networks learn? Explain backpropagation and gradient descent.",
@@ -12522,6 +12885,12 @@ Modern techniques:
 - Dropout: Randomly turn off neurons during training. Reduces overfitting.
 
 My approach: Use Adam optimizer (adaptive learning rate) by default. Start with learning_rate=0.001. If loss diverges, reduce 10x. If converges slowly, increase 2x. Monitor loss curve for stability.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Transfer learning - when is it beneficial? Fine-tuning vs feature extraction?",
@@ -12572,6 +12941,12 @@ Learning rate tradeoff:
 - Use 10x smaller than random init (0.0001 vs 0.001).
 
 My approach: Start with feature extraction. If accuracy plateaus, unfreeze backbone and fine-tune with 0.0001 learning rate. Monitor validation loss for overfitting. Use early stopping.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Imbalanced datasets - SMOTE, undersampling, cost-sensitive learning. When each?",
@@ -12618,6 +12993,12 @@ Example: Fraud (99% legit, 1% fraud).
 - Cost-sensitive: Cost of miss = 100x. Train. Catch 75% frauds, 3% false alarm. Business may prefer.
 
 My approach: Start with cost-sensitive learning (simplest, no synthetic data). If F1 plateaus, try SMOTE. Validate on original imbalanced test set.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Word embeddings - word2vec, GloVe, BERT. When to use each?",
@@ -12667,6 +13048,12 @@ When to use:
 Modern trend: Use BERT for research. Use smaller models (DistilBERT, MobileBERT) for production.
 
 My approach: Start with word2vec (free embeddings + simple). If accuracy unsatisfactory, try BERT fine-tuning. For production with latency constraints, use DistilBERT (40% faster, 90% accuracy of BERT).`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Recommendation systems - collaborative vs content-based filtering. Pros/cons?",
@@ -12708,6 +13095,12 @@ Practical systems:
 - Offline: Batch process. Precompute recommendations daily.
 
 My approach: Start with item-based CF (simple, effective). For cold start, use content features. Hybrid = CF + content boosted by popularity. Monitor diversity (avoid recommending same 5 items to everyone).`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Time series forecasting - algorithms, stationarity, seasonality. How do you evaluate?",
@@ -12761,6 +13154,12 @@ Evaluation metrics:
 Walk-forward validation: Train on first 80%, test on 81-100%. Refit. Repeat. Simulates real deployment.
 
 My approach: Start with Prophet (fast, robust, handles seasonality). If underfitting, try XGBoost with lag features. For high-frequency data (minute-level), use LSTM. Always evaluate on walk-forward CV.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Ensemble methods - bagging, boosting, voting. When does ensemble help?",
@@ -12813,6 +13212,12 @@ Practical tips:
 - Early stopping: Add models until performance plateaus.
 
 My approach: For quick wins, use Random Forest (bagging, simple). For production, use XGBoost (boosting, fast). If accuracy critical, ensemble XGBoost + logistic regression (different algorithms). Validate on holdout to avoid overfitting ensemble.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Online learning vs batch learning - when to use each? Data drift handling?",
@@ -12866,6 +13271,12 @@ Implementation:
 - Neural networks: Easy (one mini-batch update per sample).
 
 My approach: Use batch learning with quarterly retraining + drift monitoring. If drift detected, trigger retrain. For critical systems (fraud), use online learning (SGD) with careful validation. Monitor both feature and prediction distributions monthly.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "How do you detect data drift in production? What actions to take?",
@@ -12929,6 +13340,12 @@ Practical system:
 - Quarterly: Review drifting features. Drop unimportant ones. Add new ones.
 
 My approach: Calculate PSI for all features daily. Set alert threshold = 0.25. Retrain monthly automatically. When alert fires, investigate root cause before deciding full retrain vs threshold adjustment.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Regularization (L1, L2, Elastic Net) - how do they prevent overfitting?",
@@ -12986,6 +13403,12 @@ Choosing lambda:
 - Too large: Underfitting (weights shrunk too much).
 
 My approach: Start with L2 (Ridge) for regression. If need interpretability (which features matter), use L1 (Lasso). For many features (100+), use Elastic Net. Always validate lambda with cross-validation. Monitor train vs test error.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Design an end-to-end fraud detection system - data, features, model, real-time deployment.",
@@ -13036,6 +13459,12 @@ System architecture:
 - False alarms (irritate users). Solution: Tune threshold to minimize false alarms for low-risk users.
 
 My approach: Start with XGBoost + cost-weighted learning. Features: user behavior + merchant + transaction context. Deploy threshold model for initial blocking. Monitor fraud catch rate and false alarms. Weekly retraining on new fraud patterns detected.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Fair ML across demographics - detect bias, mitigate, explain to regulators.",
@@ -13113,6 +13542,12 @@ Regulatory compliance:
 - Allow applicants to appeal. Review appeal manually to detect systemic bias.
 
 My approach: Compute disparate impact ratio for all protected attributes. Retrain with fairness constraint (lambda = 0.1). Monitor approval rates monthly. If disparate impact detected, investigate root cause and retrain. Document everything for auditors.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "GANs (Generative Adversarial Networks) - architecture, training, practical applications.",
@@ -13184,6 +13619,12 @@ Diffusion models: Recent. Stable, high-quality. But slow inference.
 GANs: Fastest inference, high quality. But unstable training.
 
 My approach: For production, use pre-trained GAN (StyleGAN2 for images). For custom domain, start with Wasserstein GAN + gradient penalty. Monitor FID score (Frechet Inception Distance) to detect mode collapse. Be prepared for 100+ GPU hours of training.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Concept drift vs data drift - detect and handle both. When does model degrade?",
@@ -13261,6 +13702,12 @@ Option 4: Adaptive threshold (quick fix for concept drift).
 - Caveat: Only works if relationship unchanged, just prevalence shifted.
 
 My approach: Monitor PSI daily. Retrain monthly if PSI > 0.25 or accuracy drops > 2%. For critical systems, also monitor prediction distribution weekly. For rapid drift, use online updates (SGD) with careful validation. For slow drift, batch retraining sufficient.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Multi-armed bandits vs A/B testing - continuous optimization, exploration-exploitation.",
@@ -13351,6 +13798,12 @@ Challenges:
   Solution: Define composite reward (e.g., 0.7 * clicks + 0.3 * revenue).
 
 My approach: For continuous optimization (homepage), use epsilon-greedy bandit. Epsilon = 0.05. For major product decisions (pricing, features), use A/B test. For many variants, use Thompson sampling (better exploration-exploitation balance).`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Causal inference - randomized experiments, propensity matching, diff-in-diff.",
@@ -13448,6 +13901,12 @@ When to use each:
 - Instrumental variables: Strong confounding, hard to measure confounders, good instruments available.
 
 My approach: Start with randomized A/B test if feasible (fastest, cleanest inference). If not, use propensity matching on observational data + sensitivity analysis (how much unmeasured confounding would flip conclusion?). For regional rollouts, use diff-in-diff. Document assumptions clearly.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Reinforcement learning - states, actions, rewards, Q-learning, policy gradient.",
@@ -13535,6 +13994,12 @@ Challenges:
 4. Convergence: Policy gradient can be unstable. Policy oscillates, never converges.
 
 My approach: Use Q-learning for discrete action spaces (game playing). Use policy gradient for continuous control (robotics). Add experience replay (store past transitions, train on batch) and target networks (stabilize learning). For sparse rewards, use hindsight experience replay (relabel failed trajectories as partial success).`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Optimize model latency to 10ms - profiling bottlenecks, inference acceleration.",
@@ -13637,6 +14102,12 @@ Alternative architectures:
 3. Model server (TensorFlow Serving, Seldon): Dedicated optimized inference server. Auto-batching, model versioning, A/B testing. Baseline for production.
 
 My approach: Profile first (find true bottleneck). Cache features in Redis. Quantize model (int8). Use GPU with batching if latency < 2ms needed. Monitor percentile latency (95th) not mean. Async non-critical operations.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Model interpretability for regulators - SHAP, LIME, counterfactuals, governance.",
@@ -13742,6 +14213,12 @@ shap_values = explainer.shap_values(applicant_features)
 # print explanation: "Top 3 features: Income (+20%), Debt (-15%), CreditScore (+10%)"
 
 My approach: Use gradient boosting (good accuracy + feature importance). For regulatory decisions, compute SHAP values (theoretically sound). For applicant-facing explanations, use counterfactuals (actionable). Document all decisions + explanations. Audit quarterly for fairness bias.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Active learning - when and how to request labels strategically.",
@@ -13852,6 +14329,12 @@ Applications:
 - Anomaly detection: Normal examples abundant, anomalies rare. Active learning finds anomalies efficiently.
 
 My approach: Start with uncertainty sampling (simple, effective). Train ensemble (5 models) for robustness. Every 100 labels, switch to diversity-based sampling to avoid clustering around decision boundary. Monitor accuracy curve. Stop when accuracy plateaus.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Productionize ML notebook → service with monitoring, CI/CD, reliability.",
@@ -14066,6 +14549,12 @@ Challenges:
 - Drift. Production data different from training. Solution: Retrain weekly. Monitor drift metrics (PSI, KS).
 
 My approach: Start with Flask + Docker. Deploy to Kubernetes (3 replicas, liveness probe). Add Prometheus monitoring (latency, accuracy). CI/CD: Tests + build + canary deploy. Feature flags: Roll out slowly. Keep model versions. Retrain monthly or on-alert.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "How do you handle missing data in a dataset? When is each approach appropriate?",
@@ -14112,6 +14601,12 @@ Use when: Missing data is significant and you need uncertainty quantified.
 Metric: Compare predictions with and without missing data handling. Best approach minimizes prediction error.
 
 My approach: Check missingness pattern (random vs systematic). If < 5% and random, mean imputation. If systematic or > 20%, use KNN imputation.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Explain random forests. Why do they generally outperform single decision trees?",
@@ -14154,6 +14649,12 @@ Tradeoff:
 Hyperparameters to tune: Number of trees (more better, diminishing returns), max depth (deeper = more complex), min samples per leaf (higher = simpler).
 
 My approach: Start with 100 trees, max_depth=10. Tune depth and samples_per_leaf by validation performance.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "What is XGBoost and why is it so popular in competitions and production?",
@@ -14198,6 +14699,12 @@ Tradeoff: More hyperparameters to tune than RF. But well worth it for performanc
 Key hyperparameters: learning_rate (0.01-0.1), max_depth (3-10), n_estimators (100-1000).
 
 My approach: Start with learning_rate=0.1, max_depth=5, n_estimators=100. Tune based on CV performance.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "How would you detect and handle multicollinearity in your features?",
@@ -14240,6 +14747,12 @@ Cons: Less interpretable. Coefficients harder to interpret.
 Tree-based models: Less affected by multicollinearity. Trees split on one feature at a time, don't care about correlation.
 
 My approach: For linear models, compute VIF. If > 5, check correlation matrix. Remove highest-correlation partner or use Ridge. For trees, less critical.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Explain ROC curves and AUC. When is AUC misleading?",
@@ -14284,6 +14797,12 @@ When AUC is misleading:
 Better alternatives: Precision-recall curve (better for imbalanced), F1 score, log loss (considers calibration).
 
 My approach: Use AUC for balanced datasets and initial screening. For imbalanced or cost-sensitive, use F1, precision-recall, or custom cost function.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "What is the difference between generative and discriminative models?",
@@ -14327,6 +14846,12 @@ Data efficiency: Generative models can leverage unlabeled data better. With few 
 Practical impact: With 10K labeled examples, use discriminative (logistic regression). With 100 labeled examples, generative (Naive Bayes) might be better.
 
 My approach: Start with discriminative (simpler, faster). If data scarcity or need generation, switch to generative.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "How do you select features for a model? Walk through your process.",
@@ -14377,6 +14902,12 @@ Fewer features: Faster predictions, interpretable, less overfitting but might mi
 Computational cost: With 1000 features, backward selection means training 1000 times. Use correlation filter first to reduce.
 
 My approach: Start with domain knowledge and correlation analysis. Use tree model to get importance scores. Backward select based on CV performance. Final check: Can you interpret the final features?`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Explain k-means clustering. What are its limitations?",
@@ -14426,6 +14957,12 @@ Limitations:
 Alternatives: DBSCAN (no k, handles non-spherical), Gaussian Mixture Models (soft assignment), hierarchical clustering (dendrograms).
 
 My approach: K-means for fast clustering on spherical data with known k. DBSCAN for unknown k or irregular shapes. GMM for probabilistic soft assignment.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "When would you use dimensionality reduction? Compare PCA and t-SNE.",
@@ -14490,6 +15027,12 @@ Practical example:
 - 100-feature dataset: Use t-SNE to 2D, plot to inspect clusters visually.
 
 My approach: For preprocessing, PCA to keep 95% variance. For visualization, t-SNE. Never use t-SNE outputs for model training.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "How do you evaluate a clustering model when there are no labels?",
@@ -14553,6 +15096,12 @@ Silhouette method: Plot silhouette score vs k. Pick k with highest score.
 Tradeoff: More clusters always better metrics. But more clusters = less actionable. Balance quantitative metrics with interpretability and usefulness.
 
 My approach: Compute silhouette score for k=2 to 10. Pick k with highest score. Validate visually and with domain expert.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Explain how a neural network learns. What is backpropagation?",
@@ -14611,6 +15160,12 @@ Smaller learning rate: Safer, slower.
 Modern optimizers (Adam, RMSprop): Adapt learning rate automatically. Better than hand-tuning.
 
 My approach: Use Adam optimizer. Learning rate 0.001. Monitor training loss. If diverging, reduce learning rate. If plateau, increase learning rate slightly.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "What is transfer learning? When should you use it vs training from scratch?",
@@ -14669,6 +15224,12 @@ Moderate: Train final 2-3 layers, freeze early layers.
 Aggressive: Train all layers with low learning rate (0.0001 vs 0.001).
 
 My approach: Few labeled examples? Transfer learning essential. Large labeled dataset? Try both, compare. Moderate data? Default to transfer learning.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "How do you handle imbalanced datasets? Compare SMOTE, undersampling, and cost-sensitive learning.",
@@ -14727,6 +15288,12 @@ Cost-sensitive: Best for cost asymmetry. Use when FP and FN have different costs
 Metric implications: Accuracy terrible for imbalanced. Use F1, AUC-PR (precision-recall), or cost-based metric instead.
 
 My approach: Hybrid. SMOTE to generate minority class to maybe 30% of majority. Then cost-sensitive learning with weights reflecting true cost ratio. Validate on realistic cost metric, not accuracy.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Explain the difference between word2vec, GloVe, and BERT embeddings.",
@@ -14803,6 +15370,12 @@ Classification task (sentiment, spam): BERT likely better. Use pre-trained, fine
 Compute: word2vec runs on laptop. BERT benefits from GPU.
 
 My approach: For text classification, start with pre-trained BERT, fine-tune on your data. For similarity or exploration, word2vec faster and lighter.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "What is a recommendation system? Compare collaborative vs content-based filtering.",
@@ -14883,6 +15456,12 @@ Practical challenges:
 Real systems use: Hybrid + context-bandit algorithms + ranking (implicit signals like click, view time).
 
 My approach: Collaborative filtering main model. Content-based for cold-start. Blend recommendations for diversity.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "How would you build a time series forecasting model? What algorithms would you consider?",
@@ -14972,6 +15551,12 @@ Seasonality: Capture with seasonal decomposition or model explicitly.
 Evaluation: Train/test split for time series tricky. Use expanding window or sliding window (time-aware cross-validation).
 
 My approach: Start with ARIMA baseline (fast, interpretable). If data >500 examples, try XGBoost with lag features. If >5000 and complex patterns, LSTM.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "Explain ensemble methods. When do they help and when are they overkill?",
@@ -15044,6 +15629,12 @@ Accuracy vs interpretability: Ensemble more accurate but less interpretable.
 Rule of thumb: Single model tuned well often outperforms ensemble of poorly tuned models. Tune single model first. If stuck, ensemble.
 
 My approach: Baseline single model with cross-validation. If performance plateaus, try ensemble. Quantify accuracy gain. Worth the computational cost?`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "What is the difference between online learning and batch learning? When do you use each?",
@@ -15111,6 +15702,12 @@ Scheduled retraining: Online learning but retrain batch model periodically.
 Key metric: Online learning performance degrades if distribution shifts fast. Batch learning only learns when retrained.
 
 My approach: Streaming data? Online learning with SGD. Static data? Batch learning is simpler and more accurate.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
       {
         q: "How do you detect data drift in a production model?",
@@ -15190,6 +15787,12 @@ Response to drift:
 4. Fallback: Keep old model as backup. If performance bad, rollback.
 
 My approach: Monitor accuracy weekly if ground truth available. Feature statistics daily (mean, percentiles). Alert if accuracy drops > 2% or feature mean shifts > 1 std dev. Retrain monthly or on-demand.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
       },
       {
         q: "Explain regularization. When would you use Lasso vs Ridge vs Elastic Net?",
@@ -15282,6 +15885,12 @@ Which?
 - Features correlated? Ridge.
 
 My approach: Default to Ridge for stability. If need feature selection, Lasso. If unsure, Elastic Net with l1_ratio = 0.5 (balanced).`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
       },
     ],
     statistics: [
@@ -15322,6 +15931,13 @@ Tradeoff:
 CLT requires "large enough" samples. Depends on skewness. For nearly normal data: n > 30 works. For very skewed data: n > 100+ needed.
 
 My approach: Always check raw data distribution. If skewed, ensure large sample sizes. Trust CLT for aggregation and testing.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is a normal distribution? Give a real-world example where data is NOT normally distributed.",
@@ -15366,6 +15982,13 @@ Visual: Histogram should be bell-shaped. QQ-plot points should follow diagonal l
 Test: Shapiro-Wilk test, Kolmogorov-Smirnov test (statistical tests for normality).
 
 My approach: Always visualize your data first. If non-normal, either transform (log-transform, square root) or use non-parametric tests (Mann-Whitney U instead of t-test).`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain the difference between population and sample. When does this distinction matter?",
@@ -15420,6 +16043,13 @@ Larger sample = more accurate estimate but more costly.
 Smaller sample = cheaper but less precise.
 
 My approach: Always note whether you're reporting population parameter or sample statistic. Use confidence intervals to express uncertainty. Ensure sampling is random to avoid bias.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is standard deviation vs standard error? When do you use each?",
@@ -15478,6 +16108,13 @@ Report to client: "Average reaction time is 400 ms. 95% CI = [380, 420] ms." (us
 Don't report: "Reaction time is 400 ± 50 ms." (that's SD, about individual variation, not estimate precision)
 
 My approach: Report SD for describing data variability. Report SE or CI when reporting sample means and their precision.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain null hypothesis and alternative hypothesis with a business example.",
@@ -15534,6 +16171,13 @@ Common mistakes:
 3. Accepting H0 (very wrong language). You "fail to reject H0" or "find insufficient evidence against H0." Never say you "accept" or "proved" H0.
 
 My approach: Clearly define H0 (status quo) and H1 (what you want to prove). Use one-tailed if directional, two-tailed otherwise. Report p-value and decision clearly.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is a confidence interval? How do you explain a 95% CI to a business stakeholder?",
@@ -15594,6 +16238,13 @@ n = 10000: CI might be [$109, $111] (very narrow)
 Larger sample = narrower CI = more precise estimate.
 
 My approach: Always report CI or error bars, not just point estimates. Explain to stakeholders: "Range where true value likely lies. Accounts for sample variability."`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is the law of large numbers? How does it apply to A/B testing?",
@@ -15655,6 +16306,13 @@ With n = 5000 per group, this difference is likely real. CI [±0.9%].
 This is why you see "run test for 2 weeks minimum" recommendations. Depends on traffic. High-traffic site: 2 days sufficient. Low-traffic site: months needed.
 
 My approach: Compute required sample size upfront (using power analysis). Don't stop test early just because first few days show difference. LLN needs time and data.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain the difference between discrete and continuous probability distributions.",
@@ -15723,6 +16381,13 @@ Discrete models simpler conceptually but less precise for non-integer data.
 Continuous models flexible but can't directly model count data.
 
 My approach: Count data → discrete distribution. Measurement data → continuous. Choose distribution matching your data type and shape.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is conditional probability? Explain with Bayes theorem using a real example.",
@@ -15799,6 +16464,13 @@ Surprising: Patient tests positive on 99% accurate test but only 17% likely to b
 Key insight: Prior probability P(sick) = 1% dominates. Even a good test can't overcome rare baseline.
 
 My approach: Use Bayes when you want to flip conditional probabilities. Know posterior probability given new evidence. Useful for diagnosis, classification, updating beliefs.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is expected value? How would you use it to evaluate a business decision?",
@@ -15873,6 +16545,13 @@ Expert judgment: Gut estimate if data unavailable. Biased but actionable.
 Simulation: Run 1000 scenarios, estimate success rate.
 
 My approach: Compute EV for major decisions (product launch, infrastructure investment, marketing spend). Choose highest EV option. Update probabilities as you learn.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain the difference between mean, median, and mode. When is median better than mean?",
@@ -15942,6 +16621,13 @@ Peak of distribution. When distribution is multimodal (multiple peaks), modes id
 Categorical data. Can compute mode but not mean or median on {red, blue, green}.
 
 My approach: Visualize data first. If normal: report mean. If skewed: report median. Always report sample size and standard deviation for context.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is a probability density function vs cumulative distribution function?",
@@ -16014,6 +16700,13 @@ PDF: Visualizing distribution. Understanding likelihood of values.
 CDF: Computing probabilities. "What % below threshold?" Percentiles. Confidence intervals.
 
 My approach: For visualization, plot PDF (histogram, density curve). For calculations, use CDF (percentiles, probabilities).`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain independent vs dependent events. Why does this matter for modeling?",
@@ -16099,6 +16792,13 @@ Reality: Users talk. New price spreads by word-of-mouth within user group. Treat
 Impact: Estimated treatment effect and confidence interval wrong. True effect larger than calculated.
 
 My approach: Always think about dependence. Visualize data, check for patterns. If independence violated and effect large, use appropriate statistical methods.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "What is variance? How do you interpret high variance in a dataset?",
@@ -16186,6 +16886,13 @@ Example: Individual user engagement varies wildly. Aggregate to daily active use
 Example: Marketing spend variance. If weather affects foot traffic, control for weather.
 
 My approach: Compute variance (or standard deviation). Compare to mean (using CV). Interpret as inconsistency or unpredictability. Investigate root causes. Segment or control factors to reduce.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "Explain percentiles and quartiles. How do you use them to detect outliers?",
@@ -16282,6 +16989,13 @@ Blindly removing outliers. Outliers might be real patterns, not errors.
 Example: E-commerce. $5000 purchase looks like outlier. But it's bulk order from business customer. Real, valuable data.
 
 My approach: Compute Q1, Q3, IQR. Flag outliers using IQR method. Visualize (box plot). Investigate before removing. Understand if outliers signal problems or real patterns.`,
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
+      level: "junior_ds",
       },
       {
         q: "How do you test whether two groups are statistically different? Walk through the process.",
@@ -16412,6 +17126,13 @@ p-value > 0.05. Not significant. Insufficient evidence to say B better than A.
 Recommendation: Run longer test (more samples) or accept A and B equivalent.
 
 My approach: Define H0 and H1 clearly. Choose test based on data type. Compute test stat and p-value. Report p-value AND effect size. Interpret both statistical and practical significance.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "Explain the difference between one-tailed and two-tailed tests. When do you use each?",
@@ -16519,6 +17240,13 @@ One-tailed: More power to detect effect in predicted direction. But risky if eff
 Two-tailed: Less power. But safe. Catches effects in any direction.
 
 My approach: Plan hypothesis before looking at data. Two-tailed unless strong directional prior. Pre-register in A/B test platforms to prevent p-hacking.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "What is statistical power? How does it affect your experiment design?",
@@ -16645,6 +17373,13 @@ But 40% chance you miss real effect.
 Practical consequence: Launch feature anyway (optimistic), or abandon it (pessimistic). Higher risk.
 
 My approach: Always compute power before running test. Know your minimum detectable effect. Ensure sample size sufficient for 80% power on that effect. Report power in experiment results.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "How would you calculate the required sample size for an A/B test with 80% power?",
@@ -16761,6 +17496,13 @@ Online calculators: Optimizely, VWO, G*Power (free software).
 Code: Python (statsmodels.stats), R (pwr package).
 
 My approach: Always calculate required sample size before test. Know runtime. Decide if acceptable. If not, increase effect size (look for bigger improvements) or use better metrics (lower variance).`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "Explain the difference between parametric and non-parametric tests. Give examples of each.",
@@ -16887,6 +17629,13 @@ If both parametric assumptions met: Parametric ≥ 15-20% more powerful than non
 If assumptions violated: Non-parametric actually more powerful (avoids bias from violated assumptions). Parametric gives misleading p-values.
 
 My approach: Check normality first (visual + test). If normal: parametric (more power). If non-normal: non-parametric (honest). With large n, parametric usually safe even if slightly non-normal.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "What is the chi-squared test? When would you use it in a business context?",
@@ -17036,6 +17785,13 @@ Tradeoff:
 Chi-squared can test multiple variables at once (3-way, 4-way tables). But harder to interpret. Binary comparison easier.
 
 My approach: Chi-squared for categorical associations. Always visualize as cross-tabulation. Report proportions alongside p-values for clarity.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "Your A/B test ran for 2 weeks but didn't reach significance. What do you do?",
@@ -17165,6 +17921,13 @@ Common mistake:
 Once test runs to pre-specified sample size, stop. If not significant, accept null. Don't peek repeatedly.
 
 My approach: Pre-specify sample size (power analysis). Run test to that size. Report results (p-value + confidence interval + effect size). Decide based on practical significance, not p-value alone. Don't continue testing to chase significance.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "Explain ANOVA. When would you use it instead of multiple t-tests?",
@@ -17314,6 +18077,13 @@ Two-way ANOVA tests:
 Example: Before/during/after training, measure employee productivity.
 
 My approach: 3+ groups? Use ANOVA instead of multiple t-tests. Avoids false positive inflation. Check assumptions. If violated, use Kruskal-Wallis.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "What is heteroscedasticity? How does it affect regression results?",
@@ -17457,6 +18227,13 @@ Option C (weight): Use weighted least squares if you understand variance structu
 Step 5: Recheck residuals. Verify heteroscedasticity reduced.
 
 My approach: Always visualize residuals (residual plot). If heteroscedasticity evident, use robust standard errors (one-line fix in most software). Report both original and robust SEs if discrepancy large.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "Explain the difference between maximum likelihood estimation and method of moments.",
@@ -17550,6 +18327,13 @@ Mixture distributions (two underlying groups). MLE estimates each component. MM 
 Heavy-tailed distributions (outliers). MLE estimates tail weight. MM sensitive to outliers.
 
 My approach: Default to MLE in modern statistics (software available, efficient). Use MM for simplicity and robustness if MLE hard to compute or data suspect.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "What is a Poisson distribution? Give a real business use case.",
@@ -17654,6 +18438,13 @@ Forecast hourly call distribution:
 Plan staffing: 2 reps handle 25 calls (5% buffertail) → capacity 12.5 calls/rep/hour. Needed 2 reps/hour on average, 3 reps during peak hours.
 
 My approach: Poisson for count data (events per time/space). Check independence and constant rate assumptions. When λ>30, use normal approximation for speed.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "How would you test if your data follows a specific distribution?",
@@ -17790,6 +18581,13 @@ For research (hypothesis testing):
 - If distribution violated, use non-parametric alternatives.
 
 My approach: Plot histogram and Q-Q first. If visually close to theoretical, trust it. If suspicious, run Shapiro-Wilk (normality) or KS (other). Don't obsess over perfect match.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "Explain multivariate testing vs A/B testing. When is multivariate better?",
@@ -17930,6 +18728,13 @@ Traffic 1000/week. Testing 4 variants. Need 500 per variant.
 1000 / 4 = 250 per variant. Too sparse. Use A/B sequential.
 
 My approach: Start A/B for clarity. Once confident in what matters, test interactions via multivariate if traffic sufficient.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "What is survivorship bias? Give an example in business analytics.",
@@ -18061,6 +18866,13 @@ Conclusion: Success random? No. But early stealth + product focus not differenti
 What did differ: Founders' network size, capital efficiency, market timing.
 
 My approach: When analyzing success patterns, always ask: \"What about the failures?\" Include non-survivors in analysis. Better yet, run prospective studies (track forward) or experiments (randomize) to avoid survivorship bias entirely.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "How do you handle outliers in statistical analysis? When should you NOT remove them?",
@@ -18208,6 +19020,13 @@ Result: Median = 2 defects (excluding training). Training period (100) separate.
 stakeholders understand: Normal facility = 2, training facility = 100. Expected to improve.
 
 My approach: Don't auto-remove. Investigate source. If error, remove. If real but unusual, keep but flag. Report statistics with and without outliers. Let stakeholders see sensitivity.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "Explain the birthday paradox. What does it teach about probability intuition?",
@@ -18326,6 +19145,13 @@ Fix: Hold-out test set. Validate features on new data (not used for selection).
 Another lesson: **Explore data but confirm with held-out test set.**
 
 My approach: Whenever running multiple tests (many features, many segments, many experiments), correct for multiple testing. Use Bonferroni (simple but stringent) or FDR (practical). Or pre-register single hypothesis before peeking at data.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "What is Markov chain? Give a business application.",
@@ -18469,6 +19295,13 @@ Cons:
 - Needs good state definitions.
 
 My approach: Markov models for customer lifecycle (onboarding, retention, churn). Estimate transition probabilities from data. Identify high-risk transitions. Intervene to improve.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "How do you test for independence between two categorical variables?",
@@ -18601,6 +19434,13 @@ If yes: Express attractive regardless of segment (no causality, just correlation
 If no: Premium status enables/encourages Express choice (possible causality).
 
 My approach: Chi-squared for \"associated yes/no\". Cramér's V for strength. If associated, investigate causation with experiments.`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "Explain the Bonferroni correction. When is it too conservative?",
@@ -18763,6 +19603,13 @@ FDR: α_FDR = 0.1.
 Risk: Some false positives. Mitigated by validation step.
 
 My approach: Bonferroni for few important tests (confirm hypotheses). FDR for many exploratory tests (discover signals). Always validate discoveries in independent data.`,
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
       },
       {
         q: "What is a likelihood ratio test? When would you use it?",
@@ -18918,6 +19765,13 @@ Parameters shouldn't be on boundary (e.g., variance σ² ≥ 0).
 Violations: Use bootstrap or permutation test.
 
 My approach: LRT for comparing nested models (simpler vs complex). Test if extra parameters significant. Use p-value for decision. If p < 0.05, complex better. If p > 0.05, simple adequate (Occam's razor).`,
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "senior_ds",
+      level: "mid_ds",
+      level: "mid_ds",
       },
       {
         q: "Design an experimentation framework for a company running 100 A/B tests simultaneously.",
@@ -19097,6 +19951,13 @@ Reporting: Weekly dashboard. Monthly summary to leadership.
 Result: Avoid the 100-test false positive avalanche. Reach honest conclusions. Build knowledge iteratively.
 
 My approach: FDR control (not Bonferroni), pre-specified power, interim analyses with stopping boundaries, replication, and continuous learning. Infrastructure-heavy but essential for 100 parallel tests.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "How do you estimate causal effects when you cannot run a randomized experiment?",
@@ -19289,6 +20150,13 @@ Result all three: Hospitalization doesn't increase mortality; sicker patients be
 Conclusion: Confounding explained apparent harmful effect.
 
 My approach: Start with regression + visualization (residuals, confounder balance). If many confounders, PSM. If concerned unmeasured confounding, sensitivity analysis or IV. Always report assumptions explicitly.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Explain propensity score matching. Design a study using it for a real business problem.",
@@ -19479,6 +20347,13 @@ Use ML to fit propensity (flexible). Estimate effect via regression residuals.
 Keeps all data (no discarding). More efficient than PSM.
 
 My approach: PSM for causal inference when: (1) unconfoundedness reasonable, (2) common support exists, (3) clarity matters (transparent matching visualizable). Otherwise, double ML or IV.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "What is instrumental variable regression? When would you need it?",
@@ -19678,6 +20553,13 @@ Regression control: Easier (control measurable confounders). But biased if unmea
 Experiment: Gold standard. No instrument needed. But often infeasible.
 
 My approach: IV when unmeasured confounding or reverse causality suspected, and valid instrument exists. Check first-stage F-stat (relevance). Justify exogeneity. Report sensitivity to weak instrument.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Explain difference-in-differences. Design a study to measure the impact of a policy change.",
@@ -19898,6 +20780,13 @@ If violated, results biased.
 Limited to two periods (or complications with multiple periods).
 
 My approach: DiD for policy impact. Check parallel trends visually (plot pre-periods). Use regression with continuous covariates to adjust for minor violations. Report robustness (varying pre-period, choice of control group).`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "How would you handle interference effects in an A/B test where users influence each other?",
@@ -20058,6 +20947,13 @@ Or use cluster randomization: Randomize by referring source (organic vs paid). A
 Or model interference: Estimate effect of referred friend treatment on non-referred control.
 
 My approach: Check for interference visually (control group trends when treatment changes). If detected, either isolate treatment/control or estimate interference effects explicitly.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Explain the bootstrap method. When is it better than analytical confidence intervals?",
@@ -20236,6 +21132,13 @@ For dataset millions: Parallelizable.
 Tradeoff: Speed vs accuracy.
 
 My approach: n < 30, non-normal, or complex statistic → bootstrap. n > 100, normal data, simple statistic → analytical (faster). When unsure, bootstrap (robust, no assumptions).`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Design a sequential testing framework that allows early stopping without inflating false positives.",
@@ -20431,6 +21334,13 @@ Trade-off: Slightly larger final sample if continue to end (due to efficiency lo
 Power: 80% (same as standard, with careful boundary selection).
 
 My approach: For time-sensitive decisions (customer impact urgent), use sequential testing with O'Brien-Fleming boundaries. Pre-specify looks and boundaries. Use software to design and analyze. Report boundaries and adjusted p-values.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "What is regression discontinuity design? Give a business application.",
@@ -20616,6 +21526,13 @@ Estimate: Causal effect of scholarship on graduation at threshold (using receipt
 More complex but handles real-world non-compliance.
 
 My approach: RDD for policy thresholds (eligibility rules, eligibility changes). Plot data around threshold visually. Check for continuity/manipulation. Estimate discontinuity via regression. Vary bandwidth for robustness. Report local effect (at threshold).`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "How do you handle the multiple testing problem in a company that runs hundreds of experiments per year?",
@@ -20814,6 +21731,13 @@ Loose control: More false positives, but faster innovation (type I error inflati
 Optimal: Tier the standard. Important features stringent. Exploratory lenient.
 
 My approach: FDR control (not Bonferroni) across portfolio. Pre-register tests. Require replication on new users. Effect size + p-value both needed. Platform-based for consistency.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Explain empirical Bayes. When would you use it instead of frequentist methods?",
@@ -21024,6 +21948,13 @@ EB estimates μ and σ² from data.
 Individual customer LTV shrunk toward μ (avoid overfitting noisy customers).
 
 My approach: Empirical Bayes when many related estimates (100+ experiments, variants, cohorts) with varying sample sizes. Reduces false discoveries, leverages prior knowledge. Frequentist when prior unavailable or adversarial context. For most applications, empirical Bayes wins.`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Design a Bayesian A/B testing system. What are the advantages over frequentist testing?",
@@ -21323,6 +22254,13 @@ Bayesian: Reached decision in 2.5 weeks (2500 users, almost 1/4 samples, similar
 Bigger savings on tests with larger effects (Bayesian stops much earlier).
 
 My approach: Bayesian for business A/B testing (intuitive decisions, flexible stopping, prior knowledge). Frequentist for research (objectivity valued over efficiency) or adversarial contexts. Platform should support both.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "How do you estimate the long-term effect of a feature when your A/B test only ran for 2 weeks?",
@@ -21528,6 +22466,13 @@ When short-term predicts long-term:
 ✗ Value with network effects (full benefit needs scale).
 
 My approach: Run test 3-4 weeks (better than 2). Measure proxies (engagement, retention early indicators). Identify mechanism. Compare to similar past features. Estimate long-term as short-term * adjustment(mechanism, evidence).`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
       {
         q: "Your experiment shows a statistically significant negative result. The PM wants to ship anyway because qualitative feedback is positive. What do you recommend?",
@@ -21751,6 +22696,13 @@ If data suggests harm and PM wants ship anyway (ignoring data), escalate.
 \"I recommend against shipping based on statistical evidence and no explanation for survey-behavior mismatch. If you choose to ship, please document decision and reasons. I want to revisit in 3 months to measure impact (retention, churn). Let's be data-driven.\"
 
 My approach: Validate experiment, explain disagreement (different metrics, populations, or bias), quantify trade-offs, propose measurements to resolve. Defer to PM if business trade-off clear (engagement > conversion) and data supports. Escalate if evidence ignored.`,
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
       },
       {
         q: "Explain synthetic control methods. When would you use them?",
@@ -21957,6 +22909,13 @@ Regression discontinuity: Treatment assigned by threshold (continuous running va
 SCM: Aggregate units, policy varies geographically, long pre-period, seeking transparent counterfactual.
 
 My approach: SCM for policy evaluation at aggregate level (country, state, firm) with rich pre-treatment data. Check pre-treatment fit and placebo tests for validity. Compare to synthetic post-policy. Report weights (shows which controls similar to treatment).`,
+      level: "head_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "lead_ds",
+      level: "head_ds",
+      level: "head_ds",
+      level: "lead_ds",
       },
     ],
     domain_specific: [
@@ -21984,6 +22943,14 @@ Thin-file credit presents a classic high-uncertainty problem. Limited behavioral
 Real example: SoFi uses telecom + rental data for millennials with no credit history. Default rate ~2% vs 4% traditional underwriting on similar income.
 
 My approach: Multi-signal model with alternative data, conservative deployment with quarterly monitoring, fairness validation at each step.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "How would you build a real-time transaction fraud detection system that processes 10K transactions per second?",
@@ -22009,6 +22976,14 @@ Real-time fraud at 10K TPS requires rethinking traditional ML. Here's the archit
 Real example: Stripe's fraud model runs in <50ms, uses 20 key features (device, velocity, merchant category). Updates weekly.
 
 My approach: Pre-computed features + in-memory model + risk-based friction. Daily retraining on fresh labels. Canary deployment to minimize impact.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "Your anti-money laundering model has a 60% false positive rate. How do you reduce it without increasing risk?",
@@ -22034,6 +23009,14 @@ My approach: Pre-computed features + in-memory model + risk-based friction. Dail
 Real example: FinCEN data shows ~98% of AML alerts are false positives. SWIFT uses ensemble: sanctions + structuring + behavioral. Reduces FP to ~40%.
 
 My approach: Diagnosis of high-fire rules, tiered threshold framework, feature engineering for context, feedback loop with analyst labels.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "Design an A/B test for a new loan pricing strategy. What are the ethical and statistical considerations?",
@@ -22062,6 +23045,14 @@ A/B testing pricing is ethically complex—test groups pay different rates. Fram
 Real example: LendingClub tested rate reductions. Found elasticity = 0.8 (1% rate cut → 0.8% more approvals). Test confirmed by 12M+ book.
 
 My approach: Ethical guardrails (no worse rate), stratified randomization, 4-week run, 12M follow-up for defaults, ANOVA for fairness.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "How would you build a customer lifetime value prediction model for a neobank?",
@@ -22090,6 +23081,14 @@ CLV in neobanking is margin per customer minus acquisition cost. I'd build a 3-y
 Real example: Chime predicts CLV at signup. High-CLV customers get premium onboarding. Reduces churn by 15%.
 
 My approach: 3-year forward CLV combining spending + retention. Calibrated by cohort. Used for acquisition channel optimization.`,
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
     },
     {
       q: "Your payment success rate prediction model is biased against users from certain regions. How do you fix it?",
@@ -22118,6 +23117,14 @@ Model bias against regions is a data or feature problem, not just algorithm. Dia
 Real example: Square found payment success was 85% in rural areas vs 92% urban. Root cause: rural banks integrated later. Solution: added bank_integration_age feature. Regional AUC gap closed to 2pp.
 
 My approach: Stratified audit, region-specific features, training rebalancing, fairness validation per region.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "Design a data pipeline that processes UPI transaction data for merchant analytics in real-time.",
@@ -22145,6 +23152,14 @@ UPI processes 100M+ txns daily in India. Real-time merchant analytics requires s
 Real example: Google Pay India processes merchant dashboards with 5min latency using BigTable for state, ClickHouse for OLAP.
 
 My approach: Kafka ingestion → Spark streaming minute aggregates → Druid OLAP → API serving <100ms queries.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "How would you detect credit card churners before they leave? What features would you engineer?",
@@ -22182,6 +23197,14 @@ Churn detection hinges on behavioral signals 60+ days before actual churn. I'd e
 Real example: Capital One uses 60-day feature window. Intervention via email reduces churn by 12%.
 
 My approach: Velocity + engagement + product lifecycle features. 60-day lookback. Gradient boosting. Intervention at >60% risk threshold.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "Build a collections optimization model that maximizes recovery while minimizing customer harassment.",
@@ -22210,6 +23233,14 @@ Collections is a multi-objective problem: maximize recovery, minimize contacts, 
 Real example: SoFi's collections model segments by financial hardship signals (income drop via credit report). Contacts hardship customers via SMS (less intrusive). Recovers 8pp more than uniform strategy.
 
 My approach: Tier-based contact strategy aligned to FDCPA. Elasticity-based ROI threshold. Complaint rate monitoring. Monthly refinement.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "How would you validate a credit risk model to meet regulatory requirements?",
@@ -22237,6 +23268,14 @@ Credit model validation is heavily regulated. Framework:
 Real example: JPMorgan's credit model validated on 2008-2009 financial crisis data. Gini 0.68. Stress test: model predicted 12% default rate in 2008. Actual: 14%. Within tolerance.
 
 My approach: Training/validation split by time. Gini >0.6. Yearly stability tests. Recession stress test. Annual regulatory report.`,
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
     },
     {
       q: "Design a patient readmission prediction model for a hospital network. What features matter most?",
@@ -22274,6 +23313,14 @@ Hospital readmission costs CMS $17B annually. Predicting 30-day emergency readmi
 Real example: ReadmissionMI model (Michigan) deployed in 100+ hospitals. AUC 0.73. Intervention reduced readmission 8%.
 
 My approach: Clinical + social + process features. 30-day prediction horizon. Gradient boosting. Top decile intervention with phone + home health. Fairness validation by race.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "How would you build an AI triage system that prioritizes emergency room patients by severity?",
@@ -22299,6 +23346,14 @@ ER triage at scale requires real-time ML deployed at registration. Architecture:
 Real example: MIT Lincoln Lab's MIMIC-based triage model. Predicts 30-day mortality risk. AUC 0.81. Deployed in Boston Medical Center. Reduced wait time for high-risk patients by 45%.
 
 My approach: Vital signs + NLP on chief complaint. Gradient boosting severity score. Offline model at kiosk. Nurse override with feedback loop. Monthly retraining.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "Your diagnostic model has different accuracy across age groups and genders. How do you ensure fairness?",
@@ -22327,6 +23382,14 @@ Fairness in diagnostics is critical—a model that misses disease in women or el
 Real example: NIH Heart.org's chest pain risk model showed lower sensitivity in women. Retraining with female-specific symptoms (jaw pain, fatigue) reduced AUC gap from 6pp to 1pp.
 
 My approach: Stratified audit. Balance training data. Add demographic-specific features. Fairness constraint retraining. Threshold per group if needed. Monthly monitoring.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "Design an A/B test for a new telemedicine feature. What are the ethical constraints?",
@@ -22356,6 +23419,14 @@ Telemedicine A/B tests must meet ethical and clinical standards. Framework:
 Real example: Teladoc's JAMA study tested telemedicine vs in-person for UTI diagnosis. Non-inferiority achieved (92% vs 94% antibiotic accuracy). Test passed.
 
 My approach: Non-inferiority design with 5pp margin. Exclude acute conditions. Stratify by age and condition. Stop rule at 15% disagreement. JAMA-style publication.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "How would you build a drug interaction prediction system using medical knowledge graphs?",
@@ -22384,6 +23455,14 @@ Drug interaction prediction prevents adverse events. Knowledge graph approach:
 Real example: Stanford's DeepDrug system uses knowledge graphs. Predicted 300+ novel interactions. 12 validated in lab. AUC 0.88 on known interactions.
 
 My approach: Knowledge graph (DrugBank + FAERS). TransE embeddings. Supervised model on interaction features. Clinical validation at prescription time. Weekly refinement.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "Your NLP model extracts medical entities from doctor notes with 78% accuracy. Is that good enough to deploy?",
@@ -22421,6 +23500,14 @@ My approach: Knowledge graph (DrugBank + FAERS). TransE embeddings. Supervised m
 Real example: Google Cloud Healthcare NLP extracted medical conditions with 82% F1. Deployed with human review. False negatives discovered in follow-up. Retrained on missed cases. Improved to 88% F1.
 
 My approach: Entity-level cost analysis. 95% threshold for safety-critical entities (allergies). 78% acceptable for review-only outputs. Ensemble model. Quarterly retraining.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "Design a HIPAA-compliant data pipeline for training ML models on patient data across multiple hospitals.",
@@ -22449,6 +23536,14 @@ HIPAA compliance in multi-hospital ML requires governance layers. Architecture:
 Real example: FDA's sentinel program aggregates claims from 100M patients across healthcare plans. Strictly de-identified. Models train on this data to detect adverse drug events.
 
 My approach: De-identification (18 identifiers removed). Central encrypted lake. DUA + access controls. Query-based (no direct data export). Audit logging. Quarterly risk assessment.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "How would you measure the real-world effectiveness of an AI diagnostic tool after deployment?",
@@ -22477,6 +23572,14 @@ Post-deployment measurement differs from validation. Effectiveness framework:
 Real example: MIT study of AI chest X-ray model. Post-deployment: 8 hospitals, 2000 patients. AI-assisted diagnosis was 12% faster (2.1 days vs 2.4 days). Statistically significant but clinically modest impact.
 
 My approach: 6-month observational cohort vs historical matched controls. Propensity score matching. Time-to-diagnosis primary outcome. Confounding sensitivity analysis.`,
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
     },
     {
       q: "Build a clinical trial patient matching system. What data sources and features would you use?",
@@ -22520,6 +23623,14 @@ Clinical trial patient matching automates enrollment. System design:
 Real example: TrialMatch (MIT/Partners) matched 10K patients to 50 clinical trials. Enrollment rate 3x faster vs manual screening.
 
 My approach: Multi-source data (EHR, claims, registry). Rule-based inclusion/exclusion. Scoring for marginal cases. Daily batch matching. Clinician review of top N.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "How do you handle the interpretability requirement for ML models used in clinical decisions?",
@@ -22552,6 +23663,14 @@ Clinical ML interpretability is non-negotiable—clinicians need to trust model 
 Real example: FDA approved chest X-ray AI models only if vendors provided SHAP-based explanations. Clinician feedback led to model improvements (identifying pneumonia-mimics the net missed).
 
 My approach: Logistic regression + rule-based for inherent interpretability. SHAP for complex models. Fairness transparency by group. Clinician validation of explanations. Uncertainty quantification.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "Design a churn prediction model for a telecom company with 100M subscribers. What features matter?",
@@ -22593,6 +23712,14 @@ Telecom churn at 100M scale requires careful feature engineering. Key signals:
 Real example: Vodafone India built model on 200M subscribers. Identified that 20% subscribers were dormant (no outgoing, only incoming). Targeted with "stay active" bonus. Reduced churn by 8%.
 
 My approach: Usage trend + network quality + commercial signals. Competitor proxy via calling patterns. Seasonal adjustment. Intervention at >40% risk. Offer redemption tracking.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "How would you build a network anomaly detection system that monitors 50K cell towers in real-time?",
@@ -22623,6 +23750,14 @@ Real-time anomaly detection across 50K towers requires streaming ML. Architectur
 Real example: Telefónica Spain monitors 20K towers. Isolation Forest detects 95% of real faults (equipment failures, fiber cuts). False positive rate 15% (maintenance not flagged by operators). Model refined quarterly.
 
 My approach: MQTT/Kafka metrics ingestion. 1-hour rolling stats. Hybrid rule-based + Isolation Forest. Flink streaming. NOC feedback for weekly retraining.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "Your customer segmentation model groups all prepaid users into one segment. How do you improve granularity?",
@@ -22661,6 +23796,14 @@ Low granularity suggests feature poverty. Improvement strategy:
 Real example: Jio (India) has 6 prepaid segments ranging from rural (Rs 99/month) to urban professionals (Rs 999+). Separate offers per segment. Improved ARPU by 12%.
 
 My approach: Feature expansion (recharge patterns, service mix, engagement). K-means with silhouette analysis. Stability check (60%+). Segment-specific offers. Quarterly re-clustering.`,
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
     },
     {
       q: "Design an experiment to test whether a new data plan pricing structure reduces churn.",
@@ -22695,6 +23838,14 @@ A/B testing pricing in telecom requires careful design. Framework:
 Real example: Airtel tested unlimited data plan vs metered. Test group churn 28% vs control 35%. Rolled out nationwide. Reduced churn by 6pp.
 
 My approach: Randomize at signup. 5000/arm for 90% power. 90-day churn window. Stratify by signup month. Chi-square test with 95% CI.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "How would you build a call drop prediction model using CDR and network performance data?",
@@ -22736,6 +23887,14 @@ Call drop prediction helps identify problem networks. Features:
 Real example: Vodafone Germany predicted call drops using signal + handover data. AUC 0.78. Identified 2% of calls at extreme risk (signal <-100dBm). Offers WiFi calling alternative. Reduces customer complaints by 25%.
 
 My approach: CDR + network performance features. Gradient boosting on 100M calls with class weighting. Real-time scoring at call initiation. Proactive callback for high-risk. Quarterly refinement.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "Build a recommendation engine for telecom plan upselling that doesn't annoy low-ARPU customers.",
@@ -22775,6 +23934,14 @@ Upselling low-ARPU customers is delicate—aggressive targeting alienates them. 
 Real example: Jio tested aggressive upselling (5 recommendations/month) to low-ARPU. Churn increased 2pp vs control. Shifted to conservative strategy (1/quarter for low-ARPU). Churn reduced. Upsell rate 8% vs 12% aggressive, but better long-term LTV.
 
 My approach: Segmentation by ARPU. Conservative recommendations for low-ARPU (1-2/quarter). Engagement throttling (max 3/month). Opt-out respected. Churn monitoring. Quarterly tuning.`,
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
     },
     {
       q: "Design a data warehouse for telecom customer analytics handling 500M CDR records daily.",
@@ -22814,6 +23981,14 @@ My approach: Segmentation by ARPU. Conservative recommendations for low-ARPU (1-
 Real example: Telefónica processes 50B CDRs annually (137M/day). Uses Hadoop + Hive. Query latency: <5 min for complex joins. Processes revenue assurance, network optimization.
 
 My approach: Parquet in columnar format. Partition by date, subpartition by hour. Materialized views for dashboards. Snowflake/BigQuery for scalability. 90-day hot storage, 2-year archive.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "Your 5G rollout data shows adoption varies wildly by city. How do you analyze and prioritize expansion?",
@@ -22853,6 +24028,14 @@ Rollout variance suggests city-level factors. Analysis framework:
 Real example: Verizon's 5G rollout prioritized Manhattan (high density, high-income). NYC adoption hit 60% within 12 months. Rural areas (Tier 3) held for later. Payback: 18 months in NYC, >4 years in rural.
 
 My approach: Correlation analysis (density, income, competition, cost). Tiered segmentation. Logistic forecasting of adoption. Payback period ranking (<2 years priority). Sensitivity to demand elasticity.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "Design a product recommendation system that works for new users with zero purchase history.",
@@ -22896,6 +24079,14 @@ Cold start for recommendations requires non-collaborative approaches. Strategy:
 Real example: Amazon's cold-start handles new users with popularity (bestsellers) + category affinity (traffic source). Contextual bandits tune recommendations per session. Cold-start CTR 3-5%, warm-start (100+ interactions) CTR 8-12%.
 
 My approach: Content-based via product embeddings. Explore-exploit lifecycle. Contextual bandits (Thompson Sampling). Traffic source signals. Popular products as fallback. Transition to collaborative filtering post-10 interactions.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "Your search ranking model shows great offline metrics but users complain results are irrelevant. What's wrong?",
@@ -22937,6 +24128,14 @@ Offline-online mismatch is common. Diagnosis:
 Real example: Alibaba's search ranking model: offline NDCG 0.75, but 30% user complaints. Root cause: position bias in labels. Switched to explicit crowd labels. Retrained. Online CTR improved 8%, complaints dropped to 12%.
 
 My approach: Audit label quality (explicit relevance vs clicks). Detect distribution shift (retrain on recent data). Online A/B testing (CTR, dwell time, bounce). Weekly monitoring. Explicit feedback collection.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "How would you build a dynamic pricing model for flash sales?",
@@ -22977,6 +24176,14 @@ Flash sales require real-time pricing optimization. Framework:
 Real example: Amazon Prime Day: 48-hour sale with 100K+ products. Dynamic pricing every 15 min. Elasticity varies (toys: 0.8, electronics: 1.5). Algorithm optimizes sell-through. Average price discount 25%, revenue uplift 18% vs static sale prices.
 
 My approach: Elasticity estimation via regression. Inventory-driven price optimization. Demand forecasting (gradient boosting on historical flash sales). 15-minute price updates. Real-time competitor monitoring. Monthly elasticity recalibration.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "Design an A/B test for a redesigned checkout page. How do you handle the novelty effect?",
@@ -23017,6 +24224,14 @@ Checkout redesigns often show inflated initial lift due to novelty (users curiou
 Real example: Stripe tested new checkout flow. Week 1: 2.5% → 3.1% (0.6pp uplift, novelty inflated). Weeks 2-4: 2.1% (0.1pp vs control, within noise). Re-examined design. Issue: new flow added an extra page (seemed novel, but actually friction). Redesigned. Retest: true 0.4pp lift. Rolled out.
 
 My approach: 4-week test minimum. Analyze weeks 2-4 separately (dilute novelty). Stratify by new/returning users and device. ANCOVA with week covariate. Decision based on post-novelty effect.`,
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
     },
     {
       q: "Build a fake review detection system for an e-commerce marketplace.",
@@ -23060,6 +24275,14 @@ Fake reviews are a cat-and-mouse game. Multi-signal approach:
 Real example: Amazon detects 200K fake reviews daily (Amazon Security). Uses NLP + reviewer history. Enforcement: remove review + warn reviewer. Repeat offenders banned.
 
 My approach: Linguistic NLP features + behavioral signals + product anomalies + network analysis. Gradient boosting. Precision-recall calibrated: 95% for auto-remove, 70-95% for manual review.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "How would you design a customer segmentation model that updates in real-time as users browse?",
@@ -23101,6 +24324,14 @@ Real-time segmentation enables dynamic recommendations. Architecture:
 Real example: Alibaba's real-time segmentation serves 500M users daily. Decision tree on browsing patterns. Segments: price-sensitive (40%), brand-loyal (25%), deal-hunters (20%), explorers (15%). Personalized recommendations per segment. Conversion lift 12%.
 
 My approach: Feature store (batch-updated every 15 min) + session features (real-time). Decision tree for fast segmentation (<1ms). Monthly retraining. Recommendation adjustment per segment. Daily distribution monitoring.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "Your return rate prediction model has 70% accuracy. Is it worth deploying? What's the business case?",
@@ -23140,6 +24371,14 @@ My approach: Feature store (batch-updated every 15 min) + session features (real
 Real example: Shein tested return prediction with 68% accuracy. Precision 55%, Recall 72%. Intervention: "Free returns" removal for low-risk. ROI 2.1x (prevented $5M returns annually). Deployed.
 
 My approach: Break down accuracy into precision/recall. Model confusion matrix. Calculate ROI (intervention cost vs value saved). If ROI >1x, deploy with monitoring. Retrain if precision drifts <50%.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "Design a data pipeline for real-time product catalog analytics across 10M SKUs.",
@@ -23187,6 +24426,14 @@ My approach: Break down accuracy into precision/recall. Model confusion matrix. 
 Real example: Amazon product analytics: 350M SKUs. Real-time pricing, inventory dashboards. Uses proprietary system. External: Databricks Lakehouse (10M SKU case study). Sub-second latency on hot queries.
 
 My approach: Kafka ingestion of product events. Kafka Streams minute aggregates. ClickHouse OLAP store partitioned by date + category. Query API. 5-minute dashboard refresh. Lag monitoring (alert >5min).`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "Design an adaptive learning system that adjusts difficulty based on student performance.",
@@ -23229,6 +24476,14 @@ Adaptive learning tailors content to individual learner pace. Framework:
 Real example: Khan Academy's Mastery system. Adaptive questions by topic. Students progress at own pace. Mastery requirement: 3/3 correct. Learning time 15% faster than fixed-paced. User engagement +25%.
 
 My approach: IRT for ability estimation. 70% success rate target question selection. Topic-based error tracking with 20% interleaving. Engagement prompts. Gradient boosting for success prediction.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "How would you predict student dropout risk in an online course platform?",
@@ -23272,6 +24527,14 @@ Dropout prediction enables timely intervention. Features:
 Real example: Coursera predicts dropout risk. Intervention: Email encouraging students to set study goals. Reduces dropout by 8-12% in week 3 cohort.
 
 My approach: Engagement trend (video views, quiz completion, login gaps). Performance signals (score trends). Demographics + course effects. Logistic regression. Intervention at >60% risk. Propensity-matched evaluation.`,
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
     },
     {
       q: "Build a content recommendation system for a learning platform with 50K courses.",
@@ -23318,6 +24581,14 @@ My approach: Engagement trend (video views, quiz completion, login gaps). Perfor
 Real example: Udemy recommends courses based on browsing history + completion. If student watches ML course but doesn't complete, recommends easier ML course. If student completes, recommends advanced course. Completion rates 15% higher than baseline.
 
 My approach: Collaborative filtering + content-based features. Difficulty/category matching. Diversity constraint (top 3 from different categories). Gradient boosting ranking. Online feedback loop.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "Design an A/B test to measure whether AI-generated quiz questions improve learning outcomes.",
@@ -23356,6 +24627,14 @@ A/B testing AI-generated content for learning requires careful outcome measureme
 Real example: Carnegie Mellon tested AI-generated explanations in cognitive tutor. Short-term quiz scores improved 6pp. Retention (6 weeks): no difference. Conclusion: AI explanations help immediate understanding, not deep learning.
 
 My approach: ANCOVA on post-test score controlling for pre-test. 1000/arm for 90% power. Secondary: completion, 1-month retention. Question quality blind review. Subgroup analysis by ability.`,
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
     },
     {
       q: "How would you measure the effectiveness of an AI tutoring system vs human tutors?",
@@ -23402,6 +24681,14 @@ Comparing AI vs human tutoring requires careful study design. Framework:
 Real example: Stanford study (2023): AI tutoring vs human for statistics. 20-week RCT. Post-test: AI=74, human=76 (2pp difference, not significant). Engagement: AI students spent 90 min/week, human spent 95 min/week (similar). Retention (6mo): no significant difference. Conclusion: AI tutoring as effective as human, more scalable/cheaper.
 
 My approach: RCT with pre/post-test. Standardized human tutor (control for quality variation). Blinded outcome assessment. Engagement tracking (time spent). Qualitative interviews. Subgroup analysis by ability. 6-month retention follow-up.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "Your plagiarism detection model flags 25% false positives. How do you improve it?",
@@ -23444,6 +24731,14 @@ My approach: RCT with pre/post-test. Standardized human tutor (control for quali
 Real example: Turnitin's plagiarism detector: 98% true positive rate on obvious plagiarism, but 20% FP on paraphrased passages. Newer version uses ML + stylometry. FP reduced to 8%. Still manual review for 50-70% similarity zone.
 
 My approach: Raise similarity threshold (85% vs 70%). Ignore common phrases (stopwords). Add stylometry (writing style analysis). Human review tiers (0-50: no action, 50-80: manual review, 80-100: auto-flag). Context by assignment type. Student feedback.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "Design a learner analytics dashboard for instructors. What metrics actually predict success?",
@@ -23493,6 +24788,14 @@ Learner analytics dashboards can overwhelm or guide. Design principles:
 Real example: University of Michigan learner analytics dashboard shows at-risk flags (based on logistic regression predicting failure). Instructors using dashboard increased interventions 3x. Student completion improved 8%.
 
 My approach: Predictive metrics (first quiz, engagement trend, help-seeking). Avoid vanity metrics. At-risk student list. Actionable interventions. Cohort context. Instructor study validation. Privacy-respecting design.`,
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
     },
     {
       q: "Build a lead scoring model for a B2B SaaS company. What signals matter most?",
@@ -23540,6 +24843,14 @@ Lead scoring prioritizes sales effort toward high-conversion prospects. Signals:
 Real example: HubSpot lead scoring model: Firmographic (company size, industry) + behavioral (website activity, email engagement) + engagement (demo request, sales calls). Score 70+ = 25% close rate. Score <30 = 2% close rate. 8x difference.
 
 My approach: Firmographic (company size, industry, funding). Behavioral (trial signup, feature usage). Engagement (email opens, demo requests). Negative signals (budget, authority, competitor). Logistic regression. Score tiers mapped to sales action. Validation by close rate.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "How would you predict which SaaS customers will churn in the next 90 days?",
@@ -23581,6 +24892,14 @@ SaaS churn prediction enables proactive retention. Features:
 Real example: Slack predicts churn. High-engagement users (daily active, multi-channel usage) 1% churn. Low-engagement (<1 login/week) 15% churn. Intervention: Slack sends tips on underused features. Reduces churn by 3-5%.
 
 My approach: Usage trend (MAU, login frequency). Feature breadth (multi-feature users lower churn). Recency (days since last action). Commercial signals (plan type, renewal date). Tenure/cohort effects. Gradient boosting. Churn >60% intervention via customer success.`,
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
     },
     {
       q: "Design an experiment to measure the impact of a free trial extension on conversion.",
@@ -23618,6 +24937,14 @@ Free trial extensions test whether more time = more conversions. Framework:
 Real example: Slack tested 14-day vs 30-day free trial. 30-day cohort converted 8% higher (44% vs 40%). But 12-month churn: 30-day = 20%, 14-day = 16%. Net LTV after churn: similar. Slack kept 14-day (lower cost, same LTV).
 
 My approach: Randomize at trial signup. ANCOVA controlling for feature usage. Primary: 30-day conversion. Secondary: time-to-conversion, discount acceptance, 12-month churn. Cost-benefit analysis.`,
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
+    level: "mid_ds",
+    level: "senior_ds",
     },
     {
       q: "Your product usage data shows power users and dormant users but nothing in between. How do you activate the middle?",
@@ -23662,6 +24989,14 @@ Bimodal distribution (power + dormant, no middle) suggests activation barrier. D
 Real example: Notion (note-taking SaaS) had power users (daily) and dormant. Reason: Steep learning curve (complex templates). Intervention: Pre-built templates library. New middle segment emerged (2-3x/week users). Dormant cohort reduced 20%.
 
 My approach: Analyze middle-ground users (if any exist). Diagnose barrier (onboarding, feature discovery, use case). Test interventions (video, in-app guide, email examples). Measure shift from dormant to middle. If no middle emerges, reconsider acquisition or product design.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "Build a health score model for enterprise SaaS accounts that predicts renewal likelihood.",
@@ -23705,6 +25040,14 @@ Health score synthesizes signals into renewal prediction. Framework:
 Real example: Salesforce predicts renewal via health score. Components: feature adoption (Einstein usage), support (case resolution time), NPS. High-health accounts: 96% renewal. Low-health: 65% renewal. 31pp difference. CSMs use to prioritize at-risk accounts.
 
 My approach: Engagement + support + commercial + relationship signals. Weighted composite health score (0-100). Gradient boosting for renewal prediction. Risk tiers. QBR intervention for high-risk. Propensity-matched validation.`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     {
       q: "How would you design a data pipeline that tracks product usage events for 1M daily active users?",
@@ -23753,6 +25096,14 @@ My approach: Engagement + support + commercial + relationship signals. Weighted 
 Real example: Amplitude (product analytics): Processes 100B events/month (3.8M events/min). Uses Kafka → custom pipeline → Druid OLAP. Sub-second queries for users, features, cohorts.
 
 My approach: Kafka event ingestion. Kafka Streams for deduplication + sessionization. Druid for hot queries (7-day raw). Postgres for warm (30-day aggregates). S3 for cold storage. PII masking. 12-month raw retention.`,
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
     },
     {
       q: "Design a pricing optimization model for a SaaS product with multiple tiers.",
@@ -23800,6 +25151,14 @@ SaaS pricing optimization balances volume, margin, and churn. Framework:
 Real example: Stripe tested pricing tiers. Originally: $50, $500, custom. Introduced $29 tier. Attracted SMBs, high expansion rate to $500. Net revenue increased 15% (more customers, lower churn from expansion opportunities).
 
 My approach: Estimate elasticity per tier (historical data). Scenario analysis (raise, lower, mix). Churn impact on LTV. Expansion coefficient. Competitor positioning. A/B test optimal price. Measure 12-month cohort revenue (accounting for churn + expansion).`,
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "head_ds",
+    level: "lead_ds",
+    level: "lead_ds",
+    level: "head_ds",
+    level: "head_ds",
     },
     ],
   },

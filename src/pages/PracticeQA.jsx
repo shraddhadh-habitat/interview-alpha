@@ -692,7 +692,21 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
   }
 
   let levelsToShow = role.levels || PM_LEVELS;
-  if (expLevel && role.expLevelChips && role.expLevelChips.length > 0) {
+  let dsLevelsToShow = null;
+
+  if (selectedRole === 'ds' && expLevel && role.expLevelChips && role.expLevelChips.length > 0) {
+    const chip = role.expLevelChips.find(c => c.id === expLevel);
+    if (chip && chip.id) {
+      const levelMap = {
+        'junior_ds': ['junior_ds'],
+        'mid_ds': ['mid_ds'],
+        'senior_ds': ['senior_ds'],
+        'lead_ds': ['lead_ds'],
+        'head_ds': ['head_ds'],
+      };
+      dsLevelsToShow = new Set(levelMap[chip.id] || []);
+    }
+  } else if (expLevel && role.expLevelChips && role.expLevelChips.length > 0) {
     const chip = role.expLevelChips.find(c => c.id === expLevel);
     if (chip) {
       const allowed = new Set(chip.levels);
@@ -709,6 +723,12 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
       const questions = bank[cat] || [];
       for (let i = 0; i < questions.length; i++) {
         const q = questions[i];
+
+        // For DS, filter by question.level if expLevel filter is set
+        if (selectedRole === 'ds' && dsLevelsToShow && !dsLevelsToShow.has(q.level)) {
+          continue;
+        }
+
         const effectiveDifficulty = q.difficulty || getDifficulty(level);
         if (difficulty && effectiveDifficulty !== difficulty) continue;
         if (company && (!q.company || q.company.toLowerCase() !== company.toLowerCase())) continue;
@@ -934,8 +954,25 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     }
 
     let levelsToShow = role.levels || PM_LEVELS;
+    let dsLevelsToShow = null; // For DS, map expLevel to question.level values
 
-    // For DS, ignore expLevel filter and show all levels (they all map to "Data Scientist")
+    // For DS, map expLevel filter to DS level values
+    if (selectedRole === 'ds' && filterExpLevel && role.expLevelChips && role.expLevelChips.length > 0) {
+      const chip = role.expLevelChips.find(c => c.id === filterExpLevel);
+      if (chip && chip.id) {
+        // Map expLevel chip ID to actual question.level values
+        const levelMap = {
+          'junior_ds': ['junior_ds'],
+          'mid_ds': ['mid_ds'],
+          'senior_ds': ['senior_ds'],
+          'lead_ds': ['lead_ds'],
+          'head_ds': ['head_ds'],
+        };
+        dsLevelsToShow = new Set(levelMap[chip.id] || []);
+      }
+    }
+
+    // For PM, continue using existing logic
     if (selectedRole !== 'ds' && filterExpLevel && role.expLevelChips && role.expLevelChips.length > 0) {
       const chip = role.expLevelChips.find(c => c.id === filterExpLevel);
       if (chip) {
@@ -956,6 +993,11 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         for (let i = 0; i < questions.length; i++) {
           const q = questions[i];
           if (search && !q.q.toLowerCase().includes(searchLower) && !q.a.toLowerCase().includes(searchLower)) continue;
+
+          // For DS, filter by question.level if expLevel filter is set
+          if (selectedRole === 'ds' && dsLevelsToShow && !dsLevelsToShow.has(q.level)) {
+            continue;
+          }
 
           // Difficulty filter
           const effectiveDifficulty = q.difficulty || getDifficulty(level);
