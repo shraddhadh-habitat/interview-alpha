@@ -9027,7 +9027,7 @@ The fix usually involves retraining frequently (weekly/daily depending on drift)
       },
       {
         q: "How would you design an A/B test to measure the impact of a new search ranking algorithm?",
-        subcategory: "case_study",
+        subcategory: "case_studies",
         difficulty: "Medium",
         a: `I'd start by asking: What are we optimizing for? Click-through rate? Conversion revenue? User satisfaction? And what's the risk tolerance — can we tolerate search quality degradation in the test?
 
@@ -9049,7 +9049,7 @@ If significant lift: Measure business impact. A 2% lift might be thousands in mo
       },
       {
         q: "How would you measure the success of a fraud detection model in production?",
-        subcategory: "case_study",
+        subcategory: "case_studies",
         difficulty: "Medium",
         a: `Success isn't just "catches fraud." I'd measure across three dimensions: detection performance, business impact, and user experience.
 
@@ -9069,7 +9069,7 @@ I'd set a framework: Model catches 80% of fraud with <2% false positive rate for
       },
       {
         q: "Your stakeholder wants a model that is both accurate AND fully explainable. How do you navigate this tradeoff?",
-        subcategory: "case_study",
+        subcategory: "case_studies",
         difficulty: "Hard",
         a: `This is a real tension. I'd start with a clarifying question: Which matters more if we have to choose — catching 95% of the target or explaining every decision? The answer shapes the path.
 
