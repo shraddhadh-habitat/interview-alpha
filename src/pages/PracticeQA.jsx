@@ -24,12 +24,11 @@ const PM_CATEGORY_CHIPS = [
 ];
 
 const DS_CATEGORY_CHIPS = [
-  { id: 'machine_learning',  label: 'Machine Learning',      dataKeys: ['ai'], subcategory: 'machine_learning' },
-  { id: 'statistics',        label: 'Statistics & Probability', dataKeys: ['ai'], subcategory: 'statistics' },
-  { id: 'sql',               label: 'SQL & Data Manipulation', dataKeys: ['ai_technical'], subcategory: 'sql' },
-  { id: 'case_studies',      label: 'Case Studies & Business Problems', dataKeys: ['product'], subcategory: 'case_studies' },
-  { id: 'python',            label: 'Python/Coding',        dataKeys: ['ai_technical'], subcategory: 'python' },
-  { id: 'system_design',     label: 'System Design (ML)',    dataKeys: ['ai_technical'], subcategory: 'system_design' },
+  { id: 'machine_learning',  label: 'Machine Learning',      dataKeys: ['machine_learning'], subcategory: null },
+  { id: 'statistics',        label: 'Statistics & Probability', dataKeys: ['statistics'], subcategory: null },
+  { id: 'sql',               label: 'SQL & Data Manipulation', dataKeys: ['ai_technical', 'domain_specific'], subcategory: 'sql' },
+  { id: 'case_studies',      label: 'Case Studies & Business Problems', dataKeys: ['product', 'domain_specific'], subcategory: 'case_studies' },
+  { id: 'system_design',     label: 'System Design',         dataKeys: ['ai_technical', 'domain_specific'], subcategory: 'system_design' },
   { id: 'behavioral',        label: 'Behavioral',           dataKeys: ['behavioral'], subcategory: null },
 ];
 
@@ -680,7 +679,9 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
 
   const role = ROLES[selectedRole] || ROLES.pm;
   const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
-  let dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
+  let dataCats = selectedRole === 'ds'
+    ? ['product', 'behavioral', 'ai', 'ai_technical', 'machine_learning', 'statistics', 'domain_specific']
+    : ['product', 'behavioral', 'ai', 'ai_technical'];
   let subcategoryFilter = null;
   if (category) {
     const chip = categoryChips.find(c => c.id === category);

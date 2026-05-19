@@ -21959,8 +21959,7 @@ SCM: Aggregate units, policy varies geographically, long pre-period, seeking tra
 My approach: SCM for policy evaluation at aggregate level (country, state, firm) with rich pre-treatment data. Check pre-treatment fit and placebo tests for validity. Compare to synthetic post-policy. Report weights (shows which controls similar to treatment).`,
       },
     ],
-  },
-  domain_specific: [
+    domain_specific: [
     {
       q: "Design a credit scoring model for thin-file customers with less than 6 months of financial history.",
       subcategory: "machine_learning",
@@ -23802,7 +23801,8 @@ Real example: Stripe tested pricing tiers. Originally: $50, $500, custom. Introd
 
 My approach: Estimate elasticity per tier (historical data). Scenario analysis (raise, lower, mix). Churn impact on LTV. Expansion coefficient. Competitor positioning. A/B test optimal price. Measure 12-month cohort revenue (accounting for churn + expansion).`,
     },
-  ],
+    ],
+  },
 };
 
 export { PM_QUESTIONS as pmQuestions };
