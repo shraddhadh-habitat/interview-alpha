@@ -12240,6 +12240,3199 @@ Metric: Training loss over time. BGD is smooth. SGD zigzags. Mini-batch is jagge
 
 My approach: Use mini-batch with default batch size. Only tune if training is unstable (loss oscillating).`,
       },
+      {
+        q: "How do you handle missing data - MCAR vs MAR vs MNAR strategies?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `First, are we talking about numerical or categorical? And is the missingness random or does it depend on other variables?
+
+Missing data comes in three flavors: MCAR (Missing Completely At Random), MAR (Missing At Random), and MNAR (Missing Not At Random). This matters because different strategies work for different mechanisms.
+
+MCAR (5% missing randomly across all rows): Safest case. Deletion or imputation both work. Delete rows if < 5% missing. If 20% missing, use mean/median imputation or KNN imputation.
+
+MAR (Missingness depends on other observed variables, like older people skip age question): Deletion biases results. Use imputation. KNN imputation or model-based imputation (regression) works well. Keep features that explain missingness.
+
+MNAR (Missingness depends on unobserved data, like depressed people skip mental health questions): Deletion and standard imputation both bias. Requires domain knowledge. Add indicator variable (is_missing = 1/0) to flag which values were imputed. Sometimes you keep MNAR indicators in the model.
+
+Common strategies:
+- Delete rows (listwise): Only if < 5% and MCAR.
+- Delete columns: If > 50% missing and not critical.
+- Mean/median: Fast, but reduces variance. Only for MCAR.
+- KNN imputation: Preserves relationships. Good for small missingness (< 20%).
+- Model-based (regression, mice): Best for MAR. Preserves correlations.
+- Indicator variables: Flag which values were imputed. Helps with MNAR.
+
+Validation: If imputing, evaluate on test set with synthetic missingness. Remove values randomly, impute, check if reconstructed values match.
+
+My approach: Check missingness pattern first. If MCAR and < 5%, delete. If < 20%, use KNN. If > 20%, use MICE (multiple imputation) or add missing indicators.`,
+      },
+      {
+        q: "Random forests vs single decision trees - why does ensemble reduce variance?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Single decision tree: High variance (overfit), low bias. Change training data slightly, get completely different tree.
+
+Random forest: Multiple trees, majority vote. Why this reduces variance:
+
+Bootstrap sampling: Each tree trained on random sample of data (with replacement). Trees see different patterns.
+Random feature selection: Each split considers random subset of features. Forces diversity.
+Averaging: Predictions averaged (regression) or voted (classification). Average of uncorrelated predictions reduces variance.
+
+Math: If predictions are independent, variance of average = variance / N. With 100 trees, variance drops ~10x.
+
+Example: Predicting house price from 20 features.
+Single tree: Overfit to quirky patterns in training data (e.g., "houses with blue doors cost more"). Test error = 50k MSE.
+Random forest (100 trees): Each tree overfit differently. Average them out. Test error = 15k MSE.
+
+Bias-variance tradeoff: Random forest slightly increases bias (individual trees may be weaker) but massively reduces variance. Net result: better test error.
+
+Why it works:
+- Trees are unstable (high variance). Small data change = big tree change.
+- Bootstrap + random features = decorrelated trees.
+- Averaging decorrelated predictions works.
+
+Limits:
+- Doesn't help if all trees learn same pattern (e.g., all features are identical).
+- Adding trees helps until trees are "as good as they can be" (diminishing returns after 50-100 trees).
+- Still prone to outliers (each tree overfits independently).
+
+My approach: Use random forest for non-linear data with many features. For highly imbalanced data, tune class_weight. Monitor out-of-bag error to detect overfitting early.`,
+      },
+      {
+        q: "What is XGBoost and why is it so popular in Kaggle and production?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `XGBoost = eXtreme Gradient Boosting. Sequential boosting with regularization and smart optimizations.
+
+How it works:
+- Starts with weak learner (shallow tree, depth 1-5).
+- Adds trees sequentially, each one correcting previous errors.
+- Uses gradient descent to fit residuals (errors).
+- Regularizes (L1, L2) to prevent overfitting.
+- Each new tree weighted by learning rate (shrinkage).
+
+Why popular:
+
+1. Accuracy: Beats random forest on most tasks. Kaggle winner in 90% of competitions (2015-2020). Reason: Sequential boosting finds patterns RF misses.
+
+2. Speed: Parallel tree building, efficient handling of sparse data, GPU support. 10x faster than sklearn GradientBoosting.
+
+3. Built-in regularization: L1, L2, tree depth constraints, subsample fraction. Less tuning than RF.
+
+4. Handles non-linear + interactions: Trees capture feature interactions. Better than linear models.
+
+5. Feature importance: Outputs which features matter. Easy to interpret.
+
+Tradeoffs:
+- More hyperparameters (learning_rate, max_depth, subsample, colsample_bytree, lambda, alpha). Harder to tune.
+- Black box. Hard to explain why it made a decision.
+- Prone to overfitting on small data. Needs careful validation.
+
+When to use:
+- Structured data (tabular). Perfect.
+- Big data competitions. Natural choice.
+- Production. Fast inference, good accuracy.
+- Not good for: Images/NLP (use deep learning), tiny datasets (use simpler model).
+
+My approach: Start with xgboost.XGBClassifier(max_depth=3, learning_rate=0.1). Use cross-validation to tune. Monitor eval_set loss for early stopping.`,
+      },
+      {
+        q: "How do you detect multicollinearity in your data?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Multicollinearity = predictive features are correlated with each other. Problem for regression because coefficients become unstable (small data change = big coefficient swing).
+
+Detection methods:
+
+1. Correlation matrix: Plot correlation between all pairs of features.
+import numpy as np
+import pandas as pd
+corr_matrix = df.corr()
+#Look for values close to 1 or -1
+- Pearson correlation good for linear relationships. Simple visual check.
+- Threshold: |r| > 0.8 is suspicious. > 0.95 is definitely collinear.
+- Weakness: Only detects pairwise correlation. Misses cases where 3 features together are collinear.
+
+2. Variance Inflation Factor (VIF): For each feature, regress it on all others. VIF = 1 / (1 - R²).
+- VIF = 1: No collinearity.
+- VIF = 5-10: Moderate. Consider removing.
+- VIF > 10: Severe. Remove.
+- Pro: Detects multivariate collinearity (3+ features).
+- Con: Computationally expensive. Requires inverting correlation matrix.
+
+3. Tree-based models (Random Forest, XGBoost): Don't suffer from multicollinearity. Reason: Trees split on one feature at a time. Correlated features just mean tree picks one arbitrarily.
+- If regression is unstable but RF is stable, suspect collinearity.
+
+4. Condition number: Ratio of largest to smallest eigenvalue of X'X matrix. > 30 indicates problem.
+
+When to remove:
+- Regression: High multicollinearity (VIF > 10) inflates coefficient variance. Remove one feature from each correlated pair.
+- Classification (logistic): Less sensitive but still problematic.
+- Trees: Doesn't matter.
+
+How to remove:
+- Domain knowledge: Keep feature that's more interpretable or useful.
+- Statistical: Keep feature with higher correlation to target.
+- PCA: Project correlated features into uncorrelated components.
+
+My approach: Calculate VIF for all features. Remove highest VIF > 10. Recompute. Iterate until all VIF < 5. For production, keep list of removed features.`,
+      },
+      {
+        q: "Explain ROC curves, AUC, and when AUC is misleading.",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `ROC (Receiver Operating Characteristic) curve: Plot of True Positive Rate vs False Positive Rate at different classification thresholds.
+
+Setup: Classifier outputs probability (0 to 1). Default threshold = 0.5. But you can move threshold up/down.
+
+Threshold = 0.5 (default): Balanced. Catches many positives but also false alarms.
+Threshold = 0.9 (strict): Few false positives, but miss positives (high False Negative Rate).
+Threshold = 0.1 (lenient): Catch almost all positives, but many false alarms.
+
+ROC curve: Plot all threshold points.
+- X-axis: False Positive Rate (FPR) = FP / (FP + TN). Higher = more false alarms.
+- Y-axis: True Positive Rate (TPR) = TP / (TP + FN). Higher = better at catching positives.
+
+AUC (Area Under Curve): Probability that model ranks a random positive higher than random negative. AUC = 0.5 (random). AUC = 1.0 (perfect).
+
+When AUC is misleading:
+
+1. Imbalanced data (99% negatives, 1% positives - fraud): Random classifier gets AUC = 0.5 even though accuracy = 99%. ROC curve sits near diagonal. Precision-Recall curve is more informative.
+
+2. Cost asymmetry: False negative (missing fraud) costs more than false positive (flagging legit transaction). AUC treats all errors equally. Use cost-weighted metrics or focus on high-TPR region of ROC.
+
+3. Class imbalance + operational constraint: If cost of deployment is high (e.g., hiring), you operate at low FPR. Right side of ROC curve (high FPR) is irrelevant. ROC hides this.
+
+Better alternatives:
+- Precision-Recall (PR) curve: For imbalanced data. PR-AUC is more informative than ROC-AUC.
+- F1 score: Harmonic mean of precision and recall. Single number, easier to optimize.
+- Cost-sensitive metrics: Assign cost to FP/FN. Choose threshold that minimizes expected cost.
+
+My approach: Use ROC-AUC for balanced data. Use PR-AUC for imbalanced data. Always plot curve, not just number. Set threshold based on business cost, not AUC.`,
+      },
+      {
+        q: "Generative vs discriminative models - P(Y|X) vs P(X|Y), tradeoffs?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Discriminative: Model P(Y|X). Learn boundary between classes. "Given features, what's the label?"
+Examples: Logistic regression, SVM, neural networks, random forest.
+
+Generative: Model P(X|Y) and P(Y). Learn distribution of each class. "How are features distributed in each class?"
+Examples: Naive Bayes, Gaussian Mixture Models, HMMs.
+
+Key difference:
+
+Discriminative: Direct. Learn decision boundary. Efficient.
+Naive Bayes: P(Y|X) = P(X|Y) * P(Y) / P(X). Bayesian inversion.
+
+Tradeoff: Accuracy vs Interpretability
+
+Discriminative:
+- Pro: Usually higher accuracy. Focuses learning on decision boundary, not full distribution.
+- Pro: Flexible. Can use any architecture (deep learning).
+- Con: Less interpretable. Why did model classify as positive? Hard to explain.
+- Con: Needs labeled data for training.
+
+Generative:
+- Pro: Highly interpretable. Can see feature distributions. Easy to generate synthetic data.
+- Pro: Handles missing data naturally. Can integrate over missing features.
+- Pro: Requires less training data (learn from unlabeled data too).
+- Con: Often lower accuracy. Models full distribution, which is harder than modeling boundary.
+- Con: More assumptions. Assumes features follow some distribution (e.g., Gaussian for Naive Bayes).
+
+Example: Email spam classification.
+Discriminative (logistic regression): Learns: "Emails with word 'viagra' → spam." High accuracy. But why? Hard to explain.
+Generative (Naive Bayes): Learns: "In spam, P(viagra) = 0.8. In ham, P(viagra) = 0.001." Easy to see. Slightly lower accuracy.
+
+When to use:
+- Production (accuracy matters): Discriminative.
+- Explainability required (healthcare, law): Generative.
+- Missing data: Generative.
+- Imbalanced data: Discriminative (can weight classes).
+
+My approach: Start with discriminative (logistic or RF). If accuracy saturates or explainability required, try Naive Bayes or calibrate logistic regression with Platt scaling.`,
+      },
+      {
+        q: "Walk through your feature selection process for a new dataset.",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Feature selection: Choose subset of features that improve model. Fewer features = simpler model, faster training, less overfitting.
+
+My process:
+
+Step 1: Domain expertise.
+- Which features make business sense? Drop ones that don't.
+- Example: Predicting house price. Drop 'color of front door' unless it's market trend.
+
+Step 2: Variance check.
+- Drop near-constant features (variance < threshold).
+- Drop duplicate features (correlation = 1).
+- Example: If 95% of houses have 'garage', drop it. No signal.
+
+Step 3: Univariate selection.
+- For each feature, compute correlation with target or mutual information.
+- Drop features with near-zero correlation/MI.
+- Example: f_classif for classification, f_regression for regression.
+- Pro: Fast. Con: Misses feature interactions.
+
+Step 4: Multivariate selection (iterative).
+- Train simple model (logistic, RF).
+- Rank features by importance (coefficients, feature_importance, SHAP).
+- Remove bottom 10% of features.
+- Retrain. If performance drops, add them back.
+- Repeat until stable.
+
+Step 5: Business constraints.
+- Latency: Can't use 1000 features in real-time. Keep < 100.
+- Cost: Collecting some features expensive. Drop if not essential.
+- Interpretability: Keep features humans can explain.
+
+Step 6: Final validation.
+- Train on full feature set.
+- Train on selected features.
+- Compare test performance. If within 2%, use selected (smaller, faster).
+
+Tools: sklearn SelectKBest, RFE, permutation importance, SHAP.
+
+Common mistakes: Overfitting during selection (leak target info), removing useful but correlated features (use VIF), forgetting to validate.
+
+My approach: Start with domain knowledge + variance check. Use iterative RF importance removal until stable. Validate on holdout test set.`,
+      },
+      {
+        q: "K-means limitations - how do you handle them in practice?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `K-means: Partition data into k clusters by minimizing within-cluster variance. Popular because it's fast.
+
+Limitations:
+
+1. Must specify k: How many clusters? K-means doesn't tell you. Must choose k upfront.
+- Solution: Elbow method (plot variance vs k, look for "elbow"). Silhouette score (higher = better). Domain knowledge.
+- Or use hierarchical clustering first to estimate k.
+
+2. Spherical clusters: K-means assumes clusters are roughly spherical and same size.
+- Example: Two overlapping moons. K-means fails. Reason: Assumes each point closer to its cluster center than others.
+- Solution: Use DBSCAN (density-based) or Spectral Clustering (handles non-convex shapes).
+
+3. Initialization sensitivity: K-means converges to local optimum. Random initial centers can give bad results.
+- Solution: Run k-means multiple times (n_init=10) and pick best. Or use k-means++ initialization (smart seeding).
+
+4. Outliers: Single outlier can pull cluster center far away.
+- Example: 100 points at (0,0), 1 point at (100,100). K-means cluster center might be at (10,10).
+- Solution: Remove outliers first. Or use k-medoids (uses median, more robust).
+
+5. Difficulty evaluating: No ground truth labels. How do you know if clustering is good?
+- Silhouette score: Measures how well each point fits its cluster.
+- Davies-Bouldin Index: Lower = better. Ratio of within-cluster to between-cluster distance.
+- Calinski-Harabasz Index: Higher = better.
+- But these metrics don't always match human intuition.
+
+When to use K-means:
+- Large data (scalable).
+- Roughly spherical clusters.
+- k is known or easy to estimate.
+
+Better alternatives:
+- DBSCAN: Handles arbitrary shapes, no need to specify k, robust to outliers.
+- Hierarchical clustering: Dendrogram shows k options.
+- Gaussian Mixture Models: Probabilistic, handles different cluster sizes.
+
+My approach: Start with DBSCAN for unknown structure. If k is known, use K-means with k-means++ init. Always validate with silhouette score. Plot results to check sanity.`,
+      },
+      {
+        q: "PCA vs t-SNE for dimensionality reduction - when to use each?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Both reduce dimensions from high (100+) to low (2-3) for visualization or computation. But different goals.
+
+PCA (Principal Component Analysis):
+- Goal: Find directions of maximum variance.
+- How: Linear transformation. New features are weighted sums of old features.
+- Output: Interpretable. PC1 is "largest variance direction". Can see which original features contribute.
+- Properties: Preserves global structure. Far-apart points stay far apart.
+- Speed: Fast. O(n * d²).
+- Use: Before training (dimension reduction). Preprocessing for regression, classification.
+
+t-SNE (t-Distributed Stochastic Neighbor Embedding):
+- Goal: Preserve local structure. Nearby points stay nearby.
+- How: Non-linear transformation. Uses probability distributions.
+- Output: Clusters visible. But axes are meaningless (not interpretable).
+- Properties: Preserves local neighborhoods. Global structure lost.
+- Speed: Slow. O(n²). Doesn't scale to 100k+ samples.
+- Use: Visualization only. Exploring data, finding clusters, sanity-checking.
+
+Tradeoff:
+
+PCA: 100 features → 10 features → train classifier. Variance preserved (95%), speed good.
+t-SNE: 100 features → 2D plot. Shows clusters, but you lose 98% of variance. Can't train on this.
+
+Example:
+- MNIST (handwritten digits, 784 features).
+- PCA: 784 → 50 keeps 95% variance. Classifier achieves 97% accuracy.
+- t-SNE: 784 → 2D. Clusters visible. Looks great on slides. But can't train on 2D → poor accuracy.
+
+Limitations:
+- PCA: Assumes linear relationships. Misses non-linear structure.
+- t-SNE: Non-deterministic. Run twice, get different plots. No axes = hard to explain.
+
+When to use:
+- Preprocessing (before training): PCA.
+- Understanding data (exploration): t-SNE or UMAP.
+- Both: Use PCA to reduce 100 → 50, then t-SNE on 50 features (faster).
+
+My approach: Always PCA first for preprocessing. For visualization, use t-SNE if < 10k samples, UMAP if larger (faster, better preserves structure).`,
+      },
+      {
+        q: "How do you evaluate clustering quality when you have no labels?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `No ground truth labels. How do you know if clustering is good?
+
+Internal metrics (based on cluster structure):
+
+1. Silhouette score: For each point, measure how similar it is to its own cluster vs nearest cluster.
+- Score = 1: Perfect (far from other clusters).
+- Score = 0: On boundary.
+- Score = -1: Wrong cluster.
+- Interpretation: Average silhouette > 0.5 is good. > 0.7 is very good.
+- Pro: Intuitive. Con: Slow (O(n²)).
+
+2. Davies-Bouldin Index (DBI): Ratio of average within-cluster distance to between-cluster distance.
+- Lower is better. DBI = 0 is perfect.
+- Interpretation: DBI < 1 is good.
+- Advantage: Doesn't require computing all pairwise distances.
+
+3. Calinski-Harabasz Index (Variance Ratio Criterion): Ratio of between-cluster variance to within-cluster variance.
+- Higher is better.
+- Interpretation: > 100 is good.
+- Related to F-statistic.
+
+4. WCSS (Within-Cluster Sum of Squares): Sum of squared distances from each point to cluster center.
+- Lower is better. But always decreases as k increases.
+- Use: Elbow method. Plot WCSS vs k, find "elbow" (knee point).
+- Example: k=1 WCSS=100, k=2 WCSS=70, k=3 WCSS=68, k=4 WCSS=67. Elbow at k=3.
+
+5. Dunn Index: Ratio of minimum between-cluster distance to maximum within-cluster distance.
+- Higher is better.
+- Interpretation: > 1.25 indicates well-separated clusters.
+- Expensive to compute.
+
+Qualitative evaluation:
+- Visual inspection: Plot 2D projection (PCA or t-SNE). Do clusters look separated?
+- Domain knowledge: Do clusters match business expectations?
+- Stability: Rerun with different random seed. Do you get same clusters?
+
+When to use each:
+- Quick check: WCSS elbow method.
+- Publication-ready: Silhouette + Davies-Bouldin.
+- Tuning k: Try k=2 to k=10, pick highest silhouette.
+
+Limitations:
+- All metrics assume compact, well-separated clusters. Fail on overlapping or irregular shapes.
+- Metrics can disagree (silhouette says k=3, Davies-Bouldin says k=5).
+- High metric ≠ useful clusters. Validate against business problem.
+
+My approach: Compute all 4 metrics. If they agree, trust it. If disagree, plot and validate manually. Use silhouette for final tuning.`,
+      },
+      {
+        q: "How do neural networks learn? Explain backpropagation and gradient descent.",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Neural network: Layers of neurons. Each neuron outputs weighted sum + bias through activation function.
+
+Forward pass: Input → weights applied → activation → output. Computes prediction.
+
+Backpropagation: How does network learn weights?
+
+1. Forward pass: Compute prediction y_hat from input X.
+2. Compute loss: How far is y_hat from true label y? Loss = (y - y_hat)².
+3. Backward pass: Compute gradient of loss w.r.t. each weight.
+   - Chain rule: dLoss/dW = dLoss/dy * dy/dz * dz/dW (multiply derivatives along chain).
+   - Start from output, work backward to input.
+4. Update weights: W_new = W_old - learning_rate * gradient.
+
+Why backward: Computing gradient by hand for each weight is tedious. Backpropagation automates this (chain rule). Efficient.
+
+Gradient descent: Iterative optimization. Keep updating weights in direction that decreases loss.
+
+Analogy: You're in fog on a hill. You can't see summit, but you can feel the slope downward. Take small step downhill. Repeat. Eventually reach bottom.
+
+Learning rate: Size of step.
+- Too large: Overshoot, oscillate, diverge.
+- Too small: Converge slowly, stuck in local minimum.
+- Adaptive: Adam, RMSprop adjust learning rate per parameter.
+
+Vanishing gradient problem: In deep networks (10+ layers), gradients shrink as they backprop. Bottom layers barely update.
+- Cause: Chain rule multiplies small derivatives (< 0.1). After 10 multiplications, gradient = 0.1^10 ≈ 0.
+- Solution: ReLU activation (doesn't saturate), batch normalization, skip connections (ResNet).
+
+Modern techniques:
+- Momentum: Accumulate gradients. Speeds up learning, avoids local minima.
+- Batch normalization: Normalize inputs to each layer. Stabilizes training.
+- Dropout: Randomly turn off neurons during training. Reduces overfitting.
+
+My approach: Use Adam optimizer (adaptive learning rate) by default. Start with learning_rate=0.001. If loss diverges, reduce 10x. If converges slowly, increase 2x. Monitor loss curve for stability.`,
+      },
+      {
+        q: "Transfer learning - when is it beneficial? Fine-tuning vs feature extraction?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Transfer learning: Use pre-trained model from one task as starting point for another task.
+
+Example: ImageNet pre-trained ResNet50 (trained on 1M images, 1000 classes) → Fine-tune on your task (medical imaging, 10k images, 5 classes).
+
+Why beneficial:
+
+1. Pre-training learned useful features (edges, shapes, textures) that transfer to new task.
+2. Reduces training data needed. Without pre-training, need 100k+ images. With transfer learning, 10k works.
+3. Faster training. Start from good weights, not random.
+4. Better accuracy. Pre-trained weights are stronger initializer than random.
+
+When beneficial:
+- Source task and target task are related (both vision, both NLP).
+- Target dataset is small (< 100k samples).
+- Computational budget is limited.
+
+Not beneficial:
+- Target task is very different (pre-train on MNIST, use for medical imaging - probably weak transfer).
+- Target dataset is huge (1M+ samples). Random init works fine, transfer learning minimal help.
+
+Two approaches:
+
+1. Feature extraction: Freeze pre-trained weights. Use them to extract features. Train only output layer.
+- Use when: Target dataset very small (< 5k). Can't fine-tune without overfitting.
+- Faster. Lower memory.
+- Less accuracy (output layer alone is weak).
+
+2. Fine-tuning: Unfreeze pre-trained weights. Train everything with small learning rate.
+- Use when: Target dataset moderate (5k-100k).
+- Higher accuracy. Learn task-specific features.
+- Slower. Higher memory (store gradients for all layers).
+- Risk of overfitting if not careful.
+
+Practical approach:
+
+Phase 1: Train output layer only (frozen backbone). Warmup. Prevents divergence.
+Phase 2: Unfreeze bottom layers. Fine-tune with small learning rate (0.0001 vs 0.001). Slowly adapt.
+Phase 3: Full fine-tuning if needed.
+
+Learning rate tradeoff:
+- Lower learning rate: Preserve pre-trained knowledge. Stable. But slow.
+- Higher learning rate: Learn faster but forget pre-training.
+- Use 10x smaller than random init (0.0001 vs 0.001).
+
+My approach: Start with feature extraction. If accuracy plateaus, unfreeze backbone and fine-tune with 0.0001 learning rate. Monitor validation loss for overfitting. Use early stopping.`,
+      },
+      {
+        q: "Imbalanced datasets - SMOTE, undersampling, cost-sensitive learning. When each?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Imbalanced data: 99% negative, 1% positive (e.g., fraud, disease, churn). Classifier learns to predict "negative" always. Gets 99% accuracy but catches 0 frauds.
+
+Strategies:
+
+1. SMOTE (Synthetic Minority Over-sampling): Generate synthetic minority samples.
+- How: For each minority sample, find k nearest neighbors. Create synthetic point between sample and neighbor.
+- Pro: Increases minority class without losing information.
+- Con: Creates synthetic data that might overlap with majority class. Can overfit.
+- Use when: Minority class is 1-10% of data.
+
+2. Undersampling: Delete majority class samples.
+- Pro: Faster training. Simpler.
+- Con: Lose information. Risky with small data.
+- Use when: Huge majority class (1M+ samples) and you can afford to lose data.
+
+3. Cost-sensitive learning: Assign higher cost to minority class errors.
+- Penalize false negatives (miss fraud) more than false positives (flag legit).
+- Example: class_weight='balanced' in sklearn. Cost of FN = 99x cost of FP.
+- Pro: No synthetic data. No data loss. Directly optimizes for business cost.
+- Con: Need to estimate cost ratio. Wrong ratio = wrong optimization.
+- Use when: Business cost is clear (cost of missing fraud = $1000, false alarm = $10).
+
+4. Threshold adjustment: Default threshold = 0.5. For imbalanced, lower threshold (0.2).
+- Classifier predicts 1 if P(fraud) > 0.2 (instead of 0.5).
+- Catches more frauds but more false alarms.
+- Pro: Simple. No data changes.
+- Con: Must choose threshold wisely. Usually requires validation.
+
+5. Ensemble: Combine multiple models trained on different data samples.
+- Example: Easy Ensemble (train on random undersampled sets, average).
+- Pro: Robust.
+- Con: Complex.
+
+Metrics: Accuracy is useless. Use F1, Precision, Recall, or AUC-PR.
+
+Example: Fraud (99% legit, 1% fraud).
+- No adjustment: Accuracy = 99%. But catches 0 frauds. Useless.
+- SMOTE: Generates synthetic fraud. Now 50-50 data. Train. Catch 80% frauds, 5% false alarm rate. Better.
+- Cost-sensitive: Cost of miss = 100x. Train. Catch 75% frauds, 3% false alarm. Business may prefer.
+
+My approach: Start with cost-sensitive learning (simplest, no synthetic data). If F1 plateaus, try SMOTE. Validate on original imbalanced test set.`,
+      },
+      {
+        q: "Word embeddings - word2vec, GloVe, BERT. When to use each?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Word embedding: Vector representation of word. "King" = [0.9, 0.1, -0.5, ...]. Similar words have similar vectors.
+
+Word2vec (2013):
+- Goal: Predict context words from target word (skip-gram) or target from context (CBOW).
+- How: Train shallow neural network. Hidden layer = word vector.
+- Pro: Fast. Simple. Free pre-trained embeddings available.
+- Con: Static. "Bank" has same embedding in "bank account" and "river bank". Misses context.
+- Use when: Quick baseline. No context needed.
+
+GloVe (2014):
+- Goal: Matrix factorization. Decompose word co-occurrence matrix.
+- How: Count how often words co-occur. Factor matrix. Done.
+- Combination: Captures both local context (window) and global statistics (co-occurrence).
+- Pro: Better than word2vec. Faster training.
+- Con: Still static. Misses context.
+- Use when: Slightly better than word2vec. Still simple.
+
+BERT (2018):
+- Goal: Contextual embeddings. "Bank" different in different sentences.
+- How: Bidirectional transformer. Attend to all words simultaneously. Pre-train on masked language modeling.
+- Pro: State-of-the-art. Dynamic. Captures context. One model works for most NLP tasks.
+- Con: Expensive. Large model (300M+ parameters). Slow inference.
+- Use when: Production. Accuracy critical. Resources available.
+
+Comparison:
+
+Word2vec: 300D vector, fixed. Fast.
+GloVe: 300D vector, fixed. Slightly better than word2vec.
+BERT: Contextual. "Bank" varies by sentence. Superior but slow.
+
+Tradeoff: Speed vs Accuracy.
+Word2vec: Word vector in 1ms. But lower accuracy.
+BERT: Word vector in 100ms. But higher accuracy.
+
+When to use:
+- Baseline (speed critical): word2vec.
+- Better baseline: GloVe.
+- Best accuracy (compute budget): BERT or RoBERTa.
+- Really small data: word2vec + logistic regression. BERT might overfit.
+- Production: Depends. Can you afford 100ms latency? Use BERT. Need 5ms? Use word2vec.
+
+Modern trend: Use BERT for research. Use smaller models (DistilBERT, MobileBERT) for production.
+
+My approach: Start with word2vec (free embeddings + simple). If accuracy unsatisfactory, try BERT fine-tuning. For production with latency constraints, use DistilBERT (40% faster, 90% accuracy of BERT).`,
+      },
+      {
+        q: "Recommendation systems - collaborative vs content-based filtering. Pros/cons?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Recommendation system: Predict which items user will like.
+
+Example: Netflix recommends movies. Amazon recommends products.
+
+Collaborative filtering (CF):
+- Idea: Users who liked same items in past will like same items in future.
+- How: Build user-item matrix. If user A and B both rated movie X highly, assume they have similar taste.
+- User-based CF: Find similar users, recommend items they liked.
+- Item-based CF: Find similar items (co-rated by many users), recommend similar to user's past likes.
+- Pro: No content knowledge needed. Works on any domain (movies, music, products).
+- Con: Cold start problem. New user has no history. Can't recommend. New item has no ratings. Invisible.
+- Con: Sparsity. Most users rate < 1% of items. Matrix is 99% empty. Hard to find similar users.
+
+Content-based filtering:
+- Idea: Recommend items similar to ones user liked.
+- How: Build feature vectors for items (genre, director, actors for movies). If user liked action movie with Tom Cruise, recommend similar.
+- Pro: Works for new items. No cold start for items (only for users).
+- Pro: Interpretable. Can explain: "You liked action movies, so we recommend X."
+- Con: Requires content features. Not always available. How do you define "similarity" for books?
+- Con: Limited discovery. Only recommends similar items. Miss serendipitous recommendations.
+
+Hybrid approach:
+- Combine both. CF for collaborative signal. Content for cold start.
+- Example: Netflix uses CF + content features (genre, popularity).
+- Pro: Best of both worlds. Works for new users/items. Diverse recommendations.
+
+Cold start problem:
+- New user: No history. Recommendation impossible. Solution: Show popular items, ask for preferences (warm-up phase).
+- New item: No ratings. Invisible. Solution: Show to similar users based on content, get initial ratings.
+
+Practical systems:
+- Implicit feedback (clicks, watches, buys) vs explicit (ratings). Implicit more abundant, noisier.
+- Real-time: Nearest neighbor search in embeddings (LSH, FAISS). Millions of recommendations per second.
+- Offline: Batch process. Precompute recommendations daily.
+
+My approach: Start with item-based CF (simple, effective). For cold start, use content features. Hybrid = CF + content boosted by popularity. Monitor diversity (avoid recommending same 5 items to everyone).`,
+      },
+      {
+        q: "Time series forecasting - algorithms, stationarity, seasonality. How do you evaluate?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Time series: Data ordered by time. Stock price, sales, temperature. Temporal dependencies (today depends on yesterday).
+
+Algorithms:
+
+1. ARIMA (AutoRegressive Integrated Moving Average): Statistical. Assumes linear relationship.
+- AR: Autoregressive. Predict using past values.
+- I: Integrated. Differencing to make stationary (remove trend).
+- MA: Moving Average. Smooth noise.
+- Pro: Interpretable. Fast.
+- Con: Assumes linearity. Needs stationarity. Hard to tune (p, d, q parameters).
+- Use: Traditional forecasting. Stock prices.
+
+2. Exponential Smoothing (Prophet): Bayesian. Handles seasonality, holidays.
+- Pro: Robust. Handles missing data. Built-in uncertainty.
+- Con: Assumes additive or multiplicative seasonality.
+- Use: Business forecasting. Demand, sales.
+
+3. LSTM (Long Short-Term Memory): Deep learning. Learns long-range dependencies.
+- Pro: Flexible. Handles nonlinear patterns. Good for long sequences.
+- Con: Needs lots of data. Black box. Slow to train.
+- Use: Stock prices, energy demand. Data-rich domains.
+
+4. XGBoost / Gradient Boosting: Treat as regression. Lag features as inputs.
+- Pro: Fast. Interpretable (feature importance). Handles nonlinearity.
+- Con: Doesn't capture long-range dependencies well (window size limited).
+- Use: Rapid prototyping. Works well with exogenous features (weather for demand).
+
+Key concepts:
+
+Stationarity: Mean, variance, autocorrelation constant over time. ARIMA requires it.
+- Test: ADF test (Augmented Dickey-Fuller). p-value < 0.05 = stationary.
+- Non-stationary example: Stock price (always trending up or down).
+- Fix: Differencing. New_series = series[t] - series[t-1].
+
+Seasonality: Repeating pattern. Sales peak every December.
+- ARIMA: (p, d, q) x (P, D, Q, 12) for monthly seasonality.
+- Prophet: Automatically detected.
+- XGBoost: Create lag features (lag=12 for monthly).
+
+Evaluation metrics:
+- MAE (Mean Absolute Error): Average error. Interpretable. $100 error on forecasting sales.
+- RMSE (Root Mean Squared Error): Penalizes large errors more. Sensitive to outliers.
+- MAPE (Mean Absolute Percentage Error): Percentage error. 10% error on $1000 forecast.
+- Last 20% as test. Don't shuffle (temporal order matters).
+
+Walk-forward validation: Train on first 80%, test on 81-100%. Refit. Repeat. Simulates real deployment.
+
+My approach: Start with Prophet (fast, robust, handles seasonality). If underfitting, try XGBoost with lag features. For high-frequency data (minute-level), use LSTM. Always evaluate on walk-forward CV.`,
+      },
+      {
+        q: "Ensemble methods - bagging, boosting, voting. When does ensemble help?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Ensemble: Combine multiple models. Predictions aggregated (voting, averaging).
+
+Bagging (Bootstrap Aggregating):
+- Idea: Train N models on random samples of data (with replacement).
+- Aggregate: Average predictions (regression) or vote (classification).
+- Example: Random Forest (bagging + trees).
+- Why helps: Each model overfits differently. Average cancels out errors.
+- Reduces: Variance. Improves stability.
+- Best when: Models are unstable (high variance, e.g., deep trees).
+
+Boosting (Sequential ensemble):
+- Idea: Train models sequentially. Each corrects previous errors.
+- How: Reweight errors. Hard examples get more weight in next iteration.
+- Example: Gradient Boosting, AdaBoost, XGBoost.
+- Why helps: Focuses on hard-to-learn patterns. Reduces bias and variance.
+- Reduces: Both bias and variance.
+- Best when: Models are weak (slightly better than random).
+
+Voting:
+- Idea: Train diverse models. Take majority vote.
+- Example: Combine logistic regression + RF + XGBoost.
+- Why helps: Different models fail on different patterns. Diversity reduces error.
+- Reduces: Variance (if models independent).
+
+When ensemble helps:
+
+1. Models are diverse: Ensemble of 100 identical trees = no improvement.
+   - Example: Combine tree + logistic + SVM. Different algorithms = diversity.
+
+2. Models are weak individually: Ensemble doesn't fix fundamentally bad models.
+   - Example: Combine 3 models with 60% accuracy each. Ensemble might reach 65%. Not 95%.
+   - But if combine weak models that are independent, voting works (Condorcet's Jury Theorem).
+
+3. Computation budget allows: Training 10 models = 10x slower.
+
+When ensemble doesn't help:
+
+1. Single model already accurate (95%+). Ensemble marginal gain (96%). Not worth complexity.
+2. Models are identical (all RF with same hyperparameters). Diversity = 0.
+3. Models are highly correlated (all predict same errors). Averaging doesn't help.
+
+Practical tips:
+- Diversity > accuracy of individuals. Rather have 3 models at 70% accuracy (different) than 3 models at 90% (all same).
+- Stacking: Train meta-model to combine predictions. More complex but often better.
+- Early stopping: Add models until performance plateaus.
+
+My approach: For quick wins, use Random Forest (bagging, simple). For production, use XGBoost (boosting, fast). If accuracy critical, ensemble XGBoost + logistic regression (different algorithms). Validate on holdout to avoid overfitting ensemble.`,
+      },
+      {
+        q: "Online learning vs batch learning - when to use each? Data drift handling?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Batch learning (offline):
+- Training: All data at once. Train weekly/monthly.
+- Deployment: Fixed model. No updates.
+- Pro: Stable. Easy to evaluate. Good accuracy with large datasets.
+- Con: Slow to adapt to new patterns. Stale model.
+- Use: Static domains. Loan approval (patterns change slowly).
+
+Online learning (streaming):
+- Training: One sample at a time. Update model immediately.
+- Deployment: Living model. Always learning.
+- Pro: Adapts fast. Handles concept drift. Low latency (no batch waiting).
+- Con: Complexity. Hard to debug. Continuous monitoring needed.
+- Use: Streaming domains. Ad recommendations, fraud detection.
+
+Tradeoff: Stability vs Adaptability.
+Batch: Stable but slow.
+Online: Adaptive but risky (bad update = degraded model).
+
+Data drift: Distribution changes over time.
+
+Example: Loan default prediction. Model trained on 2020 data. Now 2024. Economy changed. Defaults up. Model outdated.
+
+Detection:
+- Monitor feature distributions: Compare current data to training data (KS test, PSI).
+- Monitor predictions: Distribution shift in predictions.
+- Monitor performance: Accuracy drops on recent data.
+
+Response:
+- Retrain: Quarterly retraining. Batch approach.
+- Online learning: Continuous updates. Streaming approach.
+- Adaptive threshold: If accuracy drops due to recall-precision shift, adjust threshold instead of retraining.
+
+Practical hybrid:
+- Batch retraining monthly.
+- Online learning if critical (fraud). Update with newest 1000 samples.
+- Monitor for drift. If detected, trigger retrain.
+
+Computational cost:
+- Batch: One retraining cost. Scheduled.
+- Online: Per-sample update cost. Continuous.
+- Hybrid: Monthly retraining + online updates.
+
+Implementation:
+- SGD-based models (logistic, SVM): Easy online (warm_start=True in sklearn).
+- Tree models: Harder (can't update incrementally). Retrain from scratch.
+- Neural networks: Easy (one mini-batch update per sample).
+
+My approach: Use batch learning with quarterly retraining + drift monitoring. If drift detected, trigger retrain. For critical systems (fraud), use online learning (SGD) with careful validation. Monitor both feature and prediction distributions monthly.`,
+      },
+      {
+        q: "How do you detect data drift in production? What actions to take?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Data drift: Feature distributions change over time. Model performance degrades.
+
+Example: Loan approval model trained on 2020 data. Economy crashes 2024. Loan defaults spike. Model's risk assessment outdated.
+
+Detection methods:
+
+1. Monitor feature distributions:
+- Compare current week to training distribution.
+- Test: Kolmogorov-Smirnov (KS) test. p-value < 0.05 = drift detected.
+- Pro: Proactive. Detect drift before performance drops.
+- Con: Statistical test sensitive to sample size. Large datasets always "drift".
+- Threshold: |KS_statistic| > 0.1 = significant drift.
+
+2. Population Stability Index (PSI):
+- PSI = sum((actual% - expected%) * log(actual% / expected%))
+- PSI < 0.1: Stable. 0.1-0.25: Small drift. > 0.25: Significant drift.
+- Pro: Standard in industry. Interpretable.
+
+3. Monitor prediction distribution:
+- Model predictions should follow training distribution.
+- If current predictions shift, something changed (features or labels).
+- Example: Training data 5% positive. Current week 12% positive. Drift.
+
+4. Monitor model performance (latency):
+- Accuracy, precision, recall on recent predictions.
+- Requires ground truth labels (delayed). Takes time to accumulate.
+- Slower than feature monitoring but most reliable.
+- Example: Accuracy was 92%. Dropped to 88% this month. Investigate.
+
+Actions:
+
+1. Alert / Notify:
+- Threshold: PSI > 0.25 or KS > 0.15 triggers alert.
+- Notify ML team. Investigate cause.
+
+2. Threshold adjustment:
+- If drift is in positive labels (fraud rate up), adjust decision threshold.
+- Example: Original threshold = 0.5. New threshold = 0.6 (stricter). Reduces false positives in new data.
+- Faster than retraining. Works if distribution shift is small.
+
+3. Retrain model:
+- Incorporate recent data into training.
+- Monthly retrain: Combine old training data + recent data.
+- Gradual update: New data weighted higher (newer = more relevant).
+- Validate: Test new model on holdout recent data before deploying.
+
+4. Investigate root cause:
+- Why did distribution change? Market shift? Data quality issue? Upstream process change?
+- Example: Loan defaults up because credit bureau changed scoring. No model fault.
+- Root cause determines action (retrain vs ignore drift).
+
+Practical system:
+- Daily: Monitor feature PSI, prediction distribution.
+- Weekly: Compute performance if labels available.
+- Monthly: Retrain if PSI > 0.25 or performance drops > 5%.
+- Quarterly: Review drifting features. Drop unimportant ones. Add new ones.
+
+My approach: Calculate PSI for all features daily. Set alert threshold = 0.25. Retrain monthly automatically. When alert fires, investigate root cause before deciding full retrain vs threshold adjustment.`,
+      },
+      {
+        q: "Regularization (L1, L2, Elastic Net) - how do they prevent overfitting?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Regularization: Penalize complexity. Simpler models generalize better.
+
+Intuition: Model can fit training data perfectly by memorizing quirks. But quirks don't generalize. Regularization prevents memorization.
+
+L2 Regularization (Ridge):
+- Penalty: lambda * sum(weights²).
+- Effect: Shrinks all weights toward zero. No weights eliminated.
+- Formula: Loss = MSE + lambda * ||w||²
+- Example: If weight = 5, penalty = 25. If weight = 1, penalty = 1. Larger weights more expensive.
+- Use case: Multicollinearity (correlated features). L2 shrinks correlated features together.
+- Strength: lambda controls severity. lambda=0 = no regularization. lambda=1 = strong shrinkage.
+
+L1 Regularization (Lasso):
+- Penalty: lambda * sum(|weights|).
+- Effect: Shrinks weights. Some weights forced to exactly zero (feature selection).
+- Formula: Loss = MSE + lambda * ||w||₁
+- Example: If weight = 5, penalty = 5. Larger weights penalized linearly.
+- Use case: Feature selection. Unwanted features eliminated. Sparse model.
+- Advantage over L2: Produces interpretable (zero) coefficients.
+
+Elastic Net:
+- Combination: alpha * L1 + (1 - alpha) * L2.
+- Best of both: L1 for feature selection, L2 for stability.
+- Use case: Many features, want selection + stability.
+
+How regularization prevents overfitting:
+
+Training data: Model fits perfectly (loss = 0).
+Without regularization: Weights grow large to minimize loss.
+With regularization: Growing weights becomes expensive. Model chooses smaller weights, slightly worse fit, but prevents overfitting.
+
+Tradeoff: Training error increases, but test error decreases.
+- No regularization: Training error = 0.01, test error = 0.50 (overfit).
+- Strong regularization: Training error = 0.10, test error = 0.12 (balanced).
+
+Example: House price prediction (20 features, 100 samples).
+- No regularization: Weights for color, street number, etc. Overfitted.
+- L2: All weights shrunk. Less overfitting. But all features still used.
+- L1: Unimportant features (color) forced to zero. Model simpler, more interpretable.
+
+Correlated features:
+
+L2 handles better: If feature A and B are correlated, L2 shrinks both but keeps both.
+L1 handles worse: If A and B are correlated, L1 might drop one arbitrarily (unstable).
+Solution: Elastic Net (combines both).
+
+Choosing lambda:
+- Cross-validation. Try lambda = 0.001, 0.01, 0.1, 1. Pick best on validation set.
+- Too small: Overfitting (regularization not strong enough).
+- Too large: Underfitting (weights shrunk too much).
+
+My approach: Start with L2 (Ridge) for regression. If need interpretability (which features matter), use L1 (Lasso). For many features (100+), use Elastic Net. Always validate lambda with cross-validation. Monitor train vs test error.`,
+      },
+      {
+        q: "Design an end-to-end fraud detection system - data, features, model, real-time deployment.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `You're asking how I'd architect fraud detection for payment transactions. Let me walk through data flow, feature engineering, model, latency constraints, and feedback.
+
+System architecture:
+
+1. Data ingestion (100k transactions/day):
+- Kafka topic \`raw_transactions\` (user_id, amount, merchant, location, device, time).
+- Stream processor (Spark Streaming, Flink) validates schema, enriches with merchant category, IP geolocation.
+- Store cleaned data in Parquet (S3) for batch training daily.
+
+2. Feature engineering (real-time):
+- Real-time features (Redis cache): User's transaction count (last 24h), avg amount, unique merchants. Updated per transaction.
+- Historical features: User's fraud rate, avg transaction amount, days since account creation.
+- Context: Amount relative to user average (z-score), merchant risk score, time-of-day patterns.
+- Example: (user_avg_amount - current_amount) / std_dev indicates anomaly.
+
+3. Model training (daily batch):
+- XGBoost (fast, interpretable).
+- Class weights: Fraud = 1%, so weight fraud 100x. Or use SMOTE.
+- Features: 50 total (transactional, user behavior, merchant, temporal).
+- Validation: 80% train, 20% holdout test. Evaluate on precision-recall (not accuracy). Target: 90% fraud catch, < 2% false alarm.
+
+4. Real-time inference (< 5ms latency):
+- Load model into memory (Python flask service, Docker).
+- Input: transaction data + Redis cached user features.
+- Output: fraud_probability. Threshold = 0.7 (tuned for 2% false alarm rate).
+- If fraud probability > 0.7: Block, request authentication. Else: Allow.
+- Latency budget: Redis lookup (1ms) + model predict (2ms) + database write (1ms) = 4ms. OK.
+
+5. Actions:
+- Fraud score > 0.7: Challenge user (OTP, biometric, 3D secure).
+- Fraud score 0.5-0.7: Soft challenge (warning email).
+- Score < 0.5: Allow.
+
+6. Feedback loop:
+- User confirms/denies challenge or reports fraud. Ground truth label collected.
+- Accumulate daily. Retrain model weekly if: (a) New fraud patterns emerge (concept drift), or (b) False alarm rate > 3%.
+- Performance monitoring: Track precision, recall, false alarm rate daily.
+
+7. Challenges:
+- Imbalanced data (1% fraud). Solution: Cost-sensitive learning + SMOTE.
+- Concept drift (fraudsters adapt). Solution: Monitor prediction distribution, retrain weekly.
+- Latency (must decide in < 5ms). Solution: Precompute features in Redis, use shallow model.
+- False alarms (irritate users). Solution: Tune threshold to minimize false alarms for low-risk users.
+
+My approach: Start with XGBoost + cost-weighted learning. Features: user behavior + merchant + transaction context. Deploy threshold model for initial blocking. Monitor fraud catch rate and false alarms. Weekly retraining on new fraud patterns detected.`,
+      },
+      {
+        q: "Fair ML across demographics - detect bias, mitigate, explain to regulators.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `You're deploying a loan approval model to millions. Regulators require that approval rates don't differ by race, gender. How do you detect and fix bias?
+
+Bias detection:
+
+1. Disparate Impact (legal test):
+- Approval rate for Group A / Approval rate for Group B < 0.8 = probable discrimination.
+- Example: Approve 80% of males, 60% of females. Ratio = 0.75 < 0.8. Disparate impact found.
+- Calculation: For each protected attribute (race, gender, age), compute approval rate. Check if ratio < 0.8.
+- Pro: Clear legal standard.
+- Con: Doesn't account for legitimate differences in creditworthiness.
+
+2. Equalized Odds:
+- True Positive Rate (approval rate for creditworthy applicants) should be same across groups.
+- Example: 90% of creditworthy males approved, 85% of creditworthy females. Difference = 5%. Unequal odds.
+- Requires ground truth labels (loan performance data). Takes years to collect.
+
+3. Calibration:
+- Prediction should have same meaning across groups. If model predicts "50% default risk" for male and female, both should have ~50% actual default rate.
+- Check: For each group and each prediction score, compute actual default rate. Should match.
+
+4. Feature importance by group:
+- Use SHAP to compute feature importance per demographic group. If model relies more on "zip code" for one group, indicates bias.
+
+Mitigation strategies:
+
+1. Remove protected attributes:
+- Drop race, gender from features.
+- Problem: Other features (zip code, name) are proxies for race. Doesn't help.
+- Pro: Simple.
+
+2. Fairness constraints in training:
+- Modify loss function: Original loss + lambda * (disparity penalty).
+- Disparity penalty = |approval_rate_groupA - approval_rate_groupB|.
+- Train: Minimize accuracy loss + fairness penalty. Trade off accuracy for fairness.
+- Example: Lower lambda = favor accuracy. Higher lambda = favor fairness.
+
+3. Threshold adjustment:
+- Different decision thresholds for different groups.
+- Example: For males, approve if score > 0.5. For females, approve if score > 0.4.
+- Achieves equalized odds.
+- Pro: Simple. Con: Legally controversial (disparate treatment).
+
+4. Synthetically balance training data:
+- Oversample underrepresented groups.
+- Example: 70% males in training. Oversample females to 50%.
+- Model learns to handle both groups equally.
+
+5. Causal reasoning (advanced):
+- Identify causal pathways of bias.
+- Example: "zip code → credit score → loan approval" and "race → zip code". Zip code is mediator.
+- Remove causal bias by using counterfactual fairness (imagine applicant of different race, same zip code).
+
+Regulatory compliance:
+
+1. Documentation:
+- Explain fairness test applied, results, mitigation chosen.
+- Example: "Model achieves 78% approval rate for Group A, 79% for Group B. Disparate impact ratio = 0.987. Acceptable."
+- Keep audit trail. If regulators ask, show everything.
+
+2. Monitoring:
+- After deployment, continuously monitor approval rates by group.
+- If disparate impact emerges in production, immediately alert and retrain.
+
+3. Explainability:
+- For each applicant (especially rejected), explain decision.
+- Example: "Application declined because debt-to-income ratio (0.45) exceeds threshold (0.40) and credit score (620) is below minimum (650). Similar applicants approved 45% of the time."
+- Use SHAP values to highlight which features drove decision.
+
+4. Appeal mechanism:
+- Allow applicants to appeal. Review appeal manually to detect systemic bias.
+
+My approach: Compute disparate impact ratio for all protected attributes. Retrain with fairness constraint (lambda = 0.1). Monitor approval rates monthly. If disparate impact detected, investigate root cause and retrain. Document everything for auditors.`,
+      },
+      {
+        q: "GANs (Generative Adversarial Networks) - architecture, training, practical applications.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `GAN = Generator vs Discriminator. Two neural networks competing. Generator creates fake data. Discriminator detects real vs fake.
+
+Architecture:
+
+Generator G:
+- Input: Random noise (z) from normal distribution. Example: 100D vector.
+- Output: Fake image (or data). Example: 28x28 pixel image (like MNIST).
+- Goal: Fool discriminator. Make fake look real.
+
+Discriminator D:
+- Input: Image (real or fake).
+- Output: Probability image is real (0-1).
+- Goal: Detect fakes. Distinguish real from generated.
+
+Training dynamics (adversarial):
+
+1. Generator produces fake images from noise.
+2. Discriminator sees batch of real images + fake images. Learns to classify.
+3. Generator learns from discriminator's feedback. Improves fakes.
+4. Repeat. Generator improves, discriminator improves. Arms race.
+
+Loss functions:
+
+Generator: Minimize -log(D(G(z))). Wants D to say "this fake is real" (output 1).
+Discriminator: Minimize -log(D(real)) - log(1 - D(fake)). Wants D = 1 for real, D = 0 for fake.
+
+Equilibrium: Neither can improve. Generator produces indistinguishable fakes.
+
+Challenges:
+
+1. Mode collapse: Generator produces only few types of images. Example: GAN trained on digits 0-9 only generates "1" and "8" repeatedly.
+- Cause: Generator exploits one mode (1, 8) that fool discriminator.
+- Fix: Spectral normalization, minibatch discrimination, or improved loss (Wasserstein GAN).
+
+2. Training instability: Oscillates. Discriminator too strong = generator stops improving. Generator too strong = discriminator stops learning.
+- Fix: Use different loss (Wasserstein), gradient penalties, or careful learning rate tuning.
+
+3. Non-convergence: After 1M iterations, still producing garbage. Takes forever to train.
+
+Practical applications:
+
+1. Style transfer: Real photo → Painting style. Example: Photo → Van Gogh style.
+- CycleGAN: Unpaired image translation. Train on domain A, domain B without matching pairs.
+
+2. Image super-resolution: 32x32 image → 256x256 high-quality. SRGAN trained to generate realistic details.
+
+3. Synthetic data generation: GAN trained on real data → generates fake (but plausible) data.
+- Use case: Medical imaging. Real patient data rare/expensive. Generate synthetic data for training.
+- Caveat: Synthetic data must match real distribution. If GAN mode collapses, synthetic data biased.
+
+4. Anomaly detection: Discriminator learns "normal" data. Anomalies fool discriminator. Use discriminator score as anomaly metric.
+
+5. De-anonymization (privacy risk): GAN trained on anonymized faces → Reconstructs original faces. Privacy concern.
+
+Tradeoffs:
+
+Strength: Can generate realistic, diverse data. No explicit density model (vs VAEs, flow models).
+Weakness: Unstable training, hard to debug, mode collapse, expensive to train (requires careful tuning).
+
+Comparison to alternatives:
+
+VAE (Variational Autoencoder): Stable, interpretable latent space. But images blurry.
+Diffusion models: Recent. Stable, high-quality. But slow inference.
+GANs: Fastest inference, high quality. But unstable training.
+
+My approach: For production, use pre-trained GAN (StyleGAN2 for images). For custom domain, start with Wasserstein GAN + gradient penalty. Monitor FID score (Frechet Inception Distance) to detect mode collapse. Be prepared for 100+ GPU hours of training.`,
+      },
+      {
+        q: "Concept drift vs data drift - detect and handle both. When does model degrade?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `You've deployed a fraud detection model. Month 1: 95% accuracy. Month 3: 92% accuracy. Month 6: 87% accuracy. Why is it degrading?
+
+Two causes: data drift and concept drift. Different fixes.
+
+Data drift (covariate shift):
+- Feature distributions change. P(X) shifts. But P(Y|X) unchanged.
+- Example: Fraud detection. Avg transaction amount was \$50. Now \$100 (inflation, more e-commerce). Features shifted but fraud patterns same.
+- Detection: Monitor feature distributions. Compare current week to training distribution using KS test or Population Stability Index (PSI).
+  PSI = sum((current% - training%) * log(current% / training%))
+  PSI < 0.1: Stable. 0.1-0.25: Small drift. > 0.25: Significant drift.
+- Impact on model: Model trained on \$50 avg. Sees \$100 avg. Extrapolates. Predictions biased but model logic still valid.
+- Fix: Retrain on recent data. New model learns \$100 is normal. Fixes predictions.
+
+Concept drift (label shift or target drift):
+- Underlying relationship changes. P(Y|X) shifts.
+- Example: Same fraud features (\$50 transaction from new user). Used to indicate 5% fraud rate. Now 15% fraud rate (fraudsters found new loophole).
+- Or: Loan approval model. Same financial profile used to predict "low default". Now "high default" (economy crashed, unemployment up).
+- Detection:
+  (1) Monitor model performance on recent data (if labels available with delay). Accuracy, precision, recall drop.
+  (2) Monitor prediction distribution. If model predicts "fraud probability" used to be mean = 0.10, now 0.15, could indicate concept drift.
+  (3) A/B test old model vs new model. If new model has higher performance on recent data, concept drift likely.
+- Impact: Model's learned pattern is invalid. Decisions systematically wrong.
+- Fix: Retrain on recent labeled data. Model relearns new P(Y|X).
+
+Combined: Data drift + concept drift (worst case):
+- Example: Both feature distribution changed AND fraud patterns changed.
+- Hard to separate. Safest: Retrain monthly on recent data.
+
+Detection strategy (practical):
+
+Daily:
+- Monitor feature PSI for all features. Alert if PSI > 0.25.
+- Monitor prediction distribution (mean, std, percentiles). Alert if shifts > 1 std dev.
+
+Weekly:
+- If ground truth available (with lag), compute accuracy, precision, recall on recent data. Compare to last month. Alert if accuracy drops > 2%.
+
+Monthly:
+- If data drift detected or performance drops, retrain model on recent 3 months of data.
+- Validate new model on holdout data from last week. If new model > old model, deploy. Otherwise, investigate.
+
+Root cause analysis:
+
+If drift detected:
+- Is it data drift (features shifted) or concept drift (label relationship changed)?
+- Investigate: Compare feature distributions. Check recent labeled data - did true fraud rate change?
+- Example: Feature distribution shifted (data drift) but true fraud rate unchanged → Retrain, data drift fix works.
+- Counter-example: Feature distribution same but true fraud rate doubled (concept drift) → Retraining on old features won't help. Need to model new pattern.
+
+Mitigation options:
+
+Option 1: Retrain monthly (reactive).
+- Simple. Works if drift gradual.
+- Downside: Lag. Month of degraded performance before retrain.
+
+Option 2: Online learning (adaptive).
+- Update model continuously. Per-sample or mini-batch updates.
+- Fast adaptation.
+- Downside: Risk of instability. Bad update degrades model. Requires careful monitoring.
+
+Option 3: Ensemble of recent models.
+- Train separate models on each recent week. Average predictions.
+- Robust. If one model outdated, others compensate.
+- Downside: 4x inference cost (run 4 models).
+
+Option 4: Adaptive threshold (quick fix for concept drift).
+- If fraud rate shifted from 5% to 15%, adjust decision threshold.
+- Example: Old threshold = 0.5 (optimized for 5% base rate). New threshold = 0.3 (optimized for 15% base rate).
+- Fast. No retraining.
+- Caveat: Only works if relationship unchanged, just prevalence shifted.
+
+My approach: Monitor PSI daily. Retrain monthly if PSI > 0.25 or accuracy drops > 2%. For critical systems, also monitor prediction distribution weekly. For rapid drift, use online updates (SGD) with careful validation. For slow drift, batch retraining sufficient.`,
+      },
+      {
+        q: "Multi-armed bandits vs A/B testing - continuous optimization, exploration-exploitation.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `You're running an e-commerce site. Homepage has 3 banner designs. Which performs best? A/B test or bandit algorithm?
+
+A/B testing:
+
+Traditional approach:
+- Randomly split traffic 33/33/33% to 3 variants.
+- Run for 2 weeks. Collect outcomes (clicks, conversions).
+- Statistical test: Is variant A better than B? (p-value < 0.05).
+- Deploy winner.
+- Result: Lost 33% traffic on suboptimal variants during test.
+
+Pros: Simple, statistically rigorous, understood.
+Cons: Wastes traffic on bad arms, binary decision (end test after fixed time).
+
+Multi-armed bandit:
+
+Idea: Explore vs exploit tradeoff. Start exploring equally. As you learn which banner wins, exploit it more.
+
+Algorithm: Epsilon-greedy.
+- Epsilon = 0.1. With 90% probability, show best arm. With 10% probability, explore random arm.
+- Over time: If variant A wins, show A 90% of time. Show B and C 5% each (explore).
+- Result: Only 10% traffic wasted on exploration.
+
+Example (click-through rate):
+Week 1: Each variant 33%. A = 2%, B = 1%, C = 1%. A is best.
+Week 2: A = 90%, B = 5%, C = 5%. More traffic to A.
+Week 3: A still best. A = 95%, B = 2.5%, C = 2.5%.
+
+Over 1000 users:
+- A/B: Each variant ~333 users. Gain from A = 333 * (2% - 1.5%) = 1.67 extra conversions.
+- Bandit: A ~900 users, B,C ~50 each. Gain = 900 * 2% + 50 * 1% + 50 * 1% = 19 conversions.
+- Bandit wins by 17 more conversions.
+
+Exploration strategies:
+
+1. Epsilon-greedy: \`epsilon\` fraction random, (1-epsilon) best.
+   - Pro: Simple.
+   - Con: Doesn't account for uncertainty. If A = 50% (only 10 samples), might exploit A even though B=49% with 1000 samples.
+
+2. Thompson sampling: Bayesian. Assume each arm has unknown reward distribution. Sample from posterior, pick best sample.
+   - Pro: Balances exploration-exploitation optimally. If arm uncertain, sample more.
+   - Con: Complex to implement.
+
+3. Upper Confidence Bound (UCB): Pick arm with highest (mean + confidence_interval).
+   - Pro: Principled. Trades off mean vs uncertainty.
+   - Con: Less intuitive than epsilon-greedy.
+
+Contextual bandits (advanced):
+
+- Idea: Tailor arm choice to user context.
+- Example: "For mobile users, banner A works. For desktop, banner B."
+- Algorithm: LinUCB. Use features (device, location, user history) to predict which banner best for this user.
+- Result: Per-user optimization.
+
+When to use each:
+
+A/B test:
+- High-stakes decision (hiring criteria, medical treatment). Need statistical rigor.
+- Low-frequency deployments (quarterly campaign change). Not optimizing continuously.
+- Small number of variants (2-3). Bandit overkill.
+
+Bandit:
+- Continuous optimization (homepage banner changes weekly). Maximize metrics immediately.
+- Many variants (10+ designs). Quick feedback on all variants.
+- Low-stakes (UI optimization). Risk of wrong decision acceptable.
+- User experience matters (don't frustrate users with bad variant).
+
+Hybrid:
+
+1. Start with bandit to identify top-2 variants quickly.
+2. Switch to A/B test for statistical significance confirmation.
+3. Deploy winner.
+
+Challenges:
+
+- Exploration fatigue: If variant C bad, users see it 10% of time. Bad for UX.
+  Solution: Warm start. Pre-test variants offline (simulation, user surveys) to eliminate obviously bad ones.
+
+- Non-stationary rewards: Best arm changes over time (seasonality, trends).
+  Solution: Increase exploration in bandit (higher epsilon). Or decay past observations (recent data weighted higher).
+
+- Multiple metrics: Banner click rate good, but increases bounce rate. Tradeoff.
+  Solution: Define composite reward (e.g., 0.7 * clicks + 0.3 * revenue).
+
+My approach: For continuous optimization (homepage), use epsilon-greedy bandit. Epsilon = 0.05. For major product decisions (pricing, features), use A/B test. For many variants, use Thompson sampling (better exploration-exploitation balance).`,
+      },
+      {
+        q: "Causal inference - randomized experiments, propensity matching, diff-in-diff.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `You want to know: Does email marketing increase purchases? Or do engaged customers just buy more anyway?
+
+This is a causal question. Correlation ≠ causation.
+
+Randomized Experiment (Gold Standard):
+
+- Randomly assign users to treatment (email) vs control (no email).
+- Treatment: 50k users get email campaign.
+- Control: 50k users don't.
+- Measure purchase rate after 2 weeks.
+- Treatment: 15% purchased. Control: 12% purchased.
+- Causal effect: 15% - 12% = 3 percentage points (ATE, Average Treatment Effect).
+
+Why gold standard: Randomization ensures treatment and control similar in all other ways (age, income, past behavior). Difference must be due to email.
+
+Limitations: Expensive, slow, ethical concerns (deprive control of benefit), can't test everything.
+
+Propensity Matching (When can't randomize):
+
+Scenario: Can't randomize. Already sent emails to some users. Want to estimate causal effect retroactively.
+
+Idea: Find control users similar to treated users. Compare outcomes.
+
+Algorithm:
+1. Calculate propensity score: P(treated = 1 | user features). Probability user would naturally get email based on features.
+   - Example: Users with high past spending have higher propensity to get email (marketing targets them).
+   - Use logistic regression: propensity = logit(features).
+
+2. Match treated users to control users with similar propensity scores.
+   - Treated user with propensity 0.7 → Match to control user with propensity 0.7 (±0.01).
+   - Ensures matched pairs similar in features.
+
+3. Compare outcomes (purchase rate) between matched pairs.
+   - Treated average purchase: 15%.
+   - Matched control average purchase: 12%.
+   - Difference: 3% (causal effect estimate).
+
+Why it works: By matching on propensity, you reduce confounding. Remaining differences attributed to treatment.
+
+Limitations: Only controls for observed features. If unobserved confounder (e.g., user motivation) differs between treated and control, estimate biased.
+
+Example: Motivated users get email AND buy more. Matching doesn't control for motivation. Estimated effect overstates email impact.
+
+Difference-in-Differences (Parallel Trends):
+
+Scenario: Some regions get treatment (e.g., new marketing campaign), others don't. Over time.
+
+Idea: Compare trend before/after between treated and untreated regions.
+
+Data:
+- Region A: Before treatment, purchase rate = 10%. After treatment (month 6), purchase rate = 15%.
+- Region B (control): Before, purchase rate = 9%. After, purchase rate = 12%.
+
+Confound: Both regions' purchase rates increased (market growth, seasonality).
+
+Difference-in-differences:
+- Change in region A: 15% - 10% = 5%.
+- Change in region B: 12% - 9% = 3%.
+- Difference: 5% - 3% = 2% (treatment effect).
+
+Intuition: Both regions had trend (3% growth). Region A had extra 2% on top. That's treatment effect.
+
+Assumption: Parallel trends. Both regions would have same trend without treatment. Usually reasonable if similar regions.
+
+Weakness: If trends diverge for other reasons, estimate biased.
+
+Instrumental Variables (When confounding severe):
+
+Scenario: Feature X causes outcome Y. But X and Y also both caused by unobserved Z. How to isolate X → Y effect?
+
+Find instrument I:
+- I causes X.
+- I does NOT directly cause Y (only through X).
+- I unconfounded (independent of Y except through X).
+
+Example: Estimate impact of education on earnings.
+- Education (X) increases earnings (Y). But smart people (Z) get more education AND earn more.
+- Instrument: Distance to college (I). People closer to college more likely to get education (I causes X). Distance doesn't directly affect earning ability (I doesn't cause Y). Reasonable.
+- Use 2SLS (Two-Stage Least Squares): Regress X on I. Get predicted X'. Regress Y on X'. Coefficient = causal effect of X on Y.
+
+Two-stage least squares:
+- Stage 1: Predicted_Education = a0 + a1 * Distance_to_College.
+- Stage 2: Earnings = b0 + b1 * Predicted_Education. Coefficient b1 = causal effect.
+
+When to use each:
+
+- Randomized experiment: Possible, high-stakes decision (drug approval). Do it.
+- Propensity matching: Can't randomize, good observational data, few unobserved confounders.
+- Diff-in-diff: Two groups with parallel trends pre-treatment. Regional rollout, time-based treatment.
+- Instrumental variables: Strong confounding, hard to measure confounders, good instruments available.
+
+My approach: Start with randomized A/B test if feasible (fastest, cleanest inference). If not, use propensity matching on observational data + sensitivity analysis (how much unmeasured confounding would flip conclusion?). For regional rollouts, use diff-in-diff. Document assumptions clearly.`,
+      },
+      {
+        q: "Reinforcement learning - states, actions, rewards, Q-learning, policy gradient.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `RL: Agent learns by trial and error. Takes actions. Receives rewards. Learns policy (which action to take in each state).
+
+Example: Robot learns to walk. State = joint angles. Action = motor commands. Reward = distance walked. After 1M steps, robot learns to walk without being programmed.
+
+Components:
+
+State (S): Current situation. Example: Robot position, velocity, joint angles.
+Action (A): What agent can do. Example: Move left leg forward, right leg forward, jump.
+Reward (R): Feedback. Example: +1 for moving forward 1 meter. -0.1 for falling. Terminal reward +100 for reaching goal.
+Policy (π): Strategy. π(a|s) = probability of action a given state s. Agent learns policy to maximize expected reward.
+
+Goal: Find policy that maximizes cumulative reward (sum of future rewards).
+
+Value Function V(s): Expected cumulative reward starting from state s and following policy.
+- V(goal) = 100 (one step to goal).
+- V(pit) = -100 (falling into pit loses points).
+- V(middle) = 50 (can reach goal or pit).
+- V helps agent evaluate states. High V states good, low V states bad.
+
+Q-Learning (Value-based):
+
+Learn Q(s, a) = expected reward of taking action a in state s, then following optimal policy.
+- Q(middle, move_forward) = 60 (move forward likely leads to goal).
+- Q(middle, move_backward) = 20 (move backward goes away from goal).
+- Policy: In state s, pick action with highest Q value.
+
+Update rule:
+Q(s, a) = Q(s, a) + alpha * [r + gamma * max Q(s', a') - Q(s, a)]
+
+- r = immediate reward.
+- gamma = discount factor (future rewards worth less).
+- max Q(s', a') = best action in next state.
+- Update Q toward "r + future value".
+
+Example: Robot in state s1, takes action a1.
+- Gets reward r = +1 (moved forward).
+- Reaches state s2 (new position).
+- Q(s1, a1) was 50. Max Q(s2, a') = 60 (good position, can reach goal).
+- Update: Q(s1, a1) = 50 + 0.1 * [1 + 0.99 * 60 - 50] = 50 + 0.1 * 10 = 51.
+
+Repeat 1M times. Q converges to true values. Policy (pick argmax Q) becomes optimal.
+
+Policy Gradient (Policy-based):
+
+Instead of learning Q values, directly learn policy parameters θ.
+- Policy: π(a|s, θ) = neural network. Input state, output action probabilities.
+- Example: State = image, output = [prob_left = 0.3, prob_right = 0.7]. Take right action 70% of time.
+
+Update: Adjust θ to increase probability of good actions.
+- If action a led to high reward, increase π(a|s).
+- If action a led to low reward, decrease π(a|s).
+
+Gradient:
+∇θ log π(a|s, θ) * R(trajectory)
+- R(trajectory) = total reward from this trajectory.
+- If R high, increase log π (make action more likely).
+- If R low, decrease log π (make action less likely).
+
+Actor-Critic (Hybrid):
+- Actor: Policy π (which action).
+- Critic: Value function V (is state good?).
+- Actor uses critic's value estimate to update policy more efficiently.
+- Better convergence than pure policy gradient.
+
+Applications:
+
+1. Game playing (AlphaGo): State = board position. Action = move. Reward = win/loss. RL + deep learning + tree search = superhuman.
+
+2. Robotics: Robot learns motor control by physics simulation. State = joint angles. Action = motor commands. Reward = task completion (pick up object, walk to target).
+
+3. Autonomous driving: State = sensor inputs (camera, lidar). Action = steering, acceleration. Reward = reach destination safely. Challenge: Real-world training too risky.
+
+4. Trading: State = market prices, portfolio. Action = buy/sell. Reward = profit. Challenge: Highly non-stationary (market regime changes).
+
+Challenges:
+
+1. Exploration: Agent must try suboptimal actions to discover better ones (exploration-exploitation tradeoff).
+2. Sparse rewards: If reward only at goal (reaching target after 1000 steps), agent struggles to learn. Solution: Reward shaping (intermediate rewards).
+3. Sample efficiency: RL very slow. 1M-1B environment steps to solve problem. Real robotics can't afford that. Solution: Simulation for training, sim-to-real transfer.
+4. Convergence: Policy gradient can be unstable. Policy oscillates, never converges.
+
+My approach: Use Q-learning for discrete action spaces (game playing). Use policy gradient for continuous control (robotics). Add experience replay (store past transitions, train on batch) and target networks (stabilize learning). For sparse rewards, use hindsight experience replay (relabel failed trajectories as partial success).`,
+      },
+      {
+        q: "Optimize model latency to 10ms - profiling bottlenecks, inference acceleration.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `You deployed fraud detection model. Current latency: 50ms. Business requires < 10ms. How do you optimize?
+
+Step 1: Profile to find bottleneck.
+
+Use profiler (Python cProfile, PyTorch profiler):
+- Feature computation: 30ms (fetch from database, compute statistics).
+- Model inference: 15ms (forward pass).
+- Decision + logging: 5ms (database write, send result).
+
+Bottleneck: Feature computation (60% of latency).
+
+Step 2: Optimize each component.
+
+A. Feature Engineering (30ms → 5ms):
+
+Problem: Fetch user history from database for each prediction.
+- Query: "SELECT COUNT(*) FROM transactions WHERE user_id = X AND timestamp > now() - 1 day."
+- Database latency: 20ms. Compute statistics (mean, std, count): 10ms.
+
+Solution: Cache features in Redis (in-memory database).
+- Pre-compute user statistics every hour. Store in Redis.
+- At inference: Redis lookup (1ms instead of 20ms database query).
+- Trade-off: Features stale (up to 1 hour old). Acceptable for fraud (fraud patterns don't change minute-to-minute).
+
+Implementation:
+- Batch job: Compute user features every hour. Write to Redis.
+- At inference: redis.get(f"user_{user_id}:stats") → instant.
+- Result: 30ms → 5ms.
+
+B. Model Inference (15ms → 2ms):
+
+Problem: Large neural network (100M parameters).
+
+Solution 1: Quantization.
+- Store weights as int8 (8-bit integers) instead of float32.
+- Convert: float 0.5123 → int8 128 (scales 0-255).
+- Inference: int8 operations 4x faster than float32.
+- Tool: TensorRT, ONNX Runtime.
+- Accuracy: Typically 0.1-1% drop.
+- Result: 15ms → 4ms.
+
+Solution 2: Pruning.
+- Remove unimportant weights (set to zero).
+- Example: 100M parameters → 30M (30% non-zero).
+- Fewer operations → faster.
+- Tool: PyTorch magnitude pruning.
+- Result: 15ms → 5ms (depends on hardware sparsity support).
+
+Solution 3: Knowledge distillation.
+- Train small "student" model to mimic large "teacher" model.
+- Student: 1M parameters (100x smaller). Inference 100x faster.
+- Process: Train student on soft targets from teacher (probabilities, not hard labels).
+- Result: 15ms → 1ms (but small accuracy drop, ~2%).
+
+Solution 4: GPU inference.
+- Move model to GPU (NVIDIA A100, T4).
+- Batch requests (run 32 predictions at once).
+- Result: 15ms → 2ms per request (latency). Throughput: 32 requests/2ms = 16k/sec.
+
+C. Decision + Logging (5ms → 2ms):
+
+Problem: Database write slow.
+- "INSERT INTO audit_log VALUES (user_id, prediction, timestamp)" takes 3ms.
+
+Solution: Async logging.
+- Return prediction to client immediately (synchronously).
+- Log asynchronously (background job). Client doesn't wait.
+- Result: 5ms → 1ms from client perspective (logging happens in background).
+
+Step 3: End-to-end optimized flow (50ms → 7ms):
+
+1. Redis fetch features: 1ms.
+2. Quantized model inference: 2ms.
+3. Synchronous decision + async logging: 1ms.
+4. Network roundtrip (latency between servers): 3ms.
+Total: 7ms. Target < 10ms achieved!
+
+Step 4: Trade-offs and monitoring.
+
+Quantization: 0.5% accuracy drop. Acceptable (fraud catch rate: 85% → 84.5%).
+Caching: Features stale by 1 hour. Monitor mismatch (new transactions not in cached stats). Refresh frequency if needed.
+Async logging: Rare loss of audit trail if service crashes. Mitigated with backups.
+
+Monitoring:
+- Latency histogram: 50th, 95th, 99th percentiles. Alert if 95th > 12ms.
+- Inference speed per batch size: Monitor GPU utilization.
+- Cache hit rate: Should be > 95%. If lower, increase refresh frequency.
+
+Alternative architectures:
+
+1. Batch requests: Instead of per-request inference, accumulate 32 requests, inference once. Latency = 5ms for batch (vs 2ms individual), but throughput 16x higher. Trade-off for high-volume scenarios.
+
+2. Edge deployment: Run model on edge (mobile, IoT) instead of cloud. No network latency. But limited compute.
+
+3. Model server (TensorFlow Serving, Seldon): Dedicated optimized inference server. Auto-batching, model versioning, A/B testing. Baseline for production.
+
+My approach: Profile first (find true bottleneck). Cache features in Redis. Quantize model (int8). Use GPU with batching if latency < 2ms needed. Monitor percentile latency (95th) not mean. Async non-critical operations.`,
+      },
+      {
+        q: "Model interpretability for regulators - SHAP, LIME, counterfactuals, governance.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `You deployed a model to deny loan applicants. Regulator asks: "Why did you deny applicant X?" You can't say "neural network decided." You need explainability.
+
+Interpretability methods:
+
+1. SHAP (SHapley Additive exPlanations):
+- Theoretically grounded. Assigns each feature a "contribution" to prediction.
+- Intuition: If I remove feature X, how much does prediction change? That's X's contribution.
+- Example:
+  Loan application: Income = \$100k, Debt = \$50k, Credit Score = 700, Age = 35.
+  Prediction: Approval probability = 75%.
+  SHAP:
+  - Income: +20% (high income helps).
+  - Debt: -15% (high debt hurts).
+  - Credit score: +10% (good credit helps).
+  - Age: 0% (neutral).
+  - Base rate (prior): 60%.
+  - Sum: 60% + 20% - 15% + 10% + 0% = 75%. Correct.
+- Pro: Theoretically sound (Shapley values from game theory). Works with any model.
+- Con: Computationally expensive. O(2^features). Approximations (SHAP KernelSAP) needed for many features.
+
+2. LIME (Local Interpretable Model-agnostic Explanations):
+- Explain single prediction by fitting local linear model.
+- Process:
+  (1) Perturb features around prediction (sample nearby inputs).
+  (2) Get model predictions for perturbed inputs.
+  (3) Fit linear regression to approximate model locally.
+  (4) Coefficients = feature importance for this prediction.
+- Example:
+  Loan prediction for applicant. LIME perturbs: Income (±20k), Debt (±30k), etc.
+  Fits linear: Approval = 0.7 + 0.8*Income + (-0.5)*Debt + ...
+  High coefficient on Income → Income important for this prediction.
+- Pro: Simple, fast, intuitive.
+- Con: Local only. Explanation different for different applicants. Unstable.
+
+3. Counterfactual explanations:
+- Find minimal change to features to flip decision.
+- Example:
+  Applicant denied with Income = \$40k.
+  Counterfactual: "If income were \$60k instead, you'd be approved."
+  Intuition: Applicant sees exactly what to change to get approved.
+- Computation: Optimize features to minimize distance to original while flipping prediction.
+  min ||x' - x|| such that model(x') predicts approval.
+- Pro: Actionable. User knows exactly what to change.
+- Con: Might be infeasible (e.g., "increase age to 25" if currently 45).
+
+4. Inherently interpretable models:
+- Use simple models instead of black boxes.
+- Examples: Logistic regression (coefficients = feature importance), decision trees (rules = interpretable).
+- Linear model:
+  Approval = 1 / (1 + exp(-(-2 + 0.03*Income - 0.01*Debt + 0.02*CreditScore)))
+  Coefficient 0.03 on Income → 0.03 * \$10k = 0.3 increase in log-odds = 0.3 / 4 ≈ 7% increase in approval probability per \$10k income.
+  Interpretable and accurate (often comparable to black box).
+- Trade-off: Interpretability vs accuracy. Linear models sometimes less accurate than deep learning.
+
+Regulatory compliance:
+
+1. Documentation:
+- For each decision (denial), document:
+  (a) Input features and values.
+  (b) Model prediction and confidence.
+  (c) Top 3-5 features influencing decision (via SHAP or LIME).
+  (d) Decision rule (threshold, logic).
+  Example: "Applicant X denied. Debt-to-income ratio (0.5) and low credit score (600) most influential. Threshold for approval: DTI < 0.4 or credit score > 650."
+
+2. Fairness audit:
+- Check: Are explanations consistent across demographics? Are protected attributes leaking into explanations?
+- Example: For females, explanation mentions "zip code" (proxy for race). For males, mentions "income". Bias!
+- Action: Remove proxy variables, ensure explainability fair.
+
+3. Appeal mechanism:
+- Applicant can appeal. Review decision manually.
+- Use explanations to guide review. Check: Did model apply rules correctly? Was feature data correct?
+- Example: Applicant appeals. Explanation says "high debt." Review finds debt data was stale. Update data, re-predict, approve.
+
+4. Transparency reports:
+- Publish aggregate statistics. E.g., "Approval rate: 65%. Median income of approved: \$80k. Top reason for denial: High debt (30% of denials)."
+- Builds trust.
+
+Interpretability tradeoffs:
+
+Accuracy vs Interpretability:
+- Black box deep learning: 95% accuracy, unexplainable.
+- Logistic regression: 92% accuracy, fully interpretable.
+- Gradient boosting: 94% accuracy, moderate interpretability (feature importance, partial dependence).
+- Choose based on domain. Medical diagnosis: Interpretability critical. Content recommendation: Accuracy critical.
+
+SHAP vs LIME vs Counterfactual:
+- SHAP: Theoretically sound, but slow. Use for batch explanations or important decisions.
+- LIME: Fast, intuitive. Use for quick explanations.
+- Counterfactual: Actionable. Use for applicant-facing explanations.
+
+Implementation:
+
+from shap import TreeExplainer, KernelExplainer
+explainer = TreeExplainer(model)
+shap_values = explainer.shap_values(applicant_features)
+# shap_values[0] = SHAP for each feature
+# print explanation: "Top 3 features: Income (+20%), Debt (-15%), CreditScore (+10%)"
+
+My approach: Use gradient boosting (good accuracy + feature importance). For regulatory decisions, compute SHAP values (theoretically sound). For applicant-facing explanations, use counterfactuals (actionable). Document all decisions + explanations. Audit quarterly for fairness bias.`,
+      },
+      {
+        q: "Active learning - when and how to request labels strategically.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `You have 100k unlabeled emails. Labeling all costs \$10k. You can afford \$2k (200 labels). How do you pick which emails to label to maximize model performance?
+
+Active learning: Strategically request labels for most informative examples.
+
+Strategies:
+
+1. Uncertainty Sampling:
+- Train model on labeled data. Predict on unlabeled data.
+- Request labels for examples where model is uncertain.
+- Intuition: Model is confident on easy examples (don't need label). Uncertain on hard examples (need label to learn).
+- Example (spam classification):
+  Model trained on 100 labeled emails.
+  Predicts on 10k unlabeled.
+  - Email A: Spam probability = 0.95. Confident. Skip.
+  - Email B: Spam probability = 0.51. Uncertain. Request label.
+- Implementation: Pick examples where P(positive) closest to 0.5 (maximum entropy).
+  Entropy = -p*log(p) - (1-p)*log(1-p). Max at p = 0.5.
+- Pro: Simple, effective.
+- Con: Biased toward decision boundary. Misses outliers.
+
+2. Query by Committee (QBC):
+- Train ensemble of models on labeled data.
+- On unlabeled example, if models disagree, request label.
+- Intuition: Disagreement = uncertainty.
+- Example:
+  Model1 predicts spam (0.8). Model2 predicts ham (0.6). Disagreement = 0.8 - 0.6 = 0.2. High. Request label.
+  Model1 predicts spam (0.95). Model2 predicts spam (0.92). Disagreement ≈ 0. Low. Skip.
+- Implementation: Train 5 models with different seeds. For each unlabeled, compute vote variance. Pick highest.
+- Pro: Accounts for model disagreement.
+- Con: Expensive (train multiple models).
+
+3. Diversity Sampling:
+- Request labels for diverse examples (cover feature space).
+- Intuition: If all labeled examples are similar (e.g., all short emails), model learns nothing about long emails.
+- Example:
+  Labeled emails: All 50-100 words, from 5 common senders.
+  Unlabeled: Mix of word lengths 10-500, 1000 senders.
+  Pick unlabeled emails with rare lengths/senders.
+- Implementation: Cluster unlabeled examples. Pick centroid of each cluster.
+  Or: Use density estimation. Pick examples in low-density regions.
+- Pro: Covers feature space.
+- Con: Ignores label information. Might pick non-informative examples.
+
+4. Hybrid: Uncertainty + Diversity:
+- Score = (1 - confidence) * diversity_score.
+- Pick examples that are both uncertain AND diverse.
+- Example: Email B is uncertain (P=0.51) and has rare length (500 words). Score high. Request label.
+- Pro: Best of both.
+
+5. Expected Model Change (EMC):
+- Request label for example that would change model most if mislabeled.
+- Complex: For each candidate, compute what happens if you train on it with different labels.
+- Pro: Directly optimizes for model improvement.
+- Con: Computationally expensive. Requires retraining.
+
+Practical workflow:
+
+Iteration 1:
+- Labeled: 0. Unlabeled: 100k.
+- Train on random 50 labeled examples (burn-in).
+- Predict on 100k unlabeled. Compute uncertainty.
+- Pick top 50 by uncertainty. Request labels. Cost: \$500.
+
+Iteration 2:
+- Labeled: 50. Unlabeled: 99.95k.
+- Retrain model on 100 labeled.
+- Predict on remaining 99.9k. New uncertainties.
+- Pick top 50 by uncertainty. Request labels. Cost: \$500.
+
+Repeat 4 times. Total 200 labels, \$2k. Model trained.
+
+Evaluation:
+
+Compare active learning vs random sampling:
+- Active learning: 200 labeled → 85% accuracy.
+- Random sampling: 200 labeled → 78% accuracy.
+- Savings: Active learning same accuracy with 3x fewer labels (as estimated, actual varies).
+
+Learning curve:
+- x-axis: Number of labeled examples.
+- y-axis: Test accuracy.
+- Active learning curve steeper (accuracy improves faster per label).
+- Random sampling flatter (needs more labels).
+
+Challenges:
+
+1. Outliers: Uncertainty sampling might pick outliers (weird emails hard to classify). Outlier label might not improve model.
+   Solution: Filter outliers first, or use diversity sampling + uncertainty.
+
+2. Labeling noise: Annotators might label incorrectly. Model learns from wrong labels.
+   Solution: Multiple annotators per example. Vote or average confidence.
+
+3. Concept drift: If distribution changes after labeling, selected examples become irrelevant.
+   Solution: Periodically resample (mixture of recent + diverse).
+
+4. Cold start: No labeled data to train initial model. Can't compute uncertainty.
+   Solution: Start with random or diversity-based sampling until model good enough.
+
+Applications:
+
+- NLP (text classification): Start with random 100 examples. Use uncertainty sampling to pick next 1k most informative. Labeling efficient.
+- Medical imaging: Radiologist time expensive. Use active learning to reduce annotation burden.
+- Anomaly detection: Normal examples abundant, anomalies rare. Active learning finds anomalies efficiently.
+
+My approach: Start with uncertainty sampling (simple, effective). Train ensemble (5 models) for robustness. Every 100 labels, switch to diversity-based sampling to avoid clustering around decision boundary. Monitor accuracy curve. Stop when accuracy plateaus.`,
+      },
+      {
+        q: "Productionize ML notebook → service with monitoring, CI/CD, reliability.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        a: `Data scientist's notebook: Jupyter, \`.ipynb\` files, manual tuning, copy-paste code.
+Production requirement: Model must run 24/7, scale to 1M requests/day, rollback if bad, monitor for failures.
+
+Step 1: Refactor notebook into modules.
+
+Notebook (bad):
+# Load data
+import pandas as pd
+df = pd.read_csv("data.csv")
+# Feature engineering
+df["feature1"] = df["col1"] + df["col2"]
+df["feature2"] = ...
+# Train
+from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier(n_estimators=100)
+model.fit(df[features], df["target"])
+# Predict
+pred = model.predict(new_data)
+
+Production (good):
+# src/features/preprocessing.py
+def load_and_preprocess(filepath):
+    df = pd.read_csv(filepath)
+    df = engineer_features(df)
+    return df
+
+def engineer_features(df):
+    df["feature1"] = df["col1"] + df["col2"]
+    return df
+
+# src/models/train.py
+def train_model(X, y):
+    model = RandomForestClassifier(n_estimators=100)
+    model.fit(X, y)
+    return model
+
+def predict(model, X):
+    return model.predict(X)
+
+# src/main.py
+from features.preprocessing import load_and_preprocess, engineer_features
+from models.train import train_model, predict
+
+df = load_and_preprocess("data.csv")
+model = train_model(df[features], df["target"])
+pred = predict(model, new_data)
+
+Step 2: API wrapper (Flask, FastAPI).
+
+# src/api.py
+from flask import Flask, request, jsonify
+import pickle
+
+app = Flask(__name__)
+
+# Load model once at startup
+with open("model.pkl", "rb") as f:
+    model = pickle.load(f)
+
+@app.route("/predict", methods=["POST"])
+def predict_endpoint():
+    data = request.json
+    features = [data["col1"], data["col2"], ...]
+    prediction = model.predict([features])
+    return jsonify({"prediction": prediction[0], "probability": float(prediction_proba[0][1])})
+
+if __name__ == "__main__":
+    app.run(port=5000)
+
+Test: curl -X POST http://localhost:5000/predict -d '{"col1": 1.5, "col2": 2.3}' -H "Content-Type: application/json"
+
+Step 3: Containerization (Docker).
+
+# Dockerfile
+FROM python:3.9
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY src/ .
+EXPOSE 5000
+CMD ["python", "api.py"]
+
+Build: docker build -t fraud-model:v1 .
+Run: docker run -p 5000:5000 fraud-model:v1
+
+Step 4: Orchestration (Kubernetes).
+
+# k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud-model
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - name: fraud-model
+        image: fraud-model:v1
+        ports:
+        - containerPort: 5000
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+- 3 replicas: If one crashes, 2 others handle traffic.
+- Liveness probe: If model unresponsive, restart.
+- Resource limits: Prevent runaway processes.
+
+Step 5: Monitoring (Prometheus, Grafana).
+
+# src/metrics.py
+from prometheus_client import Counter, Histogram, generate_latest
+
+predictions_total = Counter("predictions_total", "Total predictions")
+prediction_latency = Histogram("prediction_latency_seconds", "Latency")
+model_accuracy = Gauge("model_accuracy", "Accuracy on holdout")
+
+@app.route("/metrics")
+def metrics():
+    return generate_latest()
+
+Metrics tracked:
+- Predictions per second.
+- Latency (50th, 95th, 99th percentile).
+- Model accuracy (if ground truth available with delay).
+- Error rate (exceptions, timeouts).
+
+Alerts:
+- If latency > 100ms, page on-call engineer.
+- If accuracy drops > 2%, trigger retraining job.
+- If error rate > 1%, rollback to previous model version.
+
+Step 6: CI/CD (GitHub Actions, GitLab CI).
+
+# .github/workflows/deploy.yml
+name: Deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: pip install -r requirements.txt
+      - run: pytest tests/
+      - run: python scripts/validate_model.py
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - run: docker build -t fraud-model:\${{ github.sha }} .
+      - run: docker push gcr.io/my-project/fraud-model:\${{ github.sha }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: kubectl set image deployment/fraud-model fraud-model=gcr.io/my-project/fraud-model:\${{ github.sha }}
+
+Workflow:
+- Push code to main.
+- Automated tests run.
+- If pass, build Docker image, push to registry.
+- Deploy to staging (canary, 5% traffic).
+- Monitor (latency, error rate).
+- If OK, promote to production (100% traffic).
+
+Step 7: Testing.
+
+# tests/test_model.py
+def test_predict():
+    model = load_model()
+    X = [[1.0, 2.0, 3.0]]
+    pred = model.predict(X)
+    assert 0 <= pred[0] <= 1
+
+def test_api():
+    response = client.post("/predict", json={"col1": 1.0, ...})
+    assert response.status_code == 200
+    assert "prediction" in response.json
+
+def test_feature_engineering():
+    df = pd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
+    df = engineer_features(df)
+    assert "feature1" in df.columns
+
+Run: pytest tests/
+
+Step 8: Rollback strategy.
+
+- Blue/Green deployment: Two prod versions (blue, green). Route traffic to blue. Deploy green. If green fails, route back to blue. Zero downtime.
+- Canary: Deploy to 5% of users first. Monitor metrics. If OK, roll out 100%. If bad, rollback.
+- Model versioning: Keep last 3 model versions. If latest degrades, rollback to previous.
+
+Challenges:
+
+- Model stalls. Monitors accuracy, but what if accuracy metric itself breaks? Solution: Data quality checks (feature distributions).
+- Cold start. New model not "warmed up" (no cached predictions). Latency high initially. Solution: Pre-populate cache.
+- Drift. Production data different from training. Solution: Retrain weekly. Monitor drift metrics (PSI, KS).
+
+My approach: Start with Flask + Docker. Deploy to Kubernetes (3 replicas, liveness probe). Add Prometheus monitoring (latency, accuracy). CI/CD: Tests + build + canary deploy. Feature flags: Roll out slowly. Keep model versions. Retrain monthly or on-alert.`,
+      },
+      {
+        q: "How do you handle missing data in a dataset? When is each approach appropriate?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are we talking about numerical or categorical data? How much data is missing — 5% or 50%? And is missingness random or systematic?
+
+For this, I'll cover strategies and when each applies.
+
+---
+
+Missing data is common and dangerous. Ignore it, and your model learns patterns in incomplete data. Handle it wrong, and you bias results or lose information.
+
+Strategies:
+
+1. Remove rows (listwise deletion): Delete any row with missing values. Simple but wasteful.
+Pros: No imputation bias. Simple to implement.
+Cons: Lose data. With 5% missing in each of 10 columns, you might delete 40% of data.
+Use when: Missing data is < 5% and random. You have plenty of data.
+
+2. Remove columns: Delete features with too many missing values. E.g., age is 80% missing.
+Pros: Keep all rows.
+Cons: Lose information. That column might be important.
+Use when: Column is missing > 50% and not predictive.
+
+3. Mean/median imputation: Replace missing values with column average (numerical) or mode (categorical).
+Pros: Quick. Keeps all data.
+Cons: Reduces variance artificially. Creates false patterns. If salary is missing for 100 people, replacing with mean salary looks like everyone has exactly average salary.
+Use when: Missing data is small and random. Trade-off acceptable.
+
+4. Forward fill / backward fill (time series): For time-series data, use the last known value or next known value.
+Use when: Time series, and missing data is short gaps.
+
+5. Model-based imputation (KNN, regression): Use other features to predict missing value. E.g., missing age? Use height, weight, other features to estimate.
+Pros: Preserves relationships between features.
+Cons: More complex. Can propagate errors if model is wrong.
+Use when: Missing data matters and missing not random.
+
+6. Multiple imputation: Create multiple datasets with different imputations, average results.
+Pros: Captures uncertainty.
+Cons: Computationally expensive.
+Use when: Missing data is significant and you need uncertainty quantified.
+
+Metric: Compare predictions with and without missing data handling. Best approach minimizes prediction error.
+
+My approach: Check missingness pattern (random vs systematic). If < 5% and random, mean imputation. If systematic or > 20%, use KNN imputation.`,
+      },
+      {
+        q: "Explain random forests. Why do they generally outperform single decision trees?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about how they work mechanically, or why ensemble methods reduce variance? And do you need to know hyperparameter tuning?
+
+For this, I'll focus on the why and mechanism.
+
+---
+
+Random forest: Build many decision trees independently, then average their predictions (regression) or vote (classification).
+
+How it works:
+
+1. Bootstrapping: Create K datasets by random sampling with replacement from original data. Each dataset has same size as original but some rows repeated, some missing.
+
+2. Train trees: Train one decision tree on each bootstrapped dataset. Crucially, at each split, consider only random subset of features.
+
+3. Aggregate: For regression, average predictions. For classification, majority vote.
+
+Why better than single tree:
+
+Single decision tree can overfit. High variance. Train on different data subsets and it produces very different trees.
+
+Random forest reduces variance through:
+
+1. Averaging: 100 models averaged together. Even if some overfit, averaging smooths it out. Law of large numbers.
+
+2. Feature randomness: Each tree sees different subset of features. Prevents all trees from relying on same strong feature.
+
+3. Bootstrap diversity: Each tree trains on slightly different data. Reduces correlation between trees. Uncorrelated predictions average better.
+
+Math: Variance of average of 100 trees is roughly 1/100 of single tree's variance (if trees uncorrelated).
+
+Tradeoff:
+- Forest: Less interpretable. Can't explain single prediction easily.
+- Single tree: Interpretable but overfit.
+
+Hyperparameters to tune: Number of trees (more better, diminishing returns), max depth (deeper = more complex), min samples per leaf (higher = simpler).
+
+My approach: Start with 100 trees, max_depth=10. Tune depth and samples_per_leaf by validation performance.`,
+      },
+      {
+        q: "What is XGBoost and why is it so popular in competitions and production?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about how it works vs random forests, or how to tune it in practice? And do you care about computational efficiency?
+
+For this, I'll explain the core idea and why it dominates.
+
+---
+
+XGBoost (eXtreme Gradient Boosting): Ensemble method that builds trees sequentially, each correcting errors of previous trees. Gradient boosting with optimizations for speed and performance.
+
+Gradient boosting idea:
+- Start with weak model (single tree).
+- Train next tree to predict residuals (errors) of previous model.
+- Add next tree's predictions to running total.
+- Repeat until convergence.
+
+This way, each new tree targets what the ensemble missed.
+
+Key differences from random forest:
+
+1. Sequential vs parallel: RF builds trees independently. XGBoost builds them sequentially, each learning from previous mistakes. Sequential is slower per tree but converges faster overall.
+
+2. Regularization: XGBoost has built-in regularization. Penalizes tree complexity, prevents overfitting. Random forest has less regularization.
+
+3. Learning rate: XGBoost uses learning rate (shrinkage). Instead of fully adding next tree, scale its contribution (e.g., 0.1 * prediction). Slower learning, less overfitting.
+
+4. Handling imbalanced data: XGBoost has scale_pos_weight parameter. Better for imbalanced classification.
+
+Why popular:
+
+High performance. Consistently wins competitions (Kaggle, etc).
+Fast. Optimized implementation. Can handle million-row datasets.
+Flexible. Classification, regression, ranking.
+Regularization built-in. Less tuning needed.
+Feature importance. Can extract which features matter.
+
+Tradeoff: More hyperparameters to tune than RF. But well worth it for performance.
+
+Key hyperparameters: learning_rate (0.01-0.1), max_depth (3-10), n_estimators (100-1000).
+
+My approach: Start with learning_rate=0.1, max_depth=5, n_estimators=100. Tune based on CV performance.`,
+      },
+      {
+        q: "How would you detect and handle multicollinearity in your features?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about linear models specifically, or does it matter for tree-based models too? And do you care about interpretability vs pure prediction accuracy?
+
+For this, I'll cover detection and handling strategies.
+
+---
+
+Multicollinearity: Two or more features are highly correlated. Causes problems in linear models (high variance in coefficients, unstable predictions) but less issue for tree models.
+
+Detection:
+
+1. Correlation matrix: Compute pairwise correlation between features. If correlation > 0.8 or < -0.8, multicollinearity likely.
+2. Variance Inflation Factor (VIF): For each feature, fit a linear model predicting it from other features. VIF = 1 / (1 - R^2). VIF > 5 or 10 indicates multicollinearity.
+3. Domain knowledge: Do two features logically measure same thing? Depth and depth_cm are probably collinear.
+
+Why it's a problem for linear models:
+
+If height_in and height_cm are perfectly correlated, regression can't separate their individual effects. Coefficients become unstable and huge. Small data changes flip the signs.
+
+How to handle:
+
+1. Remove one feature: If two features perfectly correlated, keeping both is redundant. Remove one.
+Pros: Simple. Reduces model complexity.
+Cons: Lose information if correlation not perfect.
+
+2. Combine features: If two features measure same thing, combine them (PCA, average).
+Pros: Keep information, reduce collinearity.
+Cons: Less interpretable.
+
+3. Regularization (Ridge/Lasso): Ridge regression shrinks collinear coefficients together. Lasso forces some to zero, automatic selection.
+Pros: Keep features, stabilize coefficients.
+Cons: Less interpretable. Coefficients harder to interpret.
+
+4. Domain expertise: Maybe one feature is more important. Domain knowledge guides which to keep.
+
+Tree-based models: Less affected by multicollinearity. Trees split on one feature at a time, don't care about correlation.
+
+My approach: For linear models, compute VIF. If > 5, check correlation matrix. Remove highest-correlation partner or use Ridge. For trees, less critical.`,
+      },
+      {
+        q: "Explain ROC curves and AUC. When is AUC misleading?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about the mechanics of plotting ROC, or how to interpret AUC for imbalanced datasets? And when should you use other metrics?
+
+For this, I'll explain ROC/AUC and their limitations.
+
+---
+
+ROC (Receiver Operating Characteristic) curve: Plot true positive rate (TPR) vs false positive rate (FPR) as you vary the classification threshold.
+
+How it works:
+
+Classification model outputs probability. Default threshold is 0.5: predict positive if prob > 0.5.
+
+But you can adjust: threshold = 0.7, predict positive only if very confident. Or threshold = 0.3, predict positive liberally.
+
+For each threshold:
+- TPR = true positives / (true positives + false negatives). Out of actual positives, how many did we catch?
+- FPR = false positives / (false positives + true negatives). Out of actual negatives, how many did we wrongly call positive?
+
+Plot FPR on x-axis, TPR on y-axis. Vary threshold from 0 to 1, trace curve.
+
+Perfect classifier: Threshold can get all positives without false positives. Curve goes straight up then right (top-left corner).
+
+Random classifier: Curve is diagonal (45 degrees). No better than coin flip.
+
+AUC (Area Under Curve): Probability that classifier ranks random positive higher than random negative. Range 0.5 to 1.0.
+
+Why AUC is useful: Single number summarizing performance across all thresholds. Threshold-independent.
+
+When AUC is misleading:
+
+1. Imbalanced datasets: If 95% negative and 5% positive, AUC can be high even if model always predicts negative. Why? False positive rate is low (few negatives to falsely label). This high AUC but useless model.
+
+2. Cost asymmetric: If false positive costs $1000 but false negative costs $10, AUC treats them equally. But you care about cost, not AUC.
+
+3. Probability calibration: AUC only cares about ranking, not actual probabilities. Model could be poorly calibrated but still high AUC.
+
+Better alternatives: Precision-recall curve (better for imbalanced), F1 score, log loss (considers calibration).
+
+My approach: Use AUC for balanced datasets and initial screening. For imbalanced or cost-sensitive, use F1, precision-recall, or custom cost function.`,
+      },
+      {
+        q: "What is the difference between generative and discriminative models?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking conceptually, or about specific algorithms in each category? And do you need to know when to use each?
+
+For this, I'll explain the fundamental difference.
+
+---
+
+Discriminative model: Learn decision boundary between classes. Model P(y|x): probability of class y given features x.
+
+Examples: Logistic regression, SVM, decision trees, neural networks (standard supervised).
+
+How it works: Given input x, predict class y. Learn boundary that separates positive and negative examples. Doesn't care about distribution of x itself.
+
+Generative model: Learn full probability distribution P(x, y). Can generate new examples.
+
+Examples: Naive Bayes, Gaussian Mixture Models (GMM), Generative Adversarial Networks (GANs), autoencoders.
+
+How it works: Learn what positive examples look like, what negative examples look like. Learn P(x|y) and P(y), then use Bayes rule to compute P(y|x).
+
+Visual difference:
+
+Discriminative: Learns boundary line separating cats from dogs.
+Generative: Learns what cat images look like and what dog images look like. Could generate new synthetic cat image.
+
+Tradeoffs:
+
+Discriminative:
+Pros: Often needs less data. Focuses on decision boundary. More accurate for classification if you have enough labeled data.
+Cons: Can't generate new examples. Can't handle missing data easily.
+
+Generative:
+Pros: Can generate new examples. Can handle missing data by treating as latent. Better with small datasets.
+Cons: Harder to learn (model full distribution). Can be less accurate for classification.
+
+Data efficiency: Generative models can leverage unlabeled data better. With few labeled examples, generative models outperform discriminative.
+
+Practical impact: With 10K labeled examples, use discriminative (logistic regression). With 100 labeled examples, generative (Naive Bayes) might be better.
+
+My approach: Start with discriminative (simpler, faster). If data scarcity or need generation, switch to generative.`,
+      },
+      {
+        q: "How do you select features for a model? Walk through your process.",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about which specific methods to use, or how to think about feature importance? And does it matter if model is linear vs tree-based?
+
+For this, I'll walk through a systematic process.
+
+---
+
+Feature selection: Choose subset of features that improve model performance and reduce complexity. Too many features cause overfitting and slow predictions.
+
+Process:
+
+1. Domain knowledge: Talk to domain experts. Which features should matter? Ignore obviously irrelevant features.
+
+2. Exploratory data analysis: Plot each feature vs target. Any obvious patterns? Correlation matrix. High correlation with target? Keep it.
+
+3. Statistical tests:
+For linear models: Check correlation with target. If |r| < 0.05, weak signal.
+For classification: Chi-square test (categorical) or ANOVA (numerical).
+
+4. Model-based feature importance:
+Tree models: Built-in feature importance (how often a feature is used to split).
+Linear models: Coefficient size (larger = more important).
+Permutation importance: Shuffle feature, measure performance drop. Bigger drop = more important.
+
+5. Iterative removal (backward selection):
+Start with all features. Train model.
+Remove least important feature.
+Retrain, measure performance.
+Repeat until performance drops.
+
+6. Iterative addition (forward selection):
+Start with no features.
+Add best feature (highest individual performance).
+Retrain with 2 features.
+Add next best feature.
+Repeat until performance plateaus.
+
+Regularization (L1/Lasso): Automatically zeros out unimportant features during training. Feature selection implicit in model fitting.
+
+Tradeoffs:
+More features: More information but risk overfitting.
+Fewer features: Faster predictions, interpretable, less overfitting but might miss signal.
+
+Computational cost: With 1000 features, backward selection means training 1000 times. Use correlation filter first to reduce.
+
+My approach: Start with domain knowledge and correlation analysis. Use tree model to get importance scores. Backward select based on CV performance. Final check: Can you interpret the final features?`,
+      },
+      {
+        q: "Explain k-means clustering. What are its limitations?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about how the algorithm works, or its theoretical limitations? And are you interested in alternatives?
+
+For this, I'll explain mechanism and constraints.
+
+---
+
+K-means: Unsupervised clustering. Partition data into k clusters by minimizing within-cluster distance.
+
+Algorithm:
+1. Initialize k centroids randomly.
+2. Assign each point to nearest centroid.
+3. Update centroid to be mean of assigned points.
+4. Repeat steps 2-3 until convergence (centroids stop moving).
+
+Example with k=3 on 2D points:
+- Pick 3 random starting points as centroids.
+- Measure distance from each point to centroids. Assign to nearest.
+- Recalculate centroid as average of assigned points.
+- Points shift their assignments as centroids move.
+- Continue until stable.
+
+Result: Data divided into 3 clusters, each around a centroid.
+
+Why it works: Minimizes within-cluster distance, maximizes between-cluster distance.
+
+Limitations:
+
+1. Must specify k: How many clusters? No algorithm tells you. If true k is 4 but you use k=3, bad clusters. Trick: elbow method (plot inertia vs k, find elbow) or silhouette score.
+
+2. Sensitive to initialization: Random starting centroids matter. Different initializations = different results. Workaround: Run k-means 10 times with different seeds, pick best.
+
+3. Assumes spherical clusters: K-means minimizes Euclidean distance. Works for spherical clusters. If clusters are elongated or moon-shaped, fails.
+
+4. Local optima: Algorithm doesn't guarantee global optimum. Can get stuck in local optima.
+
+5. Computational: With million points, k-means is slow. O(n * k * d) per iteration where d is dimensions.
+
+6. Outliers: Single outlier point far from others becomes its own centroid if k is large enough. K-means sensitive to outliers.
+
+7. No probabilistic output: K-means assigns each point to one cluster. No soft assignment (probability of belonging to each cluster). If point near two clusters, no uncertainty captured.
+
+Alternatives: DBSCAN (no k, handles non-spherical), Gaussian Mixture Models (soft assignment), hierarchical clustering (dendrograms).
+
+My approach: K-means for fast clustering on spherical data with known k. DBSCAN for unknown k or irregular shapes. GMM for probabilistic soft assignment.`,
+      },
+      {
+        q: "When would you use dimensionality reduction? Compare PCA and t-SNE.",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about when to apply dimensionality reduction conceptually, or how to choose between methods? And do you care about interpretation?
+
+For this, I'll cover use cases and mechanics.
+
+---
+
+Dimensionality reduction: Project data from high dimensions to low (e.g., 100 features to 2D for visualization or 2 components for faster training).
+
+Why use it:
+
+1. Visualization: Can't plot 100 dimensions. Reduce to 2D, visualize clusters.
+2. Noise reduction: With 100 features but small dataset, many features are noise. Reducing to 10 removes noise.
+3. Computational efficiency: Fewer features = faster training and predictions.
+4. Curse of dimensionality: With many features and few samples, models overfit. Reducing features helps.
+5. Feature engineering: Reduced features can reveal hidden patterns.
+
+PCA (Principal Component Analysis):
+
+Unsupervised linear transformation. Find directions (principal components) where data varies most.
+
+Algorithm:
+- Compute covariance matrix of features.
+- Find eigenvectors (principal components) and eigenvalues.
+- Project data onto top k eigenvectors.
+
+Properties:
+- Linear: Components are linear combinations of original features.
+- Interpretable: Component 1 = 0.4*feature1 + 0.6*feature2 + ... Can explain what each component represents.
+- Fast: O(n*d^2) where n samples, d features.
+- Preserves global structure: Distances between points in original space somewhat preserved in reduced space.
+
+t-SNE (t-Distributed Stochastic Neighbor Embedding):
+
+Non-linear transformation. Good for visualization.
+
+Algorithm:
+- Compute pairwise distances between points.
+- Model probability that two points are neighbors.
+- Iteratively adjust 2D positions to match neighbor probabilities.
+
+Properties:
+- Non-linear: Can capture complex manifolds.
+- Visualization focused: Excellent for 2D plots. Clusters well separated visually.
+- Slow: O(n^2). Not suitable for large datasets.
+- Doesn't preserve distances: Points close in high-D might be far in 2D. Distances in t-SNE plot don't mean much.
+- Local structure preserved: Focuses on local neighborhoods.
+
+Comparison:
+
+PCA: Use for preprocessing (reduce features before training), preserves global structure.
+t-SNE: Use for visualization only, understand clusters visually.
+
+Can't use t-SNE output for training. It distorts distances.
+
+Practical example:
+- 100-feature dataset: Use PCA to 10 features, train classifier.
+- 100-feature dataset: Use t-SNE to 2D, plot to inspect clusters visually.
+
+My approach: For preprocessing, PCA to keep 95% variance. For visualization, t-SNE. Never use t-SNE outputs for model training.`,
+      },
+      {
+        q: "How do you evaluate a clustering model when there are no labels?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about internal metrics, or how to validate clustering makes sense? And do you care about computation speed?
+
+For this, I'll cover metrics and validation approaches.
+
+---
+
+Challenge: No ground truth labels. Can't use accuracy. How do we know if clustering is good?
+
+Internal metrics (don't use ground truth):
+
+1. Silhouette score:
+Measure how similar point is to its own cluster vs other clusters.
+Range -1 to 1.
+Positive: Point closer to own cluster.
+Negative: Point closer to other cluster.
+Average silhouette: Higher is better (range 0 to 1).
+
+Interpretation: 0.7+ excellent, 0.5-0.7 good, 0.3-0.5 okay, <0.3 poor.
+
+Tradeoff: Assumes spherical clusters like k-means. DBSCAN (density-based) might be penalized unfairly.
+
+2. Calinski-Harabasz index:
+Ratio of between-cluster variance to within-cluster variance.
+Higher is better.
+
+Interpretation: 100+ good, 50-100 okay, <50 poor.
+
+3. Davies-Bouldin index:
+Average similarity between each cluster and most similar cluster.
+Lower is better.
+
+Interpretation: <1 excellent, 1-2 good, >2 poor.
+
+4. Inertia (within-cluster sum of squares):
+Sum of squared distances of points to cluster centroid.
+Lower is better. But lower always with more clusters, so use elbow method.
+
+External metrics (use ground truth if available for validation):
+
+1. Purity: What fraction of points have majority label in their cluster?
+2. Homogeneity: Clusters contain only one true class?
+3. Completeness: All points of true class in same cluster?
+
+Practical validation:
+
+1. Visual inspection: Plot clusters. Do they make sense?
+2. Domain expert: Show results to stakeholder. Do clusters align with business goals?
+3. Stability: Cluster same data 10 times with k-means. Do assignments agree? Unstable clustering is unreliable.
+4. Downstream task: Use clusters as features in downstream model. Do they improve performance?
+
+Choosing number of clusters:
+
+Elbow method: Plot inertia vs k. Pick k at elbow (diminishing returns).
+Silhouette method: Plot silhouette score vs k. Pick k with highest score.
+
+Tradeoff: More clusters always better metrics. But more clusters = less actionable. Balance quantitative metrics with interpretability and usefulness.
+
+My approach: Compute silhouette score for k=2 to 10. Pick k with highest score. Validate visually and with domain expert.`,
+      },
+      {
+        q: "Explain how a neural network learns. What is backpropagation?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about the intuition, the math, or how to tune it? And do you need to know about specific optimizers?
+
+For this, I'll cover intuition and mechanism.
+
+---
+
+Neural network: Stack of neurons (nodes) connected by weights. Each neuron outputs = activation(weights * inputs + bias).
+
+How learning works:
+
+1. Forward pass: Feed input through network. Each layer transforms via y = activation(W*x + b). Output: prediction.
+
+2. Compute loss: Compare prediction to true label. Loss = how wrong are we.
+
+3. Backward pass (backpropagation): Calculate gradient of loss with respect to each weight.
+
+4. Update weights: Adjust weights in direction that reduces loss. W = W - learning_rate * gradient.
+
+5. Repeat: Do this for many iterations.
+
+Backpropagation (backward pass):
+
+Key insight: Use chain rule of calculus to compute gradients efficiently.
+
+Example: Simple network.
+Input x → Layer 1 (weight W1) → Layer 2 (weight W2) → Output y → Loss L
+
+Loss depends on y, which depends on W2, which depends on Layer 1, which depends on W1.
+
+Gradient of loss w.r.t W2:
+dL/dW2 = dL/dy * dy/dW2
+
+Gradient of loss w.r.t W1:
+dL/dW1 = dL/dy * dy/dW2 * dW2/dLayer1 * dLayer1/dW1
+
+Backpropagation computes these efficiently by:
+1. Compute dL/dy at output.
+2. Move backward. Compute gradient for W2 using dL/dy.
+3. Compute gradient for W1 using previous gradients.
+
+Result: All weights have their gradients. Takes single backward pass, not separate forward pass for each weight.
+
+Intuition: Imagine water flowing backward from output to input, carrying gradient signal. Each weight learns how much it contributed to error.
+
+Tradeoffs:
+
+More layers: Can model complex patterns but slower to train, harder gradients flow (vanishing gradient problem).
+Larger learning rate: Faster updates but might overshoot, diverge.
+Smaller learning rate: Safer, slower.
+
+Modern optimizers (Adam, RMSprop): Adapt learning rate automatically. Better than hand-tuning.
+
+My approach: Use Adam optimizer. Learning rate 0.001. Monitor training loss. If diverging, reduce learning rate. If plateau, increase learning rate slightly.`,
+      },
+      {
+        q: "What is transfer learning? When should you use it vs training from scratch?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about when to apply it, or how to fine-tune effectively? And do you care about computational cost?
+
+For this, I'll cover strategy and practical considerations.
+
+---
+
+Transfer learning: Use model pre-trained on large dataset (e.g., ImageNet with 1 million images), adapt it to your smaller dataset.
+
+Why it works:
+
+Pre-trained model learned general features (edges, textures, shapes in images). Early layers capture low-level patterns useful for any vision task. Later layers capture task-specific patterns.
+
+Strategy:
+1. Take pre-trained model (e.g., ResNet50 trained on ImageNet).
+2. Remove final classification layer.
+3. Add new classification layer for your task (e.g., 10 classes instead of 1000).
+4. Fine-tune: Train new layer with your data. Optionally, gradually train deeper layers too (with smaller learning rate to avoid destroying learned features).
+
+Examples:
+
+Computer vision: ImageNet pre-trained models dominate. Training ResNet from scratch on small dataset fails. Transfer learning often the only way.
+
+NLP: BERT, GPT pre-trained on billions of words. Fine-tune for your task (sentiment, named entity recognition). Massively better than training from scratch.
+
+When to use transfer learning:
+
+1. Limited labeled data: With 1000 examples, training from scratch overfits. Transfer learning leverages millions of pre-training examples.
+
+2. Similar task domain: If pre-training is on similar domain, features transfer. ImageNet to medical images: features transfer somewhat but less than ImageNet to natural images.
+
+3. Computational constraints: Training ResNet from scratch takes days. Fine-tuning takes hours.
+
+When not to use:
+
+1. Massive unique domain: If your task domain is very different (e.g., pre-trained on faces, you need satellite imagery), features don't transfer. Training from scratch might be better. Tradeoff with compute.
+
+2. Huge labeled dataset: If you have 10 million labeled examples, training from scratch competitive with transfer learning. But transfer learning still usually better.
+
+3. Task requires new architecture: If your problem needs different network structure, transfer learning doesn't apply.
+
+Practical tradeoffs:
+
+Few-shot (100 examples): Transfer learning essential.
+Medium-data (10K examples): Transfer learning usually better.
+Large data (100K examples): Transfer learning still helps, but diminishing returns.
+
+Fine-tuning strategies:
+
+Conservative: Only train final layer, freeze all pre-trained weights.
+Moderate: Train final 2-3 layers, freeze early layers.
+Aggressive: Train all layers with low learning rate (0.0001 vs 0.001).
+
+My approach: Few labeled examples? Transfer learning essential. Large labeled dataset? Try both, compare. Moderate data? Default to transfer learning.`,
+      },
+      {
+        q: "How do you handle imbalanced datasets? Compare SMOTE, undersampling, and cost-sensitive learning.",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about which to use when, or how to implement them? And do you care about real-world constraints like labeling cost?
+
+For this, I'll explain trade-offs and practical considerations.
+
+---
+
+Imbalanced dataset: One class much more common than other. E.g., fraud detection: 99.9% normal transactions, 0.1% fraud. Model that always predicts "normal" gets 99.9% accuracy but useless.
+
+Problem: Model ignores minority class, overfits majority.
+
+Strategies:
+
+1. Undersampling:
+Randomly remove majority class examples until balanced.
+
+Example: 10,000 normal, 100 fraud. Remove 9,900 normal, keep 100 normal. Now 1:1 ratio.
+
+Pros: Fast. Less data to train on.
+Cons: Lose information. With 100 examples instead of 10,000, model underfits. Rare patterns in majority class lost.
+Use when: Data huge and compute-limited. Can afford losing information.
+
+2. Oversampling (SMOTE):
+Synthetically create minority class examples.
+
+Algorithm: For each minority example, find k nearest neighbors. Interpolate between them to create synthetic example. Repeat until balanced.
+
+Example: 100 fraud examples. Generate 9,900 synthetic fraud examples. Now balanced.
+
+Pros: No information loss. Model has more minority class data.
+Cons: Risk overfitting to synthetic examples. Synthetic examples not real, just interpolations. Can cause data leakage if not careful.
+Use when: Minority class data precious. Can't afford to discard.
+
+3. Cost-sensitive learning:
+Penalize minority class errors more than majority class errors.
+
+Instead of: Loss = (True_positive + False_positive) / total
+Use: Loss = (1*True_positive + 100*False_positive) / total
+
+Minority class misclassification costs 100x more. Model learns to avoid it.
+
+Pros: No artificial data generation. Works with any model. Directly optimizes what you care about (cost, not accuracy).
+Cons: Need to know cost ratio. If fraud costs $1000 and false alarm costs $50, ratio is 20:1. Hard to know precisely.
+Use when: Clear cost asymmetry. Cost of FP vs FN well-defined.
+
+Comparison:
+
+Undersampling: Simplest, fastest. Use when data huge.
+SMOTE: Good balance. Use when minority class scarce but real.
+Cost-sensitive: Best for cost asymmetry. Use when FP and FN have different costs.
+
+Metric implications: Accuracy terrible for imbalanced. Use F1, AUC-PR (precision-recall), or cost-based metric instead.
+
+My approach: Hybrid. SMOTE to generate minority class to maybe 30% of majority. Then cost-sensitive learning with weights reflecting true cost ratio. Validate on realistic cost metric, not accuracy.`,
+      },
+      {
+        q: "Explain the difference between word2vec, GloVe, and BERT embeddings.",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about the algorithms themselves, or which to use for your task? And do you care about fine-tuning vs using pre-trained?
+
+For this, I'll cover mechanics and practical tradeoffs.
+
+---
+
+Word embedding: Represent word as dense vector of numbers (e.g., 300-dimensional). "King" ≈ [0.2, -0.5, 0.8, ...]. Similar words have similar vectors.
+
+word2vec:
+
+Two variants: Skip-gram and CBOW.
+
+Skip-gram idea: Given word, predict context words. E.g., "The king sits on throne." Given "king", predict nearby words "the", "sits", "throne".
+
+Training: Use small neural network. Input: word vector. Hidden layer: 300 neurons. Output: probabilities of context words. Backprop to learn embeddings.
+
+Properties:
+- Static: One vector per word. "Bank" (river) and "bank" (financial) have same vector.
+- Fast to compute: Can embed new words quickly if pre-trained.
+- Small context window: Learned from local context (nearby words).
+
+GloVe (Global Vectors for Word Representation):
+
+Idea: Combine global statistics (co-occurrence counts across entire corpus) with local context.
+
+Algorithm:
+- Count how often word A appears near word B across entire corpus.
+- Factorize this co-occurrence matrix.
+- Learn embeddings minimizing difference between dot product of embeddings and log of co-occurrence count.
+
+Properties:
+- Captures global corpus statistics.
+- Still static (one vector per word).
+- Similar quality to word2vec.
+
+BERT (Bidirectional Encoder Representations from Transformers):
+
+Idea: Context-dependent embeddings. "Bank" (river) and "bank" (financial) get different vectors depending on sentence.
+
+Algorithm:
+- Pre-train transformer on huge corpus (Wikipedia + books).
+- Predict masked words in sentence. E.g., "[MASK] sits on throne" → predict "king".
+- Bidirectional: Look at words before and after (vs left-to-right like previous).
+
+Properties:
+- Dynamic: Vector changes based on context.
+- Complex: Full transformer, slow but powerful.
+- Fine-tunable: Pre-trained BERT adapts to downstream task (sentiment, NER, Q&A).
+
+Comparison:
+
+word2vec/GloVe: Static, simple, fast.
+BERT: Dynamic, complex, slow but more accurate for downstream tasks.
+
+Data efficiency:
+- word2vec: Quick to train. Need moderate corpus.
+- BERT: Pre-trained available. Fine-tune on small labeled dataset.
+
+Tradeoff:
+
+word2vec/GloVe: Good for semantic similarity, clustering. Lightweight.
+BERT: Better for downstream tasks (classification, NER). Heavyweight.
+
+Practical use:
+
+Simple similarity task: word2vec sufficient.
+Classification task (sentiment, spam): BERT likely better. Use pre-trained, fine-tune on your data.
+
+Compute: word2vec runs on laptop. BERT benefits from GPU.
+
+My approach: For text classification, start with pre-trained BERT, fine-tune on your data. For similarity or exploration, word2vec faster and lighter.`,
+      },
+      {
+        q: "What is a recommendation system? Compare collaborative vs content-based filtering.",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about the algorithms, or how to build production system? And do you need to handle cold-start problems?
+
+For this, I'll explain both approaches and tradeoffs.
+
+---
+
+Recommendation system: Predict which items user will like, rank them, show top.
+
+Two main approaches:
+
+Collaborative filtering:
+
+Idea: Users who liked same items in past will like same items in future. If you and I both rated movie A and B highly, we probably like similar movies. Recommend to me what you liked.
+
+Algorithm: User-item matrix. Rows = users, columns = items, values = ratings.
+
+Item 1  Item 2  Item 3
+User A   5      3      ?
+User B   5      3      4
+User C   2      2      ?
+
+Find similar users (User A similar to User B, both rated items 1, 2 highly). Recommend Item 3 to User A because User B (similar) liked it.
+
+Matrix factorization: Decompose user-item matrix into two smaller matrices. User matrix (latent factors), item matrix (latent factors). Low-rank representation.
+
+Pros: Works well once you have ratings. No need to understand content. Captures complex patterns.
+Cons: Cold-start problem. New user with no ratings, can't find similar users. New item with no ratings, no one has rated it.
+
+Content-based filtering:
+
+Idea: User likes items with certain properties. If user liked action movies, recommend other action movies.
+
+Algorithm:
+- Represent item as feature vector (genre, director, length, actors).
+- Represent user as preference vector (learned from their past ratings).
+- Recommend items closest to user preference vector.
+
+Example: User A rated:
+- Movie 1: action, 2h, thriller. Rating: 5.
+- Movie 2: action, 1.5h, thriller. Rating: 4.
+- Movie 3: romance, 2h, drama. Rating: 1.
+
+User A prefers: action, thriller. Length less important.
+
+Recommend Movie 4 (action, thriller) over Movie 5 (romance).
+
+Pros: No cold-start for new items (use item features). Transparent (can explain why recommended).
+Cons: Limited by available features. If features don't capture true user preference, fails. Can't recommend items very different from user's history (lack diversity).
+
+Comparison:
+
+Collaborative filtering:
+- Captures patterns not in features.
+- Cold-start problem.
+- Likely to recommend popular items.
+
+Content-based:
+- Works with new items/users.
+- Limited to known features.
+- Recommendations can be narrow (echo chamber).
+
+Hybrid:
+
+Combine both. Collaborative when user has history. Content-based for cold-start. Diversify: mix popular with niche.
+
+Practical challenges:
+
+1. Cold-start: New user. Use content-based or popularity-based first.
+2. Exploration vs exploitation: Recommend what user likely to click (exploitation) vs new items (exploration).
+3. Diversity: All recommendations different? Or personalized?
+4. Scalability: With millions of users/items, matrix factorization hard.
+
+Real systems use: Hybrid + context-bandit algorithms + ranking (implicit signals like click, view time).
+
+My approach: Collaborative filtering main model. Content-based for cold-start. Blend recommendations for diversity.`,
+      },
+      {
+        q: "How would you build a time series forecasting model? What algorithms would you consider?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about traditional methods, deep learning, or which to pick? And do you care about forecasting horizon (1 step vs months ahead)?
+
+For this, I'll walk through approaches and tradeoffs.
+
+---
+
+Time series forecasting: Predict future values based on past. Stock price, weather, website traffic.
+
+Key challenge: Data points not independent. Tomorrow's price depends on today's price, recent trends.
+
+Approaches:
+
+1. Classical (ARIMA, Exponential Smoothing):
+
+ARIMA (AutoRegressive Integrated Moving Average):
+- Autoregressive: Future value depends on past values.
+- Moving average: Capture short-term fluctuations.
+- Integration: Handle trends by differencing.
+
+Good for: Stationary series (no trend, seasonality constant).
+Pros: Interpretable, fast, works on small data.
+Cons: Assumes linearity. Hard to capture complex patterns. Struggles with multiple variables.
+
+Exponential smoothing:
+- Weight recent values more than old values.
+- Captures trend and seasonality.
+
+Good for: Seasonal patterns, simple trends.
+Pros: Fast, interpretable.
+Cons: Limited complexity.
+
+2. Machine Learning (Tree-based, Neural Networks):
+
+Feature engineering:
+Create features from time series. E.g., for price prediction:
+- Lag features: yesterday's price, 2 days ago, 1 week ago.
+- Moving averages: 5-day, 10-day, 30-day average.
+- Trend: price trend over last week.
+- Seasonality: day of week, month of year.
+
+Then use any supervised model (Random Forest, XGBoost, Linear Regression).
+
+Pros: Can capture non-linear patterns. Handle multiple variables easily. Leverage all feature engineering.
+Cons: Requires more data to learn patterns.
+
+3. Deep Learning (LSTM, Transformer):
+
+LSTM (Long Short-Term Memory):
+- Neural network designed for sequences.
+- Memory cells remember long-term patterns.
+- Forget gate: forget irrelevant old information.
+- Input gate: remember relevant new information.
+
+Sequence-to-sequence: Take last 30 days, predict next 7 days.
+
+Pros: Captures very complex temporal patterns. State-of-the-art performance.
+Cons: Needs lots of data. Hard to interpret. Slow to train.
+
+Transformer:
+- Attention mechanism: Model which past timesteps matter for future.
+- Parallelizable, faster training than LSTM.
+
+Temporal Fusion Transformer:
+- Combines multiple features and time series.
+- Quantile regression: Get prediction intervals, not just point forecast.
+
+Practical considerations:
+
+Forecasting horizon:
+- 1 step ahead (tomorrow's price): All methods work.
+- 30 steps ahead (next month): Harder. ARIMA struggles. Deep learning better but needs more data.
+
+Data size:
+- <500 observations: Classical (ARIMA, exponential smoothing).
+- 500-5000: ML (Random Forest, XGBoost).
+- >5000: Deep learning.
+
+Stationarity: If series has trend, detrend or difference first.
+
+Seasonality: Capture with seasonal decomposition or model explicitly.
+
+Evaluation: Train/test split for time series tricky. Use expanding window or sliding window (time-aware cross-validation).
+
+My approach: Start with ARIMA baseline (fast, interpretable). If data >500 examples, try XGBoost with lag features. If >5000 and complex patterns, LSTM.`,
+      },
+      {
+        q: "Explain ensemble methods. When do they help and when are they overkill?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about types of ensembles, or when to use them? And do you care about computational cost vs performance?
+
+For this, I'll cover mechanisms and practical decisions.
+
+---
+
+Ensemble methods: Combine multiple models, aggregate predictions. Usually outperforms single model.
+
+Types:
+
+1. Bagging (Bootstrap Aggregating):
+Train multiple models on random bootstrap samples of data.
+Aggregate: Average (regression) or vote (classification).
+
+Example: Train 100 decision trees on 100 random samples (with replacement) of data. Each tree deep and overfit individually. But averaging 100 overfit trees smooths variance.
+
+Pros: Reduces variance. Each tree fits closely to its sample, ensemble averages overfitting away.
+Cons: More computational. 100 trees = 100x training time.
+
+2. Boosting:
+Train models sequentially. Each new model focuses on errors of previous models.
+
+Example: Train tree 1. It misclassifies some examples. Train tree 2 to focus on those misclassified examples. Combine.
+
+Reduces bias. Weak learners become strong.
+
+Pros: Can achieve very high accuracy.
+Cons: Slow (sequential). Risk overfitting if too many iterations.
+
+3. Stacking:
+Train multiple models (level 0: diverse models like logistic regression, SVM, tree). Their outputs become features for level 1 model (meta-learner). Meta-learner learns to weight diverse models.
+
+Pros: Can leverage strengths of multiple algorithms.
+Cons: Complex. Risk overfitting.
+
+When ensemble helps:
+
+1. Diverse weak learners: If models make different mistakes, ensemble helps. If all models make same mistakes, ensemble doesn't help.
+
+2. Uncorrelated predictions: Ensembles work when combined predictions reduce error. If models too similar, no benefit.
+
+3. Computational budget allows: Training 100 models takes time. Worth it if performance gain justifies.
+
+4. Small-to-medium data: Bagging variance reduction matters. With huge data, single model strong enough.
+
+5. Accuracy critical: Ensemble for highest possible accuracy. E.g., medical diagnosis, fraud detection.
+
+When ensemble is overkill:
+
+1. Single good model sufficient: If logistic regression gets 95% accuracy and problem only needs 90%, don't ensemble.
+
+2. Interpretability required: Ensemble of 100 trees uninterpretable. Single decision tree interpretable.
+
+3. Speed critical: Real-time predictions. Single model faster than 100 models. Might need to sacrifice accuracy.
+
+4. Limited compute: Training 100 models expensive. Budget limited.
+
+5. Data huge: 10 million examples. Single well-tuned deep network outperforms ensemble of simpler models.
+
+Practical tradeoffs:
+
+Accuracy vs speed: Ensemble more accurate but slower.
+Accuracy vs interpretability: Ensemble more accurate but less interpretable.
+
+Rule of thumb: Single model tuned well often outperforms ensemble of poorly tuned models. Tune single model first. If stuck, ensemble.
+
+My approach: Baseline single model with cross-validation. If performance plateaus, try ensemble. Quantify accuracy gain. Worth the computational cost?`,
+      },
+      {
+        q: "What is the difference between online learning and batch learning? When do you use each?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about implementation differences, or when each is appropriate? And do you care about computational memory vs accuracy?
+
+For this, I'll explain mechanics and tradeoffs.
+
+---
+
+Batch learning: Train on entire dataset at once. Update model once. Deploy.
+
+Process:
+1. Collect 10,000 examples.
+2. Train model on all 10,000.
+3. Deploy model.
+4. Later, collect 10,000 new examples.
+5. Retrain on original 10,000 + new 10,000.
+6. Redeploy.
+
+Online learning: Train on one example at a time. Update model continuously.
+
+Process:
+1. See example 1. Predict. Get feedback (true label). Update model.
+2. See example 2. Predict. Get feedback. Update model.
+3. Continue forever as new data arrives.
+
+Model always updating, never retrains from scratch.
+
+Pros and cons:
+
+Batch learning:
+Pros: Can use all data, batch algorithms. Often more accurate. Clean train/test separation.
+Cons: Old once deployed. Takes time (retraining takes hours). Requires all data upfront.
+Use when: Data static or changes slowly. Can afford retraining offline.
+
+Online learning:
+Pros: Adapts immediately to new patterns. No retraining needed. Low memory (process one example at a time).
+Cons: Can be less stable. Can overfit to recent noise. Harder to implement.
+Use when: Data streams continuously. Must adapt fast. Memory constrained.
+
+Real-world scenarios:
+
+Batch:
+- Movie recommendations: Retrain weekly with new ratings.
+- Spam detection: Retrain daily with new emails.
+- Sales forecasting: Retrain monthly with new sales.
+
+Online:
+- Real-time stock trading: Must adapt to price changes instantly.
+- Website personalization: User behavior changes, adapt visitor-by-visitor.
+- Anomaly detection: Fraud patterns evolve, need immediate adaptation.
+
+Implementation:
+
+Batch: Traditional ML (scikit-learn). Reload model, retrain, deploy.
+Online: Streaming algorithms. SGD (stochastic gradient descent) naturally fits online (update one example at a time). Can also use online variants of algorithms (online forest, online clustering).
+
+Hybrid approaches:
+
+Mini-batch online: Process 32 examples at a time, update. Balance between full batch and single example.
+Scheduled retraining: Online learning but retrain batch model periodically.
+
+Key metric: Online learning performance degrades if distribution shifts fast. Batch learning only learns when retrained.
+
+My approach: Streaming data? Online learning with SGD. Static data? Batch learning is simpler and more accurate.`,
+      },
+      {
+        q: "How do you detect data drift in a production model?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about detecting drift automatically, or different types of drift? And do you care about statistical rigor vs simplicity?
+
+For this, I'll cover types and detection methods.
+
+---
+
+Data drift: Input feature distribution changes over time.
+
+Example: Model trained on historical data. Deployed. Users start behaving differently. Feature distribution shifts. Model performance degrades.
+
+Types of drift:
+
+1. Covariate shift: P(X) changes, P(Y|X) stays same. Features look different but relationship to target unchanged.
+Example: Training on urban customers, model deployed to rural. Rural customers have different income (feature distribution changed) but response to offer same.
+
+2. Label shift (prior shift): P(Y) changes, P(X|Y) stays same.
+Example: Fraud detection. In training, 0.1% fraud. In production, 5% fraud (reason: holiday season). Class imbalance changed.
+
+3. Concept drift: P(Y|X) changes. Relationship between features and target shifts.
+Example: Economic recession. Feature = income. Relationship between income and loan default changes. Was: higher income = lower default. Now: income less predictive.
+
+Detection methods:
+
+1. Statistical tests:
+For each feature, test if distribution same as training. E.g., Kolmogorov-Smirnov test, Wasserstein distance.
+
+Example: In training, age mean = 45, std = 15. In recent month, age mean = 50, std = 18. Statistically significant shift?
+
+Pros: Rigorous, principled.
+Cons: Sensitive to small shifts, might flag false positives if data naturally variable.
+
+2. Performance degradation:
+Most direct. Monitor model accuracy on production data.
+
+If ground truth available immediately: Compare predictions vs actual labels. If accuracy drops > 5%, alert.
+
+If ground truth delayed: Compare recent accuracy to baseline. Drop signals drift.
+
+Pros: Direct. No manual threshold-setting.
+Cons: Only detects drift affecting accuracy. Some drift doesn't hurt accuracy. Requires ground truth.
+
+3. Feature monitoring:
+Track basic statistics for each feature. Mean, std, min, max.
+
+Example: Feature "purchase_amount" historically mean $100, now mean $50. Alert.
+
+Pros: Simple, interpretable.
+Cons: Doesn't directly measure prediction impact.
+
+4. Prediction distribution:
+Monitor distribution of model predictions.
+
+Example: Training: 80% predicted class 0, 20% class 1. Production: 60% class 0, 40% class 1. Shift in prediction distribution suggests input shift.
+
+5. Proxy metrics:
+When ground truth delayed, use proxy. E.g., click-through rate (CTR). If recommender performance degrades, CTR drops.
+
+Practical implementation:
+
+Real-time monitoring: For each batch of predictions, compute drift metrics. Alert if exceed threshold.
+
+Alert strategy:
+- Alert immediately on small shift? False positive risk.
+- Wait for large shift? Lose customers first.
+- Use control group: Separate group of users not affected. Compare to treatment group.
+
+Response to drift:
+
+1. Retrain: Retrain on recent data. Adapt to new distribution.
+2. Domain adaptation: Use techniques to bridge distribution gap.
+3. Investigate: Is drift temporary (holiday season) or permanent (market change)?
+4. Fallback: Keep old model as backup. If performance bad, rollback.
+
+My approach: Monitor accuracy weekly if ground truth available. Feature statistics daily (mean, percentiles). Alert if accuracy drops > 2% or feature mean shifts > 1 std dev. Retrain monthly or on-demand.`,
+      },
+      {
+        q: "Explain regularization. When would you use Lasso vs Ridge vs Elastic Net?",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        a: `Are you asking about how they work mathematically, or when to pick which? And do you care about feature selection vs pure prediction?
+
+For this, I'll explain mechanisms and selection criteria.
+
+---
+
+Regularization: Add penalty term to loss function. Penalize large coefficients, force model simpler, reduce overfitting.
+
+Loss = Original_Loss + Penalty * Coefficient_Size
+
+L1 (Lasso) regularization:
+
+Penalty = λ * sum(|β|) where β are coefficients.
+
+Effect: Shrinks some coefficients to exactly zero. Automatic feature selection.
+
+Example: Model with 10 features. Lasso forces 3 features to zero. Model uses only 7 features.
+
+Geometric intuition: L1 penalty creates diamond constraint region. Optimization often hits corner of diamond (where feature = 0).
+
+L2 (Ridge) regularization:
+
+Penalty = λ * sum(β^2)
+
+Effect: Shrinks all coefficients toward zero but not to exactly zero.
+
+Example: Model with 10 features. Ridge shrinks all 10 but keeps all (maybe 0.001 instead of 1.5).
+
+Geometric intuition: L2 penalty creates circular constraint region. Optimization hits edge but not corner.
+
+Elastic Net:
+
+Combination of L1 and L2.
+
+Penalty = λ1 * sum(|β|) + λ2 * sum(β^2)
+
+Effect: Some feature selection (L1) plus shrinkage (L2). Best of both.
+
+Tradeoff:
+
+Lasso:
+Pros: Feature selection built-in. Interpretable (zero coefficients). Sparse model.
+Cons: Unstable with correlated features. If features A and B correlated, randomly picks one to zero.
+
+Ridge:
+Pros: Stable with correlated features. Shrinks them together proportionally. All features kept.
+Cons: No feature selection. All non-zero, harder to interpret.
+
+Elastic Net:
+Pros: Feature selection + stability with correlation.
+Cons: Extra hyperparameter λ2 to tune.
+
+Choosing between them:
+
+1. Interpretability important? Use Lasso. Zero coefficients obvious.
+
+2. Correlated features? Use Ridge or Elastic Net. Lasso unstable.
+
+3. Many features, few matter? Use Lasso. Automatically finds important ones.
+
+4. Pure prediction accuracy? Ridge often slightly better than Lasso. But close.
+
+5. Mixed: some correlated groups, some important sparse features? Elastic Net.
+
+λ parameter tuning:
+
+λ = 0: No regularization (original loss).
+λ = 0.1: Mild penalty.
+λ = 1: Strong penalty.
+λ = 100: Very strong penalty.
+
+Use cross-validation to find best λ.
+
+Practical example:
+
+Linear regression on house prices. 50 features (size, rooms, age, neighborhood, etc).
+
+Ridge: All 50 features in model. Coefficients smaller, less prone to overfitting.
+
+Lasso: Maybe 20 features non-zero. Can interpret: these 20 matter for price.
+
+Which?
+- Client wants interpretable model (explain which features matter)? Lasso.
+- Client wants most accurate prediction? Try Ridge, then Lasso, pick better by CV.
+- Features correlated? Ridge.
+
+My approach: Default to Ridge for stability. If need feature selection, Lasso. If unsure, Elastic Net with l1_ratio = 0.5 (balanced).`,
+      },
     ],
   },
 
