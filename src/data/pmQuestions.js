@@ -25833,6 +25833,320 @@ Lesson: Technical excellence isn't always the answer. Context matters. For a pro
 
 The mistake many engineers make: defaulting to "the right way." The better skill: knowing which tradeoff makes sense for the context.`,
       },
+      {
+        q: "A retail client's revenue dropped 15% last quarter. Using data, how would you identify the root cause and recommend actions?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "mid_ds",
+        company: "McKinsey",
+        a: `Before diving into analysis, I'd clarify: Is this drop uniform across regions, customer segments, and product categories? Has pricing changed? Are we seeing traffic decline, conversion drop, or basket size reduction?
+
+My approach: First, decompose the 15% drop using segment analysis. I'd cross-tabulate revenue by (1) geography, (2) customer cohort (new vs repeat), (3) product category, and (4) transaction size buckets. This pinpoints where bleeding is happening.
+
+Next, I'd layer temporal patterns. Did the drop happen mid-quarter or was it gradual? Compare daily/weekly revenue trends to external events (competitor launches, seasonality, promotions ending). Correlate with traffic and conversion using a simple funnel analysis.
+
+For root cause diagnosis: If traffic dropped 20%, the issue is awareness/acquisition. If traffic held but conversion fell 25%, it's friction or competition. If conversion held but basket size dropped, pricing or mix shifted.
+
+Then, I'd build a simple regression: Revenue ~ Traffic + Conversion Rate + Avg Order Value + Category Mix + Seasonality. Standardize coefficients to show which driver moved most.
+
+Recommendations depend on findings: Low traffic? Increase marketing spend or check SEO rankings. High friction? Review checkout abandonment rates. Competitive pressure? Analyze price elasticity—discounting might expand volume but hurt margin.
+
+Key assumption: data quality is sound. I'd validate by spot-checking revenue against bank deposits before presenting conclusions.`,
+      },
+      {
+        q: "How would you build a customer segmentation model for a telecom client with 50M subscribers?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "mid_ds",
+        company: "BCG",
+        a: `Scale requires pragmatism. With 50M subscribers, I won't fit a single model—I'll design a tiered approach that trades precision for scalability.
+
+First, I'd clarify business objectives: Is this for churn prediction, pricing optimization, or service personalization? Each drives different segmentation logic.
+
+I'd use RFM on steroids: (1) Recency of activity, (2) Frequency of interactions, (3) Monetary value (ARPU), (4) Tenure, (5) Service mix (voice, data, roaming), (6) Payment behavior, (7) Customer service contacts.
+
+Dimensionality reduction: PCA to compress to 20-30 principal components. Then K-means clustering. I'd use elbow method + silhouette score to pick k, but business constraints matter—you likely want 4-8 segments.
+
+Validation is critical: (1) Size: Are segments balanced? (2) Business sense: Can a manager describe each segment? (3) Stability: Do segments hold if we retrain monthly?
+
+For 50M scale, I'd sample 5-10% stratified by geography and tenure, build the model, then assign remaining customers using a KNN classifier. This keeps compute tractable.
+
+Output: A production table with customer_id, segment_id, confidence. Update quarterly. Build segment profiles showing demographics, behavior, and churn risk. Use this for targeted retention campaigns.
+
+Key trade-off: We sacrifice 5-10% clustering purity for speed. Validate empirically—does segment-based targeting beat random in A/B tests?`,
+      },
+      {
+        q: "A bank wants to predict loan defaults. What features would you engineer from transaction data and how would you validate the model?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "mid_ds",
+        company: "Bain",
+        a: `Default prediction is existential for banks—validation matters more than cleverness. I'd ask: What's the base rate of defaults? How long is the prediction horizon (3-month, 1-year)? Are we approving new loans or monitoring existing ones?
+
+Feature engineering from transaction data:
+
+(1) Flow stability: Monthly income volatility, income trend (linear regression slope over 12 months), day-of-month concentration. Erratic income signals distress.
+
+(2) Outflow patterns: Debt service burden (monthly loan payments / income), expense volatility, large withdrawal frequency.
+
+(3) Behavioral: Days-to-zero (how quickly does balance hit zero after payday?), frequency of small transactions, dormancy periods.
+
+(4) Credit behavior: Late payment patterns, balance utilization, overdraft frequency.
+
+(5) Macro signals: Account age, product diversification, employer volatility using merchant data.
+
+Validation strategy:
+
+(1) Temporal split: Train on 2021-2022, validate on 2023, test on 2024. Never use future to predict past.
+
+(2) Default cohort alignment: If I train on customers who defaulted 12 months after loan origination, my features must be available at origination. No leakage.
+
+(3) Business metrics: Measure false positive rate vs false negative rate. A 1% improvement in AUC might double false negatives—regulatory nightmare.
+
+(4) Stress test: Model performance on recession data (2008, 2020). Does it degrade gracefully?
+
+(5) Explainability: For every default predicted, I must explain which 2-3 features drove it. Regulators demand this.
+
+Final check: Score 100 recent defaults manually. Can a human analyst verify my model caught 70% using features that felt risky?`,
+      },
+      {
+        q: "How would you build a model to predict stock price movements using alternative data sources?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Goldman Sachs",
+        a: `Stock prediction is hard—most models fail due to overfitting. I'd start by asking: Prediction horizon (1-day, 1-week, 1-month)? Universe (single stock or portfolio)? What alternative data is available?
+
+Alternative data sources (ordered by signal strength):
+
+(1) Satellite imagery: Parking lot occupancy at retailers, oil tank levels at refineries, shipping container stacks at ports. These are weeks ahead of reported earnings.
+
+(2) Credit card transaction data: Aggregate spend by merchant category. If restaurant spend drops 20% month-over-month, consumer weakness is real.
+
+(3) Web traffic: Google Trends searches for brand names, product pages. Airline searches spike before earnings beat.
+
+(4) Sentiment from earnings calls and social media: Use NLP to score tone. Be cautious—sentiment is volatile and already partially priced in.
+
+(5) Patent filings, job postings: Leading indicators of R&D strength and hiring momentum.
+
+Model architecture:
+
+(1) Feature engineering: Traditional features (lagged returns, volatility, momentum) + alternative data features (parking lot trend, credit card spend trend, sentiment score). Lag by 1-2 weeks to avoid lookahead bias.
+
+(2) Time series model: Use gradient boosting or LSTM on sequence data. Use time-based split: train on 2019-2021, validate on 2022, test on 2023.
+
+(3) Target variable: Define clearly. Predict direction (up/down) or magnitude (returns > 5%)?
+
+Validation:
+
+(1) Avoid lookahead bias: Cannot use information unavailable at prediction time.
+
+(2) Transaction costs: If bid-ask spread is 1% and broker fee is 0.2%, I need 1.2% return just to break even.
+
+(3) Out-of-sample testing: Train through 2022, test only on 2023. Does performance degrade significantly?
+
+(4) Regime change: Does my model's accuracy degrade in volatile periods (when I most want to trade)?
+
+Most models fail due to overfitting. My approach: Build ensemble of 3-5 models using different alternative data sources. Only trade when 3+ models agree.`,
+      },
+      {
+        q: "Build a credit risk scorecard for SME lending. Walk through feature selection and validation.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "JP Morgan",
+        a: `SME credit risk is different from personal credit—I need business fundamentals, not just payment history. I'd build a weighted scorecard prioritizing interpretability (regulators demand explainability).
+
+Feature categories:
+
+(1) Business financials (40% weight): Revenue trend (is business growing?), profitability margin, debt-to-equity ratio, working capital cycle. Use 3-year history to spot trends.
+
+(2) Cash flow strength (25% weight): Operating cash flow / debt service (can they pay?), days cash on hand (runway if revenue drops), seasonal patterns (do they hit cash crunches?).
+
+(3) Industry/macro (15% weight): Industry growth rate (declining industries = higher risk), interest rate sensitivity (if rates spike, their borrowing costs rise), supply chain disruption indicators.
+
+(4) Management quality (10% weight): Founder/CEO tenure (if they just left, red flag), prior business exits (successful history = lower risk), industry experience.
+
+(5) Collateral (10% weight): Asset coverage ratio (can we recover collateral if loan defaults?).
+
+Scorecard construction:
+
+(1) Stratify SMEs by industry (retail, manufacturing, tech) and revenue bucket ($100K-$500K, $500K-$5M, etc.). Risk varies dramatically across buckets.
+
+(2) For each segment, compute logistic regression. Standardize coefficients to points (e.g., "every $100K revenue increase = +5 points").
+
+(3) Convert to risk buckets: 0-20 points = High Risk (default rate >10%), 21-50 = Medium Risk (5-10%), 51-100 = Low Risk (<5%).
+
+Validation:
+
+(1) Stability: Refit the scorecard on recent data. Do coefficients change? If revenue_trend coefficient flips sign, model is unstable—investigate.
+
+(2) Discrimination: Plot cumulative distribution of scores for defaulters vs non-defaulters. Should separate cleanly (Gini > 0.6).
+
+(3) Calibration: Among loans scored 30-40 points, what was actual default rate? Should match the 7-8% implied by the scorecard.
+
+(4) Stress test: How does scorecard perform during recession (2008 data)? Default rate should be higher, but discrimination should hold.
+
+(5) Regulatory backtesting: Track model performance monthly. If actual default rate deviates >2% from predicted, investigate and retrain.
+
+Deployment: Use scorecard for decision thresholds (approve if score > 60, decline if < 20, manual review if 20-60). Update quarterly.`,
+      },
+      {
+        q: "Design a metric to measure the health of a two-sided marketplace. How do you balance supply and demand signals?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Flipkart",
+        a: `A two-sided marketplace lives or dies on balancing supply and demand. Too much supply, prices crash and sellers leave. Too much demand, users get frustrated. I'd design a composite metric around equilibrium.
+
+Primary metric: Supply-to-demand ratio (SDR). If you have 1000 sellers and 100k weekly searches, SDR = 0.01. Ideal SDR depends on category (food delivery: 1:50, luxury goods: 1:500). Track SDR trend (widening or tightening?).
+
+Second metric: Match rate (% of demand served). Of 100k searches, how many convert to transaction? If match rate drops while SDR stays constant, something's wrong (supply quality? discoverability?).
+
+Third metric: Supply utilization. Of 1000 sellers, how many completed a transaction this month? Inactive supply signals churn risk. Track "active sellers" (>1 transaction/month).
+
+Fourth metric: Price stability. If prices swing wildly (median price up 30% month-over-month), supply/demand is imbalanced. Stable prices mean equilibrium.
+
+Balancing: Use these metrics to trigger interventions. If SDR > 3x target: incentivize demand (discounts, marketing). If SDR < 0.33x target: incentivize supply (seller bonuses, reduced fees).
+
+Tradeoffs: A single metric fails. Supply can be abundant but low-quality. Demand can be high but hard to satisfy (peak-hour bottlenecks). Track 4-6 metrics, alert on 2+ degrading simultaneously.
+
+Real example: Uber's DAU (demand proxy) vs active driver count (supply proxy). Early NYC problem: 100k drivers but 1M peak-hour requests. Solution: surge pricing to reduce demand and attract drivers.
+
+Implementation: Weekly monitoring. If supply and demand decoupling, monthly deep dive (quality issues? competitive threat?). Adjust supply/demand incentives based on SDR trends.`,
+      },
+      {
+        q: "Your search ranking model improved NDCG by 5% offline but click-through rate dropped online. What happened?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Amazon",
+        a: `This is a classic train-test mismatch. NDCG measures ranking quality. CTR measures user satisfaction. They diverged, so my ranking logic works on test data but confuses users.
+
+Hypothesis 1: NDCG rewards different features than CTR. NDCG optimizes for relevance (BM25, semantic similarity). Users click based on intent to act (price, ratings, images). A result can be relevant but not clickable.
+
+Example: Query "laptop under 50k". My model ranks by relevance (specs match). But users click the cheapest option with 4+ star rating. High relevance (rank 1) but low CTR because price is buried.
+
+Hypothesis 2: Online evaluation differs from offline. NDCG is computed on test set (fixed queries, fixed results). Online, queries are live and variable. New model might rank novel results higher (exploration), confusing users.
+
+Hypothesis 3: Feedback loop. Users clicked on the old ranking because they learned its pattern. New ranking surprises them. Over time (2-4 weeks), CTR might recover as users adapt.
+
+Hypothesis 4: Positional bias. New ranking changes item positions. Clicks drop not because quality is lower, but because items moved from position 3 (high CTR) to position 7 (low visibility).
+
+Actions:
+(1) Segment A/B test by query intent (transactional vs informational).
+(2) Compare CTR on shared results between old and new ranking.
+(3) Analyze time-to-click and result view-through rate.
+(4) Check if low-CTR results are truly low-quality or just unfamiliar.
+
+Decision: NDCG is a proxy; CTR is the true metric. If CTR drops, the model is worse, even if offline metrics improve. Revert and investigate what NDCG measures that CTR doesn't.`,
+      },
+      {
+        q: "How would you quantify the business value of a data science project before building it?",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        company: "Accenture",
+        a: `Too many data science projects fail because value wasn't quantified upfront. I'd use a clear framework:
+
+Step 1: Define the outcome metric. Not "build a churn model"—that's output. The outcome is "reduce churn by X% or save $Y."
+
+Step 2: Establish baseline. Example: 15% annual churn costing $5M in lost revenue. Currently using rule-based churn flags (if customer service calls > 5 last month) with 60% recall and 20% precision.
+
+Step 3: Estimate uplift. Realistic estimate: ML model improves recall to 75% and precision to 40%.
+
+Step 4: Monetize impact. With 75% recall: We catch 75% of 15% churn = 11.25% of customer base. If retention offer costs $100 with 40% conversion = we retain 4.5% of base. That's $5M * 4.5% = $225K saved annually. Cost: $100 per retention attempt * 11.25% of 100K customers = $112.5K. Net benefit: $112.5K/year.
+
+Step 5: Account for costs. Data engineering: $150K (one-time). Model development: $80K. Ongoing maintenance: $40K/year. Total first-year cost: $270K. Net Year 1: $112.5K - $270K = -$157.5K (loss). Year 2+: $72.5K/year profit.
+
+Step 6: Risk-adjust. Discount by 30-50%. If recall improvement only reaches 65%, uplift drops. Payback extends to Year 3.
+
+Step 7: Sensitivity analysis. Test assumptions: What if retention offer acceptance is 30% instead of 40%? What if model precision is 25%?
+
+Step 8: Intangibles. Will this model improve customer satisfaction? Enable new products? Note as qualitative upside.
+
+Final output: Recommend proceeding if ROI > 1x within 18 months and conservative case is still positive. Better to overestimate costs and underestimate benefits.`,
+      },
+      {
+        q: "A manufacturing client has 10% defect rate. Design a predictive quality model. What data do you need?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "EY",
+        a: `10% defect rate is both opportunity and risk. Before designing a model, I'd clarify: Are defects caught in-house or at customer sites? This changes data and urgency.
+
+Data I need:
+
+(1) Process parameters: Temperature, pressure, humidity, machine vibration, power draw, runtime, speed settings—any sensor data from the production line.
+
+(2) Material properties: Supplier, lot number, material batch date. Defects often trace to bad batches.
+
+(3) Environmental conditions: Ambient temperature, humidity, time of day, day of week (shift quality often varies).
+
+(4) Equipment maintenance: Last calibration date, maintenance history, parts replaced. Old equipment degrades.
+
+(5) Operator: Employee ID to control for skill variation.
+
+(6) Product specifications: What specific defects? Dimensional (out of tolerance), surface (scratches), functional (doesn't work).
+
+(7) Defect labels: For historical units, were they defective? Critical: labels must be at production time (when data is collected), not months later.
+
+Model design:
+
+(1) Classification: Supervised learning. Start with logistic regression (interpretable) or random forest (captures non-linearities).
+
+(2) Real-time scoring: Deploy to production line. If defect probability > 60%, flag for immediate inspection.
+
+(3) Explainability: For every flagged unit, explain which 2-3 parameters triggered the alert. "Temperature spike + high humidity + old machine = 75% defect risk."
+
+Validation:
+
+(1) Holdout test set: Reserve 20% of recent data. At threshold that catches 70% of defects, what's precision? If 30%, you're flagging 3 units per 1 actual defect—operational burden.
+
+(2) Cost-benefit: Cost of rework = $500. Cost of customer finding defect = $5,000. Model catching 70% of defects prevents 70% * $5,000 cost.
+
+(3) Temporal validation: Train on 2022-2023, test on 2024. Does performance degrade? If yes, concept drift is happening—plan monthly retraining.
+
+Pilot: Run on 20% of production for 2 weeks. Compare model flags to actual defects caught by QA. Iterate based on feedback.`,
+      },
+      {
+        q: "Estimate the number of Uber rides happening in Delhi right now.",
+        subcategory: "case_studies",
+        difficulty: "Easy",
+        level: "junior_ds",
+        company: "Uber",
+        a: `Let me break this down into components I can estimate:
+
+Delhi population: ~32 million, metro area ~30 million.
+
+Ride frequency: What % takes Uber on any given day?
+- Affluent metros users (20% of population): 40% use Uber daily (convenient, safety).
+- Regular users (30% of population): 15% use Uber daily.
+- Infrequent users (50% of population): 2% use Uber daily.
+
+Weighted average: 0.20 * 0.40 + 0.30 * 0.15 + 0.50 * 0.02 = 0.08 + 0.045 + 0.01 = 12.5% daily users.
+
+Daily Uber users: 30M * 12.5% = 3.75M.
+
+Rides per user per day: On average, daily users take 1.2 rides per day (some days 0, some days 2-3).
+
+Daily rides in Delhi: 3.75M * 1.2 = 4.5M rides/day.
+
+Distribution by hour (assuming typical metro pattern):
+- 7-9am (morning commute): 12% of daily rides = 540K rides.
+- 9am-5pm (business hours): 35% of daily rides = 1.575M rides.
+- 5-7pm (evening commute): 15% of daily rides = 675K rides.
+- 7pm-11pm (leisure): 25% of daily rides = 1.125M rides.
+- 11pm-7am (night): 13% of daily rides = 585K rides.
+
+Right now (assume 5pm): Evening commute starts—peak traffic hour. Estimate: 675K / 2 hours = ~340K rides per hour.
+
+Since you asked "right now" without time, assume typical daytime (2pm): 1.575M / 8 hours = ~200K rides per hour.
+
+Answer: **Approximately 150-400K Uber rides happening in Delhi right now** (depending on the hour). Peak hours (5-7pm): 300-400K. Off-peak (11pm-7am): 30-50K.
+
+Key assumptions: 12.5% daily penetration, 1.2 rides per user, uniform distribution across user base.`,
+      },
     ],
   },
 };
