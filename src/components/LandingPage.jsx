@@ -589,7 +589,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
               background: 'none',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 500,
+              fontWeight: 700,
               transition: 'border-color 0.2s',
             }}
             onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
@@ -640,7 +640,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
               background: 'none',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 500,
+              fontWeight: 700,
               transition: 'border-color 0.2s',
             }}
             onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
@@ -691,7 +691,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
               background: 'none',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 500,
+              fontWeight: 700,
               transition: 'border-color 0.2s',
             }}
             onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
@@ -742,7 +742,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
               background: 'none',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 500,
+              fontWeight: 700,
               transition: 'border-color 0.2s',
             }}
             onMouseEnter={e => e.currentTarget.style.borderColor = C.text}

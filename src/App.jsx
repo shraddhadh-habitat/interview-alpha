@@ -573,11 +573,9 @@ export default function App() {
       setLoginMessage('Sign up to get AI feedback');
       setShowLoginModal(true);
     } else {
-      if (checkSession()) {
-        setPage('practice');
-      }
+      setPage('practice');
     }
-  }, [user, checkSession]);
+  }, [user]);
 
   const handleLandingBrowse = useCallback(() => {
     setPage('practice');
