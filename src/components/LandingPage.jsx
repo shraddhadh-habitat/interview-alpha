@@ -178,86 +178,87 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             marginBottom: '12px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            Sample Feedback Preview
+            Sample Questions
           </div>
 
-          {/* Card container */}
+          {/* Card 1 - Product Management */}
+          <div style={{
+            background: '#fff',
+            border: `1px solid ${C.border}`,
+            borderRadius: '16px',
+            padding: '24px',
+            marginBottom: '12px',
+          }}>
+            {/* Role label */}
+            <div style={{
+              fontSize: '10px',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              color: C.green,
+              fontWeight: 700,
+              marginBottom: '8px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Product Management
+            </div>
+            {/* Question */}
+            <p style={{
+              fontSize: '13px',
+              fontWeight: 600,
+              color: C.text,
+              marginBottom: '12px',
+              lineHeight: 1.6,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 12px 0',
+            }}>
+              WhatsApp has 500M users in India but makes almost no money from them. You're the PM tasked with building WhatsApp's first revenue product for India without hurting user trust or daily engagement. What do you build, how do you price it, and what's your biggest risk?
+            </p>
+            <div style={{
+              fontSize: '11px',
+              color: C.textMuted,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Tap to answer →
+            </div>
+          </div>
+
+          {/* Card 2 - Data Science */}
           <div style={{
             background: '#fff',
             border: `1px solid ${C.border}`,
             borderRadius: '16px',
             padding: '24px',
           }}>
+            {/* Role label */}
+            <div style={{
+              fontSize: '10px',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              color: C.green,
+              fontWeight: 700,
+              marginBottom: '8px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Data Science
+            </div>
             {/* Question */}
             <p style={{
-              fontSize: '14px',
+              fontSize: '13px',
               fontWeight: 600,
               color: C.text,
-              marginBottom: '16px',
+              marginBottom: '12px',
               lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
+              margin: '0 0 12px 0',
             }}>
-              How would you improve Uber's driver retention?
+              Zomato notices that restaurants with 4.1 star ratings get 3x more orders than restaurants with 4.0 stars. But your analysis shows that the 4.0 rated restaurants actually have better food quality based on repeat order rates. What's happening, how would you prove it, and what would you recommend to fix the rating system?
             </p>
-
-            {/* Score */}
             <div style={{
-              fontSize: '32px',
-              fontWeight: 600,
-              color: C.text,
-              marginBottom: '16px',
+              fontSize: '11px',
+              color: C.textMuted,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              6.5<span style={{ fontSize: '18px', color: C.textMuted }}>/10</span>
-            </div>
-
-            {/* What worked */}
-            <div style={{ marginBottom: '12px' }}>
-              <div style={{
-                fontSize: '12px',
-                fontWeight: 600,
-                color: '#1A7F37',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                marginBottom: '4px',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-              }}>
-                ✓ What worked
-              </div>
-              <p style={{
-                fontSize: '13px',
-                color: C.textSoft,
-                lineHeight: 1.6,
-                margin: 0,
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-              }}>
-                Clear problem definition. Good user segmentation.
-              </p>
-            </div>
-
-            {/* What to improve */}
-            <div>
-              <div style={{
-                fontSize: '12px',
-                fontWeight: 600,
-                color: '#CF222E',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                marginBottom: '4px',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-              }}>
-                → What to improve
-              </div>
-              <p style={{
-                fontSize: '13px',
-                color: C.textSoft,
-                lineHeight: 1.6,
-                margin: 0,
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-              }}>
-                Missing trade-off analysis. Metrics too vague.
-              </p>
+              Tap to answer →
             </div>
           </div>
         </div>
