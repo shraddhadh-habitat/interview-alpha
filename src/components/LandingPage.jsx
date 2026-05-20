@@ -227,7 +227,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             onMouseEnter={e => e.currentTarget.style.color = C.text}
             onMouseLeave={e => e.currentTarget.style.color = C.green}
             >
-              Answer this question →
+              Answer this question
             </button>
           </div>
 
@@ -276,7 +276,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             onMouseEnter={e => e.currentTarget.style.color = C.text}
             onMouseLeave={e => e.currentTarget.style.color = C.green}
             >
-              Answer this question →
+              Answer this question
             </button>
           </div>
         </div>

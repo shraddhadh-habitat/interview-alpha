@@ -339,7 +339,7 @@ function BlurredAnswer({ text, bgColor = 'rgb(236,247,241)' }) {
               whiteSpace: 'nowrap',
             }}
           >
-            Sign up to read full answer →
+            Sign up to read full answer
           </button>
         </div>
       </div>
@@ -578,7 +578,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                 onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
                 onMouseLeave={e => e.currentTarget.style.background = C.green}
               >
-                Practice This Question →
+                Practice This Question
               </button>
               {practiceData && (
                 <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>

@@ -90,7 +90,7 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
               e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
             }}
           >
-            Try a Free Interview →
+            Try a Free Interview
           </button>
 
           {/* Subtext */}
@@ -396,7 +396,7 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
             e.currentTarget.style.background = 'transparent';
           }}
         >
-          Browse 1,100+ Questions →
+          Browse 1,100+ Questions
         </button>
         <p style={{
           fontSize: 13,

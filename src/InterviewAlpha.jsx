@@ -793,7 +793,7 @@ const PRO_TIPS = [
   "Use the CIRCLES framework for product sense: Comprehend, Identify, Report, Cut, List, Evaluate, Summarize.",
   "Always start execution answers with clarifying the goal and defining success metrics.",
   "In behavioral questions, use STAR: Situation, Task, Action, Result  . then add what you learned.",
-  "For metrics questions, think: North Star metric → Input metrics → Counter metrics → Guardrails.",
+  "For metrics questions, think: North Star metric Input metrics Counter metrics Guardrails.",
   "Amazon interviews map everything to Leadership Principles. Know all 16 by heart.",
 ];
 
@@ -1299,7 +1299,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   onMouseEnter={e => { e.currentTarget.style.background = C.greenHover; }}
                   onMouseLeave={e => { e.currentTarget.style.background = C.green; }}
                 >
-                  Answer a question →
+                  Answer a question
                 </button>
               </div>
             )}
@@ -1321,23 +1321,23 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
 
               if (attemptCount === 0) {
                 ctaMessage = "You haven't tried a question yet";
-                ctaButtonText = "Answer your first question →";
+                ctaButtonText = "Answer your first question";
                 ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
               } else if (attemptCount >= 1 && attemptCount < 5) {
                 ctaMessage = `You've practiced ${attemptCount} ${attemptCount === 1 ? 'question' : 'questions'}. Keep building momentum.`;
-                ctaButtonText = "Practice next question →";
+                ctaButtonText = "Practice next question";
                 ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
               } else if (attemptCount >= 5 && weakestCompetency) {
                 ctaMessage = `Your ${weakestCompetency.replace(/_/g, ' ')} needs work. Let's improve it.`;
-                ctaButtonText = `Work on ${weakestCompetency.replace(/_/g, ' ')} →`;
+                ctaButtonText = `Work on ${weakestCompetency.replace(/_/g, ' ')}`;
                 ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
               } else if (attemptCount >= 10 && streak !== null && streak > 0) {
                 ctaMessage = `🔥 ${streak} day${streak === 1 ? '' : 's'} streak. Keep it alive.`;
-                ctaButtonText = "Practice today →";
+                ctaButtonText = "Practice today";
                 ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
               } else {
                 ctaMessage = `You've completed ${attemptCount} practice questions.`;
-                ctaButtonText = "Practice more questions →";
+                ctaButtonText = "Practice more questions";
                 ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
               }
 
@@ -1543,7 +1543,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 fontWeight: 600, transition: "all 0.3s ease"
               }}
             >
-              Continue →
+              Continue
             </button>
 
             <button
@@ -1646,7 +1646,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                   <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 3, fontFamily: "'Instrument Serif', serif" }}>{t.id}</div>
                   <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{t.desc}</div>
                 </div>
-                <span style={{ marginLeft: "auto", color: C.green, fontSize: 18 }}>{loading ? "..." : "→"}</span>
+                <span style={{ marginLeft: "auto", color: C.green, fontSize: 18 }}>{loading ? "..." : ""}</span>
               </button>
             ))}
           </div>
@@ -1768,7 +1768,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               boxShadow: (company && !loading) ? "0 2px 12px rgba(22,163,74,0.25)" : "none",
             }}
           >
-            {loading ? "Starting..." : "Start Interview →"}
+            {loading ? "Starting..." : "Start Interview"}
           </button>
         </div>
       </div>

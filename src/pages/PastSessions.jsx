@@ -222,7 +222,7 @@ export default function PastSessions({ user }) {
                 cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
               }}
             >
-              Sign Up →
+              Sign Up
             </button>
           </div>
         )}
@@ -284,7 +284,7 @@ export default function PastSessions({ user }) {
                     {new Date(s.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
-                <span style={{ color: C.textMuted, fontSize: 16 }}>→</span>
+                <span style={{ color: C.textMuted, fontSize: 16 }}>•</span>
               </button>
             );
           })}

@@ -90,7 +90,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
           onMouseLeave={e => e.currentTarget.style.background = C.green}
           onClick={onUpgrade}
         >
-          Upgrade to Pro →
+          Upgrade to Pro
         </button>
 
         <button

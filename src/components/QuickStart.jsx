@@ -661,7 +661,7 @@ Be honest and specific. Return ONLY the JSON, no markdown, no preamble.`;
                   boxShadow: (canSubmitText || canSubmitVoice) ? '0 4px 20px rgba(22,163,74,0.3)' : 'none',
                 }}
               >
-                Get AI Feedback →
+                Get AI Feedback
               </button>
             </div>
           )}
@@ -698,7 +698,7 @@ Be honest and specific. Return ONLY the JSON, no markdown, no preamble.`;
                   onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
                   onMouseLeave={e => e.currentTarget.style.background = C.green}
                 >
-                  Liked it? Explore 1,100+ questions →
+                  Liked it? Explore 1,100+ questions
                 </button>
                 <button
                   onClick={onDismiss}

@@ -242,7 +242,7 @@ export default function DemoTutorial({ onClose }) {
                 onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
                 onMouseLeave={e => e.currentTarget.style.background = C.green}
               >
-                {isLast ? 'Get Started →' : 'Next →'}
+                {isLast ? 'Get Started' : 'Next'}
               </button>
             </div>
           </div>

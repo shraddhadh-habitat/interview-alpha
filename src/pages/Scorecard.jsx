@@ -31,7 +31,7 @@ const NAV_H = 55;
 // Practice attempt competency keys (5 fields from PracticeMode scoring)
 const COMP_KEYS = ['structure', 'depth', 'frameworks', 'communication', 'trade_off_awareness'];
 
-// Interview session competency → display label mapping (8 fields)
+// Interview session competency display label mapping (8 fields)
 const COMPETENCIES = [
   { label: 'Structure',            sessionKey: 'communication_and_structure', practiceKey: 'structure' },
   { label: 'Depth',                sessionKey: 'technical_depth',             practiceKey: 'depth' },
@@ -46,12 +46,12 @@ const COMPETENCIES = [
 const TIPS = {
   'Structure': [
     'Open every answer with a 1-sentence thesis before diving into detail',
-    'Practice SCQA: Situation → Complication → Question → Answer',
+    'Practice SCQA: Situation Complication Question Answer',
     'Time-box sections: 30s framing, 3min core, 30s synthesis',
   ],
   'Depth': [
     'Follow every claim with a "because" clause with specific reasoning',
-    'Go 3 levels deep: surface observation → mechanism → implication',
+    'Go 3 levels deep: surface observation mechanism implication',
     'Anchor with concrete numbers and real-world examples',
   ],
   'Frameworks': [
@@ -478,7 +478,7 @@ function AttemptDetail({ item }) {
             {item.weaknesses?.length > 0 && (
               <div style={{ marginBottom: 12 }}>
                 <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 7, fontWeight: 600 }}>Areas to Improve</div>
-                {item.weaknesses.map((w, i) => <div key={i} style={{ fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 3, display: 'flex', gap: 8 }}><span>→</span><span>{w}</span></div>)}
+                {item.weaknesses.map((w, i) => <div key={i} style={{ fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 3, display: 'flex', gap: 8 }}><span>•</span><span>{w}</span></div>)}
               </div>
             )}
             {item.expert_rewrite && (
@@ -653,7 +653,7 @@ export default function Scorecard({ user }) {
             cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}
         >
-          Sign Up →
+          Sign Up
         </button>
       </div>
     </div>
@@ -684,7 +684,7 @@ export default function Scorecard({ user }) {
             cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}
         >
-          Start Practicing →
+          Start Practicing
         </button>
       </div>
     </div>

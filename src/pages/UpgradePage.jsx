@@ -245,7 +245,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                       color: isYearly ? '#fff' : C.green,
                       textAlign: 'center', fontWeight: 600,
                     }}>
-                      {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Plan →'}
+                      {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Plan'}
                     </div>
                   </button>
                 );
@@ -335,7 +335,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                       <span style={{ fontSize: 14 }}>✓</span>
                       {appliedDiscount.percent}% off applied
                       <span style={{ color: C.textMuted, marginLeft: 2 }}>
-                        · ₹{PLANS[plan].price.toLocaleString('en-IN')} → ₹{discountedPrice(PLANS[plan].price).toLocaleString('en-IN')}
+                        · ₹{PLANS[plan].price.toLocaleString('en-IN')} ₹{discountedPrice(PLANS[plan].price).toLocaleString('en-IN')}
                       </span>
                     </div>
                   )}
@@ -427,7 +427,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                     transition: 'all 0.2s',
                   }}
                 >
-                  {submitting ? 'Submitting...' : 'Submit for Verification →'}
+                  {submitting ? 'Submitting...' : 'Submit for Verification'}
                 </button>
                 <p style={{ fontSize: 11, color: C.textMuted, marginTop: 10, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>
                   We verify manually within 24 hours. You'll be notified when your account is activated.

@@ -269,7 +269,7 @@ function CTABanner({ text, onClick }) {
         onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
         onMouseLeave={e => e.currentTarget.style.background = C.text}
       >
-        Answer your first question →
+        Answer your first question
       </button>
     </div>
   );

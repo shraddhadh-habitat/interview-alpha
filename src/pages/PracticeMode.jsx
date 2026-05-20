@@ -939,7 +939,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                 >
-                  Next Question →
+                  Next Question
                 </button>
               )}
               <button

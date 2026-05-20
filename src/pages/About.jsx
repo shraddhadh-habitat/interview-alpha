@@ -173,7 +173,7 @@ export default function About() {
               onMouseEnter={e => e.currentTarget.style.color = C.text}
               onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
             >
-              Connect on LinkedIn →
+              Connect on LinkedIn
             </a>
             <a
               href="mailto:communications@interviewalpha.ai"
@@ -227,7 +227,7 @@ export default function About() {
                   marginBottom: 8,
                   fontFamily: "'Instrument Serif', serif",
                 }}>
-                  {item.value || '→'}
+                  {item.value || '-'}
                 </div>
                 <p style={{ fontSize: 14, color: C.textMuted, margin: 0, lineHeight: 1.5 }}>
                   {item.label}

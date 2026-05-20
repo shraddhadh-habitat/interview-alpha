@@ -17,15 +17,15 @@ const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
 
 // ── Section 1: PM Coaches & Mentors ──────────────────────────────────────────
 const COACHES = [
-  { name: 'Shravan Tikoo',    tagline: 'PM career coach. Product sense, execution, interview breakdowns.',                                          url: 'https://www.youtube.com/c/TheSwagWalaPM',        btn: 'YouTube →', videoId: '4qLNc4OiE2I' },
-  { name: 'Aakash Gupta',     tagline: 'Former Faire & Yahoo PM. Product growth, metrics, and strategy deep-dives.',                                url: 'https://www.youtube.com/@growproduct',           btn: 'YouTube →', videoId: 'whYs9JpLx8I' },
-  { name: 'Sugat Nayak',      tagline: 'PM mentor for Indian tech. Interviews, career transitions, product strategy.',                              url: 'https://www.youtube.com/@SugatNayak',            btn: 'YouTube →', videoId: 'K62p4ghDH0c' },
-  { name: 'Diego Granados',   tagline: 'High-energy PM coach. Real-talk feedback, mock interviews.',                                                url: 'https://www.youtube.com/c/PMDiegoGranados',      btn: 'YouTube →', videoId: 'dcdGWK1lUNY' },
-  { name: 'Dr. Nancy Li',     tagline: 'Former Google PM. Interview frameworks, career coaching.',                                                   url: 'https://www.youtube.com/c/drnancyli',            btn: 'YouTube →', videoId: 'S7NxrvGe8Xc' },
-  { name: 'Lenny Rachitsky',  tagline: 'Former Airbnb PM. In-depth interviews with world-class product leaders.',                                   url: 'https://www.youtube.com/@LennysPodcast',         btn: 'YouTube →', videoId: 'JFX869KrDGM' },
-  { name: 'Peter Yang',       tagline: 'Former Meta PM. Product sense, strategy frameworks.',                                                       url: 'https://www.youtube.com/@peteryangyt',           btn: 'YouTube →', videoId: 'GJJU7enXSRc' },
-  { name: 'Sachin Sharma',    tagline: 'PM content creator. PM skills, interview prep, and product case studies from Indian and global tech.',      url: 'https://www.youtube.com/@catchupwithsachin',    btn: 'YouTube →', videoId: 'V-Cxpq-wR0w' },
-  { name: 'Dr. Bart Jaworski',tagline: 'PM coach and YouTuber. Product management tips, interview prep, and career advice.',                        url: 'https://www.youtube.com/@DrBartPM',              btn: 'YouTube →', videoId: 'VboR68J8x-4' },
+  { name: 'Shravan Tikoo',    tagline: 'PM career coach. Product sense, execution, interview breakdowns.',                                          url: 'https://www.youtube.com/c/TheSwagWalaPM',        btn: 'YouTube', videoId: '4qLNc4OiE2I' },
+  { name: 'Aakash Gupta',     tagline: 'Former Faire & Yahoo PM. Product growth, metrics, and strategy deep-dives.',                                url: 'https://www.youtube.com/@growproduct',           btn: 'YouTube', videoId: 'whYs9JpLx8I' },
+  { name: 'Sugat Nayak',      tagline: 'PM mentor for Indian tech. Interviews, career transitions, product strategy.',                              url: 'https://www.youtube.com/@SugatNayak',            btn: 'YouTube', videoId: 'K62p4ghDH0c' },
+  { name: 'Diego Granados',   tagline: 'High-energy PM coach. Real-talk feedback, mock interviews.',                                                url: 'https://www.youtube.com/c/PMDiegoGranados',      btn: 'YouTube', videoId: 'dcdGWK1lUNY' },
+  { name: 'Dr. Nancy Li',     tagline: 'Former Google PM. Interview frameworks, career coaching.',                                                   url: 'https://www.youtube.com/c/drnancyli',            btn: 'YouTube', videoId: 'S7NxrvGe8Xc' },
+  { name: 'Lenny Rachitsky',  tagline: 'Former Airbnb PM. In-depth interviews with world-class product leaders.',                                   url: 'https://www.youtube.com/@LennysPodcast',         btn: 'YouTube', videoId: 'JFX869KrDGM' },
+  { name: 'Peter Yang',       tagline: 'Former Meta PM. Product sense, strategy frameworks.',                                                       url: 'https://www.youtube.com/@peteryangyt',           btn: 'YouTube', videoId: 'GJJU7enXSRc' },
+  { name: 'Sachin Sharma',    tagline: 'PM content creator. PM skills, interview prep, and product case studies from Indian and global tech.',      url: 'https://www.youtube.com/@catchupwithsachin',    btn: 'YouTube', videoId: 'V-Cxpq-wR0w' },
+  { name: 'Dr. Bart Jaworski',tagline: 'PM coach and YouTuber. Product management tips, interview prep, and career advice.',                        url: 'https://www.youtube.com/@DrBartPM',              btn: 'YouTube', videoId: 'VboR68J8x-4' },
 ];
 
 // ── Section 2: Recommended Books ─────────────────────────────────────────────
@@ -69,11 +69,11 @@ const BOOK_CATEGORIES = [
     label: 'AI & Machine Learning for PMs',
     badge: { bg: 'rgba(217,70,239,0.08)', color: '#A21CAF', border: 'rgba(217,70,239,0.2)' },
     books: [
-      { title: 'Building Machine Learning Powered Applications', author: 'Emmanuel Ameisen', url: 'https://www.amazon.in/dp/149204511X',                             btn: 'Buy on Amazon →' },
-      { title: 'Machine Learning Yearning',                      author: 'Andrew Ng',        url: 'https://info.deeplearning.ai/machine-learning-yearning-book',    btn: 'Free PDF →'      },
-      { title: 'You Look Like a Thing and I Love You',           author: 'Janelle Shane',    url: 'https://www.amazon.in/dp/0316525243',                             btn: 'Buy on Amazon →' },
-      { title: 'Prediction Machines',                            author: 'Ajay Agrawal',     url: 'https://www.amazon.in/dp/1633695670',                             btn: 'Buy on Amazon →' },
-      { title: 'Artificial Intelligence Basics',                 author: 'Tom Taulli',       url: 'https://www.amazon.in/dp/1484250273',                             btn: 'Buy on Amazon →' },
+      { title: 'Building Machine Learning Powered Applications', author: 'Emmanuel Ameisen', url: 'https://www.amazon.in/dp/149204511X',                             btn: 'Buy on Amazon' },
+      { title: 'Machine Learning Yearning',                      author: 'Andrew Ng',        url: 'https://info.deeplearning.ai/machine-learning-yearning-book',    btn: 'Free PDF'      },
+      { title: 'You Look Like a Thing and I Love You',           author: 'Janelle Shane',    url: 'https://www.amazon.in/dp/0316525243',                             btn: 'Buy on Amazon' },
+      { title: 'Prediction Machines',                            author: 'Ajay Agrawal',     url: 'https://www.amazon.in/dp/1633695670',                             btn: 'Buy on Amazon' },
+      { title: 'Artificial Intelligence Basics',                 author: 'Tom Taulli',       url: 'https://www.amazon.in/dp/1484250273',                             btn: 'Buy on Amazon' },
     ],
   },
   {
@@ -171,7 +171,7 @@ function CoachCard({ coach }) {
 
 function BookCard({ book, badge }) {
   const [hovered, setHovered] = useState(false);
-  const btnLabel = book.btn || 'Buy on Amazon →';
+  const btnLabel = book.btn || 'Buy on Amazon';
   return (
     <div
       onMouseEnter={() => setHovered(true)}
