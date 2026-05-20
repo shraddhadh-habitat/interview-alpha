@@ -9,11 +9,17 @@ const C = {
   green: '#16A34A',
 };
 
-function FooterLink({ children, href = '#', email = false }) {
+function FooterLink({ children, href = '#', email = false, onClick = null }) {
   return (
     <a
       href={href}
-      style={{ fontSize: 13, color: C.textMuted, textDecoration: 'none', display: 'block', marginBottom: 10, fontFamily: "'Plus Jakarta Sans', sans-serif", transition: 'color 0.2s' }}
+      onClick={(e) => {
+        if (onClick) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      style={{ fontSize: 13, color: C.textMuted, textDecoration: 'none', display: 'block', marginBottom: 10, fontFamily: "'Plus Jakarta Sans', sans-serif", transition: 'color 0.2s', cursor: onClick ? 'pointer' : 'default' }}
       onMouseEnter={e => { e.currentTarget.style.color = email ? C.green : C.text; }}
       onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
     >
@@ -66,6 +72,7 @@ export default function Footer() {
           {/* Col 3 — Legal & Contact */}
           <div>
             <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 18 }}>Legal &amp; Contact</div>
+            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'about' }))}>About</FooterLink>
             <FooterLink>Terms of Service</FooterLink>
             <FooterLink>Privacy Policy</FooterLink>
             <FooterLink href="mailto:communications@interviewalpha.ai" email>communications@interviewalpha.ai</FooterLink>
