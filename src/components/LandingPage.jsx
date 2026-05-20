@@ -751,61 +751,6 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
               Browse questions
             </button>
           </div>
-
-          {/* Card 5 - Data Science */}
-          <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
-            borderRadius: '16px',
-            padding: '20px',
-            transition: 'border-color 0.2s',
-            cursor: 'pointer',
-          }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-          onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
-          onClick={() => {
-            sessionStorage.setItem('ia:selectedRole', 'ds');
-            onStartPractice();
-          }}
-          >
-            <h3 style={{
-              fontSize: '15px',
-              fontWeight: 600,
-              color: C.text,
-              marginBottom: '8px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 8px 0',
-            }}>
-              I'm preparing for Data Science
-            </h3>
-            <p style={{
-              fontSize: '13px',
-              color: C.textSoft,
-              marginBottom: '16px',
-              lineHeight: 1.5,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
-            }}>
-              ML, statistics, and analytics interview questions
-            </p>
-            <button style={{
-              fontSize: '13px',
-              border: `0.5px solid ${C.border}`,
-              borderRadius: '8px',
-              padding: '8px 16px',
-              color: C.text,
-              background: 'none',
-              cursor: 'pointer',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 500,
-              transition: 'border-color 0.2s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
-            >
-              Practice DS questions →
-            </button>
-          </div>
         </div>
       </div>
     </div>
