@@ -113,47 +113,47 @@ export default function About() {
           {/* Bio Text */}
           <div className="about-bio-text" style={{ fontSize: 16, lineHeight: 1.8, color: C.text }}>
             <p style={{ marginBottom: 20 }}>
-              16 years in product. 10 in fintech. All of it in the deep end.
+              I've spent 16 years building products, with 10 of those years deep in fintech, working across some of the most complex systems in financial services.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              At Mastercard, UBS, and Western Union, I learned that great products aren't won at the feature layer. They're won at the last mile where infrastructure, trust, and real user problems intersect.
+              My time at Mastercard, UBS, and Western Union taught me that great products aren't won at the feature layer but at the last mile, where infrastructure, trust, and real user problems all come together to create something that actually works.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              I've driven 5X SME acquisition growth, 40% YoY transaction volume increases, and GTM strategies that delivered 60% developer platform adoption in two quarters. I've led multi-region cloud migrations with SOC2 and ISO compliance built in. Because in fintech, trust isn't a feature, it's the foundation.
+              Over the years, I drove 5X SME acquisition growth, 40% year-over-year transaction volume increases, and GTM strategies that delivered 60% developer platform adoption in just two quarters, while simultaneously leading multi-region cloud migrations with SOC2 and ISO compliance built in from day one, reinforcing my belief that in fintech, trust isn't a feature but the entire foundation.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              <strong>Two decisions shaped how I think about AI product leadership.</strong>
+              Two pivotal decisions across my career shaped how I think about AI product leadership today.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              First: investment transaction data was being treated as a record-keeping ledger. I made the call to treat it as predictive behavioral intelligence. We built a Liquidity Stress Model to predict when high-net-worth clients were entering spending phases. Advisory shifted from reactive to proactive. The system alerted advisors before the client called.
+              The first was when I noticed investment transaction data sitting in systems purely as a record-keeping ledger, and I made the call to treat it as predictive behavioral intelligence instead, which led us to build a Liquidity Stress Model that could predict when high-net-worth clients were entering spending phases, shifting advisory from reactive to proactive so the system alerted advisors before the client ever picked up the phone.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              Second: AI was being used purely as a defensive fraud shield. Post-settlement, batch processing. I pushed the move to near-real-time event streaming with Kafka and Flink, adopting Federated Learning so the system learned from transaction patterns without exposing personally identifiable information. Data Privacy by Design became engineering SOP. Not a compliance checkbox.
+              The second was when I saw AI being used purely as a defensive fraud shield through post-settlement batch processing, and I pushed the move to near-real-time event streaming with Kafka and Flink, adopting Federated Learning so the system could learn from transaction patterns without exposing personally identifiable information, turning Data Privacy by Design into an engineering standard rather than a compliance checkbox.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              These experiences are why InterviewAlpha exists. I saw thousands of talented professionals getting rejected from interviews with zero feedback. No one told them what they did wrong. No one helped them improve.
+              Those experiences planted a seed that grew into InterviewAlpha, after I kept seeing thousands of talented professionals getting rejected from interviews with zero feedback, where nobody told them what went wrong and nobody helped them get better.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              So I built it. An AI interviewer that does what no company will: tell you exactly where you stand, score you across 8 competencies, and show you what to fix.
+              That frustration is exactly why I built InterviewAlpha, an AI interviewer that does what no company will by telling you exactly where you stand, scoring you across 8 competencies, and showing you precisely what to fix so you walk into your next interview with real confidence.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              Today InterviewAlpha has thousands of expert questions across Product Management and Data Science, with company-specific prep for Google, Amazon, Meta, Apple, Flipkart, Razorpay, and more. We're expanding to Consulting, Finance, Sales & Marketing, and General Management.
+              Today InterviewAlpha has thousands of expert questions spanning Product Management and Data Science, with company-specific prep for Google, Amazon, Meta, Apple, Flipkart, Razorpay, and more, while we continue expanding into Consulting, Finance, Sales and Marketing, and General Management to serve every professional preparing for their next career move.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              I'm an AI Tinkerer. I personally test, prompt, and stress-test LLMs, RAG pipelines, and production AI systems before briefing engineers. My roadmaps are grounded in reality, not vendor demos.
+              I'm an AI Tinkerer and builder at heart, someone who personally tests, prompts, and stress-tests LLMs, RAG pipelines, and production AI systems before ever briefing engineers, which is why my roadmaps are always grounded in what actually works rather than vendor demos.
             </p>
 
             <p style={{ marginBottom: 0 }}>
-              The next wave of AI won't be smarter chatbots. It will be agentic systems that manage outcomes end to end. InterviewAlpha is built on that belief.
+              The next wave of AI won't be smarter chatbots but agentic systems that manage outcomes end to end, and InterviewAlpha is built on that belief from the ground up.
             </p>
           </div>
 
