@@ -108,7 +108,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           {/* Primary CTA  . inline-block, not full width */}
           <button
             className="hero-cta"
-            onClick={() => user ? onNavigate('practice') : onLogin()}
+            onClick={() => onNavigate('practice')}
             style={{
               display: 'inline-block',
               height: '44px',
@@ -580,7 +580,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             }}>
               Practice company-specific questions
             </p>
-            <button onClick={() => user ? onNavigate('practice') : onLogin()} style={{
+            <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -631,7 +631,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             }}>
               Answer one question and see how you score
             </p>
-            <button onClick={() => user ? onNavigate('practice') : onLogin()} style={{
+            <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -682,7 +682,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             }}>
               Start with fundamentals for any role
             </p>
-            <button onClick={() => user ? onNavigate('practice') : onLogin()} style={{
+            <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -932,7 +932,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         {/* Centered CTA */}
         <div style={{ textAlign: 'center' }}>
           <button
-            onClick={() => user ? onNavigate('practice') : onLogin()}
+            onClick={() => onNavigate('practice')}
             style={{
               height: '44px',
               paddingLeft: '32px',
