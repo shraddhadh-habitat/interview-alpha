@@ -12,6 +12,7 @@ import UpgradePage from './pages/UpgradePage';
 import AdminPanel from './pages/AdminPanel';
 import Scorecard from './pages/Scorecard';
 import About from './pages/About';
+import Careers from './pages/Careers';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import DemoTutorial from './components/DemoTutorial';
@@ -665,6 +666,7 @@ export default function App() {
           )}
           {page === 'admin' && isAdmin && <AdminPanel user={user} />}
           {page === 'about'     && <About />}
+          {page === 'careers'   && <Careers />}
         </div>
         <Footer />
         {user && !showQuickStart && <ReviewWidget user={user} profile={profile} />}
