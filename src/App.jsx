@@ -88,7 +88,7 @@ function ResetPasswordPage({ onDone }) {
             InterviewAlpha™
           </h1>
           <p style={{ fontSize: 16, color: RC.textMuted, lineHeight: 1.7 }}>
-            Almost there — set a strong new password to get back to your practice.
+            Almost there  -  set a strong new password to get back to your practice.
           </p>
         </div>
       </div>
@@ -105,7 +105,7 @@ function ResetPasswordPage({ onDone }) {
             Set new password
           </h2>
           <p style={{ fontSize: 14, color: RC.textMuted, marginBottom: 28 }}>
-            Choose a strong password — minimum 8 characters.
+            Choose a strong password  -  minimum 8 characters.
           </p>
 
           {error && (

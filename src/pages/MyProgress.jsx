@@ -327,7 +327,7 @@ export default function MyProgress({ user }) {
 
             {/* Score over time */}
             <div style={sectionStyle}>
-              <div style={sectionHeader}>Score Trend — Last {Math.min(chartData.length, 30)} Attempts</div>
+              <div style={sectionHeader}>Score Trend  -  Last {Math.min(chartData.length, 30)} Attempts</div>
               <ScoreChart data={chartData} />
             </div>
 
@@ -344,7 +344,7 @@ export default function MyProgress({ user }) {
             {/* Weakest areas */}
             {weakest.length > 0 && (
               <div style={{ ...sectionStyle, background: C.bgSoft, border: `1px solid ${C.yellowBorder}` }}>
-                <div style={{ ...sectionHeader, color: C.yellow }}>Focus Areas — Lowest Competencies</div>
+                <div style={{ ...sectionHeader, color: C.yellow }}>Focus Areas  -  Lowest Competencies</div>
                 <div style={{ display: 'grid', gap: 14, marginBottom: 20 }}>
                   {weakest.map(w => <CompBar key={w.key} label={w.key} value={w.value} />)}
                 </div>
@@ -414,8 +414,8 @@ export default function MyProgress({ user }) {
                     {recentAttempts.map((a, i) => {
                       const score = a.score;
                       const scoreColor = score >= 70 ? C.success : score >= 40 ? C.yellow : C.red;
-                      const date = a.created_at ? new Date(a.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '—';
-                      const qSnippet = a.question_id?.split('-').slice(2).join(' ') || a.question_id || '—';
+                      const date = a.created_at ? new Date(a.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : ' - ';
+                      const qSnippet = a.question_id?.split('-').slice(2).join(' ') || a.question_id || ' - ';
                       return (
                         <tr key={i}>
                           <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textMuted, whiteSpace: 'nowrap' }}>{date}</td>
@@ -424,7 +424,7 @@ export default function MyProgress({ user }) {
                               {a.user_answer ? a.user_answer.slice(0, 60) + (a.user_answer.length > 60 ? '…' : '') : qSnippet}
                             </div>
                           </td>
-                          <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textMuted, whiteSpace: 'nowrap' }}>{a.designation || '—'}</td>
+                          <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textMuted, whiteSpace: 'nowrap' }}>{a.designation || ' - '}</td>
                           <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: C.textMuted }}>#{a.attempt_number}</td>
                           <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}`, color: scoreColor, fontWeight: 700 }}>{score}</td>
                           <td style={{ padding: '11px 12px', borderBottom: `1px solid ${C.borderLight}` }}>

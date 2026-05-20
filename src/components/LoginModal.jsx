@@ -54,7 +54,7 @@ function AuthForm({ tab, mobile, onSuccess }) {
       const msg = err?.message || '';
       if (msg.includes('Invalid login credentials')) setError('Incorrect email or password.');
       else if (msg.includes('Email not confirmed')) setError('Please verify your email before signing in.');
-      else if (msg.includes('User already registered')) setError('Account exists — try signing in instead.');
+      else if (msg.includes('User already registered')) setError('Account exists  -  try signing in instead.');
       else setError(msg || 'Something went wrong. Please try again.');
     } finally {
       setLoading(false);

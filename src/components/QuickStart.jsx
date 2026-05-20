@@ -15,11 +15,11 @@ const QUESTION = "How would you improve Instagram's Explore page?";
 
 const EXPERT_ANSWER = `I'd start with user intent. The Explore page serves two different jobs: passive discovery ("show me interesting things I don't know I want yet") and active search ("I'm looking for something specific"). These require different designs, and Instagram currently tries to serve both with one layout.
 
-Research questions I'd want answered: What percentage of Explore users have a specific intent vs. passive browsing? What percentage find Explore "useful" vs. "overwhelming"? Where do users who find something they like go next — do they follow the creator, save the post, or just scroll on?
+Research questions I'd want answered: What percentage of Explore users have a specific intent vs. passive browsing? What percentage find Explore "useful" vs. "overwhelming"? Where do users who find something they like go next  -  do they follow the creator, save the post, or just scroll on?
 
-Problems I'd hypothesize: The grid layout optimizes for visual volume, not relevance. The algorithm conflates "popular" with "relevant to you." There's no context — why is this post surfaced?
+Problems I'd hypothesize: The grid layout optimizes for visual volume, not relevance. The algorithm conflates "popular" with "relevant to you." There's no context  -  why is this post surfaced?
 
-Design improvements I'd test: Intent fork at entry — two modes: Discover (passive, curated) and Search (active, query-driven). Reduce grid density with topic labels. "Because you follow X" labels to surface recommendation reasons. When a user dwells on a post for 5+ seconds, show related creators to follow — converting passive interest into an active relationship.
+Design improvements I'd test: Intent fork at entry  -  two modes: Discover (passive, curated) and Search (active, query-driven). Reduce grid density with topic labels. "Because you follow X" labels to surface recommendation reasons. When a user dwells on a post for 5+ seconds, show related creators to follow  -  converting passive interest into an active relationship.
 
 Success metric: percentage of Explore sessions that result in a follow or a save, vs. sessions that end with a scroll and no action.`;
 
@@ -249,7 +249,7 @@ function FeedbackPanel({ result }) {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {(filler_words || []).length > 0
               ? filler_words.map((w, i) => <span key={i} style={{ padding: '3px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 6, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)
-              : <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None — clean</span>}
+              : <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None  -  clean</span>}
           </div>
         </div>
         <div>
@@ -342,7 +342,7 @@ Evaluate the candidate's answer against the expert reference. Return ONLY a vali
   "feedback_text": "2-3 sentence overall assessment"
 }
 
-Scoring guide — structure: clear logical framework; depth: goes beyond surface with specific reasoning; frameworks: uses PM frameworks (JTBD, RICE, AARRR, etc.); communication: clear and concise; trade_off_awareness: acknowledges trade-offs and what is NOT being done.
+Scoring guide  -  structure: clear logical framework; depth: goes beyond surface with specific reasoning; frameworks: uses PM frameworks (JTBD, RICE, AARRR, etc.); communication: clear and concise; trade_off_awareness: acknowledges trade-offs and what is NOT being done.
 
 Be honest and specific. Return ONLY the JSON, no markdown, no preamble.`;
 
@@ -491,7 +491,7 @@ Be honest and specific. Return ONLY the JSON, no markdown, no preamble.`;
             </p>
           </div>
 
-          {/* Input area — only in 'input' phase */}
+          {/* Input area  -  only in 'input' phase */}
           {phase === 'input' && (
             <div style={{ animation: 'qs-fadeUp 0.3s cubic-bezier(0.22,1,0.36,1)' }}>
               {/* TYPE / VOICE toggle */}

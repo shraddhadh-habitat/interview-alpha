@@ -117,11 +117,11 @@ export default function About() {
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              At Mastercard, UBS, and Western Union, I learned that great products aren't won at the feature layer — they're won at the last mile where infrastructure, trust, and real user problems intersect.
+              At Mastercard, UBS, and Western Union, I learned that great products aren't won at the feature layer  -  they're won at the last mile where infrastructure, trust, and real user problems intersect.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              I've driven 5X SME acquisition growth, 40% YoY transaction volume increases, and GTM strategies that delivered 60% developer platform adoption in two quarters. I've led multi-region cloud migrations with SOC2 and ISO compliance built in — because in fintech, trust isn't a feature, it's the foundation.
+              I've driven 5X SME acquisition growth, 40% YoY transaction volume increases, and GTM strategies that delivered 60% developer platform adoption in two quarters. I've led multi-region cloud migrations with SOC2 and ISO compliance built in  -  because in fintech, trust isn't a feature, it's the foundation.
             </p>
 
             <p style={{ marginBottom: 20 }}>
@@ -129,11 +129,11 @@ export default function About() {
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              First: investment transaction data was being treated as a record-keeping ledger. I made the call to treat it as predictive behavioral intelligence. We built a Liquidity Stress Model to predict when high-net-worth clients were entering spending phases. Advisory shifted from reactive to proactive — the system alerted advisors before the client called.
+              First: investment transaction data was being treated as a record-keeping ledger. I made the call to treat it as predictive behavioral intelligence. We built a Liquidity Stress Model to predict when high-net-worth clients were entering spending phases. Advisory shifted from reactive to proactive  -  the system alerted advisors before the client called.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              Second: AI was being used purely as a defensive fraud shield — post-settlement, batch processing. I pushed the move to near-real-time event streaming with Kafka and Flink, adopting Federated Learning so the system learned from transaction patterns without exposing personally identifiable information. Data Privacy by Design became engineering SOP — not a compliance checkbox.
+              Second: AI was being used purely as a defensive fraud shield  -  post-settlement, batch processing. I pushed the move to near-real-time event streaming with Kafka and Flink, adopting Federated Learning so the system learned from transaction patterns without exposing personally identifiable information. Data Privacy by Design became engineering SOP  -  not a compliance checkbox.
             </p>
 
             <p style={{ marginBottom: 20 }}>
@@ -141,7 +141,7 @@ export default function About() {
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              So I built it. An AI interviewer that does what no company will — tells you exactly where you stand, scores you across 8 competencies, and shows you what to fix.
+              So I built it. An AI interviewer that does what no company will  -  tells you exactly where you stand, scores you across 8 competencies, and shows you what to fix.
             </p>
 
             <p style={{ marginBottom: 20 }}>
@@ -149,7 +149,7 @@ export default function About() {
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              I'm an AI Tinkerer — I personally test, prompt, and stress-test LLMs, RAG pipelines, and production AI systems before briefing engineers. My roadmaps are grounded in reality, not vendor demos.
+              I'm an AI Tinkerer  -  I personally test, prompt, and stress-test LLMs, RAG pipelines, and production AI systems before briefing engineers. My roadmaps are grounded in reality, not vendor demos.
             </p>
 
             <p style={{ marginBottom: 0 }}>

@@ -14,7 +14,7 @@ const C = {
 
 const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
 
-// FNV-1a 32-bit hash of browser environment signals — used to detect same-browser re-signups.
+// FNV-1a 32-bit hash of browser environment signals  -  used to detect same-browser re-signups.
 // Not stored in plain text on the server; collision rate is acceptable for abuse prevention.
 function generateFingerprint() {
   const raw = [
@@ -70,7 +70,7 @@ export default function AuthPage() {
           throw new Error(ipErr);
         }
 
-        // Gate 2: browser fingerprint — blocks same-browser re-signups
+        // Gate 2: browser fingerprint  -  blocks same-browser re-signups
         const { data: fpExists } = await supabase.rpc('check_fingerprint_exists', { fp: fingerprint });
         if (fpExists) {
           throw new Error('It looks like you already have an account. Please sign in instead.');
@@ -85,10 +85,10 @@ export default function AuthPage() {
           await supabase.from('profiles').upsert({ id: signUpData.user.id, email, display_name: name.trim(), phone_number: phoneDigits });
         }
 
-        // Save fingerprint to profile (fire-and-forget — profile exists via DB trigger)
+        // Save fingerprint to profile (fire-and-forget  -  profile exists via DB trigger)
         supabase.rpc('set_pending_fingerprint', { p_email: email, fp: fingerprint });
 
-        setSuccess('Account created — check your email to confirm, then log in.');
+        setSuccess('Account created  -  check your email to confirm, then log in.');
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;

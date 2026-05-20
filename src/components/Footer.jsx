@@ -76,7 +76,7 @@ export default function Footer() {
       <div style={{ maxWidth: 1120, margin: '0 auto', padding: '48px 40px' }}>
         <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 80 }}>
 
-          {/* Col 1 — Product */}
+          {/* Col 1  -  Product */}
           <div>
             <FooterHeading>Product</FooterHeading>
             <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'interview' }))}>
@@ -96,7 +96,7 @@ export default function Footer() {
             </FooterLink>
           </div>
 
-          {/* Col 2 — Company */}
+          {/* Col 2  -  Company */}
           <div>
             <FooterHeading>Company</FooterHeading>
             <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'about' }))}>
@@ -137,7 +137,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Col 3 — Legal & Contact */}
+          {/* Col 3  -  Legal & Contact */}
           <div>
             {/* Legal sub-section */}
             <div style={{ marginBottom: 32 }}>

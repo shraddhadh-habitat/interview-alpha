@@ -158,7 +158,7 @@ const ROLES = {
   },
 };
 
-// Difficulty derived from PM level — the only reliable classification signal in the data
+// Difficulty derived from PM level  -  the only reliable classification signal in the data
 function getDifficulty(level) {
   if (['Associate PM', 'PM'].includes(level)) return 'Easy';
   if (['Senior PM', 'Lead PM', 'Staff/Principal PM'].includes(level)) return 'Medium';
@@ -220,7 +220,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
           <div style={{ textAlign: 'center', padding: '12px 0' }}>
             <div style={{ fontSize: 28, marginBottom: 12 }}>✓</div>
             <div style={{ fontSize: 14, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>
-              Thanks — we'll review this.
+              Thanks  -  we'll review this.
             </div>
             <button
               onClick={onClose}
@@ -247,7 +247,7 @@ function ReportIssueModal({ questionId, user, onClose }) {
               autoFocus
               value={text}
               onChange={e => setText(e.target.value)}
-              placeholder="Describe the issue — e.g. outdated info, factual error, unclear explanation..."
+              placeholder="Describe the issue  -  e.g. outdated info, factual error, unclear explanation..."
               rows={4}
               style={{
                 width: '100%', padding: '10px 14px',
@@ -1162,7 +1162,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             borderRadius: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
             <div style={{ fontSize: 14, color: C.success, lineHeight: 1.6 }}>
-              <strong>Welcome!</strong> Try answering a question below — tap <strong>'Practice This Question'</strong> on any question to get AI feedback.
+              <strong>Welcome!</strong> Try answering a question below  -  tap <strong>'Practice This Question'</strong> on any question to get AI feedback.
             </div>
             <button
               onClick={() => setShowWelcome(false)}

@@ -49,23 +49,23 @@ const COMPANY_COMP = [
   { company: 'Meta', levels: 'IC3–IC6', tc_in: '₹60–200 LPA', tc_us: '$230–700K', notes: 'Best equity refresh in FAANG' },
   { company: 'Apple', levels: 'PM 1–5', tc_in: '₹45–160 LPA', tc_us: '$200–550K', notes: 'Secretive; RSU heavy, long vest' },
   { company: 'Microsoft', levels: 'PM 59–67', tc_in: '₹35–140 LPA', tc_us: '$175–500K', notes: 'Strong WLB; good base' },
-  { company: 'Flipkart', levels: 'PM 1–3', tc_in: '₹25–80 LPA', tc_us: '—', notes: 'ESOP potential; fast growth' },
-  { company: 'Razorpay', levels: 'PM–SPM', tc_in: '₹22–65 LPA', tc_us: '—', notes: 'Strong ESOP upside at Series D+' },
-  { company: 'CRED', levels: 'PM–GPM', tc_in: '₹28–80 LPA', tc_us: '—', notes: 'High equity, intense culture' },
-  { company: 'Swiggy', levels: 'PM–SPM', tc_in: '₹25–70 LPA', tc_us: '—', notes: 'Pre-IPO opportunity' },
-  { company: 'Zepto', levels: 'PM–GPM', tc_in: '₹22–75 LPA', tc_us: '—', notes: 'Hyper-growth; high equity value' },
+  { company: 'Flipkart', levels: 'PM 1–3', tc_in: '₹25–80 LPA', tc_us: ' - ', notes: 'ESOP potential; fast growth' },
+  { company: 'Razorpay', levels: 'PM–SPM', tc_in: '₹22–65 LPA', tc_us: ' - ', notes: 'Strong ESOP upside at Series D+' },
+  { company: 'CRED', levels: 'PM–GPM', tc_in: '₹28–80 LPA', tc_us: ' - ', notes: 'High equity, intense culture' },
+  { company: 'Swiggy', levels: 'PM–SPM', tc_in: '₹25–70 LPA', tc_us: ' - ', notes: 'Pre-IPO opportunity' },
+  { company: 'Zepto', levels: 'PM–GPM', tc_in: '₹22–75 LPA', tc_us: ' - ', notes: 'Hyper-growth; high equity value' },
 ];
 
 const NEG_STEPS = [
   {
-    step: 1, title: 'Anchor high — always',
+    step: 1, title: 'Anchor high  -  always',
     body: "The first number mentioned sets the anchor for the entire negotiation. Never share your current salary. Instead, state a range where your floor is already above their ceiling. If asked, say: \"I'm targeting ₹X–Y based on my research and total compensation.\"",
     script: '"Based on my experience and market data for this role, I\'m targeting ₹[X] all-in. Does that align with your band?"',
   },
   {
     step: 2, title: 'Never accept on the spot',
-    body: 'Even if the offer is exactly what you wanted, pause. A hasty yes signals that you left money on the table. Always ask for time — 24–72 hours — to review the full offer in writing.',
-    script: '"Thank you so much — this is exciting. Can I have a couple of days to review the full package?"',
+    body: 'Even if the offer is exactly what you wanted, pause. A hasty yes signals that you left money on the table. Always ask for time  -  24–72 hours  -  to review the full offer in writing.',
+    script: '"Thank you so much  -  this is exciting. Can I have a couple of days to review the full package?"',
   },
   {
     step: 3, title: 'Negotiate the full package',
@@ -73,21 +73,21 @@ const NEG_STEPS = [
     script: '"The base works. Can we discuss the signing bonus and perhaps accelerate the RSU cliff from 12 months to 6?"',
   },
   {
-    step: 4, title: 'Use competing offers — ethically',
-    body: 'A real competing offer is your strongest card. You don\'t need to name the company — just the number. If you don\'t have one, reference market data from levels.fyi, Glassdoor, or LinkedIn Salary.',
+    step: 4, title: 'Use competing offers  -  ethically',
+    body: 'A real competing offer is your strongest card. You don\'t need to name the company  -  just the number. If you don\'t have one, reference market data from levels.fyi, Glassdoor, or LinkedIn Salary.',
     script: '"I have another offer in the ₹X range, but I\'d prefer to join your team. Is there room to move closer to that number?"',
   },
   {
     step: 5, title: 'Know your walk-away number',
-    body: 'Before any call, write down your minimum acceptable offer. Never negotiate live without this. When you\'re at your floor, say so clearly — it\'s a powerful close. "This is my minimum — I can\'t go lower."',
-    script: '"I\'ve thought carefully and ₹X is the minimum I can accept. I really want to make this work — is that possible?"',
+    body: 'Before any call, write down your minimum acceptable offer. Never negotiate live without this. When you\'re at your floor, say so clearly  -  it\'s a powerful close. "This is my minimum  -  I can\'t go lower."',
+    script: '"I\'ve thought carefully and ₹X is the minimum I can accept. I really want to make this work  -  is that possible?"',
   },
 ];
 
 const COUNTER_TEMPLATES = [
   {
     scenario: 'Offer below target',
-    template: `Thank you for the offer — I'm genuinely excited about the role and the team. After reviewing the package, the base of ₹[X] is below my target of ₹[Y]. Given my [specific skill/experience], I'd like to ask if ₹[Y] is achievable. I'm flexible on the equity/signing bonus split if needed.`,
+    template: `Thank you for the offer  -  I'm genuinely excited about the role and the team. After reviewing the package, the base of ₹[X] is below my target of ₹[Y]. Given my [specific skill/experience], I'd like to ask if ₹[Y] is achievable. I'm flexible on the equity/signing bonus split if needed.`,
   },
   {
     scenario: 'Match a competing offer',
@@ -99,7 +99,7 @@ const COUNTER_TEMPLATES = [
   },
   {
     scenario: 'Negotiate title alongside comp',
-    template: `I noticed the offer is for PM-2. Based on my [X years of experience / scope of past work], I'd be a stronger fit at Senior PM. The title matters for my trajectory here. Would you be open to revisiting the level — which would naturally bring the comp into the right range?`,
+    template: `I noticed the offer is for PM-2. Based on my [X years of experience / scope of past work], I'd be a stronger fit at Senior PM. The title matters for my trajectory here. Would you be open to revisiting the level  -  which would naturally bring the comp into the right range?`,
   },
   {
     scenario: 'Accelerate equity cliff',
@@ -107,20 +107,20 @@ const COUNTER_TEMPLATES = [
   },
   {
     scenario: 'Remote / hybrid flexibility',
-    template: `I'm excited about the role. I'd like to discuss the remote policy — I'm currently set up to work from [city] 3 days a week. If we can agree on a hybrid arrangement of [X days], I can sign immediately. I don't need a relocation package.`,
+    template: `I'm excited about the role. I'd like to discuss the remote policy  -  I'm currently set up to work from [city] 3 days a week. If we can agree on a hybrid arrangement of [X days], I can sign immediately. I don't need a relocation package.`,
   },
   {
     scenario: 'Politely decline and leave door open',
-    template: `Thank you for the time and the offer — I have real respect for the team and what you're building. After careful consideration, I've decided to accept another offer that was a better fit for where I am right now. I hope we can stay in touch, and I'd welcome the chance to work together in the future.`,
+    template: `Thank you for the time and the offer  -  I have real respect for the team and what you're building. After careful consideration, I've decided to accept another offer that was a better fit for where I am right now. I hope we can stay in touch, and I'd welcome the chance to work together in the future.`,
   },
 ];
 
 const MISTAKES = [
   { title: 'Negotiating against yourself', body: 'Saying "I know this might be too much, but..." before stating your ask signals weakness. State your number confidently and stop talking. Silence is a tool.' },
-  { title: 'Accepting verbally before seeing it in writing', body: 'A verbal offer is not an offer. Always get the full package in writing — including equity details, vesting schedule, and cliff — before making any commitment.' },
+  { title: 'Accepting verbally before seeing it in writing', body: 'A verbal offer is not an offer. Always get the full package in writing  -  including equity details, vesting schedule, and cliff  -  before making any commitment.' },
   { title: 'Treating equity as fake money', body: 'Especially at Series B+ startups, equity can 5–50x. Model both the bull and bear case. Ask: liquidation preference, current 409A, last round valuation, total shares outstanding.' },
-  { title: 'Not negotiating because "you\'re grateful"', body: 'Recruiters expect negotiation. Companies have bands; they always offer the bottom. Not negotiating is leaving your own money on the table — often ₹5–20L per year.' },
-  { title: 'Revealing your current salary', body: 'In most Indian states, asking for your current CTC is no longer legally required. Deflect: "I\'d rather focus on the market rate for this role — what\'s the band?" If pressed, give a total comp number, not base.' },
+  { title: 'Not negotiating because "you\'re grateful"', body: 'Recruiters expect negotiation. Companies have bands; they always offer the bottom. Not negotiating is leaving your own money on the table  -  often ₹5–20L per year.' },
+  { title: 'Revealing your current salary', body: 'In most Indian states, asking for your current CTC is no longer legally required. Deflect: "I\'d rather focus on the market rate for this role  -  what\'s the band?" If pressed, give a total comp number, not base.' },
 ];
 
 // ─── Collapsible section ───
@@ -230,7 +230,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
             PM Salary & Negotiation Guide
           </h1>
           <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, maxWidth: 620 }}>
-            Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Product Manager — at every level.
+            Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Product Manager  -  at every level.
           </p>
           <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
             {['India & US Ranges', '5-Step Framework', '7 Counter-Offer Scripts', '5 Common Mistakes', '10 Companies'].map(t => (
@@ -250,7 +250,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         />
 
         {/* ── SECTION 1: Know Your Worth ── */}
-        <Section title="Know Your Worth" subtitle="Salary ranges by level — India & United States" defaultOpen={true}>
+        <Section title="Know Your Worth" subtitle="Salary ranges by level  -  India & United States" defaultOpen={true}>
           <div style={{ paddingTop: 24 }}>
             <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
             <div style={{ overflowX: 'auto', marginBottom: 32 }}>
@@ -309,7 +309,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         </Section>
 
         {/* ── SECTION 2: Negotiation Framework ── */}
-        <Section title="The Negotiation Framework" subtitle="5 steps to maximize your offer — with word-for-word scripts">
+        <Section title="The Negotiation Framework" subtitle="5 steps to maximize your offer  -  with word-for-word scripts">
           <div style={{ display: 'grid', gap: 20, paddingTop: 24 }}>
             {NEG_STEPS.map(s => (
               <div key={s.step} style={{ display: 'flex', gap: 20 }}>
@@ -359,7 +359,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         </Section>
 
         {/* ── SECTION 4: Common Mistakes ── */}
-        <Section title="5 Negotiation Mistakes PMs Make" subtitle="Avoid these — they cost 5–20% of your offer">
+        <Section title="5 Negotiation Mistakes PMs Make" subtitle="Avoid these  -  they cost 5–20% of your offer">
           <div style={{ display: 'grid', gap: 16, paddingTop: 24 }}>
             {MISTAKES.map((m, i) => (
               <div key={i} style={{
@@ -379,7 +379,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         </Section>
 
         {/* ── SECTION 5: PM Compensation by Company ── */}
-        <Section title="PM Compensation by Company" subtitle="Top tech & startup comp ranges — India and US">
+        <Section title="PM Compensation by Company" subtitle="Top tech & startup comp ranges  -  India and US">
           <div style={{ overflowX: 'auto', paddingTop: 24 }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
               <thead>

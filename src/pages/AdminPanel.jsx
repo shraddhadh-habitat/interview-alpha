@@ -42,7 +42,7 @@ export default function AdminPanel({ user }) {
   const [deleteTarget, setDeleteTarget]     = useState(null); // review id pending delete confirm
   const [userFilters, setUserFilters] = useState({ email: '', name: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' });
 
-  // Gate — only admin email
+  // Gate  -  only admin email
   if (!user || !ADMIN_EMAILS.includes(user.email.toLowerCase())) {
     return (
       <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -193,7 +193,7 @@ export default function AdminPanel({ user }) {
     );
   };
 
-  const fmt = (d) => d ? new Date(d).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+  const fmt = (d) => d ? new Date(d).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : ' - ';
 
   return (
     <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -281,10 +281,10 @@ export default function AdminPanel({ user }) {
                             <span style={{ padding: '2px 8px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 10, fontSize: 10, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5, whiteSpace: 'nowrap' }}>
                               {r.discount_code} ({r.discount_percent}%)
                             </span>
-                          ) : <span style={{ color: C.textMuted }}>—</span>}
+                          ) : <span style={{ color: C.textMuted }}> - </span>}
                         </td>
                         <td style={{ padding: '12px 14px', color: r.final_amount ? C.success : C.textMuted, fontWeight: r.final_amount ? 600 : 400 }}>
-                          {r.final_amount ? `₹${r.final_amount.toLocaleString('en-IN')}` : '—'}
+                          {r.final_amount ? `₹${r.final_amount.toLocaleString('en-IN')}` : ' - '}
                         </td>
                         <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>{r.upi_ref}</td>
                         <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap' }}>{fmt(r.submitted_at)}</td>
@@ -431,11 +431,11 @@ export default function AdminPanel({ user }) {
                           <tr><td colSpan={9} style={{ padding: '28px 14px', textAlign: 'center', color: C.textMuted, fontSize: 12 }}>No users match the filters.</td></tr>
                         ) : filtered.map((u, i) => (
                           <tr key={u.id} style={{ borderBottom: i < filtered.length - 1 ? `1px solid ${C.border}` : 'none' }}>
-                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.email || '—'}</td>
-                            <td style={{ padding: '12px 14px', color: u.display_name ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.display_name || '—'}</td>
-                            <td style={{ padding: '12px 14px', color: u.phone_number ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.phone_number || '—'}</td>
+                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.email || ' - '}</td>
+                            <td style={{ padding: '12px 14px', color: u.display_name ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.display_name || ' - '}</td>
+                            <td style={{ padding: '12px 14px', color: u.phone_number ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.phone_number || ' - '}</td>
                             <td style={{ padding: '12px 14px' }}>{subChip(u.subscription_status)}</td>
-                            <td style={{ padding: '12px 14px', color: C.textSoft, textTransform: 'capitalize' }}>{u.subscription_plan || '—'}</td>
+                            <td style={{ padding: '12px 14px', color: C.textSoft, textTransform: 'capitalize' }}>{u.subscription_plan || ' - '}</td>
                             <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{fmt(u.subscription_expires_at)}</td>
                             <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{formatIST(u.last_seen_at)}</td>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.free_sessions_used ?? 0}</td>

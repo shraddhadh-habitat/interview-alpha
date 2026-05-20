@@ -38,7 +38,7 @@ function dedupeTranscript(text) {
 // immediately and silently after the first use.
 function useVoiceToText() {
   const isAndroid = /Android/i.test(navigator.userAgent);
-  // SpeechRecognition doesn't exist on iOS Safari at all — hide Voice tab there
+  // SpeechRecognition doesn't exist on iOS Safari at all  -  hide Voice tab there
   const supported  = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 
   const [isListening, setIsListening]             = useState(false);
@@ -77,20 +77,20 @@ function useVoiceToText() {
     // Chrome's user-gesture check passes for recognition.start() in the .then().
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then((stream) => {
-        // Release the stream — we only needed the permission prompt
+        // Release the stream  -  we only needed the permission prompt
         stream.getTracks().forEach(t => t.stop());
 
         // Step 2: create a FRESH recognition instance every time
         const r = new SR();
         r.lang             = 'en-US';
-        r.continuous       = false;      // MUST be false — true crashes Android Chrome
+        r.continuous       = false;      // MUST be false  -  true crashes Android Chrome
         r.interimResults   = !isAndroid; // false on Android (true causes duplicate delivery)
         r.maxAlternatives  = 1;
 
         r.onstart = () => console.log('[Voice] Recognition started');
 
         r.onresult = (e) => {
-          console.log('[Voice] onresult — resultIndex:', e.resultIndex, 'total:', e.results.length);
+          console.log('[Voice] onresult  -  resultIndex:', e.resultIndex, 'total:', e.results.length);
           if (isAndroid) {
             // interimResults=false: results[0][0] is the complete final transcript
             const text = e.results[0][0].transcript.trim();
@@ -125,7 +125,7 @@ function useVoiceToText() {
 
         r.onend = () => {
           // continuous=false: onend fires after each utterance pause on ALL platforms.
-          // On Android this is expected — the component shows "Continue Recording".
+          // On Android this is expected  -  the component shows "Continue Recording".
           // On desktop the user can also continue with another chunk.
           console.log('[Voice] onend');
           clearInterval(timerRef.current);
@@ -356,7 +356,7 @@ function FeedbackPanel({ result, attemptNumber }) {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {(filler_words || []).length > 0
               ? filler_words.map((w, i) => <span key={i} style={{ padding: '3px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 6, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)
-              : <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None — clean</span>}
+              : <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None  -  clean</span>}
           </div>
         </div>
         <div>
@@ -443,7 +443,7 @@ ${prevBestScore !== null ? `\nPREVIOUS BEST SCORE: ${prevBestScore}/100. In "sco
 Evaluate the candidate's answer against the expert reference. Return ONLY a valid JSON object with this exact structure:
 {
   "score": <integer 1-100>,
-  "score_delta_hint": "e.g. +8 vs your best — structure improved" or null if first attempt,
+  "score_delta_hint": "e.g. +8 vs your best  -  structure improved" or null if first attempt,
   "competency_breakdown": {
     "structure": <1-10>,
     "depth": <1-10>,
@@ -689,10 +689,10 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
         <div style={{ marginBottom: 16 }} />
 
-        {/* Answer input — only shown before result */}
+        {/* Answer input  -  only shown before result */}
         {!result && (
           <div style={{ marginBottom: 24, animation: 'fadeUp 0.3s cubic-bezier(0.22,1,0.36,1)' }}>
-            {/* Mode toggle — Voice tab hidden on iOS Safari (no SpeechRecognition) */}
+            {/* Mode toggle  -  Voice tab hidden on iOS Safari (no SpeechRecognition) */}
             <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
               {(['text', ...(voice.supported ? ['voice'] : [])]).map(m => (
                 <button
@@ -720,7 +720,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   className="pm-answer-textarea"
                   value={textAnswer}
                   onChange={e => setTextAnswer(e.target.value)}
-                  placeholder="Type your answer here. Structure matters — try to open with a clear framework before diving into details."
+                  placeholder="Type your answer here. Structure matters  -  try to open with a clear framework before diving into details."
                   rows={8}
                   style={{
                     width: '100%', padding: '16px 18px',
@@ -740,7 +740,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   return (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
                       <span style={{ fontSize: 11, color: ready ? C.success : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        {wordCount} / 50 words min{!ready && wordCount > 0 ? ` — ${50 - wordCount} more` : ''}
+                        {wordCount} / 50 words min{!ready && wordCount > 0 ? `  -  ${50 - wordCount} more` : ''}
                       </span>
                       <button
                         onClick={() => handleSubmit(textAnswer, false)}
@@ -842,7 +842,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                         {voiceText ? 'Continue Recording' : 'Start Recording'}
                       </button>
 
-                      {/* Submit — shown when there is transcript */}
+                      {/* Submit  -  shown when there is transcript */}
                       {voiceText && (
                         <button
                           onClick={() => handleSubmit(dedupeTranscript(voiceText), true)}
@@ -858,7 +858,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                         </button>
                       )}
 
-                      {/* Re-Record — resets everything */}
+                      {/* Re-Record  -  resets everything */}
                       {voiceText && (
                         <button
                           onClick={voice.resetVoice}
