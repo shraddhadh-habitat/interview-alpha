@@ -160,7 +160,7 @@ export default function AuthPage() {
             marginBottom: 32, lineHeight: 1.1,
             background: RAINBOW, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
           }}>
-            InterviewAlpha™
+            InterviewAlpha.ai™
           </h1>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 40 }}>
             {[

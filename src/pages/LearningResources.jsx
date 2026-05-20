@@ -228,8 +228,8 @@ function BookCard({ book, badge }) {
 
 export default function LearningResources() {
   useEffect(() => {
-    document.title = 'PM Learning Resources | Books, Courses & Guides | InterviewAlpha';
-    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+    document.title = 'PM Learning Resources | Books, Courses & Guides | InterviewAlpha.ai';
+    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha.ai™'; };
   }, []);
 
   return (

@@ -85,7 +85,7 @@ function ResetPasswordPage({ onDone }) {
             marginBottom: 24, lineHeight: 1.1,
             background: RAINBOW, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
           }}>
-            InterviewAlpha™
+            InterviewAlpha.ai™
           </h1>
           <p style={{ fontSize: 16, color: RC.textMuted, lineHeight: 1.7 }}>
             Almost there. Set a strong new password to get back to your practice.

@@ -507,8 +507,8 @@ export default function Scorecard({ user }) {
   const [sessions, setSessions] = useState([]);
 
   useEffect(() => {
-    document.title = 'PM Interview Scorecard | InterviewAlpha';
-    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+    document.title = 'PM Interview Scorecard | InterviewAlpha.ai';
+    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha.ai™'; };
   }, []);
   const [practiceAttempts, setPracticeAttempts] = useState([]);
   const [loading, setLoading] = useState(true);

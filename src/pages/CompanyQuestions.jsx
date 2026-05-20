@@ -697,9 +697,9 @@ export default function CompanyQuestions({ setPage }) {
   const tts = useTextToSpeech();
 
   useEffect(() => {
-    const companyTitle = company ? `${company.name} PM Interview Questions | InterviewAlpha` : 'Google, Amazon, Meta PM Interview Questions | InterviewAlpha';
+    const companyTitle = company ? `${company.name} PM Interview Questions | InterviewAlpha.ai` : 'Google, Amazon, Meta PM Interview Questions | InterviewAlpha.ai';
     document.title = companyTitle;
-    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha.ai™'; };
   }, [company]);
   const data = selectedCompany ? QUESTIONS[selectedCompany] : null;
 

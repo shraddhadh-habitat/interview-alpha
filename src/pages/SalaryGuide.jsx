@@ -213,8 +213,8 @@ function CTABanner({ text, onClick }) {
 
 export default function SalaryGuide({ user, onPracticeCTA }) {
   useEffect(() => {
-    document.title = 'Product Manager Salary Guide 2026 | InterviewAlpha';
-    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+    document.title = 'Product Manager Salary Guide 2026 | InterviewAlpha.ai';
+    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha.ai™'; };
   }, []);
 
   return (

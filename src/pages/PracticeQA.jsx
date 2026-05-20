@@ -875,9 +875,9 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   useEffect(() => {
     const role = ROLES[selectedRole];
     const titlePrefix = selectedRole === 'pm' ? 'PM' : role?.titleSuffix?.split(' ')[0] || 'Interview';
-    const title = `${titlePrefix} Interview Questions & Answers | InterviewAlpha`;
+    const title = `${titlePrefix} Interview Questions & Answers | InterviewAlpha.ai`;
     document.title = title;
-    return () => { document.title = 'Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha™'; };
+    return () => { document.title = 'Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha.ai™'; };
   }, [selectedRole]);
 
   const [search, setSearch] = useState('');

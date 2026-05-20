@@ -249,7 +249,7 @@ export default function ReviewWidget({ user, profile }) {
                     className="rw-input"
                     value={reviewText}
                     onChange={e => setReviewText(e.target.value)}
-                    placeholder="How has InterviewAlpha helped your PM prep?"
+                    placeholder="How has InterviewAlpha.ai helped your PM prep?"
                     rows={4}
                     style={{ resize: 'vertical' }}
                   />

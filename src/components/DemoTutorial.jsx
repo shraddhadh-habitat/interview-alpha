@@ -13,9 +13,9 @@ const STEPS = [
     id: 'welcome',
     icon: '◆',
     label: 'Welcome',
-    title: 'Welcome to InterviewAlpha',
+    title: 'Welcome to InterviewAlpha.ai',
     subtitle: 'Your AI-powered PM interview coach',
-    body: `InterviewAlpha gives you everything you need to land your next PM role: from live mock interviews with real-time feedback, to a 1100+ question practice bank covering every level from APM to CPO.`,
+    body: `InterviewAlpha.ai gives you everything you need to land your next PM role: from live mock interviews with real-time feedback, to a 1100+ question practice bank covering every level from APM to CPO.`,
   },
   {
     id: 'profile',
@@ -23,7 +23,7 @@ const STEPS = [
     label: 'Your Profile',
     title: 'Start with Your Context',
     subtitle: 'Resume + Job Description = hyper-targeted coaching',
-    body: `Paste your resume and the job description you're targeting before your first session.\n\nInterviewAlpha uses this context to ask the exact questions a Senior PM at that company would ask. Not generic questions, but follow-ups that reference your specific experience and the role's stated requirements.\n\nYour profile auto-saves and pre-fills every new session.`,
+    body: `Paste your resume and the job description you're targeting before your first session.\n\nInterviewAlpha.ai uses this context to ask the exact questions a Senior PM at that company would ask. Not generic questions, but follow-ups that reference your specific experience and the role's stated requirements.\n\nYour profile auto-saves and pre-fills every new session.`,
   },
   {
     id: 'interview',
@@ -47,7 +47,7 @@ const STEPS = [
     label: 'Practice Mode',
     title: 'Practice Any Question',
     subtitle: 'Answer it. Get scored. Track your progress.',
-    body: `On any question in the Practice Q&A library, click "Practice This Question" to enter Practice Mode.\n\nType or speak your answer. InterviewAlpha evaluates it against the expert answer across five competencies: Structure, Depth, Frameworks, Communication, and Trade-off Awareness.\n\nYou get a score out of 100, identified strengths and weaknesses, missing concepts, filler word detection, and an expert rewrite of your answer. Each attempt is numbered and saved to your history.`,
+    body: `On any question in the Practice Q&A library, click "Practice This Question" to enter Practice Mode.\n\nType or speak your answer. InterviewAlpha.ai evaluates it against the expert answer across five competencies: Structure, Depth, Frameworks, Communication, and Trade-off Awareness.\n\nYou get a score out of 100, identified strengths and weaknesses, missing concepts, filler word detection, and an expert rewrite of your answer. Each attempt is numbered and saved to your history.`,
   },
   {
     id: 'sessions',

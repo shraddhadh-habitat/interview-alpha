@@ -75,7 +75,7 @@ export default function About() {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
           }}>
-            About InterviewAlpha
+            About InterviewAlpha.ai
           </h1>
           <p style={{ fontSize: 18, color: C.textMuted, marginBottom: 0 }}>
             Practice real interviews. Get real feedback. Build real confidence.
@@ -107,7 +107,7 @@ export default function About() {
             marginBottom: 32,
             fontWeight: 500,
           }}>
-            Founder & Builder, InterviewAlpha
+            Founder & Builder, InterviewAlpha.ai
           </p>
 
           {/* Bio Text */}
@@ -137,15 +137,15 @@ export default function About() {
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              Those experiences planted a seed that grew into InterviewAlpha, after I kept seeing thousands of talented professionals getting rejected from interviews with zero feedback, where nobody told them what went wrong and nobody helped them get better.
+              Those experiences planted a seed that grew into InterviewAlpha.ai, after I kept seeing thousands of talented professionals getting rejected from interviews with zero feedback, where nobody told them what went wrong and nobody helped them get better.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              That frustration is exactly why I built InterviewAlpha, an AI interviewer that does what no company will by telling you exactly where you stand, scoring you across 8 competencies, and showing you precisely what to fix so you walk into your next interview with real confidence.
+              That frustration is exactly why I built InterviewAlpha.ai, an AI interviewer that does what no company will by telling you exactly where you stand, scoring you across 8 competencies, and showing you precisely what to fix so you walk into your next interview with real confidence.
             </p>
 
             <p style={{ marginBottom: 20 }}>
-              Today InterviewAlpha has thousands of expert questions spanning Product Management and Data Science, with company-specific prep for Google, Amazon, Meta, Apple, Flipkart, Razorpay, and more, while we continue expanding into Consulting, Finance, Sales and Marketing, and General Management to serve every professional preparing for their next career move.
+              Today InterviewAlpha.ai has thousands of expert questions spanning Product Management and Data Science, with company-specific prep for Google, Amazon, Meta, Apple, Flipkart, Razorpay, and more, while we continue expanding into Consulting, Finance, Sales and Marketing, and General Management to serve every professional preparing for their next career move.
             </p>
 
             <p style={{ marginBottom: 20 }}>
@@ -153,7 +153,7 @@ export default function About() {
             </p>
 
             <p style={{ marginBottom: 0 }}>
-              The next wave of AI won't be smarter chatbots but agentic systems that manage outcomes end to end, and InterviewAlpha is built on that belief from the ground up.
+              The next wave of AI won't be smarter chatbots but agentic systems that manage outcomes end to end, and InterviewAlpha.ai is built on that belief from the ground up.
             </p>
           </div>
 
