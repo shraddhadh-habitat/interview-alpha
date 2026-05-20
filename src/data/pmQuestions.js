@@ -29231,10 +29231,9 @@ Network model approach:
 - Edges: Relationships (claimant → accident → doctor → claim)
 
 Example ring:
-```
+
 Person A ──accident──> Accident X ──claim──> Claim 1
 Person B ──witness──> Accident X ──repair──> Shop Y ──estimate──> Dr. Z
-```
 
 2. Anomaly detection:
 

@@ -123,6 +123,70 @@ const MISTAKES = [
   { title: 'Revealing your current salary', body: 'In most Indian states, asking for your current CTC is no longer legally required. Deflect: "I\'d rather focus on the market rate for this role  . what\'s the band?" If pressed, give a total comp number, not base.' },
 ];
 
+// ─── Data Science Salary Data ───
+const DS_IN_SALARIES = [
+  { level: 'Fresher / Intern', tc: '₹6–12 LPA', base: '₹6–10 LPA', bonus: '5–10%', equity: 'None / ESOP' },
+  { level: 'Junior Data Scientist (0–2 yrs)', tc: '₹8–18 LPA', base: '₹7–15 LPA', bonus: '8–12%', equity: 'Stock options if startup' },
+  { level: 'Data Scientist (2–5 yrs)', tc: '₹15–30 LPA', base: '₹12–24 LPA', bonus: '10–15%', equity: '₹5–15 L vesting 4yr' },
+  { level: 'Senior Data Scientist (5–8 yrs)', tc: '₹25–50 LPA', base: '₹20–40 LPA', bonus: '12–20%', equity: '₹15–40 L vesting 4yr' },
+  { level: 'Lead / Principal DS (8–12 yrs)', tc: '₹40–70 LPA', base: '₹30–55 LPA', bonus: '15–25%', equity: '₹30–70 L vesting 4yr' },
+  { level: 'Head of Data Science (12+ yrs)', tc: '₹60 L–1.2 Cr', base: '₹45 L–90 L', bonus: '20–35%', equity: 'Negotiable' },
+];
+
+const DS_US_SALARIES = [
+  { level: 'Junior Data Scientist (0–2 yrs)', tc: '$100–140K', base: '$85–120K', bonus: '10–15%', equity: '$20–40K RSU/yr' },
+  { level: 'Data Scientist (2–5 yrs)', tc: '$140–200K', base: '$110–160K', bonus: '12–18%', equity: '$40–80K RSU/yr' },
+  { level: 'Senior Data Scientist (5–8 yrs)', tc: '$200–280K', base: '$150–210K', bonus: '15–20%', equity: '$80–140K RSU/yr' },
+  { level: 'Lead / Principal DS (8–12 yrs)', tc: '$280–380K', base: '$200–280K', bonus: '18–25%', equity: '$140–240K RSU/yr' },
+  { level: 'Head of Data Science (12+ yrs)', tc: '$350–550K', base: '$240–350K', bonus: '25–40%', equity: '$200–400K RSU/yr' },
+];
+
+const DS_COMPANY_COMP = [
+  { company: 'Google', levels: 'L4–L7', tc_in: '₹25–80 LPA (DS), ₹40–1.2 Cr (Senior)', tc_us: '$180–450K (DS), $300–700K (Senior)', notes: 'Heavy RSU, strong L6+ jump' },
+  { company: 'Amazon', levels: 'SDE2–SDE4', tc_in: '₹20–60 LPA (DS), ₹35–90 LPA (Senior)', tc_us: '$160–380K (DS), $280–550K (Senior)', notes: 'Low base, back-loaded RSU' },
+  { company: 'Meta', levels: 'IC3–IC6', tc_in: '₹25–75 LPA (DS), ₹40–1.1 Cr (Senior)', tc_us: '$200–450K (DS), $350–750K (Senior)', notes: 'Best equity refresh' },
+  { company: 'Microsoft', levels: 'L60–L67', tc_in: '₹20–55 LPA (DS), ₹30–80 LPA (Senior)', tc_us: '$150–350K (DS), $250–500K (Senior)', notes: 'Strong WLB, good base' },
+  { company: 'Flipkart', levels: 'DS–Senior DS', tc_in: '₹18–45 LPA (DS), ₹30–70 LPA (Senior)', tc_us: 'N/A', notes: 'ESOP potential' },
+  { company: 'Razorpay', levels: 'DS–Senior DS', tc_in: '₹15–40 LPA (DS), ₹25–55 LPA (Senior)', tc_us: 'N/A', notes: 'Strong ESOP upside' },
+  { company: 'McKinsey (Analytics)', levels: 'Associate–Senior', tc_in: '₹20–45 LPA, ₹35–70 LPA (Senior)', tc_us: '$130–240K, $250–400K (Senior)', notes: 'Structured growth' },
+  { company: 'BCG (Gamma)', levels: 'Associate–Senior', tc_in: '₹18–40 LPA, ₹30–65 LPA (Senior)', tc_us: '$120–220K, $240–380K (Senior)', notes: 'Client-focused' },
+  { company: 'Goldman Sachs', levels: 'Analyst–VP', tc_in: '₹20–50 LPA (Analyst), ₹40–90 LPA (VP)', tc_us: '$150–350K, $400–700K (VP)', notes: 'Finance premium' },
+  { company: 'JP Morgan', levels: 'Analyst–VP', tc_in: '₹18–45 LPA (Analyst), ₹35–80 LPA (VP)', tc_us: '$140–320K, $380–650K (VP)', notes: 'Risk & trading premium' },
+];
+
+const DS_CITY_PREMIUM = [
+  { city: 'Bangalore', baseline: '100%', note: 'Highest DS salaries, largest talent pool' },
+  { city: 'Mumbai', baseline: '95–105%', note: 'Second highest, finance roles get premium' },
+  { city: 'Gurgaon/NCR', baseline: '90–100%', note: 'Competitive for consulting & fintech' },
+  { city: 'Hyderabad', baseline: '85–95%', note: 'Growing, 5–10% below Bangalore' },
+  { city: 'Pune', baseline: '80–90%', note: '10–15% below Bangalore' },
+  { city: 'Chennai', baseline: '80–90%', note: '10–15% below Bangalore' },
+];
+
+const DS_GLOBAL = [
+  { region: 'USA', range: '$100K–180K (DS), $150K–300K (Senior/Lead)', notes: 'Highest in world; Bay Area, NYC 10–30% premium' },
+  { region: 'UK', range: '£50K–90K (DS), £80K–150K (Senior/Lead)', notes: 'London 10% premium over regions' },
+  { region: 'Singapore', range: 'SGD 80K–150K (DS), SGD 120K–250K (Senior/Lead)', notes: 'Hub for SE Asia, strong market' },
+  { region: 'Dubai', range: 'AED 200K–450K (DS), AED 350K–700K (Senior/Lead)', notes: 'Tax-free; premium for tech' },
+  { region: 'Germany', range: '€55K–95K (DS), €85K–150K (Senior/Lead)', notes: 'Strong startup scene in Berlin' },
+];
+
+const DS_PREMIUM_SKILLS = [
+  { skill: 'LLM / GenAI Experience', premium: '+20–30%', note: 'Highest demand right now' },
+  { skill: 'ML Engineering (MLOps, Deployment)', premium: '+15–25%', note: 'Production-ready skills' },
+  { skill: 'Deep Learning / Computer Vision', premium: '+15–20%', note: 'Specialized, lower supply' },
+  { skill: 'Causal Inference / Experimentation', premium: '+10–20%', note: 'Critical for PM, fintech, ads' },
+  { skill: 'Domain Expertise (Fintech, Healthcare, Ads)', premium: '+10–15%', note: 'Industry-specific knowledge' },
+];
+
+const DS_NEG_TIPS = [
+  { step: 1, title: 'Total comp always  . not just base', body: 'Data Scientists often get offered lower base but higher equity. Always negotiate on base + bonus + RSU value (annualized). A ₹20L base + ₹20L bonus is better than ₹30L base + 5% bonus.' },
+  { step: 2, title: 'Signing bonus is non-recurring  . use it', body: 'When switching companies, companies will offer signing bonuses (₹5–30L) to offset your current unvested RSUs. Always ask for this. It\'s zero cost to them.' },
+  { step: 3, title: 'Remote flexibility is real currency', body: 'Most FAANG & startups now offer remote work. This is worth ₹5–10L in salary in India. Negotiate this if they\'re offering lower base. "Can I work from Bangalore 3 days a week?"' },
+  { step: 4, title: 'Stock refreshers > initial grant', body: 'At FAANG, after year 1, annual refreshers matter more than your initial grant (which vests over 4 years). Ask: "What\'s the refresh schedule? How do refreshes compare to initial grant?"' },
+  { step: 5, title: 'Counter with offers, not expectations', body: 'A competing offer is your strongest card. You don\'t need to reveal the company. Just say: "I have another offer at ₹X LPA all-in. I\'d prefer your company. Can we move closer?"' },
+];
+
 // ─── Collapsible section ───
 function Section({ title, subtitle, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -212,10 +276,13 @@ function CTABanner({ text, onClick }) {
 }
 
 export default function SalaryGuide({ user, onPracticeCTA }) {
+  const [selectedRole, setSelectedRole] = useState('PM');
+
   useEffect(() => {
-    document.title = 'Product Manager Salary Guide 2026 | InterviewAlpha.ai';
-    return () => { document.title = 'PM Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha.ai™'; };
-  }, []);
+    const roleText = selectedRole === 'PM' ? 'Product Manager' : 'Data Science';
+    document.title = `${roleText} Salary Guide 2026 | InterviewAlpha.ai`;
+    return () => { document.title = 'Interview Preparation Questions & Answers | AI Mock Interview Practice | InterviewAlpha.ai™'; };
+  }, [selectedRole]);
 
   return (
     <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -223,17 +290,61 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
 
       <div className="sg-page-pad" style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
 
+        {/* Role Selector */}
+        <div style={{ marginBottom: 32, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>I'm looking at salaries for:</span>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {['PM', 'Data Science'].map(role => (
+              <button
+                key={role}
+                onClick={() => setSelectedRole(role)}
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: 8,
+                  border: `2px solid ${selectedRole === role ? C.green : C.border}`,
+                  background: selectedRole === role ? C.greenLight : 'transparent',
+                  color: selectedRole === role ? C.green : C.textMuted,
+                  fontWeight: 600,
+                  fontSize: 13,
+                  cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => {
+                  if (selectedRole !== role) {
+                    e.currentTarget.style.borderColor = C.textMuted;
+                    e.currentTarget.style.color = C.text;
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (selectedRole !== role) {
+                    e.currentTarget.style.borderColor = C.border;
+                    e.currentTarget.style.color = C.textMuted;
+                  }
+                }}
+              >
+                {role}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Header */}
         <div style={{ marginBottom: 36 }}>
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>CAREER RESOURCES</div>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12, lineHeight: 1.15 }}>
-            PM Salary & Negotiation Guide
+            {selectedRole === 'PM' ? 'PM Salary & Negotiation Guide' : 'Data Science Salary & Negotiation Guide'}
           </h1>
           <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, maxWidth: 620 }}>
-            Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Product Manager  . at every level.
+            {selectedRole === 'PM'
+              ? 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Product Manager  . at every level.'
+              : 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Data Scientist  . at every level.'}
           </p>
           <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
-            {['India & US Ranges', '5-Step Framework', '7 Counter-Offer Scripts', '5 Common Mistakes', '10 Companies'].map(t => (
+            {(selectedRole === 'PM'
+              ? ['India & US Ranges', '5-Step Framework', '7 Counter-Offer Scripts', '5 Common Mistakes', '10 Companies']
+              : ['India & US Ranges', '5 Negotiation Tips', 'Global Salaries', '6 Cities Breakdown', 'Premium Skills']
+            ).map(t => (
               <span key={t} style={{
                 padding: '4px 12px',
                 background: C.greenLight, border: `1px solid ${C.greenBorder}`,
@@ -245,9 +356,13 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
 
         {/* ── TOP CTA BANNER ── */}
         <CTABanner
-          text="Know your worth? Now practice your answers."
+          text={selectedRole === 'PM' ? "Know your worth? Now practice your answers." : "Know your worth? Now practice your answers."}
           onClick={onPracticeCTA}
         />
+
+        {selectedRole === 'PM' ? (
+          <>
+        {/* ── PM CONTENT ── */}
 
         {/* ── SECTION 1: Know Your Worth ── */}
         <Section title="Know Your Worth" subtitle="Salary ranges by level  . India & United States" defaultOpen={true}>
@@ -414,6 +529,202 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
           text="Ready to negotiate? Practice your interview answers first."
           onClick={onPracticeCTA}
         />
+          </>
+        ) : (
+          <>
+        {/* ── DATA SCIENCE CONTENT ── */}
+
+        {/* ── SECTION 1: Know Your Worth ── */}
+        <Section title="Know Your Worth" subtitle="Salary ranges by level  . India & United States" defaultOpen={true}>
+          <div style={{ paddingTop: 24 }}>
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
+            <div style={{ overflowX: 'auto', marginBottom: 32 }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                <thead>
+                  <tr>
+                    {['Level', 'Total Comp', 'Base', 'Bonus', 'Equity'].map(h => (
+                      <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {DS_IN_SALARIES.map((row, i) => (
+                    <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                      <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                      <td style={{ padding: '12px 14px', color: C.green, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
+                      <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
+                      <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
+                      <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>United States (USD)</div>
+            <div style={{ overflowX: 'auto', marginBottom: 20 }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                <thead>
+                  <tr>
+                    {['Level', 'Total Comp', 'Base', 'Bonus', 'Equity'].map(h => (
+                      <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {DS_US_SALARIES.map((row, i) => (
+                    <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                      <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                      <td style={{ padding: '12px 14px', color: C.green, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
+                      <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
+                      <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
+                      <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div style={{ padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 12 }}>
+              <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, margin: 0 }}>
+                Ranges reflect 2025–2026 market data. Total comp (TC) includes base + annual bonus + annualized equity. Startup equity values assume a 2–4x exit multiple on current 409A/valuation. Verify with levels.fyi, Glassdoor, and LinkedIn Salary.
+              </p>
+            </div>
+          </div>
+        </Section>
+
+        {/* ── SECTION 2: Data Science Negotiation Tips ── */}
+        <Section title="5 DS-Specific Negotiation Tips" subtitle="Maximize your total compensation package">
+          <div style={{ display: 'grid', gap: 20, paddingTop: 24 }}>
+            {DS_NEG_TIPS.map(s => (
+              <div key={s.step} style={{ display: 'flex', gap: 20 }}>
+                <div style={{
+                  width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
+                  background: C.greenLight, border: `1px solid ${C.greenBorder}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 13, fontWeight: 700, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>{s.step}</div>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: "'Instrument Serif', serif", marginBottom: 8 }}>{s.title}</div>
+                  <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, margin: 0 }}>{s.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* ── SECTION 3: DS Compensation by Company ── */}
+        <Section title="DS Compensation by Company" subtitle="Top tech, startup, and consulting comp ranges">
+          <div style={{ overflowX: 'auto', paddingTop: 24 }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr>
+                  {['Company', 'Levels', 'India TC', 'US TC', 'Notes'].map(h => (
+                    <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {DS_COMPANY_COMP.map((row, i) => (
+                  <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                    <td style={{ padding: '12px 14px', fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13 }}>{row.company}</td>
+                    <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap' }}>{row.levels}</td>
+                    <td style={{ padding: '12px 14px', color: C.green, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{row.tc_in}</td>
+                    <td style={{ padding: '12px 14px', color: C.green, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{row.tc_us}</td>
+                    <td style={{ padding: '12px 14px', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{row.notes}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div style={{ marginTop: 16, padding: '14px 18px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 12 }}>
+              <p style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, margin: 0 }}>
+                All figures are estimates based on publicly available data, levels.fyi, and community reports as of 2025–2026. Actual comp varies by team, location, and negotiation.
+              </p>
+            </div>
+          </div>
+        </Section>
+
+        {/* ── SECTION 4: Global Salaries ── */}
+        <Section title="Global Data Science Salaries" subtitle="USA, UK, Singapore, Dubai, Germany">
+          <div style={{ display: 'grid', gap: 16, paddingTop: 24 }}>
+            {DS_GLOBAL.map((g, i) => (
+              <div key={i} style={{
+                padding: '18px 20px', background: C.bgMuted,
+                border: `1px solid ${C.border}`, borderRadius: 16,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
+                  <div style={{ flex: '0 0 120px' }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: C.green, fontFamily: "'Instrument Serif', serif" }}>{g.region}</div>
+                  </div>
+                  <div style={{ flex: 1, minWidth: 250 }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4 }}>{g.range}</div>
+                    <p style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.5, margin: 0 }}>{g.notes}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* ── SECTION 5: City Premiums ── */}
+        <Section title="Salary Premiums by Indian City" subtitle="How location affects Data Science compensation">
+          <div style={{ display: 'grid', gap: 16, paddingTop: 24 }}>
+            {DS_CITY_PREMIUM.map((c, i) => (
+              <div key={i} style={{
+                padding: '16px 20px', background: c.baseline === '100%' ? C.greenLight : C.bgMuted,
+                border: `1px solid ${c.baseline === '100%' ? C.greenBorder : C.border}`, borderRadius: 12,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'space-between' }}>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: C.text, fontFamily: "'Instrument Serif', serif", marginBottom: 2 }}>{c.city}</div>
+                    <p style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0 }}>{c.note}</p>
+                  </div>
+                  <div style={{
+                    padding: '6px 14px', background: C.bg, border: `1px solid ${C.border}`,
+                    borderRadius: 8, fontSize: 13, fontWeight: 700, color: C.green,
+                    fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'nowrap',
+                  }}>
+                    {c.baseline}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* ── SECTION 6: Premium Skills ── */}
+        <Section title="Skills That Command Premium" subtitle="Add these to your profile to negotiate higher">
+          <div style={{ display: 'grid', gap: 16, paddingTop: 24 }}>
+            {DS_PREMIUM_SKILLS.map((s, i) => (
+              <div key={i} style={{
+                padding: '18px 20px', background: C.successLight,
+                border: `1px solid ${C.successBorder}`, borderRadius: 16,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                  <span style={{ color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>+</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4, flexWrap: 'wrap' }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: C.success, fontFamily: "'Instrument Serif', serif" }}>{s.skill}</div>
+                      <span style={{
+                        padding: '2px 10px', background: C.success, color: '#fff',
+                        borderRadius: 12, fontSize: 10, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      }}>{s.premium}</span>
+                    </div>
+                    <p style={{ fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.5, margin: 0 }}>{s.note}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* ── BOTTOM CTA BANNER ── */}
+        <CTABanner
+          text="Ready to negotiate? Practice your interview answers first."
+          onClick={onPracticeCTA}
+        />
+          </>
+        )}
 
         <div style={{ height: 60 }} />
       </div>
