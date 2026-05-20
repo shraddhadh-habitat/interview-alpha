@@ -213,13 +213,22 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             }}>
               WhatsApp has 500M users in India but makes almost no money from them. You're the PM tasked with building WhatsApp's first revenue product for India without hurting user trust or daily engagement. What do you build, how do you price it, and what's your biggest risk?
             </p>
-            <div style={{
+            <button onClick={() => onNavigate('practice')} style={{
               fontSize: '11px',
-              color: C.textMuted,
+              color: C.green,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              Tap to answer →
-            </div>
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              fontWeight: 600,
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = C.text}
+            onMouseLeave={e => e.currentTarget.style.color = C.green}
+            >
+              Answer this question →
+            </button>
           </div>
 
           {/* Card 2 - Data Science */}
@@ -253,13 +262,22 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             }}>
               Zomato notices that restaurants with 4.1 star ratings get 3x more orders than restaurants with 4.0 stars. But your analysis shows that the 4.0 rated restaurants actually have better food quality based on repeat order rates. What's happening, how would you prove it, and what would you recommend to fix the rating system?
             </p>
-            <div style={{
+            <button onClick={() => onNavigate('practice')} style={{
               fontSize: '11px',
-              color: C.textMuted,
+              color: C.green,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              Tap to answer →
-            </div>
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              fontWeight: 600,
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = C.text}
+            onMouseLeave={e => e.currentTarget.style.color = C.green}
+            >
+              Answer this question →
+            </button>
           </div>
         </div>
       </div>
