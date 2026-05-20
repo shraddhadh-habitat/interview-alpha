@@ -863,7 +863,7 @@ function FilterContent({
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function PracticeQA({ user, profile, checkSession, onSessionUsed }) {
+export default function PracticeQA({ user, profile, checkSession, onSessionUsed, landingPracticeQuestion, onClearLandingQuestion }) {
   const { requireAuth } = useAuth();
   const tts = useTextToSpeech();
 
@@ -917,6 +917,21 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       try { setPracticeQuestion(JSON.parse(raw)); } catch {}
     }
   }, []);
+
+  // Pre-load landing practice question from landing page sample cards
+  useEffect(() => {
+    if (landingPracticeQuestion) {
+      setPracticeQuestion({
+        question: landingPracticeQuestion,
+        questionId: 'landing-sample',
+        designation: 'sample',
+        category: 'sample',
+      });
+      if (onClearLandingQuestion) {
+        onClearLandingQuestion();
+      }
+    }
+  }, [landingPracticeQuestion, onClearLandingQuestion]);
 
   // Load practice stats for current user
   useEffect(() => {

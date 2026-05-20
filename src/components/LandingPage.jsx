@@ -12,7 +12,11 @@ const C = {
   redWarmLight: 'rgba(220, 109, 109, 0.08)',
 };
 
-export default function LandingPage({ user, onNavigate, onLogin }) {
+const SAMPLE_PM_QUESTION = "WhatsApp has 500M users in India but makes almost no money from them. You're the PM tasked with building WhatsApp's first revenue product for India without hurting user trust or daily engagement. What do you build, how do you price it, and what's your biggest risk?";
+
+const SAMPLE_DS_QUESTION = "Zomato notices that restaurants with 4.1 star ratings get 3x more orders than restaurants with 4.0 stars. But your analysis shows that the 4.0 rated restaurants actually have better food quality based on repeat order rates. What's happening, how would you prove it, and what would you recommend to fix the rating system?";
+
+export default function LandingPage({ user, onNavigate, onLogin, onTryQuestion }) {
   // Hero section  . proper two-column layout with container
   const HeroSection = () => (
     <div style={{
@@ -213,7 +217,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             }}>
               WhatsApp has 500M users in India but makes almost no money from them. You're the PM tasked with building WhatsApp's first revenue product for India without hurting user trust or daily engagement. What do you build, how do you price it, and what's your biggest risk?
             </p>
-            <button onClick={() => onNavigate('practice')} style={{
+            <button onClick={() => onTryQuestion(SAMPLE_PM_QUESTION)} style={{
               fontSize: '11px',
               color: C.green,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -262,7 +266,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             }}>
               Zomato notices that restaurants with 4.1 star ratings get 3x more orders than restaurants with 4.0 stars. But your analysis shows that the 4.0 rated restaurants actually have better food quality based on repeat order rates. What's happening, how would you prove it, and what would you recommend to fix the rating system?
             </p>
-            <button onClick={() => onNavigate('practice')} style={{
+            <button onClick={() => onTryQuestion(SAMPLE_DS_QUESTION)} style={{
               fontSize: '11px',
               color: C.green,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
