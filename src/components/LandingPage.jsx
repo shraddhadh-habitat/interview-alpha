@@ -1055,7 +1055,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
           margin: 0,
           fontFamily: "'Plus Jakarta Sans', sans-serif",
         }}>
-          Software Engineering · Data Science · Product Design · Analytics
+          Software Engineering · Product Design · Analytics
         </p>
       </div>
     </div>
