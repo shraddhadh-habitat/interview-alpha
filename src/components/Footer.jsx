@@ -102,7 +102,18 @@ export default function Footer() {
             <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'about' }))}>
               About
             </FooterLink>
-            <FooterLink href="/#how-it-works">
+            <FooterLink onClick={() => {
+              const el = document.getElementById('how-it-works');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+              } else {
+                window.location.href = '/';
+                setTimeout(() => {
+                  const section = document.getElementById('how-it-works');
+                  if (section) section.scrollIntoView({ behavior: 'smooth' });
+                }, 500);
+              }
+            }}>
               How it Works
             </FooterLink>
             <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
