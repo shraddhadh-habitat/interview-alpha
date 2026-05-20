@@ -26933,6 +26933,1286 @@ Implementation:
 
 Iteration: Use feedback to improve chatbot training, intent recognition.`,
       },
+      {
+        q: "A hospital chain wants to reduce patient wait times using data. What would you build and what data do you need?",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        company: "Deloitte",
+        a: `Patient wait times have multiple components: check-in → triage → diagnosis → treatment → discharge. Each has different constraints.
+
+Data needed:
+- Historical appointments: arrival time, check-in time, doctor availability, service duration
+- Patient data: age, condition severity, insurance type (affects billing time)
+- Staff: doctor shifts, availability, specialties
+- Facility: equipment capacity, room availability, bottleneck identification
+- External: emergency admissions (disrupt schedules), no-shows
+
+Analysis:
+
+Step 1: Segment wait times. Where is the biggest bottleneck? If diagnosis takes 2hrs but check-in takes 1.5hrs, that's different.
+
+Step 2: Identify drivers. Are certain conditions slower? Are certain doctors slower (thoroughness or inexperience)? Do afternoons have longer waits?
+
+Step 3: Predictive model. Given incoming patient characteristics and current queue, predict wait time. This helps set expectations and staff intelligently.
+
+Step 4: Optimization. Mixed-integer linear programming for staff scheduling. If you know tomorrow's appointment patterns, schedule doctors optimally.
+
+Models to build:
+- Service duration prediction: For each appointment type, predict how long it takes. Helps schedule buffers
+- No-show prediction: Certain patients are more likely to cancel. Use that in overbooking logic
+- Staffing optimization: Given forecasted arrivals, determine staff levels that minimize wait time without overstaffing
+
+Interventions:
+- Pre-check-in online (reduce check-in wait)
+- Triage protocols that prioritize urgent cases
+- Parallel processing (multiple doctors in different stages)
+- Telehealth for follow-ups (reduces burden)
+
+Success metric: Median wait time <30min for routine, <1hr for complex.`,
+      },
+      {
+        q: "How would you design a vendor risk scoring system for a large enterprise procurement department?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "TCS",
+        a: `Vendor risk scoring identifies suppliers likely to have issues (quality, delivery, financial distress). Procurement teams use this to mitigate supply chain risk.
+
+Dimensions:
+
+1. Financial health:
+- Credit score, leverage ratio, days payable outstanding
+- Default probability (predict bankruptcy risk)
+- Negative news (patent lawsuits, accounting issues)
+
+2. Operational performance:
+- On-time delivery rate (% of orders delivered on due date)
+- Quality metrics (defect rate, returns, customer complaints)
+- Responsiveness (time to quote, time to address issues)
+
+3. Compliance:
+- Certifications (ISO 9001, environmental, labor standards)
+- Regulatory violations
+- Safety incident history
+
+4. Concentration risk:
+- How dependent are we on this vendor?
+- Can we switch easily?
+- Do they have other major customers (diversification = more stable)?
+
+5. Geopolitical:
+- Country risk (political instability, trade tensions)
+- Tariff exposure
+- Supply chain proximity (distant = higher delivery risk)
+
+Model approach:
+- Logistic regression on 20-30 features (interpretable for procurement)
+- XGBoost for interaction effects (quality + financial distress together is riskier than either alone)
+- Class imbalance: Vendors with problems are rare (~5%). Adjust thresholds
+
+Scoring:
+- 0-30: Low risk (routine approval)
+- 30-70: Medium risk (require audit, financial guarantees)
+- 70+: High risk (seek alternatives or require insurance/collateral)
+
+Validation: Historical vendor failures. Did your model flag them early?
+
+Update frequency: Quarterly for established vendors, monthly for high-risk or new vendors.`,
+      },
+      {
+        q: "Your client's employee attrition rate jumped from 12% to 22% in one year. How would you use people analytics to diagnose and fix this?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Deloitte",
+        a: `A 10-point increase in attrition is massive. I'd investigate systematically across multiple dimensions.
+
+Step 1: Segment the attrition.
+- By department: Is engineering losing people at 30% but sales at 15%? Narrower problem
+- By tenure: Are new hires leaving after 6 months? Onboarding issue. Are veterans leaving? Stagnation issue
+- By level: Are managers leaving? That's worse than individual contributors
+- By geography: Specific office affected or company-wide?
+- Demographic: Age, gender, entry route
+
+Step 2: Interview departing employees.
+- Exit surveys often say "seeking growth" but real reasons are deeper
+- Deep conversations reveal: toxic manager, inadequate compensation, work-life balance, no advancement
+
+Step 3: Build predictive model.
+- Features: tenure, promotion velocity, compensation growth, manager tenure, distance from office, engagement scores
+- Predict attrition probability for current employees
+- Who are we about to lose in next 3 months?
+
+Step 4: Diagnosis.
+- If engineering-specific: Is their manager newly promoted and terrible? Did a competitor hire en-masse?
+- If tenure-driven (new hires): Onboarding program failure
+- If level-driven (managers): Burnout, lack of career path
+- If compensation-driven: Competitive market shifted (tech boom = salary increases elsewhere)
+
+Step 5: Interventions.
+- Replace toxic managers
+- Increase salaries (targeted to flight-risk roles)
+- Enhance onboarding for first 90 days
+- Career development programs (promotions, rotations)
+- Work-from-home policies
+- Mentorship pairing
+
+Validate: Measure attrition by cohort post-intervention. Did manager replacement reduce engineering attrition? Time lag: 6 months to see impact.
+
+Cost-benefit: Replacing an employee costs 1-2x salary. Small investments in retention ROI quickly.`,
+      },
+      {
+        q: "How would you build an intelligent document processing pipeline that handles invoices, contracts, and purchase orders in multiple languages?",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "TCS",
+        a: `Document processing at scale (invoices, contracts, POs in 10+ languages) requires OCR, NLP, and entity extraction.
+
+Architecture:
+
+1. Document ingestion:
+- Upload scanned PDFs, images, emails
+- Store in cloud (S3/GCS), organize by document type
+
+2. OCR (Optical Character Recognition):
+- For scanned documents: Tesseract, Google Document AI, AWS Textract
+- Output: Structured text + confidence scores
+- Multi-language: Detect language, use appropriate OCR model
+
+3. Language detection:
+- Use fastText or transformer-based classifier to detect language (English, Spanish, French, etc.)
+- Route to language-specific NLP pipeline
+
+4. Document classification:
+- ML classifier: Is this an invoice, contract, or PO?
+- Use transformer (BERT fine-tuned on procurement documents)
+- Output: Document type label
+
+5. Entity extraction:
+- Vendor name, amount, date, invoice number, payment terms, etc.
+- Use NER (Named Entity Recognition) + rule-based extraction
+- Language-specific models (Spanish entity extraction differs from English)
+
+6. Validation & reconciliation:
+- Check consistency: Does date make sense? Amount non-zero?
+- Cross-reference: For an invoice, does corresponding PO exist?
+- Flag exceptions for manual review (>10% of documents)
+
+7. Output:
+- Structured JSON: vendor, amount, date, terms, status
+- Feed to accounting/ERP system
+- Audit trail for compliance
+
+Scaling challenges:
+- Latency: Process 1K documents daily. Need batch processing or queueing
+- Accuracy: Scanned documents have ~95% OCR accuracy. Errors propagate
+- Language diversity: Train models on multilingual datasets
+- Exception handling: 5-10% of documents are ambiguous. Flag for human review
+
+Monitoring:
+- Extraction accuracy per field (amount, date, vendor)
+- False positive/negative rates
+- Processing time per document
+- Exception rate (should remain <10%)
+
+Iteration: Use human corrections to retrain models monthly.`,
+      },
+      {
+        q: "Design a predictive maintenance system for an industrial client with 5,000 machines across 30 factories.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Deloitte",
+        a: `Predictive maintenance (PdM) prevents failures, reducing downtime and extending machine life. At 5K machines, you need automation.
+
+Data sources:
+- Sensor data: Vibration, temperature, pressure, electrical current (streaming, every second or minute)
+- Operational logs: Runtime hours, load, maintenance history
+- Failure history: When machines failed, root cause, repair cost, downtime duration
+
+Feature engineering:
+- Time-domain: Mean, std, max, min of sensor readings over rolling windows (1hr, 1day, 1week)
+- Frequency-domain: FFT of vibration data (mechanical failures have signature frequencies)
+- Trend: Is temperature increasing? Vibration rising? Early degradation signals
+- Machine-specific: Age, model, cumulative runtime (older = higher failure risk)
+
+Models:
+
+1. Failure prediction: Logistic regression or gradient boosting
+- Target: Will machine fail in next 7 days?
+- Train on machines with known failure history
+- Predict failure probability for all machines
+
+2. Time-to-failure: Regression or survival analysis
+- Instead of binary (fail/not fail), predict "failure in 12 days, 45 days, 30 days"
+- Helps schedule maintenance on your timeline
+
+3. Anomaly detection: Isolation Forest or autoencoder
+- Flag unusual sensor patterns that don't match normal operation
+- Lower false positive rate than threshold-based alerts
+
+Production pipeline:
+- Ingest sensor streams in real-time (Kafka, Spark Streaming)
+- Score each machine daily: failure probability
+- Flag top 5% highest-risk machines
+- Maintenance teams get alerts: "Machine A3-42 in Factory 7 has 35% failure risk in next week. Inspect bearings."
+
+Maintenance strategy:
+- High risk: Inspect immediately, order parts, schedule proactive repair
+- Medium risk: Monitor more frequently, plan maintenance window
+- Low risk: Continue normal operation
+
+Validation:
+- Backtest: On historical data, did model correctly predict failures?
+- False positive rate: % of machines flagged as high-risk that don't actually fail
+- Target: Catch 80% of failures with <20% false positive rate
+
+ROI: Prevent 1-2 machine failures per month (each costs $50K in downtime). Model costs $10K/month. ROI positive immediately.`,
+      },
+      {
+        q: "A retail bank wants to personalize its mobile app for 20M users. How would you approach this from a data science perspective?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Accenture",
+        a: `Personalization at 20M scale requires ML models that run fast (sub-100ms latency).
+
+Approach:
+
+1. Segmentation:
+- Cluster users by similarity: product usage, balance, transaction patterns, risk profile
+- K-means or hierarchical clustering on 20-30 features
+- Output: 5-10 user personas (e.g., "Young Savers", "Business Owners", "Retirees")
+- Each persona sees different app layout, product recommendations
+
+2. Product recommendation:
+- What credit products should be offered? Savings account, loan, wealth management?
+- Collaborative filtering: Users like you bought these products
+- Content-based: Your profile (age, income, savings) matches others who bought this
+- Hybrid: Combine both approaches
+- Serve top-3 products per user
+
+3. UI personalization:
+- Home screen layout: Retirees see "Fixed Deposits", young workers see "Savings"
+- Quick actions: Frequent users see "Send Money Fast", infrequent users see "Learn About Banking"
+- Notifications: Personalized push times (when user is most likely to check app)
+
+4. Dynamic pricing:
+- Offer rates personalized by risk and acquisition cost
+- High-value customers: Better rates to retain them
+- High-risk: Slightly higher rates (risk premium)
+- Logistic regression on customer profitability
+
+5. Feature flags:
+- A/B test personalization changes
+- Variant A: Generic app for 50% of users
+- Variant B: Personalized for 50%
+- Measure engagement, conversion, retention
+- Roll winner to 100%
+
+Implementation:
+
+Real-time: Cache user segments in Redis. When user opens app, retrieve segment, serve personalized content (latency <100ms).
+
+Batch: Daily jobs recompute recommendations, update cache.
+
+Explainability: Why is this loan offered? "Based on users similar to you who have $50K savings."
+
+Privacy: Don't reveal personal data. "Based on your savings pattern" not "because you're 28 years old in Bangalore."
+
+Monitoring: Personalization impact on revenue per user, product cross-sell rate.`,
+      },
+      {
+        q: "How would you build a sustainability scoring model that measures a company's ESG performance from public data?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "EY",
+        a: `ESG (Environmental, Social, Governance) scoring attracts investors. Building a model from public data is cheaper than proprietary rating agencies.
+
+Data sources:
+
+Environmental:
+- Public filings: Carbon emissions (Scope 1, 2, 3), energy use, renewable % from annual reports
+- Regulatory: EPA violations, environmental fines, cleanup costs
+- Satellite imagery: Forest loss, water usage (proxy from NDVI changes)
+- News: Oil spill, chemical leak, sustainability announcements
+
+Social:
+- Employee data: Diversity (gender, age, ethnicity) from public statements
+- Reviews: Glassdoor ratings, employee satisfaction, turnover
+- Incidents: Lawsuits, labor violations, safety accidents
+- Supply chain: Fair labor certifications, supplier audits
+
+Governance:
+- Board composition: Independence, diversity, expert representation
+- CEO pay ratio: CEO compensation vs. median employee wage
+- Auditor tenure: Frequent auditor changes signal instability
+- Shareholder disputes: Litigation, proxy battles, governance conflicts
+
+Scoring model:
+
+1. Data collection:
+- Scrape SEC filings (10-K, proxy statements)
+- News APIs: Monitor ESG-related mentions
+- Satellite imagery: For environmental impact
+- Structured databases: Regulatory violations
+
+2. Feature engineering:
+- Carbon intensity: Emissions / Revenue (normalize for company size)
+- Diversity metrics: Women in leadership %, non-white board members %
+- Safety record: Incidents per 1000 employees, trend
+- Pay ratio: CEO salary / median employee salary
+
+3. Weighting:
+- ESG = 0.35*E + 0.35*S + 0.30*G (or customize by industry)
+- Normalize each pillar to 0-100 scale
+- Output: Single ESG score, 0-100
+
+4. Benchmarking:
+- Compare company to peers (same industry, size)
+- Peer-relative scoring: "Top quartile" vs. "Bottom quartile"
+
+5. Validation:
+- Do high-ESG companies outperform on stock price?
+- Do they attract better talent?
+- Backtest: Did ESG score predict regulatory penalties?
+
+Challenges:
+- Greenwashing: Companies claim ESG but data is fake
+- Data quality: Some companies under-report environmental impact
+- Gaming: Companies optimize for ESG metrics, not actual impact
+
+Mitigation: Flag inconsistencies. If emissions reported down 50% but revenue up 30%, investigate.
+
+Output: Dashboard showing ESG score, peer comparison, improvement areas.`,
+      },
+      {
+        q: "Your client's supply chain has 15,000 SKUs across 200 warehouses. Build a demand sensing model that reduces overstock by 30%.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Accenture",
+        a: `Demand sensing (real-time demand forecasting) is complex at scale. Most companies use linear projections and overstock to avoid stockouts.
+
+Approach:
+
+1. Demand forecasting:
+- Time-series: Each SKU has demand patterns (seasonality, trends, promotions)
+- ARIMA or Prophet for baseline
+- XGBoost adds: price, competitor actions, advertising spend, weather, holidays
+
+2. Feature engineering:
+- Macro: Season, holiday calendar, economic indicators
+- Product: Category, price, seasonality
+- Marketing: Promotional activity (sale price, discount %)
+- External: Competitor pricing, web trends (Google Trends for furniture = home decor buying)
+- Inventory: Current stock, stockout history
+
+3. Hierarchy:
+- Forecast at SKU level (15K models) but also category and warehouse
+- Ensure consistency: SKU forecasts sum to category forecast
+- Reconciliation algorithms (bottom-up vs. top-down)
+
+4. Inventory optimization:
+- Safety stock calculation: Based on forecast accuracy + lead time variability
+- Instead of buffer stock = 2 weeks, make it data-driven
+- Low-accuracy SKUs: Higher safety stock
+- High-accuracy SKUs: Lower safety stock
+- Result: 15% reduction in inventory
+
+5. Overstock reduction:
+- Demand forecasting accuracy directly reduces overstock
+- If forecast is 10% too high, overstock = 10% × SKU quantity = waste
+- Improve accuracy to ±5% → overstock drops 50%
+
+6. Seasonal clearance:
+- Identify slow-moving inventory early
+- Predictive model: Will this SKU sell at full price, or will we discount?
+- Plan clearance proactively instead of emergency sales
+
+7. Simulation:
+- For each SKU, simulate inventory levels with new forecast
+- If forecast is more accurate, overstock naturally reduces
+- Measure: Overstock days (inventory sitting >90 days)
+
+Implementation:
+
+Batch process: Daily forecasts for 15K SKUs. Takes 2-4 hours (parallel processing)
+
+Cache: Store top 1K most important SKUs in real-time forecasting
+
+Action: Automated alerts. "SKU XYZ overstocked by 500 units. Recommend clearance within 14 days."
+
+Monitoring:
+- Forecast accuracy (MAPE <10% target)
+- Stockout rate (target: <2%)
+- Overstock reduction vs. baseline
+
+Results: 30% overstock reduction = millions in inventory savings.`,
+      },
+      {
+        q: "How would you detect tax fraud patterns in a dataset of 10M corporate tax returns?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "EY",
+        a: `Tax fraud is rare (~0.1% of returns) but high-impact (millions in lost revenue). Detecting patterns at 10M scale requires automated ML.
+
+Red flags:
+
+1. Statistical anomalies:
+- Deduction-to-income ratio: Normal ratio for industry is 30%. Company claiming 80%? Suspect
+- Charitable donations 10x peers in same income bracket
+- Capital losses exactly offsetting all capital gains (too convenient)
+
+2. Temporal patterns:
+- Last-minute filings (rushed, often errors or fraud)
+- Frequent amendments after audit risk period passes
+- Dramatic year-over-year swings (expense 50% up, income flat)
+
+3. Network patterns:
+- Multiple shell companies with same address, ownership structure
+- Transaction loops: Company A pays B, B pays C, C pays A (appearance of expense without real outlay)
+- Related-party transactions at inflated prices
+
+4. Industry norms:
+- Margin far below industry benchmark
+- Expense structure unusual for industry
+- RPM (revenue per million) of assets unusually low
+
+5. Text analysis:
+- Unusual description language in loss claims
+- Generic descriptions (copy-paste template)
+- Spelling/grammar errors (lower effort filing)
+
+Model approach:
+
+1. Anomaly detection:
+- Logistic regression: P(fraud | features)
+- Features: Ratio of deductions to income, asset utilization, transaction velocity
+- Isolate high-probability cases for investigation
+
+2. Network analysis:
+- Build graph: Company nodes, edge = transaction
+- Detect cycles: Circular payments suggest fraud
+- Detect cliques: Related companies with unusual patterns
+
+3. Ensemble:
+- Combine multiple signals: Anomaly score + ratio unusual + network suspect = high-risk
+- Flag top 0.5% of returns (50K cases) for manual audit
+
+4. Feedback loop:
+- When cases confirmed as fraud, retrain model
+- When cases cleared, learn false positive patterns
+
+Challenges:
+- Class imbalance: 0.1% fraud, 99.9% legitimate
+- False positives are expensive: Auditing 50K returns costs money
+- Sophisticated fraudsters evolve tactics
+
+Mitigation:
+- Focus on precision: Only flag high-confidence cases
+- Explainability: Tell auditors why case is flagged (ratio, network, temporal)
+- Iterate: Monthly retraining with human feedback
+
+Output: Audit queue. "50K high-risk returns identified. Estimated recovery: $X million if audited."`,
+      },
+      {
+        q: "Design a data strategy roadmap for a traditional manufacturing company that has zero data infrastructure.",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        company: "Accenture",
+        a: `Traditional manufacturers often lack data systems. Building infrastructure takes 2-3 years. Phased approach is realistic.
+
+Phase 1 (Months 1-6): Foundations
+
+1. Data discovery:
+- Audit existing data sources: ERP, sensors, maintenance logs
+- Most data is siloed, inconsistent, incomplete
+- Find quick wins: Best-quality, highest-impact data
+
+2. Cloud infrastructure:
+- Set up data warehouse (Snowflake, BigQuery, Redshift)
+- Start collecting IoT sensor data (temperature, vibration, pressure)
+- Archive legacy systems
+
+3. Data governance:
+- Define data ownership (who manages what data?)
+- Create standards: Field naming, quality thresholds
+- Establish privacy/security policies
+
+Phase 2 (Months 6-18): Initial use cases
+
+1. Preventive maintenance:
+- Collect machine sensor data
+- Predict failures before they happen (highest ROI)
+- Prevent $500K downtime events
+
+2. Production optimization:
+- Track cycle times, scrap rates by shift/line
+- Identify bottlenecks
+- Small improvements = 5-10% throughput gain
+
+3. Quality prediction:
+- Use sensor data to predict defects early
+- Reduce costly rework
+
+Phase 3 (Months 18-36): Advanced capabilities
+
+1. Demand sensing:
+- Forecast orders using market data, lead times
+- Better inventory management
+
+2. Supply chain visibility:
+- Track suppliers: On-time delivery, quality
+- Vendor risk scoring
+
+3. Workforce analytics:
+- Predict equipment operator skill gaps
+- Safety incident prediction
+
+Implementation:
+
+- Hire: 2-3 data engineers (infrastructure), 1-2 analysts, 1 data scientist
+- Partner: Consultant to guide roadmap (cloud architecture, data governance)
+- Tools: Start with Snowflake + Tableau. Avoid over-engineering
+- Budget: Year 1 = $1-2M (infrastructure, people). Year 2-3 = $500K annually
+
+Success metrics:
+- Year 1: Prevent 3-5 failures (prove ROI)
+- Year 2: 10-15% production efficiency gain
+- Year 3: $5-10M annual value
+
+Risks:
+- Old mindset: Execs skeptical of data. Prove ROI with quick wins
+- Legacy systems: Data extraction is messy. Budget extra time
+- Retention: Data talent leaves. Build culture to retain
+
+Timeline is realistic. Manufacturing moves slower than tech, but phased approach manages risk.`,
+      },
+      {
+        q: "Google Maps shows a restaurant as open but users keep reporting it's closed. How would you use data to solve this at scale across millions of businesses?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Google",
+        a: `Google Maps has 200M+ businesses. Keeping status accuracy (open/closed) is a scale problem. User reports are noisy but valuable signals.
+
+Problem:
+
+1. Data sources are conflicting:
+- Business reported hours: Often outdated or wrong
+- Actual operation: Varies by day, season, special closures
+- User reports: "Restaurant closed today" (could be lunch break, not permanent)
+
+2. At 200M scale, human verification is impossible
+
+Approach:
+
+1. Feature aggregation:
+- User reports: "Closed" report frequency (weighted by reviewer reliability)
+- Search patterns: Do searches for this business spike (activity proxy)?
+- Photos: Recent customer photos suggest it's open
+- Reviews: Recent reviews indicate operation
+- Call volume: Fewer calls = less business activity?
+- Traffic data: Google knows foot traffic from location services
+
+2. Probabilistic model:
+- Input: User reports (count, recency), recent activity signals
+- Output: P(restaurant is actually open now)
+- Logistic regression on these features
+
+3. Disaggregation:
+- Status changes: Permanently closed vs. temporarily closed vs. holidays
+- Hours: Monday 10am is different from Monday 3pm
+- Build per-hour predictions, not single "open/closed"
+
+4. Signals over time:
+- One "closed" report = noise. Ten reports yesterday = signal
+- Exponential decay: Recent reports matter more than old ones
+- Temporal pattern: Closed at 2am? Probably sleep, not actual closure
+
+5. Feedback loop:
+- When business reopens, learn from reports
+- When business permanently closes, learn why reports indicated this
+
+Implementation:
+
+Real-time: When user reports closure:
+1. Aggregates reports for this business (last 24hrs)
+2. Checks recent photos, reviews
+3. Updates status confidence
+4. If probability >80% that closed: Mark as closed on Maps
+
+Batch: Daily pipeline:
+- Recompute status for all 200M businesses
+- Identify high-uncertainty cases (50-70% confidence) for manual review
+- ~1000 businesses per day get escalated to local teams or business owners
+
+Validation:
+- Sample 10K businesses, verify if Map status is correct
+- Compare to ground truth (visiting in person)
+- Target: 95% accuracy
+
+Result: Users trust Maps. Restaurant status is almost always correct.`,
+      },
+      {
+        q: "How would you build a model that predicts which products on Amazon will go viral in the next 7 days?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Amazon",
+        a: `Predicting virality is hard but valuable: Amazon can feature trending products early, recommend them, prepare inventory.
+
+Definition of viral: 10x normal sales velocity in 7 days.
+
+Data sources:
+
+1. Historical virality:
+- Past 2 years of products that went viral
+- What they had in common
+
+2. Product attributes:
+- Price point (cheaper = broader appeal)
+- Category (phones trend faster than home appliances)
+- Rating and review count (established products are less likely)
+- Review sentiment (overwhelmingly positive or lots of controversy?)
+- Description length (detailed suggests authentic)
+
+3. Demand signals:
+- Search interest: Did "searches for this product" spike?
+- Click-through rate: Are searchers clicking it?
+- Wishlist additions: Early leading indicator
+- Price dynamics: Competitor pricing, Amazon price changes
+- Inventory velocity: How fast are stocks moving?
+
+4. Social/external:
+- News mentions (product got featured in media)
+- Influencer reviews (does an influencer have it?)
+- Buzz on Reddit/Twitter (sentiment, mention count)
+- Seasonal trends (back-to-school products spike in August)
+
+5. Recency:
+- New product launch (newness attracts curiosity)
+- Product age (<3 months likely, >2 years unlikely)
+
+Model approach:
+
+1. Classification:
+- Will product go viral (10x sales) in next 7 days? Yes/No
+- XGBoost: Feature importance tells you what drives virality
+- Class imbalance: Only ~1% of products go viral. Oversample or adjust threshold
+
+2. Ranking:
+- Instead of binary, output virality score (0-100)
+- Rank products by score
+- Feature top 100 on homepage
+
+3. Temporal:
+- LSTMs capture time-series patterns (sales trend, search trend)
+- Do products with rising trends go viral more often? Yes
+
+4. Trigger detection:
+- When search interest spikes 5x in 1 day, flag product
+- When review count jumps 100% in 1 week, predict virality
+- Real-time monitoring
+
+Validation:
+
+Backtest: On past products, did model correctly predict virality?
+
+ROI: If Amazon features viral products early, they capture more of the sales. Higher inventory turns, customer satisfaction.
+
+Challenges:
+- Causality: Virality causes increased reviews, not vice versa
+- Feedback loops: If Amazon features product, it becomes viral (hard to separate)
+- Novelty: Next viral product might be unlike anything in training data`,
+      },
+      {
+        q: "YouTube wants to reduce harmful content recommendations without hurting overall watch time by more than 1%. How would you approach this?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Google",
+        a: `Harmful content (hate speech, misinformation, conspiracy) drives engagement but damages brand trust. Balancing both is the challenge.
+
+Problem:
+
+- Recommendation model optimizes for watch time
+- Harmful content gets high engagement (controversy, outrage drive clicks)
+- Removing recommendations hurts watch time
+
+Approach:
+
+1. Define "harmful":
+- Not just explicit (videos with slurs)
+- Also implicit: Conspiracy theories, medical misinformation, election denial
+- Requires nuance: Discuss conspiracy ≠ Promote it
+
+2. Harm scoring:
+- ML classifier: Is this video harmful? (0-1 score)
+- Train on labeled data: Policies team labels 10K videos
+- Use text (titles, descriptions), user reports, video metadata
+
+3. Recommendation adjustment:
+- Instead of removing harmful content, demote it
+- Lower rank in recommendations (not top 5, move to position 50+)
+- Reduce frequency of recommendations
+- Don't eliminate (preserves choice, reduces PR about censorship)
+
+4. Modulation approach:
+- For each user recommendation request:
+- Score recommended videos for harm
+- Rank by (watch_time_score - 0.2 * harm_score)
+- Reweight so harmful videos are less likely but not impossible
+
+5. Guardrails:
+- Monitor watch time impact daily
+- If watch time drops >1%, dial back demotion
+- Find threshold: Maximum harm reduction with <1% watch time hit
+
+6. Segmentation:
+- Harmful content demotion applies to all users (fairness)
+- Or: Different policies for different regions (political/religious sensitivity)
+- Or: Users <18 get stronger demotion
+
+7. User control:
+- Let users opt into "Limit recommendations of potentially harmful content"
+- Transparent: "This video is labeled as potentially misleading"
+
+Validation:
+
+A/B test:
+- Control: Current recommendation model
+- Test: Demotion model
+- Measure: Watch time (target <1% drop), harm exposure (target 30% reduction), user satisfaction
+
+Challenge:
+- Defining harm is subjective
+- What's "misinformation" varies by culture
+- Some find "fact-checking" itself biased
+
+Mitigation: Transparent policy, appeals process, regular audits.`,
+      },
+      {
+        q: "Amazon's same-day delivery promise fails 8% of the time in certain zip codes. How would you diagnose and fix this using data?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Amazon",
+        a: `8% failure rate is significant (80K orders per million). Some zip codes are problematic.
+
+Diagnosis:
+
+Step 1: Segment failures by geography.
+- Which zip codes fail 8%? Manhattan? Rural areas? Identify pattern
+- Hypothesis: Logistics capacity (fewer centers, more distance)
+
+Step 2: Analyze components.
+- Failure = order accepted as same-day but not delivered
+- Causes: Order accepted too late → no pickup slot, delivery hub full, driver unavailable, traffic delays
+
+Step 3: Root cause analysis.
+
+Hypothesis 1: Order acceptance timing.
+- Are orders in problematic zips accepted too late?
+- Cutoff should be 11am, but maybe system extends to 1pm on Wednesdays
+- Check: Order acceptance timestamp distribution by zip code
+
+Hypothesis 2: Distance & logistics capacity.
+- High-failure zip codes far from delivery hub? Yes → need new hub
+- Too many same-day orders for available drivers? Yes → hire drivers
+
+Hypothesis 3: Last-mile complexity.
+- Are these apartment buildings (harder to deliver)? Yes → prioritize early time slot
+- High fraud/return rate (orders canceled)? Yes → flag for quality review
+
+Step 4: Data investigation.
+- Collect: Orders in high-failure zips, why they failed (cutoff miss, driver unavailable, etc.)
+- Model: XGBoost to predict failure probability given order details
+- Features: Order time, product type, zip code, distance, driver availability
+
+Solutions:
+
+1. Earlier cutoff for problematic zips:
+- Instead of 1pm, allow until 11am for zip codes >10km from hub
+- Reduces late orders, increases fulfillment
+
+2. Dynamic pricing:
+- Charge premium for same-day in high-failure zips
+- Covers higher costs, makes selection more profitable
+
+3. Capacity planning:
+- If zip code consistently fails, add fulfillment center nearby
+- ROI model: Cost of new center vs. revenue gain from same-day sales increase
+
+4. Predictive acceptance:
+- At time of order, predict P(can fulfill same-day)
+- Only accept if P >95%
+- Better to decline orders than fail them
+
+5. Driver scheduling:
+- Forecast orders per zip code by hour
+- Schedule drivers accordingly (more drivers before 11am cutoff)
+
+Validation:
+- Pilot solutions on 5 zip codes
+- Track failure rate reduction
+- Measure customer satisfaction impact
+
+Target: Reduce 8% failure to <2%.`,
+      },
+      {
+        q: "How would you design a query understanding system for Google Search that handles misspellings, slang, and multilingual queries?",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Google",
+        a: `Google processes 9B queries/day across 140+ languages. Query understanding is foundational.
+
+Components:
+
+1. Spelling correction:
+- User types "speling"
+- BK-tree (edit distance data structure) finds nearest correct words
+- Neural spell-check: Transformer predicts most likely correction given context
+- Don't over-correct: "iPhone" is valid, not "i phone"
+
+2. Tokenization:
+- English: "New York" = 2 tokens
+- Chinese: No spaces. Model must learn word boundaries
+- Arabic: Diacritics modify meaning
+
+3. Named entity recognition (NER):
+- Identify entities: People (Einstein), places (Paris), companies (Google)
+- Separate queries: "Paris Hilton" (person) vs. "Hilton Paris" (hotel)
+- Multi-language NER models trained on 50+ languages
+
+4. Intent classification:
+- Query: "weather tomorrow"
+- Intent: Weather lookup (serve weather widget)
+- Query: "best coffee near me"
+- Intent: Local search (serve map)
+- Query: "how to bake cake"
+- Intent: How-to (serve recipe)
+- Multi-class classifier: 20-30 intent types
+
+5. Slang & colloquialisms:
+- User says "lit" (good), "salty" (upset), "sus" (suspicious)
+- Embedding models learn these synonyms from usage
+- Web text mining: Identify emerging slang from social media
+
+6. Multilingual handling:
+- Detect language (fastText model)
+- Apply language-specific processing
+- Translate if needed (for result retrieval in different language)
+- Preserve original query for user intent
+
+7. Semantic understanding:
+- "Best Chinese restaurants in SF" ≠ "Chinese people in SF"
+- BERT embeddings capture semantic meaning
+- Distinguish intent despite similar keywords
+
+Architecture:
+
+Input: Raw query string
+
+Pipeline:
+1. Language detection
+2. Spelling correction (if needed)
+3. Tokenization & POS tagging
+4. NER (extract entities)
+5. Intent classification
+6. Semantic embedding
+7. Output: Structured query representation
+
+Latency: <50ms per query (billions served daily)
+
+Validation:
+- Precision: Did system understand intent correctly? (>95% target)
+- Coverage: Handles slang, multilingual, misspelling? (>99% coverage)
+- User satisfaction: Do results match intent?
+
+Challenges:
+- Ambiguous queries: "bank" = financial institution vs. river side
+- Context dependency: Previous queries matter
+- Rapid language evolution: New slang emerges monthly
+
+Mitigation: Feedback loops. When users reformulate (search again), system learns original intent was misunderstood.`,
+      },
+      {
+        q: "Flipkart wants to launch a new category. How would you use data to decide which category to launch and in which cities first?",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        company: "Flipkart",
+        a: `Launching a category is risky: inventory, vendor relationships, customer education. Data-driven prioritization reduces risk.
+
+Step 1: Category selection.
+
+Analyze existing Flipkart search data:
+- What searches land on Flipkart but find nothing? ("electronics glasses" = unmet demand)
+- What searches leave Flipkart for Amazon? (competitor threat)
+- Search volume growth: Fastest-growing unmet queries?
+
+External signals:
+- Google Trends: Is category growing nationally?
+- Competitor inventory: How many SKUs does Amazon have?
+- Supplier ecosystem: Are Indian vendors available?
+
+Market size estimation:
+- National: 100M households × 10% penetration = 10M potential customers
+- Category TAM (total addressable market): $500M annually
+- Flipkart's capture: If 15% market share achievable = $75M revenue
+
+RFM analysis on existing customers:
+- Which Flipkart customers are most likely to buy new category?
+- High-value customers (high recency, frequency, monetary)
+
+Shortlist: 5-10 categories by opportunity size
+
+Step 2: City selection.
+
+For top-3 categories, identify best cities:
+
+1. Market maturity:
+- Metro cities (Mumbai, Bangalore, Delhi): High e-commerce penetration, ready to try new categories
+- Tier 2 (Pune, Hyderabad): Growing adoption
+- Tier 3: Lower adoption, higher price sensitivity
+
+2. Category fit:
+- Electronics glasses? Metros (urban professionals)
+- Home furniture? Metros + Tier 2 (middle-class growth)
+- Farm equipment? Tier 2 + rural (agricultural growth)
+
+3. Demand signals:
+- Search volume by city: Use Google Trends data + Flipkart's own search
+- Competitor presence: Where does Amazon have this category?
+
+4. Logistics ease:
+- Cities with existing Flipkart fulfillment centers (lower shipping cost)
+
+5. Customer profile match:
+- Which cities have high concentration of "new category adopter" customers?
+
+Rank cities: Market size × growth × logistics ease × customer readiness
+
+Step 3: Pilot strategy.
+
+Launch in top-3 cities:
+- Budget: 500 SKUs, 5-10 vendors
+- Duration: 3 months pilot
+- Track: Orders, GMV, AOV (average order value), NPS, repeat rate
+
+Success metrics:
+- 50K orders in 3 months = success. Scale nationally
+- <30K orders = category not ready. Iterate product mix
+- <15K orders = failure. Shelve category
+
+Step 4: Expansion.
+
+If pilot succeeds:
+- City 4-6: Scale inventory, recruit more vendors
+- Months 6-12: Achieve 1M orders nationally
+- Months 12+: Mainstream category like Electronics, Fashion`,
+      },
+      {
+        q: "How would you build a pricing intelligence system that monitors competitor prices across 5M products in real-time?",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Flipkart",
+        a: `Monitoring 5M product prices across competitors (Amazon, other retailers) in real-time is infrastructure-heavy.
+
+Architecture:
+
+1. Data ingestion:
+- Web scraping: Use headless browsers (Selenium, Playwright) to scrape competitor sites
+- API: Some partners provide price feeds (API connections)
+- Data feeds: Buy structured price data from data brokers
+- Frequency: Every 6 hours (balance between freshness and server load)
+
+2. Data parsing:
+- Extract: Product name, price, stock status, promotions
+- Normalize: "iPhone 14 Pro" vs. "iPhone 14Pro" vs. "Apple iPhone 14 Pro" = same product
+- Entity matching: Link competitor product to Flipkart SKU
+
+3. Real-time processing:
+- Stream processing (Kafka, Spark): As prices arrive, process immediately
+- Dedup: Avoid duplicate price records
+- Alerting: If competitor price drops >20%, alert merchandising team
+
+4. Price comparison:
+- Calculate: Flipkart price vs. competitor average
+- Identify: Undercut opportunities (competitor cheaper) and opportunity to raise (Flipkart premium)
+- Confidence: Only flag if competitor has >10 sales (high-volume products matter)
+
+5. Elasticity modeling:
+- Which products are price-sensitive? (demand drops if price up 10%)
+- Which are loyalty-driven? (demand stable despite price)
+- Use elasticity to recommend pricing:
+  - High elasticity: Stay competitive (low margin but high volume)
+  - Low elasticity: Higher margin (customers pay for loyalty)
+
+6. Dynamic pricing:
+- Model: p(optimal_price | competitor_price, elasticity, inventory, demand)
+- Recommend prices that maximize profit = (price - cost) × demand
+- Implement: Automated pricing updates for 100K SKUs (high-volume products)
+- Manual approval: Lower-volume products (merchandising team decides)
+
+Infrastructure:
+
+- Scraping: 1000 parallel jobs, distributed across 10 regions
+- Storage: 5M products × price history (12 months) = 100GB daily data
+- Latency: Price comparison available within 1 hour of scrape
+
+Monitoring:
+- Scrape success rate (% of products successfully scraped)
+- Data freshness (latest price is <6 hours old)
+- Pricing engine accuracy (predicted price vs. actual price)
+
+Challenges:
+- Robots.txt: Respect competitors' scraping policies
+- Blocking: IP bans, CAPTCHA. Use proxy rotation, random delays
+- Product identification: Similar products across sites are hard to match
+- Pricing dynamics: Flash sales, out-of-stock, limited inventory
+
+Mitigation: Build elastic infrastructure, use data partnerships, invest in entity matching.`,
+      },
+      {
+        q: "A fintech startup has 500K users but only 2% use the investment feature. How would you use data to increase adoption?",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        a: `2% adoption (10K users) is low. Your investment feature is dormant.
+
+Root cause analysis:
+
+1. Awareness:
+- Do users know the feature exists? Check: Fraction of active users who've clicked on "Investments" tab
+- If <30% have seen it, problem is discoverability
+
+2. Friction:
+- Onboarding: How many steps to make first investment? If >5, too many
+- Minimum investment: If $1000 minimum, only wealthy users qualify. Lower it to $100?
+- KYC (Know Your Customer): Investment has compliance. Make KYC frictionless
+
+3. Trust:
+- Review sentiment: Do existing user reviews mention safety, returns, transparency?
+- Competitive: Is Zerodha/Upstox better? User research tells us why they prefer competitors
+
+4. Value:
+- Returns: Are real returns attractive? (5% annual might be boring)
+- Education: Do users understand mutual funds, stocks? Low literacy = hesitation
+
+Diagnostic model:
+
+Build segments:
+- Aware & Active: Seen feature, opened it multiple times, didn't invest (friction)
+- Aware & Passive: Seen feature, opened once, forgot (engagement issue)
+- Unaware: Never seen feature (discovery issue)
+
+For each segment, recommend actions
+
+Solutions:
+
+1. Discovery:
+- Show "Your investment plan" card on home screen (personalized)
+- Push notifications: "Recommended: Invest in low-risk funds matching your profile"
+- Onboarding flow: For new users, suggest investment at signup (10x higher adoption)
+
+2. Trust building:
+- Social proof: "10,000 users invested ₹5Cr in mutual funds" (aggregate stats)
+- Transparency: Show historical returns of recommended funds
+- Educational content: Blog posts, explainer videos (YouTube)
+
+3. Friction reduction:
+- One-click investment: "Set & forget" automatic monthly investments
+- Lower minimums: $10 SIP (systematic investment plan) instead of $1000 lump sum
+- KYC simplification: Pre-fill from existing user data (name, address)
+
+4. Incentives:
+- First investment bonus: ₹500 cashback on first ₹10K investment
+- Referral: Earn ₹1000 for referring a friend who invests ₹10K
+- Match: Flipkart did this with savings: 20% return guarantee (risky but drove adoption)
+
+5. Personalization:
+- Age-based: Young users get aggressive growth funds; retirees get safer bonds
+- Risk profile: Questionnaire determines recommendation
+- Goal-based: "Save for house" vs. "Retirement"
+
+A/B test:
+
+- Control: Current onboarding
+- Test: Lower minimum ($10) + push notification + first-investment bonus
+- Measure: % who invest in next 30 days (target: 2% → 5%)
+
+If test succeeds (5% adoption = 25K new investors × ₹10K avg = ₹250Cr AUM), roll out.`,
+      },
+      {
+        q: "Your ride-hailing app shows surge pricing but users cancel and rebook 5 minutes later at normal price. How do you detect and handle this gaming behavior?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `Users gaming surge pricing (cancel at 2x surge, rebook at 1x) costs you revenue and disrupts driver allocation.
+
+Detection:
+
+Anomaly pattern:
+- User books ride
+- Surge price: 2x-3x multiplier active
+- User cancels within 5 minutes
+- Same location, within 5 minutes: User rebooks
+- New booking likely at 1x surge (price dropped)
+
+Build classifier:
+
+Features:
+- Time between cancel & rebook (seconds)
+- Price difference (surge_price - normal_price)
+- Distance: Pickup location same? (<100m = same)
+- User history: Has this user done this before? (repeat behavior)
+- Surge magnitude: Was surge >1.8x? (gaming only worthwhile for big surges)
+
+Model:
+- Logistic regression: P(is_gaming_behavior | features)
+- Training data: Label historical cancel-rebooks as "gaming" or "legitimate cancel"
+- Output: Confidence score (0-100)
+
+Legitimate cancels vs. gaming:
+- Genuine: User waited 5min for driver, driver far away, canceled
+- Gaming: User saw price, canceled immediately, rebooked 1min later
+
+Signal:
+- Gaming has tight pattern: cancel soon after booking, rebook immediately, same location
+- Genuine has more variation
+
+Responses:
+
+1. Soft deterrent (first offense):
+- When user tries to rebook immediately: "Note: Prices are changing. Are you sure?"
+- Shows we're aware of gaming (nudge effect)
+
+2. Temporary pricing hold:
+- User cancels at surge: Lock their surge price for 10 minutes
+- If they rebook within 10min, charged original surge price
+- Removes incentive to game
+
+3. Account friction (repeat gaming):
+- Repeat offenders (>5 gaming events/month): Soft ban from rebooking for 15 minutes after surge cancellation
+- Escalate: After 3 bans, account review for potential deactivation
+
+4. Dynamic pricing adjustment:
+- Gaming users: Show them slightly higher prices as deterrent
+- "You canceled a surge ride. Rebooking now at 1.2x base (your history shows frequent cancels)"
+
+5. Driver incentives:
+- During surge, offer drivers bonus: "Complete 3 consecutive rides, earn ₹200 extra"
+- Reduces likelihood driver gets canceled
+
+Monitoring:
+- % of cancels that are gaming vs. legitimate
+- Revenue impact of gaming
+- User satisfaction (ensure legitimate users aren't penalized)
+
+Challenges:
+- False positives: Cancel due to driver too far, legitimate rebook = not gaming
+- Gaming evolution: Users adapt tactics
+- Fairness: Penalizing gaming shouldn't harm legitimate cancels
+
+Mitigation: Human review of flagged cases, appeal process, transparent policy.`,
+      },
+      {
+        q: "How would you build a food safety risk scoring model for a restaurant aggregator platform using inspection data, user reviews, and order patterns?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `Food safety is critical. A single outbreak damages brand and harms users. Predictive risk scoring helps compliance teams prioritize inspections.
+
+Data sources:
+
+1. Health inspections:
+- Violations: Roach infestation, improper temperature, expired ingredients
+- Severity: Critical (immediate risk) vs. non-critical (best practice)
+- Frequency: Inspection history (pattern of violations)
+- Date: Recency matters (violation 2 months ago vs. 1 year ago)
+
+2. User reviews:
+- Mentions of food poisoning: "Got sick after eating", "found hair in food"
+- Patterns: "Third time food is cold" (temperature compliance)
+- Spike: Sudden negative reviews (signal of outbreak)
+
+3. Order patterns:
+- Refund rate: High refund = customer dissatisfaction (quality?)
+- Return rate: User orders from restaurant again? (quality indicator)
+- Cuisine type: Some cuisines higher risk (raw/undercooked seafood)
+
+4. Time factors:
+- Rush hours: More errors when busy (weekend dinner rush)
+- Staff turnover: New restaurants higher risk (inexperience)
+
+5. External:
+- Media reports of food poisoning at competitor restaurants (signal that health is on alert)
+
+Scoring model:
+
+Features:
+
+1. Inspection risk:
+- Score = 10 × (critical violations) + 2 × (non-critical) + recent_violation_penalty
+- Recent = violation <3 months old: 5 points
+- Score range: 0-50
+
+2. Review risk:
+- Count food-poisoning mentions in past 6 months
+- Sentiment analysis: Negative sentiment spike
+- Score range: 0-30
+
+3. Operational risk:
+- Refund rate (baseline by cuisine type): High refund = 0-20 points
+- Order frequency: Low repeat rate = 0-10 points
+
+4. Time risk:
+- Staff turnover (proxy: new restaurant): 0-10 points
+
+Total: Risk score 0-100
+
+Action thresholds:
+
+- 0-30: Low risk. Routine monitoring
+- 30-60: Medium risk. Increase inspection frequency (quarterly)
+- 60-80: High risk. Priority inspection (monthly)
+- 80+: Very high risk. Immediate inspection + potential removal
+
+Validation:
+
+Backtest: Did model correctly identify restaurants that later had violations or user complaints?
+
+P(violation | model_flagged_as_high_risk) = 60%+ means model is predictive
+
+Output:
+
+Dashboard:
+- Risk score by restaurant
+- Top 100 highest-risk restaurants for inspection queue
+- Trends: Is risk increasing (more violations) or decreasing (improved)?
+
+Monitoring:
+- False positive rate: Restaurants flagged but no issues found
+- False negative rate: Restaurants we missed that had issues
+- Target: 80% recall (catch 80% of true risks)
+
+Challenges:
+- Inspection bias: Busier restaurants inspected more often (confounding)
+- Sparse data: New restaurants have few reviews, no inspection history
+- Gaming: Restaurants delete negative reviews (mitigated by maintaining archive)
+
+Mitigation: Adjust for inspection frequency, use imputation for new restaurants, prevent review deletion.`,
+      },
     ],
   },
 };
