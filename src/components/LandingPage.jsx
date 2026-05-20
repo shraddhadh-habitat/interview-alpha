@@ -12,7 +12,7 @@ const C = {
   redWarmLight: 'rgba(220, 109, 109, 0.08)',
 };
 
-export default function LandingPage({ onStartPractice, onBrowseQuestions, onPathClick, user, showLoginModal }) {
+export default function LandingPage({ user, onNavigate, onLogin }) {
   // Hero section  . proper two-column layout with container
   const HeroSection = () => (
     <div style={{
@@ -108,7 +108,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
           {/* Primary CTA  . inline-block, not full width */}
           <button
             className="hero-cta"
-            onClick={onStartPractice}
+            onClick={() => user ? onNavigate('practice') : onLogin()}
             style={{
               display: 'inline-block',
               height: '44px',
@@ -142,7 +142,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
 
           {/* Secondary link */}
           <button
-            onClick={onBrowseQuestions}
+            onClick={() => onNavigate('practice')}
             style={{
               display: 'block',
               marginTop: '8px',
@@ -580,7 +580,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
             }}>
               Practice company-specific questions
             </p>
-            <button onClick={onStartPractice} style={{
+            <button onClick={() => user ? onNavigate('practice') : onLogin()} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -631,7 +631,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
             }}>
               Answer one question and see how you score
             </p>
-            <button onClick={onStartPractice} style={{
+            <button onClick={() => user ? onNavigate('practice') : onLogin()} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -682,7 +682,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
             }}>
               Start with fundamentals for any role
             </p>
-            <button onClick={onStartPractice} style={{
+            <button onClick={() => user ? onNavigate('practice') : onLogin()} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -733,7 +733,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
             }}>
               Thousands of questions with expert answers
             </p>
-            <button onClick={onBrowseQuestions} style={{
+            <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -932,7 +932,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions, onPath
         {/* Centered CTA */}
         <div style={{ textAlign: 'center' }}>
           <button
-            onClick={onStartPractice}
+            onClick={() => user ? onNavigate('practice') : onLogin()}
             style={{
               height: '44px',
               paddingLeft: '32px',

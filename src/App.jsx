@@ -368,6 +368,7 @@ export default function App() {
   const [showQuickStart, setShowQuickStart] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginMessage, setLoginMessage] = useState('');
+  const [postLoginDestination, setPostLoginDestination] = useState(null);
   const [profileLoaded, setProfileLoaded]   = useState(false);
   const quickStartCheckedRef = useRef(false);
 
@@ -570,6 +571,7 @@ export default function App() {
   // LandingPage handlers
   const handleLandingPrimaryCTA = useCallback(() => {
     if (!user) {
+      setPostLoginDestination('practice');
       setLoginMessage('Sign up to get AI feedback');
       setShowLoginModal(true);
     } else {
@@ -629,8 +631,9 @@ export default function App() {
           {page === 'interview'   && (
             !user ? (
               <LandingPage
-                onStartPractice={handleLandingPrimaryCTA}
-                onBrowseQuestions={handleLandingBrowse}
+                user={user}
+                onNavigate={(destination) => setPage(destination)}
+                onLogin={() => { setPostLoginDestination('practice'); setLoginMessage('Sign up to get AI feedback'); setShowLoginModal(true); }}
               />
             ) : (
               <InterviewAlpha
@@ -689,10 +692,15 @@ export default function App() {
             onClose={() => {
               setShowLoginModal(false);
               setLoginMessage('');
+              setPostLoginDestination(null);
             }}
             onSuccess={() => {
               setShowLoginModal(false);
               setLoginMessage('');
+              if (postLoginDestination) {
+                setPage(postLoginDestination);
+                setPostLoginDestination(null);
+              }
             }}
           />
         )}
