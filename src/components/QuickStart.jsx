@@ -15,11 +15,11 @@ const QUESTION = "How would you improve Instagram's Explore page?";
 
 const EXPERT_ANSWER = `I'd start with user intent. The Explore page serves two different jobs: passive discovery ("show me interesting things I don't know I want yet") and active search ("I'm looking for something specific"). These require different designs, and Instagram currently tries to serve both with one layout.
 
-Research questions I'd want answered: What percentage of Explore users have a specific intent vs. passive browsing? What percentage find Explore "useful" vs. "overwhelming"? Where do users who find something they like go next  -  do they follow the creator, save the post, or just scroll on?
+Research questions I'd want answered: What percentage of Explore users have a specific intent vs. passive browsing? What percentage find Explore "useful" vs. "overwhelming"? Where do users who find something they like go next? Do they follow the creator, save the post, or just scroll on?
 
-Problems I'd hypothesize: The grid layout optimizes for visual volume, not relevance. The algorithm conflates "popular" with "relevant to you." There's no context  -  why is this post surfaced?
+Problems I'd hypothesize: The grid layout optimizes for visual volume, not relevance. The algorithm conflates "popular" with "relevant to you." There's no context. Why is this post surfaced?
 
-Design improvements I'd test: Intent fork at entry  -  two modes: Discover (passive, curated) and Search (active, query-driven). Reduce grid density with topic labels. "Because you follow X" labels to surface recommendation reasons. When a user dwells on a post for 5+ seconds, show related creators to follow  -  converting passive interest into an active relationship.
+Design improvements I'd test: Intent fork at entry. Two modes: Discover (passive, curated) and Search (active, query-driven). Reduce grid density with topic labels. "Because you follow X" labels to surface recommendation reasons. When a user dwells on a post for 5+ seconds, show related creators to follow. This converts passive interest into an active relationship.
 
 Success metric: percentage of Explore sessions that result in a follow or a save, vs. sessions that end with a scroll and no action.`;
 

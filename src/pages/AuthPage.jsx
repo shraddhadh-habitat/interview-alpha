@@ -88,7 +88,7 @@ export default function AuthPage() {
         // Save fingerprint to profile (fire-and-forget  -  profile exists via DB trigger)
         supabase.rpc('set_pending_fingerprint', { p_email: email, fp: fingerprint });
 
-        setSuccess('Account created  -  check your email to confirm, then log in.');
+        setSuccess('Account created. Check your email to confirm, then log in.');
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;

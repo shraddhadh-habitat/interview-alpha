@@ -57,12 +57,12 @@ const TIPS = {
   'Frameworks': [
     'Practice CIRCLES, JTBD, RICE, and AARRR until they feel natural',
     'Always state why you chose this framework over alternatives',
-    'Adapt frameworks to context  -  never apply them mechanically',
+    'Adapt frameworks to context  . never apply them mechanically',
   ],
   'Communication': [
     'Lead with the conclusion, then support it (headline-first)',
     'Record yourself and listen for clarity, filler words, and pace',
-    'Pause instead of saying "um"  -  silence signals confidence',
+    'Pause instead of saying "um"  . silence signals confidence',
   ],
   'Trade-off Awareness': [
     'Explicitly name 2 things you are NOT doing and why',
@@ -98,10 +98,10 @@ function gradeInfo(score) {
 }
 
 function compInsightText(score) {
-  if (score >= 8) return 'Exceptional  -  interview-ready';
-  if (score >= 6) return 'Good  -  minor refinements needed';
-  if (score >= 4) return 'Developing  -  focused practice recommended';
-  return 'Critical gap  -  prioritize this immediately';
+  if (score >= 8) return 'Exceptional  . interview-ready';
+  if (score >= 6) return 'Good  . minor refinements needed';
+  if (score >= 4) return 'Developing  . focused practice recommended';
+  return 'Critical gap  . prioritize this immediately';
 }
 
 function compInsightColor(score) {
@@ -758,7 +758,7 @@ export default function Scorecard({ user }) {
 
               {/* Score trend */}
               <div style={sectionBox}>
-                <div style={sectionLabel}>Score Trend  -  Last {Math.min(progress.chartData.length, 30)} Attempts</div>
+                <div style={sectionLabel}>Score Trend  . Last {Math.min(progress.chartData.length, 30)} Attempts</div>
                 <ScoreChart data={progress.chartData} />
               </div>
 
@@ -775,7 +775,7 @@ export default function Scorecard({ user }) {
               {/* Weakest areas */}
               {progress.weakest.length > 0 && (
                 <div style={{ ...sectionBox, background: '#FFFDF7', border: `1px solid ${C.yellowBorder}` }}>
-                  <div style={{ ...sectionLabel, color: C.yellow }}>Focus Areas  -  Lowest Competencies</div>
+                  <div style={{ ...sectionLabel, color: C.yellow }}>Focus Areas  . Lowest Competencies</div>
                   <div style={{ display: 'grid', gap: 12, marginBottom: 18 }}>
                     {progress.weakest.map(w => <CompBar key={w.key} label={w.key} value={w.value} />)}
                   </div>
@@ -890,7 +890,7 @@ export default function Scorecard({ user }) {
               </div>
               <div className="sc-insight-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
                 {scorecard.strongest && <InsightCard title="Strongest Competency" icon="◆" iconColor={C.success} value={scorecard.strongest[0]} sub={`${scorecard.strongest[1].toFixed(1)} / 10`} subColor={C.success} />}
-                {scorecard.weakest && <InsightCard title="Weakest Competency" icon="▼" iconColor={C.red} value={scorecard.weakest[0]} sub={`${scorecard.weakest[1].toFixed(1)} / 10  -  focus here`} subColor={C.red} badge="Focus Area" badgeColor={C.redLight} badgeBorder={C.redBorder} badgeText={C.red} />}
+                {scorecard.weakest && <InsightCard title="Weakest Competency" icon="▼" iconColor={C.red} value={scorecard.weakest[0]} sub={`${scorecard.weakest[1].toFixed(1)} / 10  . focus here`} subColor={C.red} badge="Focus Area" badgeColor={C.redLight} badgeBorder={C.redBorder} badgeText={C.red} />}
                 <InsightCard title="Improvement Rate" icon={scorecard.improvRate != null && parseFloat(scorecard.improvRate) >= 0 ? '▲' : '▼'} iconColor={scorecard.improvRate != null && parseFloat(scorecard.improvRate) >= 0 ? C.success : C.red} value={scorecard.improvRate != null ? `${parseFloat(scorecard.improvRate) >= 0 ? '+' : ''}${scorecard.improvRate}%` : ' - '} sub="first 5 vs last 5 sessions" subColor={C.textMuted} />
                 <InsightCard title="Consistency" icon="≈" iconColor={C.green} value={scorecard.consistency} sub={scorecard.sd != null ? `σ = ${scorecard.sd} pts` : 'Need 2+ sessions'} subColor={C.textMuted} />
               </div>
@@ -931,14 +931,14 @@ export default function Scorecard({ user }) {
             </Section>
 
             {/* Performance Timeline */}
-            <Section title="Performance Timeline" sub="All attempts chronologically  -  orange = score, green dashed = 3-pt moving average">
+            <Section title="Performance Timeline" sub="All attempts chronologically  . orange = score, green dashed = 3-pt moving average">
               <PerformanceTimeline timeline={scorecard.timeline} />
             </Section>
           </>
         )}
 
         {/* Detailed Attempt Log */}
-        <Section title="Detailed Attempt Log" sub="Every session and practice attempt  -  click any row to expand full feedback">
+        <Section title="Detailed Attempt Log" sub="Every session and practice attempt  . click any row to expand full feedback">
           <div style={{ display: 'flex', gap: 10, marginBottom: 18, flexWrap: 'wrap', alignItems: 'center' }}>
             <FilterSelect label="Type" value={filterType} onChange={setFilterType} options={[{ value: 'all', label: 'All Types' }, { value: 'interview', label: 'Interviews only' }, { value: 'practice', label: 'Practice only' }]} />
             <FilterSelect label="Sort" value={`${sortBy}-${sortDir}`} onChange={v => { const [by, dir] = v.split('-'); setSortBy(by); setSortDir(dir); }} options={[{ value: 'date-desc', label: 'Newest first' }, { value: 'date-asc', label: 'Oldest first' }, { value: 'score-desc', label: 'Highest score' }, { value: 'score-asc', label: 'Lowest score' }]} />

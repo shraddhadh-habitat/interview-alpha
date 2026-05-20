@@ -126,7 +126,7 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
             "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
           </blockquote>
           <p style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 16 }}>
-             -  Shrey C.
+            Shrey C.
           </p>
           <p style={{ fontSize: 13, color: C.textMuted }}>
             Trusted by 150+ PMs preparing for Google, Amazon, Meta, Flipkart

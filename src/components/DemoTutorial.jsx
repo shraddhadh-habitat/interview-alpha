@@ -15,7 +15,7 @@ const STEPS = [
     label: 'Welcome',
     title: 'Welcome to InterviewAlpha',
     subtitle: 'Your AI-powered PM interview coach',
-    body: `InterviewAlpha gives you everything you need to land your next PM role  -  from live mock interviews with real-time feedback, to a 1100+ question practice bank covering every level from APM to CPO.`,
+    body: `InterviewAlpha gives you everything you need to land your next PM role: from live mock interviews with real-time feedback, to a 1100+ question practice bank covering every level from APM to CPO.`,
   },
   {
     id: 'profile',
@@ -23,7 +23,7 @@ const STEPS = [
     label: 'Your Profile',
     title: 'Start with Your Context',
     subtitle: 'Resume + Job Description = hyper-targeted coaching',
-    body: `Paste your resume and the job description you're targeting before your first session.\n\nInterviewAlpha uses this context to ask the exact questions a Senior PM at that company would ask  -  not generic questions, but follow-ups that reference your specific experience and the role's stated requirements.\n\nYour profile auto-saves and pre-fills every new session.`,
+    body: `Paste your resume and the job description you're targeting before your first session.\n\nInterviewAlpha uses this context to ask the exact questions a Senior PM at that company would ask. Not generic questions, but follow-ups that reference your specific experience and the role's stated requirements.\n\nYour profile auto-saves and pre-fills every new session.`,
   },
   {
     id: 'interview',
@@ -31,7 +31,7 @@ const STEPS = [
     label: 'Live Interview',
     title: 'The Live Interview Simulator',
     subtitle: 'Three tracks. Real pressure. Expert feedback.',
-    body: `Choose your track  -  Product Sense, Execution, or Behavioral  -  and enter a real-time mock interview with an AI interviewer that stays in character.\n\nSpeak or type your answers. After each response you get structured feedback on structure, user empathy, and analytical rigor.\n\nEnd the session to receive your overall score, filler word analysis, high-signal keyword detection, and a Director-level rewrite of your answer.`,
+    body: `Choose your track (Product Sense, Execution, or Behavioral) and enter a real-time mock interview with an AI interviewer that stays in character.\n\nSpeak or type your answers. After each response you get structured feedback on structure, user empathy, and analytical rigor.\n\nEnd the session to receive your overall score, filler word analysis, high-signal keyword detection, and a Director-level rewrite of your answer.`,
   },
   {
     id: 'practiceqa',
@@ -39,7 +39,7 @@ const STEPS = [
     label: 'Practice Q&A',
     title: 'Browse 1100+ PM Questions',
     subtitle: 'Expert answers across every designation',
-    body: `The Practice Q&A library covers every PM level from Associate PM to CPO  -  across both product and behavioral question categories.\n\nFilter by designation, search by keyword, and expand any question to read a structured expert answer that demonstrates the frameworks and thinking patterns a top PM would use.\n\nThese are frameworks, not scripts. Replace example stories with your own.`,
+    body: `The Practice Q&A library covers every PM level from Associate PM to CPO across both product and behavioral question categories.\n\nFilter by designation, search by keyword, and expand any question to read a structured expert answer that demonstrates the frameworks and thinking patterns a top PM would use.\n\nThese are frameworks, not scripts. Replace example stories with your own.`,
   },
   {
     id: 'practicemode',
@@ -55,7 +55,7 @@ const STEPS = [
     label: 'Past Sessions & Leaderboard',
     title: 'Track Your Progress',
     subtitle: 'Every session saved. Competition optional.',
-    body: `Every interview session is saved  -  you can replay the full conversation, review your score breakdown, and see how you've improved over time.\n\nThe Leaderboard shows top performers across all users. Your ranking is based on average session score.\n\nYou're ready. Start with a live interview, or warm up in the Practice Q&A library.`,
+    body: `Every interview session is saved. You can replay the full conversation, review your score breakdown, and see how you've improved over time.\n\nThe Leaderboard shows top performers across all users. Your ranking is based on average session score.\n\nYou're ready. Start with a live interview, or warm up in the Practice Q&A library.`,
   },
 ];
 
@@ -158,7 +158,7 @@ export default function DemoTutorial({ onClose }) {
               fontSize: 10, letterSpacing: 3, textTransform: 'uppercase',
               color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
             }}>
-              Step {step + 1} of {STEPS.length}  -  {current.label}
+              Step {step + 1} of {STEPS.length}  . {current.label}
             </span>
           </div>
 

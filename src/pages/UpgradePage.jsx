@@ -66,7 +66,7 @@ function StatusBanner({ profile }) {
   if (status === 'pending') {
     return (
       <div style={{ padding: '14px 20px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 16, marginBottom: 32, fontSize: 13, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-        ⏳ Payment submitted  -  we'll activate your account within 24 hours. No action needed.
+        ⏳ Payment submitted  . we'll activate your account within 24 hours. No action needed.
       </div>
     );
   }
@@ -179,14 +179,14 @@ export default function UpgradePage({ user, profile, onBack }) {
             Go Pro. Land the Role.
           </h1>
           <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, maxWidth: 480, margin: '0 auto' }}>
-            100 AI sessions per month  -  mock interviews, practice evaluations, and complete session history  -  everything you need to land the role.
+            100 AI sessions per month  . mock interviews, practice evaluations, and complete session history  . everything you need to land the role.
           </p>
         </div>
 
-        {/* Step 1  -  Plan selection */}
+        {/* Step 1  . Plan selection */}
         {step === 1 && (
           <div style={{ animation: 'fadeUp 0.35s cubic-bezier(0.22,1,0.36,1)' }}>
-            {/* Plan comparison table  -  scrollable on narrow screens */}
+            {/* Plan comparison table  . scrollable on narrow screens */}
             <div className="up-compare-wrap" style={{ marginBottom: 32, borderRadius: 12, border: `1px solid ${C.border}` }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0, borderRadius: 12, overflow: 'hidden', minWidth: 320 }}>
               {/* Header row */}
@@ -274,7 +274,7 @@ export default function UpgradePage({ user, profile, onBack }) {
           </div>
         )}
 
-        {/* Step 2  -  Payment */}
+        {/* Step 2  . Payment */}
         {step === 2 && (
           <div style={{ animation: 'fadeUp 0.35s cubic-bezier(0.22,1,0.36,1)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32 }}>
@@ -389,7 +389,7 @@ export default function UpgradePage({ user, profile, onBack }) {
 
               {/* Reference entry side */}
               <div>
-                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 16, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Step 2  -  Enter Reference</div>
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 16, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Step 2  . Enter Reference</div>
                 <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, marginBottom: 20 }}>
                   After paying, enter the UPI transaction ID from your payment app (e.g. 12-digit reference number or UPI ref).
                 </p>
@@ -437,7 +437,7 @@ export default function UpgradePage({ user, profile, onBack }) {
           </div>
         )}
 
-        {/* Step 3  -  Confirmation */}
+        {/* Step 3  . Confirmation */}
         {step === 3 && (
           <div style={{ textAlign: 'center', padding: '32px 0', animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
             <div style={{ width: 64, height: 64, borderRadius: '50%', background: C.successLight, border: `2px solid ${C.successBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', fontSize: 28 }}>

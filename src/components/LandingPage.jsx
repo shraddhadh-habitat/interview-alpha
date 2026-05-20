@@ -13,7 +13,7 @@ const C = {
 };
 
 export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
-  // Hero section  -  proper two-column layout with container
+  // Hero section  . proper two-column layout with container
   const HeroSection = () => (
     <div style={{
       background: C.bg,
@@ -62,7 +62,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
         gap: '48px',
         alignItems: 'center',
       }}>
-        {/* LEFT COLUMN  -  55% */}
+        {/* LEFT COLUMN  . 55% */}
         <div className="hero-left" style={{
           flex: '0 0 55%',
           maxWidth: '100%',
@@ -102,10 +102,10 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             maxWidth: '420px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            Practice real interview questions. See what worked, what didn't, and how to improve  -  in under 2 minutes.
+            Practice real interview questions. See what worked, what didn't, and how to improve in under 2 minutes.
           </p>
 
-          {/* Primary CTA  -  inline-block, not full width */}
+          {/* Primary CTA  . inline-block, not full width */}
           <button
             className="hero-cta"
             onClick={onStartPractice}
@@ -163,7 +163,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
           </button>
         </div>
 
-        {/* RIGHT COLUMN  -  45% */}
+        {/* RIGHT COLUMN  . 45% */}
         <div className="hero-right" style={{
           flex: '0 0 45%',
           maxWidth: '340px',
@@ -309,7 +309,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 16px 0',
             }}>
-               -  Shrey C., Product Manager
+              Shrey C., Product Manager
             </p>
 
             {/* Divider */}

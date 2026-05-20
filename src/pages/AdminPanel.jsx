@@ -42,7 +42,7 @@ export default function AdminPanel({ user }) {
   const [deleteTarget, setDeleteTarget]     = useState(null); // review id pending delete confirm
   const [userFilters, setUserFilters] = useState({ email: '', name: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' });
 
-  // Gate  -  only admin email
+  // Gate  . only admin email
   if (!user || !ADMIN_EMAILS.includes(user.email.toLowerCase())) {
     return (
       <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>

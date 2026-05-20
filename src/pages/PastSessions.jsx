@@ -91,7 +91,7 @@ function SessionDetail({ session, onBack }) {
               ? session.detected_filler_words.map((w, i) => (
                   <span key={i} style={{ padding: '3px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 6, fontSize: 12, color: C.red }}>{w}</span>
                 ))
-              : <span style={{ fontSize: 12, color: C.textMuted }}>None  -  clean delivery</span>}
+              : <span style={{ fontSize: 12, color: C.textMuted }}>None  . clean delivery</span>}
           </div>
         </div>
         <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>

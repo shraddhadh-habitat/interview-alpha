@@ -327,7 +327,7 @@ export default function MyProgress({ user }) {
 
             {/* Score over time */}
             <div style={sectionStyle}>
-              <div style={sectionHeader}>Score Trend  -  Last {Math.min(chartData.length, 30)} Attempts</div>
+              <div style={sectionHeader}>Score Trend: Last {Math.min(chartData.length, 30)} Attempts</div>
               <ScoreChart data={chartData} />
             </div>
 
@@ -344,7 +344,7 @@ export default function MyProgress({ user }) {
             {/* Weakest areas */}
             {weakest.length > 0 && (
               <div style={{ ...sectionStyle, background: C.bgSoft, border: `1px solid ${C.yellowBorder}` }}>
-                <div style={{ ...sectionHeader, color: C.yellow }}>Focus Areas  -  Lowest Competencies</div>
+                <div style={{ ...sectionHeader, color: C.yellow }}>Focus Areas: Lowest Competencies</div>
                 <div style={{ display: 'grid', gap: 14, marginBottom: 20 }}>
                   {weakest.map(w => <CompBar key={w.key} label={w.key} value={w.value} />)}
                 </div>

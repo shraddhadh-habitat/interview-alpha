@@ -720,7 +720,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   className="pm-answer-textarea"
                   value={textAnswer}
                   onChange={e => setTextAnswer(e.target.value)}
-                  placeholder="Type your answer here. Structure matters  -  try to open with a clear framework before diving into details."
+                  placeholder="Type your answer here. Structure matters. Try to open with a clear framework before diving into details."
                   rows={8}
                   style={{
                     width: '100%', padding: '16px 18px',

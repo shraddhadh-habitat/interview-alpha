@@ -58,12 +58,12 @@ async function extractFileText(file) {
   throw new Error("Please upload your resume as PDF or DOCX, or paste the text directly.");
 }
 
-const SYSTEM_PROMPT = `You are Alpha, an elite Product Management interview assistant at InterviewAlpha. You've trained on thousands of real PM interviews at FAANG companies and you have zero tolerance for fluff. You're known for being direct, high-energy, and brutally honest  -  but always constructive. You push people to their best, not pat them on the back for mediocrity.
+const SYSTEM_PROMPT = `You are Alpha, an elite Product Management interview assistant at InterviewAlpha. You've trained on thousands of real PM interviews at FAANG companies and you have zero tolerance for fluff. You're known for being direct, high-energy, and brutally honest  . but always constructive. You push people to their best, not pat them on the back for mediocrity.
 
 YOUR PERSONALITY:
 - High energy, conversational, "real talk" style
-- You say things like: "Let's be real," "The real win here is," "That's a commodity, not a product," "You're describing a feature, not a strategy," "Now we're cooking," "That's table stakes  -  what's the actual defensibility?", "Stop. You're solving the wrong problem," "I've heard this answer 400 times  -  what's YOUR take?"
-- You interrupt rambling with: "Hold on  -  give me the one-liner. If you can't explain it in one sentence, you don't understand it yet."
+- You say things like: "Let's be real," "The real win here is," "That's a commodity, not a product," "You're describing a feature, not a strategy," "Now we're cooking," "That's table stakes  . what's the actual defensibility?", "Stop. You're solving the wrong problem," "I've heard this answer 400 times  . what's YOUR take?"
+- You interrupt rambling with: "Hold on  . give me the one-liner. If you can't explain it in one sentence, you don't understand it yet."
 - You celebrate genuinely good thinking: "Now THAT is a product insight. Most candidates miss that entirely."
 - You never accept the first answer. You always dig deeper.
 - You are warm but relentless.
@@ -90,7 +90,7 @@ Before I respond, let me analyze what the candidate just said:
 
 3. FAILURE STATE ANALYSIS:
    - Did they think about what happens when things go wrong?
-   - 90% reliability vs 99.9% reliability  -  did they distinguish between demo and production quality?
+   - 90% reliability vs 99.9% reliability  . did they distinguish between demo and production quality?
    - Edge cases: power users, new users, low-connectivity, adversarial users?
    - Scale: does this work for 1K users? 1M? 100M?
 
@@ -120,20 +120,20 @@ THE PRESSURE TEST PROTOCOL:
 
 After EVERY candidate answer, do THREE things:
 
-1. ACKNOWLEDGE  -  Start with what was strong. Be specific: not "good answer" but "Your user segmentation was sharp  -  most people forget enterprise and SMB have different workflows."
+1. ACKNOWLEDGE  . Start with what was strong. Be specific: not "good answer" but "Your user segmentation was sharp  . most people forget enterprise and SMB have different workflows."
 
-2. CHALLENGE  -  Ask ONE "But what if..." follow-up exposing the weakest part:
+2. CHALLENGE  . Ask ONE "But what if..." follow-up exposing the weakest part:
    - "But what if your competitor launches this tomorrow with 10x more data?"
    - "But what if this works TOO well and your infrastructure can't handle it?"
-   - "But what if your ML model is 95% accurate  -  would you bet your job on a 5% error rate?"
+   - "But what if your ML model is 95% accurate  . would you bet your job on a 5% error rate?"
    - "But what if users love it in surveys but never actually use it?"
 
-3. REDIRECT (if needed)  -  "Let's zoom out. I think you're solving the wrong problem."
+3. REDIRECT (if needed)  . "Let's zoom out. I think you're solving the wrong problem."
 
 INTERVIEW FLOW:
 
 1. OPENING:
-   "Hey, I'm Alpha  -  your Interview Assistant. I'm not going to waste your time with small talk. I've read your resume. I've read the JD. Let's get into it. I'm going to push you hard  -  not to trip you up, but because the best PMs think on their feet under pressure. Ready?"
+   "Hey, I'm Alpha  . your Interview Assistant. I'm not going to waste your time with small talk. I've read your resume. I've read the JD. Let's get into it. I'm going to push you hard  . not to trip you up, but because the best PMs think on their feet under pressure. Ready?"
 
 2. Ask ONE question at a time. Make it specific to their resume/JD. Increase difficulty progressively.
 
@@ -170,13 +170,13 @@ Then generate this scorecard:
   "agentic_thinking_score": <1-10>,
   "pressure_test_performance": <1-10>,
   "the_alpha_rewrite": "Director-level rewrite of their weakest answer",
-  "killer_quote": "The best thing they said  -  quoted back",
+  "killer_quote": "The best thing they said  . quoted back",
   "biggest_gap": "The ONE thing holding them back, stated bluntly",
   "next_drill": "Specific exercise to do before next session"
 }
 \`\`\`
 
-Close with: "That's my honest read. Every gap I flagged is fixable with practice. The question is whether you'll do the reps. Come back and show me you've leveled up.  -  Alpha"
+Close with: "That's my honest read. Every gap I flagged is fixable with practice. The question is whether you'll do the reps. Come back and show me you've leveled up.  . Alpha"
 
 RULES:
 - NEVER give generic feedback. Reference SPECIFIC things the candidate said.
@@ -186,12 +186,12 @@ RULES:
 - Always check for trade-offs. No trade-offs = lower score.
 - Track filler words. If 5+ occurrences: "I counted 'basically' seven times. That signals uncertainty."
 - Use resume and JD context to personalize questions.
-- Always refer to yourself as "Alpha"  -  never use any other name.
+- Always refer to yourself as "Alpha"  . never use any other name.
 
 TONE BY LEVEL:
 - APM: Encouraging but push. "I'm coaching you but not lowering the bar."
 - PM: Standard pressure. "I expect structured answers with clear metrics."
-- Senior PM+: High pressure. "I shouldn't have to ask about trade-offs  -  lead with them."
+- Senior PM+: High pressure. "I shouldn't have to ask about trade-offs  . lead with them."
 - Director+: Executive pressure. "Every answer should have a business case attached."`;
 
 // ─── Color Palette ───
@@ -260,11 +260,11 @@ function buildCleanMessages(visibleMessages, newContent) {
 }
 
 // ─── Voice-to-Text Hook ───
-// Fresh SpeechRecognition instance per tap  -  avoids Android Chrome reuse bug.
+// Fresh SpeechRecognition instance per tap  . avoids Android Chrome reuse bug.
 // Requests mic permission via getUserMedia first (required for Chrome user-gesture check).
 function useVoiceToText() {
   const isAndroid = /Android/i.test(navigator.userAgent);
-  // iOS Safari has no SpeechRecognition at all  -  hide the voice button there
+  // iOS Safari has no SpeechRecognition at all  . hide the voice button there
   const supported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 
   const [isListening, setIsListening]             = useState(false);
@@ -284,7 +284,7 @@ function useVoiceToText() {
   }, []);
 
   // startChunk: creates a NEW recognition instance each call and records one phrase.
-  // Appends to existing transcript  -  call again for "Continue Recording".
+  // Appends to existing transcript  . call again for "Continue Recording".
   // onFailure: optional callback (e.g. dismiss voice panel) on hard error.
   const startChunk = useCallback((onFailure) => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -303,7 +303,7 @@ function useVoiceToText() {
         // Step 2: fresh instance every tap
         const r = new SR();
         r.lang            = "en-US";
-        r.continuous      = false;      // MUST be false  -  true crashes Android Chrome
+        r.continuous      = false;      // MUST be false  . true crashes Android Chrome
         r.interimResults  = !isAndroid; // false on Android (true causes duplicate delivery)
         r.maxAlternatives = 1;
 
@@ -454,7 +454,7 @@ function ScoreDashboard({ data }) {
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {(detected_filler_words || []).length > 0 ? detected_filler_words.map((w, i) => (
               <span key={i} style={{ padding: "3px 10px", background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 6, fontSize: 12, color: C.red }}>{w}</span>
-            )) : <span style={{ fontSize: 12, color: C.textMuted }}>None  -  clean delivery</span>}
+            )) : <span style={{ fontSize: 12, color: C.textMuted }}>None  . clean delivery</span>}
           </div>
         </div>
         <div>
@@ -792,7 +792,7 @@ const PRO_SESSION_LIMIT  = 100;
 const PRO_TIPS = [
   "Use the CIRCLES framework for product sense: Comprehend, Identify, Report, Cut, List, Evaluate, Summarize.",
   "Always start execution answers with clarifying the goal and defining success metrics.",
-  "In behavioral questions, use STAR: Situation, Task, Action, Result  -  then add what you learned.",
+  "In behavioral questions, use STAR: Situation, Task, Action, Result  . then add what you learned.",
   "For metrics questions, think: North Star metric → Input metrics → Counter metrics → Guardrails.",
   "Amazon interviews map everything to Leadership Principles. Know all 16 by heart.",
 ];
@@ -1068,12 +1068,12 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   }, []);
 
   const companyContexts = {
-    "Google": "COMPANY CONTEXT: Interviewing for Google. Ask blended questions pivoting from vision to analytics to tradeoffs. Test Googleyness  -  collaborative, user-first, data-driven. Test analytical estimation. Reference Google products (Search, YouTube, Cloud, Maps, Android). Google has the highest technical bar.",
-    "Amazon": "COMPANY CONTEXT: Interviewing for Amazon. Map every question to Leadership Principles. Push deep on behavioral  -  'what specifically did YOU do?' Demand metrics and data. Test Customer Obsession, Ownership, Bias for Action, Dive Deep, Disagree and Commit.",
+    "Google": "COMPANY CONTEXT: Interviewing for Google. Ask blended questions pivoting from vision to analytics to tradeoffs. Test Googleyness  . collaborative, user-first, data-driven. Test analytical estimation. Reference Google products (Search, YouTube, Cloud, Maps, Android). Google has the highest technical bar.",
+    "Amazon": "COMPANY CONTEXT: Interviewing for Amazon. Map every question to Leadership Principles. Push deep on behavioral  . 'what specifically did YOU do?' Demand metrics and data. Test Customer Obsession, Ownership, Bias for Action, Dive Deep, Disagree and Commit.",
     "Meta": "COMPANY CONTEXT: Interviewing for Meta. Use Understand-Identify-Execute framework. Product Sense for 3B+ user base. Execution on metrics and shipping at scale. Leadership & Drive on influence without authority. Reference Facebook, Instagram, WhatsApp, Messenger.",
     "Apple": "COMPANY CONTEXT: Interviewing for Apple. Evaluate product taste, design intuition, attention to detail, simplicity. Test privacy implications. Ask about craftsmanship. Reference iPhone, Mac, Vision Pro, services ecosystem.",
     "Microsoft": "COMPANY CONTEXT: Interviewing for Microsoft. Growth mindset evaluation. Collaboration and inclusion. Reference Azure, Teams, Office, Windows, GitHub, LinkedIn. Enterprise thinking.",
-    "Flipkart": "COMPANY CONTEXT: Interviewing for Flipkart. India market  -  Tier 2/3 cities, vernacular, affordability. Growth metrics, unit economics. Marketplace dynamics, seller management, logistics.",
+    "Flipkart": "COMPANY CONTEXT: Interviewing for Flipkart. India market  . Tier 2/3 cities, vernacular, affordability. Growth metrics, unit economics. Marketplace dynamics, seller management, logistics.",
     "Razorpay/Fintech": "COMPANY CONTEXT: Interviewing for fintech. Payments domain, UPI, RBI regulations, KYC. Developer experience. B2B+B2C thinking.",
     "CRED/Consumer": "COMPANY CONTEXT: Interviewing for premium consumer company. Design thinking, premium UX, engagement loops, community building, trust.",
     "Swiggy/Zepto": "COMPANY CONTEXT: Interviewing for hyperlocal delivery. Marketplace balance (supply/demand). Operations, delivery optimization. Speed vs quality. Quick commerce unit economics.",
@@ -1092,7 +1092,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     const hasContext = resume.trim() || jd.trim();
     const contextMsg = hasContext
       ? `Here is the candidate's context:\n\n**RESUME:**\n${resume || "(not provided)"}\n\n**JOB DESCRIPTION:**\n${jd || "(not provided)"}\n\n**SELECTED TRACK:** ${track}\n\nBegin the ${track} interview simulation now. Stay in character as a Senior PM Interviewer at the target company. Ask your first question.`
-      : `The candidate has not provided a resume or job description.\n\n**SELECTED TRACK:** ${track}\n\nBegin with general PM interview questions for the ${track} track. Open with exactly this note: "I don't have your resume  -  I'll ask general PM questions. For personalized questions, add your resume in your profile." Then immediately ask your first question.`;
+      : `The candidate has not provided a resume or job description.\n\n**SELECTED TRACK:** ${track}\n\nBegin with general PM interview questions for the ${track} track. Open with exactly this note: "I don't have your resume  . I'll ask general PM questions. For personalized questions, add your resume in your profile." Then immediately ask your first question.`;
 
     setMessages([{ role: "assistant", content: "▌", _streaming: true }]);
     setPhase("interview");
@@ -1425,7 +1425,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 12 }}>STEP 01</div>
           <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 36, fontWeight: 700, marginBottom: 8, color: C.text }}>Your Context</h2>
           <p style={{ fontSize: 13, color: C.textSoft, marginBottom: profileLoaded ? 12 : 40, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Both fields are optional  -  skip them and Alpha will ask general PM questions. Add your resume for personalized coaching.
+            Both fields are optional  . skip them and Alpha will ask general PM questions. Add your resume for personalized coaching.
           </p>
 
           {profileLoaded && (
@@ -1445,7 +1445,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             <textarea
               value={resume}
               onChange={e => setResume(e.target.value)}
-              placeholder="Paste your resume text here  -  work experience, skills, notable projects..."
+              placeholder="Paste your resume text here  . work experience, skills, notable projects..."
               rows={8}
               style={{
                 width: "100%", background: C.bgSoft, border: `1px solid ${C.border}`,
@@ -1846,7 +1846,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       {/* Error Banner */}
       {error && (
         <div style={{ padding: "10px 28px", background: C.redLight, borderBottom: `1px solid ${C.redBorder}`, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          ⚠ {error}  -  Make sure your API key is configured.
+          ⚠ {error}  . Make sure your API key is configured.
         </div>
       )}
 

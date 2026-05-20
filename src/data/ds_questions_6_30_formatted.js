@@ -12,7 +12,7 @@ export const DS_QUESTIONS_6_30 = [
 
 Batch prediction works when decisions can wait. Example: Email spam filtering checks new mail every 30 minutes. You accumulate messages, score them in bulk, apply labels. Efficient, cheap, low infrastructure needs.
 
-Real-time prediction is needed when users see results immediately. Example: Search ranking  -  user types a query, expect results in <500ms. Batch can't work; you need synchronous serving.
+Real-time prediction is needed when users see results immediately. Example: Search ranking  . user types a query, expect results in <500ms. Batch can't work; you need synchronous serving.
 
 Tradeoff 1: Cost vs latency. Batch is cheaper (amortize inference across many samples). Real-time requires low-latency infrastructure (GPUs, caching, optimized code).
 
@@ -22,7 +22,7 @@ Decision framework: If latency requirement is <1 second, you need real-time. If 
 
 Hybrid approach: Pre-compute expensive components (embeddings) in batch, serve simple scoring in real-time. Example: Nightly update user embeddings; at request time, score current item against cached embedding.
 
-Implementation: Real-time uses REST endpoints or RPC. Batch uses Spark/distributed systems. Monitor real-time latency percentiles (p95, p99), not averages  -  users care about worst-case.
+Implementation: Real-time uses REST endpoints or RPC. Batch uses Spark/distributed systems. Monitor real-time latency percentiles (p95, p99), not averages  . users care about worst-case.
 
 My default: Start batch. If latency becomes a constraint, add real-time layer.`,
     level: "mid_ds",
@@ -58,7 +58,7 @@ Preventive: Always validate models on held-out recent data, not just historical.
 
 What they excel at: Writing, summarization, translation, answering questions about text, coding assistance, brainstorming. They're useful when approximate, fluent output suffices.
 
-Real examples: "Draft a customer service response"  -  great. "Summarize this 50-page document"  -  great. "Write product copy"  -  great. "Classify 10,000 support tickets"  -  works but needs validation.
+Real examples: "Draft a customer service response"  . great. "Summarize this 50-page document"  . great. "Write product copy"  . great. "Classify 10,000 support tickets"  . works but needs validation.
 
 What they fail at: Counting (ask GPT to count words in a sentence, it often fails). Arithmetic beyond simple operations. Factual recall (they hallucinate confidently). Real-time data (knowledge cutoff is old). Private information they weren't trained on. Tasks requiring multi-step logic or external tool integration.
 
@@ -268,7 +268,7 @@ Step 2: Understand impact. How much do outliers distort your analysis? If predic
 
 Step 3: Decide based on the task:
 
-Keep: If outliers represent real, important phenomena. Example: predicting customer lifetime value  -  the $100K customer is valuable and real. Ignoring them underestimates true value.
+Keep: If outliers represent real, important phenomena. Example: predicting customer lifetime value  . the $100K customer is valuable and real. Ignoring them underestimates true value.
 
 Remove: If outliers are errors, and their impact is large. Example: 0.1% of temperature readings are impossible values (sensor failures). Remove them; they're noise.
 
@@ -300,9 +300,9 @@ For proportions (categorical data): Chi-square test. Example: Does proportion of
 For time series or dependent samples: Paired t-test (accounts for correlation between measurements).
 
 Practical recommendation: For A/B test results (comparing treatment vs control), I'd use:
- -  Two-sample t-test if data is roughly normal and large sample
- -  Mann-Whitney U if you're uncertain about normality
- -  Chi-square if the metric is a proportion (conversion rate, yes/no)
+ . Two-sample t-test if data is roughly normal and large sample
+ . Mann-Whitney U if you're uncertain about normality
+ . Chi-square if the metric is a proportion (conversion rate, yes/no)
 
 But honestly, with large samples (1000+ per group), t-test is robust even for non-normal data (Central Limit Theorem). I'd default to t-test unless there's reason not to.
 
@@ -355,11 +355,11 @@ In practice: I'd set a minimum effect size before running the test. "We'll only 
 Step 1 (immediate): Verify the signal. Is it real or a measurement issue? Check: Did tracking change? Did data pipeline break? Confirm the metric across multiple sources (app logs, web logs, backend events). If all sources show the drop, it's real.
 
 Step 2 (4 hours): Segment to isolate cause. A 10% drop likely has a single root or two compounded issues. Break down by:
- -  Geography (US, EU, Asia): Did one region drop more?
- -  Playlist type (Discover Weekly, Release Radar, Liked Songs): Did users stop engaging with discovery features?
- -  Device (mobile, web, desktop): Did app quality degrade?
- -  User cohort (new, old, premium vs free): Did one group churn?
- -  Content type (music vs podcasts): Did one category drop?
+ . Geography (US, EU, Asia): Did one region drop more?
+ . Playlist type (Discover Weekly, Release Radar, Liked Songs): Did users stop engaging with discovery features?
+ . Device (mobile, web, desktop): Did app quality degrade?
+ . User cohort (new, old, premium vs free): Did one group churn?
+ . Content type (music vs podcasts): Did one category drop?
 
 Step 3 (8 hours): Timeline analysis. When exactly did the drop occur? Sudden drop (within hours) suggests a feature deployment, outage, or algorithmic change. Gradual decline (over weeks) suggests longer-term trend (seasonality, competition, market change).
 
@@ -385,15 +385,15 @@ Communication: Flag to leadership immediately with segmentation data, not just "
     a: `ROI = (Benefit - Cost) / Cost. For ML projects, benefits are indirect and costs are often underestimated.
 
 Step 1: Quantify benefit. What business metric improves? Examples:
- -  Recommendation system: measure incremental revenue per user. If model adds $2/user/month and there are 10M users, benefit is $20M monthly.
- -  Churn prediction: measure intervention effectiveness. If model identifies 10K at-risk customers, and retention campaign saves 2K at $1K LTV per customer, benefit is $2M.
- -  Fraud detection: measure fraud prevented. If model catches fraud worth $500K/month at 80% precision, benefit is $400K.
+ . Recommendation system: measure incremental revenue per user. If model adds $2/user/month and there are 10M users, benefit is $20M monthly.
+ . Churn prediction: measure intervention effectiveness. If model identifies 10K at-risk customers, and retention campaign saves 2K at $1K LTV per customer, benefit is $2M.
+ . Fraud detection: measure fraud prevented. If model catches fraud worth $500K/month at 80% precision, benefit is $400K.
 
 Step 2: Quantify cost. Include:
- -  Data infrastructure (storage, pipelines, ETL): $500K/year
- -  ML engineering (salaries, tools): $1M/year
- -  Monitoring and retraining: $200K/year
- -  Opportunity cost (team could work on other projects)
+ . Data infrastructure (storage, pipelines, ETL): $500K/year
+ . ML engineering (salaries, tools): $1M/year
+ . Monitoring and retraining: $200K/year
+ . Opportunity cost (team could work on other projects)
 
 Total: $1.7M/year for this example.
 
@@ -429,9 +429,9 @@ Unit economics: Revenue per user - costs per user. Example: SaaS product generat
 Cohort data (if available): If your company operates elsewhere, analyze: Which countries have highest lifetime value? Fastest growth? Lowest churn? Replicate that pattern.
 
 Decision framework: Rank countries by:
- -  TAM (Total Addressable Market): How many potential customers?
- -  Favorability: Regulatory ease, competitive intensity, customer acquisition ease?
- -  Unit economics: Will you make money?
+ . TAM (Total Addressable Market): How many potential customers?
+ . Favorability: Regulatory ease, competitive intensity, customer acquisition ease?
+ . Unit economics: Will you make money?
 
 Recommendation: Pilot in 1-2 high-potential countries. Allocate $500K to marketing, learn CAC and conversion rate. Extend only if unit economics work.
 
@@ -515,17 +515,17 @@ Infrastructure (day 1): Don't over-engineer. A simple event logging system suffi
 What to log from day 1:
 
 Core events:
- -  Signup (timestamp, source: organic/paid/referral)
- -  First action (which feature did they use?)
- -  Engagement (time-in-app, features used per session)
- -  Conversion (purchase, subscription, or business goal)
- -  Churn signal (uninstall, 3-day inactivity, explicit disengagement)
+ . Signup (timestamp, source: organic/paid/referral)
+ . First action (which feature did they use?)
+ . Engagement (time-in-app, features used per session)
+ . Conversion (purchase, subscription, or business goal)
+ . Churn signal (uninstall, 3-day inactivity, explicit disengagement)
 
 Contextual data:
- -  Device (iOS/Android/web)
- -  Geography
- -  User cohort (new, returning)
- -  Attribution (where did user come from?)
+ . Device (iOS/Android/web)
+ . Geography
+ . User cohort (new, returning)
+ . Attribution (where did user come from?)
 
 Don't track: Everything. Too much noise. Start with core, add signals as questions arise.
 
@@ -545,13 +545,13 @@ Avoid: Vanity metrics (total signups is useless; care about retention). Complex 
     a: `Classic metric definition mismatch. Same data, different denominator or numerator.
 
 Question 1: What's the numerator (conversions)?
- -  CEO might count: "Users who purchased anything in the past month." = 1000 conversions.
- -  Marketing might count: "Users who clicked 'Buy Now' button." = 2600 clicks (includes multi-click users, cart abandoners).
+ . CEO might count: "Users who purchased anything in the past month." = 1000 conversions.
+ . Marketing might count: "Users who clicked 'Buy Now' button." = 2600 clicks (includes multi-click users, cart abandoners).
 These are different populations.
 
 Question 2: What's the denominator (conversion rate = conversions / total)?
- -  CEO might use: "Total monthly active users." = 30,000. Rate = 1000/30,000 = 3.3%.
- -  Marketing might use: "Users who reached checkout page." = 32,500. Rate = 2600/32,500 = 8%.
+ . CEO might use: "Total monthly active users." = 30,000. Rate = 1000/30,000 = 3.3%.
+ . Marketing might use: "Users who reached checkout page." = 32,500. Rate = 2600/32,500 = 8%.
 
 Same numerator (conversions), different denominators → different rates.
 
@@ -651,10 +651,10 @@ Lesson 2: Validate on recent cohorts, not just overall accuracy. A cohort acquir
 Lesson 3: Talk to the business to understand the causal mechanism. Why do people churn? Ask 10 churned customers. Their reasons might not match your model's features.
 
 Since then, I always:
- -  Spend time understanding data causality, not just correlation.
- -  Validate on holdout recent data (time-based split).
- -  A/B test models in production before full deployment.
- -  Build feedback loops (flag predicted churners, measure actual churn, retrain).`,
+ . Spend time understanding data causality, not just correlation.
+ . Validate on holdout recent data (time-based split).
+ . A/B test models in production before full deployment.
+ . Build feedback loops (flag predicted churners, measure actual churn, retrain).`,
     level: "lead_ds",
   },
 
@@ -716,9 +716,9 @@ Result: Early launch generated $2M in incremental retention value (prevented chu
 
 Why this worked:
 
- -  Clear deadline and business value. I didn't default to "do it right"
- -  Explicit tradeoff communication. I told leadership: "We can launch in 4 weeks with a POC that needs retraining in 3 months, or launch in 12 weeks with a production system." They chose 4 weeks.
- -  Plan to eliminate debt. I didn't leave it broken; I committed to a proper build in the next quarter.
+ . Clear deadline and business value. I didn't default to "do it right"
+ . Explicit tradeoff communication. I told leadership: "We can launch in 4 weeks with a POC that needs retraining in 3 months, or launch in 12 weeks with a production system." They chose 4 weeks.
+ . Plan to eliminate debt. I didn't leave it broken; I committed to a proper build in the next quarter.
 
 Lesson: Technical excellence isn't always the answer. Context matters. For a proof-of-concept, 80% accuracy is fine. For cancer diagnosis, 99% is mandatory. For a one-time analysis, a script is sufficient. For a production system that runs for years, architecture matters.
 
