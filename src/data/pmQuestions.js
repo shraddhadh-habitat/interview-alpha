@@ -9169,7 +9169,7 @@ Monitor what matters: If fraud is 0.1%, a model catching 80% with 1% false posit
       },
       {
         q: "Google Search quality dropped 5% in a specific country. How would you investigate using data?",
-        company: "google",
+        company: "Google",
         subcategory: "case_studies",
         difficulty: "Hard",
         a: `First, I'd clarify: Is the 5% drop in organic traffic, engagement (clicks), or some quality metric we track internally? Is it country-wide or specific to mobile/desktop or certain search types?
@@ -9194,7 +9194,7 @@ The framework: Signal → verification → segmentation → historical compariso
       },
       {
         q: "Design a ML model to detect spam in Gmail. Walk through your approach from data to deployment.",
-        company: "google",
+        company: "Google",
         subcategory: "machine_learning",
         difficulty: "Hard",
         a: `I'd clarify first: Are we focusing on phishing, promotional spam, or both? What's the tolerance for false positives (legitimate emails marked spam)?
@@ -9219,7 +9219,7 @@ Evaluation: Precision-recall curve, not accuracy. Test on holdout data, but also
       },
       {
         q: "How would you measure the success of YouTube's recommendation algorithm?",
-        company: "google",
+        company: "Google",
         subcategory: "case_studies",
         difficulty: "Medium",
         a: `Success isn't just engagement. I'd measure across multiple dimensions.
@@ -9246,7 +9246,7 @@ This multi-metric approach prevents optimizing for the wrong proxy and catching 
       },
       {
         q: "Google Ads revenue per click dropped 8% this quarter. Diagnose using data.",
-        company: "google",
+        company: "Google",
         subcategory: "statistics",
         difficulty: "Hard",
         a: `Revenue per click = (Total ad revenue) / (Total clicks). An 8% drop is significant. I'd immediately ask: Is this from fewer high-value ads being shown, or lower CPM (cost-per-thousand-impressions)?
@@ -9277,7 +9277,7 @@ The key: Decompose the metric, segment relentlessly, and distinguish causes from
       },
       {
         q: "Design an anomaly detection system for Google Cloud that monitors millions of servers.",
-        company: "google",
+        company: "Google",
         subcategory: "system_design",
         difficulty: "Hard",
         a: `Scale is the challenge. Millions of servers, each reporting hundreds of metrics (CPU, memory, disk, latency). Real-time detection needed.
@@ -9304,7 +9304,7 @@ Deployment: Canary the detection on 5% of servers first, measure false positive 
       },
       {
         q: "How would you build a demand forecasting model for Amazon's warehouse inventory?",
-        company: "amazon",
+        company: "Amazon",
         subcategory: "machine_learning",
         difficulty: "Hard",
         a: `I'd clarify first: Are we forecasting SKU-level (specific product) or category-level demand? What's the planning horizon (days ahead)?
@@ -9331,7 +9331,7 @@ Serving: Batch forecast daily/weekly. Update as new orders arrive. Use quantile 
       },
       {
         q: "Design an A/B test framework for Amazon's checkout page. What metrics would you track?",
-        company: "amazon",
+        company: "Amazon",
         subcategory: "case_studies",
         difficulty: "Medium",
         a: `Checkout is revenue-critical. A small change can impact millions of dollars.
@@ -9362,7 +9362,7 @@ Tradeoff: Speed (declare winner fast) vs certainty (let test run longer to confi
       },
       {
         q: "Amazon's delivery promise accuracy dropped from 95% to 88%. How do you investigate?",
-        company: "amazon",
+        company: "Amazon",
         subcategory: "statistics",
         difficulty: "Hard",
         a: `That 7-point drop is severe and likely has a single root cause or a few compounded issues.
@@ -9391,7 +9391,7 @@ The key: Timeline (when), geography (where), and product (what) narrow down root
       },
       {
         q: "Build a customer review authenticity detection model for Amazon marketplace.",
-        company: "amazon",
+        company: "Amazon",
         subcategory: "machine_learning",
         difficulty: "Hard",
         a: `Fake reviews are a pervasive problem. Sellers post positive fake reviews to boost rankings, or post negative reviews for competitors.
@@ -9418,7 +9418,7 @@ Feedback: Reviews you flag and users report as "helpful anyway" → retrain to r
       },
       {
         q: "How would you design a personalization engine for Amazon's homepage for 300M users?",
-        company: "amazon",
+        company: "Amazon",
         subcategory: "system_design",
         difficulty: "Hard",
         a: `Scale is immense. 300M concurrent users, homepage must load <2 seconds, and each user sees a personalized feed.
@@ -9447,7 +9447,7 @@ Infrastructure: Microservices for different components (embeddings service, rank
       },
       {
         q: "How would you detect and measure the spread of misinformation on Facebook using data science?",
-        company: "meta",
+        company: "Meta",
         subcategory: "case_studies",
         difficulty: "Hard",
         a: `Misinformation is hard to define (opinion vs false fact). I'd clarify: Are we detecting obvious falsehoods (2+2=5), misleading claims (missing context), or conspiracy theories?
@@ -9476,7 +9476,7 @@ Monitoring: Track misinformation metric weekly. If it spikes (election, crisis),
       },
       {
         q: "Design a friend recommendation algorithm for Instagram. What features would you use?",
-        company: "meta",
+        company: "Meta",
         subcategory: "machine_learning",
         difficulty: "Medium",
         a: `Friend recommendations are crucial for network growth. Cold-start users need to quickly find people to follow.
@@ -9511,7 +9511,7 @@ Privacy: Don't expose the full network graph. Recommendations should feel serend
       },
       {
         q: "Instagram Reels engagement dropped 12% among 18-24 year olds. Investigate using data.",
-        company: "meta",
+        company: "Meta",
         subcategory: "statistics",
         difficulty: "Hard",
         a: `A 12% drop in engagement is significant, especially for a key demographic. This is likely an algorithmic or product change.
@@ -9538,7 +9538,7 @@ Tradeoff: Short-term metric optimization (views) vs long-term health (retention,
       },
       {
         q: "How would you build a content ranking model for Facebook News Feed?",
-        company: "meta",
+        company: "Meta",
         subcategory: "machine_learning",
         difficulty: "Hard",
         a: `News Feed ranking is Meta's core product. Billions of posts, personalized for each user.
@@ -9575,7 +9575,7 @@ Monitoring: Track engagement daily. Alert if engagement drops. A/B test new rank
       },
       {
         q: "Design a real-time A/B testing platform that handles Meta's scale of 3B users.",
-        company: "meta",
+        company: "Meta",
         subcategory: "system_design",
         difficulty: "Hard",
         a: `At 3B users, even 1% changes matter (30M users affected). A/B testing infrastructure must handle massive scale and speed.
@@ -9604,7 +9604,7 @@ Tradeoff: Speed (get results in 1 day) vs statistical power (need longer for sma
       },
       {
         q: "Build a pricing optimization model for Flipkart's Big Billion Days sale.",
-        company: "flipkart",
+        company: "Flipkart",
         subcategory: "machine_learning",
         difficulty: "Hard",
         a: `Big Billion Days is Flipkart's mega sale. Pricing is strategic: too low = margin erosion, too high = lost sales volume.
@@ -9637,7 +9637,7 @@ Challenges: Cannibalization (deep discount on product A might reduce sales of pr
       },
       {
         q: "How would you design a delivery time prediction system for Flipkart's logistics?",
-        company: "flipkart",
+        company: "Flipkart",
         subcategory: "system_design",
         difficulty: "Medium",
         a: `Delivery time prediction is key for customer satisfaction. Promise 2 days, deliver in 3 = unhappy customer.
@@ -9666,7 +9666,7 @@ Handling exceptions: Weather delays, carrier strikes, sorting errors. These are 
       },
       {
         q: "Flipkart's search relevance scores dropped. Walk through your investigation approach.",
-        company: "flipkart",
+        company: "Flipkart",
         subcategory: "case_studies",
         difficulty: "Medium",
         a: `Search relevance dropping directly impacts discoverability and conversion. I'd investigate systematically.
@@ -9697,7 +9697,7 @@ Monitoring: Track relevance weekly. Also track downstream metrics (conversion ra
       },
       {
         q: "How would you improve Netflix's content recommendation for users who watch in multiple languages?",
-        company: "netflix",
+        company: "Netflix",
         subcategory: "machine_learning",
         difficulty: "Hard",
         a: `Multi-language users present a challenge. They're interested in content from different cultures and languages. A simple recommendation model might focus on one language and miss good content in another.
@@ -9728,7 +9728,7 @@ Serving: Predict for each language separately, merge ranked lists, present to us
       },
       {
         q: "Design an experiment to test whether Netflix should auto-play trailers. What metrics matter?",
-        company: "netflix",
+        company: "Netflix",
         subcategory: "case_studies",
         difficulty: "Medium",
         a: `Auto-play trailers can increase engagement (users watch trailers, learn about content) or decrease engagement (noisy, distracting, battery drain).
@@ -9757,7 +9757,7 @@ Recommendation: Likely test auto-play on desktop only, exclude mobile (battery/d
       },
       {
         q: "Netflix's subscriber churn increased 15% in Q3. Use data to diagnose and recommend actions.",
-        company: "netflix",
+        company: "Netflix",
         subcategory: "statistics",
         difficulty: "Hard",
         a: `A 15% increase in churn is alarming. Q3 is July-Sept, so seasonality might play a role (back-to-school, summer ends). But this magnitude suggests an underlying problem.
@@ -9786,7 +9786,7 @@ Retention focus: Monitor churn weekly going forward. If it continues, the fix wa
       },
       {
         q: "Design a surge pricing model that balances driver supply with rider demand in real-time.",
-        company: "uber",
+        company: "Uber",
         subcategory: "machine_learning",
         difficulty: "Hard",
         a: `Surge pricing is critical: too high and riders leave, too low and drivers don't show up. Real-time balance is essential.
@@ -9817,7 +9817,7 @@ Monitoring: Track wait times (if > 15 min consistently, surge too low). Track ca
       },
       {
         q: "How would you build a fraud detection system for fake Uber rides?",
-        company: "uber",
+        company: "Uber",
         subcategory: "machine_learning",
         difficulty: "Hard",
         a: `Fake rides (fraudsters creating rides, not actually taking them) waste driver time and platform resources. Common fraud: create ride, collect surge pricing subsidy, cancel. Repeat.
@@ -9844,7 +9844,7 @@ Handling: Suspend fraudulent accounts, claw back subsidies, report to law enforc
       },
       {
         q: "Uber's ETA prediction accuracy dropped in a specific city. How do you investigate?",
-        company: "uber",
+        company: "Uber",
         subcategory: "case_studies",
         difficulty: "Medium",
         a: `ETA (Estimated Time of Arrival) is critical for rider expectations and driver pay. A drop in accuracy in one city is location-specific and diagnostic.
@@ -9873,7 +9873,7 @@ Monitoring: Track ETA accuracy per city weekly. Alert if any city drops >10%.`,
       },
       {
         q: "Design an ML pipeline that predicts driver cancellations before they happen.",
-        company: "uber",
+        company: "Uber",
         subcategory: "system_design",
         difficulty: "Hard",
         a: `Driver cancellations hurt riders (lost rides, wait time) and platform economics. If I can predict who will cancel, I can intervene (incentivize them to stay, find backup driver, warn rider).

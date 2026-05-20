@@ -63,16 +63,20 @@ const PM_COMPANY_CHIPS = [
 ];
 
 const DS_COMPANY_CHIPS = [
-  { id: 'Google',    label: 'Google' },
-  { id: 'Amazon',    label: 'Amazon' },
-  { id: 'Meta',      label: 'Meta' },
-  { id: 'Apple',     label: 'Apple' },
-  { id: 'Microsoft', label: 'Microsoft' },
-  { id: 'Flipkart',  label: 'Flipkart' },
-  { id: 'Swiggy',    label: 'Swiggy' },
-  { id: 'Razorpay',  label: 'Razorpay' },
-  { id: 'Netflix',   label: 'Netflix' },
-  { id: 'Uber',      label: 'Uber' },
+  { id: 'McKinsey',      label: 'McKinsey' },
+  { id: 'BCG',           label: 'BCG' },
+  { id: 'Bain',          label: 'Bain' },
+  { id: 'Goldman Sachs', label: 'Goldman Sachs' },
+  { id: 'JP Morgan',     label: 'JP Morgan' },
+  { id: 'Flipkart',      label: 'Flipkart' },
+  { id: 'Amazon',        label: 'Amazon' },
+  { id: 'Google',        label: 'Google' },
+  { id: 'Netflix',       label: 'Netflix' },
+  { id: 'Uber',          label: 'Uber' },
+  { id: 'Accenture',     label: 'Accenture' },
+  { id: 'EY',            label: 'EY' },
+  { id: 'Deloitte',      label: 'Deloitte' },
+  { id: 'TCS',           label: 'TCS' },
 ];
 
 const PM_DOMAIN_CHIPS = [
