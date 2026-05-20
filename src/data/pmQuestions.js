@@ -28213,6 +28213,1446 @@ Challenges:
 
 Mitigation: Adjust for inspection frequency, use imputation for new restaurants, prevent review deletion.`,
       },
+      {
+        q: "An airline's loyalty program has 5M members but redemption rates are falling. How would you use data to redesign the program?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Bain",
+        a: `Falling redemption is revenue risk—members aren't using miles, so they're not engaged. I'd investigate systematically.
+
+Root cause analysis:
+
+1. Segment members by redemption behavior:
+- Non-redeemers (80% of 5M): Have miles but never redeem. Why? Points feel irrelevant? Redemption is hard? Expiration risk scares them?
+- Sporadic redeemers (15%): Redeem occasionally. Satisfaction? Value perception?
+- Active redeemers (5%): High lifetime value, engaged
+
+2. Data analysis:
+- Miles earned vs. miles expired: Are unused miles expiring?
+- Redemption friction: How many steps to redeem? Destination availability?
+- Devaluations: Did program reduce mile values? Trust eroded?
+
+3. Member interviews:
+- Survey non-redeemers: "Why don't you use miles?" Answers reveal (too complex, bad redemption value, didn't know about program)
+- Satisfaction by segment: Did satisfaction drop post-devaluation?
+
+Diagnosis options:
+
+If expiration issue: Members feel rushed. Solution: Extend expiry windows (e.g., 5 years instead of 3), auto-convert unused miles to status tier.
+
+If friction: Redemption is 10+ steps. Solution: Mobile-first booking, one-click redemption for popular routes.
+
+If value: A mile redeems for $0.007 but costs $0.01 to earn (bad value). Solution: Increase redemption value (10K miles = first-class ticket instead of economy).
+
+If awareness: Members don't know program benefits. Solution: Quarterly emails highlighting redemption opportunities, aspirational destinations.
+
+Redesign:
+- Tiered value: Status members get 1.5x mile value (retention)
+- Dynamic pricing: High-demand flights need more miles (simple rules)
+- Non-flight redemptions: Hotels, car rentals (broader appeal)
+- Predictive nudges: Recommend redemption before expiry (Martech integration)
+
+Measure: Redemption rate by segment pre/post redesign. Target: 30% redemption rate (industry ~25%).
+
+ROI: Engaged members fly more (20% increase in bookings) > cost of more attractive redemptions.`,
+      },
+      {
+        q: "How would you build a store location optimization model for a quick service restaurant chain expanding into 50 new cities?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "McKinsey",
+        a: `Choosing 50 store locations is high-stakes (millions per store). Data-driven site selection reduces risk.
+
+Approach:
+
+1. Demand estimation by location:
+- Population density: Dense areas = more foot traffic
+- Income levels: Proxy from property values, credit scores
+- Age distribution: QSR customers often 18-45 years
+- Competitor proximity: Too close = cannibalization
+- Foot traffic (Google): Foot traffic to existing stores by neighborhood
+
+2. Accessibility modeling:
+- Drive time to location: <15min radius captures 70% of customers
+- Public transit: In metros, transit access matters
+- Parking availability: Car-dependent areas prefer parking
+
+3. Store performance benchmarking:
+- Your existing 200 stores: Analyze which demographics drove high sales
+- Build regression: Sales ~ population + income + foot traffic + competitors
+- For each new potential location, predict sales using model
+
+4. Market sizing:
+- TAM (Total Addressable Market): Number of target customers in 15min radius
+- Market penetration: If 5% of TAM visit your store, what's revenue?
+- Compare market size across 50 candidate cities
+
+5. Geospatial optimization:
+- Facility location problem: Place 50 stores to minimize total drive time
+- Or: Maximize total population coverage
+- Use optimization libraries (OR-Tools, CPLEX)
+
+6. Cannibalization analysis:
+- If placing 2 stores in same city, what % of revenue is cannibalized?
+- Model: Adjust sales down 30% if <3km apart
+
+7. Financial modeling:
+- Store profitability: (predicted revenue) - (operating cost) - (capex)
+- Payback period: If store costs $2M, how long to break even?
+- Sensitivity: What if revenue is 20% lower than predicted?
+
+Implementation:
+
+Simulation: For each of 50 candidate locations:
+1. Predict sales using regression
+2. Estimate cannibalization
+3. Calculate profit
+4. Rank by profit
+
+Validation: Backtest on past store openings. Did model correctly predict sales for those locations?
+
+Output: Top 50 locations ranked by profitability. Phased rollout over 2 years.
+
+Monitoring: First 10 stores—do actual sales match predictions? Recalibrate model if drift occurs.`,
+      },
+      {
+        q: "A CPG company's market share dropped 3% despite increasing ad spend by 40%. Use data to explain what went wrong.",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Bain",
+        a: `More ad spend + lower market share = something is broken. I'd diagnose systematically.
+
+Hypothesis 1: Ads aren't reaching right audience.
+- Check: Who are we targeting vs. who buys our product?
+- Maybe increased spend is reaching wrong demographics (younger, lower income, different geographies)
+- Action: Analyze ad audience vs. buyer demographics
+
+Hypothesis 2: Competitor response.
+- Did competitors increase ad spend too? If they matched our spend increase, arms race = no net gain
+- Did competitors launch new product that stole share?
+- Action: Competitive intelligence on ad spend, pricing, new launches
+
+Hypothesis 3: Product quality or pricing.
+- Did we raise prices along with ad spend? That kills volume
+- Did product quality decline (quality complaints on social media)?
+- Action: Monitor reviews, NPS, customer complaints pre/post ad increase
+
+Hypothesis 4: Cannibalization.
+- Are we increasing sales of one product but hurting others in our portfolio?
+- Example: Promoting "new flavor" kills "classic flavor" sales
+- Action: SKU-level sales breakdown
+
+Hypothesis 5: Diminishing returns.
+- Maybe we oversaturated. Ad frequency too high = ad fatigue
+- Customer sees ad 20x/week, stops paying attention
+- Action: Analyze ad frequency vs. lift (response)
+
+Hypothesis 6: Attribution model is broken.
+- Think we're getting ROI but attribution is wrong (last-click bias)
+- Real incremental lift much lower than we think
+- Action: Run A/B test (holdout market with no ads vs. treatment market)
+
+Diagnostic steps:
+
+1. Segment analysis:
+- Which customer segments lost share? (Premium? Budget? Urban? Rural?)
+- Hypothesis directs solution
+
+2. Timeline:
+- When exactly did share drop? Day 1 of increased spend? Or gradually over months?
+- If day 1, media mix issue. If gradual, competitor response or fatigue
+
+3. Sales funnel:
+- Awareness (aided/unaided brand recall)
+- Consideration (consideration set)
+- Purchase (trials, repeat)
+Where did we lose? Awareness stayed same but consideration dropped? That's messaging issue.
+
+4. Channel analysis:
+- Online vs. retail? Did shelf position change? Did distribution shrink?
+
+Action: Run holdout market test. Reduce ad spend in 10% of markets, keep 90% at high spend. If low-spend market holds market share, high spend isn't working (attribution issue). If low-spend market loses share, high spend is necessary.
+
+Likely outcome: Competitive response (they matched spend) + attribution overcounting real lift.`,
+      },
+      {
+        q: "How would you build a customer health score for a B2B SaaS company that predicts contract renewals 6 months in advance?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "McKinsey",
+        a: `Predicting renewals 6 months early lets you intervene (discounts, new features, support) before churn happens.
+
+Health score dimensions:
+
+1. Product usage:
+- Active users: Fraction of licensed users actually logging in
+- Feature adoption: Using core features or just 1-2?
+- Usage velocity: Usage increasing or declining? Declining = red flag
+- Session quality: Time-in-app, completed workflows, errors
+
+2. Engagement:
+- Support tickets: Volume, sentiment (frustrated users = churn risk)
+- Feedback: Net Promoter Score (NPS), satisfaction surveys
+- Sales interactions: Meeting cadence (dormant relationships = churn risk)
+
+3. Financial:
+- Expansion: Are they buying add-ons, more seats?
+- Payment: Any late payments? (Financial distress signal)
+- Pricing: Are they on 3-year plan (stickier) or month-to-month?
+
+4. Account signals:
+- Contact change: Key champion left the company? Risk rises
+- Organization changes: Did customer get acquired or restructure? (Uncertainty = churn risk)
+- Competitive wins: Did competitor sell them similar solution? Risk rises
+
+5. Behavioral trends:
+- Trajectory: Is usage increasing (healthy) or decreasing (at-risk)?
+- Seasonality: Some usage patterns are normal (low in summer)
+
+Scoring model:
+
+Logistic regression: P(churn | features)
+
+Features (example weights):
+- Feature adoption >80%: +40 points
+- Usage growing >10% month-over-month: +20 points
+- Active users >70% of licensed: +25 points
+- NPS >50: +30 points
+- Support tickets >1 per week: -20 points (frustration)
+- Contact turnover at account: -30 points
+
+Scale to 0-100. Segmentation:
+- 0-40: High risk. Proactive outreach, success plan, discount offer
+- 40-70: Medium risk. Continue engagement, monitor
+- 70+: Healthy. Standard QBR (quarterly business review)
+
+Validation:
+
+Train on historical data (customers who churned vs. renewed). Can model predict who actually renewed?
+
+Precision: Of accounts we flag as high-risk, what % actually churn? Target >70%.
+
+Monitoring:
+- Scores by cohort (company size, industry)
+- Churn rate by risk bucket
+- Effectiveness of interventions (did outreach reduce churn?)
+
+Action:
+- Flag top 100 at-risk accounts for manual CSM (Customer Success Manager) review
+- Automate lower-risk interventions (email nurtures, product tips)`,
+      },
+      {
+        q: "Your client runs 50 retail stores. Some outperform others despite similar demographics. How would you identify the drivers of store performance?",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        company: "Bain",
+        a: `Same demographics but different sales = store-specific factors matter. I'd investigate systematically.
+
+Data sources:
+
+1. Store operations:
+- Store age (newer stores often underperform initially)
+- Store size (bigger might not always mean higher sales)
+- Layout (some layouts drive higher attach rate)
+- Staffing (experience of store manager, staff turnover)
+- Hours of operation (7am vs. 9am opening changes foot traffic)
+
+2. Local factors:
+- Foot traffic (Google traffic data, foot traffic analytics)
+- Visibility (location on high street vs. strip mall)
+- Nearby competition (distance to competitor stores)
+- Parking (availability, difficulty)
+- Local events (festivals boost sales)
+
+3. Management:
+- Store manager tenure (experienced managers perform better)
+- Staff training quality (mystery shopper scores)
+- Inventory management (stockout rates, clearance discounts)
+- Local promotions (does manager run local campaigns?)
+
+4. Customer base:
+- Customer demographics (income, age, family size by zip code)
+- Brand awareness (aided recall in that market)
+- Customer satisfaction (NPS by store)
+
+Analysis:
+
+1. Outlier analysis:
+- Identify top 5 stores (highest sales) and bottom 5 (lowest)
+- What do top stores have in common? (Manager tenure? Foot traffic? Layout?)
+- What do bottom stores lack?
+
+2. Regression model:
+- Sales ~ foot traffic + manager tenure + store size + age + local competition + staffing level
+- Which variables explain most variance?
+- Are demographics even significant (maybe not, if stores in similar demos still differ)?
+
+3. Clustering:
+- Are stores naturally grouped? (High performers, medium, low)
+- What distinguishes each group?
+
+4. Qualitative:
+- Visit top 5 and bottom 5 stores in person
+- Observe customer behavior, staff engagement
+- Interview managers: What's different about your store?
+
+Expected findings:
+
+- Store manager quality is #1 driver (40% variance)
+- Foot traffic matters (30%)
+- Store age (newly opened ramp up over time)
+- Local staffing and training
+
+Actions:
+
+1. Replicate top performers:
+- Train bottom-store managers using top-store managers as coaches
+- Copy best practices (layout, staffing model, promotions)
+
+2. Investment:
+- High-foot-traffic stores: Expand (higher ROI)
+- Low-foot-traffic stores: Improve operations, don't expand
+
+3. Staffing:
+- Rotate top managers to bottom stores for 6 months
+- Implement best-practice training across all stores
+
+Validation: Six months post-intervention, did bottom-store performance improve?`,
+      },
+      {
+        q: "How would you build a real-time carbon emissions tracking model for a company with operations across 20 countries?",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "BCG",
+        a: `Real-time carbon tracking enables quick action (energy reduction, renewable switching) and shows environmental commitment.
+
+Data sources:
+
+1. Energy consumption:
+- Electricity usage by facility (smart meter data, monthly bills)
+- Natural gas, heating oil (heating systems)
+- Water usage (water treatment is carbon-intensive)
+- Waste generated (landfill, recycling, incineration have different footprints)
+
+2. Transportation:
+- Fleet emissions: Vehicle miles, fuel type (gas, EV, hybrid)
+- Business travel: Flight hours, mileage (carbon per mile varies by aircraft)
+- Employee commute (if tracked via employee surveys or car park sensors)
+
+3. Supply chain:
+- Supplier emissions: Scope 3 emissions (most difficult to measure)
+- Raw material sourcing (distance, production intensity)
+- Shipping (container size, distance, mode: air vs. sea)
+
+4. Production (if manufacturing):
+- Equipment efficiency (modern equipment = lower emissions)
+- Process efficiency (waste, scrap rate)
+- Raw material composition
+
+Calculation framework:
+
+Emissions = Activity × Emission Factor
+
+Example:
+- 1000 kWh electricity × 0.4 kg CO2/kWh = 400 kg CO2
+
+Emission factors vary by:
+- Country (US grid mix different from India grid)
+- Time of day (coal-heavy during peak hours vs. renewable-heavy off-peak)
+- Season (heating demand in winter)
+
+Real-time architecture:
+
+1. Data ingestion:
+- APIs from energy providers (smart meters)
+- IoT sensors in facilities
+- ERP system for supply chain data
+- Manual uploads for less-connected data sources
+
+2. Processing:
+- Normalize units (kWh, therms, miles → carbon)
+- Real-time calculation engine (Kafka/Spark)
+- Scope 1, 2, 3 categorization
+
+3. Dashboarding:
+- Facility-level carbon intensity (kg CO2 per $revenue)
+- Trending (is emissions per unit declining?)
+- Benchmarking (compare across facilities, countries)
+- Attribution (which sources drive emissions?)
+
+4. Forecasting:
+- Daily/weekly patterns (help identify anomalies)
+- Seasonal forecasts
+- Impact modeling: "If we switch to 100% renewables, carbon drops X%"
+
+Challenges:
+
+- Data quality: Meter readings inconsistent, estimates required
+- Scope 3 uncertainty: Supplier emissions hard to verify
+- Real-time latency: Energy data sometimes delayed 1 month
+
+Mitigation: Accept estimates with confidence intervals, prioritize Scope 1&2 (directly controlled).
+
+Validation: Compare to annual voluntary disclosure reports (GRI, SASB). Should match within 5%.`,
+      },
+      {
+        q: "Design a personalized wealth management recommendation engine for clients with portfolios ranging from $100K to $50M.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Goldman Sachs",
+        a: `Wealth clients have vastly different needs (young savers vs. retirees vs. business owners). One-size-fits-all recommendations fail.
+
+Approach:
+
+1. Client segmentation:
+- Age + life stage: 30yo growth-focused vs. 65yo retiree
+- Wealth level: $100K vs. $50M have different constraint (access to hedge funds)
+- Industry: Tech founder (volatile income) vs. executive (stable)
+- Risk tolerance: Questionnaire (standard but misses nuance)
+- Goals: Children's education, retirement, legacy planning
+
+Personas:
+- Young Accumulator (25-40): Growth-focused, 80% equities
+- Mid-career Optimizer (40-55): Balanced, some tax planning
+- Pre-retiree (55-65): Derisking, tax efficiency, concentrated position management
+- Retiree (65+): Income generation, capital preservation
+
+2. Portfolio analysis:
+- Current allocation: Equities, bonds, alternatives, real estate, crypto
+- Concentration: Is 60% in one stock? (idiosyncratic risk)
+- Tax efficiency: Unrealized gains, loss harvesting opportunities
+- Liquidity needs: Emergency fund adequacy
+
+3. Recommendation logic:
+
+For Young Accumulators:
+- Recommend: High-growth equities (US tech, emerging markets, small-cap)
+- Avoid: Bonds (not needed yet)
+- Tax strategy: Defer taxes (hold long-term)
+
+For Mid-career:
+- Recommend: Diversified equities + bonds, alternative investments (private equity)
+- Tax strategy: Tax-loss harvesting, stock option planning
+
+For Pre-retirees:
+- Recommend: Reduce concentrated positions (sell high-cost-basis stock slowly)
+- Bonds, real estate (income-generating)
+- Estate planning: Trusts, gifting strategy
+
+For Retirees:
+- Recommend: Income bonds, dividend stocks, REITs
+- Tax efficiency: Roth conversions, withdrawal sequencing
+- Legacy: Estate planning, charitable giving
+
+4. Model:
+
+- Collaborative filtering: "Clients like you (similar age, wealth, risk) invested in X. Have you considered it?"
+- Rule-based: If concentration >40%, recommend diversification
+- Regression: P(portfolio outperformance) given allocation
+
+5. Constraints:
+- Compliance: Can't recommend illiquid investments to $100K clients (minimum investment $1M)
+- Risk limit: CRO approval for leveraged positions
+- Wealth cap: Some strategies reserved for $10M+ clients
+
+Implementation:
+
+Dashboard: Client sees recommendations ranked by relevance and expected impact.
+
+Action: "Diversify Apple position" recommendation includes: Tax impact, execution plan, alternatives.
+
+Personalization: Frequency of recommendation adjusts by risk tolerance (conservative clients get less frequent rebalancing suggestions).
+
+Validation: Did clients who followed recommendations outperform those who didn't?
+
+Monitoring: Backtest on historical portfolios. Could we have predicted optimal allocation?`,
+      },
+      {
+        q: "A private equity firm wants to screen 1,000 potential acquisition targets down to 50 using data. What signals would you model?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Goldman Sachs",
+        a: `Screening 1000 targets to 50 requires a systematic scoring model. Manual diligence on all 1000 is wasteful.
+
+Scoring framework:
+
+1. Financial health:
+- EBITDA margin: Higher margin = better asset (less turnaround needed)
+- Debt levels: High debt = distressed asset (good deal value but riskier)
+- Revenue growth: Declining revenue = red flag
+- Cash flow: Positive FCF = healthy
+- Valuation: EV/EBITDA multiple (low multiple = undervalued)
+
+Score: +10 if EBITDA margin >20%, +5 if growing >5%, -10 if high debt
+
+2. Market opportunity:
+- TAM (Total Addressable Market) growth: Growing markets are easier to improve
+- Competitive position: Market leader vs. follower
+- Market fragmentation: Fragmented markets = consolidation opportunity
+
+Score: +15 for large TAM, +10 for market leadership, +5 for fragmentation
+
+3. Operational levers (PE specific):
+- Margin expansion opportunity: Can we cut costs without hurting business?
+- Revenue synergy: Can we cross-sell with portfolio companies?
+- M&A target: Is company acquisition-ready for consolidation strategy?
+- Management team: Weak management = improvement opportunity
+
+Score: +20 if >5pp margin expansion possible, +10 if management weak (replaceable)
+
+4. Deal structure:
+- Leverage capacity: Can we put 60% debt on this? (high leverage = high returns)
+- Exit opportunities: IPO path? Strategic buyer? (exit options = returns)
+- Revenue sustainability: Recurring revenue >50% (sticky revenue = lower risk)
+
+Score: +15 if high leverage possible, +10 if sticky revenue, +15 if IPO path viable
+
+5. Risk factors:
+- Key person dependency: Founder-led with no succession plan (single point of failure)
+- Customer concentration: 50% revenue from 1 customer (contract loss = disaster)
+- Regulatory risk: Healthcare, pharma (regulatory) vs. software (low regulatory)
+- Litigation: Pending lawsuits (downside risk)
+
+Score: -20 if customer concentration high, -15 if regulatory risk, -10 if litigation
+
+6. Industry signals:
+- Industry consolidation stage: Mature (ready for PE) vs. early stage (more risk)
+- Technology obsolescence: Are they at risk of disruption?
+- Labor dependency: High cost of labor (wage inflation risk)
+
+Model:
+
+Total Score = Financial (0-30) + Market (0-40) + Operations (0-50) + Structure (0-40) + Risk (-50 to 0) + Industry (0-30)
+
+Range: -50 to 190
+
+Threshold:
+- 150+: Top tier targets (top 50, fast-track diligence)
+- 100-150: Secondary tier (additional diligence needed)
+- <100: Reject
+
+Validation:
+
+Backtest on past PE acquisitions:
+- Did model correctly identify successful deals (high returns)?
+- Did model flag problematic deals that underperformed?
+- Adjust thresholds to maximize IRR of screened portfolio
+
+Output:
+
+Ranked list of 50 targets with scores and rationale ("High scores on margin expansion + market growth. Risk: customer concentration").
+
+Qualitative review: Review top 50 manually before full diligence (model guides but doesn't decide).`,
+      },
+      {
+        q: "How would you measure the ROI of AI adoption across different business units in a large conglomerate?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "BCG",
+        a: `AI ROI is notoriously hard to measure. Without proper attribution, you can't tell if AI drove value or if other factors did.
+
+Challenges:
+
+1. Causality: AI implementation often happens alongside other changes (new processes, training, hiring). Isolate AI's contribution.
+
+2. Baseline: What's the counterfactual? If AI hadn't been deployed, what would have happened? (Required for ROI calculation)
+
+3. Time lag: AI benefits often take 6-12 months to materialize. Quick ROI claims are suspect.
+
+4. Business unit differences: Sales AI (lead scoring) has different ROI than manufacturing AI (quality control).
+
+Framework:
+
+1. Define scope:
+- Which AI projects? (LLM chatbots, predictive models, computer vision?)
+- Which business units? (Sales, Operations, HR?)
+- Time period: Year 1? Year 3?
+
+2. Measure costs:
+- Capex: Model development, infrastructure, tools
+- Opex: Data labeling, model maintenance, retraining
+- Opportunity cost: People diverted to AI projects
+- Total: Usually $1-5M per mid-size project
+
+3. Measure benefits:
+- Revenue increase: Did AI-enabled sales process close more deals? By how much?
+- Cost reduction: Did AI chatbot reduce support headcount? Calculate FTE savings
+- Efficiency: Did AI reduce cycle time? (Sales cycle 10 days → 7 days = 30% faster)
+- Quality: Did defect rate drop? (Quality improvement = reduced rework)
+
+4. Experimental design:
+
+Best: A/B test
+- Control group: Manual process (no AI)
+- Treatment group: AI-enabled process
+- Measure outcome (conversion, cost, time)
+- Difference = AI impact
+
+Example:
+- 2000 leads: 1000 to AI model (lead scoring), 1000 to sales reps (no model)
+- AI group: 150 converted (15% conversion)
+- Manual group: 100 converted (10% conversion)
+- AI lift: 5 percentage points = 50% increase in conversions
+- Revenue lift: 50 extra deals × $50K deal value = $2.5M incremental revenue
+- Cost: $1M for model
+- Net ROI: ($2.5M - $1M) / $1M = 150% Year 1 ROI
+
+Practical alternative: Before-after with controls
+
+If you can't do A/B test:
+- Measure metric before AI deployment (baseline)
+- Measure metric after AI (6+ months post-launch to allow stabilization)
+- Control for external factors: Did market conditions change? Did competitors launch new products?
+- Regression: Outcome ~ AI implementation + market conditions
+
+5. Business unit specificity:
+
+Sales AI: Revenue lift, sales cycle time, win rate
+Manufacturing AI: Defect rate reduction, cycle time, scrap reduction, throughput
+HR AI: Time-to-hire, retention rate post-AI recruiting
+Finance AI: Close cycle time, audit findings, compliance violations
+
+Don't use generic ROI. Measure what matters for each unit.
+
+6. Challenges:
+
+- Diminishing returns: Year 1 ROI is 150%, Year 2 is 20% (model maturity, market saturation)
+- Cannibalization: Did AI-driven sales replace manual sales, or add net new?
+- Attribution: Did revenue grow because of AI or because market boomed?
+
+Solution: Segment analysis. Among AI users vs. non-AI users, did adoption cohort outperform?
+
+Output:
+
+Report by business unit:
+"Sales: 150% ROI, $2.5M incremental revenue, 6-month payback
+Manufacturing: 80% ROI, $500K cost savings, 18-month payback
+HR: 40% ROI, $200K time savings, 24-month payback"
+
+Caveats: Assume model performance remains stable (retraining costs not captured if needed) and external market conditions don't deteriorate.`,
+      },
+      {
+        q: "Your forex trading model is profitable in backtesting but loses money in live trading. Walk through your debugging process.",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Goldman Sachs",
+        a: `This is the classic gap between backtest and production. Many causes. I'd investigate systematically.
+
+Step 1: Validate backtest.
+
+Was backtest correct?
+- Check data quality: Forex data accurate, no look-ahead bias?
+- Slippage: Did backtest account for bid-ask spread? (2pips typical)
+- Commissions: Did backtest deduct trading costs? ($5-50 per round-trip)
+- Survivorship bias: Did data exclude delisted pairs or restricted currencies?
+
+Example: Backtest shows 20% annual return. If backtest didn't account for 1% spread per trade and you trade 50x/year = 50% annual cost. Real return: 20% - 50% = -30%.
+
+Step 2: Compare backtest to live.
+
+Backtest metrics vs. live metrics:
+- Backtest Sharpe: 1.5. Live Sharpe: -0.5. Massive gap.
+- Backtest win rate: 60%. Live win rate: 45%.
+- Backtest avg profit: +$500 per trade. Live avg loss: -$200 per trade.
+
+Where's divergence largest? If all metrics degrade similarly, broad issue (leverage, risk limit). If specific metric degrade, targeted issue (entry signal, stop loss).
+
+Step 3: Investigate causes.
+
+Hypothesis 1: Market regime change.
+- Backtest trained on 2020-2023 data (stable, trending markets)
+- Live trading is 2024 (volatile, choppy markets, different correlation patterns)
+- Solution: Retrain model on recent data, test regime adaptation
+
+Hypothesis 2: Execution slippage > backtest assumption.
+- Backtest assumed 2pips slippage. Live reality: 5-10pips during volatile hours
+- Backtest traded during liquid hours. Live trades during illiquid hours (poor fill)
+- Solution: Adjust slippage assumption, avoid trading during illiquid windows
+
+Hypothesis 3: Data quality degradation.
+- Backtest used cleaned data (manually verified)
+- Live uses real-time data feeds (may have bugs, stale quotes)
+- Solution: Monitor data quality, add validation checks
+
+Hypothesis 4: Overfitting.
+- Model optimized for specific patterns in training data
+- Model has 100 parameters, trained on 2 years data (overfit risk)
+- Live data has different patterns model never saw
+- Solution: Simplify model (10 parameters, not 100), cross-validate rigorously
+
+Hypothesis 5: Look-ahead bias.
+- Backtest subtly uses data not available at decision time
+- Example: "If tomorrow's close is above X, buy today" (cheating—can't use tomorrow's data today)
+- Solution: Audit backtest logic step-by-step
+
+Hypothesis 6: Parameter instability.
+- Optimal parameters for 2020-2023 (e.g., moving average window = 20 days)
+- Optimal parameters for 2024 (moving average window = 5 days, markets faster)
+- Solution: Adaptive parameters or rolling optimization
+
+Debugging steps:
+
+1. Paper trade (simulate live execution without real money):
+- Run model on recent 2 weeks of data with realistic slippage/commissions
+- Does it profit? If not, issue is with current market regime, not backtest
+- If yes, live execution issue (slippage, broker latency)
+
+2. Decompose returns:
+- Alpha (strategy signal): +2% annually
+- Slippage: -1%
+- Commission: -0.5%
+- Overnight gap risk: -2.5% (gaps open/close between sessions)
+- Net: -2%
+
+Where's value leaking? Fix biggest leak first.
+
+3. Forward test on holdout data:
+- Train model on 2020-2022
+- Test on 2023 data (wasn't used in training)
+- Does model still profit? If not, overfitting likely
+
+4. Monitor live metrics:
+- Daily P&L, win rate, profit factor (average win / average loss)
+- If metrics deteriorate over time, regime change happening
+
+Action plan:
+
+- Reduce leverage (smaller position sizes = less slippage pain)
+- Retrain model monthly with recent data (adaptive)
+- Trade only during liquid hours (lower slippage)
+- Simplify model (reduce overfitting risk)
+- Add position limit: Max 5% of account per trade (risk control)
+
+Accept: Backtests are aspirational. Live results will always be lower. Target: Backtest ROI minus 30% for realistic expectation.`,
+      },
+      {
+        q: "How would you build a model that detects when a corporate client is about to default 90 days before it happens?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "JP Morgan",
+        a: `Early default detection lets JP Morgan take action (tighten covenants, call loans, protect collateral) before loss occurs.
+
+Data sources:
+
+1. Financial statements:
+- Quarterly financials: Revenue, EBITDA, net income, debt levels
+- Trends: Is revenue declining? EBITDA margin compressing?
+- Ratios: Debt-to-EBITDA, interest coverage, current ratio
+- Cash flow: Is it positive and stable? Declining?
+
+2. Credit behavior:
+- Payment history: On-time, late, missed payments?
+- Use of credit: Is client maxing out credit lines?
+- Covenant violations: Already breaching debt covenants? (early warning)
+
+3. Market signals:
+- CDS spread (Credit Default Swap): Market's view of default probability
+- Equity price (if public): Shareholders selling is a red flag
+- Credit rating: Agency downgrades signal deterioration
+- Industry stress: Is entire industry declining? (sector risk)
+
+4. News & operational:
+- Management changes: Key person departure?
+- Customer loss: Lost major customer?
+- Litigation: Pending lawsuits?
+- Regulatory action: Fines, violations?
+
+5. Counterparty signals:
+- Supplier relationships: Are suppliers cutting payment terms? (They're concerned)
+- Customer behavior: Are customers paying slower? (Bad sign)
+- Competitive pressure: Market share loss?
+
+Features for model:
+
+1. Deterioration signals:
+- Revenue declining >10% YoY
+- EBITDA margin down >200bps YoY
+- Debt-to-EBITDA rising (leverage increasing)
+- Free cash flow negative (unsustainable)
+- Interest coverage <1.5x (tight)
+
+2. Stability signals:
+- Covenant headroom <20% (close to violation)
+- Payment history: Recent late payments?
+- Credit line usage >90% (maxed out)
+
+3. Temporal signals:
+- Deterioration accelerating (margin down 500bps last quarter vs. 100bps previous quarter)
+- Seasonality adjusted (some clients are cyclical)
+
+4. Macro:
+- Interest rates rising (servicing debt becomes harder)
+- Industry declining (sector-specific stress)
+
+Model approach:
+
+- Logistic regression on 30+ features
+- Training data: Historical defaulters (labeled as default) vs. non-defaulters
+- Target: P(default in next 90 days)
+
+Class imbalance: Default is rare (1-2% of corporate loans). Use:
+- SMOTE (oversample defaulters)
+- Adjust decision threshold (predict default if P >20%, not >50%)
+- Focus on recall (catch defaults) over precision
+
+Validation:
+
+Backtest on historical data:
+- 5 years of historical loans with known outcomes
+- Train on years 1-3, test on years 4-5
+- Measure: Of loans flagged as high-risk 90 days before actual default, what % actually defaulted? (recall should be >80%)
+
+Output:
+
+Daily scoring:
+- Risk score 0-100 for each corporate loan
+- 0-40: Low risk. Routine monitoring
+- 40-70: Medium risk. Quarterly check-ins with client
+- 70+: High risk. Escalate to credit committee, tighten covenants, consider calling loan
+
+Action:
+- Loan officer gets alert: "Client X risk score jumped from 35 to 75 this quarter. Investigate."
+- Triggers review of financial statements, interviews with management
+
+Monitoring:
+- Track false positives (flagged as default but didn't default). Too many = lower threshold
+- Track false negatives (defaulted but not flagged). Need retraining
+
+Benefit: Catch defaults 90 days early = preserve principal through forced payment, asset liquidation, covenant enforcement.`,
+      },
+      {
+        q: "Design an AI system that automates regulatory compliance reporting for a global bank operating in 30 jurisdictions.",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        level: "head_ds",
+        company: "JP Morgan",
+        a: `Regulatory reporting is complex: 30 jurisdictions = 30 different rules (BASEL III, CFTC, SEC, FCA, ECB, etc.). Manual reporting is error-prone and slow.
+
+Architecture:
+
+1. Data ingestion:
+- Portfolio data: Securities, derivatives, cash positions by jurisdiction
+- Customer data: Counterparty creditworthiness, concentration
+- Risk data: VaR, stress test results, liquidity coverage ratios
+- Market data: Prices, rates (feeds into risk calculations)
+- Streaming: Real-time updates (regulatory reports must be current as of report date)
+
+2. Mapping layer:
+- Each jurisdiction has unique reporting requirements
+- Basel III: Capital adequacy (Pillar 1)
+- CFTC: Counterparty risk, margin adequacy
+- ECB: Large exposures, concentration
+- Database: Rules engine that maps regulatory requirement → data source → calculation
+
+3. Calculation engine:
+- For each requirement, execute calculation
+- Example: "US banks must report 10% capital ratio" = (Tier 1 Capital) / (Risk-Weighted Assets) >= 10%
+- Validate: Does result make sense? Flag anomalies (ratio jumped 50% overnight = investigate)
+
+4. Data quality:
+- Reconciliation: Does portfolio data match market data? (daily checks)
+- Outlier detection: Is one trade's size unusual? (potential data error)
+- Lineage: Track data from source to report (audit trail for regulators)
+
+5. Report generation:
+- Automated: Format results per regulatory template (CBTL, FINREP, ITS, etc.)
+- Validation: Cross-checks (sum of components = total)
+- Exception handling: If calculation fails, flag for human review
+- Output: Regulatory filing formats (XML, CSV, FIX)
+
+6. Approval workflow:
+- Auto-generated reports → finance team review → compliance sign-off → submit to regulators
+- Escalation: If discrepancy between reports (US vs. UK), investigate before filing
+
+Real-time monitoring:
+
+- Dashboard: Current capital ratios, liquidity coverage, concentration ratios
+- Alerts: "Concentration ratio approaching regulatory limit" (80 hours to remediate before breach)
+- Forecasting: If current trajectory continues, will we breach ratio by month-end?
+
+Challenge: Rules change frequently
+
+- Annual regulation updates (BASEL IV, CFTC amendments)
+- Different interpretations across jurisdictions (same rule, different implementation)
+- Solution: Version control rules. When rule changes, version new rule, retest calculations
+
+Validation:
+
+Backtest on past reports:
+- Can system reproduce manually-filed reports from 2023?
+- Are auto-generated reports identical to manual versions?
+- Accuracy target: 99.9% (no material errors)
+
+Data quality:
+- Portfolio reconciliation: 100% match with source systems
+- Calculation logic: Audited by external firm (compliance requirement)
+
+Output:
+
+- 30 regulatory reports filed on-time, error-free
+- Compliance team spends <5% of time on report generation (rest on analysis)
+- Auditability: Full trail from position → calculation → report
+
+Benefit to bank:
+- Faster reporting (weekly instead of monthly possible)
+- Reduced compliance risk (fewer errors, faster remediation)
+- Competitive advantage (faster access to capital if ratio monitoring is real-time)`,
+      },
+      {
+        q: "A healthcare insurer's claim costs are rising 15% YoY while premiums only rose 5%. How would you use data to identify and address the gap?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Deloitte",
+        a: `Claims rising 15% while premiums rise 5% = margin compression (unsustainable). I'd diagnose the gap.
+
+Root cause analysis:
+
+Hypothesis 1: Mix shift.
+- Are we insuring sicker populations? (Adverse selection)
+- Did low-income members (high utilization) increase?
+- Did high-income members (low utilization) leave?
+- Action: Analyze membership mix changes by age, income, disease prevalence
+
+Hypothesis 2: Utilization increases.
+- Are members visiting doctors more frequently?
+- Are hospital admissions up?
+- Are prescription fills up?
+- Action: Calculate utilization per 1000 members by service (office visits, inpatient, ER, prescription)
+
+Hypothesis 3: Unit cost inflation.
+- Are doctors charging more per visit?
+- Did hospital prices increase?
+- Did drug prices spike?
+- Action: Compare 2023 vs. 2024 unit costs (negotiated rates)
+
+Hypothesis 4: Fraud / waste.
+- Are claims being filed for services not rendered?
+- Are unnecessary services being billed? (Over-utilization)
+- Are duplicate claims being paid?
+- Action: Fraud detection, audit sample of high-cost claims
+
+Hypothesis 5: Disease prevalence increase.
+- Did opioid addiction crisis hit this year?
+- Did mental health conditions increase post-pandemic?
+- Did COVID-related claims spike?
+- Action: Analyze claims by diagnosis code, compare to prior year
+
+Diagnostic steps:
+
+1. Segment analysis:
+- Break 15% cost increase by category:
+  - Inpatient: +25% (biggest driver)
+  - ER: +12%
+  - Outpatient: +8%
+  - Prescriptions: +3%
+- Inpatient is culprit. Why?
+
+2. Inpatient deep dive:
+- Average cost per admission: $50K → $52K (4% increase)
+- Number of admissions: 100K → 125K (25% increase)
+- Why more admissions?
+  - Younger members (lower risk) leaving?
+  - Older members (high risk) joining?
+  - Elective procedures increasing post-COVID backlog?
+
+3. Member mix analysis:
+- Age distribution: Did average age increase?
+- Chronic disease prevalence: Diabetes, hypertension, cancer cases up?
+- Medicaid vs. Commercial: Did Medicaid (sicker, higher cost) grow?
+
+4. Unit cost analysis:
+- Sample 100 high-cost claims from 2024
+- Average charge: $1,500
+- Insurance pays: $800 (negotiated rate)
+- Did negotiated rate increase 15%? (leverage loss with providers)
+
+Action plan:
+
+If utilization is driver:
+- Preauthorization: Require approval for high-cost procedures
+- Case management: Manage complex patients (diabetes, heart disease) proactively
+- Incentives: Pay members for preventive care (primary care visits reduce ER usage)
+
+If cost-per-service is driver:
+- Renegotiate contracts with providers (demand 10% discount)
+- Switch to value-based payment (pay for outcomes, not services)
+- In-network steering (nudge members to cheaper providers)
+
+If mix is driver:
+- Adjust premiums: If membership got sicker, premiums must rise
+- Retention program: Offer discounts to lower-risk members to prevent churn
+- Product redesign: Create high-deductible plan to reduce utilization
+
+If fraud/waste:
+- Implement claims auditing (flag 10% of high-cost claims for human review)
+- Educate providers (reduce unnecessary procedures)
+- Member education (patients are cost-conscious when deductibles are high)
+
+Validation:
+
+6 months post-intervention, measure:
+- Did cost trend moderate from 15% to <8%?
+- Did premium increase follow (move toward 12-13% premium increase)?
+
+Likely scenario: Mix (sicker membership) + utilization (post-COVID backlog) + provider rate increases = 15% cost inflation. Requires multi-faceted response.`,
+      },
+      {
+        q: "How would you build a network analysis model to detect organized insurance fraud rings?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Deloitte",
+        a: `Organized insurance fraud rings (coordinated false claims to defraud insurers) are harder to detect than individual fraud. Network analysis reveals patterns.
+
+Fraud ring characteristics:
+
+- Multiple claimants with same accident
+- Same doctors/repair shops used repeatedly
+- Claims clustered in time and location
+- Cross-claims: Person A claims injury, Person B is witness, Person C is doctor
+- Shell companies: Fake repair shops with inflated estimates
+
+Network model approach:
+
+1. Build entity graph:
+- Nodes: People, vehicles, doctors, repair shops, claims
+- Edges: Relationships (claimant → accident → doctor → claim)
+
+Example ring:
+```
+Person A ──accident──> Accident X ──claim──> Claim 1
+Person B ──witness──> Accident X ──repair──> Shop Y ──estimate──> Dr. Z
+```
+
+2. Anomaly detection:
+
+Pattern 1: Claimant-Doctor over-connection
+- Person A filed 15 claims all treated by Dr. Z
+- Dr. Z treats >50% of Person A's medical expenses (unusual—most people see multiple doctors)
+- Red flag: Possible collusion
+
+Pattern 2: Repair shop clustering
+- 20 car accident claims all use Shop Y (probability this random: <0.01%)
+- All claims within 5km of shop
+- Red flag: Possible ring
+
+Pattern 3: Temporal clustering
+- 10 accident claims same day, same location
+- Probability: ~0.0001% (red flag)
+
+Pattern 4: Claimant re-use
+- Person A in 5 accidents (statistically improbable, <0.1%)
+- Red flag: Professional fraudster
+
+3. Network metrics:
+
+Density: How interconnected is a subgraph? (Dense = tightly connected ring)
+Betweenness centrality: Which nodes are "hubs"? (Dr. Z connected to many fraudsters)
+Community detection: Use clustering algorithm (Louvain) to identify tightly-knit groups
+
+4. Scoring:
+
+Ring score = f(over-connections, temporal clustering, anomalous density)
+
+For each claimant-doctor-shop triple:
+- Score 0-100 based on:
+  - How many times this doctor treated this claimant? (+score)
+  - How unusual are this doctor's treatment patterns? (+score)
+  - How many fraudsters use this doctor/shop? (+score)
+
+Threshold:
+- 0-30: Low risk. No action
+- 30-70: Medium risk. Manual review
+- 70+: High risk. Escalate for investigation
+
+5. Temporal analysis:
+
+Did fraud ring activity spike?
+- Month 1: 5 suspicious claims involving Persons A, B, C
+- Month 2: 15 suspicious claims involving same Persons A, B, C + Person D
+- Growth suggests active ring (vs. historical fraud as one-offs)
+
+6. Validation:
+
+Backtest on known fraud rings:
+- Input: Claims from a known fraud ring (convicted, prosecuted)
+- Does model identify network connection? (Recall >90% target)
+- Does model flag legitimate accident clusters? (False positive <5% target)
+
+Example: Known ring: Dr. Z, Shop Y, Persons A, B, C
+- Model should identify these 5 nodes as suspicious network
+- If model misses, tune sensitivity
+
+7. Feedback loop:
+
+Investigator flags fraud ring:
+- Add nodes to "confirmed fraud" database
+- Retrain model (these patterns are now known bad)
+- Future claims matching these patterns get higher scores
+
+Output:
+
+Dashboard:
+- Top 100 suspicious networks (ranked by ring score)
+- Network visualization (shows connections)
+- Recommendation: "Investigate 10 claims involving Doctor Z and Shop Y (ring probability 85%)"
+
+Benefit: Catch coordinated fraud before losses mount. A 10-person ring claiming $500K is expensive if not detected.`,
+      },
+      {
+        q: "Your client wants to implement AI but their data is scattered across 15 legacy systems with no common identifiers. What is your approach?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "JP Morgan",
+        a: `Scattered data across legacy systems is common in large enterprises. Without unifying it, AI is impossible.
+
+Challenge:
+
+15 legacy systems:
+- Customer database (1980s mainframe)
+- Sales CRM (2000s)
+- Supply chain (2010s)
+- HR system (separate)
+- Finance (SAP)
+- Each has different customer identifiers (ID, email, phone, account number)
+
+No common key: Customer "John Smith" in CRM != "J Smith" in mainframe (same person, different names)
+
+Approach:
+
+Phase 1: Assessment (4 weeks)
+
+1. Data audit:
+- Map all 15 systems
+- Document schemas (what data does each store?)
+- Identify customer representations in each (how is customer identified?)
+- Quantify overlap (how many customers appear in multiple systems?)
+
+2. Data quality assessment:
+- Completeness: Does CRM have phone for 90% of customers? (90% complete)
+- Accuracy: Random sample 100 customers, verify data is correct
+- Consistency: Same customer in CRM and mainframe—do phone numbers match? (consistency)
+
+Output: "CRM is 85% complete but mainframe has many duplicates (5% of records are duplicates)"
+
+Phase 2: Data integration (8-12 weeks)
+
+1. Entity resolution (record linkage):
+- Match same customer across systems
+- Fuzzy matching: "John Smith" + phone "555-1234" matches "Jon Smith" + phone "555-1234"
+- Use ML: Train model on manually-matched samples
+
+Example: 100 customer pairs manually matched (same person appearing in 2 systems)
+- Train on 80 pairs
+- Validate on 20 pairs
+- Model learns: "Name similar + address same + phone same = 99% likely same customer"
+- Apply model to all 15 systems
+
+Tools: Python (fuzzywuzzy library), Pandas, or specialized tools (Informatica, Talend)
+
+2. Create unified customer database:
+- Master Customer List (MCL): One record per true customer
+- Attributes: Merge data from 15 systems
+  - Name: From most complete system
+  - Phone: From most reliable system
+  - Purchase history: Consolidate from CRM + ERP
+  - Contact: Take latest update
+
+3. Create mapping tables:
+- System A Customer ID 12345 → MCL ID 999
+- System B Account # ABC → MCL ID 999
+- Future: Any new data from systems maps to MCL
+
+4. Data quality improvements:
+- Standardization: Phone numbers all (555) 1234-5678 format
+- Deduplication: Remove duplicate records
+- Completeness: Fill gaps where possible (call center has full address, add to mainframe)
+
+Phase 3: Infrastructure (6-8 weeks)
+
+1. Modern data warehouse:
+- Ingest data from 15 legacy systems (via APIs, file exports, database replication)
+- Store in cloud (Snowflake, BigQuery, Redshift)
+- Daily syncs: Keep warehouse current with legacy systems
+
+2. Data pipeline:
+- Extract: Pull data from each system nightly
+- Transform: Apply mappings (System A ID → MCL ID), standardize formats
+- Load: Insert into warehouse
+- Quality checks: Alert if data quality drops (duplicates, gaps)
+
+3. Governance:
+- Data dictionary: Document every field (what does it mean?)
+- Access control: Who can see customer data? (Privacy regulations)
+- Audit log: Track who accessed what data (compliance)
+
+Phase 4: AI/ML (4-8 weeks)
+
+Now that data is unified:
+- Build predictive models (customer churn, lifetime value)
+- Train on clean, consolidated data
+- Deploy models on warehouse (real-time scoring as new data arrives)
+
+Timeline: 6-9 months total
+
+Costs:
+- Tools: $500K (Informatica, warehouse, ML platform)
+- People: 5 FTEs (data engineers, data scientists) for 6 months = $1M
+- Total: ~$1.5M
+
+ROI:
+- If churn prediction model reduces churn 5% = $10M annual value (depends on customer lifetime value)
+- Payback: 2 months
+
+Risks:
+- Legacy system changes: If mainframe updates customer schema, MCL needs updating
+- Data privacy: Consolidating data = GDPR/CCPA responsibility (be careful with PII)
+- Legacy system EOL: If 1 of 15 systems retires, update integration
+
+Validation: After 3 months, run AI model on unified data. Does it perform better than model built on single system? (Should show 20-30% improvement)`,
+      },
+      {
+        q: "Estimate the total annual revenue of all cloud kitchens in Mumbai.",
+        subcategory: "case_studies",
+        difficulty: "Easy",
+        level: "junior_ds",
+        a: `Bottom-up estimation approach:
+
+Step 1: Define cloud kitchens.
+Cloud kitchens = delivery-only kitchens (no dine-in). Found on Swiggy, Zomato.
+
+Step 2: Estimate number of cloud kitchens in Mumbai.
+- Mumbai metro population: 20M
+- Delivery market penetration: 30% (6M people order food delivery)
+- Avg orders per person per month: 4 (active users)
+- Total monthly orders: 6M × 4 = 24M orders/month
+
+- Avg order value: ₹300
+- Monthly delivery market size: 24M × 300 = ₹72B monthly = ₹864B annually
+
+- Cloud kitchen share of delivery market: 40% (rest is restaurant direct)
+- Cloud kitchen revenue: 864B × 40% = ₹346B annually
+
+Alternative approach:
+- Number of cloud kitchens: 1,500 (rough estimate for Mumbai metro)
+- Avg revenue per kitchen: ₹20-30L monthly = ₹2.4-3.6Cr annually
+- Total: 1,500 × ₹2.8Cr = ₹420B
+
+Estimate: ₹300-400 billion (₹3-4 billion range) in annual revenue for cloud kitchens in Mumbai.
+
+Key assumptions: 30% delivery penetration, 40% cloud kitchen share, ₹300 avg order value.`,
+      },
+      {
+        q: "Write a Python function that takes a user's transaction history and returns their spending pattern as weekday vs weekend, with average transaction value for each.",
+        subcategory: "python",
+        difficulty: "Medium",
+        level: "mid_ds",
+        a: `\`\`\`python
+import pandas as pd
+from datetime import datetime
+
+def analyze_spending_pattern(transactions):
+    \"\"\"
+    Args:
+        transactions: List of dicts with 'date' (YYYY-MM-DD) and 'amount' (float)
+
+    Returns:
+        Dict with weekday/weekend spending stats
+    \"\"\"
+    df = pd.DataFrame(transactions)
+    df['date'] = pd.to_datetime(df['date'])
+    df['day_of_week'] = df['date'].dt.dayofweek  # 0=Monday, 6=Sunday
+    df['is_weekend'] = df['day_of_week'].isin([5, 6])  # Saturday, Sunday
+
+    # Aggregate by weekday vs weekend
+    weekday_stats = df[~df['is_weekend']]['amount'].agg(['count', 'sum', 'mean', 'std'])
+    weekend_stats = df[df['is_weekend']]['amount'].agg(['count', 'sum', 'mean', 'std'])
+
+    return {
+        'weekday': {
+            'transactions': weekday_stats['count'],
+            'total_spending': weekday_stats['sum'],
+            'avg_transaction': weekday_stats['mean'],
+            'std_dev': weekday_stats['std']
+        },
+        'weekend': {
+            'transactions': weekend_stats['count'],
+            'total_spending': weekend_stats['sum'],
+            'avg_transaction': weekend_stats['mean'],
+            'std_dev': weekend_stats['std']
+        }
+    }
+
+# Example usage
+transactions = [
+    {'date': '2024-01-15', 'amount': 50},
+    {'date': '2024-01-16', 'amount': 75},
+    {'date': '2024-01-20', 'amount': 120},  # Saturday
+]
+print(analyze_spending_pattern(transactions))
+\`\`\``,
+      },
+      {
+        q: "Estimate how many data points Zepto generates per order from placement to delivery.",
+        subcategory: "case_studies",
+        difficulty: "Easy",
+        level: "junior_ds",
+        a: `Data points per order:
+
+1. Order placement (5 data points):
+- User ID, timestamp, device type, app version, session ID
+
+2. Selection phase (10 points):
+- Product IDs (5 products avg), quantities, prices, carousel clicks, search queries
+
+3. Checkout (8 points):
+- Address, payment method, tip, promo code, delivery time selected, user notes
+
+4. Order confirmation (4 points):
+- Order ID, confirmation time, SMS/push sent, customer acknowledged
+
+5. Store operations (12 points):
+- Order received by store, items picked, packed, packing completed, QC check, ready for dispatch
+
+6. Delivery (20 points):
+- Rider assigned, rider location (GPS every 30 seconds), customer location update, pickup time, dropoff time, distance, delivery status (picked up, on-the-way, delivered), voice call log, rider rating, customer tip
+
+7. Post-delivery (5 points):
+- Delivery proof (photo), feedback, rating, refund (if any), support ticket
+
+Total: 5 + 10 + 8 + 4 + 12 + 20 + 5 = 64 data points per order.
+
+With 100K orders/day in Mumbai: 6.4M data points/day.
+
+Note: If tracking rider steps (20+ GPS points during delivery), real number is higher (100+).`,
+      },
+      {
+        q: "Write a Python script that reads a CSV of customer data, identifies duplicate records using fuzzy matching, and outputs a deduplicated file.",
+        subcategory: "python",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `\`\`\`python
+import pandas as pd
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
+
+def deduplicate_customers(input_csv, output_csv, match_threshold=85):
+    \"\"\"
+    Identify and remove duplicate customer records using fuzzy matching on name + email.
+
+    Args:
+        input_csv: Path to customer CSV (must have 'name', 'email' columns)
+        output_csv: Path to output deduplicated CSV
+        match_threshold: Fuzzy match score threshold (0-100, default 85)
+    \"\"\"
+    df = pd.read_csv(input_csv)
+
+    # Create fuzzy match keys (name + email)
+    df['match_key'] = df['name'] + ' ' + df['email'].fillna('')
+
+    # Group duplicates
+    duplicates = []
+    seen = set()
+
+    for idx, key in enumerate(df['match_key']):
+        if idx in seen:
+            continue
+
+        # Find similar records
+        similar_idxs = []
+        for other_idx, other_key in enumerate(df['match_key']):
+            if other_idx <= idx or other_idx in seen:
+                continue
+
+            # Fuzzy match score (0-100)
+            score = fuzz.token_sort_ratio(key, other_key)
+
+            if score >= match_threshold:
+                similar_idxs.append(other_idx)
+                seen.add(other_idx)
+
+        if similar_idxs:
+            # Mark first record as keeper, others for deletion
+            duplicates.append({
+                'keeper': idx,
+                'duplicates': similar_idxs,
+                'match_score': score
+            })
+
+    # Keep only unique records (remove duplicates)
+    records_to_remove = set()
+    for dup in duplicates:
+        records_to_remove.update(dup['duplicates'])
+
+    df_deduped = df[~df.index.isin(records_to_remove)].drop('match_key', axis=1)
+    df_deduped.to_csv(output_csv, index=False)
+
+    print(f"Original: {len(df)} records")
+    print(f"Duplicates found: {len(records_to_remove)}")
+    print(f"Deduplicated: {len(df_deduped)} records")
+    print(f"Output saved to {output_csv}")
+
+# Example usage
+deduplicate_customers('customers.csv', 'customers_deduped.csv')
+\`\`\``,
+      },
+      {
+        q: "Estimate the total storage cost for Hotstar streaming all IPL matches in one season across all quality levels.",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        a: `Estimation:
+
+Step 1: IPL matches per season.
+- IPL season: 74 matches (2023 total)
+- Format: 50min average match (excluding commentary, ads)
+
+Step 2: Video file sizes by quality.
+- 4K (3840×2160): 10 Mbps = 600 MB/min = 30GB per 50min match
+- 1080p HD: 3 Mbps = 180 MB/min = 9GB per match
+- 720p: 1.5 Mbps = 90 MB/min = 4.5GB per match
+- 480p (mobile): 0.5 Mbps = 30 MB/min = 1.5GB per match
+
+Assume distribution:
+- 4K: 5% of viewers (premium) = 1 copy
+- 1080p: 30% of viewers (standard) = 1 copy
+- 720p: 40% of viewers (moderate) = 1 copy
+- 480p: 25% of viewers (low) = 1 copy
+
+Total per match: 30 + 9 + 4.5 + 1.5 = 45GB
+
+Step 3: Season total.
+- 74 matches × 45GB = 3,330 GB = 3.3 TB
+
+Step 4: Add redundancy & backup.
+- Primary storage: 3.3 TB
+- Backup/redundancy: 2x (disaster recovery) = 6.6 TB
+- CDN caching (distribute globally): 1x additional = 3.3 TB
+- Total: ~13 TB
+
+Step 5: Storage cost.
+- AWS S3 Standard: $0.023 per GB/month
+- 13 TB = 13,000 GB
+- Monthly cost: 13,000 × $0.023 = $300/month
+- Annual (full season including off-season retention): ~$3,600
+
+Alternative: Cloud video platform (JW Player, Cloudflare Stream) = ~$500-2000/month depending on traffic.
+
+Estimate: ₹30-50 lakhs per season for storage (₹3-5 lakhs/month average).`,
+      },
     ],
   },
 };
