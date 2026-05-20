@@ -8,26 +8,18 @@ const C = {
 const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
 
 function FounderAvatar() {
-  // Placeholder avatar with initials "SD"
-  // Replace with <img src="/founder.jpg" alt="Shraddha Dudhgaoli" /> when photo is uploaded
   return (
-    <div
+    <img
+      src="/founder.jpg"
+      alt="Shraddha Dudhgaoli"
       style={{
         width: 120,
         height: 120,
         borderRadius: '50%',
-        background: 'linear-gradient(135deg, #1B1B18, #5C5C57)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: 48,
-        fontWeight: 600,
-        color: '#FAFAF8',
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        objectFit: 'cover',
+        objectPosition: 'center',
       }}
-    >
-      SD
-    </div>
+    />
   );
 }
 
