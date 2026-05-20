@@ -1,3 +1,5 @@
+import React from 'react';
+
 const C = {
   bg: '#FAFAF8',
   text: '#1B1B18',
@@ -8,10 +10,13 @@ const C = {
 const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
 
 function FounderAvatar() {
-  return (
+  const [imageLoaded, setImageLoaded] = React.useState(true);
+
+  return imageLoaded ? (
     <img
       src="/founder.jpg"
       alt="Shraddha Dudhgaoli"
+      onError={() => setImageLoaded(false)}
       style={{
         width: 120,
         height: 120,
@@ -20,6 +25,24 @@ function FounderAvatar() {
         objectPosition: 'center',
       }}
     />
+  ) : (
+    <div
+      style={{
+        width: 120,
+        height: 120,
+        borderRadius: '50%',
+        background: 'linear-gradient(135deg, #1B1B18, #3a3a35)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 36,
+        fontWeight: 600,
+        color: '#FFFFFF',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+      }}
+    >
+      SD
+    </div>
   );
 }
 
@@ -55,7 +78,7 @@ export default function About() {
             About InterviewAlpha
           </h1>
           <p style={{ fontSize: 18, color: C.textMuted, marginBottom: 0 }}>
-            Built by product leaders. For product leaders.
+            Built by someone who got rejected without feedback. Now fixing that for everyone.
           </p>
         </div>
 
