@@ -78,7 +78,7 @@ export default function About() {
             About InterviewAlpha
           </h1>
           <p style={{ fontSize: 18, color: C.textMuted, marginBottom: 0 }}>
-            Built by someone who got rejected without feedback. Now fixing that for everyone.
+            Practice real interviews. Get real feedback. Build real confidence.
           </p>
         </div>
 
