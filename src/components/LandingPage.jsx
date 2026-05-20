@@ -12,7 +12,7 @@ const C = {
   redWarmLight: 'rgba(220, 109, 109, 0.08)',
 };
 
-export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
+export default function LandingPage({ onStartPractice, onBrowseQuestions, onPathClick, user, showLoginModal }) {
   // Hero section  . proper two-column layout with container
   const HeroSection = () => (
     <div style={{
@@ -126,7 +126,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
             onMouseLeave={e => e.currentTarget.style.background = C.text}
           >
-            Answer your first question →
+            Answer your first question
           </button>
 
           {/* Reassurance text */}
@@ -159,7 +159,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             onMouseEnter={e => e.currentTarget.style.color = C.text}
             onMouseLeave={e => e.currentTarget.style.color = C.textSoft}
           >
-            or browse questions free →
+            or browse questions free
           </button>
         </div>
 
@@ -580,7 +580,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             }}>
               Practice company-specific questions
             </p>
-            <button style={{
+            <button onClick={onStartPractice} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -595,7 +595,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
             onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
             >
-              Prep for my interview →
+              Start prepping
             </button>
           </div>
 
@@ -631,7 +631,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             }}>
               Answer one question and see how you score
             </p>
-            <button style={{
+            <button onClick={onStartPractice} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -646,7 +646,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
             onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
             >
-              Try a product question →
+              Try a question
             </button>
           </div>
 
@@ -670,7 +670,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
             }}>
-              I'm switching roles
+              I'm exploring new roles
             </h3>
             <p style={{
               fontSize: '13px',
@@ -680,9 +680,9 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 16px 0',
             }}>
-              Start with fundamentals
+              Start with fundamentals for any role
             </p>
-            <button style={{
+            <button onClick={onStartPractice} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -697,7 +697,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
             onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
             >
-              Start with fundamentals →
+              Start with basics
             </button>
           </div>
 
@@ -731,9 +731,9 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 16px 0',
             }}>
-              1,100+ questions with expert answers
+              Thousands of questions with expert answers
             </p>
-            <button style={{
+            <button onClick={onBrowseQuestions} style={{
               fontSize: '13px',
               border: `0.5px solid ${C.border}`,
               borderRadius: '8px',
@@ -748,7 +748,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
             onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
             >
-              Browse all questions →
+              Browse questions
             </button>
           </div>
 
@@ -1005,7 +1005,7 @@ export default function LandingPage({ onStartPractice, onBrowseQuestions }) {
             onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
             onMouseLeave={e => e.currentTarget.style.background = C.text}
           >
-            Answer your first question →
+            Answer your first question
           </button>
           <p style={{
             fontSize: '13px',
