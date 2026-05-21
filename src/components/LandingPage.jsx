@@ -1,5 +1,5 @@
 const C = {
-  bg: '#FAFAF8',
+  bg: '#FFFFFF',
   text: '#1B1B18',
   textMuted: 'rgba(27, 27, 24, 0.5)',
   textSoft: 'rgba(27, 27, 24, 0.5)',

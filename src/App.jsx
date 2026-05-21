@@ -405,6 +405,18 @@ export default function App() {
     return () => window.removeEventListener('ia:navigate', handler);
   }, []);
 
+  // Set body background to gold/bronze frame
+  useEffect(() => {
+    document.body.style.background = 'linear-gradient(135deg, #C9A96E, #D4B87A, #BF9B5E)';
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    return () => {
+      document.body.style.background = '';
+      document.body.style.margin = '';
+      document.body.style.padding = '';
+    };
+  }, []);
+
   const loadProfile = useCallback(async (uid) => {
     const { data } = await supabase
       .from('profiles')
@@ -617,7 +629,12 @@ export default function App() {
           }}
         />
       )}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .app-container { margin: 8px auto !important; }
+        }
+      `}</style>
+      <div className="app-container" style={{ maxWidth: '1200px', margin: '20px auto', background: '#FFFFFF', borderRadius: '12px', boxShadow: '0 2px 20px rgba(0,0,0,0.08)', minHeight: 'calc(100vh - 40px)', overflow: 'hidden', flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Nav
           user={user}
           page={page}
