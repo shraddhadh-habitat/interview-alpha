@@ -90,16 +90,19 @@ const HeroBackground = () => {
   const animatedCount = shapes.filter(s => s.animation !== 'none').length;
   console.log('HeroBackground rendering, shapes:', shapes.length, 'animated:', animatedCount);
 
+  const visibleShapes = shapes.filter(s => !(s.col < 6 && s.row > 1 && s.row < 5));
+  console.log('Total shapes:', shapes.length, 'Visible:', visibleShapes.length);
+
   const renderShape = (shape) => {
-    const size = 28;
+    const size = 32;
     const gapX = 100 / cols;
     const gapY = 100 / rows;
     const x = shape.col * gapX + gapX / 2;
     const y = shape.row * gapY + gapY / 2;
-    const color = shape.filled ? '#FDCD34' : 'rgba(0,0,0,0.08)';
+    const color = shape.filled ? '#FDCD34' : 'rgba(0,0,0,0.2)';
     const isNearText = (x < 45 && y > 30 && y < 80);
 
-    if (isNearText) return null;
+    // if (isNearText) return null;
 
     const style = {
       position: 'absolute',
@@ -121,7 +124,7 @@ const HeroBackground = () => {
             height: size,
             borderRadius: '50%',
             backgroundColor: shape.filled ? color : 'transparent',
-            border: shape.filled ? 'none' : '1.5px solid rgba(0,0,0,0.1)',
+            border: shape.filled ? 'none' : '2px solid rgba(0,0,0,0.2)',
           }}
         />
       );
@@ -138,7 +141,7 @@ const HeroBackground = () => {
             height: size - 4,
             borderRadius: 3,
             backgroundColor: shape.filled ? color : 'transparent',
-            border: shape.filled ? 'none' : '1.5px solid rgba(0,0,0,0.1)',
+            border: shape.filled ? 'none' : '2px solid rgba(0,0,0,0.2)',
           }}
         />
       );
@@ -170,7 +173,7 @@ const HeroBackground = () => {
             data-animated={shape.isAnimated ? 'true' : undefined}
             style={{...style}}
           >
-            <polygon points="14,2 26,26 2,26" fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="1.5"/>
+            <polygon points="14,2 26,26 2,26" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1.5"/>
           </svg>
         );
       }
@@ -188,7 +191,6 @@ const HeroBackground = () => {
       pointerEvents: 'none',
       zIndex: 0,
     }}>
-      <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 999, background: 'red', color: 'white', padding: '5px 10px', fontSize: 12 }}>BG ACTIVE</div>
       {shapes.map(renderShape)}
     </div>
   );
