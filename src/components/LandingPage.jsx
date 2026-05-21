@@ -190,8 +190,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 1 - Product Management */}
           <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
+            background: '#FDCD34',
+            border: 'none',
             borderRadius: '16px',
             padding: '24px',
             marginBottom: '12px',
@@ -201,10 +201,14 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '10px',
               letterSpacing: '1px',
               textTransform: 'uppercase',
-              color: C.green,
-              fontWeight: 700,
+              color: '#fff',
+              fontWeight: 900,
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              background: '#1B1B18',
+              padding: '4px 12px',
+              borderRadius: '4px',
+              display: 'inline-block',
             }}>
               Product Management
             </div>
@@ -230,17 +234,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               onNavigate('practice');
             }} style={{
               fontSize: '11px',
-              color: C.green,
+              color: '#fff',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: 'none',
+              background: '#1B1B18',
               border: 'none',
               cursor: 'pointer',
-              padding: 0,
-              fontWeight: 600,
-              transition: 'color 0.2s',
+              padding: '8px 16px',
+              fontWeight: 900,
+              transition: 'background 0.2s',
+              borderRadius: '6px',
             }}
-            onMouseEnter={e => e.currentTarget.style.color = C.text}
-            onMouseLeave={e => e.currentTarget.style.color = C.green}
+            onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
+            onMouseLeave={e => e.currentTarget.style.background = '#1B1B18'}
             >
               Answer this question
             </button>
@@ -248,8 +253,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 2 - Data Science */}
           <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
+            background: '#FDCD34',
+            border: 'none',
             borderRadius: '16px',
             padding: '24px',
           }}>
@@ -258,10 +263,14 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '10px',
               letterSpacing: '1px',
               textTransform: 'uppercase',
-              color: C.green,
-              fontWeight: 700,
+              color: '#fff',
+              fontWeight: 900,
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              background: '#1B1B18',
+              padding: '4px 12px',
+              borderRadius: '4px',
+              display: 'inline-block',
             }}>
               Data Science
             </div>
@@ -287,17 +296,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               onNavigate('practice');
             }} style={{
               fontSize: '11px',
-              color: C.green,
+              color: '#fff',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: 'none',
+              background: '#1B1B18',
               border: 'none',
               cursor: 'pointer',
-              padding: 0,
-              fontWeight: 600,
-              transition: 'color 0.2s',
+              padding: '8px 16px',
+              fontWeight: 900,
+              transition: 'background 0.2s',
+              borderRadius: '6px',
             }}
-            onMouseEnter={e => e.currentTarget.style.color = C.text}
-            onMouseLeave={e => e.currentTarget.style.color = C.green}
+            onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
+            onMouseLeave={e => e.currentTarget.style.background = '#1B1B18'}
             >
               Answer this question
             </button>
