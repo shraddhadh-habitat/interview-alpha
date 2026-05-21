@@ -1,5 +1,3 @@
-import HeroBackground from './HeroBackground';
-
 const C = {
   bg: '#FAFAF8',
   text: '#1B1B18',
@@ -25,10 +23,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
       alignItems: 'center',
       paddingTop: '32px',
       paddingBottom: '40px',
-      position: 'relative',
-      overflow: 'hidden',
     }}>
-      <HeroBackground />
       <style>{`
         @media (max-width: 768px) {
           .hero-container {
