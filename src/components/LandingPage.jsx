@@ -136,10 +136,12 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           {/* Reassurance text */}
           <p style={{
             fontSize: '13px',
-            color: C.textMuted,
+            color: '#1B1B18',
             marginTop: '12px',
             marginBottom: '0',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontWeight: 900,
+            textShadow: '0 0 0 #1B1B18',
           }}>
             No resume. No setup. Free. Takes 2 minutes.
           </p>
@@ -177,11 +179,11 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           <div className="hero-card-label" style={{
             fontSize: '11px',
             letterSpacing: '2px',
-            textTransform: 'uppercase',
-            color: C.textMuted,
-            fontWeight: 700,
+            color: '#1B1B18',
+            fontWeight: 900,
             marginBottom: '12px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
+            textShadow: '0 0 0 #1B1B18',
           }}>
             Sample Questions
           </div>
@@ -395,12 +397,12 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         <div style={{
           fontSize: '13px',
           letterSpacing: '2px',
-          textTransform: 'uppercase',
-          color: C.textMuted,
-          fontWeight: 700,
+          color: '#1B1B18',
+          fontWeight: 900,
           textAlign: 'center',
           marginBottom: '48px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
+          textShadow: '0 0 0 #1B1B18',
         }}>
           How it works
         </div>
@@ -574,11 +576,12 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         {/* Section heading */}
         <h2 style={{
           fontSize: '18px',
-          fontWeight: 500,
-          color: C.text,
+          fontWeight: 900,
+          color: '#1B1B18',
           textAlign: 'center',
           marginBottom: '48px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
+          textShadow: '0 0 0 #1B1B18',
         }}>
           Where do you want to start?
         </h2>
@@ -816,12 +819,12 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         <div style={{
           fontSize: '13px',
           letterSpacing: '2px',
-          textTransform: 'uppercase',
-          color: C.textMuted,
-          fontWeight: 700,
+          color: '#1B1B18',
+          fontWeight: 900,
           textAlign: 'center',
           marginBottom: '48px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
+          textShadow: '0 0 0 #1B1B18',
         }}>
           What you get with every practice session
         </div>
@@ -991,9 +994,11 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           </button>
           <p style={{
             fontSize: '13px',
-            color: C.textMuted,
+            color: '#1B1B18',
             marginTop: '12px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontWeight: 900,
+            textShadow: '0 0 0 #1B1B18',
           }}>
             Free. No signup needed to browse.
           </p>
