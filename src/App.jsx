@@ -369,7 +369,6 @@ export default function App() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginMessage, setLoginMessage] = useState('');
   const [postLoginDestination, setPostLoginDestination] = useState(null);
-  const [landingPracticeQuestion, setLandingPracticeQuestion] = useState(null);
   const [profileLoaded, setProfileLoaded]   = useState(false);
   const quickStartCheckedRef = useRef(false);
 
@@ -593,18 +592,6 @@ export default function App() {
     }
   }, [user]);
 
-  const handleTryQuestion = useCallback((questionText) => {
-    if (!user) {
-      setPostLoginDestination('practice');
-      setLandingPracticeQuestion(questionText);
-      setLoginMessage('Sign up to practice with AI feedback');
-      setShowLoginModal(true);
-    } else {
-      setLandingPracticeQuestion(questionText);
-      setPage('practice');
-    }
-  }, [user]);
-
   if (authLoading) return <LoadingScreen />;
   if (showResetPassword) return <ResetPasswordPage onDone={() => { setShowResetPassword(false); supabase.auth.signOut(); }} />;
 
@@ -647,7 +634,6 @@ export default function App() {
                 user={user}
                 onNavigate={(destination) => setPage(destination)}
                 onLogin={() => { setPostLoginDestination('practice'); setLoginMessage('Sign up to get AI feedback'); setShowLoginModal(true); }}
-                onTryQuestion={handleTryQuestion}
               />
             ) : (
               <InterviewAlpha
@@ -665,8 +651,6 @@ export default function App() {
               profile={profile}
               checkSession={checkSession}
               onSessionUsed={onSessionUsed}
-              landingPracticeQuestion={landingPracticeQuestion}
-              onClearLandingQuestion={() => setLandingPracticeQuestion(null)}
             />
           )}
           {page === 'sessions'    && <PastSessions user={user} />}
