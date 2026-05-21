@@ -838,7 +838,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         }}>
           {/* Card 1 */}
           <div style={{
-            background: '#F5F3EF',
+            background: '#FDCD34',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -851,7 +851,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '14px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -860,7 +860,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </h3>
             <p style={{
               fontSize: '12px',
-              color: C.textSoft,
+              color: '#1B1B18',
               margin: 0,
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -871,7 +871,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 2 */}
           <div style={{
-            background: '#F5F3EF',
+            background: '#FDCD34',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -884,7 +884,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '14px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -893,7 +893,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </h3>
             <p style={{
               fontSize: '12px',
-              color: C.textSoft,
+              color: '#1B1B18',
               margin: 0,
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -904,7 +904,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 3 */}
           <div style={{
-            background: '#F5F3EF',
+            background: '#FDCD34',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -917,7 +917,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '14px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -926,7 +926,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </h3>
             <p style={{
               fontSize: '12px',
-              color: C.textSoft,
+              color: '#1B1B18',
               margin: 0,
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -937,7 +937,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 4 */}
           <div style={{
-            background: '#F5F3EF',
+            background: '#FDCD34',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -950,7 +950,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '14px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -959,7 +959,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </h3>
             <p style={{
               fontSize: '12px',
-              color: C.textSoft,
+              color: '#1B1B18',
               margin: 0,
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
