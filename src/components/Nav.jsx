@@ -31,7 +31,7 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
 
   if (status === 'active') {
     return (
-      <span style={{ padding: '4px 10px', background: C.greenLight, border: `1px solid rgba(22,163,74,0.3)`, borderRadius: 20, fontSize: 11, fontWeight: 600, color: C.green, whiteSpace: 'nowrap' }}>
+      <span style={{ padding: '4px 10px', background: 'rgba(253, 205, 52, 0.12)', border: `1px solid rgba(253, 205, 52, 0.2)`, borderRadius: 20, fontSize: 11, fontWeight: 600, color: '#FDCD34', whiteSpace: 'nowrap' }}>
         ◆ Pro · {monthly}/{PRO_SESSION_LIMIT}
       </span>
     );
@@ -113,19 +113,16 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 800;
       letter-spacing: 0.2px;
-      color: #6B7280;
+      color: rgba(27, 27, 24, 0.5);
       white-space: nowrap;
       cursor: pointer;
       transition: color 0.15s, transform 0.15s;
       display: flex;
       align-items: center;
     }
-    .nav-tab:hover { color: #111827; transform: translateY(-1px); }
+    .nav-tab:hover { color: #1B1B18; transform: translateY(-1px); }
     .nav-tab.active {
-      background: ${RAINBOW};
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #1B1B18;
       border-bottom: 3px solid transparent;
       position: relative;
     }
@@ -134,10 +131,10 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       position: absolute;
       bottom: 0; left: 12px; right: 12px;
       height: 3px;
-      background: ${RAINBOW};
+      background: #FDCD34;
       border-radius: 2px 2px 0 0;
     }
-    .nav-tab.admin { color: ${C.red}; -webkit-text-fill-color: ${C.red}; }
+    .nav-tab.admin { color: #1B1B18; -webkit-text-fill-color: #1B1B18; }
     .hamburger-btn {
       display: none;
       background: none;
@@ -228,7 +225,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
           <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 400, letterSpacing: -0.5, cursor: 'pointer' }} onClick={() => handleNav('interview')}>
-            <span style={{ color: C.text }}>I</span><span style={{ color: C.green }}>A</span><sup style={{ fontSize: 10, color: C.textMuted, verticalAlign: 'super' }}>™</sup>
+            <span style={{ color: C.text }}>I</span><span style={{ color: '#FDCD34' }}>A</span><sup style={{ fontSize: 10, color: C.textMuted, verticalAlign: 'super' }}>™</sup>
           </span>
         </div>
 
@@ -336,7 +333,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
               onClick={() => { setDrawerOpen(false); requireAuth('Sign in to continue'); }}
               style={{
                 width: '100%', height: 48,
-                background: RAINBOW, border: 'none', borderRadius: 12,
+                background: '#1B1B18', border: 'none', borderRadius: 12,
                 color: '#fff', fontSize: 16, fontWeight: 700,
                 cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
               }}
@@ -388,8 +385,8 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                   <span style={{
                     display: 'inline-flex', alignItems: 'center',
                     padding: '4px 12px', borderRadius: 20,
-                    background: RAINBOW,
-                    color: '#fff',
+                    background: '#FDCD34',
+                    color: '#1B1B18',
                     fontSize: 14, fontWeight: 700,
                   }}>
                     {tab.label}
