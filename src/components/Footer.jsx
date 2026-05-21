@@ -116,21 +116,9 @@ export default function Footer() {
             }}>
               How it Works
             </FooterLink>
-            <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                style={{
-                  fontSize: 14,
-                  color: C.link,
-                  textDecoration: 'none',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                }}
-              >
-                Blog
-              </a>
-              <ComingSoon />
-            </div>
+            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'blog' }))}>
+              Blog
+            </FooterLink>
             <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'careers' }))}>
               Careers
             </FooterLink>

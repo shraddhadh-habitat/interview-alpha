@@ -13,6 +13,8 @@ import AdminPanel from './pages/AdminPanel';
 import Scorecard from './pages/Scorecard';
 import About from './pages/About';
 import Careers from './pages/Careers';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import DemoTutorial from './components/DemoTutorial';
@@ -685,6 +687,8 @@ export default function App() {
           {page === 'admin' && isAdmin && <AdminPanel user={user} />}
           {page === 'about'     && <About />}
           {page === 'careers'   && <Careers />}
+          {page === 'blog'      && <Blog />}
+          {page === 'blog-feedback-black-hole' && <BlogPost />}
         </div>
         <Footer />
         {user && !showQuickStart && <ReviewWidget user={user} profile={profile} />}
