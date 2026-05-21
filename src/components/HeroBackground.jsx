@@ -87,6 +87,9 @@ const HeroBackground = () => {
     console.log('[HeroBackground] Sample animated shape:', animatedShapes[0]);
   }
 
+  const animatedCount = shapes.filter(s => s.animation !== 'none').length;
+  console.log('HeroBackground rendering, shapes:', shapes.length, 'animated:', animatedCount);
+
   const renderShape = (shape) => {
     const size = 28;
     const gapX = 100 / cols;
@@ -185,6 +188,7 @@ const HeroBackground = () => {
       pointerEvents: 'none',
       zIndex: 0,
     }}>
+      <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 999, background: 'red', color: 'white', padding: '5px 10px', fontSize: 12 }}>BG ACTIVE</div>
       {shapes.map(renderShape)}
     </div>
   );
