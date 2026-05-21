@@ -324,8 +324,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         <div style={{ maxWidth: '560px', margin: '0 auto' }}>
           {/* Testimonial card */}
           <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
+            background: '#FDCD34',
+            border: 'none',
             borderRadius: '16px',
             padding: '24px',
           }}>
@@ -333,7 +333,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <p style={{
               fontSize: '14px',
               fontStyle: 'italic',
-              color: C.text,
+              color: '#1B1B18',
               lineHeight: 1.7,
               marginBottom: '16px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -346,7 +346,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <p style={{
               fontSize: '13px',
               fontWeight: 500,
-              color: C.textSoft,
+              color: '#1B1B18',
               marginBottom: '16px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 16px 0',
@@ -357,14 +357,14 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             {/* Divider */}
             <div style={{
               height: '1px',
-              background: C.border,
+              background: '#1B1B18',
               margin: '16px 0',
             }} />
 
             {/* Proof line */}
             <p style={{
               fontSize: '13px',
-              color: C.textMuted,
+              color: '#1B1B18',
               textAlign: 'center',
               margin: 0,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -415,8 +415,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         }}>
           {/* Card 1 */}
           <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
+            background: '#FDCD34',
+            border: 'none',
             borderRadius: '16px',
             padding: '20px',
             textAlign: 'center',
@@ -425,8 +425,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: '#F5F3EF',
-              color: C.text,
+              background: '#1B1B18',
+              color: '#fff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -441,7 +441,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -451,7 +451,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
             <p style={{
               fontSize: '13px',
-              color: C.textSoft,
+              color: '#1B1B18',
               margin: 0,
               lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -462,8 +462,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 2 */}
           <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
+            background: '#FDCD34',
+            border: 'none',
             borderRadius: '16px',
             padding: '20px',
             textAlign: 'center',
@@ -472,8 +472,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: '#F5F3EF',
-              color: C.text,
+              background: '#1B1B18',
+              color: '#fff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -488,7 +488,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -498,7 +498,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
             <p style={{
               fontSize: '13px',
-              color: C.textSoft,
+              color: '#1B1B18',
               margin: 0,
               lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -509,8 +509,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 3 */}
           <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
+            background: '#FDCD34',
+            border: 'none',
             borderRadius: '16px',
             padding: '20px',
             textAlign: 'center',
@@ -519,8 +519,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: '#F5F3EF',
-              color: C.text,
+              background: '#1B1B18',
+              color: '#fff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -535,7 +535,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -545,7 +545,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
             <p style={{
               fontSize: '13px',
-              color: C.textSoft,
+              color: '#1B1B18',
               margin: 0,
               lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -594,8 +594,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         }}>
           {/* Card 1 */}
           <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
+            background: '#FDCD34',
+            border: 'none',
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -607,7 +607,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -616,7 +616,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </h3>
             <p style={{
               fontSize: '13px',
-              color: C.textSoft,
+              color: '#1B1B18',
               marginBottom: '16px',
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -645,8 +645,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 2 */}
           <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
+            background: '#FDCD34',
+            border: 'none',
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -658,7 +658,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -667,7 +667,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </h3>
             <p style={{
               fontSize: '13px',
-              color: C.textSoft,
+              color: '#1B1B18',
               marginBottom: '16px',
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -696,8 +696,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 3 */}
           <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
+            background: '#FDCD34',
+            border: 'none',
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -709,7 +709,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -718,7 +718,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </h3>
             <p style={{
               fontSize: '13px',
-              color: C.textSoft,
+              color: '#1B1B18',
               marginBottom: '16px',
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -747,8 +747,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 4 */}
           <div style={{
-            background: '#fff',
-            border: `1px solid ${C.border}`,
+            background: '#FDCD34',
+            border: 'none',
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -760,7 +760,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: C.text,
+              color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
@@ -769,7 +769,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </h3>
             <p style={{
               fontSize: '13px',
-              color: C.textSoft,
+              color: '#1B1B18',
               marginBottom: '16px',
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
