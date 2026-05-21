@@ -407,7 +407,7 @@ export default function App() {
 
   // Set body background to gold/bronze frame
   useEffect(() => {
-    document.body.style.background = 'linear-gradient(135deg, #C9A96E, #D4B87A, #BF9B5E)';
+    document.body.style.background = 'linear-gradient(135deg, #B8860B, #DAA520, #FFD700, #DAA520, #B8860B)';
     document.body.style.margin = '0';
     document.body.style.padding = '0';
     return () => {
