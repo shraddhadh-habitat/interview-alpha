@@ -923,8 +923,12 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const sampleQ = localStorage.getItem('ia_sample_question');
     if (sampleQ) {
       localStorage.removeItem('ia_sample_question');
-      localStorage.removeItem('ia_sample_category');
-      setPracticeQuestion({ question: sampleQ, questionId: 'landing-sample' });
+      try {
+        const parsed = JSON.parse(sampleQ);
+        setPracticeQuestion(parsed);
+      } catch(e) {
+        setPracticeQuestion({ question: sampleQ, questionId: 'landing-sample' });
+      }
     }
   }, []);
 
