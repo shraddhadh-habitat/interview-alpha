@@ -159,6 +159,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               textDecoration: 'underline',
               padding: 0,
               transition: 'color 0.2s',
+              fontWeight: 700,
             }}
             onMouseEnter={e => e.currentTarget.style.color = C.text}
             onMouseLeave={e => e.currentTarget.style.color = C.textSoft}
@@ -178,7 +179,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             letterSpacing: '2px',
             textTransform: 'uppercase',
             color: C.textMuted,
-            fontWeight: 600,
+            fontWeight: 700,
             marginBottom: '12px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
@@ -365,8 +366,9 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               textAlign: 'center',
               margin: 0,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 700,
             }}>
-              150+ PMs signed up · Google · Amazon · Meta · Flipkart prep
+              Thousands signed up · Google · Amazon · Meta · Flipkart prep
             </p>
           </div>
         </div>
@@ -395,7 +397,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           letterSpacing: '2px',
           textTransform: 'uppercase',
           color: C.textMuted,
-          fontWeight: 600,
+          fontWeight: 700,
           textAlign: 'center',
           marginBottom: '48px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -816,7 +818,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           letterSpacing: '2px',
           textTransform: 'uppercase',
           color: C.textMuted,
-          fontWeight: 600,
+          fontWeight: 700,
           textAlign: 'center',
           marginBottom: '48px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -1025,7 +1027,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           letterSpacing: '2px',
           textTransform: 'uppercase',
           color: C.textMuted,
-          fontWeight: 600,
+          fontWeight: 700,
           marginBottom: '16px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
         }}>
@@ -1038,6 +1040,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           lineHeight: 1.6,
           margin: 0,
           fontFamily: "'Plus Jakarta Sans', sans-serif",
+          fontWeight: 700,
         }}>
           Software Engineering · Product Design · Analytics
         </p>
