@@ -77,11 +77,11 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             letterSpacing: '3px',
             textTransform: 'uppercase',
             color: '#1B1B18',
-            fontWeight: 900,
+            fontWeight: 700,
             marginBottom: '16px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            AI-powered interview practice
+            AI that scores your answers like a real interviewer
           </div>
 
           {/* Headline */}
