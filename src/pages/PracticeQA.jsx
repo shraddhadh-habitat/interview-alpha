@@ -921,12 +921,10 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   // Pre-load sample question from landing page via localStorage
   useEffect(() => {
     const sampleQ = localStorage.getItem('ia_sample_question');
-    console.log('[PracticeQA] localStorage sample question:', sampleQ);
     if (sampleQ) {
       localStorage.removeItem('ia_sample_question');
       try {
         const parsed = JSON.parse(sampleQ);
-        console.log('[PracticeQA] Parsed sample question:', parsed);
         setPracticeQuestion({
           question: parsed,
           questionId: parsed.questionId || 'landing-sample',
@@ -934,7 +932,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           category: parsed.category || 'sample',
         });
       } catch(e) {
-        console.error('[PracticeQA] JSON parse error:', e);
         setPracticeQuestion({
           question: { q: sampleQ, a: '' },
           questionId: 'landing-sample',
