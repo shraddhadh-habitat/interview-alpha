@@ -217,12 +217,14 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               WhatsApp has 500M users in India but makes almost no money from them. You're the PM tasked with building WhatsApp's first revenue product for India without hurting user trust or daily engagement. What do you build, how do you price it, and what's your biggest risk?
             </p>
             <button onClick={() => {
+              console.log('[LandingPage] PM "Answer this question" clicked');
               localStorage.setItem('ia_sample_question', JSON.stringify({
                 q: SAMPLE_PM_QUESTION,
                 a: "Before diving in, I'd want to clarify a few things: Are we optimizing for revenue or user growth? What's the acceptable engagement drop threshold? Is this B2B or B2C revenue?\n\nAssuming we need B2B revenue without touching consumer experience, I'd focus on WhatsApp Business API monetization.\n\nThe core insight is that small businesses in India already use WhatsApp as their primary customer channel. 15M+ businesses use WhatsApp Business. The opportunity is charging businesses for verified accounts, automated messaging, and catalog features that drive sales.\n\nFor V1, I'd build three things: verified business profiles with a blue tick (trust signal for consumers, worth paying for by businesses), broadcast messaging for order updates and promotions (charged per message beyond a free tier), and integrated payments for in-chat purchases (take a small transaction fee).\n\nPricing: freemium model. Free for small businesses under 100 messages per day. Rs 500 per month for premium features. Transaction fee of 1% on in-chat payments.\n\nThe biggest risk is perception. If users feel WhatsApp is becoming spammy or commercial, daily engagement drops. The guardrail: users must opt-in to business messages, businesses get a spam score, and any business with high block rates gets suspended.\n\nSuccess metrics: monthly revenue per business user, business adoption rate, consumer block rate (must stay under 2%), and daily active user retention (must not drop more than 0.5%).",
                 questionId: "landing-pm-sample",
                 category: "Product Management"
               }));
+              console.log('[LandingPage] localStorage set, navigating to practice');
               onNavigate('practice');
             }} style={{
               fontSize: '11px',
