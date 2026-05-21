@@ -405,6 +405,10 @@ export default function App() {
     return () => window.removeEventListener('ia:navigate', handler);
   }, []);
 
+  useEffect(() => {
+    console.log('[App] page changed to:', page);
+  }, [page]);
+
   const loadProfile = useCallback(async (uid) => {
     const { data } = await supabase
       .from('profiles')
