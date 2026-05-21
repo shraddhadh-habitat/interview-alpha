@@ -1022,8 +1022,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           fontSize: '14px',
           letterSpacing: '2px',
           textTransform: 'uppercase',
-          color: C.textMuted,
-          fontWeight: 1200,
+          color: '#1B1B18',
+          fontWeight: 900,
           marginBottom: '16px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
         }}>
