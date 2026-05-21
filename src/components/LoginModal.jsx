@@ -4,10 +4,10 @@ import { supabase } from '../lib/supabase';
 const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
 
 const C = {
-  text: '#0A0A0A', textMuted: '#5C5C57', textLight: '#9C9C97',
-  border: '#E8E6E1', bg: '#FAFAF8',
-  green: '#16A34A',
-  red: '#CF222E', redLight: 'rgba(207,34,46,0.06)', redBorder: 'rgba(207,34,46,0.18)',
+  text: '#1B1B18', textMuted: 'rgba(27, 27, 24, 0.5)', textLight: 'rgba(27, 27, 24, 0.5)',
+  border: 'rgba(27, 27, 24, 0.12)', bg: '#FAFAF8',
+  green: '#1B1B18',
+  red: '#1B1B18', redLight: 'rgba(27, 27, 24, 0.08)', redBorder: 'rgba(27, 27, 24, 0.12)',
 };
 
 function AuthForm({ tab, mobile, onSuccess }) {

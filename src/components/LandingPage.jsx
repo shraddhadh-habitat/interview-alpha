@@ -3,13 +3,13 @@ import HeroBackground from './HeroBackground';
 const C = {
   bg: '#FAFAF8',
   text: '#1B1B18',
-  textMuted: '#9C9C97',
-  textSoft: '#5C5C57',
-  border: '#E8E6E1',
-  green: '#16A34A',
-  greenLight: 'rgba(22, 163, 74, 0.08)',
-  redWarm: '#DC6D6D',
-  redWarmLight: 'rgba(220, 109, 109, 0.08)',
+  textMuted: 'rgba(27, 27, 24, 0.5)',
+  textSoft: 'rgba(27, 27, 24, 0.5)',
+  border: 'rgba(27, 27, 24, 0.12)',
+  green: '#FDCD34',
+  greenLight: 'rgba(253, 205, 52, 0.12)',
+  redWarm: '#1B1B18',
+  redWarmLight: 'rgba(27, 27, 24, 0.08)',
 };
 
 const SAMPLE_PM_QUESTION = "WhatsApp has 500M users in India but makes almost no money from them. You're the PM tasked with building WhatsApp's first revenue product for India without hurting user trust or daily engagement. What do you build, how do you price it, and what's your biggest risk?";

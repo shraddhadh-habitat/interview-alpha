@@ -3,13 +3,13 @@ import { supabase } from '../lib/supabase';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
-  text: '#0A0A0A', textSoft: '#0A0A0A', textMuted: '#5C5C57',
-  border: '#E8E6E1',
-  green: '#16A34A', greenHover: '#15803D',
-  greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
-  success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
-  red: '#CF222E', redLight: 'rgba(211,47,47,0.07)', redBorder: 'rgba(211,47,47,0.18)',
-  yellow: '#C67F00', yellowLight: 'rgba(198,127,0,0.06)', yellowBorder: 'rgba(198,127,0,0.15)',
+  text: '#1B1B18', textSoft: '#1B1B18', textMuted: 'rgba(27, 27, 24, 0.5)',
+  border: 'rgba(27, 27, 24, 0.12)',
+  green: '#1B1B18', greenHover: '#0A0A0A',
+  greenLight: 'rgba(27, 27, 24, 0.08)', greenBorder: 'rgba(27, 27, 24, 0.12)',
+  success: '#FDCD34', successLight: 'rgba(253, 205, 52, 0.12)', successBorder: 'rgba(253, 205, 52, 0.2)',
+  red: '#1B1B18', redLight: 'rgba(27, 27, 24, 0.08)', redBorder: 'rgba(27, 27, 24, 0.12)',
+  yellow: '#FDCD34', yellowLight: 'rgba(253, 205, 52, 0.12)', yellowBorder: 'rgba(253, 205, 52, 0.2)',
 };
 
 const PLANS = {

@@ -99,10 +99,8 @@ const HeroBackground = () => {
     const gapY = 100 / rows;
     const x = shape.col * gapX + gapX / 2;
     const y = shape.row * gapY + gapY / 2;
-    const color = shape.filled ? '#FDCD34' : 'rgba(0,0,0,0.2)';
-    const isNearText = (x < 45 && y > 30 && y < 80);
-
-    // if (isNearText) return null;
+    const color = shape.filled ? '#FDCD34' : 'rgba(0,0,0,0.12)';
+    // All shapes visible, no text occlusion
 
     const style = {
       position: 'absolute',
@@ -124,7 +122,7 @@ const HeroBackground = () => {
             height: size,
             borderRadius: '50%',
             backgroundColor: shape.filled ? color : 'transparent',
-            border: shape.filled ? 'none' : '2px solid rgba(0,0,0,0.2)',
+            border: shape.filled ? 'none' : '2px solid rgba(0,0,0,0.12)',
           }}
         />
       );
@@ -141,7 +139,7 @@ const HeroBackground = () => {
             height: size - 4,
             borderRadius: 3,
             backgroundColor: shape.filled ? color : 'transparent',
-            border: shape.filled ? 'none' : '2px solid rgba(0,0,0,0.2)',
+            border: shape.filled ? 'none' : '2px solid rgba(0,0,0,0.12)',
           }}
         />
       );
@@ -173,7 +171,7 @@ const HeroBackground = () => {
             data-animated={shape.isAnimated ? 'true' : undefined}
             style={{...style}}
           >
-            <polygon points="14,2 26,26 2,26" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1.5"/>
+            <polygon points="14,2 26,26 2,26" fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth="1.5"/>
           </svg>
         );
       }
