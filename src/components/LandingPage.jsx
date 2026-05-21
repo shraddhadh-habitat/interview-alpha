@@ -72,18 +72,6 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           maxWidth: '100%',
         }}>
           {/* Eyebrow */}
-          <div style={{
-            fontSize: '12px',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            color: C.textMuted,
-            fontWeight: 600,
-            marginBottom: '16px',
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-          }}>
-            AI-powered interview practice
-          </div>
-
           {/* Headline */}
           <h1 className="hero-headline" style={{
             fontSize: '36px',
