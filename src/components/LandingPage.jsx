@@ -1019,11 +1019,11 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
       }}>
         {/* Section label */}
         <div style={{
-          fontSize: '13px',
+          fontSize: '14px',
           letterSpacing: '2px',
           textTransform: 'uppercase',
           color: C.textMuted,
-          fontWeight: 700,
+          fontWeight: 900,
           marginBottom: '16px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
         }}>
