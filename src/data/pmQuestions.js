@@ -29652,6 +29652,2296 @@ Alternative: Cloud video platform (JW Player, Cloudflare Stream) = ~$500-2000/mo
 
 Estimate: ₹30-50 lakhs per season for storage (₹3-5 lakhs/month average).`,
       },
+      // ─────────────────────────────────────────────
+      // PRODUCT ANALYTICS & METRICS (10)
+      // ─────────────────────────────────────────────
+      {
+        q: "PhonePe processes 4 billion UPI transactions per month. You notice that failed transactions spike every Friday evening between 7-9 PM. Walk me through how you would investigate this, what data you would need, and what you would recommend.",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Flipkart",
+        a: `Before diving in, I'd ask: Is this a recent pattern or historical? Are failures happening across all transaction types and amounts, or specific to certain merchants or user segments?
+
+I'd structure the investigation in three layers:
+
+**Layer 1: Confirm the pattern.**
+Query transaction logs for the past 12 weeks, segmenting by day and hour. Calculate failure rate = failed transactions / total transactions. If Friday 7-9 PM shows 3x baseline failure rate, it's real.
+
+**Layer 2: Identify the root cause.**
+
+I'd check:
+- Load metrics: Does traffic spike on Friday evening? If transaction volume doubles but failure rate triples, it's a capacity issue.
+- Latency: Did average response time increase? Timeout-based failures would show higher latency.
+- Merchant availability: Are certain merchants' webhook handlers down? If failures are concentrated with specific merchants, it's their infrastructure.
+- Bank/issuer slowness: Are specific banks failing more? RBI data or bank status pages would confirm.
+- UPI stack issues: Did we deploy a new version Friday morning? Check release notes and rollback times.
+
+**Layer 3: User and merchant impact.**
+Query repeat failures for the same user/merchant combo. Calculate churn: Did Friday failure volume correlate with Sunday inactivity (churned users)?
+
+**What I'd recommend:**
+- If it's load: Auto-scale infrastructure or add circuit breakers (fail fast instead of hanging).
+- If it's specific merchants: Notify them to upgrade webhook handling.
+- If it's banks: Failover to alternative payment methods (NEFT, cards) during that window.
+
+**Key metrics:** Failure rate by day/hour, failure rate by transaction type, user retention post-failure, and merchant recovery time.
+
+The output: Root cause report + prioritized fix list with effort/impact ratios.`,
+      },
+      {
+        q: "Airbnb hosts in Tokyo have 60% lower occupancy than hosts in Osaka despite higher search volume. What hypotheses would you test and what data would you use to explain this gap?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        a: `I'd start by clarifying: Is this a recent trend or chronic? Are we comparing same-quality listings? Are there seasonal effects (Cherry blossom season hits Tokyo harder)?
+
+**Hypotheses to test:**
+
+1. **Price mismatch:** Tokyo hosts overestimate their price power. Check: average nightly rate in Tokyo vs Osaka for comparable listings (beds, location, amenities). If Tokyo is 30% pricier, that's demand destruction.
+
+2. **Search ranking bias:** Maybe Tokyo search results prioritize hotels (more established) or low-cost hostels, pushing mid-range Airbnb down. Check: position of Airbnb listings in search results for identical queries. Compare click-through rate by search position.
+
+3. **Booking conversion funnel:** Users search Tokyo but book elsewhere. Check: search-to-booking conversion rate. If Tokyo is 3% vs Osaka 8%, the leak is in conversion, not search.
+
+4. **Cancellation rate:** Maybe Tokyo hosts have higher cancellation, making their occupancy unreliable. Check: confirmed bookings vs cancellations by listing and city.
+
+5. **Listing quality:** Tokyo listings might have worse photos, reviews, or cleanliness. Check: photo count, review score distribution, and review sentiment (negative reviews mention cleanliness?).
+
+6. **Market saturation:** Too many Airbnb options in Tokyo diluting demand. Check: listings per available rooms; supply-to-demand ratio.
+
+**Data needed:**
+- Listing attributes, pricing, photos, reviews (quality signals)
+- Search queries from Tokyo vs Osaka (what users search for)
+- Search-to-booking funnel (where do users drop off?)
+- Occupancy calendar (confirmed bookings)
+- Cancellation rates by listing and city
+- User click patterns (which listings do they click?)
+
+**Quick win:** If Tokyo has 3x more listings for similar demand, the fix is shifting demand (marketing push for Tokyo experiences) or tightening supply (incentivize hosts to improve or delist).`,
+      },
+      {
+        q: "You're a data scientist at Razorpay. A merchant reports that their payment success rate is 20% lower than the platform average. Build an investigation framework with specific queries you would run.",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Flipkart",
+        a: `I'd ask: When did this start? Is it all payment methods or specific ones? All customers or a segment?
+
+**Investigation framework:**
+
+**Step 1: Confirm it's real**
+\`\`\`sql
+SELECT merchant_id, success_rate, sample_size
+FROM merchant_metrics
+WHERE merchant_id = 'merchant_X'
+  AND success_rate < platform_average * 0.8
+ORDER BY date DESC LIMIT 30;
+\`\`\`
+If success rate is below 80% of platform average (e.g., platform is 97%, merchant is 76%), it's significant.
+
+**Step 2: Segment the failures**
+\`\`\`sql
+SELECT
+  payment_method, success_rate, failure_reason,
+  COUNT(*) as transaction_count
+FROM transactions
+WHERE merchant_id = 'merchant_X'
+GROUP BY payment_method, failure_reason
+ORDER BY transaction_count DESC;
+\`\`\`
+Are failures concentrated in one payment method (cards, UPI, wallets)? One failure reason (timeout, insufficient funds, fraud decline)?
+
+**Step 3: Compare to peer merchants**
+\`\`\`sql
+SELECT m.category, AVG(t.success_rate) as category_avg
+FROM merchants m
+JOIN transaction_metrics t ON m.id = t.merchant_id
+WHERE m.category = (SELECT category FROM merchants WHERE id = 'merchant_X')
+GROUP BY m.category;
+\`\`\`
+If merchant's category average is 95% but this merchant is 76%, it's merchant-specific.
+
+**Step 4: Check merchant configuration**
+- Webhook timeout settings: Is their endpoint slow?
+- Fraud rules: Over-aggressive? Blocking legitimate transactions?
+- API version: Using deprecated endpoint that has bugs?
+
+**Step 5: Customer segment analysis**
+\`\`\`sql
+SELECT customer_segment, success_rate, failure_reason
+FROM transactions
+WHERE merchant_id = 'merchant_X'
+GROUP BY customer_segment, failure_reason;
+\`\`\`
+Are repeat customers succeeding more (they have known payment methods)? New customers failing (fraud filter)
+
+**What I'd recommend:**
+- If it's a specific payment method: Investigate integration with that issuer.
+- If it's timeout: Increase timeout window or offer retry logic.
+- If it's fraud: Whitelist returning customers or adjust risk thresholds.
+
+Output: Root cause summary + fix options with implementation effort.`,
+      },
+      {
+        q: "Swiggy Instamart promises 10-minute delivery but achieves it only 65% of the time. The operations team blames traffic, the product team blames item availability. How would you use data to settle this debate?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `I'd ask: What's the baseline outside Instamart? (Does Swiggy Food also struggle with on-time delivery?) Is 65% consistent across cities and times?
+
+**Hypothesis testing approach:**
+
+**For traffic-related delays:**
+Correlate order delivery time with external traffic data. Pull:
+- Order time, order location, delivery completion time
+- Google Maps traffic API data for the route taken
+- If high traffic days (weekends) correlate with longer delivery times, traffic is a factor
+
+Query:
+\`\`\`sql
+SELECT
+  CASE WHEN traffic_level > 0.8 THEN 'High'
+       WHEN traffic_level < 0.4 THEN 'Low' ELSE 'Medium' END as traffic_bucket,
+  PERCENTILE(delivery_time, 0.9) as p90_delivery_time,
+  COUNT(*) as order_count
+FROM orders
+WHERE delivery_model = 'instamart'
+GROUP BY traffic_bucket
+ORDER BY traffic_level DESC;
+\`\`\`
+
+If high-traffic orders have 20min delivery vs low-traffic 8min, traffic is culpable.
+
+**For item availability delays:**
+Measure time-to-pick. Does picking slow because items are out-of-stock or misplaced?
+
+\`\`\`sql
+SELECT
+  order_date, item_sku,
+  (fulfillment_start - order_time) as time_to_pick,
+  fulfillment_reason
+FROM orders
+WHERE delay_reason LIKE '%item%' OR fulfillment_reason = 'item_not_found';
+\`\`\`
+
+**Comparative analysis:**
+For orders that hit 10-minute target vs missed:
+- How many items were substituted? (Stock issue)
+- How long was picking time? (Store layout issue)
+- What distance between store and delivery location? (Traffic issue)
+
+**The verdict:**
+Create a breakdown: Of 35% late deliveries, attribute each to:
+- Traffic: 60% (orders took longer due to congestion)
+- Item availability: 30% (picking delays)
+- Other (payment, customer delay): 10%
+
+**Quick fixes:**
+- Traffic: Pre-position inventory closer to customers (micro-fulfillment) or dynamically reroute batching.
+- Item availability: Real-time inventory sync or dynamic substitution recommendations.
+
+This gives ops and product their answer with data, not opinions.`,
+      },
+      {
+        q: "LinkedIn shows you 'People also viewed' profiles. How would you measure whether this feature increases recruiter engagement or just creates noise?",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        a: `Before diving in, I'd clarify: Are we measuring recruiter engagement (number of profiles viewed, inmail sent) or candidate engagement? And what's the baseline? (Did recruiters view alt profiles before this feature?)
+
+**Measurement approach:**
+
+**Design an A/B test:**
+- Control: Show profile without "people also viewed" section
+- Treatment: Show profile with curated recommendations
+- Stratify by recruiter type (hiring managers vs agencies)
+- Run 2-4 weeks minimum to capture weekly hiring patterns
+
+**Metrics to track:**
+
+1. **Engagement lift:**
+\`\`\`sql
+SELECT
+  variant,
+  COUNT(DISTINCT recruiter_id) as unique_recruiters,
+  COUNT(*) as total_recommendations_clicked,
+  AVG(recommendations_clicked_per_profile) as click_rate
+FROM profile_recommendations
+WHERE experiment_timestamp BETWEEN start_date AND end_date
+GROUP BY variant;
+\`\`\`
+
+2. **Quality of engagement:**
+- Do clicked candidates convert to interviews? (Did the recommendations send relevant candidates?)
+- Time-to-hire: Are recommended candidates hired faster?
+- Feedback from recruiters: Is the feature helpful or distracting?
+
+3. **Noise metrics:**
+- Are recruiters clicking recommendations then immediately leaving? (Low-quality clicks)
+- Are they viewing the original profile, or only recommendations? (Feature cannibalizing primary objective)
+
+**Key insight:**
+If control and treatment have same interview rate but treatment has 2x clicks, the feature creates noise. If treatment has 2x interviews, it drives quality.
+
+**Recommendation framework:**
+- If lift in interviews + recruiters give positive feedback: Keep and iterate.
+- If lift in clicks but not interviews: Feature creates false engagement; consider personalization improvements.
+- If negative lift: Remove it.
+
+Measure, don't assume.`,
+      },
+      {
+        q: "You work at Spotify. Users who listen to podcasts have 2x retention but 40% lower music streaming. Is this a problem? How would you determine the net effect on subscriber lifetime value?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        level: "lead_ds",
+        a: `This is a classic Simpson's Paradox scenario. I'd ask: Are podcast listeners a different cohort (older, different markets) or the same users discovering podcasts?
+
+**Step 1: Isolate causal effect**
+
+Control for selection bias. Podcast listeners might be inherently stickier users. Compare:
+- Same user cohort (age, region, tenure)
+- Before and after podcast adoption
+- Did retention improve after they added podcasts, or were they always stickier?
+
+Query:
+\`\`\`sql
+SELECT
+  user_id,
+  first_podcast_listen_date,
+  retention_90d_before as retention_pre_podcast,
+  retention_90d_after as retention_post_podcast,
+  music_streams_per_week_before,
+  music_streams_per_week_after
+FROM user_podcast_adoption
+WHERE cohort_age_group = '25-34'
+  AND tenure_months BETWEEN 6 AND 12;
+\`\`\`
+
+**Step 2: Model lifetime value impact**
+
+LTV = Sum of (monthly recurring revenue) - churn rate over subscription life
+
+For podcast adopters:
+- Monthly music revenue: Fewer streams. But music ad load is lower (fewer songs = fewer ad slots).
+- Podcast revenue: Podcast ad load = higher revenue per listen (longer duration).
+- Net: Does podcast ad revenue > lost music ad revenue?
+
+Example calculation:
+- Pre-podcast user: $2/month (music ads)
+- Post-podcast user: Music drops to $1/month + podcasts add $1.50/month = $2.50/month (net positive)
+- Retention improvement: 85% → 90% (longer LTV)
+- Net LTV lift: 20-30%
+
+**Step 3: Segment analysis**
+Are podcast listeners uniform, or do some segments churn harder?
+
+\`\`\`sql
+SELECT
+  user_segment, retention_lift, revenue_lift,
+  CASE WHEN revenue_lift > 0 AND retention_lift > 0 THEN 'Win'
+       WHEN revenue_lift > 0 AND retention_lift < 0 THEN 'Conditional Win'
+       ELSE 'Loss' END as outcome
+FROM segment_podcast_impact;
+\`\`\`
+
+**Conclusion:**
+- If overall LTV improves (even with lower music streams): Podcasts are good; double down.
+- If overall LTV flat or negative: Problem. Either push podcasts to lower-risk segments or improve music recommendation.
+
+The 40% music streaming drop isn't inherently bad if ad revenue and retention more than compensate.`,
+      },
+      {
+        q: "A D2C brand spends 60% of revenue on Meta and Google ads. The marketing team claims 5x ROAS. You suspect attribution is inflated. How would you design a geo-lift test to find the true incremental impact?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        level: "lead_ds",
+        a: `Attribution over-counting is real. Last-click attribution credits the final touchpoint, ignoring organic search or repeat visitors. I'd design a geo-lift test to isolate true incremental effect.
+
+**Test design:**
+
+1. **Geographic stratification:**
+- Identify 20 metro markets similar in size, demographics, and baseline sales
+- Randomly assign 10 to treatment (keep 100% ad spend), 10 to control (cut ad spend to 10%)
+- Run for 4 weeks minimum (account for weekly patterns)
+
+2. **Selection:**
+- Use markets with >$50K baseline weekly revenue (enough signal)
+- Avoid holiday weeks
+- Confirm no cross-market ad spillover (e.g., if running podcast ads, they shouldn't reach control markets)
+
+3. **Measurement:**
+
+\`\`\`sql
+SELECT
+  market_id, variant,
+  SUM(revenue) as total_revenue,
+  SUM(ad_spend) as total_spend,
+  SUM(revenue) / SUM(ad_spend) as measured_roas,
+  AVG(daily_revenue) as daily_avg
+FROM sales_by_market_day
+WHERE test_date BETWEEN start_date AND end_date
+GROUP BY market_id, variant;
+\`\`\`
+
+4. **Calculate true incremental lift:**
+
+Measured ROAS = $5 (marketing team's claim)
+Geo-lift ROAS = (Control revenue drop from cut ads) / (Ad spend reduction)
+
+If control markets lost 30% revenue from 90% ad spend cut, true incremental ROAS = 30% / 90% = 0.33x
+vs measured 5x. Huge gap = heavy attribution inflation.
+
+**Key insight:**
+The gap reveals organic, direct, and repeat traffic misattributed to paid ads. If true ROAS is 0.5x, brand should shift budget toward higher-lift channels.
+
+**Recommendation:**
+- True ROAS >2x: Ads are good. Scale cautiously (increasing spend increases saturation, diminishing returns).
+- True ROAS 0.5-1.5x: Ads lose money or barely break even. Shift budget.
+- True ROAS <0.5x: Ad spend is waste.
+
+Geo-lift removes attribution bias and gives the real picture.`,
+      },
+      {
+        q: "Your e-commerce platform shows that customers who use the search bar convert at 3x the rate of those who browse categories. Does this mean improving search will 3x overall conversion? Why or why not?",
+        subcategory: "statistics",
+        difficulty: "Medium",
+        level: "mid_ds",
+        a: `No, almost certainly not. This is selection bias masquerading as causation. I'd clarify: Are we comparing users in the same session or different cohorts?
+
+**The bias:**
+- Searchers are goal-directed ("I know what I want"). They convert higher because they've narrowed their search space.
+- Browsers are exploratory ("I'm just looking"). They have lower intent, so lower conversion is expected.
+
+This doesn't mean search improves conversion. It means people with higher intent use search.
+
+**Test it properly:**
+
+Design an experiment where we change how people interact with search/browse:
+- Control: Current UI (search bar + category navigation)
+- Treatment: Prominent search-first design (search bar larger, categories de-emphasized)
+
+Measure: Does search usage increase? Does overall conversion increase?
+
+Query:
+\`\`\`sql
+SELECT variant,
+  COUNT(DISTINCT user_id) as users,
+  SUM(CASE WHEN converted = 1 THEN 1 ELSE 0 END) as conversions,
+  SUM(CASE WHEN used_search = 1 THEN 1 ELSE 0 END) as search_users,
+  AVG(CASE WHEN converted = 1 THEN 1 ELSE 0 END) as conversion_rate
+FROM sessions
+GROUP BY variant;
+\`\`\`
+
+**Likely outcome:**
+Increasing search visibility does lift a few percentage points in conversion (from say 3% to 4%). Not 3x. Why? Because it makes search more discoverable to lower-intent browsers, who still convert low.
+
+**The real opportunity:**
+- Improve search quality (better results). Users doing searches are high-intent; better relevance could lift their conversion further.
+- Improve recommendations on browse. Low-intent users need help finding what interests them.
+
+**Takeaway:**
+Correlation (searchers convert 3x) is not causation (search causes 3x conversion). Test interventions, don't assume.`,
+      },
+      {
+        q: "Uber Eats noticed that average order value increased 12% after adding a 'frequently ordered together' feature. But total orders per user dropped 5%. Was this feature a net positive? How would you calculate the true impact?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        company: "Uber",
+        a: `I'd ask: Is this A/B test data or observational? If observational, there could be confounds (seasonality, competitor moves, price changes).
+
+**Calculating net impact:**
+
+The feature has tradeoffs:
+- AOV up 12%: Good (more revenue per order)
+- Order frequency down 5%: Bad (fewer orders total)
+
+**Monthly revenue impact:**
+
+Pre-feature baseline:
+- Orders per user per month: 10
+- AOV: $20
+- Revenue per user: $200
+
+Post-feature:
+- Orders per user: 10 × (1 - 0.05) = 9.5
+- AOV: $20 × 1.12 = $22.40
+- Revenue per user: 9.5 × $22.40 = $212.80
+
+**Net lift: $212.80 - $200 = $12.80 per user per month. That's a 6.4% revenue lift. Feature is positive.**
+
+But I'd dig deeper:
+
+**Step 1: Understand the order frequency drop**
+Why did users order less? Possible causes:
+- Larger orders satisfy demand longer (feature works—no need to reorder weekly)
+- Users hitting pricing sensitivity ($22 AOV vs $20 triggers more "I'll skip this week")
+- Seasonality (test ran during holiday slack period)?
+
+\`\`\`sql
+SELECT
+  days_since_last_order_pre,
+  days_since_last_order_post,
+  COUNT(*) as user_count
+FROM user_ordering_patterns
+GROUP BY days_since_last_order_pre, days_since_last_order_post;
+\`\`\`
+
+If order frequency drop is driven by users ordering larger baskets less frequently (healthy), that's good. If price sensitivity, concern.
+
+**Step 2: Segment analysis**
+Does everyone benefit equally, or are some users worse off?
+
+\`\`\`sql
+SELECT
+  user_segment,
+  revenue_change,
+  CASE WHEN revenue_change > 0 THEN 'Won' ELSE 'Lost' END as outcome,
+  COUNT(*) as user_count
+FROM segment_impact_analysis
+GROUP BY user_segment;
+\`\`\`
+
+If 70% of users benefited but 30% churned (higher AOV priced them out), it's a mixed win.
+
+**Recommendation:**
+- Net revenue positive: Feature is good. Monitor churn carefully though.
+- If churn concern: Add tiered suggestions ("frequently bought together" + "frequently bought solo" tracks for lower-spend segments).
+
+True impact = revenue lift accounting for retention/churn effects.`,
+      },
+      {
+        q: "You're measuring the impact of a new homepage algorithm at Netflix. Your A/B test shows a 3% increase in click-through but no change in total watch hours. What's happening and what do you recommend?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        level: "lead_ds",
+        company: "Netflix",
+        a: `3% CTR lift with zero watch hour change is a red flag. It usually means one of three things:
+
+**Hypothesis 1: Increased clickthrough but same content consumption**
+Users are clicking more but watching the same amount of content overall. They're just exploring more before deciding.
+
+Query:
+\`\`\`sql
+SELECT
+  variant,
+  AVG(clicks_per_session) as avg_clicks,
+  AVG(watch_hours_per_session) as avg_watch_hours,
+  AVG(watch_hours_per_click) as efficiency
+FROM session_metrics
+GROUP BY variant;
+\`\`\`
+
+If watch hours per click is lower in treatment, users are clicking more but abandoning more.
+
+**Hypothesis 2: Shifted viewing to lower-engagement content**
+The algorithm surfaces different content. Users click the new recommendations, but they watch less of it (abandon faster).
+
+Check: Average completion rate for content clicked in treatment vs control. If completion drops, this is likely.
+
+**Hypothesis 3: Cannibalizing future viewing**
+Users binge through new recommendations now but exhaust watch lists faster, leading to fewer watch hours in week 2-4.
+
+Run test for 4-6 weeks, not 1 week. Measure cumulative watch hours.
+
+**Recommendation:**
+
+Option 1: Kill the feature.
+- If the sole goal is maximizing watch hours, a 0% impact doesn't justify the change.
+
+Option 2: Iterate the algorithm.
+- The issue isn't "more clicks." It's "more clicks of low-quality content."
+- Fine-tune the algorithm to surface more engaging titles, not just more clickable titles.
+- (Clickable ≠ watchable. A sensational thumbnail might get clicks but boring content.)
+
+Option 3: Reframe success.
+- If the real goal is "user exploration" (discover new content = healthier library), then 3% CTR lift is valuable even without watch hours increase.
+- But explicitly ask: does increased exploration correlate with 30-day retention? If yes, keep it.
+
+**Key insight:**
+CTR and watch hours should move together. If they decouple, your metric is misaligned with value. Fix the recommendation quality, not the test result.`,
+      },
+      // ─────────────────────────────────────────────
+      // MACHINE LEARNING & MODELING (10)
+      // ─────────────────────────────────────────────
+      {
+        q: "You're building a model to predict which startup founders will default on their loans for a fintech lender. Traditional credit scores don't exist for most founders. What alternative data sources and features would you use?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        a: `Traditional credit scores assume established financial history. Startup founders often have thin credit files or recent high debt (cash runway is negative). I'd look for alternative signals of repayment intent and capability.
+
+**Data sources:**
+
+1. **Business health signals:**
+- Revenue growth (month-over-month): Fast growth suggests runway.
+- Cash burn rate: How many months of cash on hand? Negative burn within 6 months = default risk.
+- Customer concentration: 50% revenue from one customer = risk.
+- Recurring revenue ratio: SaaS = more predictable than contract-based.
+
+2. **Founder personal history:**
+- Prior startup exits: Track record of success.
+- Education (Stanford, IIT = better outcomes statistically, though biased).
+- Age, years of experience: Older founders with 10+ years experience have higher success rates.
+- Personal net worth (if available): Founder has skin in the game.
+
+3. **Market signals:**
+- Fundraising rounds: Series B funding = lower default risk than seed.
+- Investor quality: VCs with successful track records invest in fewer failures.
+- Industry vertical: SaaS < hardware (hardware has longer sales cycles, higher burn).
+
+4. **Network signals:**
+- Founder network size and quality (LinkedIn connections, introductions).
+- Co-founder stability: Founders who fired early employees show judgment.
+
+5. **Alternative credit:**
+- Payment history on business credit cards.
+- Supplier payment behavior (quick pay vs delayed).
+- Loan repayment history on prior small business loans.
+
+**Feature engineering:**
+
+\`\`\`python
+# Runway feature
+monthly_burn = (cash_spent_last_3mo / 3)
+runway_months = cash_on_hand / monthly_burn
+
+# Growth feature
+revenue_growth_3mo = (revenue_month3 - revenue_month1) / revenue_month1
+
+# Concentration feature
+top_customer_revenue_share = largest_customer_revenue / total_revenue
+
+# Founder quality feature
+is_repeat_founder = prior_startups > 0
+avg_exit_value = avg(past_exit_valuations)
+
+# Combine into features
+default_risk_score = (
+  1 / (runway_months + 1) * 0.4 +  # Short runway = risk
+  (1 - revenue_growth_3mo) * 0.3 +  # Slowing growth = risk
+  top_customer_revenue_share * 0.2 +  # Concentration = risk
+  (1 if not repeat_founder else 0) * 0.1  # First-time founder = risk
+)
+\`\`\`
+
+**Model choice:**
+Logistic regression with these features is interpretable and works well. XGBoost if non-linear patterns matter.
+
+**Key insight:**
+Founders are high-risk by default. Focus on: Can they execute? Do they have runway? Are they transparent?`,
+      },
+      {
+        q: "Design an ML system that predicts flight delays 6 hours before departure. Your airline client wants to proactively rebook passengers. What data, features, and model architecture would you propose?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `6 hours before departure is tight. I need features that are stable that far out (weather forecasts change, so I need probabilistic weather, not current conditions).
+
+**Data needed:**
+
+1. **Flight metadata:**
+- Aircraft type: Some planes delay more (older cargo planes, regional jets).
+- Route: SFO-LAX has different delay patterns than SFO-NYC.
+- Day of week + seasonality: Fridays and holidays have different delay patterns.
+- Airline + operator: Different airlines have different reliability.
+
+2. **Weather:**
+- Forecast 6 hours out (don't use current weather—it changes).
+- Source airports: Departure weather + destination weather + connecting hub weather.
+- Forecast confidence: High-uncertainty forecasts are less reliable predictors.
+
+3. **Operational:**
+- Aircraft turnaround time: Is the incoming flight delayed? (Cascading delays).
+- Crew availability: Crew scheduling mismatches cause delays.
+- Maintenance status: Flagged aircraft have higher delay risk.
+- Gate/runway availability at airport.
+
+4. **Historical:**
+- Airline historical delay rate for this route.
+- Same aircraft's historical performance.
+
+**Feature engineering:**
+
+\`\`\`python
+# Weather risk score
+weather_delay_risk = (
+  wind_speed_knots * 0.3 +
+  visibility_miles_inverse * 0.2 +
+  precipitation_probability * 0.3 +
+  forecast_confidence_inverse * 0.2
+)
+
+# Operational risk
+incoming_flight_delay_mins = (actual_arrival - scheduled_arrival)
+cascading_delay_risk = incoming_flight_delay_mins * 0.8  # 80% cascade through
+
+# Airline performance
+airline_baseline_delay = percentile_delay_for_airline_on_this_route
+
+# Combine
+delay_risk_score = (
+  weather_delay_risk * 0.35 +
+  cascading_delay_risk * 0.35 +
+  airline_baseline_delay * 0.2 +
+  (day_of_week_delay_factor) * 0.1
+)
+\`\`\`
+
+**Model architecture:**
+
+Gradient boosting (XGBoost/LightGBM) with:
+- Binary classification: delay >15 min vs on-time
+- Probability output: P(delay), not just class
+
+**Training:**
+- Historical 2 years of flights
+- Positive class: All flights that delayed >15 min
+- Negative class: On-time flights
+- Validation: Hold out last month to avoid data leakage (use data before 6hrs before departure)
+
+**Deployment:**
+
+Run model 6 hours before departure:
+- Get latest weather forecast
+- Get aircraft turnaround status
+- Score: output P(delay)
+- Alert threshold: P(delay) > 40% → trigger rebooking proactively
+
+**Monitoring:**
+
+\`\`\`sql
+SELECT
+  prediction_date,
+  CORR(predicted_delay_probability, actual_delay) as calibration,
+  PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY predicted_delay_probability
+    WHERE actual_delay = 1) as median_prob_delayed
+FROM flight_predictions
+GROUP BY DATE_TRUNC('week', prediction_date);
+\`\`\`
+
+Ensure predictions stay calibrated (P(delay)=40% means 40% actually delay).
+
+**Key challenge:**
+Weather forecast uncertainty grows 48+ hours out. At 6 hours, forecasts are pretty good, but still have variance. Account for this in decision thresholds.`,
+      },
+      {
+        q: "You're building a resume screening model for a large recruiter. In testing, your model has 92% accuracy but rejects 3x more female candidates than male. How do you diagnose and fix this without reducing overall quality?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        a: `92% accuracy masks the bias. I'd immediately check precision and recall by gender.
+
+**Diagnosis:**
+
+Query training data for label bias:
+
+\`\`\`sql
+SELECT
+  gender,
+  SUM(CASE WHEN hired = 1 THEN 1 ELSE 0 END) as hired_count,
+  COUNT(*) as total_count,
+  AVG(CASE WHEN hired = 1 THEN 1 ELSE 0 END) as hire_rate
+FROM training_resumes
+GROUP BY gender;
+\`\`\`
+
+If males have 40% hire rate and females have 20%, the training data itself is biased. This could reflect:
+- Actual hiring bias in historical data (recruiters hired more men)
+- Selection bias (women candidates were self-selecting out of certain roles)
+- Confounding: women in training data were from different industries with lower hire rates
+
+**Check feature importance:**
+
+Which features drive the reject decision?
+- "Years of experience" (men average 12 years, women 8 = gender-correlated)
+- "Technical skills listed" (if women use different terminology, model doesn't recognize)
+- "Career gap" (women take parental leave = flagged as risk)
+- "Graduation year" (cohort bias)
+
+These are proxies for gender without explicitly using gender.
+
+**Fix 1: Bias in training labels**
+If historical hiring was biased, I need to adjust:
+- Oversample female candidates in training to balance (reweight training data)
+- Or use domain expertise to relabel: "This female candidate with 8 years experience should have been hired like the male with 8 years"
+
+**Fix 2: Feature engineering**
+- Remove features that are gender proxies (graduation year, name, gaps in employment)
+- Use role-specific experience metrics that aren't gendered
+- Account for career breaks as positive signals (someone returning to work might be highly motivated)
+
+**Fix 3: Fairness constraints**
+During training, enforce parity: "Ensure rejection rate is within 10% for each gender"
+
+\`\`\`python
+# Fairness constraint during training
+threshold_male = threshold_that_achieves_92_accuracy
+threshold_female = adjust_threshold_until_rejection_rate_within_10_percent
+
+# Different thresholds for different groups
+if gender == 'Female':
+    reject_if_score < threshold_female
+else:
+    reject_if_score < threshold_male
+\`\`\`
+
+**Evaluation:**
+
+New metrics beyond accuracy:
+- Precision by gender: Of candidates model recommends, what % are strong? (Should be equal)
+- Recall by gender: Of strong candidates, what % does model find? (Should be equal)
+- Equalized odds: TPR and FPR should be similar across genders
+
+\`\`\`sql
+SELECT
+  gender,
+  SUM(CASE WHEN predicted = 1 AND actual = 1 THEN 1 ELSE 0 END) /
+    SUM(CASE WHEN actual = 1 THEN 1 ELSE 0 END) as recall,
+  SUM(CASE WHEN predicted = 1 AND actual = 0 THEN 1 ELSE 0 END) /
+    SUM(CASE WHEN predicted = 1 THEN 1 ELSE 0 END) as false_positive_rate
+FROM model_predictions
+GROUP BY gender;
+\`\`\`
+
+**Expected tradeoff:**
+Fairness-constrained model might drop from 92% to 89% accuracy overall. But it rejects men and women equally, which is the goal.
+
+**Key insight:**
+Model learned historical bias. Fix it by adjusting training data, features, or decision boundaries—not by ignoring the bias.`,
+      },
+      {
+        q: "CRED wants to predict which users will miss their next credit card payment. You have transaction data, app usage data, and bureau data. Design the feature engineering pipeline and explain your model choice.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `This is a churn prediction variant. Target: binary classification, predict 30-day payment default.
+
+**Feature engineering pipeline:**
+
+**Layer 1: Transaction signals**
+\`\`\`python
+# Recency, frequency, monetary (RFM) features
+last_transaction_days_ago = (today - max(transaction_date))
+transactions_last_90_days = COUNT(transactions WHERE date > today - 90 days)
+avg_transaction_value = AVG(transaction_amount WHERE date > today - 90 days)
+
+# Volatility = risky spending pattern
+transaction_std_dev = STDDEV(transaction_amount WHERE date > today - 90 days)
+transaction_volatility = transaction_std_dev / avg_transaction_value  # coefficient of variation
+
+# Time between transactions = cash flow pattern
+avg_days_between_transactions = AVG(date_diff between sequential transactions)
+
+# Category risk (dining spend > 50% = high-risk, income likely irregular)
+category_concentration = (max_category_spend / total_spend)
+\`\`\`
+
+**Layer 2: App usage signals (alternative data)**
+\`\`\`python
+# Engagement with app = financial awareness
+days_since_last_login = (today - max(login_date))
+logins_per_week = COUNT(logins WHERE date > today - 30 days) / 4
+
+# Payment behavior awareness
+bill_reminders_dismissed = COUNT(notifications_dismissed WHERE type = 'payment_reminder')
+bill_payment_latency = PERCENTILE_90(days_late_to_pay_bill)  # historical pattern
+
+# Bill amount viewed = awareness of obligation
+views_bill_before_due = CASE WHEN views_bill_summary > 0 THEN 1 ELSE 0 END
+\`\`\`
+
+**Layer 3: Bureau data**
+\`\`\`python
+# Traditional credit metrics
+credit_score = bureau_credit_score
+utilization_ratio = total_credit_used / total_credit_limit
+
+# Payment history
+historical_default_rate = COUNT(missed_payments) / COUNT(total_payments)
+months_since_last_default = (today - last_default_date)
+
+# Recent activity (sign of financial stress)
+recent_loan_inquiries = COUNT(inquiries WHERE date > today - 90 days)  # hard inquiries = desperation
+recent_balance_increase = (current_balance - balance_90_days_ago) / balance_90_days_ago
+\`\`\`
+
+**Layer 4: Behavioral composites**
+\`\`\`python
+# Financial health score
+financial_stress_signal = (
+  (1 / (months_since_last_default + 1)) * 0.3 +  # recent default = stress
+  utilization_ratio * 0.3 +  # high utilization = tight
+  recent_loan_inquiries * 0.2 +  # desperate borrowing
+  transaction_volatility * 0.2  # erratic spending
+)
+
+# Engagement score (proxy for financial awareness)
+engagement_score = (
+  logins_per_week * 0.4 +
+  views_bill_before_due * 0.4 +
+  (1 - bill_reminders_dismissed / total_reminders) * 0.2  # dismisses alerts = not paying attention
+)
+\`\`\`
+
+**Model choice:**
+
+XGBoost with weighted classes:
+- Default rate in data is ~3%, so class imbalance
+- Use scale_pos_weight = count(negatives) / count(positives) = 97/3 ≈ 32
+- This tells model to penalize false negatives (missed defaults) more heavily
+
+Why XGBoost?
+- Captures interactions (high utilization + high volatility + recent default = very high risk)
+- Handles categorical features naturally (transaction categories)
+- Fast inference at scale
+
+**Training data:**
+
+- Historical 24 months of users with bureau data + transaction data + app usage
+- Target: Did user miss payment in month 25?
+- Avoid look-ahead bias: Features are from month 24, target is month 25
+
+**Deployment:**
+
+Score every CRED user daily:
+- P(default) > 20% → early outreach (payment plan offer, lower credit limit reminder)
+- P(default) > 50% → urgent intervention (call, payment assistance)
+
+**Monitoring:**
+
+Track calibration and fairness:
+- P(default)=20% should mean ~20% actually default
+- Check for bias by income level, location, age
+
+**Key insight:**
+App engagement is a goldmine for fintech. Users who ignore payment reminders are at high risk—often more predictive than bureau scores alone.`,
+      },
+      {
+        q: "Your image classification model for a medical device has 99.1% accuracy on your test set but only 94% in production across different hospitals. Diagnose three likely causes and your fix for each.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        a: `5% accuracy drop from test to production is a 50x increase in error rate. Classic domain shift problem.
+
+**Diagnosis 1: Equipment/scanner variability**
+
+Medical images from different hospitals use different equipment (X-ray machines, CT scanners) with different calibrations, image quality, contrast levels.
+
+Test set likely came from one hospital or imaging center. Production is diverse.
+
+**Fix:**
+- Collect images from multiple hospitals in training (domain augmentation)
+- Use transfer learning: start with ImageNet-pretrained weights, fine-tune on medical images
+- Add explicit "hospital ID" as a feature; retrain to be invariant to equipment
+
+\`\`\`python
+# During training, use domain randomization
+image_brightness = random.uniform(0.8, 1.2)  # Simulate different imaging calibrations
+image_contrast = random.uniform(0.8, 1.2)
+image_noise = random.gauss(0, 0.01)  # Equipment noise
+
+augmented_image = (original_image * contrast * brightness) + noise
+\`\`\`
+
+**Diagnosis 2: Patient demographics shift**
+
+Test set trained on demographics A (age 50-70, specific ethnicity, BMI range). Production sees different demographics B.
+
+Diseases present differently across demographics (bone density varies by age/sex, image appearance varies by BMI).
+
+**Fix:**
+- Segment test and production data by demographics
+- Measure accuracy per segment
+- If accuracy drops for specific age ranges, you have data drift
+
+\`\`\`sql
+SELECT
+  age_bucket,
+  demographic_group,
+  accuracy,
+  f1_score
+FROM model_performance_by_demographic
+WHERE environment = 'production'
+ORDER BY accuracy DESC;
+\`\`\`
+
+If a segment has 85% accuracy, that's your problem. Collect more training examples for that demographic or use fairness constraints during training.
+
+**Diagnosis 3: Label quality drift**
+
+Test set was labeled by expert radiologists with high agreement. Production labels might be from less experienced staff or annotated inconsistently.
+
+**Fix:**
+- Audit a sample of 100 production predictions: have them reviewed by the same expert who labeled test set
+- Measure label disagreement rate
+- If 10% of production labels are wrong, your model isn't broken—your labels are
+
+\`\`\`sql
+SELECT
+  model_prediction, gold_label_expert, production_label,
+  CASE WHEN model_prediction = gold_label_expert THEN 'Correct'
+       ELSE 'Disagree' END as model_status
+FROM production_audit
+GROUP BY model_prediction, gold_label_expert, production_label;
+\`\`\`
+
+**Comprehensive fix strategy:**
+
+Combine all three:
+1. Retrain on multi-hospital data with domain augmentation
+2. Measure accuracy by age/sex/BMI; upsample underrepresented groups
+3. Establish gold-standard labeling protocol; audit production labels
+
+**Monitoring in production:**
+
+Track per-hospital accuracy. If hospital X has 89% while hospital Y has 97%, you know equipment/protocol differs.
+
+**Key insight:**
+99.1% on test set is a false positive signal. Real-world ML breaks because test ≠ production. Always stratify evaluation by realistic subgroups.`,
+      },
+      {
+        q: "Build a real-time content toxicity detection system for a social media platform with 500M daily posts in 12 languages. What architecture would you propose? How do you handle languages where training data is scarce?",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        level: "head_ds",
+        a: `500M posts/day is massive. Real-time means <100ms latency per post. 12 languages means I can't train 12 separate models.
+
+**Architecture:**
+
+**Layer 1: Fast filter (language-agnostic)**
+- Regex-based keyword blocking: profanity lists, slurs
+- Per-language curated lists maintained by community/mods
+- Latency: <1ms
+- Catches 60% of obvious toxicity
+
+**Layer 2: ML model (multilingual)**
+- Use multilingual BERT or mBERT (trained on 104 languages)
+- Fine-tune on existing high-resource language data (English 100K labeled examples)
+- For scarce languages, use transfer learning
+
+\`\`\`python
+# Multilingual model architecture
+from transformers import AutoModelForSequenceClassification
+
+# Use mBERT—already trained on 104 languages
+model = AutoModelForSequenceClassification.from_pretrained(
+  'bert-base-multilingual-cased',
+  num_labels=2  # toxic vs not
+)
+
+# Fine-tune on high-resource languages
+# mBERT already understands language structure across 104 languages
+# so fine-tuning on English generalizes to other languages
+model.fine_tune(english_labeled_data, epochs=3)
+
+# For very scarce languages (e.g., Marathi 100 examples):
+# Use few-shot learning with mBERT embeddings + prototype matching
+\`\`\`
+
+**Layer 3: Real-time scoring**
+- Batch inference: Collect posts for 50ms, score in batches
+- Distributed serving: Multiple mBERT replicas behind load balancer
+- Latency target: P99 < 100ms per post
+
+**Layer 4: Escalation for uncertainty**
+- If model confidence = 45-55%, send to human review (Mechanical Turk/local moderators)
+- High confidence (>90%): Auto-remove or shadow (hide from others but show to author)
+
+**Handling scarce languages:**
+
+1. **Transfer learning:** mBERT already understands grammar across languages. Fine-tune on English; test on low-resource languages. Should achieve 70-80% of English accuracy.
+
+2. **Weak supervision:** For languages with 100 labeled examples:
+   - Use language-specific keyword lists (curated by native speakers)
+   - Use back-translation: translate posts to English, score with English model, average
+   - Active learning: ask annotators to label highest-uncertainty examples
+
+\`\`\`python
+# Back-translation approach for scarce languages
+marathi_post = "तुम खराब आहात"  # Hindi/Marathi
+english_translated = translate(marathi_post, 'mr' -> 'en')
+# "You are bad"
+english_toxicity_score = english_model.predict(english_translated)
+# 0.6 (moderate toxicity)
+# Use English score as weak label for Marathi
+
+# Combine with keyword-based score
+keyword_score = keyword_toxicity(marathi_post)  # 0.5
+final_score = 0.5 * english_score + 0.5 * keyword_score  # 0.55
+\`\`\`
+
+3. **Community feedback:** For low-confidence predictions, show both options to moderators:
+   - "Is this toxic?" with human review flag
+   - Use feedback to retrain quarterly
+
+**Monitoring:**
+
+\`\`\`sql
+SELECT
+  language,
+  toxicity_threshold,
+  COUNT(*) as posts_flagged,
+  SUM(CASE WHEN human_review = 'toxic' THEN 1 ELSE 0 END) / COUNT(*) as precision,
+  SUM(CASE WHEN human_review = 'toxic' THEN 1 ELSE 0 END) / SUM(CASE WHEN true_toxic THEN 1 ELSE 0 END) as recall
+FROM toxicity_predictions
+GROUP BY language, toxicity_threshold;
+\`\`\`
+
+Track false positive rate (legitimate posts flagged) vs false negative rate (toxic posts missed) per language.
+
+**Key insight:**
+No single model works at scale for 12 languages. Combination of fast heuristics (keywords), transfer learning (mBERT), and human escalation (uncertainty) is pragmatic.`,
+      },
+      {
+        q: "You're asked to build a demand forecasting model for a grocery chain with 2,000 stores. Each store has different demographics, competition, and weather patterns. Would you build one model or 2,000? Explain your reasoning.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `This is a critical architecture decision. The wrong choice is costly (over-forecast = waste, under-forecast = stockouts).
+
+**Option 1: Single global model**
+- Inputs: Store ID + item SKU + demographics + competition + weather → demand forecast
+- Pros: Simpler to train, faster to deploy, learns from all 2,000 stores' data
+- Cons: Assumes store-specific effects are additive; misses non-linear store × item interactions
+
+\`\`\`python
+demand = global_baseline + store_effect + item_effect + weather_effect
+# Example: Global avg demand = 100, store 342 is in affluent area (+20),
+# milk SKU is staple (+30), rainy weather (-5) => predict 145 units
+\`\`\`
+
+**Option 2: 2,000 individual models**
+- One model per store, trained on store's historical demand + local factors
+- Pros: Captures store-specific patterns exactly; handles non-linear dynamics
+- Cons: Small data per store (24 months ÷ 365 days = only 24 datapoints per item per store); overfitting; expensive to maintain
+
+**Option 3: Hybrid (hierarchical)**
+- Global model learns patterns across all stores
+- Store-specific models learn store deviations from global baseline
+- Best of both worlds
+
+\`\`\`python
+global_forecast = global_model(item, day_of_week, season, weather)
+store_adjustment = store_model(store_id, historical_error_distribution)
+final_forecast = global_forecast + store_adjustment
+\`\`\`
+
+**My recommendation: Hierarchical with careful design.**
+
+Here's why:
+
+1. **Data efficiency:** Global model trains on 2,000 × 365 = 730K observations. Each individual store model trains on only 365. The global model is much more stable.
+
+2. **Generalization to new stores:** If a new store opens, the global model works immediately. Individual store models need 6 months of history.
+
+3. **Store-specific dynamics:** Use the hierarchical model. The global model captures 80% of variance (item popularity, seasonality). The store model captures the last 20% (local preferences, competition).
+
+**Architecture:**
+
+\`\`\`python
+# Training
+global_model = XGBoost(
+  features=[item_id, day_of_week, season, avg_weather, chain_promotions],
+  data=all_2000_stores_historical
+)
+
+# Per-store residual modeling
+for store_id in [1..2000]:
+  store_training_data = global_model.residuals(store_id)  # errors
+  store_model[store_id] = LinearRegression(
+    features=[day_of_week, local_competition, store_size],
+    data=store_training_data
+  )
+
+# Inference
+def forecast(item, store_id, date):
+  global_pred = global_model.predict(item, date)
+  store_residual = store_model[store_id].predict(date)
+  return global_pred + store_residual
+\`\`\`
+
+**Validation:**
+
+Hold out last 8 weeks per store. Measure MAPE (mean absolute percentage error):
+
+\`\`\`sql
+SELECT
+  store_id,
+  MAPE(prediction, actual_demand),
+  days_of_history_available
+FROM forecast_accuracy_by_store
+ORDER BY MAPE DESC;
+\`\`\`
+
+If stores with <6 months history have MAPE >20% while established stores have <10%, use global model only for new stores.
+
+**Key insight:**
+1 global model is fast but inaccurate. 2,000 models is accurate but unmaintainable. Hierarchical balances both. The global model is your foundation; store models are refinements.`,
+      },
+      {
+        q: "Design an ML system that automatically adjusts insurance premiums based on real-time driving behavior from IoT devices in cars. What are the modeling challenges and ethical concerns?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        a: `This is a lucrative but ethically minefield. Real-time driving data gives actuarial advantage but raises privacy and fairness issues.
+
+**Modeling approach:**
+
+**Feature engineering from driving telemetry:**
+
+\`\`\`python
+# Per driver, per day
+hard_braking_events = COUNT(deceleration > 8 m/s^2)
+speeding_duration = SUM(time where speed > speed_limit)
+cornering_aggressiveness = AVG(lateral_g_force)
+nighttime_driving_miles = SUM(distance WHERE time_of_day = 22:00-06:00)
+highway_vs_city_ratio = (highway_miles / total_miles)
+
+# Weekly aggregates
+hard_brakes_per_thousand_miles = hard_braking_events / (miles_driven / 1000)
+average_following_distance = AVG(distance_to_car_ahead)
+smooth_acceleration_score = 1 - (hard_acceleration_events / drives)
+
+# Behavioral patterns
+consistency_score = STDDEV(daily_hard_brakes) # low std = predictable
+risk_pattern = (nighttime_highway_speeding / total_miles)
+\`\`\`
+
+**Model: Predict accident risk**
+
+Classification model: Will driver have accident in next 12 months?
+
+\`\`\`python
+# Training data: historical drivers with claims
+# Features: driving behaviors last 6 months
+# Target: accident=1, no accident=0
+
+model = XGBoost(
+  features=[hard_braking_rate, speeding_duration, nighttime_miles, ...],
+  target=accident_in_next_12mo
+)
+
+# Output: P(accident | driving behavior)
+# Premium adjustment: premium *= 0.5^(1 - P(accident))
+# Safe driver (10% accident risk): premium *= 0.95 (5% discount)
+# Risky driver (40% accident risk): premium *= 0.78 (22% penalty)
+\`\`\`
+
+**Modeling challenges:**
+
+1. **Causation vs correlation:** Hard braking might indicate safety-conscious driving (defensive) or reckless driving. Need domain knowledge to interpret.
+
+2. **Adverse selection:** Risky drivers opt-out of telematics programs. You only see data from safer drivers, biasing the model.
+
+3. **Latency:** Collecting 6 months of driving data before adjusting premiums is slow. Balance real-time adjustment vs learning curve.
+
+4. **Confounding:** Rainy weather causes hard braking; do we penalize drivers for weather?
+
+**Ethical concerns:**
+
+1. **Privacy:** Tracking location, speed, routes 24/7. Are drivers opting in knowingly? Can the data be breached?
+
+2. **Discrimination:** Hard braking might be more common in urban areas (traffic) vs rural (highways). Women vs men might have different patterns. Model could proxy for protected attributes.
+
+\`\`\`python
+# Check for discrimination
+SELECT
+  gender, age_bucket, race,
+  AVG(premium_adjustment) as avg_adjustment,
+  AVG(hard_braking_rate) as avg_behavior
+FROM driver_premiums
+GROUP BY gender, age_bucket, race;
+\`\`\`
+
+If females have lower hard braking but same premium adjustment, bias exists.
+
+3. **Fairness-accuracy tradeoff:** To ensure fairness (equalized premiums across demographics), model accuracy suffers. Insurance companies might object.
+
+4. **Gaming:** Drivers modify behavior when observed (Hawthorne effect). Very smooth driving during monitored periods might not predict real-world safety.
+
+5. **Access:** Requiring a telematics device excludes low-income drivers without compatible cars. Only wealthy drivers can access discounts.
+
+**Recommendation:**
+
+1. **Consent:** Make telematics opt-in with clear data use policies. Users should know data is monitored.
+
+2. **Fairness constraints:** During training, enforce similar premium adjustments for similar accident risk across demographics.
+
+3. **Transparency:** Explain to drivers why premium adjusted. "You had 20 hard-braking events per 1000 miles; average is 10. Your premium increased 15%."
+
+4. **Regulation:** Work with regulators. Some states restrict how much premiums can vary by telematics data.
+
+5. **Validation:** A/B test: half get telematics discount, half don't. Compare actual accident rates. If telematics group has better outcomes, it works.
+
+**Key insight:**
+Just because you can measure behavior doesn't mean you should adjust prices on it. The model might work technically but create societal harm (poverty penalty). Balance accuracy with ethics.`,
+      },
+      {
+        q: "Your NLP model extracts key clauses from legal contracts with 85% accuracy. The legal team says this isn't good enough to deploy. The product team says waiting for 95% means waiting 6 more months. How do you frame this decision?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `This is a classic ML trade-off framing question. I'd reframe it away from "accuracy" to "business impact and risk."
+
+**Step 1: Understand what "not good enough" means**
+
+"85% accuracy" is meaningless without context. I'd ask:
+- Accuracy on which clauses? (Confidentiality clauses might be 95%, payment terms 80%.)
+- Precision vs recall: Do we miss important clauses (recall) or flag false positives (precision)?
+- What's the cost of an error?
+
+\`\`\`sql
+SELECT
+  clause_type, precision, recall, f1_score
+FROM model_performance_by_clause
+WHERE accuracy_percent > 0
+ORDER BY f1_score;
+\`\`\`
+
+If confidentiality clauses (high legal risk) have 78% recall, that's dangerous. If formatting clauses have 92% recall, that's fine.
+
+**Step 2: Quantify the cost of errors**
+
+Legal uses the model to:
+1. Surface important clauses to lawyers (to review)
+2. Flag unusual terms (for negotiation)
+
+If the model misses 15% of key clauses, lawyers review 100 contracts, and miss 15 important terms on average, what's the cost?
+- Missed confidentiality clause: Could expose IP worth $1M
+- Missed payment term: Could lose $50K per contract
+- Missed liability cap: Could cost $500K in litigation
+
+Expected cost per contract = P(miss) × Value_at_risk
+
+If lawyers still review everything (85% accuracy just saves time reading), the risk is low. If they trust the model to surface only important stuff, risk is high.
+
+**Step 3: Hybrid approach (avoid the false choice)**
+
+"85% vs 95%" is binary thinking. What if we do this:
+
+- **Phase 1:** Deploy at 85% accuracy with human review requirement. Lawyers must review all flagged clauses before client gets the contract. Model speeds up review, doesn't replace it.
+  - Timeline: Deploy now (week 1)
+  - Cost: Lawyer review time ↑ 10% per contract
+  - Risk: Unchanged (lawyers catch errors)
+
+- **Phase 2:** Retrain on mislabeled examples from Phase 1. Real data beats perfect samples.
+  - Every clause lawyers flag as "model missed this" becomes new training data
+  - Months 2-6: Retrain monthly as new data accumulates
+  - Target: 92% accuracy by month 6, then deploy without mandatory review
+
+\`\`\`python
+# Phase 1: Serve + collect feedback
+for contract in production_contracts:
+  flagged_clauses = model.predict(contract)  # 85% accurate
+  lawyer_review_results = lawyer.review(flagged_clauses)
+
+  # Collect mislabels
+  missed_clauses = lawyer_review_results[model_missed == True]
+  save_to_training_queue(missed_clauses)
+
+# Monthly retraining
+if len(training_queue) > 500:
+  retrain_model(original_training_data + new_mislabeled_examples)
+  evaluate_accuracy_on_holdout()
+\`\`\`
+
+**Step 4: Frame the conversation**
+
+To legal: "We deploy 85% with mandatory lawyer review. You get 2x faster review time while risk stays the same. We improve accuracy monthly as we collect real-world data."
+
+To product: "Deploy Phase 1 now. Phase 2 gets to 92-93% by month 4-5, avoiding the 6-month wait."
+
+To leadership: "Cost: lawyer review overhead for months 1-4. Benefit: deploy faster, collect better training data, achieve higher accuracy sooner than alternative."
+
+**Key insight:**
+Don't frame as "accuracy vs timeline." Frame as "maximize value per unit of effort." 85% + human review + monthly retraining beats waiting 6 months for 95% alone.`,
+      },
+      {
+        q: "You're building a recommendation system for a news app. Users love clicking on outrage content, but it reduces long-term retention and brand trust. Design a reward function that balances engagement with platform health.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "head_ds",
+        a: `This is a multi-objective optimization problem. Maximizing short-term clicks destroys long-term value. I'd frame it as a two-tier recommendation system.
+
+**Problem definition:**
+
+Naive objective: Maximize clicks
+- Leads to clickbait, outrage, algorithmic radicalization
+- Users eventually churn (cognitive overload, burnout)
+- Brand becomes tabloid
+
+Better objective: Maximize 90-day subscription retention
+- Balances engagement (users come back) with diversity (users don't burn out)
+
+**Reward function design:**
+
+\`\`\`python
+# Per article recommendation
+immediate_reward = click_probability * click_value
+long_term_reward = retention_impact * future_lifetime_value
+
+# Combined reward (discount future by time value)
+article_reward = (
+  0.7 * immediate_reward +  # short-term: engagement matters
+  0.3 * long_term_reward    # long-term: retention matters
+)
+
+# Click value: varies by content type
+if article.category == 'outrage':
+  click_value = 1.0  # High engagement
+  retention_impact = -0.1  # Negative impact on 90-day retention
+elif article.category == 'educational':
+  click_value = 0.6  # Lower immediate engagement
+  retention_impact = +0.2  # Positive long-term impact
+
+# User state matters
+if user.session_count_this_week > 10:
+  # User already heavily engaged; risk of burnout
+  outrage_discount = 0.5  # Show less outrage
+else:
+  outrage_discount = 1.0
+
+article_reward *= outrage_discount
+\`\`\`
+
+**Implementation:**
+
+Train a ranking model with these features:
+
+\`\`\`python
+from sklearn.ensemble import GradientBoosting
+
+# Features
+features = [
+  'article_sentiment_score',  # -1 (negative/outrage) to +1 (positive)
+  'article_category',
+  'user_engagement_this_week',
+  'user_churn_risk_score',
+  'article_novelty',  # Is this a retread of existing topic?
+  'user_topic_diversity_this_week'  # How varied are user's readings?
+]
+
+# Target: P(user retained in 90 days | recommended this article)
+target = user_retained_90_days
+
+model = GradientBoosting(learning_rate=0.1, max_depth=5)
+model.fit(features, target, sample_weight=article_reward)
+\`\`\`
+
+**Key constraints:**
+
+1. **Diversity:** Ensure recommendations aren't all the same category.
+
+\`\`\`python
+# During ranking, enforce variety
+ranked_articles = sorted(articles, key=lambda x: model.predict_reward(x))
+final_ranking = []
+last_5_categories = []
+
+for article in ranked_articles:
+  if article.category not in last_5_categories:
+    final_ranking.append(article)
+    last_5_categories.append(article.category)
+  else:
+    # Skip articles in categories we've shown recently
+    continue
+\`\`\`
+
+2. **High-risk user detection:** Users with high churn risk get more quality recommendations, fewer outrage pieces.
+
+\`\`\`python
+user_churn_risk = logistic_regression.predict_proba(user_features)[1]
+if user_churn_risk > 0.4:
+  # High churn risk; prioritize retention
+  outrage_discount = 0.3  # Only show 30% of outrage score
+  educational_boost = 1.5
+\`\`\`
+
+3. **A/B testing the tradeoff:**
+
+- Control: Maximize clicks (status quo)
+- Treatment: Balanced reward function (engagement + retention)
+
+Measure:
+- Week 1: Clicks might drop 5-10% in treatment (expected)
+- Week 8: 90-day retention lift 2-3% in treatment (goal)
+- Revenue impact: Lower churn likely outweighs lower engagement
+
+\`\`\`sql
+SELECT
+  variant,
+  AVG(weekly_clicks) as avg_clicks,
+  PERCENTILE_DISC(0.9) WITHIN GROUP (ORDER BY days_to_churn) as p90_retention,
+  AVG(subscription_value) as arpu
+FROM user_metrics
+GROUP BY variant;
+\`\`\`
+
+**Monitoring:**
+
+Track click-through rate by sentiment:
+
+\`\`\`sql
+SELECT
+  sentiment_bucket (negative/outrage, neutral, positive),
+  COUNT(*) as impressions,
+  SUM(clicked) as clicks,
+  AVG(clicked) as ctr
+FROM recommendation_impressions
+WHERE timestamp > DATE_SUB(NOW(), INTERVAL 7 DAY)
+GROUP BY sentiment_bucket
+ORDER BY ctr DESC;
+\`\`\`
+
+If outrage content still dominates the top 10, the discount isn't working. Increase the weight.
+
+**Key insight:**
+You can't ignore engagement (users won't return). But pure engagement optimization destroys retention. The middle path: optimize for retention subject to engagement floor ("users must click >3x/week").`,
+      },
+      // ─────────────────────────────────────────────
+      // SQL, PYTHON & ESTIMATION (10)
+      // ─────────────────────────────────────────────
+      {
+        q: "Write a SQL query to find users who made their first purchase within 48 hours of signing up, spent more than the median first-order value, AND returned to make a second purchase within 30 days. Explain why this cohort matters.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `This cohort is product-market-fit gold. Quick converters → high intent. Repeat purchasers → strong retention signal. High spenders → good LTV indicator.
+
+\`\`\`sql
+WITH first_purchases AS (
+  SELECT
+    user_id,
+    created_at AS signup_date,
+    MIN(order_date) AS first_order_date,
+    MIN(order_total) AS first_order_value
+  FROM users u
+  LEFT JOIN orders o ON u.id = o.user_id
+  WHERE order_date IS NOT NULL
+  GROUP BY user_id, created_at
+),
+
+median_first_order AS (
+  SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY first_order_value) AS median_value
+  FROM first_purchases
+),
+
+quick_converters AS (
+  SELECT fp.user_id, fp.signup_date, fp.first_order_date, fp.first_order_value
+  FROM first_purchases fp, median_first_order mfo
+  WHERE DATE_PART('hour', fp.first_order_date - fp.signup_date) <= 48
+    AND fp.first_order_value > mfo.median_value
+),
+
+repeat_purchasers AS (
+  SELECT DISTINCT qc.user_id
+  FROM quick_converters qc
+  JOIN orders o ON qc.user_id = o.user_id
+  WHERE o.order_date > qc.first_order_date
+    AND o.order_date <= qc.first_order_date + INTERVAL '30 days'
+)
+
+SELECT
+  COUNT(DISTINCT qc.user_id) AS total_quick_converters,
+  COUNT(DISTINCT rp.user_id) AS repeat_purchasers,
+  ROUND(100.0 * COUNT(DISTINCT rp.user_id) / COUNT(DISTINCT qc.user_id), 2) AS repeat_purchase_rate,
+  ROUND(AVG(qc.first_order_value), 2) AS avg_first_order_value
+FROM quick_converters qc
+LEFT JOIN repeat_purchasers rp ON qc.user_id = rp.user_id;
+\`\`\`
+
+**Why this cohort matters:**
+
+1. **Speed to purchase:** Within 48 hours signals clarity on value prop. They didn't need convincing. If <20% convert this fast, onboarding friction is high.
+
+2. **High first-order value:** These users see worth immediately and spend accordingly. Predicts high LTV.
+
+3. **Repeat purchase:** 30-day repeat rate >40% is exceptional for most e-commerce. This cohort's repeat rate is a proxy for product quality.
+
+**Why track this:**
+- If repeat rate drops month-over-month, something broke (product quality, UX, fulfillment)
+- Compare this cohort's CAC vs LTV to other segments
+- Deep-dive interviews with this cohort: What convinced them? (Informs marketing copy, product messaging)
+
+This cohort defines success.`,
+      },
+      {
+        q: "Write a SQL query to calculate the retention curve for each monthly cohort, showing what percentage of users from each signup month are still active 1, 3, 6, and 12 months later.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `Cohort retention analysis is fundamental. Shows if product improves over time (later cohorts retain better = product got better).
+
+\`\`\`sql
+WITH signup_cohorts AS (
+  SELECT
+    user_id,
+    DATE_TRUNC('month', created_at) AS cohort_month
+  FROM users
+),
+
+user_activity AS (
+  SELECT
+    user_id,
+    DATE_TRUNC('month', activity_date) AS activity_month
+  FROM events  -- login, purchase, etc.
+  WHERE activity_date IS NOT NULL
+),
+
+cohort_activity AS (
+  SELECT
+    sc.cohort_month,
+    DATE_PART('month', AGE(ua.activity_month, sc.cohort_month)) AS months_since_signup,
+    COUNT(DISTINCT sc.user_id) AS users_in_cohort,
+    COUNT(DISTINCT ua.user_id) AS active_users
+  FROM signup_cohorts sc
+  LEFT JOIN user_activity ua ON sc.user_id = ua.user_id
+    AND ua.activity_month >= sc.cohort_month
+  GROUP BY sc.cohort_month, months_since_signup
+)
+
+SELECT
+  cohort_month,
+  COALESCE(MAX(CASE WHEN months_since_signup = 0 THEN active_users END),
+    MAX(users_in_cohort)) AS month_0_users,
+  ROUND(100.0 * MAX(CASE WHEN months_since_signup = 1 THEN active_users END) /
+    COALESCE(MAX(CASE WHEN months_since_signup = 0 THEN active_users END),
+      MAX(users_in_cohort)), 2) AS month_1_retention,
+  ROUND(100.0 * MAX(CASE WHEN months_since_signup = 3 THEN active_users END) /
+    COALESCE(MAX(CASE WHEN months_since_signup = 0 THEN active_users END),
+      MAX(users_in_cohort)), 2) AS month_3_retention,
+  ROUND(100.0 * MAX(CASE WHEN months_since_signup = 6 THEN active_users END) /
+    COALESCE(MAX(CASE WHEN months_since_signup = 0 THEN active_users END),
+      MAX(users_in_cohort)), 2) AS month_6_retention,
+  ROUND(100.0 * MAX(CASE WHEN months_since_signup = 12 THEN active_users END) /
+    COALESCE(MAX(CASE WHEN months_since_signup = 0 THEN active_users END),
+      MAX(users_in_cohort)), 2) AS month_12_retention
+FROM cohort_activity
+WHERE cohort_month >= DATE_TRUNC('month', CURRENT_DATE - INTERVAL '13 months')
+GROUP BY cohort_month
+ORDER BY cohort_month DESC;
+\`\`\`
+
+**Interpretation:**
+
+If 2024-01 cohort: 100% → 45% → 25% → 12% → 5%, the product has high churn. By month 6, 75% are gone. Red flag.
+
+If 2024-06 cohort: 100% → 60% → 40% → 25% → 15%, retention improved (later cohort is stickier). Product improvements likely worked.
+
+**What to look for:**
+- Cliff: If all cohorts drop 50% from month 0 to month 1, onboarding is broken.
+- Trend: Later cohorts retaining better = product improving.
+- Segment: Run this by user segment (paid vs free, geography, etc.) to see where churn concentrates.`,
+      },
+      {
+        q: "Write a Python function that takes a time series of daily revenue and identifies structural breaks using the CUSUM method. Explain when you would use this vs simple anomaly detection.",
+        subcategory: "python",
+        difficulty: "Hard",
+        level: "lead_ds",
+        a: `CUSUM detects persistent shifts (e.g., algorithm change decreases revenue permanently). Simple anomaly detection flags one-off spikes. Different tools for different problems.
+
+\`\`\`python
+import numpy as np
+from typing import Tuple, List
+
+def cusum_structural_break(
+    revenue_series: np.ndarray,
+    threshold: float = 5.0,
+    drift: float = 0.1
+) -> Tuple[List[int], np.ndarray, np.ndarray]:
+    """
+    Cumulative Sum Control Chart (CUSUM) method for detecting structural breaks.
+
+    Args:
+        revenue_series: Daily revenue values
+        threshold: Decision threshold (higher = fewer false positives)
+        drift: Parameter to ignore small changes
+
+    Returns:
+        breakpoints: Indices where structural breaks detected
+        cusum_positive: Cumulative sum for upward changes
+        cusum_negative: Cumulative sum for downward changes
+    """
+    # Normalize by rolling mean to account for growth
+    rolling_mean = np.convolve(revenue_series, np.ones(7)/7, mode='same')
+    normalized = revenue_series - rolling_mean
+
+    n = len(normalized)
+    cusum_pos = np.zeros(n)
+    cusum_neg = np.zeros(n)
+    breakpoints = []
+
+    for i in range(1, n):
+        # Cumulative sum: max(0, prev + current - drift)
+        cusum_pos[i] = max(0, cusum_pos[i-1] + normalized[i] - drift)
+        cusum_neg[i] = min(0, cusum_neg[i-1] + normalized[i] + drift)
+
+        # Detect break when CUSUM crosses threshold
+        if cusum_pos[i] > threshold:
+            breakpoints.append(i)
+            cusum_pos[i] = 0  # Reset after break
+        elif cusum_neg[i] < -threshold:
+            breakpoints.append(i)
+            cusum_neg[i] = 0  # Reset after break
+
+    return breakpoints, cusum_pos, cusum_neg
+
+# Usage example
+revenue = np.array([1000, 1050, 980, 1100, 1150,  # Baseline
+                    750, 755, 740, 760, 750,      # Permanent drop (structural break)
+                    1200, 1250, 1300, 1350])      # Recovery attempt
+
+breakpoints, cusum_pos, cusum_neg = cusum_structural_break(revenue, threshold=100)
+print(f"Structural breaks detected at indices: {breakpoints}")
+# Output: [5] — The drop from day 5 onwards is permanent, not noise
+\`\`\`
+
+**CUSUM vs simple anomaly detection:**
+
+| Criterion | CUSUM | Anomaly Detection (Z-score, IQR) |
+|-----------|-------|--------------------------|
+| Detects | Sustained level shifts | One-off outliers |
+| Example | Algorithm change decreases revenue 10% forever | Revenue spike one day due to promo |
+| False positive rate | Low (needs sustained change) | High (flags noise as anomaly) |
+| Recovery tracking | Excellent (reset after break) | Misses if pattern shifts back |
+| Latency | 5-7 days to confirm (waits for accumulation) | Immediate (1 day) |
+
+**When to use CUSUM:**
+- Monitoring KPI health after deployment
+- Detecting when a change (algorithm, pricing, feature) has broken something permanently
+- Quality control in manufacturing or processes
+
+When to use simple anomaly detection:
+- Marketing spends on specific day → spike expected
+- One-off server outage → temporary blip
+- Unusual but temporary event (holiday, promo)
+
+**Practical example:**
+Deploy new recommendation algorithm Monday. Revenue drops 8% daily. After 7 days:
+- CUSUM: "Confirmed structural break. Algorithm is broken. Rollback."
+- Z-score: "Day 2 looks normal again. Just noise."
+
+CUSUM wins here—catches the real problem.`,
+      },
+      {
+        q: "Estimate the total compute cost for training a large language model with 70 billion parameters. Walk through your assumptions about GPU types, training time, and cloud pricing.",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        a: `70B parameter LLM is enterprise-scale (like LLaMA 2 70B). I'd estimate from first principles.
+
+**Step 1: Compute requirements**
+
+FLOPs for training = 6 × Parameters × Tokens
+(Rule of thumb: 6 FLOPs per parameter per token)
+
+Tokens = 2 Trillion (standard for 70B, e.g., LLaMA 2)
+
+FLOPs = 6 × 70B × 2T = 840 trillion FLOPs = 8.4 × 10^20 FLOPs
+
+**Step 2: GPU throughput**
+
+A100 GPU (80GB): 312 TFLOP/s (tensor ops, optimal case)
+
+Time = FLOPs / Throughput = (8.4 × 10^20) / (312 × 10^12) = 2.7M seconds ≈ 31 days of continuous compute
+
+But:
+- Efficiency is never 100%. Realistic: 40-50% of peak (due to I/O, communication)
+- Distributed training overhead: Multiple GPUs add 20-30% latency
+
+Adjusted time = 31 days / 0.4 = 77 days
+
+**Step 3: GPU configuration**
+
+Need distributed training. Assume:
+- 8x A100 GPUs per node
+- 10 nodes = 80 GPUs total
+
+Effective throughput = 80 × 312 TFLOP/s × 0.4 (efficiency) = 9,984 TFLOP/s
+Time = (8.4 × 10^20) / (9,984 × 10^12) = 84 days ≈ 12 weeks
+
+But with pipeline parallelism + data parallelism, realistic time: 6-8 weeks
+
+**Step 4: Cloud cost**
+
+AWS SageMaker / Google Cloud / Azure pricing:
+
+A100 (80GB): $3-4 per hour per GPU (on-demand)
+
+80 GPUs × $3.50/hr × 24 hrs/day × 50 days = $336,000
+
+Plus:
+- Storage: 2TB checkpoints × $0.023/GB/month × 2 months = $92
+- Networking: ~$10K (data transfer between nodes)
+- Pre/post-processing: ~$50K
+
+**Total: ~$400K**
+
+**Alternative: Reserved instances**
+- 1-year reserved A100: $1.20/hr (65% discount)
+- 80 GPUs × $1.20/hr × 24 hrs × 50 days = $115K
+- Much cheaper, but requires commitment
+
+**Step 5: Reality check**
+
+Meta trained LLaMA 2 70B on 2 trillion tokens using 2,000 A100 GPUs for ~21 days.
+
+Extrapolating:
+- 2,000 GPUs × 21 days = 42,000 GPU-days
+- vs my 80 GPUs × 50 days = 4,000 GPU-days
+- Ratio: 10x difference (Meta is 10x more compute)
+
+This makes sense: Meta probably used 50K or more GPUs total (training multiple sizes in parallel).
+
+For smaller team: **$300-500K for a 70B model** is reasonable.
+
+**Cost breakdown:**
+- GPU: $300K (80%)
+- Storage/networking: $50K (15%)
+- Overhead (software, ops): $25K (5%)
+
+**How to reduce cost:**
+1. Use quantization (FP8 instead of FP16): 4x faster, 80% cheaper
+2. Use spot instances (70% discount, but risk interruption)
+3. Layer-wise training (train some layers frozen): 50% reduction
+
+**Conclusion:** $400K is ballpark for a team of 10 engineers training a 70B model from scratch once. Ongoing fine-tuning is much cheaper ($10-50K).`,
+      },
+      {
+        q: "Write a SQL query to find products that are frequently bought together but never appear in the same user's search history. What could this insight tell a product team?",
+        subcategory: "sql_data",
+        difficulty: "Medium",
+        level: "mid_ds",
+        a: `This reveals hidden complementarity. Users don't know about the pairing, but their behavior shows they should.
+
+\`\`\`sql
+WITH product_pairs AS (
+  SELECT
+    o1.product_id AS product_a,
+    o2.product_id AS product_b,
+    COUNT(DISTINCT o1.user_id) AS co_purchase_count
+  FROM orders o1
+  JOIN orders o2 ON o1.user_id = o2.user_id
+    AND o1.product_id < o2.product_id  -- Avoid duplicates (A,B) vs (B,A)
+    AND ABS(DATE_PART('day', o1.order_date - o2.order_date)) <= 30  -- Within 30 days
+  GROUP BY o1.product_id, o2.product_id
+  HAVING COUNT(DISTINCT o1.user_id) >= 50  -- Only significant pairs
+),
+
+search_pairs AS (
+  SELECT DISTINCT
+    s1.product_id AS product_a,
+    s2.product_id AS product_b
+  FROM search_events s1
+  JOIN search_events s2 ON s1.user_id = s2.user_id
+    AND ABS(DATE_PART('day', s1.search_date - s2.search_date)) <= 7  -- Same search session
+    AND s1.product_id < s2.product_id
+)
+
+SELECT
+  pp.product_a,
+  pp.product_b,
+  pp.co_purchase_count,
+  pa.name AS product_a_name,
+  pb.name AS product_b_name,
+  CASE WHEN sp.product_a IS NOT NULL THEN 'Yes' ELSE 'No' ENDDDD AS appears_in_search
+FROM product_pairs pp
+LEFT JOIN search_pairs sp ON pp.product_a = sp.product_a
+  AND pp.product_b = sp.product_b
+LEFT JOIN products pa ON pp.product_a = pa.id
+LEFT JOIN products pb ON pp.product_b = pb.id
+WHERE sp.product_a IS NULL  -- Never searched together
+ORDER BY pp.co_purchase_count DESC;
+\`\`\`
+
+**What this reveals:**
+
+**Example output:**
+- Laptop + laptop stand: 200 co-purchases, never searched together
+- Camera + tripod: 150 co-purchases, never searched together
+
+**Insights for product:**
+
+1. **Recommendation opportunity:** Build a "frequently bought together" widget on product pages. Users might not know about the pairing; your recommendation surface it.
+
+2. **Cross-sell potential:** When user buys laptop, recommend laptop stand. Could increase AOV by 10-15%.
+
+3. **Search problem:** Maybe search is bad at finding complementary products. Fix search ranking to surface pairs more naturally.
+
+4. **Bundle opportunity:** Create a "bundles" product (Laptop + Stand at 5% discount). Increases conversion.
+
+5. **Category structure:** Maybe laptop and stands are in different categories, so users don't naturally think to search for both. Reorganize navigation.
+
+**Business impact:**
+If 1,000 laptop purchases/month and stand bundling increases attachment from 0% to 25%, that's $50-100K additional revenue monthly (depending on stand margin).`,
+      },
+      {
+        q: "Estimate how much data Zepto generates per day across all its dark stores in Bangalore, including inventory, orders, delivery tracking, and customer interactions.",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        a: `Zepto is ultra-fast delivery (10 min). Bangalore has ~40 dark stores. Estimate from bottom-up.
+
+**Daily order volume:**
+- Bangalore population: 13M
+- DAU (daily active users): ~2% = 260K
+- Orders per active user per day: 0.2 (not everyone orders daily, but some order 2x)
+- Daily orders: 260K × 0.2 = 52K orders/day
+
+**Per-order data generated:**
+
+1. **Order data:** ~5 KB
+   - Order ID, timestamp, user ID, items, quantities, prices, total: 500 bytes
+   - × 52K orders = 260 MB/day
+
+2. **Inventory updates:** ~1 MB per store per day
+   - 40 stores × 1 MB = 40 MB/day
+   - (Each store tracks 1,500-2,000 SKUs, updates 5-10 times/day as items sell out)
+
+3. **Delivery tracking (GPS):** ~2 KB per delivery
+   - GPS coordinates every 10 seconds during 15-minute delivery = 90 data points
+   - 90 points × 500 bytes = 45 KB per delivery
+   - 52K orders × 45 KB = 2.3 GB/day
+
+4. **Customer interactions:** ~500 bytes per order
+   - Search queries, taps, scrolls, cart changes: 200 events per user per day
+   - 260K users × 200 events × 100 bytes = 5.2 GB/day
+
+5. **Logistics backend:** ~10 MB
+   - Routing, driver assignments, cluster optimization
+
+6. **Payment processing:** ~1 MB
+   - ~1 KB per transaction × 52K = 52 MB/day
+
+**Total per day:**
+- Order data: 0.26 GB
+- Inventory: 0.04 GB
+- Delivery tracking: 2.3 GB
+- Customer interactions: 5.2 GB
+- Logistics: 0.01 GB
+- Payments: 0.05 GB
+- **Total: ~7.9 GB/day ≈ 8 GB/day**
+
+**Scaling:**
+- 8 GB/day × 365 = 2.9 TB/year = ~3 TB/year for Bangalore
+- If Zepto expands to 10 cities: ~30 TB/year
+- With replication (backup, analytics): ~100 TB/year
+
+**Storage infrastructure cost:**
+- AWS S3: $0.023/GB/month
+- 100 TB = 100,000 GB
+- 100,000 × $0.023 × 12 = $27,600/year for raw storage
+
+**Practical reality:**
+Zepto likely generates 20-30 GB/day when including:
+- ML training data logs
+- Analytics events
+- Logs (backend services)
+- Video for delivery verification (optional)
+
+**Scaling lesson:**
+Ultra-fast delivery = high-frequency data generation. Every 10-second GPS update scales quickly.`,
+      },
+      {
+        q: "Write a Python function that implements a simple collaborative filtering recommendation engine using only NumPy. Explain the cold-start problem and how you would handle it.",
+        subcategory: "python",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `Collaborative filtering: "If users A and B like the same items, they probably like each other's other items."
+
+\`\`\`python
+import numpy as np
+from typing import List, Tuple
+
+class SimpleCollaborativeFiltering:
+    def __init__(self, min_similarity=0.1):
+        self.user_item_matrix = None
+        self.user_similarity = None
+        self.min_similarity = min_similarity
+
+    def fit(self, interactions: np.ndarray) -> None:
+        """
+        interactions: (n_users, n_items) matrix where 1 = user bought/rated item, 0 = no interaction
+        """
+        self.user_item_matrix = interactions
+        n_users = interactions.shape[0]
+
+        # Compute user-user similarity using cosine similarity
+        self.user_similarity = np.zeros((n_users, n_users))
+
+        for i in range(n_users):
+            for j in range(n_users):
+                # Cosine similarity = dot product / (norm_a * norm_b)
+                dot_product = np.dot(interactions[i], interactions[j])
+                norm_i = np.linalg.norm(interactions[i])
+                norm_j = np.linalg.norm(interactions[j])
+
+                if norm_i > 0 and norm_j > 0:
+                    similarity = dot_product / (norm_i * norm_j)
+                    self.user_similarity[i, j] = max(0, similarity)  # Only positive similarities
+
+    def recommend(self, user_id: int, n_recommendations: int = 5) -> List[int]:
+        """
+        Recommend items to user_id based on similar users' preferences.
+        """
+        # Find most similar users
+        similarities = self.user_similarity[user_id]
+        similar_user_indices = np.argsort(similarities)[::-1][1:11]  # Top 10, excluding self
+
+        # Items liked by similar users but not by this user
+        items_liked_by_user = np.where(self.user_item_matrix[user_id] == 1)[0]
+
+        scores = np.zeros(self.user_item_matrix.shape[1])
+        for similar_user_id in similar_user_indices:
+            if similarities[similar_user_id] < self.min_similarity:
+                continue
+
+            # Weight similar user's items by their similarity score
+            scores += self.user_item_matrix[similar_user_id] * similarities[similar_user_id]
+
+        # Exclude items user already interacted with
+        scores[items_liked_by_user] = -999
+
+        # Return top N
+        recommended_items = np.argsort(scores)[::-1][:n_recommendations]
+        return recommended_items.tolist()
+
+# Usage
+interactions = np.array([
+    [1, 1, 0, 1, 0],  # User 0: likes items 0,1,3
+    [1, 1, 1, 0, 0],  # User 1: likes items 0,1,2
+    [0, 1, 1, 1, 0],  # User 2: likes items 1,2,3
+    [0, 0, 1, 1, 1],  # User 3: likes items 2,3,4
+])
+
+cf = SimpleCollaborativeFiltering()
+cf.fit(interactions)
+recommendations = cf.recommend(user_id=0, n_recommendations=2)
+print(f"Recommend items {recommendations} to user 0")
+# Output: Recommend items [2, 4] to user 0
+\`\`\`
+
+**The cold-start problem:**
+
+**New user (no purchase history):**
+- We can't compute similarity because they have no interaction vector
+- Can't recommend based on similar users
+
+**New item (no purchase history):**
+- No one has bought it, so it has zero vector
+- Will never be recommended
+
+**Solutions:**
+
+1. **For new users: Content-based + collaborative hybrid**
+   \`\`\`python
+   def recommend_cold_start_user(user_profile: dict):
+       """
+       user_profile: demographic + behavior data (age, location, search history)
+       """
+       # Step 1: Find users with similar demographics
+       similar_users_demo = find_similar_by_demographics(user_profile)
+
+       # Step 2: Average their preferences
+       avg_preferences = np.mean(self.user_item_matrix[similar_users_demo], axis=0)
+
+       # Step 3: Recommend high-scoring items
+       return np.argsort(avg_preferences)[::-1][:5]
+   \`\`\`
+
+2. **For new items: Popularity + content features**
+   \`\`\`python
+   def recommend_new_items(recent_item_ids: List[int]):
+       """
+       recent_item_ids: newly added items
+       """
+       # Rank by category popularity
+       category_scores = {}
+       for item_id in recent_item_ids:
+           category = get_item_category(item_id)
+           category_scores[item_id] = popularity_by_category[category]
+
+       return sorted(recent_item_ids, key=lambda x: category_scores[x], reverse=True)[:5]
+   \`\`\`
+
+3. **Hybrid approach for maximum coverage:**
+   - New user + existing items: Use demographic matching
+   - Existing user + new items: Use content-based similarity
+   - New user + new items: Use popularity
+
+**Key insight:**
+Pure collaborative filtering fails when no history exists. In production, combine with content features (category, price, brand) and demographic signals to handle cold-start.`,
+      },
+      {
+        q: "Estimate the annual cost savings if all Indian banks adopted AI-based document verification instead of manual KYC processes.",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        a: `KYC (Know Your Customer) is India's largest manual document verification process. Estimating cost of manual + AI savings.
+
+**Current manual process cost:**
+
+Number of banks in India: 52 scheduled banks (large) + 900+ co-ops, small finance banks = ~1000 total
+
+Accounts opened per year: ~100M (growing)
+- RBI estimates: Retail bank accounts grow ~3% annually
+- Average accounts per bank: 1M / ~50 large banks = 20M per year (averaged)
+
+Cost per manual KYC verification:
+- Junior officer salary: ₹2.5L/year = ₹208/hour (250 working days × 8 hrs)
+- Productivity: 1 KYC verification takes 30 min = 16 per day
+- Cost per KYC: ₹208 / 16 × 0.5 = ₹6.50
+
+Additional overhead:
+- Document collection, storage, compliance audit: +₹2 per KYC
+- Total manual cost per KYC: ~₹8.50
+
+**Manual cost for all banks:**
+100M accounts × ₹8.50 = ₹850 crores/year
+
+**AI-based KYC cost:**
+
+One-time setup:
+- AI system development + training: ₹10 crores
+- Infrastructure (OCR, document storage, API): ₹5 crores
+- Compliance validation: ₹3 crores
+- Total setup: ₹18 crores (amortize over 3 years = ₹6 crores/year)
+
+Per-account cost:
+- Document upload + processing: ₹0.50 (cloud API calls)
+- Storage: ₹0.10 per KYC document (S3 pricing)
+- Compliance audits (10% flagged for human review): ₹1 per account (manual review of edge cases)
+- Total per-KYC cost: ₹1.60
+
+**AI cost for all banks:**
+100M accounts × ₹1.60 + ₹6 crores setup = ₹160 crores + ₹6 crores = ₹166 crores/year
+
+**Annual savings:**
+₹850 crores (manual) - ₹166 crores (AI) = **₹684 crores/year**
+
+**Additional benefits (monetization):**
+- Faster account opening: 5-day manual → 1-hour AI = customers less likely to drop-off. Est. 5% conversion lift = ₹400 crores in new deposits × 0.5% spread = ₹20 crores additional NII
+- Fraud reduction: AI detects forged documents. Est. 2% reduction in account fraud = ₹50 crores saved
+- Regulatory efficiency: RBI can audit AI systems vs 1000 banks' manual processes = ₹100 crores compliance cost savings industry-wide
+
+**Net savings: ₹684 crores + ₹20 crores + ₹50 crores = ₹754 crores/year**
+
+**Reality check:**
+- This assumes universal AI adoption (unlikely—small banks will lag)
+- More realistic: 50% adoption by large banks = ₹350 crores savings
+- Implementation risk: Edge cases (forged docs, unusual scenarios) might require human review, raising cost to ₹4-5 per KYC
+
+**Conservative estimate: ₹200-400 crores/year for 50% adoption.**
+
+**Implications:**
+This is a $25-50M annual opportunity for a SaaS AI KYC vendor. FINTECHPROUD: High margins (₹1 cost, sell for ₹2-3).`,
+      },
+      {
+        q: "Write a SQL query to detect seasonality in transaction data by comparing each week's volume to the same week in the previous year, flagging weeks where volume deviated by more than 2 standard deviations.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        level: "senior_ds",
+        a: `Seasonality detection: Week 1 2024 vs Week 1 2023. Flag anomalies that break seasonal patterns.
+
+\`\`\`sql
+WITH weekly_volumes AS (
+  SELECT
+    DATE_TRUNC('week', transaction_date) AS week_start,
+    DATE_PART('week', transaction_date) AS week_of_year,
+    DATE_PART('year', transaction_date) AS year,
+    COUNT(*) AS transaction_count,
+    SUM(amount) AS total_volume
+  FROM transactions
+  GROUP BY 1, 2, 3
+),
+
+seasonal_stats AS (
+  SELECT
+    week_of_year,
+    AVG(transaction_count) AS avg_count,
+    STDDEV_POP(transaction_count) AS stddev_count,
+    AVG(total_volume) AS avg_volume,
+    STDDEV_POP(total_volume) AS stddev_volume
+  FROM weekly_volumes
+  WHERE YEAR <= 2024 - 1  -- Previous years only for baseline
+  GROUP BY week_of_year
+),
+
+current_year_weeks AS (
+  SELECT
+    wv.*,
+    ss.avg_count,
+    ss.stddev_count,
+    ss.avg_volume,
+    ss.stddev_volume,
+    (wv.transaction_count - ss.avg_count) / NULLIF(ss.stddev_count, 0) AS z_score_count,
+    (wv.total_volume - ss.avg_volume) / NULLIF(ss.stddev_volume, 0) AS z_score_volume
+  FROM weekly_volumes wv
+  LEFT JOIN seasonal_stats ss ON wv.week_of_year = ss.week_of_year
+  WHERE wv.year = 2024
+)
+
+SELECT
+  week_start,
+  week_of_year,
+  transaction_count,
+  avg_count,
+  ROUND(z_score_count, 2) AS z_score_count,
+  total_volume,
+  avg_volume,
+  ROUND(z_score_volume, 2) AS z_score_volume,
+  CASE
+    WHEN ABS(z_score_count) > 2 OR ABS(z_score_volume) > 2 THEN 'ANOMALY'
+    ELSE 'NORMAL'
+  END AS anomaly_flag
+FROM current_year_weeks
+WHERE ABS(z_score_count) > 2 OR ABS(z_score_volume) > 2
+ORDER BY week_start;
+\`\`\`
+
+**Interpretation:**
+
+Example output:
+- Week 3 2024: 5M transactions vs historical avg 4.8M. Z-score = 0.5 (normal)
+- Week 10 2024: 2.1M transactions vs historical avg 4.9M. Z-score = -3.2 (ANOMALY—30% below baseline)
+
+**What to investigate:**
+- Z-score < -2: Drop from seasonal baseline. Possible issues: competitor promotion, supply shortage, outage
+- Z-score > +2: Spike above seasonal. Possible issues: marketing campaign worked, external event driving demand
+
+**Use case:**
+If Week 52 (New Year) usually has +50% volume but 2024 Week 52 is -5%, something is wrong (lost revenue opportunity or data issue).
+
+**Key insight:**
+Seasonality makes year-over-year comparison more robust than week-over-week (which can confound with day-of-week effects).`,
+      },
+      {
+        q: "Write a Python script that ingests a CSV of customer support tickets, clusters them using TF-IDF and K-means, and outputs the top 5 themes with representative examples from each cluster.",
+        subcategory: "python",
+        difficulty: "Hard",
+        level: "lead_ds",
+        a: `Automated ticket categorization using unsupervised learning. No labels needed—let data speak.
+
+\`\`\`python
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.cluster import KMeans
+from typing import List, Tuple
+
+def cluster_support_tickets(csv_path: str, n_clusters: int = 5) -> List[Tuple[str, List[str]]]:
+    """
+    Cluster support tickets and extract themes.
+
+    Returns: List of (theme, representative_tickets)
+    """
+    # Load tickets
+    df = pd.read_csv(csv_path)
+    tickets = df['ticket_text'].tolist()
+
+    # TF-IDF vectorization: Convert text to numerical representation
+    # Remove common words (stopwords) that don't add meaning
+    vectorizer = TfidfVectorizer(
+        max_features=500,  # Keep top 500 important words
+        stop_words='english',
+        ngram_range=(1, 2),  # Include single words and pairs
+        min_df=2,  # Word must appear in ≥2 documents
+        max_df=0.8  # Word appears in ≤80% of documents (too common = useless)
+    )
+
+    tfidf_matrix = vectorizer.fit_transform(tickets)
+
+    # K-means clustering
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
+    clusters = kmeans.fit_predict(tfidf_matrix)
+
+    # Extract themes and representative tickets
+    results = []
+
+    for cluster_id in range(n_clusters):
+        # Get all tickets in this cluster
+        cluster_mask = clusters == cluster_id
+        cluster_tickets = [tickets[i] for i in np.where(cluster_mask)[0]]
+        cluster_indices = np.where(cluster_mask)[0]
+
+        # Get cluster center
+        center = kmeans.cluster_centers_[cluster_id]
+
+        # Find most important words in this cluster
+        # Get top words from TF-IDF for this cluster
+        feature_names = vectorizer.get_feature_names_out()
+        top_word_indices = np.argsort(center)[-5:]  # Top 5 words
+        top_words = [feature_names[i] for i in top_word_indices[::-1]]
+        theme = " + ".join(top_words)  # e.g., "billing + invoice + payment"
+
+        # Find representative tickets (closest to cluster center)
+        distances = np.linalg.norm(
+            tfidf_matrix[cluster_mask].toarray() - center,
+            axis=1
+        )
+        top_ticket_indices = np.argsort(distances)[:3]  # 3 most representative
+        representative = [cluster_tickets[i] for i in top_ticket_indices]
+
+        results.append((theme, representative))
+
+    return results
+
+# Usage
+def main():
+    themes = cluster_support_tickets('support_tickets.csv', n_clusters=5)
+
+    for i, (theme, tickets) in enumerate(themes, 1):
+        print(f"\n{'='*60}")
+        print(f"Cluster {i}: {theme}")
+        print(f"{'='*60}")
+        for j, ticket in enumerate(tickets, 1):
+            print(f"{j}. {ticket[:200]}...")  # First 200 chars
+
+if __name__ == '__main__':
+    main()
+\`\`\`
+
+**Example output:**
+
+Cluster 1: billing + invoice + payment
+1. "I was charged twice for my subscription last month. Can someone help me..."
+2. "My payment failed but I was still charged. Need a refund immediately..."
+3. "The invoice shows incorrect amount. Billed for premium but have basic plan..."
+
+Cluster 2: bugs + crash + app not working
+1. "App crashes whenever I try to upload files. Happens on iOS 16..."
+2. "Login keeps failing. Error code: 500. Tried resetting password..."
+3. "Search feature broken. No results returned even for existing data..."
+
+Cluster 3: feature request + new functionality
+1. "Would be great if you added dark mode. Eyes hurt in bright light..."
+2. "Can you add bulk export functionality? Managing 1000s of items..."
+3. "Multi-user collaboration would be huge for our team..."
+
+Cluster 4: account + subscription + upgrade
+1. "How do I upgrade to premium? Can't find the button..."
+2. "Want to downgrade to basic plan but keep my data..."
+3. "My account was suspended. I don't understand why..."
+
+Cluster 5: documentation + training + onboarding
+1. "Your API docs are confusing. Which endpoint for bulk operations?..."
+2. "Can you provide a tutorial for power users?..."
+3. "The mobile app has no help section. How do I do X?..."
+
+**Value of this approach:**
+
+1. **Zero labeling needed:** Automatic theme discovery vs manually labeling 1000s of tickets
+2. **Scaling:** Ingest new tickets weekly, re-cluster to spot emerging issues
+3. **Routing:** Assign new tickets to appropriate team based on cluster (billing team gets cluster 1, devops gets cluster 2)
+4. **Roadmapping:** Count cluster sizes; if cluster 3 (features) is 30% of tickets, product team knows what users want
+
+**Key insight:**
+TF-IDF + K-means is unsupervised clustering. It works because important words naturally group similar tickets together. No training data needed.`,
+      },
     ],
   },
 };
