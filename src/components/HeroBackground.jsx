@@ -23,7 +23,11 @@ const HeroBackground = () => {
       }
     `;
     document.head.appendChild(styleEl);
-    return () => document.head.removeChild(styleEl);
+    console.log('[HeroBackground] Keyframes injected into document head');
+    return () => {
+      document.head.removeChild(styleEl);
+      console.log('[HeroBackground] Keyframes removed');
+    };
   }, []);
 
   const cols = 14;
@@ -77,7 +81,11 @@ const HeroBackground = () => {
     }
   }
 
-  console.log('Animated shapes:', shapes.filter(s => s.isAnimated).length, 'out of', shapes.length);
+  const animatedShapes = shapes.filter(s => s.isAnimated);
+  console.log('[HeroBackground] Animated shapes:', animatedShapes.length, 'out of', shapes.length);
+  if (animatedShapes.length > 0) {
+    console.log('[HeroBackground] Sample animated shape:', animatedShapes[0]);
+  }
 
   const renderShape = (shape) => {
     const size = 28;
