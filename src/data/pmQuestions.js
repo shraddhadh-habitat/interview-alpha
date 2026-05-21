@@ -29694,6 +29694,7 @@ The output: Root cause report + prioritized fix list with effort/impact ratios.`
         subcategory: "case_studies",
         difficulty: "Hard",
         level: "lead_ds",
+        company: "Airbnb",
         a: `I'd start by clarifying: Is this a recent trend or chronic? Are we comparing same-quality listings? Are there seasonal effects (Cherry blossom season hits Tokyo harder)?
 
 **Hypotheses to test:**
@@ -29725,7 +29726,7 @@ The output: Root cause report + prioritized fix list with effort/impact ratios.`
         subcategory: "case_studies",
         difficulty: "Hard",
         level: "senior_ds",
-        company: "Flipkart",
+        company: "Razorpay",
         a: `I'd ask: When did this start? Is it all payment methods or specific ones? All customers or a segment?
 
 **Investigation framework:**
@@ -29788,6 +29789,7 @@ Output: Root cause summary + fix options with implementation effort.`,
         subcategory: "case_studies",
         difficulty: "Hard",
         level: "senior_ds",
+        company: "Swiggy",
         a: `I'd ask: What's the baseline outside Instamart? (Does Swiggy Food also struggle with on-time delivery?) Is 65% consistent across cities and times?
 
 **Hypothesis testing approach:**
@@ -29848,6 +29850,7 @@ This gives ops and product their answer with data, not opinions.`,
         subcategory: "case_studies",
         difficulty: "Medium",
         level: "mid_ds",
+        company: "LinkedIn",
         a: `Before diving in, I'd clarify: Are we measuring recruiter engagement (number of profiles viewed, inmail sent) or candidate engagement? And what's the baseline? (Did recruiters view alt profiles before this feature?)
 
 **Measurement approach:**
@@ -29896,6 +29899,7 @@ Measure, don't assume.`,
         subcategory: "statistics",
         difficulty: "Hard",
         level: "lead_ds",
+        company: "Spotify",
         a: `This is a classic Simpson's Paradox scenario. I'd ask: Are podcast listeners a different cohort (older, different markets) or the same users discovering podcasts?
 
 **Step 1: Isolate causal effect**
@@ -29957,6 +29961,7 @@ The 40% music streaming drop isn't inherently bad if ad revenue and retention mo
         subcategory: "statistics",
         difficulty: "Hard",
         level: "lead_ds",
+        company: "Meta",
         a: `Attribution over-counting is real. Last-click attribution credits the final touchpoint, ignoring organic search or repeat visitors. I'd design a geo-lift test to isolate true incremental effect.
 
 **Test design:**
@@ -30418,6 +30423,7 @@ Model learned historical bias. Fix it by adjusting training data, features, or d
         subcategory: "machine_learning",
         difficulty: "Hard",
         level: "senior_ds",
+        company: "CRED",
         a: `This is a churn prediction variant. Target: binary classification, predict 30-day payment default.
 
 **Feature engineering pipeline:**
@@ -30608,6 +30614,7 @@ Track per-hospital accuracy. If hospital X has 89% while hospital Y has 97%, you
         subcategory: "system_design",
         difficulty: "Hard",
         level: "head_ds",
+        company: "Meta",
         a: `500M posts/day is massive. Real-time means <100ms latency per post. 12 languages means I can't train 12 separate models.
 
 **Architecture:**
@@ -31332,6 +31339,7 @@ CUSUM wins here—catches the real problem.`,
         subcategory: "case_studies",
         difficulty: "Hard",
         level: "lead_ds",
+        company: "Google",
         a: `70B parameter LLM is enterprise-scale (like LLaMA 2 70B). I'd estimate from first principles.
 
 **Step 1: Compute requirements**
@@ -31484,6 +31492,7 @@ If 1,000 laptop purchases/month and stand bundling increases attachment from 0% 
         subcategory: "case_studies",
         difficulty: "Medium",
         level: "mid_ds",
+        company: "Zepto",
         a: `Zepto is ultra-fast delivery (10 min). Bangalore has ~40 dark stores. Estimate from bottom-up.
 
 **Daily order volume:**
