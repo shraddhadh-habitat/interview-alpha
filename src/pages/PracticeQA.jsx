@@ -925,9 +925,19 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       localStorage.removeItem('ia_sample_question');
       try {
         const parsed = JSON.parse(sampleQ);
-        setPracticeQuestion(parsed);
+        setPracticeQuestion({
+          question: parsed,
+          questionId: parsed.questionId || 'landing-sample',
+          designation: 'sample',
+          category: parsed.category || 'sample',
+        });
       } catch(e) {
-        setPracticeQuestion({ question: sampleQ, questionId: 'landing-sample' });
+        setPracticeQuestion({
+          question: { q: sampleQ, a: '' },
+          questionId: 'landing-sample',
+          designation: 'sample',
+          category: 'sample',
+        });
       }
     }
   }, []);
