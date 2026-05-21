@@ -844,7 +844,6 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '32px',
               marginBottom: '12px',
             }}>
-              📋
             </div>
             <h3 style={{
               fontSize: '14px',
@@ -878,7 +877,6 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '32px',
               marginBottom: '12px',
             }}>
-              🏢
             </div>
             <h3 style={{
               fontSize: '14px',
@@ -912,7 +910,6 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '32px',
               marginBottom: '12px',
             }}>
-              📊
             </div>
             <h3 style={{
               fontSize: '14px',
@@ -946,7 +943,6 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '32px',
               marginBottom: '12px',
             }}>
-              ✏️
             </div>
             <h3 style={{
               fontSize: '14px',
