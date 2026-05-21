@@ -1,112 +1,98 @@
-import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 
 const HeroBackground = () => {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cols = 14;
+  const rows = 6;
+  const shapes = [];
 
-  const shapes = useMemo(() => {
-    const items = [];
-    const gridCols = 12;
-    const gridRows = 8;
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const index = row * cols + col;
+      const isFilled = [
+        // Row 0: scattered fills
+        2,3,4,8,9,10,11,
+        // Row 1: center cluster
+        18,19,20,21,25,27,
+        // Row 2: sparse
+        31,32,
+        // Row 3: very sparse
+        44,
+        // Row 4-5: mostly empty
+      ].includes(index);
 
-    for (let row = 0; row < gridRows; row++) {
-      for (let col = 0; col < gridCols; col++) {
-        const x = (col / gridCols) * 100;
-        const y = (row / gridRows) * 100;
-        const type = ['circle', 'square', 'triangle'][(row * gridCols + col) % 3];
-        const isAnimated = Math.random() < 0.15;
-        const isYellow = Math.random() < 0.12;
-        const isNearCenter = (x > 20 && x < 80 && y > 25 && y < 75);
+      const shapeType = index % 7 === 0 ? 'triangle' : index % 5 === 0 ? 'square' : 'circle';
 
-        items.push({
-          id: `${row}-${col}`,
-          x: x + (Math.random() * 4 - 2),
-          y: y + (Math.random() * 4 - 2),
-          type,
-          size: 4 + Math.random() * 6,
-          opacity: isNearCenter ? 0.06 : 0.12,
-          isAnimated: isAnimated && !prefersReduced,
-          color: isYellow && !isNearCenter ? '#FDCD34' : '#E8E6E1',
-          animDelay: Math.random() * 8,
-          animDuration: 6 + Math.random() * 8,
-        });
-      }
+      shapes.push({
+        row, col, index,
+        filled: isFilled,
+        type: shapeType,
+      });
     }
-    return items;
-  }, []);
+  }
 
   const renderShape = (shape) => {
-    const baseStyle = {
-      position: 'absolute',
-      left: `${shape.x}%`,
-      top: `${shape.y}%`,
-    };
+    const size = 28;
+    const gapX = 100 / cols;
+    const gapY = 100 / rows;
+    const x = shape.col * gapX + gapX / 2;
+    const y = shape.row * gapY + gapY / 2;
+    const color = shape.filled ? '#FDCD34' : 'rgba(0,0,0,0.08)';
+    const isNearText = (x < 45 && y > 30 && y < 80);
 
-    const animProps = shape.isAnimated ? {
-      animate: {
-        x: [0, (Math.random() - 0.5) * 5, 0],
-        y: [0, (Math.random() - 0.5) * 4, 0],
-        opacity: [shape.opacity, shape.opacity * 1.5, shape.opacity],
-      },
-      transition: {
-        duration: shape.animDuration,
-        repeat: Infinity,
-        ease: 'easeInOut',
-        delay: shape.animDelay,
-      }
-    } : {};
+    if (isNearText) return null;
+
+    const style = {
+      position: 'absolute',
+      left: `${x}%`,
+      top: `${y}%`,
+      transform: 'translate(-50%, -50%)',
+    };
 
     if (shape.type === 'circle') {
       return (
-        <motion.div
-          key={shape.id}
-          style={{
-            ...baseStyle,
-            width: shape.size,
-            height: shape.size,
-            borderRadius: '50%',
-            backgroundColor: shape.color,
-            opacity: shape.opacity,
-          }}
-          {...animProps}
-        />
+        <div key={shape.index} style={{
+          ...style,
+          width: size,
+          height: size,
+          borderRadius: '50%',
+          backgroundColor: shape.filled ? color : 'transparent',
+          border: shape.filled ? 'none' : '1.5px solid rgba(0,0,0,0.1)',
+        }} />
       );
     }
 
     if (shape.type === 'square') {
       return (
-        <motion.div
-          key={shape.id}
-          style={{
-            ...baseStyle,
-            width: shape.size,
-            height: shape.size,
-            borderRadius: 1,
-            backgroundColor: shape.color,
-            opacity: shape.opacity,
-          }}
-          {...animProps}
-        />
+        <div key={shape.index} style={{
+          ...style,
+          width: size - 4,
+          height: size - 4,
+          borderRadius: 3,
+          backgroundColor: shape.filled ? color : 'transparent',
+          border: shape.filled ? 'none' : '1.5px solid rgba(0,0,0,0.1)',
+        }} />
       );
     }
 
     if (shape.type === 'triangle') {
-      return (
-        <motion.div
-          key={shape.id}
-          style={{
-            ...baseStyle,
+      if (shape.filled) {
+        return (
+          <div key={shape.index} style={{
+            ...style,
             width: 0,
             height: 0,
-            borderLeft: `${shape.size/2}px solid transparent`,
-            borderRight: `${shape.size/2}px solid transparent`,
-            borderBottom: `${shape.size}px solid ${shape.color}`,
-            opacity: shape.opacity,
-            backgroundColor: 'transparent',
-          }}
-          {...animProps}
-        />
-      );
+            borderLeft: `${size/2}px solid transparent`,
+            borderRight: `${size/2}px solid transparent`,
+            borderBottom: `${size}px solid ${color}`,
+          }} />
+        );
+      } else {
+        return (
+          <svg key={shape.index} width={size} height={size} viewBox="0 0 28 28" style={{...style}}>
+            <polygon points="14,2 26,26 2,26" fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="1.5"/>
+          </svg>
+        );
+      }
     }
   };
 
