@@ -1023,7 +1023,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           letterSpacing: '2px',
           textTransform: 'uppercase',
           color: C.textMuted,
-          fontWeight: 900,
+          fontWeight: 1200,
           marginBottom: '16px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
         }}>
