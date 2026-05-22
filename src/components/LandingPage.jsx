@@ -816,7 +816,10 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
       <style>{`
         @media (max-width: 768px) {
           .proof-container { padding: 0 20px !important; }
-          .proof-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+          .proof-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+        }
+        @media (max-width: 480px) {
+          .proof-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
       <div className="proof-container" style={{
@@ -839,10 +842,10 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           What you get with every practice session
         </div>
 
-        {/* 4 feature cards grid */}
+        {/* 5 feature cards grid */}
         <div className="proof-grid" style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: 'repeat(5, 1fr)',
           gap: '16px',
           marginBottom: '48px',
         }}>
@@ -975,6 +978,39 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
               See how a senior PM would answer the same question
+            </p>
+          </div>
+
+          {/* Card 5 */}
+          <div style={{
+            background: '#FDCD34',
+            borderRadius: '12px',
+            padding: '20px',
+            textAlign: 'center',
+          }}>
+            <div style={{
+              fontSize: '32px',
+              marginBottom: '12px',
+            }}>
+            </div>
+            <h3 style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              color: '#1B1B18',
+              marginBottom: '8px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 8px 0',
+            }}>
+              Resume Tools
+            </h3>
+            <p style={{
+              fontSize: '12px',
+              color: '#1B1B18',
+              margin: 0,
+              lineHeight: 1.5,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              ATS score checker and AI resume tailor for every application
             </p>
           </div>
         </div>

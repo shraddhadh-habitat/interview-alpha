@@ -7,6 +7,7 @@ import PracticeQA from './pages/PracticeQA';
 import MyProgress from './pages/MyProgress';
 import SalaryGuide from './pages/SalaryGuide';
 import ATSChecker from './pages/ATSChecker';
+import ResumeTailor from './pages/ResumeTailor';
 import LearningResources from './pages/LearningResources';
 import CompanyQuestions from './pages/CompanyQuestions';
 import UpgradePage from './pages/UpgradePage';
@@ -678,6 +679,7 @@ export default function App() {
           {page === 'scorecard'   && <Scorecard user={user} />}
           {page === 'salary'      && <SalaryGuide user={user} onPracticeCTA={handleLandingPrimaryCTA} />}
           {page === 'ats-checker' && <ATSChecker user={user} />}
+          {page === 'resume-tailor' && <ResumeTailor user={user} />}
           {page === 'resources'   && <LearningResources />}
           {page === 'upgrade'     && (
             <UpgradePage
