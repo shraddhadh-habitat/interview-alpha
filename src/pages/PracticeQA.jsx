@@ -26,6 +26,7 @@ const PM_CATEGORY_CHIPS = [
 // DS_CATEGORY_CHIPS will be built dynamically from the Data Scientist data
 const buildDSCategoryChips = (dsLevel) => {
   const categoryMap = {
+    'fundamentals': { label: 'Fundamentals', subcategory: null },
     'product': { label: 'Product', subcategory: null },
     'behavioral': { label: 'Behavioral', subcategory: null },
     'ai': { label: 'AI/Analytical', subcategory: null },
