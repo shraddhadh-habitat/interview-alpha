@@ -88,6 +88,9 @@ export default function Footer() {
             <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'scorecard' }))}>
               Scorecard
             </FooterLink>
+            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'ats-checker' }))}>
+              ATS Resume Checker
+            </FooterLink>
             <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'salary' }))}>
               Salary Guide
             </FooterLink>

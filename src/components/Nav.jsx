@@ -50,6 +50,7 @@ const PUBLIC_TABS = [
   { id: 'interview',  label: 'Interview' },
   { id: 'practice',   label: 'Practice' },
   { id: 'scorecard',  label: 'Scorecard' },
+  { id: 'ats-checker', label: 'ATS Checker' },
   { id: 'salary',     label: 'Salary Guide' },
 ];
 
