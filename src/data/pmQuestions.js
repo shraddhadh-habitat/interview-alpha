@@ -8968,6 +8968,7 @@ The tradeoff: complex models (deep learning) can capture subtle patterns but are
 I'd start simple  . collaborative filtering + popularity, measure baseline, then iterate. Monitoring model staleness is critical: user preferences shift, new products arrive, seasonal trends emerge.`,
       level: "lead_ds",
       level: "lead_ds",
+      domain: "ecommerce",
       },
       {
         q: "Your model accuracy is 95% but business stakeholders say it's not working. What's going wrong?",
@@ -8988,6 +8989,7 @@ Finally, consider the cost-benefit. Even if the model works technically, is it w
 The fix: align metrics with business goals before building. Use A/B testing to validate impact. Monitor across user segments, not just aggregate accuracy.`,
       level: "mid_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "Design a churn prediction system for a subscription product.",
@@ -9010,6 +9012,7 @@ Evaluation: Use precision-recall, not just accuracy. Recall matters  . missing a
 Finally, I'd implement monitoring: Track prediction distribution over time. If suddenly 50% of users look "at-risk," the model may have drifted.`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "saas",
       },
       {
         q: "Your model performs well in testing but poorly in production. How do you diagnose this?",
@@ -9032,6 +9035,7 @@ Then I'd run a canary: Deploy to 5% of traffic, compare predictions vs baseline 
 The fix usually involves retraining frequently (weekly/daily depending on drift), automated monitoring, and version control of features and models.`,
       level: "lead_ds",
       level: "head_ds",
+      domain: "general",
       },
       {
         q: "How would you design an A/B test to measure the impact of a new search ranking algorithm?",
@@ -9056,6 +9060,7 @@ Canary first: Deploy to 1% for 24 hours, check for crashes, then ramp to full te
 If significant lift: Measure business impact. A 2% lift might be thousands in monthly revenue, justifying deployment. But consider maintenance burden too.`,
       level: "senior_ds",
       level: "senior_ds",
+      domain: "edtech",
       },
       {
         q: "How would you measure the success of a fraud detection model in production?",
@@ -9078,6 +9083,7 @@ Lastly, measure intervention effectiveness. If a transaction is flagged, what ha
 I'd set a framework: Model catches 80% of fraud with <2% false positive rate for legitimate users. Review and iterate quarterly.`,
       level: "mid_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "Your stakeholder wants a model that is both accurate AND fully explainable. How do you navigate this tradeoff?",
@@ -9100,6 +9106,7 @@ My recommendation: Start simple (explainable), measure gap to acceptable accurac
 Also, "explainability" is subjective. Ask what level of detail stakeholders need. Sometimes "this user segment is high-risk" is sufficient; sometimes you need per-feature breakdowns.`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "healthcare",
       },
       {
         q: "Explain the bias-variance tradeoff using a business example.",
@@ -9120,6 +9127,7 @@ For our conversion model: A simple rule like "users from mobile convert 20%, des
 The key: Monitor both training and validation error. If they diverge, you're overfitting.`,
       level: "senior_ds",
       level: "senior_ds",
+      domain: "telecom",
       },
       {
         q: "Your classification model has high precision but low recall. When is this acceptable?",
@@ -9142,6 +9150,7 @@ For medical screening, FN cost is critical (disease progression); FP cost is man
 Ask your stakeholder: If you make 100 positive predictions, what's acceptable? 90 true positives, 10 false positives? Or 50 true positives, 50 false positives? Their answer reveals the cost tradeoff.`,
       level: "mid_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "How would you handle significant class imbalance in your training data?",
@@ -9166,6 +9175,7 @@ Finally, adjust decision thresholds. Default is 0.5 (predict positive if probabi
 Monitor what matters: If fraud is 0.1%, a model catching 80% with 1% false positive rate is good. If 99.9% legitimate, that 1% FP rate still means 1 in 100 legitimate transactions are flagged.`,
       level: "senior_ds",
       level: "senior_ds",
+      domain: "fintech",
       },
       {
         q: "Google Search quality dropped 5% in a specific country. How would you investigate using data?",
@@ -9191,6 +9201,7 @@ Tradeoff: Speed vs depth. I could revert recent changes (fast, safe) or investig
 The framework: Signal → verification → segmentation → historical comparison → remediation.`,
       level: "lead_ds",
       level: "head_ds",
+      domain: "ecommerce",
       },
       {
         q: "Design a ML model to detect spam in Gmail. Walk through your approach from data to deployment.",
@@ -9216,6 +9227,7 @@ Tradeoff: Precision vs recall. Miss a phishing email (recall) and users get hack
 Evaluation: Precision-recall curve, not accuracy. Test on holdout data, but also on real production traffic (A/B test).`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "general",
       },
       {
         q: "How would you measure the success of YouTube's recommendation algorithm?",
@@ -9243,6 +9255,7 @@ Tradeoff: Engagement vs healthy behavior. Maximizing one (highly addictive conte
 This multi-metric approach prevents optimizing for the wrong proxy and catching unintended consequences early.`,
       level: "mid_ds",
       level: "mid_ds",
+      domain: "saas",
       },
       {
         q: "Google Ads revenue per click dropped 8% this quarter. Diagnose using data.",
@@ -9274,6 +9287,7 @@ Tradeoff: If you reduce inventory to raise CPM, you lose volume. Growth vs profi
 The key: Decompose the metric, segment relentlessly, and distinguish causes from symptoms.`,
       level: "lead_ds",
       level: "head_ds",
+      domain: "saas",
       },
       {
         q: "Design an anomaly detection system for Google Cloud that monitors millions of servers.",
@@ -9301,6 +9315,7 @@ Tradeoff: Sensitivity vs false positives. Stricter thresholds catch more real is
 Deployment: Canary the detection on 5% of servers first, measure false positive rate, then roll out. Prevent alert storms.`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "healthcare",
       },
       {
         q: "How would you build a demand forecasting model for Amazon's warehouse inventory?",
@@ -9328,6 +9343,7 @@ Evaluation: RMSE or MAPE (mean absolute percentage error). But also penalize mis
 Serving: Batch forecast daily/weekly. Update as new orders arrive. Use quantile regression (not just point estimates)  . give 10th and 90th percentile demand, not just mean.`,
       level: "lead_ds",
       level: "head_ds",
+      domain: "ecommerce",
       },
       {
         q: "Design an A/B test framework for Amazon's checkout page. What metrics would you track?",
@@ -9359,6 +9375,7 @@ Implementation: Use in-house experimentation platform. Randomly assign, log user
 Tradeoff: Speed (declare winner fast) vs certainty (let test run longer to confirm). Amazon often picks certainty  . losing a sale is expensive.`,
       level: "senior_ds",
       level: "senior_ds",
+      domain: "ecommerce",
       },
       {
         q: "Amazon's delivery promise accuracy dropped from 95% to 88%. How do you investigate?",
@@ -9388,6 +9405,7 @@ Tradeoff: Accuracy vs customer satisfaction. If Amazon can't keep promises, it's
 The key: Timeline (when), geography (where), and product (what) narrow down root cause fast.`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "telecom",
       },
       {
         q: "Build a customer review authenticity detection model for Amazon marketplace.",
@@ -9415,6 +9433,7 @@ Serving: Real-time scoring for new reviews (flag if risk score >0.7). Hide risky
 Feedback: Reviews you flag and users report as "helpful anyway" → retrain to reduce that false positive pattern.`,
       level: "lead_ds",
       level: "head_ds",
+      domain: "ecommerce",
       },
       {
         q: "How would you design a personalization engine for Amazon's homepage for 300M users?",
@@ -9444,6 +9463,7 @@ Tradeoff: Personalization depth vs computational cost. A super-complex model is 
 Infrastructure: Microservices for different components (embeddings service, ranking service, cache service). Load balance across regions.`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "fintech",
       },
       {
         q: "How would you detect and measure the spread of misinformation on Facebook using data science?",
@@ -9473,6 +9493,7 @@ Fact-checking: Scale issues. You can't fact-check 500M posts daily. Partner with
 Monitoring: Track misinformation metric weekly. If it spikes (election, crisis), prioritize resources.`,
       level: "lead_ds",
       level: "head_ds",
+      domain: "telecom",
       },
       {
         q: "Design a friend recommendation algorithm for Instagram. What features would you use?",
@@ -9508,6 +9529,7 @@ Tradeoff: Relevance vs novelty. Recommending their existing friends (high releva
 Privacy: Don't expose the full network graph. Recommendations should feel serendipitous, not creepy.`,
       level: "mid_ds",
       level: "mid_ds",
+      domain: "telecom",
       },
       {
         q: "Instagram Reels engagement dropped 12% among 18-24 year olds. Investigate using data.",
@@ -9535,6 +9557,7 @@ Fix: If algorithm change is the culprit, revert and investigate why it failed. I
 Tradeoff: Short-term metric optimization (views) vs long-term health (retention, monetization).`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "healthcare",
       },
       {
         q: "How would you build a content ranking model for Facebook News Feed?",
@@ -9572,6 +9595,7 @@ Serving: Real-time ranking. When user opens app, retrieve 1000 candidate posts, 
 Monitoring: Track engagement daily. Alert if engagement drops. A/B test new ranking approaches before full rollout.`,
       level: "lead_ds",
       level: "head_ds",
+      domain: "ecommerce",
       },
       {
         q: "Design a real-time A/B testing platform that handles Meta's scale of 3B users.",
@@ -9601,6 +9625,7 @@ Deployment: Canary experiments to 1% of users first. Monitor for issues (crashes
 Tradeoff: Speed (get results in 1 day) vs statistical power (need longer for small effects). With huge user base, even tiny effects hit significance quickly.`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "general",
       },
       {
         q: "Build a pricing optimization model for Flipkart's Big Billion Days sale.",
@@ -9634,6 +9659,7 @@ Evaluation: Compare predicted profit under optimized pricing vs actual pricing u
 Challenges: Cannibalization (deep discount on product A might reduce sales of product B). Account for this in the model.`,
       level: "lead_ds",
       level: "head_ds",
+      domain: "fintech",
       },
       {
         q: "How would you design a delivery time prediction system for Flipkart's logistics?",
@@ -9663,6 +9689,7 @@ Tradeoff: Optimistic vs pessimistic prediction. Promise 3 days, deliver in 2 = h
 Handling exceptions: Weather delays, carrier strikes, sorting errors. These are hard to predict. Monitor prediction error, retrain frequently.`,
       level: "senior_ds",
       level: "senior_ds",
+      domain: "ecommerce",
       },
       {
         q: "Flipkart's search relevance scores dropped. Walk through your investigation approach.",
@@ -9694,6 +9721,7 @@ Fix: Revert bad changes, improve ranking algorithm, increase index freshness.
 Monitoring: Track relevance weekly. Also track downstream metrics (conversion rate, average order value) to see business impact.`,
       level: "mid_ds",
       level: "mid_ds",
+      domain: "ecommerce",
       },
       {
         q: "How would you improve Netflix's content recommendation for users who watch in multiple languages?",
@@ -9725,6 +9753,7 @@ Tradeoff: One global model (simple, scalable) vs language-specific (complex, bet
 Serving: Predict for each language separately, merge ranked lists, present to user.`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "edtech",
       },
       {
         q: "Design an experiment to test whether Netflix should auto-play trailers. What metrics matter?",
@@ -9754,6 +9783,7 @@ Analysis: If auto-play increases conversion but decreases NPS, you've found the 
 Recommendation: Likely test auto-play on desktop only, exclude mobile (battery/data concern). Or make it an opt-in user preference.`,
       level: "senior_ds",
       level: "senior_ds",
+      domain: "ecommerce",
       },
       {
         q: "Netflix's subscriber churn increased 15% in Q3. Use data to diagnose and recommend actions.",
@@ -9783,6 +9813,7 @@ Long-term: Improve content discovery (recommendation algorithm) to reduce "nothi
 Retention focus: Monitor churn weekly going forward. If it continues, the fix was insufficient.`,
       level: "lead_ds",
       level: "head_ds",
+      domain: "saas",
       },
       {
         q: "Design a surge pricing model that balances driver supply with rider demand in real-time.",
@@ -9814,6 +9845,7 @@ Fairness: Don't exploit during emergencies (price-gouging). Set surge multiplier
 Monitoring: Track wait times (if > 15 min consistently, surge too low). Track cancellation rate (if riders cancel after seeing surge, price too high).`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "general",
       },
       {
         q: "How would you build a fraud detection system for fake Uber rides?",
@@ -9841,6 +9873,7 @@ Evaluation: Precision-recall. Catch 80% of fraud with 5% false positive rate (Ub
 Handling: Suspend fraudulent accounts, claw back subsidies, report to law enforcement if severe.`,
       level: "lead_ds",
       level: "head_ds",
+      domain: "fintech",
       },
       {
         q: "Uber's ETA prediction accuracy dropped in a specific city. How do you investigate?",
@@ -9870,6 +9903,7 @@ Fix: Short-term: Revert to previous model if new one failed. Increase ETA estima
 Monitoring: Track ETA accuracy per city weekly. Alert if any city drops >10%.`,
       level: "mid_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "Design an ML pipeline that predicts driver cancellations before they happen.",
@@ -9903,6 +9937,7 @@ Bias: Don't systematically disadvantage certain drivers (e.g., new drivers have 
 Privacy: Don't expose prediction to driver (no "this ride has high cancel probability"). Use internally for ops only.`,
       level: "head_ds",
       level: "lead_ds",
+      domain: "fintech",
       },
     ],
     ai: [],
@@ -9929,6 +9964,7 @@ For ML: Start with lake (raw features available), but organize it. Define clear 
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "edtech",
       },
       {
         q: "Explain the CAP theorem and how it affects data pipeline design.",
@@ -9956,6 +9992,7 @@ The right architecture: Often, hybrid. Use CP for critical customer data, AP for
       level: "lead_ds",
       level: "head_ds",
       level: "head_ds",
+      domain: "fintech",
       },
       {
         q: "How would you design a feature store for a company with 20 ML models in production?",
@@ -9989,6 +10026,7 @@ Solution: Invest in good tooling (Tecton, Feast, Chip) to abstract complexity. W
       level: "head_ds",
       level: "lead_ds",
       level: "lead_ds",
+      domain: "general",
       },
       {
         q: "Walk me through the architecture of a real-time ML serving system.",
@@ -10029,6 +10067,7 @@ Key tradeoff: Real-time requires fresh features (expensive) vs batch allows stal
       level: "lead_ds",
       level: "head_ds",
       level: "head_ds",
+      domain: "ecommerce",
       },
       {
         q: "Explain the difference between L1 and L2 regularization. When would you use each?",
@@ -10056,6 +10095,7 @@ Data efficiency: L1 is better when data is scarce (forces the model to focus on 
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "How does SHAP work for model interpretability? What are its limitations?",
@@ -10087,6 +10127,7 @@ Comparison: LIME (another method) is faster but less principled. Deep SHAP handl
       level: "head_ds",
       level: "lead_ds",
       level: "lead_ds",
+      domain: "fintech",
       },
       {
         q: "What is data leakage and how do you prevent it?",
@@ -10122,6 +10163,7 @@ Leakage is insidious  . you won't know you have it until production. Discipline 
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "healthcare",
       },
       {
         q: "Write a query to find the top 10 users by revenue who signed up in the last 90 days and made at least 3 purchases. Explain your approach.",
@@ -10166,6 +10208,7 @@ This pattern extends: filter → aggregate → rank → limit.`,
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "ecommerce",
       },
       {
         q: "How would you design a data pipeline that processes 10TB of clickstream data daily?",
@@ -10198,6 +10241,7 @@ Solution: Idempotent pipeline (safe to rerun). Late-arriving data triggers daily
       level: "lead_ds",
       level: "head_ds",
       level: "head_ds",
+      domain: "telecom",
       },
       {
         q: "Explain the difference between star schema and snowflake schema. When do you use each?",
@@ -10225,6 +10269,7 @@ Recommendation: Start with star. If dimension storage becomes a problem, convert
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "Your dashboard shows different revenue numbers than the finance team's report. How do you investigate the discrepancy?",
@@ -10255,6 +10300,7 @@ Prevention: Daily automated reconciliation that flags >5% differences.`,
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "How would you handle slowly changing dimensions in a data warehouse?",
@@ -10297,6 +10343,7 @@ My recommendation: Type 2 for critical dimensions (customer, product). Type 1 fo
       level: "head_ds",
       level: "lead_ds",
       level: "lead_ds",
+      domain: "fintech",
       },
       {
         q: "How would you optimize a Pandas script that takes 4 hours to process 50M rows?",
@@ -10352,6 +10399,7 @@ Expected improvement: Chunking + dtypes = 3-5x speedup. Polars = 50x speedup. Ta
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "Explain the difference between multiprocessing and multithreading in Python. When do you use each for data tasks?",
@@ -10406,6 +10454,7 @@ Recommendation: For data pipelines, start with multiprocessing. For dashboards/A
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "telecom",
       },
       {
         q: "Write pseudocode for a function that detects outliers in a time series dataset. Explain your approach.",
@@ -10461,6 +10510,7 @@ Validation: Compare flagged anomalies to actual anomalies (domain expert review)
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "fintech",
       },
       {
         q: "How would you build a reusable data validation framework in Python for incoming data feeds?",
@@ -10515,6 +10565,7 @@ class InRange(Rule):
 schema = {
   'user_id': [NotNull(), InRange(1, 999999)],
   'revenue': [NotNull(), InRange(0, 1000000)],
+      domain: "general",
 }
 validator = Validator(schema)
 errors = validator.validate(df)
@@ -10611,6 +10662,7 @@ When to use: Processing huge files, streaming data, infinite sequences (e.g., Fi
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "Design an end-to-end ML pipeline for a credit scoring model. Include data ingestion, training, deployment, and monitoring.",
@@ -10667,6 +10719,7 @@ Deployment strategy:
       level: "head_ds",
       level: "lead_ds",
       level: "lead_ds",
+      domain: "fintech",
       },
       {
         q: "How would you architect a feature store that serves both real-time and batch ML models?",
@@ -10733,6 +10786,7 @@ Recommendation: Start simple (batch only), add online caching as you scale.`,
       level: "lead_ds",
       level: "head_ds",
       level: "head_ds",
+      domain: "fintech",
       },
       {
         q: "Design a model monitoring system that detects data drift and triggers retraining automatically.",
@@ -10841,6 +10895,7 @@ Challenges:
       level: "head_ds",
       level: "lead_ds",
       level: "lead_ds",
+      domain: "saas",
       },
       {
         q: "Your ML model serves 50K predictions per second. Design the serving infrastructure.",
@@ -10919,6 +10974,7 @@ Expected: 50K RPS, P99 latency <50ms, 99.99% uptime.`,
       level: "lead_ds",
       level: "head_ds",
       level: "head_ds",
+      domain: "healthcare",
       },
     ],
     behavioral: [
@@ -10941,6 +10997,7 @@ Lesson learned: Contradicting stakeholders works when you lead with data, not op
       level: "senior_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "saas",
       },
       {
         q: "Tell me about a time you had to decide between shipping a good-enough model now vs waiting 3 months for a significantly better one.",
@@ -10963,6 +11020,7 @@ Lesson learned: The right call is rarely "perfection now" or "good enough now." 
       level: "lead_ds",
       level: "lead_ds",
       level: "lead_ds",
+      domain: "saas",
       },
       {
         q: "Describe a time you had to build a data science team's roadmap. How did you prioritize projects?",
@@ -10991,6 +11049,7 @@ Lesson learned: Roadmaps aren't about being perfect. They're about transparency.
       level: "head_ds",
       level: "head_ds",
       level: "head_ds",
+      domain: "fintech",
       },
       {
         q: "Tell me about a time your model created an ethical concern. How did you handle it?",
@@ -11027,6 +11086,7 @@ This slowed deployment by 2 weeks and reduced accuracy by 2%, but it's the right
       level: "lead_ds",
       level: "lead_ds",
       level: "lead_ds",
+      domain: "fintech",
       },
       {
         q: "Tell me about a time you had to prioritize between multiple data requests from different teams.",
@@ -11058,6 +11118,7 @@ Lesson: Prioritization isn't about being fair to everyone. It's about maximizing
       level: "mid_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "saas",
       },
       {
         q: "Describe a time you automated a manual reporting process. What was the impact?",
@@ -11088,6 +11149,7 @@ Lesson: Automation isn't glamorous, but it multiplies your impact. One small pro
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "Tell me about a time you had to make a recommendation with insufficient data.",
@@ -11126,6 +11188,7 @@ Lesson: Sometimes you can't wait for perfect data. You make the best recommendat
       level: "head_ds",
       level: "head_ds",
       level: "head_ds",
+      domain: "edtech",
       },
       {
         q: "How did you handle stakeholder expectations when a project took longer than promised?",
@@ -11159,6 +11222,7 @@ Lesson: Overpromise, then delay = broken trust. Early flag with options = manage
       level: "senior_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "ecommerce",
       },
       {
         q: "Describe a time you identified a data quality issue nobody else noticed. What did you do?",
@@ -11194,6 +11258,7 @@ Lesson: Data quality issues are invisible unless you look for them. The most imp
       level: "mid_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "Tell me about a time two valid analytical approaches gave different results. How did you decide?",
@@ -11234,6 +11299,7 @@ Lesson: When two valid methods disagree, dig into why. Often they're answering d
       level: "lead_ds",
       level: "lead_ds",
       level: "lead_ds",
+      domain: "general",
       },
       {
         q: "Describe a time you had to say no to a stakeholder's data request. Why and how?",
@@ -11266,6 +11332,7 @@ Lesson: Saying no is part of prioritization. But you can't just say no. You have
       level: "senior_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "saas",
       },
       {
         q: "Tell me about your most impactful data science project. What made it impactful?",
@@ -11299,6 +11366,7 @@ Lesson: Impact comes from understanding the problem deeply, not just analyzing w
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "ecommerce",
       },
       {
         q: "Describe a time you failed to deliver on a data project. What went wrong?",
@@ -11335,6 +11403,7 @@ Impact: I eventually delivered a simple model (exponential smoothing + trend) th
       level: "head_ds",
       level: "head_ds",
       level: "head_ds",
+      domain: "edtech",
       },
       {
         q: "How did you onboard yourself into a new domain where you had no prior data expertise?",
@@ -11378,6 +11447,7 @@ Lesson: The hardest part of joining a new domain isn't learning the data tools. 
       level: "mid_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "fintech",
       },
       {
         q: "Tell me about a time you had to convince your team to adopt a new tool or methodology.",
@@ -11413,6 +11483,7 @@ Lesson: Adoption isn't about the tool being good. It's about solving a real prob
       level: "senior_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "ecommerce",
       },
     ],
     ai: [
@@ -11449,6 +11520,7 @@ Best practice: Pre-register your tests, use FDR for multiple comparisons, and re
       level: "lead_ds",
       level: "lead_ds",
       level: "lead_ds",
+      domain: "healthcare",
       },
       {
         q: "Explain the difference between Type I and Type II errors using a business scenario.",
@@ -11488,6 +11560,7 @@ Key insight: You can't eliminate both errors. You choose which you can tolerate.
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "ecommerce",
       },
       {
         q: "When would you use bootstrapping instead of parametric tests?",
@@ -11527,6 +11600,7 @@ Implementation: Use scipy.stats.bootstrap in Python. It's a few lines.`,
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "Your data is not normally distributed. How does this affect your choice of statistical tests?",
@@ -11568,6 +11642,7 @@ Example: Customer revenue is skewed (right-tail, some big spenders). Raw data fa
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "general",
       },
     ],
     machine_learning: [
@@ -11615,6 +11690,7 @@ Metric: Use validation curve to find the sweet spot between bias and variance.`,
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "healthcare",
       },
       {
         q: "Explain the difference between supervised and unsupervised learning with examples.",
@@ -11661,6 +11737,7 @@ Unsupervised: You're exploring, don't know what to look for. Discovery, compress
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "fintech",
       },
       {
         q: "What is cross-validation and why is it important?",
@@ -11699,6 +11776,7 @@ My approach: Start with k=5. If compute allows, k=10.`,
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "Explain the difference between classification and regression.",
@@ -11749,6 +11827,7 @@ My approach: If output is naturally categorical, classification. If numeric, reg
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "fintech",
       },
       {
         q: "What is a confusion matrix? Walk through precision, recall, and F1 score.",
@@ -11798,6 +11877,7 @@ My approach: Understand your cost of FP vs FN, then optimize accordingly.`,
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "fintech",
       },
       {
         q: "When would you use a decision tree vs logistic regression?",
@@ -11855,6 +11935,7 @@ My approach: Understand your features first. If they seem linearly separable, lo
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "fintech",
       },
       {
         q: "What is feature engineering? Give 3 examples of useful features for a retail dataset.",
@@ -11911,6 +11992,7 @@ My approach: Start with domain knowledge (what matters in retail?), then data ex
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "ecommerce",
       },
       {
         q: "Explain the difference between bagging and boosting.",
@@ -11974,6 +12056,7 @@ My approach: Random forest for simplicity and robustness. XGBoost for maximum ac
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "What is the curse of dimensionality? How does it affect model performance?",
@@ -12027,6 +12110,7 @@ My approach: Start with domain knowledge (which features matter?). Remove obviou
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "edtech",
       },
       {
         q: "Explain train/test/validation split. Why is it important?",
@@ -12077,6 +12161,7 @@ My approach: With large data, 80/10/10. With small data, k-fold cross-validation
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "edtech",
       },
       {
         q: "What are hyperparameters? How do you tune them?",
@@ -12130,6 +12215,7 @@ My approach: Random search first (faster). If time allows, grid search around pr
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "edtech",
       },
       {
         q: "Explain the difference between parametric and non-parametric models.",
@@ -12191,6 +12277,7 @@ My approach: Start parametric (linear regression) for baseline. If it underperfo
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "edtech",
       },
       {
         q: "What is one-hot encoding? When does it cause problems?",
@@ -12246,6 +12333,7 @@ My approach: One-hot for low-cardinality (< 10 categories). Target encoding or f
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "ecommerce",
       },
       {
         q: "Explain gradient descent in simple terms. What is learning rate?",
@@ -12313,6 +12401,7 @@ My approach: Use Adam optimizer (learning rate adaptation). If tuning manually, 
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "edtech",
       },
       {
         q: "What is the difference between batch, mini-batch, and stochastic gradient descent?",
@@ -12392,6 +12481,7 @@ My approach: Use mini-batch with default batch size. Only tune if training is un
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "How do you handle missing data - MCAR vs MAR vs MNAR strategies?",
@@ -12424,6 +12514,7 @@ My approach: Check missingness pattern first. If MCAR and < 5%, delete. If < 20%
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "healthcare",
       },
       {
         q: "Random forests vs single decision trees - why does ensemble reduce variance?",
@@ -12462,6 +12553,7 @@ My approach: Use random forest for non-linear data with many features. For highl
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "What is XGBoost and why is it so popular in Kaggle and production?",
@@ -12506,6 +12598,7 @@ My approach: Start with xgboost.XGBClassifier(max_depth=3, learning_rate=0.1). U
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "edtech",
       },
       {
         q: "How do you detect multicollinearity in your data?",
@@ -12553,6 +12646,7 @@ My approach: Calculate VIF for all features. Remove highest VIF > 10. Recompute.
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "Explain ROC curves, AUC, and when AUC is misleading.",
@@ -12592,6 +12686,7 @@ My approach: Use ROC-AUC for balanced data. Use PR-AUC for imbalanced data. Alwa
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "fintech",
       },
       {
         q: "Generative vs discriminative models - P(Y|X) vs P(X|Y), tradeoffs?",
@@ -12640,6 +12735,7 @@ My approach: Start with discriminative (logistic or RF). If accuracy saturates o
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "healthcare",
       },
       {
         q: "Walk through your feature selection process for a new dataset.",
@@ -12692,6 +12788,7 @@ My approach: Start with domain knowledge + variance check. Use iterative RF impo
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "K-means limitations - how do you handle them in practice?",
@@ -12739,6 +12836,7 @@ My approach: Start with DBSCAN for unknown structure. If k is known, use K-means
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "healthcare",
       },
       {
         q: "PCA vs t-SNE for dimensionality reduction - when to use each?",
@@ -12788,6 +12886,7 @@ My approach: Always PCA first for preprocessing. For visualization, use t-SNE if
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "How do you evaluate clustering quality when you have no labels?",
@@ -12846,6 +12945,7 @@ My approach: Compute all 4 metrics. If they agree, trust it. If disagree, plot a
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "How do neural networks learn? Explain backpropagation and gradient descent.",
@@ -12891,6 +12991,7 @@ My approach: Use Adam optimizer (adaptive learning rate) by default. Start with 
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "edtech",
       },
       {
         q: "Transfer learning - when is it beneficial? Fine-tuning vs feature extraction?",
@@ -12947,6 +13048,7 @@ My approach: Start with feature extraction. If accuracy plateaus, unfreeze backb
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "healthcare",
       },
       {
         q: "Imbalanced datasets - SMOTE, undersampling, cost-sensitive learning. When each?",
@@ -12999,6 +13101,7 @@ My approach: Start with cost-sensitive learning (simplest, no synthetic data). I
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "fintech",
       },
       {
         q: "Word embeddings - word2vec, GloVe, BERT. When to use each?",
@@ -13054,6 +13157,7 @@ My approach: Start with word2vec (free embeddings + simple). If accuracy unsatis
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "Recommendation systems - collaborative vs content-based filtering. Pros/cons?",
@@ -13101,6 +13205,7 @@ My approach: Start with item-based CF (simple, effective). For cold start, use c
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "Time series forecasting - algorithms, stationarity, seasonality. How do you evaluate?",
@@ -13160,6 +13265,7 @@ My approach: Start with Prophet (fast, robust, handles seasonality). If underfit
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "Ensemble methods - bagging, boosting, voting. When does ensemble help?",
@@ -13218,6 +13324,7 @@ My approach: For quick wins, use Random Forest (bagging, simple). For production
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "Online learning vs batch learning - when to use each? Data drift handling?",
@@ -13277,6 +13384,7 @@ My approach: Use batch learning with quarterly retraining + drift monitoring. If
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "How do you detect data drift in production? What actions to take?",
@@ -13346,6 +13454,7 @@ My approach: Calculate PSI for all features daily. Set alert threshold = 0.25. R
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "fintech",
       },
       {
         q: "Regularization (L1, L2, Elastic Net) - how do they prevent overfitting?",
@@ -13409,6 +13518,7 @@ My approach: Start with L2 (Ridge) for regression. If need interpretability (whi
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "Design an end-to-end fraud detection system - data, features, model, real-time deployment.",
@@ -13465,6 +13575,7 @@ My approach: Start with XGBoost + cost-weighted learning. Features: user behavio
       level: "head_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "fintech",
       },
       {
         q: "Fair ML across demographics - detect bias, mitigate, explain to regulators.",
@@ -13548,6 +13659,7 @@ My approach: Compute disparate impact ratio for all protected attributes. Retrai
       level: "lead_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "fintech",
       },
       {
         q: "GANs (Generative Adversarial Networks) - architecture, training, practical applications.",
@@ -13625,6 +13737,7 @@ My approach: For production, use pre-trained GAN (StyleGAN2 for images). For cus
       level: "head_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "healthcare",
       },
       {
         q: "Concept drift vs data drift - detect and handle both. When does model degrade?",
@@ -13708,6 +13821,7 @@ My approach: Monitor PSI daily. Retrain monthly if PSI > 0.25 or accuracy drops 
       level: "lead_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "fintech",
       },
       {
         q: "Multi-armed bandits vs A/B testing - continuous optimization, exploration-exploitation.",
@@ -13804,6 +13918,7 @@ My approach: For continuous optimization (homepage), use epsilon-greedy bandit. 
       level: "head_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "ecommerce",
       },
       {
         q: "Causal inference - randomized experiments, propensity matching, diff-in-diff.",
@@ -13907,6 +14022,7 @@ My approach: Start with randomized A/B test if feasible (fastest, cleanest infer
       level: "lead_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "healthcare",
       },
       {
         q: "Reinforcement learning - states, actions, rewards, Q-learning, policy gradient.",
@@ -14000,6 +14116,7 @@ My approach: Use Q-learning for discrete action spaces (game playing). Use polic
       level: "head_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "fintech",
       },
       {
         q: "Optimize model latency to 10ms - profiling bottlenecks, inference acceleration.",
@@ -14108,6 +14225,7 @@ My approach: Profile first (find true bottleneck). Cache features in Redis. Quan
       level: "lead_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "fintech",
       },
       {
         q: "Model interpretability for regulators - SHAP, LIME, counterfactuals, governance.",
@@ -14219,6 +14337,7 @@ My approach: Use gradient boosting (good accuracy + feature importance). For reg
       level: "head_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "fintech",
       },
       {
         q: "Active learning - when and how to request labels strategically.",
@@ -14335,6 +14454,7 @@ My approach: Start with uncertainty sampling (simple, effective). Train ensemble
       level: "lead_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "healthcare",
       },
       {
         q: "Productionize ML notebook → service with monitoring, CI/CD, reliability.",
@@ -14555,6 +14675,7 @@ My approach: Start with Flask + Docker. Deploy to Kubernetes (3 replicas, livene
       level: "head_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "general",
       },
       {
         q: "How do you handle missing data in a dataset? When is each approach appropriate?",
@@ -14607,6 +14728,7 @@ My approach: Check missingness pattern (random vs systematic). If < 5% and rando
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "Explain random forests. Why do they generally outperform single decision trees?",
@@ -14655,6 +14777,7 @@ My approach: Start with 100 trees, max_depth=10. Tune depth and samples_per_leaf
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "What is XGBoost and why is it so popular in competitions and production?",
@@ -14705,6 +14828,7 @@ My approach: Start with learning_rate=0.1, max_depth=5, n_estimators=100. Tune b
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "edtech",
       },
       {
         q: "How would you detect and handle multicollinearity in your features?",
@@ -14753,6 +14877,7 @@ My approach: For linear models, compute VIF. If > 5, check correlation matrix. R
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "Explain ROC curves and AUC. When is AUC misleading?",
@@ -14803,6 +14928,7 @@ My approach: Use AUC for balanced datasets and initial screening. For imbalanced
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "What is the difference between generative and discriminative models?",
@@ -14852,6 +14978,7 @@ My approach: Start with discriminative (simpler, faster). If data scarcity or ne
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "telecom",
       },
       {
         q: "How do you select features for a model? Walk through your process.",
@@ -14908,6 +15035,7 @@ My approach: Start with domain knowledge and correlation analysis. Use tree mode
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "Explain k-means clustering. What are its limitations?",
@@ -14963,6 +15091,7 @@ My approach: K-means for fast clustering on spherical data with known k. DBSCAN 
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "When would you use dimensionality reduction? Compare PCA and t-SNE.",
@@ -15033,6 +15162,7 @@ My approach: For preprocessing, PCA to keep 95% variance. For visualization, t-S
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "How do you evaluate a clustering model when there are no labels?",
@@ -15102,6 +15232,7 @@ My approach: Compute silhouette score for k=2 to 10. Pick k with highest score. 
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "Explain how a neural network learns. What is backpropagation?",
@@ -15166,6 +15297,7 @@ My approach: Use Adam optimizer. Learning rate 0.001. Monitor training loss. If 
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "telecom",
       },
       {
         q: "What is transfer learning? When should you use it vs training from scratch?",
@@ -15294,6 +15426,7 @@ My approach: Hybrid. SMOTE to generate minority class to maybe 30% of majority. 
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "fintech",
       },
       {
         q: "Explain the difference between word2vec, GloVe, and BERT embeddings.",
@@ -15376,6 +15509,7 @@ My approach: For text classification, start with pre-trained BERT, fine-tune on 
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "What is a recommendation system? Compare collaborative vs content-based filtering.",
@@ -15462,6 +15596,7 @@ My approach: Collaborative filtering main model. Content-based for cold-start. B
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "How would you build a time series forecasting model? What algorithms would you consider?",
@@ -15557,6 +15692,7 @@ My approach: Start with ARIMA baseline (fast, interpretable). If data >500 examp
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "Explain ensemble methods. When do they help and when are they overkill?",
@@ -15635,6 +15771,7 @@ My approach: Baseline single model with cross-validation. If performance plateau
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "healthcare",
       },
       {
         q: "What is the difference between online learning and batch learning? When do you use each?",
@@ -15708,6 +15845,7 @@ My approach: Streaming data? Online learning with SGD. Static data? Batch learni
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "How do you detect data drift in a production model?",
@@ -15793,6 +15931,7 @@ My approach: Monitor accuracy weekly if ground truth available. Feature statisti
       level: "senior_ds",
       level: "mid_ds",
       level: "senior_ds",
+      domain: "fintech",
       },
       {
         q: "Explain regularization. When would you use Lasso vs Ridge vs Elastic Net?",
@@ -15891,6 +16030,7 @@ My approach: Default to Ridge for stability. If need feature selection, Lasso. I
       level: "mid_ds",
       level: "senior_ds",
       level: "mid_ds",
+      domain: "general",
       },
     ],
     statistics: [
@@ -15938,6 +16078,7 @@ My approach: Always check raw data distribution. If skewed, ensure large sample 
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "ecommerce",
       },
       {
         q: "What is a normal distribution? Give a real-world example where data is NOT normally distributed.",
@@ -15989,6 +16130,7 @@ My approach: Always visualize your data first. If non-normal, either transform (
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "edtech",
       },
       {
         q: "Explain the difference between population and sample. When does this distinction matter?",
@@ -16050,6 +16192,7 @@ My approach: Always note whether you're reporting population parameter or sample
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "saas",
       },
       {
         q: "What is standard deviation vs standard error? When do you use each?",
@@ -16115,6 +16258,7 @@ My approach: Report SD for describing data variability. Report SE or CI when rep
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "Explain null hypothesis and alternative hypothesis with a business example.",
@@ -16178,6 +16322,7 @@ My approach: Clearly define H0 (status quo) and H1 (what you want to prove). Use
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "What is a confidence interval? How do you explain a 95% CI to a business stakeholder?",
@@ -16245,6 +16390,7 @@ My approach: Always report CI or error bars, not just point estimates. Explain t
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "What is the law of large numbers? How does it apply to A/B testing?",
@@ -16313,6 +16459,7 @@ My approach: Compute required sample size upfront (using power analysis). Don't 
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "Explain the difference between discrete and continuous probability distributions.",
@@ -16388,6 +16535,7 @@ My approach: Count data → discrete distribution. Measurement data → continuo
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "ecommerce",
       },
       {
         q: "What is conditional probability? Explain with Bayes theorem using a real example.",
@@ -16471,6 +16619,7 @@ My approach: Use Bayes when you want to flip conditional probabilities. Know pos
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "healthcare",
       },
       {
         q: "What is expected value? How would you use it to evaluate a business decision?",
@@ -16552,6 +16701,7 @@ My approach: Compute EV for major decisions (product launch, infrastructure inve
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "fintech",
       },
       {
         q: "Explain the difference between mean, median, and mode. When is median better than mean?",
@@ -16628,6 +16778,7 @@ My approach: Visualize data first. If normal: report mean. If skewed: report med
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "ecommerce",
       },
       {
         q: "What is a probability density function vs cumulative distribution function?",
@@ -16707,6 +16858,7 @@ My approach: For visualization, plot PDF (histogram, density curve). For calcula
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "Explain independent vs dependent events. Why does this matter for modeling?",
@@ -16799,6 +16951,7 @@ My approach: Always think about dependence. Visualize data, check for patterns. 
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "general",
       },
       {
         q: "What is variance? How do you interpret high variance in a dataset?",
@@ -16893,6 +17046,7 @@ My approach: Compute variance (or standard deviation). Compare to mean (using CV
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "fintech",
       },
       {
         q: "Explain percentiles and quartiles. How do you use them to detect outliers?",
@@ -16996,6 +17150,7 @@ My approach: Compute Q1, Q3, IQR. Flag outliers using IQR method. Visualize (box
       level: "junior_ds",
       level: "junior_ds",
       level: "junior_ds",
+      domain: "fintech",
       },
       {
         q: "How do you test whether two groups are statistically different? Walk through the process.",
@@ -17133,6 +17288,7 @@ My approach: Define H0 and H1 clearly. Choose test based on data type. Compute t
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "Explain the difference between one-tailed and two-tailed tests. When do you use each?",
@@ -17247,6 +17403,7 @@ My approach: Plan hypothesis before looking at data. Two-tailed unless strong di
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "What is statistical power? How does it affect your experiment design?",
@@ -17380,6 +17537,7 @@ My approach: Always compute power before running test. Know your minimum detecta
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "How would you calculate the required sample size for an A/B test with 80% power?",
@@ -17503,6 +17661,7 @@ My approach: Always calculate required sample size before test. Know runtime. De
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "Explain the difference between parametric and non-parametric tests. Give examples of each.",
@@ -17636,6 +17795,7 @@ My approach: Check normality first (visual + test). If normal: parametric (more 
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "ecommerce",
       },
       {
         q: "What is the chi-squared test? When would you use it in a business context?",
@@ -17792,6 +17952,7 @@ My approach: Chi-squared for categorical associations. Always visualize as cross
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "saas",
       },
       {
         q: "Your A/B test ran for 2 weeks but didn't reach significance. What do you do?",
@@ -17928,6 +18089,7 @@ My approach: Pre-specify sample size (power analysis). Run test to that size. Re
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "ecommerce",
       },
       {
         q: "Explain ANOVA. When would you use it instead of multiple t-tests?",
@@ -18084,6 +18246,7 @@ My approach: 3+ groups? Use ANOVA instead of multiple t-tests. Avoids false posi
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "fintech",
       },
       {
         q: "What is heteroscedasticity? How does it affect regression results?",
@@ -18234,6 +18397,7 @@ My approach: Always visualize residuals (residual plot). If heteroscedasticity e
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "general",
       },
       {
         q: "Explain the difference between maximum likelihood estimation and method of moments.",
@@ -18334,6 +18498,7 @@ My approach: Default to MLE in modern statistics (software available, efficient)
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "What is a Poisson distribution? Give a real business use case.",
@@ -18445,6 +18610,7 @@ My approach: Poisson for count data (events per time/space). Check independence 
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "fintech",
       },
       {
         q: "How would you test if your data follows a specific distribution?",
@@ -18588,6 +18754,7 @@ My approach: Plot histogram and Q-Q first. If visually close to theoretical, tru
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "Explain multivariate testing vs A/B testing. When is multivariate better?",
@@ -18735,6 +18902,7 @@ My approach: Start A/B for clarity. Once confident in what matters, test interac
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "ecommerce",
       },
       {
         q: "What is survivorship bias? Give an example in business analytics.",
@@ -18873,6 +19041,7 @@ My approach: When analyzing success patterns, always ask: \"What about the failu
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "ecommerce",
       },
       {
         q: "How do you handle outliers in statistical analysis? When should you NOT remove them?",
@@ -19027,6 +19196,7 @@ My approach: Don't auto-remove. Investigate source. If error, remove. If real bu
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "fintech",
       },
       {
         q: "Explain the birthday paradox. What does it teach about probability intuition?",
@@ -19152,6 +19322,7 @@ My approach: Whenever running multiple tests (many features, many segments, many
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "general",
       },
       {
         q: "What is Markov chain? Give a business application.",
@@ -19302,6 +19473,7 @@ My approach: Markov models for customer lifecycle (onboarding, retention, churn)
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "saas",
       },
       {
         q: "How do you test for independence between two categorical variables?",
@@ -19441,6 +19613,7 @@ My approach: Chi-squared for \"associated yes/no\". Cramér's V for strength. If
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "ecommerce",
       },
       {
         q: "Explain the Bonferroni correction. When is it too conservative?",
@@ -19610,6 +19783,7 @@ My approach: Bonferroni for few important tests (confirm hypotheses). FDR for ma
       level: "mid_ds",
       level: "senior_ds",
       level: "senior_ds",
+      domain: "healthcare",
       },
       {
         q: "What is a likelihood ratio test? When would you use it?",
@@ -19772,6 +19946,7 @@ My approach: LRT for comparing nested models (simpler vs complex). Test if extra
       level: "senior_ds",
       level: "mid_ds",
       level: "mid_ds",
+      domain: "healthcare",
       },
       {
         q: "Design an experimentation framework for a company running 100 A/B tests simultaneously.",
@@ -19958,6 +20133,7 @@ My approach: FDR control (not Bonferroni), pre-specified power, interim analyses
       level: "head_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "ecommerce",
       },
       {
         q: "How do you estimate causal effects when you cannot run a randomized experiment?",
@@ -20157,6 +20333,7 @@ My approach: Start with regression + visualization (residuals, confounder balanc
       level: "lead_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "healthcare",
       },
       {
         q: "Explain propensity score matching. Design a study using it for a real business problem.",
@@ -20354,6 +20531,7 @@ My approach: PSM for causal inference when: (1) unconfoundedness reasonable, (2)
       level: "head_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "ecommerce",
       },
       {
         q: "What is instrumental variable regression? When would you need it?",
@@ -20560,6 +20738,7 @@ My approach: IV when unmeasured confounding or reverse causality suspected, and 
       level: "lead_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "fintech",
       },
       {
         q: "Explain difference-in-differences. Design a study to measure the impact of a policy change.",
@@ -20787,6 +20966,7 @@ My approach: DiD for policy impact. Check parallel trends visually (plot pre-per
       level: "head_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "general",
       },
       {
         q: "How would you handle interference effects in an A/B test where users influence each other?",
@@ -20954,6 +21134,7 @@ My approach: Check for interference visually (control group trends when treatmen
       level: "lead_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "ecommerce",
       },
       {
         q: "Explain the bootstrap method. When is it better than analytical confidence intervals?",
@@ -21139,6 +21320,7 @@ My approach: n < 30, non-normal, or complex statistic → bootstrap. n > 100, no
       level: "head_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "healthcare",
       },
       {
         q: "Design a sequential testing framework that allows early stopping without inflating false positives.",
@@ -21341,6 +21523,7 @@ My approach: For time-sensitive decisions (customer impact urgent), use sequenti
       level: "lead_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "general",
       },
       {
         q: "What is regression discontinuity design? Give a business application.",
@@ -21533,6 +21716,7 @@ My approach: RDD for policy thresholds (eligibility rules, eligibility changes).
       level: "head_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "edtech",
       },
       {
         q: "How do you handle the multiple testing problem in a company that runs hundreds of experiments per year?",
@@ -21738,6 +21922,7 @@ My approach: FDR control (not Bonferroni) across portfolio. Pre-register tests. 
       level: "lead_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "fintech",
       },
       {
         q: "Explain empirical Bayes. When would you use it instead of frequentist methods?",
@@ -21955,6 +22140,7 @@ My approach: Empirical Bayes when many related estimates (100+ experiments, vari
       level: "head_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "ecommerce",
       },
       {
         q: "Design a Bayesian A/B testing system. What are the advantages over frequentist testing?",
@@ -22261,6 +22447,7 @@ My approach: Bayesian for business A/B testing (intuitive decisions, flexible st
       level: "lead_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "ecommerce",
       },
       {
         q: "How do you estimate the long-term effect of a feature when your A/B test only ran for 2 weeks?",
@@ -22473,6 +22660,7 @@ My approach: Run test 3-4 weeks (better than 2). Measure proxies (engagement, re
       level: "head_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "saas",
       },
       {
         q: "Your experiment shows a statistically significant negative result. The PM wants to ship anyway because qualitative feedback is positive. What do you recommend?",
@@ -22703,6 +22891,7 @@ My approach: Validate experiment, explain disagreement (different metrics, popul
       level: "lead_ds",
       level: "lead_ds",
       level: "head_ds",
+      domain: "saas",
       },
       {
         q: "Explain synthetic control methods. When would you use them?",
@@ -22916,6 +23105,7 @@ My approach: SCM for policy evaluation at aggregate level (country, state, firm)
       level: "head_ds",
       level: "head_ds",
       level: "lead_ds",
+      domain: "general",
       },
     ],
     domain_specific: [
@@ -25182,6 +25372,7 @@ Hybrid approach: Pre-compute expensive components (embeddings) in batch, serve s
 Implementation: Real-time uses REST endpoints or RPC. Batch uses Spark/distributed systems. Monitor real-time latency percentiles (p95, p99), not averages  . users care about worst-case.
 
 My default: Start batch. If latency becomes a constraint, add real-time layer.`,
+      domain: "general",
       },
       {
         q: "Your model works perfectly on historical data but fails on new data. What went wrong?",
@@ -25201,6 +25392,7 @@ Feedback loop failure: Did the model's own predictions change the ground truth? 
 Fixes: Implement monitoring (track feature distributions, prediction distributions weekly). Retrain frequently (weekly/daily depending on drift). Use domain knowledge to identify likely changes. Set up alerts: if feature X diverges >10% from baseline, investigate.
 
 Preventive: Always validate models on held-out recent data, not just historical. Cross-validate with time-based splits (train on 2023, test on 2024), not random splits.`,
+      domain: "fintech",
       },
       {
         q: "Explain LLMs to a product manager. What can they do and what can't they do?",
@@ -25222,6 +25414,7 @@ Cost and latency. LLMs are expensive to run. A single inference costs $0.01-1 de
 When to use: Customer support (draft responses, classify tickets), content generation, code suggestions, internal tools. When to avoid: financial advice without verification, legal guidance, anything requiring factual accuracy, real-time systems.
 
 My recommendation: LLMs are powerful assistants, not replacements. Pair them with human review, fact-checking, and grounding in real data. Use for augmenting humans, not replacing judgment.`,
+      domain: "general",
       },
       {
         q: "How do you choose between a simple logistic regression and a complex neural network?",
@@ -25245,6 +25438,7 @@ Practical approach: Logistic regression baseline takes 1-2 days. If it gets 80% 
 Reality check: I've seen teams use neural networks for problems where logistic regression with feature engineering would suffice. Overfitting complexity. Start simple. Iterate toward complexity only when necessary.
 
 My recommendation: Logistic regression + good features beats a poorly-tuned neural network every time.`,
+      domain: "healthcare",
       },
       {
         q: "Your training data is 2 years old. How do you assess if your model is still valid?",
@@ -25268,6 +25462,7 @@ Step 6: Live validation (if possible). A/B test: use the old model for 10% of tr
 Practical decision: If accuracy dropped >10%, retrain. If computational cost is low, retrain annually regardless. If you're unsure, use the model for low-stakes decisions only until you can validate.
 
 Preventive: Never train a model and shelve it for years. Plan for retraining. Monitor prediction distributions in production (if they shift >20%, likely drift). Set up automated retraining pipelines.`,
+      domain: "saas",
       },
       {
         q: "An A/B test shows 2% improvement with p-value 0.04. Should we ship? Walk me through your reasoning.",
@@ -25287,6 +25482,7 @@ Third, secondary metrics and business context. Did the improvement come with tra
 My decision framework: If the 2% lift is on a core metric (revenue, retention), it persists across user segments, secondary metrics are neutral or positive, and engineering cost is low, ship it. If it's on a vanity metric, driven by one user segment, or expensive to maintain, don't.
 
 Realistic answer: I'd retrain my priors. Two years of shipping marginal wins (2-3% each) compounds. But single tests below p=0.05 carry false positive risk. I'd want Bayesian perspective (what do I believe before and after?) before committing.`,
+      domain: "ecommerce",
       },
       {
         q: "How do you explain correlation vs causation to a marketing team that wants to increase spend based on a correlation?",
@@ -25310,6 +25506,7 @@ Alternative if you can't A/B test: Use causal inference techniques (instrumental
 What I'd recommend: "Let's A/B test increasing social spend on 10% of users. Measure conversion impact. If it works, expand. If not, we'll know the correlation was spurious." This is cheap insurance against wasting budget on false leads.
 
 Why it matters: Correlation-based decisions lead to wasted spend. You increase social budget, but because you're not addressing the confound (engagement level), conversions don't actually improve.`,
+      domain: "fintech",
       },
       {
         q: "Your metric improved but you're not sure if it's because of your change or seasonality. How do you separate the effects?",
@@ -25331,6 +25528,7 @@ Approach 5: Bayesian prior. Before the campaign, what was Q4 seasonality? Expres
 I'd rank them: A/B test (cleanest, if you can), difference-in-differences (good if you can't A/B test), historical comparison (practical, if clean baselines exist).
 
 In practice: Most teams do #1 + #2 (historical + segmentation), which catches major seasonality but not all confounds.`,
+      domain: "general",
       },
       {
         q: "What is selection bias? Give 3 examples from real business scenarios.",
@@ -25350,6 +25548,7 @@ Business impact: You think product is fine because only happy customers provide 
 Example 3: Response bias in A/B tests. You run an experiment offering discounts to half your users. But users who see the discount and engage with it are systematically different (price-sensitive, deal-hunting) from users who ignore it. You measure conversion on the discount group only, ignoring non-responders. Conclusion: "Discount increases conversion by 5%." Reality: discount-responsive users self-select; non-responsive users (perhaps loyal, high-LTV) aren't captured.
 
 How to spot and fix: Always define your population precisely (all customers? active customers? new customers?). Ensure sample matches. Use random sampling. If that's impossible, weight the sample to match population distributions.`,
+      domain: "saas",
       },
       {
         q: "Explain hypothesis testing to someone who has never taken a statistics course.",
@@ -25385,6 +25584,7 @@ Important: A p-value is NOT the probability that your hypothesis is true. It's t
 Practical takeaway: Low p-value = evidence for your alternative hypothesis. High p-value = not enough evidence; stick with the null.
 
 Common mistake: p-value 0.06 is not much different from 0.04. Both are borderline. Don't think of 0.05 as a hard cliff.`,
+      domain: "ecommerce",
       },
       {
         q: "Your data has extreme outliers. How do you decide whether to keep, cap, or remove them?",
@@ -25416,6 +25616,7 @@ Transform: Log transformation can compress outliers. Instead of raw values, use 
 Step 4: For models, test both. Train with and without outliers. Measure validation performance. If including outliers hurts generalization, remove them. If it helps, keep them.
 
 Bottom line: Don't blindly remove outliers. Understand them first. They're often the most interesting data points.`,
+      domain: "fintech",
       },
       {
         q: "How do you measure if two distributions are significantly different? What test do you use and why?",
@@ -25444,6 +25645,7 @@ But honestly, with large samples (1000+ per group), t-test is robust even for no
 Why not always use one test? Different tests have different power (ability to detect true effects) under different data distributions. A test that's powerful for normal data might miss effects in heavy-tailed data.
 
 My workflow: Run simple t-test first. If p-value is clearly <0.01 or >0.1, you don't need advanced tests (conclusion is robust). If it's borderline (0.04-0.06), validate with Mann-Whitney. If both agree, you're confident.`,
+      domain: "ecommerce",
       },
       {
         q: "Explain the difference between statistical significance and practical significance with a business example.",
@@ -25475,6 +25677,7 @@ Business framework: Statistical significance is necessary but not sufficient. As
 Decision: Statistical significance + practical significance + cost < benefit = ship.
 
 In practice: I'd set a minimum effect size before running the test. "We'll only ship if conversion improves >1%," regardless of p-value. This prevents chasing statistically significant noise.`,
+      domain: "ecommerce",
       },
       {
         q: "Spotify's weekly listening hours dropped 10% last month. How would you investigate?",
@@ -25505,6 +25708,8 @@ Root cause often: Combination. New feature (poor UX) + seasonal dip + competitor
 Fix: If feature-driven, rollback or iterate. If seasonal, this is expected (don't panic). If competitive, improve recommendations to retain users.
 
 Communication: Flag to leadership immediately with segmentation data, not just "listening hours down 10%."`,
+      domain: "saas",
+      company: "Spotify",
       },
       {
         q: "How would you measure the ROI of a machine learning project to justify continued investment?",
@@ -25535,6 +25740,7 @@ Step 5: Consider risk and time-to-value. An ML project costs $1.7M upfront but m
 Communication: Show the calculation. "This model generates $20M in value at $1.7M cost. Break-even is achieved in 1 month. I recommend continuation."
 
 Gotchas: Benefits often grow over time (model improves, team learns), so annual ROI can be higher than first year. Costs can compound if the model requires constant retraining. Set up quarterly reviews to reassess.`,
+      domain: "fintech",
       },
       {
         q: "Your company wants to launch in a new country. What data would you analyze to decide which country?",
@@ -25563,6 +25769,7 @@ Decision framework: Rank countries by:
 Recommendation: Pilot in 1-2 high-potential countries. Allocate $500K to marketing, learn CAC and conversion rate. Extend only if unit economics work.
 
 Red flags: Tiny TAM (market too small), high regulatory burden (legal costs exceed revenue), high CAC (market saturated), low conversion (product-market fit issue specific to that region).`,
+      domain: "saas",
       },
       {
         q: "A product team asks you to build a model. How do you decide if ML is even the right solution?",
@@ -25588,6 +25795,7 @@ Fifth: Operational burden. ML requires monitoring, retraining, debugging driftin
 My recommendation: Start with the simplest solution. Measure baseline. If you beat it with the simple approach, ship that. If the simple approach caps out and you need more accuracy, then invest in ML.
 
 Questions to ask: "What's the baseline (no ML)?" "How much would 10% improvement in accuracy impact business?" "Do we have data to train on?" "Can the team maintain this long-term?" If answers suggest ML isn't justified, don't build it.`,
+      domain: "fintech",
       },
       {
         q: "Your dashboard shows DAU is up 15% but revenue is flat. What's happening?",
@@ -25617,6 +25825,7 @@ Hypothesis 5: Short-term boost, long-term loss. DAU spike from marketing campaig
 Fix: Measure cohort retention. Isolate the cohorts acquired during the DAU spike. Do they retain? Do they convert? If not, the growth is hollow.
 
 My recommendation: Calculate revenue per DAU for each day. If it's trending down, the issue is clear (more users, lower monetization). Segment by acquisition source, user tenure, geography to locate the low-monetization segment. Re-optimize toward higher-monetization users.`,
+      domain: "saas",
       },
       {
         q: "How would you set up analytics for a product launching from zero? What do you track from day one?",
@@ -25655,6 +25864,7 @@ Alerts: Set up dashboards tracking daily DAU, signup rate, conversion rate. Aler
 Iteration: Week 1, measure DAU and funnel. Identify biggest drop-off. Fix it. Iterate. Week 2, revisit. This rapid feedback loop beats overthinking analytics.
 
 Avoid: Vanity metrics (total signups is useless; care about retention). Complex cohorts (you don't have data yet). Premature optimization (focus on learning first, optimizing second).`,
+      domain: "saas",
       },
       {
         q: "The CEO says our conversion rate is 3%. The marketing team says it's 8%. Both are using the same database. What's going on?",
@@ -25695,6 +25905,7 @@ How to resolve:
 3. Agree which to use as the North Star. (Usually the CEO definition, since it reflects business impact.)
 
 4. Implement tracking to ensure both teams use the same database query/definition. Use a shared metric (calculated once, used everywhere).`,
+      domain: "ecommerce",
       },
       {
         q: "Tell me about a time you delivered a data insight that changed a business decision.",
@@ -25716,6 +25927,7 @@ Result: CEO shifted strategy. The company built a real-time transaction monitori
 Key to success: I didn't just report the data. I framed it as a business decision (speed to market vs fraud prevention vs user acquisition). I showed the math. I offered a recommendation with clear tradeoffs.
 
 Lesson: Data insights matter when they change behavior. That required understanding the CEO's actual problem (reduce fraud without losing users), not just answering the literal question (should we tighten KYC?).`,
+      domain: "fintech",
       },
       {
         q: "Describe a time you had to work with a difficult stakeholder who didn't trust data.",
@@ -25739,6 +25951,7 @@ Recommendation: Reallocate budget from social to search. Don't kill the campaign
 Result: They respected that approach (acknowledged their metric, reframed the problem). Budget was rebalanced. ROI improved to 3.8% (not 5%, but much better). Most importantly, they trusted the next analysis because we started from their perspective, not ours.
 
 Key lesson: Stakeholder distrust often comes from misalignment on definitions or goals. Before trying to convince someone, understand what would convince them. Meet them where they are.`,
+      domain: "healthcare",
       },
       {
         q: "Tell me about your biggest data science failure. What happened and what did you learn?",
@@ -25768,6 +25981,7 @@ Since then, I always:
  . Validate on holdout recent data (time-based split).
  . A/B test models in production before full deployment.
  . Build feedback loops (flag predicted churners, measure actual churn, retrain).`,
+      domain: "saas",
       },
       {
         q: "How do you stay current with new ML techniques and tools? Give a specific example of something you learned recently and applied.",
@@ -25799,6 +26013,7 @@ Impact: 3% improvement in recommendation CTR.
 Why I pursued this: I saw the pattern (contrastive learning is general), identified a problem it solved (learning embeddings without labels), validated it worked, then shipped it. Not every new technique becomes useful, but staying current means I can recognize when one does.
 
 Lesson: Learning new techniques matters, but application matters more. I don't chase SOTA (state-of-the-art) models for their own sake. I stay current enough to identify when a new approach solves a real problem.`,
+      domain: "edtech",
       },
       {
         q: "Describe a time you had to choose between technical excellence and meeting a deadline.",
@@ -25832,6 +26047,7 @@ Why this worked:
 Lesson: Technical excellence isn't always the answer. Context matters. For a proof-of-concept, 80% accuracy is fine. For cancer diagnosis, 99% is mandatory. For a one-time analysis, a script is sufficient. For a production system that runs for years, architecture matters.
 
 The mistake many engineers make: defaulting to "the right way." The better skill: knowing which tradeoff makes sense for the context.`,
+      domain: "fintech",
       },
       {
         q: "A retail client's revenue dropped 15% last quarter. Using data, how would you identify the root cause and recommend actions?",
@@ -25852,6 +26068,7 @@ Then, I'd build a simple regression: Revenue ~ Traffic + Conversion Rate + Avg O
 Recommendations depend on findings: Low traffic? Increase marketing spend or check SEO rankings. High friction? Review checkout abandonment rates. Competitive pressure? Analyze price elasticity - discounting might expand volume but hurt margin.
 
 Key assumption: data quality is sound. I'd validate by spot-checking revenue against bank deposits before presenting conclusions.`,
+      domain: "fintech",
       },
       {
         q: "How would you build a customer segmentation model for a telecom client with 50M subscribers?",
@@ -25874,6 +26091,7 @@ For 50M scale, I'd sample 5-10% stratified by geography and tenure, build the mo
 Output: A production table with customer_id, segment_id, confidence. Update quarterly. Build segment profiles showing demographics, behavior, and churn risk. Use this for targeted retention campaigns.
 
 Key trade-off: We sacrifice 5-10% clustering purity for speed. Validate empirically - does segment-based targeting beat random in A/B tests?`,
+      domain: "telecom",
       },
       {
         q: "A bank wants to predict loan defaults. What features would you engineer from transaction data and how would you validate the model?",
@@ -25908,6 +26126,7 @@ Validation strategy:
 (5) Explainability: For every default predicted, I must explain which 2-3 features drove it. Regulators demand this.
 
 Final check: Score 100 recent defaults manually. Can a human analyst verify my model caught 70% using features that felt risky?`,
+      domain: "fintech",
       },
       {
         q: "How would you build a model to predict stock price movements using alternative data sources?",
@@ -25948,6 +26167,7 @@ Validation:
 (4) Regime change: Does my model's accuracy degrade in volatile periods (when I most want to trade)?
 
 Most models fail due to overfitting. My approach: Build ensemble of 3-5 models using different alternative data sources. Only trade when 3+ models agree.`,
+      domain: "fintech",
       },
       {
         q: "Build a credit risk scorecard for SME lending. Walk through feature selection and validation.",
@@ -25990,6 +26210,7 @@ Validation:
 (5) Regulatory backtesting: Track model performance monthly. If actual default rate deviates >2% from predicted, investigate and retrain.
 
 Deployment: Use scorecard for decision thresholds (approve if score > 60, decline if < 20, manual review if 20-60). Update quarterly.`,
+      domain: "fintech",
       },
       {
         q: "Design a metric to measure the health of a two-sided marketplace. How do you balance supply and demand signals?",
@@ -26014,6 +26235,7 @@ Tradeoffs: A single metric fails. Supply can be abundant but low-quality. Demand
 Real example: Uber's DAU (demand proxy) vs active driver count (supply proxy). Early NYC problem: 100k drivers but 1M peak-hour requests. Solution: surge pricing to reduce demand and attract drivers.
 
 Implementation: Weekly monitoring. If supply and demand decoupling, monthly deep dive (quality issues? competitive threat?). Adjust supply/demand incentives based on SDR trends.`,
+      domain: "ecommerce",
       },
       {
         q: "Your search ranking model improved NDCG by 5% offline but click-through rate dropped online. What happened?",
@@ -26040,6 +26262,7 @@ Actions:
 (4) Check if low-CTR results are truly low-quality or just unfamiliar.
 
 Decision: NDCG is a proxy; CTR is the true metric. If CTR drops, the model is worse, even if offline metrics improve. Revert and investigate what NDCG measures that CTR doesn't.`,
+      domain: "fintech",
       },
       {
         q: "How would you quantify the business value of a data science project before building it?",
@@ -26066,6 +26289,7 @@ Step 7: Sensitivity analysis. Test assumptions: What if retention offer acceptan
 Step 8: Intangibles. Will this model improve customer satisfaction? Enable new products? Note as qualitative upside.
 
 Final output: Recommend proceeding if ROI > 1x within 18 months and conservative case is still positive. Better to overestimate costs and underestimate benefits.`,
+      domain: "saas",
       },
       {
         q: "A manufacturing client has 10% defect rate. Design a predictive quality model. What data do you need?",
@@ -26108,6 +26332,7 @@ Validation:
 (3) Temporal validation: Train on 2022-2023, test on 2024. Does performance degrade? If yes, concept drift is happening - plan monthly retraining.
 
 Pilot: Run on 20% of production for 2 weeks. Compare model flags to actual defects caught by QA. Iterate based on feedback.`,
+      domain: "edtech",
       },
       {
         q: "Estimate the number of Uber rides happening in Delhi right now.",
@@ -26146,6 +26371,7 @@ Since you asked "right now" without time, assume typical daytime (2pm): 1.575M /
 Answer: **Approximately 150-400K Uber rides happening in Delhi right now** (depending on the hour). Peak hours (5-7pm): 300-400K. Off-peak (11pm-7am): 30-50K.
 
 Key assumptions: 12.5% daily penetration, 1.2 rides per user, uniform distribution across user base.`,
+      domain: "general",
       },
       {
         q: "A fashion e-commerce company sees high returns on apparel. How would you use data to reduce return rates without hurting sales?",
@@ -26170,6 +26396,7 @@ For sizing specifically, build a size recommendation engine. Input customer meas
 Monitor tradeoff: Each friction addition risks cart abandonment. A/B test interventions separately. Size confirmation might reduce returns 10% but drop conversion 2%—worth it. Strict return policies might cut returns 20% but harm repeat customers—likely not.
 
 Key metric: Return-adjusted revenue (revenue minus return processing costs) per order, not just revenue.`,
+      domain: "ecommerce",
       },
       {
         q: "How would you design a propensity model to identify which free trial users will convert to paid subscribers?",
@@ -26195,6 +26422,7 @@ Evaluation: ROC-AUC tells you discrimination ability, but business metrics matte
 Action: Don't just predict. Use it. High-propensity users: light touch, let product speak. Low-propensity: reach out with education, remove obstacles. Medium-propensity: time-bound offers (limited discount) to nudge.
 
 Iterate weekly: As actual conversions happen, retrain. Model accuracy will drift as product changes.`,
+      domain: "saas",
       },
       {
         q: "A logistics company wants to reduce delivery costs by 20%. What data would you need and what models would you build?",
@@ -26224,6 +26452,7 @@ Models to build:
 5. Driver utilization: Are vehicles mostly full? Analyze capacity utilization and identify consolidation opportunities.
 
 Implementation: Start with route optimization (biggest ROI). Pilot in one city, measure cost reduction, roll out. Then layer in demand forecasting for scheduling.`,
+      domain: "ecommerce",
       },
       {
         q: "How would you measure the effectiveness of a digital transformation initiative using data?",
@@ -26252,6 +26481,7 @@ Causality is hard: Maybe customer satisfaction improved but sales also improved 
 Business impact: Ultimately, tie metrics to revenue impact. If customer experience improved and retention increased, quantify that revenue lift. That's the story.
 
 Timing: Give transformation 3-6 months to stabilize before claiming success. Initial disruption masks benefits.`,
+      domain: "ecommerce",
       },
       {
         q: "A pharma company wants to predict which drugs in their pipeline will succeed in clinical trials. What approach would you take?",
@@ -26282,6 +26512,7 @@ Approach:
 5. Interpretability: Pharma stakeholders need explanations. Why did model predict failure? Which features drove it? Logistic regression and SHAP values help here.
 
 Validation: Use historical trials as test set, but be careful. Trial design evolves. A 2015 trial design differs from 2023. Temporal validation catches this drift.`,
+      domain: "healthcare",
       },
       {
         q: "How would you build a dynamic workforce planning model for a consulting firm with 10,000 consultants?",
@@ -26317,6 +26548,7 @@ Optimization:
 This is a mixed-integer linear program—complex but solvable. Most firms use stochastic optimization to handle uncertainty.
 
 Key metric: Utilization % (billable hours / available hours) and project staffing success (% projects fully staffed on time).`,
+      domain: "ecommerce",
       },
       {
         q: "A telecom company wants to identify which customers are likely to upgrade their plans. Walk through your modeling approach.",
@@ -26351,6 +26583,7 @@ Segmentation:
 Timing: Run inference monthly. Production: Use batch predictions to feed marketing automation.
 
 Avoid: Don't just push upgrades. Track customers you upgrade and their satisfaction. Bad upgrades hurt retention more than they boost revenue.`,
+      domain: "telecom",
       },
       {
         q: "How would you build an early warning system that detects deteriorating credit quality in a corporate loan portfolio?",
@@ -26386,6 +26619,7 @@ Production pipeline:
 - Escalate to credit officers for review and possible action (tighter monitoring, covenant amendments, collateral requirements)
 
 Validation: Backtest on historical defaults. Of borrowers you flagged as deteriorating 6 months before default, how many actually defaulted? Target >60% detection rate.`,
+      domain: "fintech",
       },
       {
         q: "Design an NLP system that automatically categorizes and summarizes regulatory filings for compliance teams.",
@@ -26421,6 +26655,7 @@ Production pipeline:
 Output: Dashboard showing categorized filings, summaries, and flagged entities. Compliance officers review, ask follow-ups.
 
 Validation: Have compliance team score system outputs for accuracy. Target >85% precision in categorization (false positives are costly).`,
+      domain: "general",
       },
       {
         q: "How would you use alternative data like satellite imagery and web scraping to predict quarterly earnings before announcements?",
@@ -26465,6 +26700,7 @@ Challenges:
 - Causality: Correlation ≠ causation. More parking ≠ guaranteed earnings beat
 
 Validation: Backtest on past 8 quarters. Can you predict quarterly earnings ±5% accuracy 4 weeks early? If yes, valuable signal for trading/strategy.`,
+      domain: "fintech",
       },
       {
         q: "Your anomaly detection model for trade surveillance generates 500 alerts per day but only 5% are real issues. How do you improve this?",
@@ -26503,6 +26739,7 @@ Improvements:
 - Stage 3: Escalation to human (top 50 most-anomalous get reviewed)
 
 Target: 50 alerts/day with 30% true positive rate. That's manageable for compliance.`,
+      domain: "fintech",
       },
       {
         q: "How would you build a customer churn prediction model for a private banking division?",
@@ -26543,6 +26780,7 @@ Action:
 - Bottom 80%: Minimal action
 
 Monitoring: Measure actual churn of flagged cohorts. Did your interventions prevent defection?`,
+      domain: "fintech",
       },
       {
         q: "Explain how you would backtest a quantitative trading strategy and what pitfalls to watch for.",
@@ -26589,6 +26827,7 @@ Critical pitfalls:
 6. Market regime changes: Strategy works during bull markets but fails in crashes.
 
 Mitigation: Walk-forward testing. Train on period T, test on T+1, train on T+1, test on T+2. Real market changes are captured.`,
+      domain: "fintech",
       },
       {
         q: "Swiggy's average delivery time increased by 4 minutes in Bangalore last week. Walk through your investigation using data.",
@@ -26639,6 +26878,7 @@ If volume-driven: Add driver incentives, expand restaurant partner network
 If traffic-driven: Optimize routing (ML algorithm updates)
 If staffing-driven: Hiring/retention focus
 If capacity-driven: Partner with restaurants on prep efficiency`,
+      domain: "ecommerce",
       },
       {
         q: "How would you build a model that predicts which sellers on a marketplace are likely to deliver counterfeit products?",
@@ -26682,6 +26922,7 @@ Validation:
 - False negatives matter too: Did you miss any counterfeiters?
 
 Iterate: With manual review feedback, retrain. Fraud evolves; models must adapt.`,
+      domain: "fintech",
       },
       {
         q: "Design an experimentation platform that can run 200 simultaneous A/B tests without interference.",
@@ -26736,6 +26977,7 @@ Architecture:
 - If more, something's wrong with randomization or analysis
 
 Monitoring: Daily dashboards showing test progress, early warnings for interference, auto-stop rules for winner/loser.`,
+      domain: "general",
       },
       {
         q: "Your content recommendation model shows users love clickbait content but it reduces long-term retention. How do you solve this?",
@@ -26787,6 +27029,7 @@ Solution approach:
 - If 30-day retention improves 5%, roll out fully
 
 Monitoring: Weekly tracking of both short-term (CTR, watch time) and long-term (retention, churn) metrics. If short-term tanked too much, adjust blend.`,
+      domain: "saas",
       },
       {
         q: "How would you use data to optimize the placement of quick commerce dark stores in a new city?",
@@ -26833,6 +27076,7 @@ Step 5: Launch sequence
 - Iterate based on realized demand, not forecast
 
 Monitoring: Orders per store, delivery time distribution, customer acquisition cost, customer lifetime value.`,
+      domain: "ecommerce",
       },
       {
         q: "Build a model that predicts peak order volumes for a food delivery platform to optimize rider allocation.",
@@ -26879,6 +27123,7 @@ Approach:
 - Measure impact on wait times and rider utilization (not just forecast accuracy)
 
 Monitoring: Actual vs. forecast, forecast error by hour. Retrain weekly as patterns evolve.`,
+      domain: "ecommerce",
       },
       {
         q: "How would you measure whether a new AI chatbot is actually resolving customer issues or just deflecting them?",
@@ -26932,6 +27177,7 @@ Implementation:
 - If resolution drops to 20%, chatbot is deflecting
 
 Iteration: Use feedback to improve chatbot training, intent recognition.`,
+      domain: "saas",
       },
       {
         q: "A hospital chain wants to reduce patient wait times using data. What would you build and what data do you need?",
@@ -26970,6 +27216,7 @@ Interventions:
 - Telehealth for follow-ups (reduces burden)
 
 Success metric: Median wait time <30min for routine, <1hr for complex.`,
+      domain: "healthcare",
       },
       {
         q: "How would you design a vendor risk scoring system for a large enterprise procurement department?",
@@ -27019,6 +27266,7 @@ Scoring:
 Validation: Historical vendor failures. Did your model flag them early?
 
 Update frequency: Quarterly for established vendors, monthly for high-risk or new vendors.`,
+      domain: "fintech",
       },
       {
         q: "Your client's employee attrition rate jumped from 12% to 22% in one year. How would you use people analytics to diagnose and fix this?",
@@ -27061,6 +27309,7 @@ Step 5: Interventions.
 Validate: Measure attrition by cohort post-intervention. Did manager replacement reduce engineering attrition? Time lag: 6 months to see impact.
 
 Cost-benefit: Replacing an employee costs 1-2x salary. Small investments in retention ROI quickly.`,
+      domain: "healthcare",
       },
       {
         q: "How would you build an intelligent document processing pipeline that handles invoices, contracts, and purchase orders in multiple languages?",
@@ -27118,6 +27367,7 @@ Monitoring:
 - Exception rate (should remain <10%)
 
 Iteration: Use human corrections to retrain models monthly.`,
+      domain: "fintech",
       },
       {
         q: "Design a predictive maintenance system for an industrial client with 5,000 machines across 30 factories.",
@@ -27223,6 +27473,7 @@ Explainability: Why is this loan offered? "Based on users similar to you who hav
 Privacy: Don't reveal personal data. "Based on your savings pattern" not "because you're 28 years old in Bangalore."
 
 Monitoring: Personalization impact on revenue per user, product cross-sell rate.`,
+      domain: "fintech",
       },
       {
         q: "How would you build a sustainability scoring model that measures a company's ESG performance from public data?",
@@ -27288,6 +27539,7 @@ Challenges:
 Mitigation: Flag inconsistencies. If emissions reported down 50% but revenue up 30%, investigate.
 
 Output: Dashboard showing ESG score, peer comparison, improvement areas.`,
+      domain: "fintech",
       },
       {
         q: "Your client's supply chain has 15,000 SKUs across 200 warehouses. Build a demand sensing model that reduces overstock by 30%.",
@@ -27352,6 +27604,7 @@ Monitoring:
 - Overstock reduction vs. baseline
 
 Results: 30% overstock reduction = millions in inventory savings.`,
+      domain: "fintech",
       },
       {
         q: "How would you detect tax fraud patterns in a dataset of 10M corporate tax returns?",
@@ -27419,6 +27672,7 @@ Mitigation:
 - Iterate: Monthly retraining with human feedback
 
 Output: Audit queue. "50K high-risk returns identified. Estimated recovery: $X million if audited."`,
+      domain: "fintech",
       },
       {
         q: "Design a data strategy roadmap for a traditional manufacturing company that has zero data infrastructure.",
@@ -27493,6 +27747,7 @@ Risks:
 - Retention: Data talent leaves. Build culture to retain
 
 Timeline is realistic. Manufacturing moves slower than tech, but phased approach manages risk.`,
+      domain: "ecommerce",
       },
       {
         q: "Google Maps shows a restaurant as open but users keep reporting it's closed. How would you use data to solve this at scale across millions of businesses?",
@@ -27559,6 +27814,7 @@ Validation:
 - Target: 95% accuracy
 
 Result: Users trust Maps. Restaurant status is almost always correct.`,
+      domain: "general",
       },
       {
         q: "How would you build a model that predicts which products on Amazon will go viral in the next 7 days?",
@@ -27631,6 +27887,7 @@ Challenges:
 - Causality: Virality causes increased reviews, not vice versa
 - Feedback loops: If Amazon features product, it becomes viral (hard to separate)
 - Novelty: Next viral product might be unlike anything in training data`,
+      domain: "fintech",
       },
       {
         q: "YouTube wants to reduce harmful content recommendations without hurting overall watch time by more than 1%. How would you approach this?",
@@ -27697,6 +27954,7 @@ Challenge:
 - Some find "fact-checking" itself biased
 
 Mitigation: Transparent policy, appeals process, regular audits.`,
+      domain: "healthcare",
       },
       {
         q: "Amazon's same-day delivery promise fails 8% of the time in certain zip codes. How would you diagnose and fix this using data?",
@@ -27765,6 +28023,7 @@ Validation:
 - Measure customer satisfaction impact
 
 Target: Reduce 8% failure to <2%.`,
+      domain: "ecommerce",
       },
       {
         q: "How would you design a query understanding system for Google Search that handles misspellings, slang, and multilingual queries?",
@@ -27843,6 +28102,7 @@ Challenges:
 - Rapid language evolution: New slang emerges monthly
 
 Mitigation: Feedback loops. When users reformulate (search again), system learns original intent was misunderstood.`,
+      domain: "fintech",
       },
       {
         q: "Flipkart wants to launch a new category. How would you use data to decide which category to launch and in which cities first?",
@@ -27919,6 +28179,7 @@ If pilot succeeds:
 - City 4-6: Scale inventory, recruit more vendors
 - Months 6-12: Achieve 1M orders nationally
 - Months 12+: Mainstream category like Electronics, Fashion`,
+      domain: "ecommerce",
       },
       {
         q: "How would you build a pricing intelligence system that monitors competitor prices across 5M products in real-time?",
@@ -27982,6 +28243,7 @@ Challenges:
 - Pricing dynamics: Flash sales, out-of-stock, limited inventory
 
 Mitigation: Build elastic infrastructure, use data partnerships, invest in entity matching.`,
+      domain: "fintech",
       },
       {
         q: "A fintech startup has 500K users but only 2% use the investment feature. How would you use data to increase adoption?",
@@ -28052,6 +28314,7 @@ A/B test:
 - Measure: % who invest in next 30 days (target: 2% → 5%)
 
 If test succeeds (5% adoption = 25K new investors × ₹10K avg = ₹250Cr AUM), roll out.`,
+      domain: "fintech",
       },
       {
         q: "Your ride-hailing app shows surge pricing but users cancel and rebook 5 minutes later at normal price. How do you detect and handle this gaming behavior?",
@@ -28125,6 +28388,7 @@ Challenges:
 - Fairness: Penalizing gaming shouldn't harm legitimate cancels
 
 Mitigation: Human review of flagged cases, appeal process, transparent policy.`,
+      domain: "general",
       },
       {
         q: "How would you build a food safety risk scoring model for a restaurant aggregator platform using inspection data, user reviews, and order patterns?",
@@ -28212,6 +28476,7 @@ Challenges:
 - Gaming: Restaurants delete negative reviews (mitigated by maintaining archive)
 
 Mitigation: Adjust for inspection frequency, use imputation for new restaurants, prevent review deletion.`,
+      domain: "ecommerce",
       },
       {
         q: "An airline's loyalty program has 5M members but redemption rates are falling. How would you use data to redesign the program?",
@@ -28256,6 +28521,7 @@ Redesign:
 Measure: Redemption rate by segment pre/post redesign. Target: 30% redemption rate (industry ~25%).
 
 ROI: Engaged members fly more (20% increase in bookings) > cost of more attractive redemptions.`,
+      domain: "healthcare",
       },
       {
         q: "How would you build a store location optimization model for a quick service restaurant chain expanding into 50 new cities?",
@@ -28316,6 +28582,7 @@ Validation: Backtest on past store openings. Did model correctly predict sales f
 Output: Top 50 locations ranked by profitability. Phased rollout over 2 years.
 
 Monitoring: First 10 stores—do actual sales match predictions? Recalibrate model if drift occurs.`,
+      domain: "fintech",
       },
       {
         q: "A CPG company's market share dropped 3% despite increasing ad spend by 40%. Use data to explain what went wrong.",
@@ -28377,6 +28644,7 @@ Where did we lose? Awareness stayed same but consideration dropped? That's messa
 Action: Run holdout market test. Reduce ad spend in 10% of markets, keep 90% at high spend. If low-spend market holds market share, high spend isn't working (attribution issue). If low-spend market loses share, high spend is necessary.
 
 Likely outcome: Competitive response (they matched spend) + attribution overcounting real lift.`,
+      domain: "ecommerce",
       },
       {
         q: "How would you build a customer health score for a B2B SaaS company that predicts contract renewals 6 months in advance?",
@@ -28444,6 +28712,7 @@ Monitoring:
 Action:
 - Flag top 100 at-risk accounts for manual CSM (Customer Success Manager) review
 - Automate lower-risk interventions (email nurtures, product tips)`,
+      domain: "saas",
       },
       {
         q: "Your client runs 50 retail stores. Some outperform others despite similar demographics. How would you identify the drivers of store performance?",
@@ -28523,6 +28792,7 @@ Actions:
 - Implement best-practice training across all stores
 
 Validation: Six months post-intervention, did bottom-store performance improve?`,
+      domain: "fintech",
       },
       {
         q: "How would you build a real-time carbon emissions tracking model for a company with operations across 20 countries?",
@@ -28600,6 +28870,7 @@ Challenges:
 Mitigation: Accept estimates with confidence intervals, prioritize Scope 1&2 (directly controlled).
 
 Validation: Compare to annual voluntary disclosure reports (GRI, SASB). Should match within 5%.`,
+      domain: "healthcare",
       },
       {
         q: "Design a personalized wealth management recommendation engine for clients with portfolios ranging from $100K to $50M.",
@@ -28673,6 +28944,7 @@ Personalization: Frequency of recommendation adjusts by risk tolerance (conserva
 Validation: Did clients who followed recommendations outperform those who didn't?
 
 Monitoring: Backtest on historical portfolios. Could we have predicted optimal allocation?`,
+      domain: "fintech",
       },
       {
         q: "A private equity firm wants to screen 1,000 potential acquisition targets down to 50 using data. What signals would you model?",
@@ -28751,6 +29023,7 @@ Output:
 Ranked list of 50 targets with scores and rationale ("High scores on margin expansion + market growth. Risk: customer concentration").
 
 Qualitative review: Review top 50 manually before full diligence (model guides but doesn't decide).`,
+      domain: "healthcare",
       },
       {
         q: "How would you measure the ROI of AI adoption across different business units in a large conglomerate?",
@@ -28839,6 +29112,7 @@ Manufacturing: 80% ROI, $500K cost savings, 18-month payback
 HR: 40% ROI, $200K time savings, 24-month payback"
 
 Caveats: Assume model performance remains stable (retraining costs not captured if needed) and external market conditions don't deteriorate.`,
+      domain: "general",
       },
       {
         q: "Your forex trading model is profitable in backtesting but loses money in live trading. Walk through your debugging process.",
@@ -28934,6 +29208,7 @@ Action plan:
 - Add position limit: Max 5% of account per trade (risk control)
 
 Accept: Backtests are aspirational. Live results will always be lower. Target: Backtest ROI minus 30% for realistic expectation.`,
+      domain: "fintech",
       },
       {
         q: "How would you build a model that detects when a corporate client is about to default 90 days before it happens?",
@@ -29030,6 +29305,7 @@ Monitoring:
 - Track false negatives (defaulted but not flagged). Need retraining
 
 Benefit: Catch defaults 90 days early = preserve principal through forced payment, asset liquidation, covenant enforcement.`,
+      domain: "fintech",
       },
       {
         q: "Design an AI system that automates regulatory compliance reporting for a global bank operating in 30 jurisdictions.",
@@ -29108,6 +29384,7 @@ Benefit to bank:
 - Faster reporting (weekly instead of monthly possible)
 - Reduced compliance risk (fewer errors, faster remediation)
 - Competitive advantage (faster access to capital if ratio monitoring is real-time)`,
+      domain: "fintech",
       },
       {
         q: "A healthcare insurer's claim costs are rising 15% YoY while premiums only rose 5%. How would you use data to identify and address the gap?",
@@ -29207,6 +29484,7 @@ Validation:
 - Did premium increase follow (move toward 12-13% premium increase)?
 
 Likely scenario: Mix (sicker membership) + utilization (post-COVID backlog) + provider rate increases = 15% cost inflation. Requires multi-faceted response.`,
+      domain: "healthcare",
       },
       {
         q: "How would you build a network analysis model to detect organized insurance fraud rings?",
@@ -29309,6 +29587,7 @@ Dashboard:
 - Recommendation: "Investigate 10 claims involving Doctor Z and Shop Y (ring probability 85%)"
 
 Benefit: Catch coordinated fraud before losses mount. A 10-person ring claiming $500K is expensive if not detected.`,
+      domain: "fintech",
       },
       {
         q: "Your client wants to implement AI but their data is scattered across 15 legacy systems with no common identifiers. What is your approach?",
@@ -29422,6 +29701,7 @@ Risks:
 - Legacy system EOL: If 1 of 15 systems retires, update integration
 
 Validation: After 3 months, run AI model on unified data. Does it perform better than model built on single system? (Should show 20-30% improvement)`,
+      domain: "saas",
       },
       {
         q: "Estimate the total annual revenue of all cloud kitchens in Mumbai.",
@@ -29453,6 +29733,7 @@ Alternative approach:
 Estimate: ₹300-400 billion (₹3-4 billion range) in annual revenue for cloud kitchens in Mumbai.
 
 Key assumptions: 30% delivery penetration, 40% cloud kitchen share, ₹300 avg order value.`,
+      domain: "ecommerce",
       },
       {
         q: "Write a Python function that takes a user's transaction history and returns their spending pattern as weekday vs weekend, with average transaction value for each.",
@@ -29486,6 +29767,7 @@ def analyze_spending_pattern(transactions):
             'total_spending': weekday_stats['sum'],
             'avg_transaction': weekday_stats['mean'],
             'std_dev': weekday_stats['std']
+      domain: "fintech",
         },
         'weekend': {
             'transactions': weekend_stats['count'],
@@ -29537,6 +29819,8 @@ Total: 5 + 10 + 8 + 4 + 12 + 20 + 5 = 64 data points per order.
 With 100K orders/day in Mumbai: 6.4M data points/day.
 
 Note: If tracking rider steps (20+ GPS points during delivery), real number is higher (100+).`,
+      domain: "ecommerce",
+      company: "Zepto",
       },
       {
         q: "Write a Python script that reads a CSV of customer data, identifies duplicate records using fuzzy matching, and outputs a deduplicated file.",
@@ -29607,6 +29891,7 @@ def deduplicate_customers(input_csv, output_csv, match_threshold=85):
 # Example usage
 deduplicate_customers('customers.csv', 'customers_deduped.csv')
 \`\`\``,
+      domain: "general",
       },
       {
         q: "Estimate the total storage cost for Hotstar streaming all IPL matches in one season across all quality levels.",
@@ -29651,6 +29936,7 @@ Step 5: Storage cost.
 Alternative: Cloud video platform (JW Player, Cloudflare Stream) = ~$500-2000/month depending on traffic.
 
 Estimate: ₹30-50 lakhs per season for storage (₹3-5 lakhs/month average).`,
+      domain: "telecom",
       },
       // ─────────────────────────────────────────────
       // PRODUCT ANALYTICS & METRICS (10)
@@ -29688,6 +29974,7 @@ Query repeat failures for the same user/merchant combo. Calculate churn: Did Fri
 **Key metrics:** Failure rate by day/hour, failure rate by transaction type, user retention post-failure, and merchant recovery time.
 
 The output: Root cause report + prioritized fix list with effort/impact ratios.`,
+      domain: "fintech",
       },
       {
         q: "Airbnb hosts in Tokyo have 60% lower occupancy than hosts in Osaka despite higher search volume. What hypotheses would you test and what data would you use to explain this gap?",
@@ -29720,6 +30007,7 @@ The output: Root cause report + prioritized fix list with effort/impact ratios.`
 - User click patterns (which listings do they click?)
 
 **Quick win:** If Tokyo has 3x more listings for similar demand, the fix is shifting demand (marketing push for Tokyo experiences) or tightening supply (incentivize hosts to improve or delist).`,
+      domain: "general",
       },
       {
         q: "You're a data scientist at Razorpay. A merchant reports that their payment success rate is 20% lower than the platform average. Build an investigation framework with specific queries you would run.",
@@ -29783,6 +30071,7 @@ Are repeat customers succeeding more (they have known payment methods)? New cust
 - If it's fraud: Whitelist returning customers or adjust risk thresholds.
 
 Output: Root cause summary + fix options with implementation effort.`,
+      domain: "fintech",
       },
       {
         q: "Swiggy Instamart promises 10-minute delivery but achieves it only 65% of the time. The operations team blames traffic, the product team blames item availability. How would you use data to settle this debate?",
@@ -29844,6 +30133,7 @@ Create a breakdown: Of 35% late deliveries, attribute each to:
 - Item availability: Real-time inventory sync or dynamic substitution recommendations.
 
 This gives ops and product their answer with data, not opinions.`,
+      domain: "ecommerce",
       },
       {
         q: "LinkedIn shows you 'People also viewed' profiles. How would you measure whether this feature increases recruiter engagement or just creates noise?",
@@ -29893,6 +30183,7 @@ If control and treatment have same interview rate but treatment has 2x clicks, t
 - If negative lift: Remove it.
 
 Measure, don't assume.`,
+      domain: "general",
       },
       {
         q: "You work at Spotify. Users who listen to podcasts have 2x retention but 40% lower music streaming. Is this a problem? How would you determine the net effect on subscriber lifetime value?",
@@ -29955,6 +30246,7 @@ FROM segment_podcast_impact;
 - If overall LTV flat or negative: Problem. Either push podcasts to lower-risk segments or improve music recommendation.
 
 The 40% music streaming drop isn't inherently bad if ad revenue and retention more than compensate.`,
+      domain: "telecom",
       },
       {
         q: "A D2C brand spends 60% of revenue on Meta and Google ads. The marketing team claims 5x ROAS. You suspect attribution is inflated. How would you design a geo-lift test to find the true incremental impact?",
@@ -30007,6 +30299,7 @@ The gap reveals organic, direct, and repeat traffic misattributed to paid ads. I
 - True ROAS <0.5x: Ad spend is waste.
 
 Geo-lift removes attribution bias and gives the real picture.`,
+      domain: "fintech",
       },
       {
         q: "Your e-commerce platform shows that customers who use the search bar convert at 3x the rate of those who browse categories. Does this mean improving search will 3x overall conversion? Why or why not?",
@@ -30049,6 +30342,7 @@ Increasing search visibility does lift a few percentage points in conversion (fr
 
 **Takeaway:**
 Correlation (searchers convert 3x) is not causation (search causes 3x conversion). Test interventions, don't assume.`,
+      domain: "ecommerce",
       },
       {
         q: "Uber Eats noticed that average order value increased 12% after adding a 'frequently ordered together' feature. But total orders per user dropped 5%. Was this feature a net positive? How would you calculate the true impact?",
@@ -30117,6 +30411,7 @@ If 70% of users benefited but 30% churned (higher AOV priced them out), it's a m
 - If churn concern: Add tiered suggestions ("frequently bought together" + "frequently bought solo" tracks for lower-spend segments).
 
 True impact = revenue lift accounting for retention/churn effects.`,
+      domain: "ecommerce",
       },
       {
         q: "You're measuring the impact of a new homepage algorithm at Netflix. Your A/B test shows a 3% increase in click-through but no change in total watch hours. What's happening and what do you recommend?",
@@ -30168,6 +30463,7 @@ Option 3: Reframe success.
 
 **Key insight:**
 CTR and watch hours should move together. If they decouple, your metric is misaligned with value. Fix the recommendation quality, not the test result.`,
+      domain: "general",
       },
       // ─────────────────────────────────────────────
       // MACHINE LEARNING & MODELING (10)
@@ -30238,6 +30534,7 @@ Logistic regression with these features is interpretable and works well. XGBoost
 
 **Key insight:**
 Founders are high-risk by default. Focus on: Can they execute? Do they have runway? Are they transparent?`,
+      domain: "fintech",
       },
       {
         q: "Design an ML system that predicts flight delays 6 hours before departure. Your airline client wants to proactively rebook passengers. What data, features, and model architecture would you propose?",
@@ -30332,6 +30629,7 @@ Ensure predictions stay calibrated (P(delay)=40% means 40% actually delay).
 
 **Key challenge:**
 Weather forecast uncertainty grows 48+ hours out. At 6 hours, forecasts are pretty good, but still have variance. Account for this in decision thresholds.`,
+      domain: "general",
       },
       {
         q: "You're building a resume screening model for a large recruiter. In testing, your model has 92% accuracy but rejects 3x more female candidates than male. How do you diagnose and fix this without reducing overall quality?",
@@ -30417,6 +30715,7 @@ Fairness-constrained model might drop from 92% to 89% accuracy overall. But it r
 
 **Key insight:**
 Model learned historical bias. Fix it by adjusting training data, features, or decision boundaries—not by ignoring the bias.`,
+      domain: "healthcare",
       },
       {
         q: "CRED wants to predict which users will miss their next credit card payment. You have transaction data, app usage data, and bureau data. Design the feature engineering pipeline and explain your model choice.",
@@ -30525,6 +30824,7 @@ Track calibration and fairness:
 
 **Key insight:**
 App engagement is a goldmine for fintech. Users who ignore payment reminders are at high risk—often more predictive than bureau scores alone.`,
+      domain: "fintech",
       },
       {
         q: "Your image classification model for a medical device has 99.1% accuracy on your test set but only 94% in production across different hospitals. Diagnose three likely causes and your fix for each.",
@@ -30608,6 +30908,7 @@ Track per-hospital accuracy. If hospital X has 89% while hospital Y has 97%, you
 
 **Key insight:**
 99.1% on test set is a false positive signal. Real-world ML breaks because test ≠ production. Always stratify evaluation by realistic subgroups.`,
+      domain: "healthcare",
       },
       {
         q: "Build a real-time content toxicity detection system for a social media platform with 500M daily posts in 12 languages. What architecture would you propose? How do you handle languages where training data is scarce?",
@@ -30702,6 +31003,7 @@ Track false positive rate (legitimate posts flagged) vs false negative rate (tox
 
 **Key insight:**
 No single model works at scale for 12 languages. Combination of fast heuristics (keywords), transfer learning (mBERT), and human escalation (uncertainty) is pragmatic.`,
+      domain: "edtech",
       },
       {
         q: "You're asked to build a demand forecasting model for a grocery chain with 2,000 stores. Each store has different demographics, competition, and weather patterns. Would you build one model or 2,000? Explain your reasoning.",
@@ -30788,6 +31090,7 @@ If stores with <6 months history have MAPE >20% while established stores have <1
 
 **Key insight:**
 1 global model is fast but inaccurate. 2,000 models is accurate but unmaintainable. Hierarchical balances both. The global model is your foundation; store models are refinements.`,
+      domain: "fintech",
       },
       {
         q: "Design an ML system that automatically adjusts insurance premiums based on real-time driving behavior from IoT devices in cars. What are the modeling challenges and ethical concerns?",
@@ -30886,6 +31189,7 @@ If females have lower hard braking but same premium adjustment, bias exists.
 
 **Key insight:**
 Just because you can measure behavior doesn't mean you should adjust prices on it. The model might work technically but create societal harm (poverty penalty). Balance accuracy with ethics.`,
+      domain: "fintech",
       },
       {
         q: "Your NLP model extracts key clauses from legal contracts with 85% accuracy. The legal team says this isn't good enough to deploy. The product team says waiting for 95% means waiting 6 more months. How do you frame this decision?",
@@ -30966,6 +31270,7 @@ To leadership: "Cost: lawyer review overhead for months 1-4. Benefit: deploy fas
 
 **Key insight:**
 Don't frame as "accuracy vs timeline." Frame as "maximize value per unit of effort." 85% + human review + monthly retraining beats waiting 6 months for 95% alone.`,
+      domain: "fintech",
       },
       {
         q: "You're building a recommendation system for a news app. Users love clicking on outrage content, but it reduces long-term retention and brand trust. Design a reward function that balances engagement with platform health.",
@@ -31108,6 +31413,7 @@ If outrage content still dominates the top 10, the discount isn't working. Incre
 
 **Key insight:**
 You can't ignore engagement (users won't return). But pure engagement optimization destroys retention. The middle path: optimize for retention subject to engagement floor ("users must click >3x/week").`,
+      domain: "saas",
       },
       // ─────────────────────────────────────────────
       // SQL, PYTHON & ESTIMATION (10)
@@ -31175,6 +31481,7 @@ LEFT JOIN repeat_purchasers rp ON qc.user_id = rp.user_id;
 - Deep-dive interviews with this cohort: What convinced them? (Informs marketing copy, product messaging)
 
 This cohort defines success.`,
+      domain: "ecommerce",
       },
       {
         q: "Write a SQL query to calculate the retention curve for each monthly cohort, showing what percentage of users from each signup month are still active 1, 3, 6, and 12 months later.",
@@ -31243,6 +31550,7 @@ If 2024-06 cohort: 100% → 60% → 40% → 25% → 15%, retention improved (lat
 - Cliff: If all cohorts drop 50% from month 0 to month 1, onboarding is broken.
 - Trend: Later cohorts retaining better = product improving.
 - Segment: Run this by user segment (paid vs free, geography, etc.) to see where churn concentrates.`,
+      domain: "general",
       },
       {
         q: "Write a Python function that takes a time series of daily revenue and identifies structural breaks using the CUSUM method. Explain when you would use this vs simple anomaly detection.",
@@ -31333,6 +31641,7 @@ Deploy new recommendation algorithm Monday. Revenue drops 8% daily. After 7 days
 - Z-score: "Day 2 looks normal again. Just noise."
 
 CUSUM wins here—catches the real problem.`,
+      domain: "general",
       },
       {
         q: "Estimate the total compute cost for training a large language model with 70 billion parameters. Walk through your assumptions about GPU types, training time, and cloud pricing.",
@@ -31418,6 +31727,7 @@ For smaller team: **$300-500K for a 70B model** is reasonable.
 3. Layer-wise training (train some layers frozen): 50% reduction
 
 **Conclusion:** $400K is ballpark for a team of 10 engineers training a 70B model from scratch once. Ongoing fine-tuning is much cheaper ($10-50K).`,
+      domain: "telecom",
       },
       {
         q: "Write a SQL query to find products that are frequently bought together but never appear in the same user's search history. What could this insight tell a product team?",
@@ -31486,6 +31796,7 @@ ORDER BY pp.co_purchase_count DESC;
 
 **Business impact:**
 If 1,000 laptop purchases/month and stand bundling increases attachment from 0% to 25%, that's $50-100K additional revenue monthly (depending on stand margin).`,
+      domain: "general",
       },
       {
         q: "Estimate how much data Zepto generates per day across all its dark stores in Bangalore, including inventory, orders, delivery tracking, and customer interactions.",
@@ -31554,6 +31865,7 @@ Zepto likely generates 20-30 GB/day when including:
 
 **Scaling lesson:**
 Ultra-fast delivery = high-frequency data generation. Every 10-second GPS update scales quickly.`,
+      domain: "ecommerce",
       },
       {
         q: "Write a Python function that implements a simple collaborative filtering recommendation engine using only NumPy. Explain the cold-start problem and how you would handle it.",
@@ -31684,6 +31996,7 @@ print(f"Recommend items {recommendations} to user 0")
 
 **Key insight:**
 Pure collaborative filtering fails when no history exists. In production, combine with content features (category, price, brand) and demographic signals to handle cold-start.`,
+      domain: "general",
       },
       {
         q: "Estimate the annual cost savings if all Indian banks adopted AI-based document verification instead of manual KYC processes.",
@@ -31748,6 +32061,7 @@ Per-account cost:
 
 **Implications:**
 This is a $25-50M annual opportunity for a SaaS AI KYC vendor. FINTECHPROUD: High margins (₹1 cost, sell for ₹2-3).`,
+      domain: "fintech",
       },
       {
         q: "Write a SQL query to detect seasonality in transaction data by comparing each week's volume to the same week in the previous year, flagging weeks where volume deviated by more than 2 standard deviations.",
@@ -31827,6 +32141,7 @@ If Week 52 (New Year) usually has +50% volume but 2024 Week 52 is -5%, something
 
 **Key insight:**
 Seasonality makes year-over-year comparison more robust than week-over-week (which can confound with day-of-week effects).`,
+      domain: "fintech",
       },
       {
         q: "Write a Python script that ingests a CSV of customer support tickets, clusters them using TF-IDF and K-means, and outputs the top 5 themes with representative examples from each cluster.",
@@ -31950,6 +32265,7 @@ Cluster 5: documentation + training + onboarding
 
 **Key insight:**
 TF-IDF + K-means is unsupervised clustering. It works because important words naturally group similar tickets together. No training data needed.`,
+      domain: "edtech",
       },
     ],
   },
