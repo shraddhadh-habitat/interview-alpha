@@ -23,14 +23,32 @@ const PM_CATEGORY_CHIPS = [
   { id: 'technical',        label: 'Technical/Estimation', dataKeys: ['ai_technical'], subcategory: null },
 ];
 
-const DS_CATEGORY_CHIPS = [
-  { id: 'machine_learning',  label: 'Machine Learning',      dataKeys: ['machine_learning'], subcategory: null },
-  { id: 'statistics',        label: 'Statistics & Probability', dataKeys: ['statistics'], subcategory: null },
-  { id: 'sql',               label: 'SQL & Data Manipulation', dataKeys: ['ai_technical', 'domain_specific'], subcategory: 'sql' },
-  { id: 'case_studies',      label: 'Case Studies & Business Problems', dataKeys: ['product', 'domain_specific'], subcategory: 'case_studies' },
-  { id: 'system_design',     label: 'System Design',         dataKeys: ['ai_technical', 'domain_specific'], subcategory: 'system_design' },
-  { id: 'behavioral',        label: 'Behavioral',           dataKeys: ['behavioral'], subcategory: null },
-];
+// DS_CATEGORY_CHIPS will be built dynamically from the Data Scientist data
+const buildDSCategoryChips = (dsLevel) => {
+  const categoryMap = {
+    'product': { label: 'Product', subcategory: null },
+    'behavioral': { label: 'Behavioral', subcategory: null },
+    'ai': { label: 'AI/Analytical', subcategory: null },
+    'ai_technical': { label: 'Technical/SQL', subcategory: null },
+    'machine_learning': { label: 'Machine Learning', subcategory: null },
+    'statistics': { label: 'Statistics & Probability', subcategory: null },
+    'domain_specific': { label: 'Domain Specific', subcategory: null },
+  };
+
+  const chips = [];
+  Object.keys(dsLevel).forEach(cat => {
+    if (Array.isArray(dsLevel[cat]) && dsLevel[cat].length > 0 && categoryMap[cat]) {
+      const config = categoryMap[cat];
+      chips.push({
+        id: cat,
+        label: config.label,
+        dataKeys: [cat],
+        subcategory: config.subcategory,
+      });
+    }
+  });
+  return chips;
+};
 
 const EXP_LEVEL_CHIPS = [
   { id: 'intern',    label: 'Intern',              levels: ['Associate PM'] },
@@ -691,9 +709,16 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
 
   const role = ROLES[selectedRole] || ROLES.pm;
   const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
-  let dataCats = selectedRole === 'ds'
-    ? ['product', 'behavioral', 'ai', 'ai_technical', 'machine_learning', 'statistics', 'domain_specific']
-    : ['product', 'behavioral', 'ai', 'ai_technical'];
+
+  // For DS, dynamically get all category keys from the Data Scientist level
+  let dataCats;
+  if (selectedRole === 'ds') {
+    const dsLevel = pmQuestions['Data Scientist'];
+    dataCats = dsLevel ? Object.keys(dsLevel).filter(k => Array.isArray(dsLevel[k])) : [];
+  } else {
+    dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
+  }
+
   let subcategoryFilter = null;
   if (category) {
     const chip = categoryChips.find(c => c.id === category);
@@ -763,10 +788,19 @@ function FilterContent({
   onApply,
   onClearAll,
   selectedRole,
+  pmQuestions,
 }) {
 
   const role = ROLES[selectedRole] || ROLES.pm;
-  const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
+
+  // Build DS category chips dynamically from the Data Scientist data
+  let categoryChips;
+  if (selectedRole === 'ds') {
+    const dsLevel = pmQuestions['Data Scientist'];
+    categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
+  } else {
+    categoryChips = PM_CATEGORY_CHIPS;
+  }
 
   const categoryOptions = [
     { id: '', label: 'All' },
@@ -977,9 +1011,15 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const role = ROLES[selectedRole] || ROLES.pm;
     const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
 
-    let dataCats = selectedRole === 'ds'
-      ? ['product', 'behavioral', 'ai', 'ai_technical', 'machine_learning', 'statistics', 'domain_specific']
-      : ['product', 'behavioral', 'ai', 'ai_technical'];
+    // For DS, dynamically get all category keys from the Data Scientist level
+    let dataCats;
+    if (selectedRole === 'ds') {
+      const dsLevel = pmQuestions['Data Scientist'];
+      dataCats = dsLevel ? Object.keys(dsLevel).filter(k => Array.isArray(dsLevel[k])) : [];
+    } else {
+      dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
+    }
+
     let subcategoryFilter = null;
     if (filterCategory) {
       const chip = categoryChips.find(c => c.id === filterCategory);
@@ -1159,6 +1199,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     onApply: () => setShowFilters(false),
     onClearAll: clearAllFilters,
     selectedRole,
+    pmQuestions,
   };
 
   // ── Render ─────────────────────────────────────────────────────────────────
