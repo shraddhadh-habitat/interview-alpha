@@ -708,7 +708,15 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
   const { category, expLevel, company, difficulty, domain } = filterState;
 
   const role = ROLES[selectedRole] || ROLES.pm;
-  const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
+
+  // Build categoryChips dynamically for DS
+  let categoryChips;
+  if (selectedRole === 'ds') {
+    const dsLevel = pmQuestions['Data Scientist'];
+    categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
+  } else {
+    categoryChips = PM_CATEGORY_CHIPS;
+  }
 
   // For DS, dynamically get all category keys from the Data Scientist level
   let dataCats;
@@ -1009,7 +1017,15 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   const filtered = useMemo(() => {
     const role = ROLES[selectedRole] || ROLES.pm;
-    const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
+
+    // Build categoryChips dynamically for DS
+    let categoryChips;
+    if (selectedRole === 'ds') {
+      const dsLevel = pmQuestions['Data Scientist'];
+      categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
+    } else {
+      categoryChips = PM_CATEGORY_CHIPS;
+    }
 
     // For DS, dynamically get all category keys from the Data Scientist level
     let dataCats;
@@ -1107,7 +1123,15 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   const appliedFilterTags = useMemo(() => {
     const role = ROLES[selectedRole] || ROLES.pm;
-    const categoryChips = selectedRole === 'ds' ? DS_CATEGORY_CHIPS : PM_CATEGORY_CHIPS;
+
+    // Build categoryChips dynamically for DS
+    let categoryChips;
+    if (selectedRole === 'ds') {
+      const dsLevel = pmQuestions['Data Scientist'];
+      categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
+    } else {
+      categoryChips = PM_CATEGORY_CHIPS;
+    }
     const domainChips = selectedRole === 'ds' ? DS_DOMAIN_CHIPS : PM_DOMAIN_CHIPS;
 
     const tags = [];
