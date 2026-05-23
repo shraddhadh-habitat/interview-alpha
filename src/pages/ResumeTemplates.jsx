@@ -88,11 +88,15 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
       fontFamily: "'Plus Jakarta Sans', sans-serif",
       color: C.text,
       paddingTop: NAV_H,
+      overflowX: 'hidden',
     }}>
       <style>{`
+        body { overflow-x: hidden; }
         @media (max-width: 768px) {
-          .templates-container { padding: 0 20px !important; }
+          .templates-container { padding: 24px 16px !important; }
+          .templates-hero { padding: 32px 16px !important; }
           .templates-grid { grid-template-columns: 1fr !important; }
+          .template-button { min-height: 44px !important; }
         }
         @media (max-width: 1024px) {
           .templates-grid { grid-template-columns: repeat(2, 1fr) !important; }
@@ -100,7 +104,7 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
       `}</style>
 
       {/* Hero Section */}
-      <div style={{ background: C.bgCard, padding: '48px 28px', borderBottom: `1px solid ${C.border}` }}>
+      <div className="templates-hero" style={{ background: C.bgCard, padding: '48px 28px', borderBottom: `1px solid ${C.border}` }}>
         <div style={{ maxWidth: 1080, margin: '0 auto', textAlign: 'center' }}>
           <h1 style={{
             fontFamily: "'Instrument Serif', serif",
@@ -125,7 +129,7 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
       </div>
 
       {/* Templates Grid */}
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 28px' }}>
+      <div className="templates-container" style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 28px' }}>
         <div className="templates-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -197,11 +201,12 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
               <TemplatePreview template={template} />
 
               <a
+                className="template-button"
                 href={`mailto:communications@interviewalpha.ai?subject=Request Template: ${template.name}`}
                 style={{
-                  display: 'block',
+                  display: 'flex',
                   width: '100%',
-                  height: 40,
+                  minHeight: 44,
                   background: C.text,
                   color: '#FFFFFF',
                   border: 'none',
@@ -211,10 +216,11 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
                   cursor: 'pointer',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   textDecoration: 'none',
-                  display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   transition: 'all 0.2s',
+                  boxSizing: 'border-box',
+                  padding: '10px 16px',
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.background = '#0F0F0D';

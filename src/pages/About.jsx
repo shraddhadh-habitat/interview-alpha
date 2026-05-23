@@ -48,22 +48,26 @@ function FounderAvatar() {
 
 export default function About() {
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text }}>
+    <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, overflowX: 'hidden' }}>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { overflow-x: hidden; }
         @media (max-width: 768px) {
-          .about-container { padding: 32px 20px !important; }
-          .about-bio-section { max-width: 100% !important; }
-          .about-name { font-size: 20px !important; }
-          .about-title { font-size: 13px !important; }
-          .about-bio-text { font-size: 14px !important; }
+          .about-container { padding: 40px 16px !important; }
+          .about-header { padding-bottom: 40px !important; }
+          .about-bio-section { max-width: 100% !important; margin-bottom: 40px !important; }
+          .about-name { font-size: 24px !important; }
+          .about-title { font-size: 14px !important; }
+          .about-bio-text { font-size: 15px !important; line-height: 1.8 !important; }
+          .about-numbers { padding-top: 40px !important; margin-top: 40px !important; }
+          .about-links { flex-direction: column !important; gap: 16px !important; }
         }
       `}</style>
 
-      <div className="about-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 40px' }}>
+      <div className="about-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 40px', paddingTop: 70 }}>
 
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 64 }}>
+        <div className="about-header" style={{ textAlign: 'center', marginBottom: 64 }}>
           <h1 style={{
             fontFamily: "'Instrument Serif', serif",
             fontSize: 48,
@@ -158,7 +162,7 @@ export default function About() {
           </div>
 
           {/* Contact Links */}
-          <div style={{ marginTop: 40, paddingTop: 32, borderTop: `1px solid ${C.border}`, display: 'flex', gap: 32, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="about-links" style={{ marginTop: 40, paddingTop: 32, borderTop: `1px solid ${C.border}`, display: 'flex', gap: 32, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a
               href="https://www.linkedin.com/in/shraddha-d-9399ba26/"
               target="_blank"
@@ -193,7 +197,7 @@ export default function About() {
         </div>
 
         {/* By The Numbers */}
-        <div style={{ marginTop: 80, paddingTop: 64, borderTop: `1px solid ${C.border}` }}>
+        <div className="about-numbers" style={{ marginTop: 80, paddingTop: 64, borderTop: `1px solid ${C.border}` }}>
           <h3 style={{
             fontSize: 28,
             fontWeight: 600,
@@ -207,7 +211,7 @@ export default function About() {
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: 40,
             maxWidth: 900,
             margin: '0 auto',

@@ -181,8 +181,12 @@ export default function ResumeToolsHub({ user }) {
         WebkitOverflowScrolling: 'touch',
       }}>
         <style>{`
+          body { overflow-x: hidden; }
           .resume-tabs::-webkit-scrollbar { display: none; }
           .resume-tabs { -ms-overflow-style: none; scrollbar-width: none; }
+          @media (max-width: 768px) {
+            .resume-tab-btn { padding: 12px 14px !important; font-size: 12px !important; min-height: 44px !important; }
+          }
         `}</style>
         <div className="resume-tabs" style={{
           display: 'flex',
@@ -192,9 +196,11 @@ export default function ResumeToolsHub({ user }) {
           {tabs.map(tab => (
             <button
               key={tab.id}
+              className="resume-tab-btn"
               onClick={() => setActiveTab(tab.id)}
               style={{
                 padding: '16px 24px',
+                minHeight: 60,
                 background: 'none',
                 border: 'none',
                 fontSize: 14,
