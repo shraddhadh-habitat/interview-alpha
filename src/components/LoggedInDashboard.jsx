@@ -143,7 +143,7 @@ export default function LoggedInDashboard({ user, profile }) {
           style={{
             fontSize: 24,
             fontWeight: 500,
-            marginBottom: 40,
+            marginBottom: 8,
             fontFamily: "'Instrument Serif', serif",
           }}
         >
