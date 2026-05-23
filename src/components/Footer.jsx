@@ -111,13 +111,13 @@ export default function Footer() {
             <FooterLink onClick={() => {
               const el = document.getElementById('how-it-works');
               if (el) {
-                el.scrollIntoView({ behavior: 'smooth' });
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               } else {
                 window.location.href = '/';
                 setTimeout(() => {
                   const section = document.getElementById('how-it-works');
-                  if (section) section.scrollIntoView({ behavior: 'smooth' });
-                }, 500);
+                  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 800);
               }
             }}>
               How it Works

@@ -21,7 +21,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
       background: C.bg,
       display: 'flex',
       alignItems: 'center',
-      paddingTop: user ? '16px' : '8px',
+      paddingTop: user ? '0px' : '8px',
       paddingBottom: '24px',
     }}>
       <style>{`
@@ -405,19 +405,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         margin: '0 auto',
         padding: '0 40px',
       }}>
-        {/* Section label */}
-        <div style={{
-          fontSize: '13px',
-          letterSpacing: '2px',
+        {/* Section heading */}
+        <h2 style={{
+          fontSize: '20px',
+          fontWeight: 700,
           color: '#1B1B18',
-          fontWeight: 900,
           textAlign: 'center',
           marginBottom: '48px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
-          textShadow: '0 0 0 #1B1B18',
+          margin: '0 0 48px 0',
         }}>
           How it works
-        </div>
+        </h2>
 
         {/* 3 cards grid */}
         <div className="how-grid" style={{
