@@ -48,25 +48,28 @@ function FounderAvatar() {
 
 export default function About() {
   return (
-    <div style={{ width: '100%', minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, boxSizing: 'border-box' }}>
+    <div style={{ width: '100%', minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, boxSizing: 'border-box', overflowX: 'hidden' }}>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         @media (max-width: 768px) {
-          .about-container { padding: 40px 16px !important; }
-          .about-header { padding-bottom: 40px !important; }
+          .about-container { padding: 32px 16px !important; }
+          .about-header { padding-bottom: 24px !important; margin-bottom: 32px !important; }
+          .about-header h1 { font-size: 24px !important; }
+          .about-header p { font-size: 14px !important; }
           .about-bio-section { max-width: 100% !important; margin-bottom: 40px !important; }
-          .about-name { font-size: 24px !important; }
-          .about-title { font-size: 14px !important; }
-          .about-bio-text { font-size: 15px !important; line-height: 1.8 !important; }
-          .about-numbers { padding-top: 40px !important; margin-top: 40px !important; }
-          .about-links { flex-direction: column !important; gap: 16px !important; }
+          .about-name { font-size: 20px !important; }
+          .about-title { font-size: 12px !important; }
+          .about-bio-text { font-size: 14px !important; line-height: 1.7 !important; }
+          .about-bio-text p { word-break: break-word !important; }
+          .about-numbers { padding-top: 32px !important; margin-top: 32px !important; }
+          .about-links { flex-direction: column !important; gap: 12px !important; }
         }
       `}</style>
 
       <div className="about-container" style={{ width: '100%', maxWidth: 1200, margin: '0 auto', padding: '80px 40px', boxSizing: 'border-box' }}>
 
         {/* Header */}
-        <div className="about-header" style={{ textAlign: 'center', marginBottom: 64 }}>
+        <div className="about-header" style={{ textAlign: 'center', marginBottom: 64, width: '100%' }}>
           <h1 style={{
             fontFamily: "'Instrument Serif', serif",
             fontSize: 48,
@@ -86,7 +89,7 @@ export default function About() {
         </div>
 
         {/* Founder Section */}
-        <div className="about-bio-section" style={{ maxWidth: 680, margin: '0 auto 80px' }}>
+        <div className="about-bio-section" style={{ width: '100%', maxWidth: 680, margin: '0 auto 80px', boxSizing: 'border-box' }}>
 
           {/* Avatar */}
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 28 }}>
@@ -114,7 +117,7 @@ export default function About() {
           </p>
 
           {/* Bio Text */}
-          <div className="about-bio-text" style={{ fontSize: 16, lineHeight: 1.8, color: C.text }}>
+          <div className="about-bio-text" style={{ width: '100%', fontSize: 16, lineHeight: 1.8, color: C.text, boxSizing: 'border-box', wordBreak: 'break-word' }}>
             <p style={{ marginBottom: 20 }}>
               I've spent 16 years building products, with 10 of those years deep in fintech, working across some of the most complex systems in financial services.
             </p>
@@ -161,7 +164,7 @@ export default function About() {
           </div>
 
           {/* Contact Links */}
-          <div className="about-links" style={{ marginTop: 40, paddingTop: 32, borderTop: `1px solid ${C.border}`, display: 'flex', gap: 32, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="about-links" style={{ width: '100%', marginTop: 40, paddingTop: 32, borderTop: `1px solid ${C.border}`, display: 'flex', gap: 32, justifyContent: 'center', flexWrap: 'wrap', boxSizing: 'border-box' }}>
             <a
               href="https://www.linkedin.com/in/shraddha-d-9399ba26/"
               target="_blank"
