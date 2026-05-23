@@ -251,9 +251,8 @@ export default function ResumeOptimizer({ user }) {
   };
 
   return (
-    <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto', paddingTop: 70, boxSizing: 'border-box', overflowX: 'hidden' }}>
+    <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
       <style>{`
-        body { overflow-x: hidden; }
         @media (max-width: 768px) {
           .optimize-input-grid { grid-template-columns: 1fr !important; }
           .keyword-grid { grid-template-columns: 1fr !important; }

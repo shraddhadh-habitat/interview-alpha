@@ -181,7 +181,6 @@ export default function ResumeToolsHub({ user }) {
         WebkitOverflowScrolling: 'touch',
       }}>
         <style>{`
-          body { overflow-x: hidden; }
           .resume-tabs::-webkit-scrollbar { display: none; }
           .resume-tabs { -ms-overflow-style: none; scrollbar-width: none; }
           @media (max-width: 768px) {

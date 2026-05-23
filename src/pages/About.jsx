@@ -48,10 +48,9 @@ function FounderAvatar() {
 
 export default function About() {
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text }}>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { overflow-x: hidden; }
         @media (max-width: 768px) {
           .about-container { padding: 40px 16px !important; }
           .about-header { padding-bottom: 40px !important; }
@@ -64,7 +63,7 @@ export default function About() {
         }
       `}</style>
 
-      <div className="about-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 40px', paddingTop: 70 }}>
+      <div className="about-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 40px' }}>
 
         {/* Header */}
         <div className="about-header" style={{ textAlign: 'center', marginBottom: 64 }}>

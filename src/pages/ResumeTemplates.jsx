@@ -88,10 +88,8 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
       fontFamily: "'Plus Jakarta Sans', sans-serif",
       color: C.text,
       paddingTop: NAV_H,
-      overflowX: 'hidden',
     }}>
       <style>{`
-        body { overflow-x: hidden; }
         @media (max-width: 768px) {
           .templates-container { padding: 24px 16px !important; }
           .templates-hero { padding: 32px 16px !important; }

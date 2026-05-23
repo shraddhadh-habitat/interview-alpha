@@ -15,7 +15,6 @@ const C = {
 const globalStyles = `
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   * { box-sizing: border-box; }
-  body { overflow-x: hidden; }
   @media (max-width: 768px) {
     .sg-page-pad { padding: 24px 16px !important; }
     .sg-section-pad { padding: 16px 16px 24px !important; }
@@ -289,10 +288,10 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
   }, [selectedRole]);
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 70, fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'hidden', boxSizing: 'border-box' }}>
+    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{globalStyles}</style>
 
-      <div className="sg-page-pad" style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px', boxSizing: 'border-box' }}>
+      <div className="sg-page-pad" style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
 
         {/* Role Selector */}
         <div style={{ marginBottom: 32, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>

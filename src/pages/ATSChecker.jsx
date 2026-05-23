@@ -202,11 +202,9 @@ export default function ATSChecker({ user }) {
   };
 
   return (
-    <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto', paddingTop: 70, boxSizing: 'border-box' }}>
+    <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto', boxSizing: 'border-box' }}>
       <style>{`
-        body { overflow-x: hidden; }
         @media (max-width: 768px) {
-          .ats-container { padding: 24px 16px !important; }
           .ats-input-grid { grid-template-columns: 1fr !important; }
           .ats-scores-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .ats-textarea { font-size: 16px !important; }
