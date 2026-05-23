@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from './lib/supabase';
 import InterviewAlpha from './InterviewAlpha';
 import LandingPage from './components/LandingPage';
-import LoggedInDashboard from './components/LoggedInDashboard';
 import PastSessions from './pages/PastSessions';
 import PracticeQA from './pages/PracticeQA';
 import MyProgress from './pages/MyProgress';
@@ -651,19 +650,11 @@ export default function App() {
         />
         <div style={{ flex: 1 }}>
           {page === 'interview'   && (
-            <>
-              {user && (
-                <LoggedInDashboard
-                  user={user}
-                  profile={profile}
-                />
-              )}
-              <LandingPage
-                user={user}
-                onNavigate={(destination) => setPage(destination)}
-                onLogin={() => { setPostLoginDestination('practice'); setLoginMessage('Sign up to get AI feedback'); setShowLoginModal(true); }}
-              />
-            </>
+            <LandingPage
+              user={user}
+              onNavigate={(destination) => setPage(destination)}
+              onLogin={() => { setPostLoginDestination('practice'); setLoginMessage('Sign up to get AI feedback'); setShowLoginModal(true); }}
+            />
           )}
           {page === 'practice'    && (
             <PracticeQA
