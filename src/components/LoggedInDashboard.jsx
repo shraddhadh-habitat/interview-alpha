@@ -265,18 +265,16 @@ export default function LoggedInDashboard({ user, profile }) {
           </div>
         )}
 
-        {/* Smart Context-Aware CTA */}
+        {/* Smart Context-Aware CTA - only for users with at least 1 attempt */}
         {(() => {
           const attemptCount = practiceAttempts.length;
+          if (attemptCount === 0) return null;
+
           let ctaMessage = '';
           let ctaButtonText = '';
           let ctaAction = null;
 
-          if (attemptCount === 0) {
-            ctaMessage = "You haven't tried a question yet";
-            ctaButtonText = 'Answer your first question';
-            ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
-          } else if (attemptCount >= 1 && attemptCount < 5) {
+          if (attemptCount >= 1 && attemptCount < 5) {
             ctaMessage = `You've practiced ${attemptCount} ${attemptCount === 1 ? 'question' : 'questions'}. Keep building momentum.`;
             ctaButtonText = 'Practice next question';
             ctaAction = () => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }));
