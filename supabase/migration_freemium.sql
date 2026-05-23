@@ -17,7 +17,7 @@ create table if not exists public.payment_requests (
   id           uuid        primary key default gen_random_uuid(),
   user_id      uuid        references auth.users not null,
   user_email   text        not null,
-  plan         text        not null,       -- 'monthly' | 'yearly'
+  plan         text        not null,       -- 'monthly' | 'quarterly' | 'yearly'
   amount_inr   integer     not null,
   upi_ref      text        not null,
   status       text        not null default 'pending',  -- 'pending' | 'approved' | 'rejected'
@@ -65,6 +65,8 @@ begin
 
   expiry := case when req.plan = 'yearly'
                  then now() + interval '1 year'
+                 when req.plan = 'quarterly'
+                 then now() + interval '3 months'
                  else now() + interval '1 month' end;
 
   update public.payment_requests
