@@ -133,18 +133,20 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             Answer your first question
           </button>
 
-          {/* Reassurance text */}
-          <p style={{
-            fontSize: '13px',
-            color: '#1B1B18',
-            marginTop: '12px',
-            marginBottom: '0',
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontWeight: 900,
-            textShadow: '0 0 0 #1B1B18',
-          }}>
-            No resume. No setup. Free. Takes 2 minutes.
-          </p>
+          {/* Reassurance text - hidden for logged-in users */}
+          {!user && (
+            <p style={{
+              fontSize: '13px',
+              color: '#1B1B18',
+              marginTop: '12px',
+              marginBottom: '0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 900,
+              textShadow: '0 0 0 #1B1B18',
+            }}>
+              No resume. No setup. Free. Takes 2 minutes.
+            </p>
+          )}
 
           {/* Secondary link */}
           <button
@@ -1038,16 +1040,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           >
             Answer your first question
           </button>
-          <p style={{
-            fontSize: '13px',
-            color: '#1B1B18',
-            marginTop: '12px',
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontWeight: 900,
-            textShadow: '0 0 0 #1B1B18',
-          }}>
-            Free. No signup needed to browse.
-          </p>
+          {!user && (
+            <p style={{
+              fontSize: '13px',
+              color: '#1B1B18',
+              marginTop: '12px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 900,
+              textShadow: '0 0 0 #1B1B18',
+            }}>
+              Free. No signup needed to browse.
+            </p>
+          )}
         </div>
       </div>
     </div>
