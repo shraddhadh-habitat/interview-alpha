@@ -124,7 +124,7 @@ export default function LoggedInDashboard({ user, profile }) {
       style={{
         background: C.bgSoft,
         padding: '48px 28px',
-        paddingTop: NAV_H + 48,
+        paddingTop: NAV_H + 8,
         borderBottom: `1px solid ${C.border}`,
       }}
     >
