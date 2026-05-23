@@ -1,3 +1,5 @@
+const NAV_H = 60;
+
 const C = {
   bg: '#FFFFFF',
   text: '#1B1B18',
@@ -21,7 +23,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
       background: C.bg,
       display: 'flex',
       alignItems: 'center',
-      paddingTop: user ? '0px' : '8px',
+      paddingTop: user ? 0 : NAV_H,
       paddingBottom: '24px',
     }}>
       <style>{`
