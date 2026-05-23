@@ -38,9 +38,9 @@ function ResumeScore() {
       background: C.bg,
       fontFamily: "'Plus Jakarta Sans', sans-serif",
       color: C.text,
-      paddingTop: 8,
+      paddingTop: 0,
     }}>
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 28px' }}>
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '32px 28px 48px 28px' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <h1 style={{
             fontFamily: "'Instrument Serif', serif",
