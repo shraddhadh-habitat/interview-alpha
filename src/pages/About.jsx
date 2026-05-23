@@ -63,7 +63,7 @@ export default function About() {
         }
       `}</style>
 
-      <div className="about-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 40px' }}>
+      <div className="about-container" style={{ width: '100%', maxWidth: 1200, margin: '0 auto', padding: '80px 40px', boxSizing: 'border-box' }}>
 
         {/* Header */}
         <div className="about-header" style={{ textAlign: 'center', marginBottom: 64 }}>
