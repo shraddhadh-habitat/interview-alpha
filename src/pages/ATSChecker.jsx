@@ -202,7 +202,7 @@ export default function ATSChecker({ user }) {
   };
 
   return (
-    <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto', boxSizing: 'border-box' }}>
+    <div style={{ width: '100%', padding: '40px 20px', maxWidth: '1200px', margin: '0 auto', boxSizing: 'border-box' }}>
       <style>{`
         @media (max-width: 768px) {
           .ats-input-grid { grid-template-columns: 1fr !important; }

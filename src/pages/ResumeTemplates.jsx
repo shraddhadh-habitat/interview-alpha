@@ -83,11 +83,13 @@ function TemplatePreview({ template }) {
 export default function ResumeTemplates({ hideAtsButton = false }) {
   return (
     <div style={{
+      width: '100%',
       minHeight: '100vh',
       background: C.bg,
       fontFamily: "'Plus Jakarta Sans', sans-serif",
       color: C.text,
       paddingTop: NAV_H,
+      boxSizing: 'border-box',
     }}>
       <style>{`
         @media (max-width: 768px) {

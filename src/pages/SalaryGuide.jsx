@@ -288,10 +288,10 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
   }, [selectedRole]);
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ width: '100%', minHeight: '100vh', background: C.bgSoft, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif", boxSizing: 'border-box' }}>
       <style>{globalStyles}</style>
 
-      <div className="sg-page-pad" style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px' }}>
+      <div className="sg-page-pad" style={{ maxWidth: 860, margin: '0 auto', padding: '40px 28px', width: '100%', boxSizing: 'border-box' }}>
 
         {/* Role Selector */}
         <div style={{ marginBottom: 32, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>

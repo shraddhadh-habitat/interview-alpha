@@ -48,7 +48,7 @@ function FounderAvatar() {
 
 export default function About() {
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text }}>
+    <div style={{ width: '100%', minHeight: '100vh', background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, boxSizing: 'border-box' }}>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         @media (max-width: 768px) {

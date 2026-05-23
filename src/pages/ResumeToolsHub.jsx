@@ -166,9 +166,11 @@ export default function ResumeToolsHub({ user }) {
 
   return (
     <div style={{
+      width: '100%',
       minHeight: '100vh',
       background: C.bg,
       fontFamily: "'Plus Jakarta Sans', sans-serif",
+      boxSizing: 'border-box',
     }}>
       {/* Tabs Bar */}
       <div style={{
