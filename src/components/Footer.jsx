@@ -88,14 +88,8 @@ export default function Footer() {
             <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'scorecard' }))}>
               Scorecard
             </FooterLink>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'ats-checker' }))}>
-              ATS Resume Checker
-            </FooterLink>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'resume-optimizer' }))}>
-              Resume Optimizer
-            </FooterLink>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'resume-templates' }))}>
-              Resume Templates
+            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'resume-tools' }))}>
+              Resume Tools
             </FooterLink>
             <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'salary' }))}>
               Salary Guide

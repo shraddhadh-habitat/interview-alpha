@@ -80,7 +80,7 @@ function TemplatePreview({ template }) {
   );
 }
 
-export default function ResumeTemplates() {
+export default function ResumeTemplates({ hideAtsButton = false }) {
   return (
     <div style={{
       minHeight: '100vh',
@@ -295,34 +295,36 @@ export default function ResumeTemplates() {
         </div>
 
         {/* CTA */}
-        <div style={{ textAlign: 'center' }}>
-          <button
-            onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'ats-checker' }))}
-            style={{
-              padding: '14px 32px',
-              height: 44,
-              background: C.yellow,
-              color: C.text,
-              border: 'none',
-              borderRadius: 10,
-              fontSize: 15,
-              fontWeight: 600,
-              cursor: 'pointer',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.opacity = '0.9';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(253, 205, 52, 0.25)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.opacity = '1';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-          >
-            Check if your resume passes ATS
-          </button>
-        </div>
+        {!hideAtsButton && (
+          <div style={{ textAlign: 'center' }}>
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'resume-tools' }))}
+              style={{
+                padding: '14px 32px',
+                height: 44,
+                background: C.yellow,
+                color: C.text,
+                border: 'none',
+                borderRadius: 10,
+                fontSize: 15,
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.opacity = '0.9';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(253, 205, 52, 0.25)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              Check if your resume passes ATS
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
