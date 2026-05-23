@@ -22,7 +22,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
       display: 'flex',
       alignItems: 'center',
       paddingTop: '32px',
-      paddingBottom: '40px',
+      paddingBottom: '24px',
     }}>
       <style>{`
         @media (max-width: 768px) {
@@ -572,7 +572,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
   // Guided paths section
   const GuidedPathsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
+    <div style={{ background: C.bg, paddingTop: '16px', paddingBottom: '48px' }}>
       <style>{`
         @media (max-width: 768px) {
           .paths-container { padding: 0 20px !important; }
