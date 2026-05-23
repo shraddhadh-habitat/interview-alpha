@@ -233,11 +233,11 @@ export default function ResumeToolsHub({ user }) {
       </div>
 
       {/* Tab Content */}
-      <div style={{ width: '100%', boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', flex: 1, boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
         {activeTab === 'ats-checker' && <ATSChecker user={user} />}
         {activeTab === 'resume-optimizer' && <ResumeOptimizer user={user} />}
         {activeTab === 'templates' && (
-          <div style={{ width: '100%', paddingTop: 0, boxSizing: 'border-box' }}>
+          <div style={{ width: '100%', paddingTop: 0, boxSizing: 'border-box', flex: 1, display: 'flex', flexDirection: 'column' }}>
             <ResumeTemplates hideAtsButton={true} />
           </div>
         )}

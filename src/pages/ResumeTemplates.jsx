@@ -104,8 +104,8 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
       `}</style>
 
       {/* Hero Section */}
-      <div className="templates-hero" style={{ background: C.bgCard, padding: '48px 28px', borderBottom: `1px solid ${C.border}` }}>
-        <div style={{ maxWidth: 1080, margin: '0 auto', textAlign: 'center' }}>
+      <div className="templates-hero" style={{ width: '100%', background: C.bgCard, padding: '48px 28px', borderBottom: `1px solid ${C.border}`, boxSizing: 'border-box' }}>
+        <div style={{ width: '100%', maxWidth: 1080, margin: '0 auto', textAlign: 'center', boxSizing: 'border-box' }}>
           <h1 style={{
             fontFamily: "'Instrument Serif', serif",
             fontSize: 28,
@@ -129,7 +129,7 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
       </div>
 
       {/* Templates Grid */}
-      <div className="templates-container" style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 28px' }}>
+      <div className="templates-container" style={{ width: '100%', maxWidth: 1080, margin: '0 auto', padding: '48px 28px', boxSizing: 'border-box' }}>
         <div className="templates-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
