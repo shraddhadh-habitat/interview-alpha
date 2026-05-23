@@ -138,18 +138,6 @@ export default function LoggedInDashboard({ user, profile }) {
           color: C.text,
         }}
       >
-        {/* Welcome */}
-        <h1
-          style={{
-            fontSize: 24,
-            fontWeight: 500,
-            marginBottom: 8,
-            fontFamily: "'Instrument Serif', serif",
-          }}
-        >
-          Welcome back, {displayName}!
-        </h1>
-
         {/* Today's Challenge - only show if they have 1+ attempts */}
         {practiceAttempts.length >= 1 && (
           <div

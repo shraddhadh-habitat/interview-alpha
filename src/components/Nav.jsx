@@ -253,6 +253,15 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           {user ? (
             <>
+              <span style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: '#FDCD34',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                whiteSpace: 'nowrap',
+              }}>
+                Welcome back, {displayName || user?.email?.split('@')[0]}!
+              </span>
               <SubscriptionBadge profile={profile} onUpgradeClick={onUpgradeClick} />
 
               {/* Avatar with dropdown */}

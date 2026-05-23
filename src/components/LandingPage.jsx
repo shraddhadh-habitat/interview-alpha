@@ -21,7 +21,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
       background: C.bg,
       display: 'flex',
       alignItems: 'center',
-      paddingTop: '8px',
+      paddingTop: user ? '16px' : '8px',
       paddingBottom: '24px',
     }}>
       <style>{`
