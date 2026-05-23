@@ -94,6 +94,9 @@ export default function Footer() {
             <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'resume-optimizer' }))}>
               Resume Optimizer
             </FooterLink>
+            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'resume-templates' }))}>
+              Resume Templates
+            </FooterLink>
             <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'salary' }))}>
               Salary Guide
             </FooterLink>

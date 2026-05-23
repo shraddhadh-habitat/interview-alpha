@@ -8,6 +8,7 @@ import MyProgress from './pages/MyProgress';
 import SalaryGuide from './pages/SalaryGuide';
 import ATSChecker from './pages/ATSChecker';
 import ResumeOptimizer from './pages/ResumeOptimizer';
+import ResumeTemplates from './pages/ResumeTemplates';
 import LearningResources from './pages/LearningResources';
 import CompanyQuestions from './pages/CompanyQuestions';
 import UpgradePage from './pages/UpgradePage';
@@ -670,6 +671,7 @@ export default function App() {
           {page === 'salary'      && <SalaryGuide user={user} onPracticeCTA={handleLandingPrimaryCTA} />}
           {page === 'ats-checker' && <ATSChecker user={user} />}
           {page === 'resume-optimizer' && <ResumeOptimizer user={user} />}
+          {page === 'resume-templates' && <ResumeTemplates />}
           {page === 'resources'   && <LearningResources />}
           {page === 'upgrade'     && (
             <UpgradePage
