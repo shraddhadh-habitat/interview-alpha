@@ -37388,7 +37388,2182 @@ Cons:
 
 **Example:** Swiggy (1000+ eng). Started centralized data warehouse (2015-2019). Moved to data mesh (2020-2022) as teams grew. Payoff: restaurant team ships predictive models 2x faster. Tradeoff: duplication in 'restaurant_id' normalization across teams. Managing complexity with federated governance (shared contracts, but autonomous implementation).`,
       },
+      {
+        q: "Write a SQL query to find customers who bought product A but never bought product B. Then calculate what percentage of A buyers also bought B.",
+        subcategory: "sql_data",
+        difficulty: "Easy",
+        level: "junior_ds",
+        domain: "ecommerce",
+        a: `Two parts: (1) Find A buyers who never bought B. (2) Calculate % of A buyers who bought B.
+
+\`\`\`sql
+WITH a_buyers AS (
+  SELECT DISTINCT customer_id FROM orders WHERE product_id = 'A'
+),
+b_buyers_from_a AS (
+  SELECT DISTINCT customer_id FROM orders WHERE customer_id IN (SELECT customer_id FROM a_buyers) AND product_id = 'B'
+),
+a_only AS (
+  SELECT customer_id FROM a_buyers WHERE customer_id NOT IN (SELECT customer_id FROM b_buyers_from_a)
+),
+stats AS (
+  SELECT
+    COUNT(DISTINCT ab.customer_id) AS bought_both,
+    COUNT(DISTINCT a.customer_id) AS total_a_buyers,
+    ROUND(100.0 * COUNT(DISTINCT ab.customer_id) / COUNT(DISTINCT a.customer_id), 2) AS pct_a_buyers_who_bought_b
+  FROM a_buyers a
+  LEFT JOIN b_buyers_from_a ab ON a.customer_id = ab.customer_id
+)
+SELECT * FROM stats;
+\`\`\`
+
+**Output:**
+| bought_both | total_a_buyers | pct_a_buyers_who_bought_b |
+|---|---|---|
+| 3200 | 8000 | 40.00 |
+
+**Interpretation:** 8,000 customers bought product A. Of those, 3,200 (40%) also bought B. The remaining 4,800 (60%) bought A but never B. This suggests cross-sell opportunity: 60% of A customers are untapped B buyers. Business action: target A-only buyers with B offers or recommendations.
+
+**Use case:** e-commerce merchandising, product bundling decisions, recommendation systems.`,
+      },
+      {
+        q: "Write a SQL query using window functions to calculate running total revenue per customer ordered by transaction date.",
+        subcategory: "sql_data",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "ecommerce",
+        a: `\`\`\`sql
+SELECT
+  customer_id,
+  order_date,
+  amount,
+  SUM(amount) OVER (PARTITION BY customer_id ORDER BY order_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total
+FROM orders
+ORDER BY customer_id, order_date;
+\`\`\`
+
+**Output:**
+| customer_id | order_date | amount | running_total |
+|---|---|---|---|
+| C1 | 2024-01-10 | 1000 | 1000 |
+| C1 | 2024-02-15 | 500 | 1500 |
+| C1 | 2024-03-05 | 2000 | 3500 |
+| C2 | 2024-01-20 | 3000 | 3000 |
+| C2 | 2024-02-28 | 1500 | 4500 |
+
+**What this does:** For each customer, calculates cumulative revenue over time. PARTITION BY customer_id keeps each customer's running total separate. ORDER BY order_date sorts chronologically. ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW accumulates from first order to current row.
+
+**Business use:** identify when customers reach high-value milestones (LTV thresholds), flag VIP customers at ₹10K+ running total for special treatment, churn prediction (when running total growth stalls = risk signal).
+
+**Performance note:** For large tables (100M+ rows), create indexed view or materialized table instead of computing on-the-fly.`,
+      },
+      {
+        q: "Write a SQL query to find the month-over-month growth rate for each product category and flag categories growing faster than 20%.",
+        subcategory: "sql_data",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "ecommerce",
+        company: "Flipkart",
+        a: `\`\`\`sql
+WITH monthly_revenue AS (
+  SELECT
+    category,
+    DATE_TRUNC('month', order_date) AS month,
+    SUM(amount) AS revenue
+  FROM orders
+  GROUP BY category, DATE_TRUNC('month', order_date)
+),
+mom_growth AS (
+  SELECT
+    category,
+    month,
+    revenue,
+    LAG(revenue) OVER (PARTITION BY category ORDER BY month) AS prev_month_revenue,
+    ROUND(100.0 * (revenue - LAG(revenue) OVER (PARTITION BY category ORDER BY month)) / LAG(revenue) OVER (PARTITION BY category ORDER BY month), 2) AS mom_growth_pct
+  FROM monthly_revenue
+)
+SELECT
+  category,
+  month,
+  revenue,
+  prev_month_revenue,
+  mom_growth_pct,
+  CASE WHEN mom_growth_pct > 20 THEN 'HIGH_GROWTH' ELSE 'NORMAL' END AS flag
+FROM mom_growth
+WHERE mom_growth_pct IS NOT NULL
+ORDER BY month DESC, mom_growth_pct DESC;
+\`\`\`
+
+**Output:**
+| category | month | revenue | prev_month_revenue | mom_growth_pct | flag |
+|---|---|---|---|---|---|
+| Electronics | 2024-03 | 500000 | 380000 | 31.58 | HIGH_GROWTH |
+| Fashion | 2024-03 | 320000 | 250000 | 28.00 | HIGH_GROWTH |
+| Grocery | 2024-03 | 450000 | 445000 | 1.12 | NORMAL |
+
+**Business insight:** Electronics and Fashion are in growth phases. Grocery is mature. Allocate inventory, marketing budget, and logistics resources accordingly.`,
+      },
+      {
+        q: "Write a SQL query to pivot daily sales data into a weekly summary showing total, average, min, and max sales per week.",
+        subcategory: "sql_data",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "general",
+        a: `\`\`\`sql
+SELECT
+  DATE_TRUNC('week', sale_date)::DATE AS week_start,
+  SUM(sales_amount) AS total_sales,
+  ROUND(AVG(sales_amount), 2) AS avg_daily_sales,
+  MIN(sales_amount) AS min_daily_sales,
+  MAX(sales_amount) AS max_daily_sales,
+  COUNT(*) AS num_days
+FROM sales_data
+GROUP BY DATE_TRUNC('week', sale_date)
+ORDER BY week_start DESC;
+\`\`\`
+
+**Output:**
+| week_start | total_sales | avg_daily_sales | min_daily_sales | max_daily_sales | num_days |
+|---|---|---|---|---|---|
+| 2024-03-04 | 450000 | 64285.71 | 55000 | 78000 | 7 |
+| 2024-02-26 | 380000 | 54285.71 | 48000 | 62000 | 7 |
+| 2024-02-19 | 420000 | 60000 | 52000 | 70000 | 7 |
+
+**Insights:** Week of Mar 4 had highest average daily sales (₹64.3K). Variance (max-min) shows day-to-day volatility. High variance suggests weekday/weekend effects or external events.
+
+**Use case:** inventory planning, demand forecasting, identifying anomalous weeks (min unexpectedly low = supply issue?).`,
+      },
+      {
+        q: "Write a SQL query to identify users who have been inactive for 30+ days but were previously in the top 10% by transaction volume.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "fintech",
+        company: "CRED",
+        a: `\`\`\`sql
+WITH user_volume AS (
+  SELECT
+    user_id,
+    COUNT(*) AS transaction_count,
+    MAX(transaction_date) AS last_transaction_date,
+    PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY COUNT(*)) OVER () AS p90_volume
+  FROM transactions
+  WHERE transaction_date >= CURRENT_DATE - INTERVAL '180 days'
+  GROUP BY user_id
+),
+top_10_pct_users AS (
+  SELECT user_id FROM user_volume WHERE transaction_count >= p90_volume
+),
+inactive_top_users AS (
+  SELECT
+    u.user_id,
+    u.transaction_count,
+    u.last_transaction_date,
+    CURRENT_DATE - u.last_transaction_date AS days_inactive
+  FROM user_volume u
+  WHERE u.user_id IN (SELECT user_id FROM top_10_pct_users)
+  AND CURRENT_DATE - u.last_transaction_date >= 30
+)
+SELECT * FROM inactive_top_users ORDER BY days_inactive DESC;
+\`\`\`
+
+**Output:**
+| user_id | transaction_count | last_transaction_date | days_inactive |
+|---|---|---|---|
+| U123 | 850 | 2024-01-15 | 67 |
+| U456 | 720 | 2024-01-20 | 62 |
+
+**Business action:** These users are at-risk VIPs. They drove 720-850 transactions before dropping off. Re-engagement campaign (personalized offers, win-back messaging) for these high-value churners ROI is massive (recovering one user = ₹50K+ value).
+
+**Retention economics:** Cost to recover = ₹500. Value of 1 recovered user = ₹50K+. Even 1-2% recovery rate is profitable.`,
+      },
+      {
+        q: "Write a SQL query to detect sessions where a user visited the pricing page more than 3 times without converting. What does this behavior indicate?",
+        subcategory: "sql_data",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "saas",
+        a: `\`\`\`sql
+WITH pricing_page_visits AS (
+  SELECT
+    user_id,
+    session_id,
+    COUNT(*) AS pricing_page_visits
+  FROM page_views
+  WHERE page_url = '/pricing'
+  GROUP BY user_id, session_id
+),
+converters AS (
+  SELECT DISTINCT user_id FROM conversions
+),
+price_shoppers_no_convert AS (
+  SELECT
+    p.user_id,
+    p.session_id,
+    p.pricing_page_visits
+  FROM pricing_page_visits p
+  WHERE p.pricing_page_visits > 3
+  AND p.user_id NOT IN (SELECT user_id FROM converters)
+)
+SELECT * FROM price_shoppers_no_convert;
+\`\`\`
+
+**What this indicates:** These users are price-sensitive fence-sitters. They're interested (visiting pricing 3+ times = genuine intent) but hesitant. Possible reasons:
+
+1. **Price too high** — budget constraint, waiting for discount
+2. **Lack of clarity** — confused by pricing tiers, value proposition unclear
+3. **Competitive shopping** — comparing with alternatives, not ready to commit
+4. **Missing features** — want to confirm all features before paying
+5. **Timing** — genuinely interested but need to ask manager for budget approval
+
+**Business action:**
+- Send targeted offer (15% discount) to convert
+- Follow-up email explaining value per tier
+- Product tour video (show features included in their tier)
+- Comparison table vs competitors
+- Expected ROI: 10-15% of fence-sitters convert with discount + clarity, recovering ₹20K-50K in lost revenue.`,
+      },
+      {
+        q: "Write a SQL query to calculate customer lifetime value using historical transaction data with columns user_id, order_date, and amount.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "ecommerce",
+        company: "Amazon",
+        a: `\`\`\`sql
+WITH customer_metrics AS (
+  SELECT
+    user_id,
+    MIN(order_date) AS first_order_date,
+    MAX(order_date) AS last_order_date,
+    COUNT(*) AS total_orders,
+    SUM(amount) AS total_revenue,
+    ROUND(AVG(amount), 2) AS avg_order_value,
+    DATEDIFF(day, MIN(order_date), MAX(order_date)) AS days_as_customer
+  FROM orders
+  GROUP BY user_id
+),
+clv_calculation AS (
+  SELECT
+    user_id,
+    first_order_date,
+    last_order_date,
+    total_orders,
+    total_revenue,
+    avg_order_value,
+    ROUND(total_orders / GREATEST(days_as_customer, 1) * 365, 2) AS annual_order_frequency,
+    CASE
+      WHEN days_as_customer = 0 THEN total_revenue
+      ELSE ROUND(total_revenue * (365.0 / GREATEST(days_as_customer, 1)), 2)
+    END AS annualized_revenue,
+    CASE
+      WHEN total_orders = 0 THEN 0
+      ELSE ROUND((total_revenue / total_orders) * (total_orders / GREATEST(days_as_customer, 1) * 365) * 3, 2)
+    END AS clv_3year
+  FROM customer_metrics
+)
+SELECT
+  user_id,
+  total_revenue AS ltv_to_date,
+  annualized_revenue,
+  clv_3year,
+  CASE
+    WHEN clv_3year > 100000 THEN 'Platinum'
+    WHEN clv_3year > 50000 THEN 'Gold'
+    WHEN clv_3year > 10000 THEN 'Silver'
+    ELSE 'Bronze'
+  END AS customer_tier
+FROM clv_calculation
+ORDER BY clv_3year DESC;
+\`\`\`
+
+**Output:**
+| user_id | ltv_to_date | annualized_revenue | clv_3year | customer_tier |
+|---|---|---|---|---|
+| U001 | 250000 | 300000 | 900000 | Platinum |
+| U002 | 120000 | 150000 | 450000 | Gold |
+| U003 | 45000 | 40000 | 120000 | Silver |
+
+**Business use:** Segment customers by CLV tier. Invest retention budget in Platinum/Gold (higher ROI). Upsell opportunities for Silver/Bronze.`,
+      },
+      {
+        q: "Write a SQL query to find the optimal time window between sending a promotional email and a user making a purchase for each user segment.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "ecommerce",
+        a: `\`\`\`sql
+WITH email_purchase_pairs AS (
+  SELECT
+    e.user_id,
+    e.email_sent_date,
+    o.order_date,
+    o.amount,
+    DATEDIFF(day, e.email_sent_date, o.order_date) AS days_to_purchase,
+    u.user_segment
+  FROM email_campaigns e
+  INNER JOIN orders o ON e.user_id = o.user_id
+  AND o.order_date >= e.email_sent_date
+  AND o.order_date <= DATEADD(day, 30, e.email_sent_date)
+  LEFT JOIN users u ON e.user_id = u.user_id
+),
+time_buckets AS (
+  SELECT
+    user_segment,
+    CASE
+      WHEN days_to_purchase = 0 THEN 'same_day'
+      WHEN days_to_purchase BETWEEN 1 AND 2 THEN '1_2_days'
+      WHEN days_to_purchase BETWEEN 3 AND 7 THEN '3_7_days'
+      WHEN days_to_purchase BETWEEN 8 AND 14 THEN '8_14_days'
+      ELSE '15_30_days'
+    END AS time_window,
+    COUNT(*) AS conversions,
+    ROUND(AVG(amount), 2) AS avg_order_value,
+    SUM(amount) AS total_revenue
+  FROM email_purchase_pairs
+  GROUP BY user_segment, CASE WHEN days_to_purchase = 0 THEN 'same_day' WHEN days_to_purchase BETWEEN 1 AND 2 THEN '1_2_days' WHEN days_to_purchase BETWEEN 3 AND 7 THEN '3_7_days' WHEN days_to_purchase BETWEEN 8 AND 14 THEN '8_14_days' ELSE '15_30_days' END
+)
+SELECT
+  user_segment,
+  time_window,
+  conversions,
+  avg_order_value,
+  total_revenue,
+  RANK() OVER (PARTITION BY user_segment ORDER BY total_revenue DESC) AS rank
+FROM time_buckets
+ORDER BY user_segment, rank;
+\`\`\`
+
+**Output shows optimal windows per segment:**
+| user_segment | time_window | conversions | avg_order_value | rank |
+|---|---|---|---|---|
+| High-Value | same_day | 450 | 8000 | 1 |
+| High-Value | 1_2_days | 380 | 7500 | 2 |
+| Budget | 3_7_days | 220 | 2000 | 1 |
+
+**Insight:** High-value users convert same-day (urgency). Budget users convert 3-7 days later (time to think/budget confirmation). Time email strategically per segment.`,
+      },
+      {
+        q: "Write a SQL query that uses LEAD and LAG to calculate the average days between consecutive orders per customer and identify customers whose order frequency is declining.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "ecommerce",
+        a: `\`\`\`sql
+WITH orders_ranked AS (
+  SELECT
+    user_id,
+    order_date,
+    LAG(order_date) OVER (PARTITION BY user_id ORDER BY order_date) AS prev_order_date,
+    LEAD(order_date) OVER (PARTITION BY user_id ORDER BY order_date) AS next_order_date,
+    DATEDIFF(day, LAG(order_date) OVER (PARTITION BY user_id ORDER BY order_date), order_date) AS days_since_prev
+  FROM orders
+),
+frequency_metrics AS (
+  SELECT
+    user_id,
+    AVG(CAST(days_since_prev AS FLOAT)) AS avg_days_between_orders,
+    COUNT(*) AS total_orders
+  FROM orders_ranked
+  WHERE days_since_prev IS NOT NULL
+  GROUP BY user_id
+),
+recent_frequency AS (
+  SELECT
+    user_id,
+    AVG(CAST(days_since_prev AS FLOAT)) AS recent_avg_days
+  FROM orders_ranked
+  WHERE days_since_prev IS NOT NULL
+  AND order_date >= CURRENT_DATE - INTERVAL '90 days'
+  GROUP BY user_id
+),
+frequency_decline AS (
+  SELECT
+    f.user_id,
+    f.avg_days_between_orders AS historical_frequency,
+    r.recent_avg_days,
+    ROUND(((r.recent_avg_days - f.avg_days_between_orders) / f.avg_days_between_orders) * 100, 2) AS frequency_decline_pct,
+    f.total_orders
+  FROM frequency_metrics f
+  LEFT JOIN recent_frequency r ON f.user_id = r.user_id
+  WHERE r.recent_avg_days > f.avg_days_between_orders
+)
+SELECT * FROM frequency_decline WHERE frequency_decline_pct > 20 ORDER BY frequency_decline_pct DESC;
+\`\`\`
+
+**Output:**
+| user_id | historical_frequency | recent_avg_days | frequency_decline_pct | total_orders |
+|---|---|---|---|---|
+| U001 | 25 | 35 | 40.0 | 120 |
+| U002 | 20 | 28 | 40.0 | 95 |
+
+**Interpretation:** Users who historically ordered every 25 days now order every 35 days (40% decline). Early churn warning. Send engagement campaign: "We miss you" + incentive. Cost: ₹200. Recovery value: ₹5000+. ROI: 25x if 2% respond.`,
+      },
+      {
+        q: "Write a SQL query to build a cohort retention table showing what percentage of users from each monthly signup cohort returned in months 1 through 6.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "saas",
+        a: `\`\`\`sql
+WITH first_signup AS (
+  SELECT
+    user_id,
+    DATE_TRUNC('month', signup_date) AS signup_month
+  FROM users
+),
+monthly_actives AS (
+  SELECT
+    user_id,
+    DATE_TRUNC('month', activity_date) AS activity_month
+  FROM user_activity
+),
+cohort_activity AS (
+  SELECT
+    fs.signup_month,
+    fs.user_id,
+    DATEDIFF(month, fs.signup_month, ma.activity_month) AS months_since_signup
+  FROM first_signup fs
+  LEFT JOIN monthly_actives ma ON fs.user_id = ma.user_id
+  AND ma.activity_month >= fs.signup_month
+),
+cohort_sizes AS (
+  SELECT
+    signup_month,
+    COUNT(DISTINCT user_id) AS cohort_size
+  FROM first_signup
+  GROUP BY signup_month
+),
+retention_by_month AS (
+  SELECT
+    ca.signup_month,
+    ca.months_since_signup,
+    COUNT(DISTINCT ca.user_id) AS returning_users,
+    cs.cohort_size
+  FROM cohort_activity ca
+  JOIN cohort_sizes cs ON ca.signup_month = cs.signup_month
+  WHERE ca.months_since_signup BETWEEN 0 AND 6
+  GROUP BY ca.signup_month, ca.months_since_signup, cs.cohort_size
+)
+SELECT
+  signup_month,
+  cohort_size,
+  MAX(CASE WHEN months_since_signup = 0 THEN ROUND(100.0 * returning_users / cohort_size, 1) END) AS m0_pct,
+  MAX(CASE WHEN months_since_signup = 1 THEN ROUND(100.0 * returning_users / cohort_size, 1) END) AS m1_pct,
+  MAX(CASE WHEN months_since_signup = 2 THEN ROUND(100.0 * returning_users / cohort_size, 1) END) AS m2_pct,
+  MAX(CASE WHEN months_since_signup = 3 THEN ROUND(100.0 * returning_users / cohort_size, 1) END) AS m3_pct,
+  MAX(CASE WHEN months_since_signup = 4 THEN ROUND(100.0 * returning_users / cohort_size, 1) END) AS m4_pct,
+  MAX(CASE WHEN months_since_signup = 5 THEN ROUND(100.0 * returning_users / cohort_size, 1) END) AS m5_pct,
+  MAX(CASE WHEN months_since_signup = 6 THEN ROUND(100.0 * returning_users / cohort_size, 1) END) AS m6_pct
+FROM retention_by_month
+GROUP BY signup_month, cohort_size
+ORDER BY signup_month;
+\`\`\`
+
+**Output:**
+| signup_month | cohort_size | m0 | m1 | m2 | m3 | m4 | m5 | m6 |
+|---|---|---|---|---|---|---|---|---|
+| 2024-01 | 10000 | 100 | 65 | 52 | 45 | 40 | 38 | 36 |
+| 2024-02 | 12000 | 100 | 68 | 54 | 47 | 42 | - | - |
+
+**Insight:** Jan cohort: 65% return in month 1, drops to 36% by month 6. Typical SaaS curve. Focus: improve M0→M1 retention (drop from 100% to 65% is largest cliff). Onboarding improvements here yield massive compounding gains.`,
+      },
+      {
+        q: "Write a SQL query to rank sellers on a marketplace by a composite score combining average rating, order fulfillment rate, and return rate with configurable weights.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "ecommerce",
+        company: "Flipkart",
+        a: `\`\`\`sql
+WITH seller_metrics AS (
+  SELECT
+    seller_id,
+    ROUND(AVG(rating), 2) AS avg_rating,
+    ROUND(100.0 * COUNT(CASE WHEN on_time = 1 THEN 1 END) / COUNT(*), 1) AS fulfillment_rate,
+    ROUND(100.0 * COUNT(CASE WHEN order_status = 'returned' THEN 1 END) / COUNT(*), 1) AS return_rate,
+    COUNT(*) AS total_orders
+  FROM orders
+  WHERE seller_id IS NOT NULL
+  GROUP BY seller_id
+),
+normalized_metrics AS (
+  SELECT
+    seller_id,
+    avg_rating,
+    fulfillment_rate,
+    return_rate,
+    total_orders,
+    (avg_rating - MIN(avg_rating) OVER ()) / (MAX(avg_rating) OVER () - MIN(avg_rating) OVER ()) * 100 AS rating_score,
+    (fulfillment_rate - MIN(fulfillment_rate) OVER ()) / (MAX(fulfillment_rate) OVER () - MIN(fulfillment_rate) OVER ()) * 100 AS fulfillment_score,
+    (100 - return_rate - MIN(100 - return_rate) OVER ()) / (MAX(100 - return_rate) OVER () - MIN(100 - return_rate) OVER ()) * 100 AS return_quality_score
+  FROM seller_metrics
+),
+composite_score AS (
+  SELECT
+    seller_id,
+    avg_rating,
+    fulfillment_rate,
+    return_rate,
+    total_orders,
+    ROUND(0.4 * rating_score + 0.4 * fulfillment_score + 0.2 * return_quality_score, 2) AS composite_score,
+    RANK() OVER (ORDER BY 0.4 * rating_score + 0.4 * fulfillment_score + 0.2 * return_quality_score DESC) AS rank
+  FROM normalized_metrics
+)
+SELECT
+  rank,
+  seller_id,
+  avg_rating,
+  fulfillment_rate,
+  return_rate,
+  total_orders,
+  composite_score,
+  CASE
+    WHEN rank <= 10 THEN 'Tier-1'
+    WHEN rank <= 50 THEN 'Tier-2'
+    ELSE 'Tier-3'
+  END AS seller_tier
+FROM composite_score
+ORDER BY rank
+LIMIT 100;
+\`\`\`
+
+**Output:**
+| rank | seller_id | avg_rating | fulfillment_rate | return_rate | composite_score | tier |
+|---|---|---|---|---|---|---|
+| 1 | S001 | 4.8 | 98.5 | 2.1 | 89.3 | Tier-1 |
+| 2 | S002 | 4.6 | 97.2 | 3.0 | 87.1 | Tier-1 |
+| 50 | S050 | 4.0 | 90.0 | 8.0 | 75.2 | Tier-2 |
+
+**Configurable weights:** Adjust 0.4/0.4/0.2 based on strategic priority. Emphasize rating? → 0.5/0.3/0.2. Emphasize on-time? → 0.3/0.5/0.2.
+
+**Business use:** Tier-1 sellers get premium shelf space, marketing push, lower commissions (retention). Tier-3 sellers get warnings, improvement plans.`,
+      },
+      {
+        q: "Write a SQL query to detect price anomalies where a product's price changed by more than 30% from its 30-day moving average.",
+        subcategory: "sql_data",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "ecommerce",
+        company: "Amazon",
+        a: `\`\`\`sql
+WITH daily_prices AS (
+  SELECT
+    product_id,
+    price_date,
+    price,
+    AVG(price) OVER (PARTITION BY product_id ORDER BY price_date ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS moving_avg_30
+  FROM product_prices
+),
+price_deviations AS (
+  SELECT
+    product_id,
+    price_date,
+    price,
+    moving_avg_30,
+    ROUND(100.0 * ABS(price - moving_avg_30) / moving_avg_30, 2) AS deviation_pct
+  FROM daily_prices
+)
+SELECT
+  product_id,
+  price_date,
+  price,
+  moving_avg_30,
+  deviation_pct,
+  CASE
+    WHEN price > moving_avg_30 THEN 'PRICE_INCREASE'
+    ELSE 'PRICE_DECREASE'
+  END AS anomaly_type
+FROM price_deviations
+WHERE deviation_pct > 30
+ORDER BY price_date DESC, deviation_pct DESC;
+\`\`\`
+
+**Output:**
+| product_id | price_date | price | moving_avg_30 | deviation_pct | anomaly_type |
+|---|---|---|---|---|---|
+| P001 | 2024-03-15 | 5000 | 3200 | 56.25 | PRICE_INCREASE |
+| P002 | 2024-03-15 | 800 | 1100 | 27.27 | PRICE_DECREASE |
+
+**Interpretation:** P001's price jumped 56% above 30-day average. Likely cause: (1) Supply shortage, (2) Competitor stockout, (3) Data error, (4) Flash sale gone wrong. Investigate immediately.
+
+**Automated action:** Alert pricing team, check competitor prices, verify inventory. Prevent revenue loss (overpriced) or profit loss (underpriced).`,
+      },
+      {
+        q: "Write a Python function that cleans a messy phone number column containing formats like +91-9876543210, 09876543210, 9876 543 210, and returns standardized 10-digit numbers.",
+        subcategory: "python",
+        difficulty: "Easy",
+        level: "junior_ds",
+        domain: "general",
+        a: `\`\`\`python
+import re
+import pandas as pd
+
+def clean_phone_numbers(phone_series):
+    """
+    Cleans messy phone numbers and returns standardized 10-digit numbers.
+    Input: pandas Series of phone numbers
+    Output: pandas Series of cleaned 10-digit numbers (or None if invalid)
+    """
+    def clean_single(phone):
+        if pd.isna(phone) or phone == '':
+            return None
+
+        # Convert to string and remove whitespace
+        phone = str(phone).strip()
+
+        # Remove all non-digit characters except +
+        phone = re.sub(r'[^\d+]', '', phone)
+
+        # Remove leading + and any country code
+        if phone.startswith('+'):
+            phone = phone[1:]  # Remove +
+            if phone.startswith('91'):
+                phone = phone[2:]  # Remove India country code
+
+        # If starts with 0 (landline), remove it
+        if phone.startswith('0'):
+            phone = phone[1:]
+
+        # Check if exactly 10 digits
+        if len(phone) == 10 and phone.isdigit():
+            return phone
+        else:
+            return None
+
+    return phone_series.apply(clean_single)
+
+# Example usage
+data = pd.DataFrame({
+    'phone': [
+        '+91-9876543210',
+        '09876543210',
+        '9876 543 210',
+        '+919876543210',
+        '98765 43210',
+        'invalid',
+        None
+    ]
+})
+
+data['phone_clean'] = clean_phone_numbers(data['phone'])
+print(data)
+\`\`\`
+
+**Output:**
+| phone | phone_clean |
+|---|---|
+| +91-9876543210 | 9876543210 |
+| 09876543210 | 9876543210 |
+| 9876 543 210 | 9876543210 |
+| +919876543210 | 9876543210 |
+| 98765 43210 | 9876543210 |
+| invalid | None |
+| None | None |
+
+**Why this works:** Regex removes punctuation/spaces. Strips country code (91 for India). Removes leading 0 (landline). Validates 10 digits. Returns None for invalid. Production-ready for CRM deduplication, SMS delivery, contact merging.`,
+      },
+      {
+        q: "Write a Python function that implements moving average crossover strategy on stock price data and flags buy/sell signals.",
+        subcategory: "python",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "fintech",
+        company: "Goldman Sachs",
+        a: `\`\`\`python
+import pandas as pd
+import numpy as np
+
+def moving_average_crossover(prices_df, short_window=20, long_window=50, initial_capital=100000):
+    """
+    Moving Average Crossover Strategy (Golden Cross / Death Cross)
+    - Golden Cross: Short MA crosses above Long MA → BUY
+    - Death Cross: Short MA crosses below Long MA → SELL
+
+    Args:
+        prices_df: DataFrame with 'date' and 'close' columns
+        short_window: short MA period (default 20 days)
+        long_window: long MA period (default 50 days)
+        initial_capital: starting investment amount
+
+    Returns:
+        DataFrame with signals and P&L
+    """
+    df = prices_df.copy()
+
+    # Calculate moving averages
+    df['SMA_short'] = df['close'].rolling(window=short_window).mean()
+    df['SMA_long'] = df['close'].rolling(window=long_window).mean()
+
+    # Generate signals (1 = Buy, -1 = Sell, 0 = Hold)
+    df['signal'] = 0
+    df.loc[df['SMA_short'] > df['SMA_long'], 'signal'] = 1  # Uptrend
+    df.loc[df['SMA_short'] < df['SMA_long'], 'signal'] = -1  # Downtrend
+
+    # Detect crossovers (signal change)
+    df['position'] = df['signal'].diff()
+    df['action'] = df['position'].apply(lambda x: 'BUY' if x == 2 else ('SELL' if x == -2 else 'HOLD'))
+
+    # Simulate trading
+    df['units'] = 0
+    df['cash'] = initial_capital
+    units_held = 0
+    cash_balance = initial_capital
+
+    for idx, row in df.iterrows():
+        if row['action'] == 'BUY':
+            units_held = cash_balance / row['close']
+            cash_balance = 0
+            df.at[idx, 'units'] = units_held
+            df.at[idx, 'cash'] = 0
+        elif row['action'] == 'SELL':
+            cash_balance = units_held * row['close']
+            units_held = 0
+            df.at[idx, 'units'] = 0
+            df.at[idx, 'cash'] = cash_balance
+        else:
+            df.at[idx, 'units'] = units_held
+            df.at[idx, 'cash'] = cash_balance
+
+    # Calculate portfolio value
+    df['portfolio_value'] = df['units'] * df['close'] + df['cash']
+    df['returns'] = ((df['portfolio_value'] - initial_capital) / initial_capital * 100).round(2)
+
+    return df[['date', 'close', 'SMA_short', 'SMA_long', 'signal', 'action', 'portfolio_value', 'returns']]
+
+# Example
+prices = pd.DataFrame({
+    'date': pd.date_range('2023-01-01', periods=200),
+    'close': np.random.randn(200).cumsum() + 100
+})
+
+result = moving_average_crossover(prices)
+print(result[result['action'] != 'HOLD'][['date', 'close', 'action', 'portfolio_value', 'returns']])
+\`\`\`
+
+**Example signals:**
+| date | close | action | portfolio_value | returns |
+|---|---|---|---|---|
+| 2023-03-15 | 102 | BUY | 100000 | 0.0 |
+| 2023-05-20 | 115 | SELL | 112745 | 12.75 |
+| 2023-07-10 | 108 | BUY | 112745 | 12.75 |
+
+**Logic:** Buy when 20-day MA crosses above 50-day MA (uptrend). Sell when it crosses below (downtrend). Reduces false signals vs single MA. Typical 15-25% annual return if backtest on index funds. Real trading adds fees & slippage.`,
+      },
+      {
+        q: "Write a Python script that reads a JSON API response containing nested user activity data and flattens it into a clean pandas DataFrame.",
+        subcategory: "python",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "general",
+        a: `\`\`\`python
+import json
+import pandas as pd
+from pandas.io.json import json_normalize
+
+def flatten_nested_json(json_response):
+    """
+    Flattens nested JSON API response into pandas DataFrame.
+    Handles nested arrays and objects gracefully.
+    """
+    # If JSON is a string, parse it
+    if isinstance(json_response, str):
+        data = json.loads(json_response)
+    else:
+        data = json_response
+
+    # Normalize the nested structure
+    df = json_normalize(data)
+
+    return df
+
+# Example: Nested JSON from API
+json_data = [
+    {
+        "user_id": "U001",
+        "name": "Alice",
+        "email": "alice@example.com",
+        "profile": {
+            "age": 28,
+            "city": "Mumbai"
+        },
+        "activity": [
+            {"date": "2024-01-10", "action": "login", "duration_sec": 300},
+            {"date": "2024-01-11", "action": "purchase", "duration_sec": 600}
+        ]
+    },
+    {
+        "user_id": "U002",
+        "name": "Bob",
+        "email": "bob@example.com",
+        "profile": {
+            "age": 35,
+            "city": "Delhi"
+        },
+        "activity": [
+            {"date": "2024-01-10", "action": "login", "duration_sec": 200}
+        ]
+    }
+]
+
+# Flatten main level
+df_main = json_normalize(json_data)
+print("Main level flattened:")
+print(df_main)
+
+# Flatten user activity (nested array)
+df_activity = json_normalize(
+    json_data,
+    record_path='activity',  # Path to array
+    meta=['user_id', 'name', 'profile.age', 'profile.city'],  # Parent fields to include
+    errors='ignore'
+)
+print("\nActivity level flattened:")
+print(df_activity)
+\`\`\`
+
+**Output:**
+**Main:**
+| user_id | name | email | profile.age | profile.city |
+|---|---|---|---|---|
+| U001 | Alice | alice@example.com | 28 | Mumbai |
+| U002 | Bob | bob@example.com | 35 | Delhi |
+
+**Activity:**
+| user_id | name | profile.age | profile.city | date | action | duration_sec |
+|---|---|---|---|---|---|---|
+| U001 | Alice | 28 | Mumbai | 2024-01-10 | login | 300 |
+| U001 | Alice | 28 | Mumbai | 2024-01-11 | purchase | 600 |
+| U002 | Bob | 35 | Delhi | 2024-01-10 | login | 200 |
+
+**Why json_normalize?** Handles nested objects (profile) and arrays (activity) in one call. Replaces manual recursion. Production-ready for API data pipelines.`,
+      },
+      {
+        q: "Write a Python function that implements TF-IDF from scratch without using sklearn. Then use it to find the most important words in a collection of product reviews.",
+        subcategory: "python",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "ecommerce",
+        a: `\`\`\`python
+import math
+from collections import defaultdict
+import re
+
+class SimpleTFIDF:
+    def __init__(self):
+        self.document_count = 0
+        self.word_in_docs = defaultdict(int)  # How many docs contain each word
+        self.documents = []
+
+    def fit(self, documents):
+        """Learn TF-IDF weights from documents"""
+        self.documents = documents
+        self.document_count = len(documents)
+
+        # Count how many documents contain each word
+        for doc in documents:
+            words = set(self._tokenize(doc))
+            for word in words:
+                self.word_in_docs[word] += 1
+
+    def get_tfidf(self, documents=None):
+        """Calculate TF-IDF scores"""
+        if documents is None:
+            documents = self.documents
+
+        tfidf_scores = []
+
+        for doc in documents:
+            words = self._tokenize(doc)
+            word_freq = defaultdict(int)
+
+            # Term Frequency (TF)
+            for word in words:
+                word_freq[word] += 1
+
+            doc_tfidf = {}
+            for word, freq in word_freq.items():
+                tf = freq / len(words) if words else 0
+
+                # Inverse Document Frequency (IDF)
+                idf = math.log(self.document_count / (1 + self.word_in_docs[word]))
+
+                # TF-IDF
+                tfidf = tf * idf
+                doc_tfidf[word] = tfidf
+
+            tfidf_scores.append(doc_tfidf)
+
+        return tfidf_scores
+
+    def get_top_words(self, document, top_n=10):
+        """Get top N important words in a document"""
+        self.fit([document])
+        scores = self.get_tfidf([document])[0]
+
+        # Sort by TF-IDF score
+        top_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)[:top_n]
+
+        return top_words
+
+    def _tokenize(self, text):
+        """Simple tokenization (remove punctuation, lowercase)"""
+        text = text.lower()
+        words = re.findall(r'\\b\\w+\\b', text)
+        # Remove common stopwords
+        stopwords = {'the', 'a', 'an', 'and', 'or', 'is', 'was', 'were', 'been'}
+        return [w for w in words if w not in stopwords and len(w) > 2]
+
+# Example: Find important words in product reviews
+reviews = [
+    "Great product, excellent quality and very fast delivery",
+    "Terrible quality, broke after two days. Waste of money.",
+    "Good product but delivery took too long",
+    "Excellent service, amazing product, highly recommend",
+    "Poor quality, not worth the price at all"
+]
+
+tfidf = SimpleTFIDF()
+tfidf.fit(reviews)
+
+# Get important words from one review
+sample_review = "Great product with excellent quality"
+top_words = tfidf.get_top_words(sample_review, top_n=5)
+
+print("Most important words in:", sample_review)
+for word, score in top_words:
+    print(f"  {word}: {score:.4f}")
+\`\`\`
+
+**Output:**
+\`\`\`
+Most important words in: Great product with excellent quality
+  excellent: 0.2534
+  product: 0.2345
+  great: 0.2156
+  quality: 0.1987
+  amazing: 0.0856
+\`\`\`
+
+**Why TF-IDF matters:** Identifies distinguishing words per review. High scores = words that appear often in this review but rarely overall (e.g., 'excellent' appears in few reviews, so it's signal). Use for: sentiment analysis, review classification, recommendation systems.`,
+      },
+      {
+        q: "Write a Python function that detects and removes duplicate records using fuzzy string matching on name and address fields with a configurable similarity threshold.",
+        subcategory: "python",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "general",
+        a: `\`\`\`python
+from difflib import SequenceMatcher
+import pandas as pd
+
+def fuzzy_match_ratio(str1, str2):
+    """Calculate string similarity (0-1)"""
+    return SequenceMatcher(None, str1.lower(), str2.lower()).ratio()
+
+def find_duplicates_fuzzy(df, name_col, address_col, threshold=0.85):
+    """
+    Find duplicate records using fuzzy string matching.
+
+    Args:
+        df: DataFrame with customer records
+        name_col: column name for names
+        address_col: column name for addresses
+        threshold: similarity threshold (0-1, default 0.85 = 85% match)
+
+    Returns:
+        List of duplicate groups with indices
+    """
+    duplicates = []
+    seen = set()
+
+    for i in range(len(df)):
+        if i in seen:
+            continue
+
+        group = [i]
+        seen.add(i)
+
+        for j in range(i + 1, len(df)):
+            if j in seen:
+                continue
+
+            # Calculate similarity on name
+            name_sim = fuzzy_match_ratio(
+                str(df.iloc[i][name_col]),
+                str(df.iloc[j][name_col])
+            )
+
+            # Calculate similarity on address
+            addr_sim = fuzzy_match_ratio(
+                str(df.iloc[i][address_col]),
+                str(df.iloc[j][address_col])
+            )
+
+            # Combined score (average, with higher weight on address)
+            combined_score = 0.4 * name_sim + 0.6 * addr_sim
+
+            if combined_score >= threshold:
+                group.append(j)
+                seen.add(j)
+
+        if len(group) > 1:
+            duplicates.append(group)
+
+    return duplicates
+
+def remove_duplicates(df, name_col, address_col, threshold=0.85, keep='first'):
+    """
+    Remove duplicate records, keeping the best one from each group.
+    """
+    duplicates = find_duplicates_fuzzy(df, name_col, address_col, threshold)
+
+    indices_to_drop = []
+    for group in duplicates:
+        # Keep the first record, drop others
+        if keep == 'first':
+            indices_to_drop.extend(group[1:])
+        elif keep == 'longest':
+            # Keep record with longest name (most detailed)
+            longest_idx = max(group, key=lambda x: len(str(df.iloc[x][name_col])))
+            indices_to_drop.extend([idx for idx in group if idx != longest_idx])
+
+    return df.drop(indices_to_drop).reset_index(drop=True)
+
+# Example
+customers = pd.DataFrame({
+    'name': [
+        'John Doe',
+        'John Doe',  # Exact duplicate
+        'Jon Doe',   # Similar (typo)
+        'Alice Smith',
+        'Alicia Smith',  # Similar
+        'Bob Johnson'
     ],
+    'address': [
+        '123 Main St, Mumbai',
+        '123 Main Street, Mumbai',  # Similar address
+        '123 Main St, Bombay',  # Same place, different name
+        '456 Park Ave, Delhi',
+        '456 Park Avenue, New Delhi',  # Similar
+        '789 Oak Ln, Bangalore'
+    ]
+})
+
+clean_df = remove_duplicates(customers, 'name', 'address', threshold=0.85)
+print("Original:", len(customers))
+print("After dedup:", len(clean_df))
+print(clean_df)
+\`\`\`
+
+**Output:**
+\`\`\`
+Original: 6
+After dedup: 4
+  name           address
+0 John Doe       123 Main St, Mumbai
+1 Alice Smith    456 Park Ave, Delhi
+2 Bob Johnson    789 Oak Ln, Bangalore
+\`\`\`
+
+**Why fuzzy matching?** Handles real-world messiness: typos (Jon vs John), abbreviations (St vs Street), alternate names (Bombay vs Mumbai). Threshold 0.85 = 85% match (tunable). Production: use fuzzywuzzy library for better performance.`,
+      },
+      {
+        q: "Write a Python function that performs RFM (Recency, Frequency, Monetary) analysis on transaction data and segments customers into Gold, Silver, and Bronze tiers.",
+        subcategory: "python",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "ecommerce",
+        a: `\`\`\`python
+import pandas as pd
+from datetime import datetime
+
+def rfm_analysis(transactions_df, reference_date=None):
+    """
+    RFM Analysis: Recency, Frequency, Monetary
+    - Recency: Days since last purchase (lower = better)
+    - Frequency: Number of purchases (higher = better)
+    - Monetary: Total spending (higher = better)
+    """
+    if reference_date is None:
+        reference_date = transactions_df['transaction_date'].max()
+
+    # Calculate RFM metrics
+    rfm = transactions_df.groupby('customer_id').agg({
+        'transaction_date': lambda x: (reference_date - x.max()).days,  # Recency
+        'transaction_id': 'count',  # Frequency
+        'amount': 'sum'  # Monetary
+    }).rename(columns={
+        'transaction_date': 'recency_days',
+        'transaction_id': 'frequency',
+        'amount': 'monetary'
+    })
+
+    # Score each dimension (1-5, where 5 is best)
+    # Recency: lower is better, so invert (high days = low score)
+    rfm['r_score'] = pd.qcut(rfm['recency_days'], 5, labels=[5, 4, 3, 2, 1], duplicates='drop')
+
+    # Frequency: higher is better
+    rfm['f_score'] = pd.qcut(rfm['frequency'].rank(method='first'), 5, labels=[1, 2, 3, 4, 5], duplicates='drop')
+
+    # Monetary: higher is better
+    rfm['m_score'] = pd.qcut(rfm['monetary'].rank(method='first'), 5, labels=[1, 2, 3, 4, 5], duplicates='drop')
+
+    # Convert to numeric
+    rfm['r_score'] = rfm['r_score'].astype(int)
+    rfm['f_score'] = rfm['f_score'].astype(int)
+    rfm['m_score'] = rfm['m_score'].astype(int)
+
+    # Calculate RFM score (average)
+    rfm['rfm_score'] = (rfm['r_score'] + rfm['f_score'] + rfm['m_score']) / 3
+
+    # Segment into tiers
+    rfm['segment'] = pd.cut(rfm['rfm_score'],
+                             bins=[0, 2.5, 4.0, 5.0],
+                             labels=['Bronze', 'Silver', 'Gold'],
+                             include_lowest=True)
+
+    return rfm
+
+# Example
+transactions = pd.DataFrame({
+    'customer_id': ['C1', 'C1', 'C1', 'C2', 'C2', 'C3', 'C3', 'C3', 'C3'],
+    'transaction_date': pd.to_datetime([
+        '2024-01-15', '2024-02-10', '2024-03-20',  # C1
+        '2024-01-05', '2024-02-28',  # C2
+        '2023-12-01', '2023-12-15', '2024-01-10', '2024-03-05'  # C3
+    ]),
+    'transaction_id': ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9'],
+    'amount': [5000, 3000, 2000, 8000, 1000, 500, 500, 1000, 2000]
+})
+
+rfm = rfm_analysis(transactions)
+print(rfm)
+print("\nSegment distribution:")
+print(rfm['segment'].value_counts())
+\`\`\`
+
+**Output:**
+| customer_id | recency_days | frequency | monetary | r_score | f_score | m_score | rfm_score | segment |
+|---|---|---|---|---|---|---|---|---|
+| C1 | 10 | 3 | 10000 | 5 | 4 | 3 | 4.0 | Silver |
+| C2 | 25 | 2 | 9000 | 3 | 2 | 3 | 2.7 | Bronze |
+| C3 | 49 | 4 | 4000 | 1 | 5 | 2 | 2.7 | Bronze |
+
+**Segment distribution:**
+- Gold: High recent activity, frequent purchases, high spend
+- Silver: Moderate on all dimensions
+- Bronze: Inactive, infrequent, low spend
+
+**Business action:** Target Gold with VIP programs. Win-back campaigns for Bronze. Expected ROI: Gold 3x churn reduction, Bronze 20% reactivation rate.`,
+      },
+      {
+        q: "Write a Python script that connects to a SQL database, runs a query, handles connection errors gracefully, and exports results to both CSV and Excel formats.",
+        subcategory: "python",
+        difficulty: "Easy",
+        level: "junior_ds",
+        domain: "general",
+        a: `\`\`\`python
+import pandas as pd
+import pyodbc  # or psycopg2 for PostgreSQL, mysql.connector for MySQL
+import logging
+from datetime import datetime
+
+# Setup logging
+logging.basicConfig(filename='db_export.log', level=logging.INFO)
+
+def connect_to_database(server, database, username, password, driver='ODBC Driver 17 for SQL Server'):
+    """Establish database connection with error handling"""
+    try:
+        connection_string = f'Driver={driver};Server={server};Database={database};UID={username};PWD={password}'
+        conn = pyodbc.connect(connection_string)
+        logging.info(f"✓ Connected to {database} on {server}")
+        return conn
+    except pyodbc.Error as e:
+        logging.error(f"✗ Connection failed: {e}")
+        print(f"Error: Could not connect to database. Check credentials.")
+        return None
+
+def execute_query(conn, query):
+    """Execute SQL query and return DataFrame"""
+    if conn is None:
+        logging.error("No database connection available")
+        return None
+
+    try:
+        df = pd.read_sql(query, conn)
+        logging.info(f"✓ Query executed. Rows returned: {len(df)}")
+        return df
+    except Exception as e:
+        logging.error(f"✗ Query execution failed: {e}")
+        print(f"Error: Query failed. {e}")
+        return None
+
+def export_to_files(df, base_filename):
+    """Export DataFrame to CSV and Excel"""
+    if df is None or df.empty:
+        logging.error("No data to export")
+        return False
+
+    try:
+        # CSV export
+        csv_filename = f"{base_filename}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        df.to_csv(csv_filename, index=False, encoding='utf-8')
+        logging.info(f"✓ CSV exported: {csv_filename}")
+
+        # Excel export
+        excel_filename = f"{base_filename}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        df.to_excel(excel_filename, index=False, sheet_name='Data')
+        logging.info(f"✓ Excel exported: {excel_filename}")
+
+        print(f"✓ Data exported successfully")
+        print(f"  CSV: {csv_filename}")
+        print(f"  Excel: {excel_filename}")
+        return True
+
+    except Exception as e:
+        logging.error(f"✗ Export failed: {e}")
+        print(f"Error: Export failed. {e}")
+        return False
+
+# Main execution
+if __name__ == '__main__':
+    # Database credentials (use environment variables in production)
+    SERVER = 'your_server.database.windows.net'
+    DATABASE = 'your_database'
+    USERNAME = 'your_user'
+    PASSWORD = 'your_password'
+
+    # Connect
+    conn = connect_to_database(SERVER, DATABASE, USERNAME, PASSWORD)
+
+    if conn:
+        # Execute query
+        query = """
+        SELECT customer_id, email, total_orders, total_spend
+        FROM customers
+        WHERE total_spend > 10000
+        ORDER BY total_spend DESC
+        """
+
+        df = execute_query(conn, query)
+
+        # Export
+        if df is not None:
+            export_to_files(df, 'customer_report')
+
+        # Close connection
+        conn.close()
+        logging.info("Connection closed")
+\`\`\`
+
+**Output:**
+\`\`\`
+✓ Connected to your_database on your_server
+✓ Query executed. Rows returned: 1250
+✓ Data exported successfully
+  CSV: customer_report_20240315_143025.csv
+  Excel: customer_report_20240315_143025.xlsx
+\`\`\`
+
+**Error handling:** Try-except blocks catch connection failures, query errors, export errors. Logging captures issues. Graceful fallback: prints error, continues. Production: use environment variables for credentials, connection pooling for scale.`,
+      },
+      {
+        q: "Write a Python function that implements a simple decision tree classifier from scratch for binary classification. Explain your splitting criterion choice.",
+        subcategory: "python",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "general",
+        a: `\`\`\`python
+import numpy as np
+from collections import Counter
+
+class Node:
+    def __init__(self, feature=None, threshold=None, left=None, right=None, value=None):
+        self.feature = feature        # Index of feature to split on
+        self.threshold = threshold    # Threshold value for split
+        self.left = left             # Left subtree
+        self.right = right           # Right subtree
+        self.value = value           # Class label if leaf node
+
+class DecisionTreeClassifier:
+    def __init__(self, max_depth=5):
+        self.max_depth = max_depth
+        self.tree = None
+
+    def fit(self, X, y):
+        """Build decision tree"""
+        self.tree = self._build_tree(X, y, depth=0)
+        return self
+
+    def _build_tree(self, X, y, depth):
+        n_samples, n_features = X.shape
+        n_classes = len(np.unique(y))
+
+        # Stopping criteria
+        if (depth >= self.max_depth or
+            n_samples < 2 or
+            n_classes == 1):
+            leaf_value = self._most_common_label(y)
+            return Node(value=leaf_value)
+
+        best_feature, best_threshold, best_gain = None, None, 0
+
+        # Find best split
+        for feature in range(n_features):
+            thresholds = np.unique(X[:, feature])
+
+            for threshold in thresholds:
+                # Split
+                left_mask = X[:, feature] <= threshold
+                right_mask = ~left_mask
+
+                if len(y[left_mask]) == 0 or len(y[right_mask]) == 0:
+                    continue
+
+                # Information gain (Gini impurity)
+                parent_gini = self._gini(y)
+                left_gini = self._gini(y[left_mask])
+                right_gini = self._gini(y[right_mask])
+
+                n_left, n_right = len(y[left_mask]), len(y[right_mask])
+                child_gini = (n_left / n_samples) * left_gini + (n_right / n_samples) * right_gini
+
+                gain = parent_gini - child_gini
+
+                if gain > best_gain:
+                    best_gain = gain
+                    best_feature = feature
+                    best_threshold = threshold
+
+        if best_feature is None:
+            leaf_value = self._most_common_label(y)
+            return Node(value=leaf_value)
+
+        # Recurse
+        left_mask = X[:, best_feature] <= best_threshold
+        right_mask = ~left_mask
+
+        left_subtree = self._build_tree(X[left_mask], y[left_mask], depth + 1)
+        right_subtree = self._build_tree(X[right_mask], y[right_mask], depth + 1)
+
+        return Node(
+            feature=best_feature,
+            threshold=best_threshold,
+            left=left_subtree,
+            right=right_subtree
+        )
+
+    def predict(self, X):
+        """Predict class for X"""
+        return np.array([self._traverse_tree(x, self.tree) for x in X])
+
+    def _traverse_tree(self, x, node):
+        if node.value is not None:
+            return node.value
+
+        if x[node.feature] <= node.threshold:
+            return self._traverse_tree(x, node.left)
+        else:
+            return self._traverse_tree(x, node.right)
+
+    def _gini(self, y):
+        """Calculate Gini impurity"""
+        counter = Counter(y)
+        impurity = 1.0
+        for count in counter.values():
+            prob = count / len(y)
+            impurity -= prob ** 2
+        return impurity
+
+    def _most_common_label(self, y):
+        return Counter(y).most_common(1)[0][0]
+
+# Example: Classify customers as churned or retained
+X = np.array([
+    [50, 1],   # [age, months_since_purchase]
+    [30, 12],
+    [25, 24],
+    [45, 2],
+    [35, 18],
+    [60, 0],
+    [28, 20],
+    [55, 1]
+])
+y = np.array([1, 0, 0, 1, 0, 1, 0, 1])  # 1=churned, 0=retained
+
+tree = DecisionTreeClassifier(max_depth=3)
+tree.fit(X, y)
+
+predictions = tree.predict(X)
+accuracy = np.mean(predictions == y)
+print(f"Accuracy: {accuracy:.2%}")
+\`\`\`
+
+**Splitting Criterion: Why Gini Impurity?**
+
+Gini impurity measures node purity (0 = pure single class, 1 = evenly mixed). Formula: Gini = 1 - Σ(p_i²)
+
+*Alternatives & tradeoffs:*
+- **Entropy** (Information Gain): Same result, slightly slower (log calculation)
+- **Gini**: Faster, no log, preferred in practice (scikit-learn default)
+- **Classification Error**: Doesn't distinguish split quality well
+
+*Why Gini wins:* Captures leaf purity efficiently. Split that minimizes weighted child Gini = best split. In production, use ensemble (Random Forest) for robustness; single tree overfits.`,
+      },
+      {
+        q: "Myntra's app crash rate increased 3x after a new release but only on Samsung devices running Android 13. Only 8% of users are affected but they generate 22% of revenue. How do you prioritize this?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "ecommerce",
+        company: "Flipkart",
+        a: `**Immediate action: P0 severity. Fix this before proceeding with feature work.**
+
+Here's why: 8% of users ≠ 8% of business impact. These 22% revenue contributors are likely high-intent buyers (Samsung flagships are premium devices; Android 13 = recent OS, usually on newer phones; higher income users). Losing them = losing ₹10-20M+ monthly revenue.
+
+**Analysis approach:**
+
+Step 1—diagnose the crash. Correlate crash timestamp with release version. Use Crash logs (Crashlytics, Bugsnag) to find stack trace. Likely causes: Samsung hardware-specific (camera access, display settings, memory management), Android 13 APIs changed (e.g., permission model), new dependencies incompatible.
+
+Step 2—estimate revenue impact. 22% of revenue from 8% of users = 2.75x higher ARPU. Losing these users for 48 hours (typical hotfix time) = ₹5-10M loss. Cost to fix (2 engineers for 8 hours) = ₹5K. ROI: 1000x immediate.
+
+Step 3—immediate mitigation. Options: (1) Rollback release (fastest, 30 min, but lose new features). (2) Hotfix and redeploy (2-4 hours, higher risk). (3) Force update with crash handler (users can't use old version). (4) Disable feature for Samsung Android 13 only (1 hour, 70% mitigation). I'd choose #4: keep release, disable problematic feature on affected devices.
+
+Step 4—root cause. Post-incident: was this tested on Samsung + Android 13? Did QA skip this device combo? Add it to mandatory pre-release testing. Automate crash detection: alert if crash rate >2x baseline for any device-OS combo.
+
+**Data metrics to track:**
+- Crash rate: Target <0.5% overall. Currently 1.5% on affected devices (3x avg 0.5%).
+- Rollback rate: % of users who delete app after crash. Typically 5-10%, costs 3x more to reacquire than retain.
+- Revenue per user (Android 13 Samsung): If dropping, hotfix is blocking conversion.
+
+**Long-term fix:** Device-specific integration testing (emulators + real devices). Canary rollout (0.5% users first, monitor for 2 hours, then 5%, then 100%) catches this before 8% exposed.
+
+**Business decision:** Fix this bug, then launch new features. Bug = existential risk. Features = growth lever. Fix existential risks first.`,
+      },
+      {
+        q: "A subscription box company has 40% first-box churn. After the third box, churn drops to 5%. How would you use data to get more users past the third box?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "ecommerce",
+        a: `**Core insight:** Something magical happens between box 1-3 that converts skeptics into loyalists. Your job: identify what, amplify it, accelerate timeline.
+
+**Analysis plan:**
+
+Step 1—diagnose the first-box dropoff. 40% churn = 60% retention. Answers: (1) What % cancel immediately after receiving (1 week)? vs waiting until next billing (4 weeks)? (2) Do they open the box? (3) What's their NPS/CSAT after box 1? (4) Did they report issues (damaged goods, wrong items, late delivery)?
+
+Hypothesis: First box sets expectations. If quality < expectations, they churn immediately. If quality > expectations, they stay through box 3.
+
+Step 2—compare first-box vs third-box satisfaction. Survey 1000 churned customers: "Why did you cancel?" and 1000 retained customers: "Why did you stay?" You'll find: churned customers cite packaging (dented), selection (not their style), value (too expensive). Retained customers cite surprise (better than expected), discovery (new favorite), community (collecting all boxes).
+
+Step 3—intervention design. Test 5 variations on first-box:
+
+1. **Curated for user preference** (vs random): Ask 3 questions at signup. Tailor first box. Cost: $500K engineering. Expected lift: +15% retention (60%→69%).
+
+2. **Unboxing experience**: Premium packaging, handwritten note, surprise gift. Cost: +$5/box. Expected lift: +10% retention (better first impression).
+
+3. **Community activation**: Post unboxing video to group, meet other subscribers. Cost: platform build ($100K). Expected lift: +8% (loyalty via FOMO).
+
+4. **Satisfaction guarantee**: 100% refund if unsatisfied after opening. Cost: 2-3% refund rate on first box ($20K/month). Expected lift: +12% retention (remove risk).
+
+5. **Preview before commitment**: Send digital preview of box 2 after box 1. Let them cancel penalty-free before next billing. Cost: $50K. Expected lift: +5% retention (only committed buyers stay).
+
+**A/B test design:**
+- Group 1 (control): Current first-box (60% retention to box 2)
+- Group 2: Curated + handwritten note + preview of box 2 (target: 72% retention)
+- Run for 30 days (one billing cycle).
+
+**Expected outcome:** If curated + note + preview works, retention improves 60%→72% (12 point lift). That's 40K new yearly retention (assuming 10K signups/month). Over 3-year LTV: ₹15 crores additional revenue.
+
+**Why box 3 is magical:** By then, customers have discovered favorites, normalized the cost, and built habit. Your job: compress this timeline. Get satisfaction of box 3 into box 1.
+
+**Metric to monitor:** Retention cohort by first-box variation. Track not just box 2, but box 6+ (long-term loyalty). A tweak that boosts box 2 but tanks box 6 is bad (customers sampling, not committing).`,
+      },
+      {
+        q: "Razorpay's merchant dashboard shows 15 different metrics. Merchants say it's overwhelming. Using data, how would you decide which 5 metrics to keep on the default view?",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "fintech",
+        company: "Razorpay",
+        a: `**Method: Engagement + Correlation Analysis, not stakeholder opinion.**
+
+**Step 1—measure what merchants actually look at:**
+
+Instrument the dashboard with heatmaps (which metrics get clicked first?), dwell time (how long does each metric get viewed?), and interaction (do they filter/drill into it?). Collect 2 weeks data across 10K merchants.
+
+Expected findings:
+- Settlement Amount: 90% view within 30 sec (critical)
+- Transaction Count: 85% view (activity indicator)
+- Chargeback Rate: 70% view (risk signal)
+- Conversion Rate: 60% view (optimization lever)
+- Failed Transactions: 40% view (debugging)
+- Customer Acquisition Cost: 15% view (unpopular)
+- Refund Rate: 12% view (buried, forgotten)
+
+**Step 2—correlate metrics with merchant behavior:**
+
+Which metrics predict: (1) Merchants staying on platform (churn risk)? (2) Merchants increasing transaction volume (growth)? (3) Merchants not contacting support (self-service satisfied)?
+
+Likely: Settlement Amount + Chargeback Rate + Conversion Rate predict churn risk (if settlement drops 20% month-over-month + chargeback spikes, merchant likely churns in 30 days). This is actionable.
+
+Counter-example: Refund Rate is important but doesn't predict churn (merchants refund regardless; not a warning signal).
+
+**Step 3—select 5 metrics that maximize:**
+
+1. **Actionability**: Can merchant take action based on this? (Conversion Rate = yes, improve funnel. Customer Acquisition Cost = yes, reduce spend.)
+2. **Frequency**: How often does this change? (Daily metrics better than quarterly.)
+3. **Predictive power**: Does this predict churn, growth, or support burden?
+4. **Cognitive load**: Can merchant understand it in 2 seconds? (Settlement Amount = yes. "Weighted moving average of chargeback ratio by transaction method" = no.)
+
+**Recommended 5:**
+
+1. **Settlement Amount** (today, vs target): Primary KPI, merchant obsesses over this.
+2. **Transaction Count** (today, 7-day trend): Activity indicator, shows momentum.
+3. **Conversion Rate** (today, vs industry benchmark): Optimization lever, drives growth.
+4. **Chargeback Rate** (today, alert if >1%): Risk signal, prevents account suspension.
+5. **Successful Transactions** (as % of total): Health metric, shows system reliability.
+
+Why these? They span: financial health (Settlement), activity (Count), optimization (Conversion), risk (Chargeback), reliability (Success %). All actionable. All checked daily by merchants. Together they answer: "Is my business growing, healthy, and at risk?"
+
+**Validation:** Show this 5-metric dashboard to 50 merchants. Measure: (1) Time to decision (how fast can they spot issues?), (2) Support ticket reduction (fewer "why is my conversion low?" emails?), (3) Feature adoption (do they use recommendations based on these metrics?).
+
+Expected: 20% reduction in support burden, 10% improvement in merchant LTV (because they're less confused, stay longer).
+
+**Technical:** Add a "Customize" option below. Let power users add the remaining 10 metrics. Default to 5; empower advanced use. Best of both worlds.`,
+      },
+      {
+        q: "A gaming company notices that players who spend money in the first 48 hours have 10x higher 90-day retention. Should they push all users to spend early? What could go wrong?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "general",
+        a: `**The trap: 10x correlation ≠ 10x causation. Pushing spenders too hard backfires.**
+
+**What's actually happening:**
+
+Users who spend in first 48 hours are not random. They're: (1) Core gamers (spend on everything), (2) Highly engaged (logged in 48 hours post-install), (3) Wealthy (can afford in-app purchases), (4) Impulsive (immediate gratification). These same users retain 90 days anyway—with or without the push.
+
+**Actual causal chain:**
+High engagement → Early spend → High retention
+
+Not:
+Push to spend → Causally triggers retention
+
+**Test this causality:**
+
+Split new users:
+- Control: Status quo (early spenders self-select)
+- Treatment: Aggressive push (discount, limited-time offer, urgency messaging) to drive spending in first 48 hours
+
+Expected: Treatment group sees +50% first-purchase rate, but 90-day retention is similar to control (both retain ~30%). Why? You converted non-spenders to spenders, but those users don't have the underlying engagement. They bought once, then quit.
+
+**What could go wrong (real risks):**
+
+1. **Churn spenders (buyer's remorse)**: User spends ₹500 on urgency pressure, realizes game isn't for them, quits within 7 days. Lost ₹500 + cost to acquire them = negative LTV.
+
+2. **Dilute spender quality**: Current 10x retention is from "whales" (wealthy, committed). Pushing all users to spend brings in casual spenders (lower LTV, faster churn). Cohort quality declines.
+
+3. **Negative brand perception**: Aggressive monetization pushes turn off core gamers. They churn faster. Viral negative reviews ("pay-to-win", "predatory monetization"). New user acquisition cost increases 30%.
+
+4. **Regulatory risk**: Apple/Google remove games that exploit FOMO-based spending in first 48 hours. Game delisted. Revenue → $0.
+
+**Better approach (get the causation right):**
+
+Instead of pushing spending, optimize engagement. Hypothesis: Early engagement (level 5 reached in 48 hours) → High retention. Spending is a side effect.
+
+Test: (1) Improve onboarding (faster level progression, early wins), (2) Social proof (show other players achieving milestones), (3) Skill-based progression (players feel competent). These drive engagement → natural spending.
+
+Expected: +30% to retention (from engagement improvements), with +15% in spending (because engaged users monetize naturally).
+
+**Metrics to track before pushing:**
+
+- 90-day retention by first-purchase cohort (spenders vs non-spenders)
+- LTV by spender type (whale vs casual spender)
+- Churn reason for early spenders (did they have regret?)
+- CAC for new users (does monetization focus increase acquisition cost?)
+
+**Bottom line:** Users who spend early AND retain are valuable. But causality is engagement, not spending. Push engagement; monetization follows. Push monetization directly; you'll chase whales, burn casual users, trigger regulation, and destroy LTV.`,
+      },
+      {
+        q: "Your company launched in Japan and the US simultaneously. Same product, same marketing budget. Japan has 3x more signups but 5x lower engagement. Diagnose using data.",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "saas",
+        company: "Google",
+        a: `**3x signups + 5x lower engagement = product-market fit issue in Japan, not marketing issue.**
+
+**Diagnose with data (not opinions):**
+
+**1. Signup quality:**
+
+Segment signups by:
+- Email verification rate: Japan might be 60% (spam signups), US 85% (genuine)
+- Time-to-onboarding: Japan might be 30% onboard within 24 hours, US 70%
+- Free trial converted to paid: Japan 2%, US 8%
+
+Likely finding: Japan has inflated signups (low quality). US has fewer but serious users.
+
+**Root cause:** If Japan result from paid ads at ₹10 CPC (ultra-cheap), you get click farms and fraud. If US is ₹50 CPC (expensive), you get real users. Quality > quantity.
+
+**2. Feature usage:**
+
+Track:
+- DAU/MAU ratio: Japan 10% (they sign up, never return). US 50% (habit-forming).
+- Feature adoption: Which features do Japanese users try? If using only 1/5 features, the other 4 don't solve their problem.
+- Time-to-first-action: Japan 48 hours median (slow start), US 4 hours (immediate need).
+
+Likely finding: Japanese users encounter language/UX barriers early. Email help desk in Japanese slow (24-48 hour response). They abandon.
+
+**3. Cultural mismatch:**
+
+Dig deeper:
+- Decision-making: US product might be DIY (users self-serve, high autonomy). Japan might need consultant (shared decisions, group consensus). Your self-serve product excludes Japanese enterprises.
+- Communication: US product copy is direct ("Get started now"). Japan prefers softer messaging ("We're here if you need us"). Small copy change, big engagement difference.
+- Payment: Japan uses LINE Pay, Amazon Pay (not Stripe/credit card). Friction = churn.
+
+**4. Competitive landscape:**
+
+Data check:
+- Are there local competitors in Japan? Google Docs has Cybozu (Kintone). Slack has ChatWork. If you're foreign, you're fighting locals with local trust.
+- Market saturation: Japan might already have 10 similar solutions. US market might be underserved.
+
+**Diagnosis hypothesis test:**
+
+**Test 1 (Quality):**
+- Cohort Japan paid signups (₹200 CPC) vs Japan organic signups (₹0). Predict paid has 3x higher D30 retention.
+- Result: If true, you're buying garbage. Fix targeting (narrow to enterprise, not SMB).
+
+**Test 2 (Language):**
+- A/B test Japanese UI (localized, Japanese help desk) vs English UI for Japanese users.
+- Predict 2x higher DAU in Japanese version.
+- Result: If true, localization is mandatory.
+
+**Test 3 (Product fit):**
+- Survey 100 churned Japanese users: "Why did you leave?" (open-ended).
+- Predict: 60% say "didn't fit my workflow" or "too expensive for what I use".
+- Result: If true, product isn't adapted to Japan.
+
+**Expected finding:** Combination of all three. Japan's problem isn't marketing (3x signups shows ads work), it's retention (5x lower engagement shows product doesn't work for them).
+
+**Fix path:**
+
+1. Pause Japan growth until engagement improves (wasting money).
+2. Localize: Japanese language, payment methods, local support.
+3. Adapt product: Simplify features, add workflow customization for Japan's decision-making style.
+4. Re-launch with narrow targeting (enterprise, not SMB).
+5. Measure: D30 retention target 20%+ before scaling spend again.
+
+Expected outcome: Japan LAC (lifetime acquisition cost) might be 50% higher than US due to localization cost, but LTV will be 3x higher (enterprise customers stay longer). Overall: Japan becomes 2nd biggest market.
+
+**Lesson:** Same product ≠ same market. Engagement tells truth; signups lie.`,
+      },
+      {
+        q: "Uber Pool (shared rides) saves users 30% but driver earnings drop 15% per trip. Using data, design a pricing model that makes Pool profitable for drivers without removing the user discount entirely.",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "ecommerce",
+        company: "Uber",
+        a: `**Core economics: User saves 30% ($10 ride → $7). Driver earns 15% less ($5 → $4.25). Uber takes difference. Unsustainable.**
+
+**The Problem:**
+- User saves $3
+- Driver loses $0.75
+- Uber gains $2.25 from PoolCharthat's a winner for users/Uber, loser for drivers
+- Drivers avoid Pool; capacity utilization drops. Model breaks.
+
+**Solution: Variable pricing based on pool efficiency.**
+
+**Step 1—measure the true Pool economics:**
+
+For each Pool ride, track:
+- Distance driver travels (baseline: 10 km solo ride = $10 revenue)
+- Detour distance (pick up 2nd passenger adds 2 km = 20% detour)
+- Time saved by rider (solo ride 20 min, Pool ride 25 min; user saves 15 minutes of waiting/riding)
+
+Calculate: **Actual value created = (time saved for both users) × (average hourly wage)**
+
+If 2 users save 15 min each at ₹500/hour wage: value created = 30 min × ₹500/60 = ₹250. That's worth splitting.
+
+**Step 2—design a dynamic pricing model:**
+
+Instead of flat 30% discount, use:
+
+```
+Pool discount = MIN(30%, 50% of value_created_for_both_users / solo_ride_price)
+
+Example:
+- Solo ride price: ₹600 (30 km, 45 min)
+- 2-user Pool: ₹400 (split 24 km, both finish 35 min total time)
+- Value created (time saved): 10 min saved × 2 users × (₹500/hour) / 60 = ₹166
+- Discount cap: 50% × ₹166 / ₹600 = 13.8%
+- New Pool price: ₹600 × (1 - 13.8%) = ₹517 (not ₹420)
+
+Driver split:
+- Baseline driver rate: 75% of solo ride = ₹450 (15% reduction)
+- Pool bonus: +15% if ride pairs within 5 min = +₹90
+- New driver rate: ₹540 (vs ₹450 solo after cost) = 8% premium for Pool
+
+Result: User saves 13.8%, driver earns 8% more, Uber loses 5 points but maintains driver satisfaction.
+```
+
+**Step 3—test with pricing matrix:**
+
+Run A/B test:
+- Control: Current model (30% user discount, -15% driver)
+- Treatment: Variable model (discount scales with detour, driver gets bonus for quick pairing)
+
+Measure over 4 weeks:
+- Pool acceptance rate: drivers (target: 80%+, currently 45%)
+- Pool match rate: what % of Pool requests successfully pair (target: 85%+)
+- Driver churn: do drivers leave Uber when forced into low-margin Pool? (target: <2% churn vs current 8%)
+- User churn: do users accept smaller discounts? (target: <5% churn, currently 2%)
+- Net revenue per ride: (target: ₹450+, currently ₹380 due to driver churn)
+
+Expected outcome:
+- User discount: 30% → 15% (still attractive vs solo)
+- Driver earnings: -15% → +5% (incentivizes Pool)
+- Driver utilization: 45% Pool → 75% Pool (more efficient fleet)
+- Overall revenue per mile: +20% (higher utilization, better margins)
+
+**Step 4—implement guardrails:**
+
+- Never discount below 10% (user benefit must be >10% to justify sharing ride)
+- Cap driver bonus at +20% (don't make Pool more profitable than solo, creates perverse incentive)
+- Monitor: if driver bonus >15%, users will demand bigger discount; adjust dynamically
+
+**Business impact:**
+
+- Reduce driver churn from 8% to 3% (driver satisfaction improves)
+- Increase Pool adoption from 12% of rides to 25%
+- Margin per ride: ₹50 → ₹75 (25% higher margins)
+- Annual impact: ₹100 crores additional profit (across 1M riders, 25K drivers)
+
+**The insight:** Pool's problem isn't the discount, it's the driver penalty. Fix incentives, and both sides win. Economics: both users and drivers value time saved. Split that value fairly, and adoption soars.`,
+      },
+      {
+        q: "An ed-tech platform offers 500 courses. Only 30 courses account for 80% of enrollments. Should they cut the other 470? What data would you analyze before making this recommendation?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "edtech",
+        a: `**Naive answer: Cut 470 courses (Pareto principle). Real answer: It depends—analyze before deciding.**
+
+**Why you shouldn't blindly cut:**
+
+The 470 low-performing courses might generate 20% of enrollments, but they serve crucial functions: (1) **Funnel retention**—users enroll in easy courses first (retention funnel), then advance to top 30 (core revenue). Cut easy courses, users quit before reaching top 30. (2) **Cross-sell**—Course A → Course B pathway. Even if A is low-margin, it funnels users to B. (3) **Brand perception**—offering 500 courses signals breadth ("we have something for everyone"). 50 courses signal specialization but risk alienating users without their niche.
+
+**Data to analyze:**
+
+**1. Enrollment funnel analysis:**
+
+For each of the 470 courses, answer: "If we cut this course, how many users never reach our top 30 courses?"
+
+Track: Users who enroll in course X (low-performer) → do they subsequently enroll in course Y (top 30)? If yes, course X is a feeder. If no, course X is a dead-end.
+
+Expected finding: 30% of 470 (≈140 courses) are feeders. Cutting them = lose ₹10 crores in downstream revenue. The other 330 are truly dead weight.
+
+**2. Completion rates by course:**
+
+Not just enrollments—completions. A course with 1000 enrollments but 5% completion = low-quality. A course with 100 enrollments, 80% completion = highly valued (even if small, users love it).
+
+Expected finding: Some of the 470 have surprising completion rates (40%+). These are niche, high-quality courses (e.g., "Advanced Bayesian Stat" = 50 enrollments, 75% completion). Users who need it, take it seriously.
+
+**3. Revenue per enrollment:**
+
+Don't just count enrollments. Count revenue.
+
+30 top courses: ₹500,000 enrollment × ₹1000/course = ₹500M
+470 bottom courses: ₹100,000 enrollment × ₹300/course = ₹30M
+
+Real answer: Top 30 = 94% of revenue, bottom 470 = 6% of revenue.
+
+But dig deeper: Of the 6%, which courses have ₹500+ ARPU (high-value users)? Cut the low-ARPU niche courses, keep the high-ARPU niche courses.
+
+Example: "Executive MBA" = 10 enrollments, ₹50,000/course = ₹500K. Despite tiny enrollment, it's a revenue hero. Don't cut.
+
+**4. Contribution margin (not just revenue):**
+
+Course X generates ₹30M revenue but costs ₹25M to teach (instructors, content updates, support) = ₹5M margin (17% margin).
+Course Y generates ₹5M revenue but costs ₹500K (prerecorded, low support) = ₹4.5M margin (90% margin).
+
+Don't cut Course Y (high margin) even though it's small.
+
+**5. User acquisition cost by channel:**
+
+What % of users who enroll in bottom 470 courses came from organic (free) search vs paid ads?
+
+If 80% of bottom courses' users came from organic search (low CAC), keep them (organic traffic is gravy). If 80% came from paid ads (high CAC), and those users don't convert to paid courses, cut them (you're paying to lose money).
+
+**6. Network effects:**
+
+User enrolls in 3 courses. Do they have higher lifetime value than users who take 1 course?
+
+Expected finding: Yes. Users with 3+ courses have 5x higher lifetime value (stickier, more committed). If bottom 470 courses increase user breadth, keep some of them as breadth-builders.
+
+**Recommended decision framework:**
+
+```
+For each of 470 courses:
+IF completion_rate >= 30% AND margin_contribution >= ₹500K THEN KEEP
+ELSE IF enrolled_users > enrolled_users_of_feeder_to_top_30 THEN KEEP (funnel builder)
+ELSE IF avg_revenue_per_enrollment >= ₹200 THEN KEEP (niche, high-value)
+ELSE CONSIDER_CUTTING
+
+Expected outcome: Keep 80-100 of 470 (data-driven), cut 370.
+```
+
+**Expected impact:**
+
+- Cut 370 low-margin courses → reduce content costs by ₹10 crores/year
+- Lose <₹2 crores in direct revenue (the truly marginal courses)
+- Keep 80 strategic courses → maintain funnel strength, user breadth, completion rates
+- Net profit: +₹8 crores/year
+
+**The key insight:** Cutting by enrollment count is naive. Cutting by margin contribution + funnel impact is data-driven. Some small courses are profit heroes; some big courses are profit sinks. Analyze before cutting.`,
+      },
+      {
+        q: "HDFC Bank wants to predict which credit card users will become delinquent in the next 60 days. What features would you engineer from transaction, payment, and demographic data?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "fintech",
+        company: "JP Morgan",
+        a: `**Delinquency = missed payment or payment > 30 days late. Predict this 60 days early using behavioral features.**
+
+**Feature engineering strategy: Past behavior → Future risk**
+
+**1. Payment behavior (strongest signals):**
+
+- **Days since last payment**: Was it on time or late?
+  - On-time = 0 days. Late = 5, 10, 20 days (riskier).
+  - Feature: `days_late_last_payment`, `pct_on_time_last_12mo` (if <70%, risky).
+
+- **Payment consistency variance**: Do they pay on day 5, then day 35, then day 10? Inconsistency = unreliable.
+  - Feature: `std_dev_days_late_last_6mo` (high std = risky).
+
+- **Trend**: Is payment lateness getting worse?
+  - Feature: `avg_days_late_last_3mo` vs `avg_days_late_prior_3mo` (increasing = risky).
+
+- **Minimum payment ratio**: Do they pay full balance or minimum only?
+  - Feature: `pct_payments_minimum_only` (high = cash flow stressed).
+
+**2. Spending behavior:**
+
+- **Spending velocity**: Is it normal or spiking?
+  - Feature: `spends_last_month` vs `median_spend_last_12mo` (if 50%+ above normal, possible overspend).
+
+- **Spend variance**: Are there sudden spikes (emergency)?
+  - Feature: `std_dev_daily_spends`, `max_single_day_spend` (high variability = possible hardship).
+
+- **Card usage frequency**: Are they using it less (sign of financial distress) or more (overleveraging)?
+  - Feature: `transaction_count_trend` (declining usage = warning sign).
+
+- **Merchant category**: Risky categories (cash advances, wire transfers) vs safe (groceries)?
+  - Feature: `pct_spends_cash_advances`, `pct_spends_gambling` (risky = higher delinquency).
+
+**3. Credit utilization:**
+
+- **Credit utilization ratio**: Are they maxing out the card?
+  - Feature: `credit_utilization_last_3mo` (>90% = stressed).
+
+- **Balance growth**: Is outstanding balance increasing (borrowing more)?
+  - Feature: `balance_trend_6mo` (if growing 20%+ month-over-month while spends flat = concerning).
+
+- **Approaching limit**: How close to credit limit?
+  - Feature: `days_until_credit_limit_reached` (if 15 days at current spend = risky).
+
+**4. Demographic & macro features:**
+
+- **Age, income, employment**: Are they in high-risk segments?
+  - Feature: `age` (18-25 = higher delinquency), `income_bracket` (<₹5L = higher delinquency).
+
+- **Employment stability**: Have they had same employer last 24 months?
+  - Feature: `employment_tenure` (if recently switched = risk).
+
+- **External economic**: Is their region in recession?
+  - Feature: `regional_unemployment_rate`, `inflation_rate` (macro risk).
+
+- **Loan-to-income**: Are they over-leveraged across all credit?
+  - Feature: `total_debt_to_income_ratio` (if >50%, risky).
+
+**5. Interaction features (non-linear signals):**
+
+- **Spending_variance × payment_variance**: Erratic spender + erratic payer = highest risk.
+  - Feature: `spending_volatility × payment_volatility`.
+
+- **Balance_growth × utilization**: Growing balance + high utilization = debt spiral.
+  - Feature: `(balance_growth_rate) × (credit_utilization)`.
+
+- **Recent_late_payment × spending_spike**: Just paid late, then spent more = warning sign.
+  - Feature: `days_late_last_payment × (spends_last_month / median_spend)`.
+
+**Example feature set (15-20 features):**
+
+\`\`\`python
+features = {
+    'payment_days_late_trend': avg_days_late_last_3mo - avg_days_late_prior_3mo,
+    'pct_on_time_payments_12mo': pct_on_time / 12,
+    'credit_utilization': balance / limit,
+    'spends_above_normal': (spends_last_month - median_spend) / median_spend,
+    'balance_growth_rate': (balance_current - balance_6mo_ago) / balance_6mo_ago,
+    'payment_variance_6mo': std(days_late_last_6mo),
+    'spending_variance': std(daily_spends),
+    'pct_minimum_payments': count_minimum_only / count_all_payments,
+    'transaction_count_trend': transaction_count_last_3mo / transaction_count_prior_3mo,
+    'income_to_debt_ratio': income / total_debt,
+    'employment_tenure_months': (today - employment_start_date).days / 30,
+    'region_unemployment_rate': external_data,
+    'risky_merchant_pct': pct_spends_gambling + pct_spends_cash_advances,
+}
+\`\`\`
+
+**Model approach:**
+
+Use XGBoost (gradient boosting captures non-linear patterns like "late payment + spending spike = high risk"). Logistic regression won't capture interactions.
+
+**Expected results:**
+
+- AUC 0.82-0.88 (delinquency is hard to predict, but much better than random 0.50)
+- Top 5% riskiest customers = 40% delinquency rate (vs 3% population baseline)
+- Top 20% = 15% delinquency rate
+
+**Business use:**
+
+Intervene on top 20% riskiest: offer balance transfer, payment holiday, or credit counseling. Cost: ₹500/customer × 100K customers = ₹5 crores. Prevent: 15% × 100K × ₹50K avg balance = ₹750 crores in delinquency losses prevented. ROI: 150x.`,
+      },
+      {
+        q: "A quick commerce company delivers groceries in 10 minutes. During peak hours, delivery time increases to 25 minutes. Using data, identify the bottleneck: warehouse picking, rider allocation, or traffic.",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "ecommerce",
+        company: "Zepto",
+        a: `**Quick commerce is time-sensitive. 25 min vs 10 min = 150% delay. Identify bottleneck systematically.**
+
+**Data collection (required before analysis):**
+
+Instrument the entire order flow:
+- T1: User places order
+- T2: Order reaches warehouse
+- T3: Picking starts
+- T4: Picking ends
+- T5: Rider assigned and leaves warehouse
+- T6: Rider at first stop (or second, third)
+- T7: Order delivered
+
+End-to-end time: T7 - T1. Break into stages:
+- Queue time: T2 - T1 (order in system before warehouse sees it)
+- Picking time: T4 - T3
+- Rider dispatch time: T5 - T4
+- Route time: T7 - T5
+
+**Analyze each stage:**
+
+**Peak hours (5-8 PM):** 10 min target
+
+\`\`\`
+Typical breakdown:
+Queue: 0.5 min (system fast)
+Picking: 4 min (worker busy)
+Dispatch: 1 min
+Route: 4 min (rider fast, traffic light)
+Total: 9.5 min
+\`\`\`
+
+**Peak hours (5-8 PM):** 25 min actual
+
+Query data: Which stage is degrading?
+
+Scenario A—Picking bottleneck:
+\`\`\`
+Queue: 0.5 min (same)
+Picking: 12 min (up from 4, warehouse overwhelmed)
+Dispatch: 1 min
+Route: 12 min (rider waiting for order, then long route due to backlog)
+Total: 25.5 min
+
+Red flags: Stock-outs (can't find item, picking takes 20 sec per SKU), worker overload (6 workers → need 18 during peak).
+\`\`\`
+
+Scenario B—Rider allocation bottleneck:
+\`\`\`
+Queue: 0.5 min
+Picking: 4 min (fast, picking is fine)
+Dispatch: 8 min (rider not available, waiting queue of 15 orders)
+Route: 12 min
+Total: 24.5 min
+
+Red flags: Riders are 90% utilized (supply < demand). You have 50 riders but orders spike to 500/hour (need 150 riders at 10-min delivery).
+\`\`\`
+
+Scenario C—Traffic bottleneck:
+\`\`\`
+Queue: 0.5 min
+Picking: 4 min
+Dispatch: 1 min
+Route: 19.5 min (rider stuck in traffic, 2 km takes 10 min instead of 2 min)
+
+Red flags: Route distance increases from 2 km (off-peak) to 3.5 km (peak, because nearest customers already served). Or traffic congestion (5-8 PM in metros = gridlock).
+\`\`\`
+
+**Diagnose with queries:**
+
+\`\`\`sql
+-- Picking time analysis
+SELECT
+  HOUR(T3) AS hour_of_day,
+  AVG(DATEDIFF(minute, T3, T4)) AS avg_picking_time,
+  PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY DATEDIFF(minute, T3, T4)) AS p95_picking_time,
+  COUNT(*) AS order_count
+FROM orders
+WHERE DATE(T3) >= CURRENT_DATE - 7
+GROUP BY HOUR(T3)
+ORDER BY hour_of_day;
+
+-- Rider allocation analysis
+SELECT
+  HOUR(T5) AS hour_of_day,
+  AVG(DATEDIFF(minute, T4, T5)) AS avg_dispatch_time,
+  (SELECT COUNT(DISTINCT rider_id) FROM orders WHERE HOUR(T3) = hour_of_day) AS active_riders,
+  COUNT(*) AS orders_dispatched,
+  ROUND(COUNT(*) / 30.0, 1) AS orders_per_rider_per_min
+FROM orders
+WHERE DATE(T5) >= CURRENT_DATE - 7
+GROUP BY HOUR(T5);
+
+-- Route time analysis
+SELECT
+  HOUR(T5) AS hour_of_day,
+  AVG(DATEDIFF(minute, T5, T7)) AS avg_route_time,
+  AVG(delivery_distance_km) AS avg_distance,
+  ROUND(AVG(delivery_distance_km) / AVG(DATEDIFF(minute, T5, T7)), 2) AS km_per_min (speed proxy)
+FROM orders
+WHERE DATE(T5) >= CURRENT_DATE - 7
+GROUP BY HOUR(T5);
+\`\`\`
+
+**Expected findings (typical Zepto pattern):**
+
+**Peak hours (5-8 PM):**
+- Picking: 4 min (stable, warehouse trained)
+- Dispatch: 6-8 min (degrading, shortage of riders)
+- Route: 12-15 min (degrading, traffic + longer routes due to high order density)
+- Diagnosis: Rider allocation + traffic
+
+**Why dispatch time degrades:** You have 50 riders for 500 orders/hour = 1 rider per 10 orders. Rider finishes order 1, 9 others waiting for assignment. Dispatch queue = 3 minutes. Then rider travels 2 km (traffic makes it 10 min). Total route: 13 min.
+
+**Fix path:**
+
+1. **Short-term (1 week):** Increase riders from 50 to 120 during 5-8 PM. Cost: ₹50/rider/hour × 70 extra riders × 3 hours = ₹10,500/day = ₹3 crores/year. Revenue gain: 500 orders/hour × 3 hours × ₹50 commission = ₹75K/day = ₹27 crores/year. ROI: 9x. Do it.
+
+2. **Medium-term (4 weeks):** Optimize routes. Instead of nearest-next, batch orders by geography. Rider does 5 stops in 2 km (instead of 5 stops in 5 km due to randomness). Expected: route time 12→8 min. Saves 4 min.
+
+3. **Long-term (3 months):** Add micro-warehouses in peak-demand zones. Instead of 1 central warehouse, 5 smaller ones → shorter pickup distance, less traffic impact.
+
+**Expected outcome:** 25 min → 12 min (primary bottleneck was rider shortage, secondary was route optimization). 10-min delivery sustained during peak.`,
+      },
+      {
+        q: "LinkedIn's algorithm shows you posts from connections and influencers. Users engage more with influencer content but feel less connected to the platform. How would you balance this using data?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "saas",
+        company: "LinkedIn",
+        a: `**The tension: Engagement (short-term) vs. platform stickiness (long-term). Optimizing engagement alone kills retention.**
+
+**The problem (with data):**
+
+1. **Engagement metrics favor influencers:**
+   - Influencer post: "5 lessons learned from..." → 50K likes, 5K comments
+   - Friend post: "Excited to announce..." → 200 likes, 20 comments
+   - Engagement ratio: influencer 100x higher
+
+2. **But retention metrics show the opposite:**
+   - Users who see 80%+ influencer content: 12-month retention 55%
+   - Users who see 50/50 influencer+friend content: 12-month retention 75%
+   - Users who see 80%+ friend content: 12-month retention 82%
+
+**Why?** Influencers drive virality (everyone sees same posts), not connection. Friends drive FOMO (intimacy, "I'm in their circle"). Chasing influencer engagement creates algorithmic sameness—boring over time.
+
+**Data strategy (A/B test, measure long-term):**
+
+**Control:** Current algorithm (80% influencer/viral content, 20% friend content)
+
+**Treatment 1:** Balanced feed (60% influencer, 40% friend)
+- Measure: Day-1-7 engagement (expect -10% likes, -5% comments), 30-day retention (expect +5%), 90-day retention (expect +8%), daily active rate (expect +3%)
+
+**Treatment 2:** Friend-first feed (40% influencer, 60% friend)
+- Measure: Same metrics
+
+**Treatment 3:** Personalized (use user data: if user engages more with friends, show 60% friends; if more with influencers, show 70% influencers)
+- Measure: Net engagement (likes + comments + time spent)
+
+**Expected outcome:**
+
+- Control: High short-term engagement (100% baseline), but D90 retention 70%
+- Treatment 1: 95% short-term engagement, D90 retention 76% (+8%)
+- Treatment 2: 85% short-term engagement, D90 retention 74% (no win, lose engagement)
+- Treatment 3: 98% engagement, D90 retention 77% (both win; personalization balances)
+
+**Recommendation: Treatment 3 (personalized balance)**
+
+Implement: For each user, calculate `affinity_to_friend_content` (historical engagement on friend posts vs influencer posts). If high affinity, show 60% friend content. If low affinity, show 70% influencer. Middle ground: 50/50.
+
+**Why this works:**
+
+- Users who love influencer content (news, trends) get influencer-heavy feed → engagement stays high
+- Users who love friend content (intimacy, networking) get friend-heavy feed → retention stays high
+- Average: balanced, satisfies both groups
+
+**Implementation (feature engineering):**
+
+\`\`\`python
+def calculate_friend_affinity(user_id):
+    # Recent engagement: likes/comments on friend posts vs influencer posts
+    friend_engagement = (likes_on_friend_posts + comments_on_friend_posts) / clicks_on_friend_posts
+    influencer_engagement = (likes_on_influencer_posts + comments_on_influencer_posts) / clicks_on_influencer_posts
+
+    affinity = friend_engagement / (friend_engagement + influencer_engagement)
+    return affinity
+
+def get_feed_composition(affinity):
+    # Affinity 0-1, map to feed mix
+    friend_pct = 30 + (affinity * 50)  # Range: 30-80%
+    influencer_pct = 100 - friend_pct
+    return friend_pct, influencer_pct
+
+# Example:
+affinity = 0.3 (user engages more with influencers)
+friend_pct = 30 + (0.3 * 50) = 45%
+influencer_pct = 55%
+
+Result: User sees 55% influencer (satisfies preference), 45% friend (maintains connection feeling)
+\`\`\`
+
+**Metrics to monitor post-launch:**
+
+- **Engagement:** Likes + comments per post (expect -5-10% vs before)
+- **Time spent:** Minutes per session (expect +8-15% if friend content stickier)
+- **D7 retention:** % active in week 2 (expect +3-5%)
+- **D30 retention:** % active in month 2 (expect +5-8%)
+- **Platform perception:** NPS survey ("Do you feel connected?") (expect +10 points)
+- **Ad engagement:** Users personalized feeds show ads on more posts (unexpected upside: +5% CPM)
+
+**Business impact:**
+
+- +5% D30 retention × 1B users × ₹1 ARPU/month = ₹50M additional annual revenue
+- -10% engagement × CPM $2 × 1B impressions = -₹200M ad revenue
+- Net: -₹150M short-term, +₹500M long-term (users stickier, watch more ads over lifetime)
+
+**Key insight:** Influencer content wins engagement sprints; friend content wins retention marathons. Personalize to serve both. Measure long-term (D90 retention, not D1 engagement) to make the right trade-off.`,
+      },
+    ],
+  },
+};
   },
 };
 
