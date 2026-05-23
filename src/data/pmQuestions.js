@@ -36552,6 +36552,843 @@ TF-IDF + K-means is unsupervised clustering. It works because important words na
       domain: "edtech",
       },
     ],
+    iim_campus: [
+      {
+        q: "Your sentiment analysis model trained on English tweets fails completely on Hinglish (Hindi-English mix) customer reviews. You have no labeled Hinglish data. What do you do?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "ecommerce",
+        company: "Flipkart",
+        a: `Before diving in, I'd clarify: how many Hinglish reviews do we have? Can we get 500-1000 manually labeled samples? What's the business impact of silence vs wrong predictions?
+
+This is a domain shift problem. Your English model learned patterns like 'amazing' = positive, but in Hinglish, 'bhaiya amazing nahi tha' (brother, it wasn't amazing) reverses the sentiment. You're missing code-switching dynamics and transliteration ('acha' vs 'अच्छा').
+
+Here's my approach: Step 1—Transfer learning. Fine-tune your English model on just 200-300 labeled Hinglish samples. You're not retraining from scratch; you're adapting the learned representations. A 70% boost is common. Step 2—Validate. Test on 100 holdout Hinglish reviews. If accuracy jumps to 75%+, you've solved it. Step 3—If still struggling, add preprocessing. Normalize transliterations ('acha'→'अच्छा'), handle code-switching patterns. Step 4—Ensemble. Keep the English model for fallback; route Hinglish through the fine-tuned model.
+
+Real metric: English model: 78% accuracy on English tweets. After fine-tuning on 200 Hinglish reviews: 74% on Hinglish (not great but usable). With preprocessing: 81% on Hinglish.
+
+Tradeoff: spending 3-5 days labeling 200 samples vs shipping with imperfect English model. I'd label first. Cost: ~₹500-1000 for annotation. ROI: 10x if you have millions of Hinglish reviews. The insight: you don't need thousands of labeled samples—transfer learning is powerful.`,
+      },
+      {
+        q: "A retailer's demand forecasting model over-predicts during festivals and under-predicts during monsoons. The model uses the same features year-round. What is wrong and how do you fix it?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "ecommerce",
+        a: `The problem: your model learned average demand patterns, but demand is non-stationary. Festivals (Diwali, Holi) and monsoons break the pattern permanently until they occur again. Your model has no way to know 'Diwali is coming'—it treats it like noise.
+
+Here's the diagnosis: Plot residuals (predicted - actual) by date. You'll see systematic spikes during festivals (residuals negative = over-prediction) and dips during monsoons (residuals positive = under-prediction). This screams 'missing external events feature.'
+
+Fix—add external features: (1) Holiday calendar. Binary flag: is_festival=1 on Diwali week, is_monsoon=1 during monsoon months. (2) Lead indicators. Include weather data (temperature, humidity, rainfall). Monsoon correlates with higher humidity + rain; this matters for footwear, umbrellas. (3) Day-of-week & seasonality. Fourier features capture annual seasonality without explicit labels. (4) Prior year demand during same festival. If last Diwali had 2x normal demand, expect similar this year—strong signal.
+
+Results: without external features, MAPE (mean absolute percentage error) = 18%. With holiday + weather features: MAPE = 9%. Game-changer.
+
+Code: add columns to your data: day_of_week, is_festival, is_monsoon, rainfall_mm, humidity_pct, day_of_year_sin (Fourier). Retrain XGBoost/LightGBM. Your tree model will automatically learn 'when is_festival=1 and demand_lag > 1000, predict 2x.' Tradeoff: requires external data sources (weather API, holiday calendar). Cost: $10-50/month for APIs. Worth it.`,
+      },
+      {
+        q: "You built a model that predicts employee attrition with 88% accuracy. HR used it to identify 50 flight risks and gave them retention bonuses. Attrition didn't decrease. What went wrong?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "general",
+        company: "McKinsey",
+        a: `You've hit the prediction-action gap. High accuracy ≠ useful predictions. The problem: your model is predicting who was already planning to leave (based on historical churn patterns), not who is persuadable.
+
+Think about it: your model saw patterns like 'employee talked to recruiter last month' or 'took sick leave excessively' or 'didn't get promotion.' These are symptoms of someone already decided. Giving them a bonus when they've mentally quit doesn't change their mind; they might take the bonus and leave anyway.
+
+Here's the real issue: you measured accuracy on a static test set. But in reality, causality matters. 88% accuracy tells you 'we can identify likely churners.' It doesn't tell you 'retention bonuses will stop them.'
+
+To fix this: (1) Design an RCT. Split 50 flight risks into treatment (bonus) and control (no bonus). Measure which group actually stays. Expected outcome: bonus has 10-20% effect on retention, not 100%. (2) Causal inference. Use propensity score matching: find employees similar to the 50, but didn't get bonuses. Compare churn rates. This tells you the true causal impact. (3) Segment your model predictions. High-risk factors: dissatisfied (external job search), engaged (external offers), disengaged (mentally left). Bonuses work on external offers, not on disengagement.
+
+Result: instead of 50 blanket bonuses, target 10 employees with external offers. Retention lifts 40%. Save ₹50L.
+
+Insight: ML predicts correlation. Business needs causation.`,
+      },
+      {
+        q: "Your image recognition model for a food delivery app identifies dishes with 91% accuracy in your test set but only 72% on user-uploaded photos. Diagnose the gap.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "ecommerce",
+        company: "Swiggy",
+        a: `This is a classic domain shift. Your test set was probably restaurant-provided photos: professional lighting, centered dish, clean backgrounds, high resolution. User uploads: bad lighting, blurry, cropped, food at weird angles, hand in frame, multiple dishes mixed.
+
+Diagnosis: (1) Photo quality—user photos are 50% lower resolution on average, more compression artifacts. (2) Lighting—indoor restaurant photos have consistent lighting; user homes have lamps, shadows, orange tint. (3) Occlusion—user uploads often have utensils, hands, or other dishes. (4) Background—professionals photograph on plain backgrounds; users shoot on tables with clutter.
+
+Fix approach: (1) Data augmentation. Train on artificially degraded images: add Gaussian blur, compress to 50% quality, crop randomly, adjust brightness/contrast. This teaches the model robustness. (2) Collect real user photos. Get 200-500 user uploads, label them. Fine-tune your model on this distribution. Accuracy likely jumps to 85%+. (3) Ensemble. Keep separate models: one for professional (restaurants), one for user. Route based on image metadata. (4) Preprocessing. Detect and handle occlusions using edge detection; normalize lighting using histogram equalization.
+
+Expected results: Test accuracy stays 91%. User accuracy: 72%→82% with data augmentation alone. With 200 real user samples fine-tuned: 72%→87%.
+
+Real solution: invest ₹20-30L to collect 1000 user-submitted photos with labels. Retrain. This is how production models maintain performance across distribution shifts.`,
+      },
+      {
+        q: "A bank's marketing model shows that customers who received a loan offer email were 3x more likely to apply. Does this mean the email caused applications? Design an analysis to find out.",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "fintech",
+        company: "JP Morgan",
+        a: `No, not necessarily. This is selection bias. Your model is observing correlation, not causation. The bank probably sent emails to 'likely applicants' (high credit score, recent loan inquiry history). Those same customers would apply anyway—the email is epiphenomenal.
+
+Here's the problem: customers who received emails were already filtered by the bank's targeting logic. If targeting was 'customers with credit score > 750 AND recent search history,' you're comparing those high-signal customers to a baseline that includes low-signal ones. Of course they apply more.
+
+Design a real causal analysis: (1) Propensity score matching. Find non-email recipients (similar credit scores, income, loan history) as a control group. Did they apply at lower rates? If yes, email has causal effect. If no, targeting did all the work. (2) RCT (A/B test). Randomize within your target audience (score > 750). Half get email, half don't. Measure application rates. This isolates email's true effect. Expected: email probably lifts applications by 10-20%, not 200%.
+
+(3) Timing analysis. Did application rate spike right after email send? Or was the timing random? Spike = causation. Random = selection bias.
+
+Expected finding: 70% of the 3x lift is due to targeting (selecting high-propensity customers), 30% is email's true causal effect. Real number: email adds 15-20 percentage points to application rate for targeted customers.
+
+Implication: don't claim email campaign drove 3x growth. Say: 'We targeted high-propensity customers and email added 20% lift.' Different story, more accurate.`,
+      },
+      {
+        q: "You're building a fake news detection model for a social media platform. Your training data is from 2023 but fake news tactics evolve monthly. How do you keep the model current?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "saas",
+        company: "Meta",
+        a: `Static training data is death for this problem. Fake news evolves faster than your model training cycle. In 2023, fake news looked like 'X celebrity died.' In 2024, it's deepfakes, AI-generated text, and coordinated inauthentic behavior (bots amplifying misinformation). Your 2023 model won't catch 2024 tactics.
+
+Strategy—continuous learning: (1) Online learning with monthly retraining. Don't retrain quarterly. Set up a pipeline that retrains weekly on new labeled data. Keep a sliding window of last 3 months. Older data starts aging out. (2) Active learning. You label 100 examples; the model finds 1000 uncertain cases that humans should label. This accelerates data collection. (3) Ensemble with rule-based detectors. ML alone won't catch novel tactics. Add rules: 'if bot-like engagement pattern → flag.' 'If keyword trending 3 hours → review.' 'If zero known author → risky.' (4) Adversarial retraining. Feed your model fake articles it misclassified. Explicitly train on failures.
+
+Real system: Label 50-100 new articles weekly (3-5 hours analyst time). Retrain model every Friday. Measure: how many 'new tactic' fakes do we miss? Track that metric monthly. If missing rate climbs, we're losing the arms race.
+
+Practical: use a feature store that's easy to update. Keep important features as: author_history, engagement_velocity, semantic_novelty (how different from training set), bot_score. When tactics change, swap in new signals. Your 2025 model should look quite different from 2023.`,
+      },
+      {
+        q: "Your propensity model says 1000 customers will churn this month. You can only afford to call 200. How do you decide which 200 to call for maximum business impact?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "telecom",
+        a: `Don't just call the 200 with highest churn probability. That's a common mistake. You want to maximize expected business impact, which combines probability AND value.
+
+Framework: (1) Segment by value. Customers have different lifetime values. A high-value customer (monthly spend ₹5000, 3-year LTV = ₹180K) is worth saving more than a low-value customer (₹500/month, LTV = ₹18K). (2) Estimate causal impact of a call. Not all calls succeed. A proactive call probably saves 30-40% of churners you reach. This varies by reason: price-sensitive (often saveable), better offer elsewhere (harder). (3) Calculate expected value saved = churn_probability × LTV × save_rate. Rank by this, not churn probability alone.
+
+Example: Customer A: prob=60%, LTV=₹200K, save_rate=35% → EV = 0.6 × 200K × 0.35 = ₹42K Customer B: prob=95%, LTV=₹10K, save_rate=30% → EV = 0.95 × 10K × 0.30 = ₹2.85K → Call Customer A first, not B.
+
+Bonus: segment by churn reason. Build 5 models: price-driven, competitor-driven, service-issue-driven, engagement-driven, contract-end. For each reason, estimate save_rate. Personalize the call script. 'You're looking for lower rates'—offer discount. 'Service issue'—escalate to senior tech support.
+
+Result: strategic calling saves 40-50% of high-value churners vs random calling (saves 20-25%). ROI: calls cost ₹50/call = ₹10K for 200 calls. Saving 80 customers × ₹180K LTV = ₹14.4M value. Massive win.`,
+      },
+      {
+        q: "A pharma company wants to use ML to predict clinical trial outcomes before spending $50M on Phase 3. What data would you need and what are the ethical boundaries?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "head_ds",
+        domain: "healthcare",
+        company: "McKinsey",
+        a: `This is high-stakes ML with regulatory and ethical landmines. Predicting efficacy before Phase 3 could save years and $50M, but the model must be rigorous and transparent.
+
+Data needed: (1) Phase 1/2 data (patient outcomes, dosage responses, safety). (2) Biomarkers (genetic markers, protein levels that correlate with response). (3) Real-world evidence (patient registries showing outcomes in similar populations). (4) Historical trial data (your company's past trials + published literature). (5) Patient demographics (age, comorbidities, genetics) and population stratification.
+
+Model approach: Bayesian hierarchical model (not black-box neural nets). Why? Pharma regulators (FDA) want interpretability. Explain 'drug works 10% better in patients with biomarker X.' Also, Phase 1/2 data is small (50-200 patients)—Bayesian priors (informed by historical trials) stabilize estimates better than frequentist methods.
+
+Ethical boundaries—critical: (1) Don't use the model to justify skipping Phase 3. A prediction model, even 90% accurate on similar drugs, isn't proof. Phase 3 is mandatory; the model informs design, not replaces it. (2) Fairness in populations. If model is trained on 80% European ancestry data, it might fail on Asian or African populations. Test across ethnicities. Disclose limitations. (3) Regulatory compliance. FDA wants to understand the model. Use SHAP values to explain predictions. Don't use it as a black-box. (4) Conflicts of interest. Don't let commercial pressure ('predict success') override scientific rigor. Hire external validators.
+
+Practical: use the model to optimize Phase 3 design. 'Model predicts responders are 40% of population. Enrich Phase 3 with responders using biomarkers. Smaller, faster trial, same statistical power.' That's ethical and profitable.`,
+      },
+      {
+        q: "Your recommendation model increased engagement 15% but users complain they only see the same type of content now. How do you add diversity without losing the engagement gains?",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "saas",
+        company: "Netflix",
+        a: `Classic exploration-exploitation tradeoff. You've optimized for exploitation (showing what users like) and sacrificed exploration (showing them new things they might love). Users are in filter bubbles.
+
+Diagnosis: Your model learned 'if user watches horror, recommend more horror.' It's myopic. It maximizes today's engagement but loses future opportunity: user might discover sci-fi and watch 100 hours more.
+
+Fix—multi-objective optimization: (1) Reformulate the ranking. Instead of 'probability of click,' use: 0.8 × (probability of engagement) + 0.2 × (novelty score). Novelty can be 'similarity to user's past clicks.' So 'horror-to-sci-fi' gets boosted even if click probability is lower. (2) Diversity penalty. Add a constraint: 'No more than 40% of top 10 recommendations from the same category.' (3) Contextual bandits. Allocate exploration budget: 80% exploitation (proven favorites), 20% exploration (new content). Dynamically adjust based on user's discovery rate.
+
+Practical example: User watched 10 horror movies. Engagement model ranks: horror#1 (0.8 prob), horror#2 (0.75 prob), horror#3 (0.72 prob), sci-fi#1 (0.4 prob). With diversity weighting: horror#1 (0.64 weighted), horror#2 (0.6 weighted), sci-fi#1 (0.48 weighted). Sci-fi ranks higher despite lower engagement probability.
+
+Expected outcome: diversity increases from 30% to 50% (measured by content category coverage). Engagement drops from +15% to +8% (cost of diversity). But long-term? Users discover new preferences, lifetime value increases. 2-year perspective: +15% short-term, +25% long-term.
+
+Metric: track 'catalog coverage' (% of content watched) and 'discovery rate' (how often users explore new categories). Optimize joint objective.`,
+      },
+      {
+        q: "An insurance company wants to price premiums using ML but regulators require the model to be fully explainable. You know a black-box model performs 12% better. How do you navigate this?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "fintech",
+        company: "Deloitte",
+        a: `This is a real-world tension: accuracy vs compliance. Regulators (NAIC, EU regulators) demand model transparency because customers have the right to understand why they're charged ₹5000 vs ₹8000 for insurance. Black-box models (deep NNs, complex ensembles) can't explain that. But they're more accurate because they capture non-linear interactions (e.g., 'age × driving_record' together predict risk differently than individually).
+
+Strategy—don't sacrifice compliance for accuracy: (1) Start with interpretable baseline. Use logistic regression or decision trees. Measure accuracy: 84%. Explainability: 100% (each coefficient, each split is interpretable). (2) Add complexity carefully. Use gradient boosted trees (XGBoost) instead of neural nets. SHAP values explain each prediction. Accuracy: 92% (8% improvement vs black-box's 12%). Explainability: 95% (SHAP is mostly transparent; tree structure is interpretable). (3) Feature engineering as leverage. Don't rely on raw inputs; engineer meaningful features: 'claim_frequency_ratio' = (claims / years_insured). Models with engineered features perform better AND are more interpretable because features have business meaning.
+
+Practical: Present this to regulators: 'Our XGBoost model (92% accuracy) explains each premium decision via SHAP values. Customer can see: age contributes +₹200, driving record contributes -₹500.' They get transparency and you get near-black-box accuracy.
+
+Trade-off: 12% accuracy (black-box) vs 92% (XGBoost) is choosing between illegal and legal. Compliance is non-negotiable. Use the 8% accuracy gap to justify premium increases in borderline cases (hand-review), not as reason to violate regulations.
+
+Real outcome: XGBoost + SHAP is production-ready. Regulators approve. Customers accept premium because they understand it.`,
+      },
+      {
+        q: "Estimate the total number of food orders delivered per day across all platforms in India. Break down by platform, city tier, and meal type.",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "ecommerce",
+        a: `Working top-down from India's urban population and usage rates.
+
+**Urban population:** India has ~500M urban population. Only ~300M in cities large enough to have food delivery (Tier 1 & 2 cities).
+
+**Daily order rate:** Not everyone orders every day. Average: Tier 1 (metro, high penetration) = 12% penetration, Tier 2 (smaller cities, emerging) = 4% penetration.
+
+- Tier 1 cities (Delhi, Mumbai, Bangalore, Hyderabad, etc.): 120M population × 12% = 14.4M daily users
+- Tier 2 cities (50 cities, ~80M population): 80M × 4% = 3.2M daily users
+- Total daily users: ~17.6M
+
+**Orders per user per day:** Not all daily users order. But those who do might order 1.2 times (some order breakfast + lunch). Average across all daily users = 0.35 orders/user/day.
+
+- Total orders: 17.6M × 0.35 = **6.16M orders/day**
+
+**By platform:** (Market share: Zomato ~35%, Swiggy ~45%, UberEats ~12%, smaller players ~8%)
+- Zomato: 6.16M × 35% = 2.16M
+- Swiggy: 6.16M × 45% = 2.77M
+- UberEats: 6.16M × 12% = 0.74M
+- Others: 6.16M × 8% = 0.49M
+
+**By city tier:**
+- Tier 1: 14.4M users × 0.40 orders/user = 5.76M
+- Tier 2: 3.2M users × 0.20 orders/user = 0.64M
+
+**By meal type:** (assumptions: breakfast 15%, lunch 40%, dinner 35%, snacks 10%)
+- Breakfast: 6.16M × 15% = 0.92M
+- Lunch: 6.16M × 40% = 2.46M
+- Dinner: 6.16M × 35% = 2.16M
+- Snacks: 6.16M × 10% = 0.62M
+
+**Reality check:** Swiggy + Zomato reported ~5-6M orders/day combined (2023). My estimate of 6.16M is reasonable, maybe slightly high (accounts for growth to 2025).
+
+**Final estimate: ~6-7M orders/day across India.**`,
+      },
+      {
+        q: "Estimate the data storage cost for WhatsApp to store one day of messages for all Indian users including text, images, and videos.",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "general",
+        a: `WhatsApp India user base: ~500M users. Not all send messages daily, but many send multiple.
+
+**Message volume:**
+- Daily active users: 500M × 60% = 300M
+- Messages per active user per day: ~5-8 (mix of individual chats, group chats, media)
+- Average: 6 messages per user
+- Total messages: 300M × 6 = 1.8B messages/day
+
+**Message size breakdown:**
+- Text (70% of messages): 50 bytes average
+- Images (20%): 2-3 MB average
+- Videos (10%): 10-15 MB average
+
+**Storage calculation:**
+- Text: 1.8B × 70% × 50 bytes = 0.063B GB = 63 TB
+- Images: 1.8B × 20% × 2.5 MB = 0.9B GB = 900 TB
+- Videos: 1.8B × 10% × 12 MB = 2.16B GB = 2160 TB
+- **Total: 3123 TB = ~3.1 PB/day**
+
+**Cloud storage cost** (AWS S3 standard, India region):
+- Storage: $0.023/GB/month
+- 3.1 PB/day × 365 days = 1131.5 PB/year
+- Cost: 1131.5 × 1024 GB × $0.023 = **$26.7M/year** for storage alone
+
+**Add replication + redundancy:** 3x copies (regions, backups) = $80M/year
+
+**Add data transfer:** Users download images/videos = $5-10M/year
+
+**Add indexing + search:** $5-10M/year
+
+**Total annual cost: ~$100-120M/year**
+
+**Per-user cost:** $100M / 500M users = $0.20/user/year ≈ 1-2 paisa per user per month.
+
+**Business validation:** WhatsApp generates most revenue from B2B messaging ($0.004-0.005 per message). Storing consumer messages costs far less than revenue. Scale justifies the investment.`,
+      },
+      {
+        q: "Paytm shows that users who link their bank account transact 5x more. Should Paytm aggressively push bank linking? What data analysis would you do before recommending this?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "fintech",
+        a: `The 5x stat is correlation, not causation. Users who link bank accounts are likely higher-intent users (they trust the app, they're serious about digital payments). Paytm selected into a better user base, not created it.
+
+Before recommending aggressive push, I'd run this analysis: (1) Propensity matching. Find users similar to 'bank-linked' (high app adoption, frequent login, high account balance) who haven't linked. Did they transact more without linking? If yes, the higher transacting is selection bias. If no, bank linking has causal effect. (2) RCT. Randomize: half of wavering users get push notification 'Link your bank for faster transfers' (treatment), half get nothing (control). Measure transaction increase. If treatment group transacts 3x more, link-pushing works. (3) Segmentation. Bank linking effects might differ: high-intent users (already heavy transactors) gain 2x from linking. Low-intent users gain 20x from linking (big unlock). But how many low-intent users exist? (4) Fraud risk. Do bank-linked users have lower fraud? Or is it that wealthier users link (less fraud inherently)? Check: fraud_rate_linked vs fraud_rate_unlinked, controlling for wealth proxy.
+
+Expected findings: Bank linking probably causes 50-100% transaction increase, not 400% (which is selection bias). But for low-intent users, it's a key unlock.
+
+Recommendation: target low-intent users with linking push. For high-intent? They'll link anyway. Avoid blanket push (wastes effort on already-converted users). Use propensity score: push to users with 20-50% predicted bank-linking rate, not 1% or 90%.
+
+Expected impact: 20% increase in monthly transactions from targeted bank-linking campaign, vs 3% from blanket push.`,
+      },
+      {
+        q: "A ride-hailing company wants to expand to 10 new Tier 2 cities. Using only publicly available data, how would you rank which cities to enter first?",
+        subcategory: "case_studies",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "ecommerce",
+        company: "Uber",
+        a: `Ranking based on TAM (Total Addressable Market), readiness, and competition.
+
+**TAM = city population × % urban workforce × avg trips/year:**
+- Tier 2 cities: Pune, Jaipur, Indore, Ahmedabad, etc. Population: 3-5M each
+- Urban workforce: 30-40% (white-collar jobs that demand mobility)
+- Trips/year per person: 60-100 (compare to Tier 1's 150-200)
+- Example: Pune = 5M × 35% × 80 = 14M potential trips/year
+
+**Readiness factors** (from public data):
+- Smartphone penetration: higher = readier (govt household surveys)
+- 4G coverage: >70% = good (TRAI data public)
+- Vehicle density: cars per capita (road stats, RTO data if public)
+- Traffic congestion: longer commutes = higher demand (Google Maps anonymized commute times public)
+- Income levels: nighttime lights satellite data, tax return density
+
+**Competition:**
+- Are Ola, local players already present? Their coverage area size (from user reviews, maps heat maps)
+- If uncontested: first-mover advantage. If contested: harder to enter
+
+**Example ranking for 10 cities:**
+1. Pune: TAM 14M, Ola partial, high income, ready (8.2/10)
+2. Jaipur: TAM 10M, Ola present, lower income but growing (7.5/10)
+3. Indore: TAM 8M, Ola weak, emerging (7.2/10)
+4. Ahmedabad: TAM 9M, Ola strong, wealthy (6.8/10)
+5-10: smaller cities
+
+**Shortcut:** Use nighttime lights + mobile data + Ola coverage to automate scoring.
+
+**Data sources:** WorldBank nighttime lights (freely available), TRAI reports, Google Trends (rising Uber + taxi searches), Twitter sentiment, app download trends (Sensor Tower data on Ola/Uber uninstalls).
+
+**Expected ROI:** Enter Pune first. Ola is partial. 15M TAM, 20% penetration possible = 3M annual revenue (assuming $0.50 commission per trip). Invest ₹5 crores in supply/demand. Payback in 2-3 years.`,
+      },
+      {
+        q: "Write a SQL query to find users whose spending pattern shifted from weekday-heavy to weekend-heavy in the last 3 months compared to the previous 3 months.",
+        subcategory: "sql_data",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "fintech",
+        a: `WITH spending_by_period AS (SELECT user_id, CASE WHEN EXTRACT(DOW FROM transaction_date) IN (0, 6) THEN 'weekend' ELSE 'weekday' END AS day_type, SUM(amount) AS total_spent, DATE_TRUNC('month', transaction_date) AS month FROM transactions WHERE transaction_date BETWEEN CURRENT_DATE - INTERVAL '6 months' AND CURRENT_DATE GROUP BY user_id, day_type, month), prior_3mo AS (SELECT user_id, day_type, SUM(total_spent) AS spent_prior FROM spending_by_period WHERE month BETWEEN CURRENT_DATE - INTERVAL '6 months' AND CURRENT_DATE - INTERVAL '3 months' GROUP BY user_id, day_type), recent_3mo AS (SELECT user_id, day_type, SUM(total_spent) AS spent_recent FROM spending_by_period WHERE month > CURRENT_DATE - INTERVAL '3 months' GROUP BY user_id, day_type), ratio_shifts AS (SELECT p.user_id, p.day_type, COALESCE(r.spent_recent, 0) AS spent_recent, COALESCE(p.spent_prior, 0) AS spent_prior, CASE WHEN p.spent_prior > 0 THEN COALESCE(r.spent_recent, 0) / p.spent_prior ELSE 0 END AS ratio_change FROM prior_3mo p LEFT JOIN recent_3mo r ON p.user_id = r.user_id AND p.day_type = r.day_type) SELECT user_id, MAX(CASE WHEN day_type = 'weekend' THEN ratio_change ELSE 0 END) AS weekend_growth, MAX(CASE WHEN day_type = 'weekday' THEN ratio_change ELSE 0 END) AS weekday_growth FROM ratio_shifts GROUP BY user_id HAVING MAX(CASE WHEN day_type = 'weekend' THEN ratio_change ELSE 0 END) > 1.5 * GREATEST(MAX(CASE WHEN day_type = 'weekday' THEN ratio_change ELSE 0 END), 0.1) ORDER BY weekend_growth DESC;
+
+**Interpretation:** Finds users where weekend spending grew 50%+ faster than weekday spending (e.g., weekend 2x increase, weekday 1x = qualifies).
+
+**Use case:** Identify lifestyle shifts (work travel reduction, weekend leisure spending increase). Tailor marketing: "weekend experiences" for this cohort. Business value: ₹500K/year in incremental weekend consumption.`,
+      },
+      {
+        q: "Write a SQL query to calculate the time between a user's first and second purchase, grouped by acquisition channel, and identify which channel has the fastest repeat purchase.",
+        subcategory: "sql_data",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "ecommerce",
+        a: `WITH user_purchases AS (SELECT user_id, acquisition_channel, order_date, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY order_date) AS purchase_rank FROM orders), first_second AS (SELECT user_id, acquisition_channel, MAX(CASE WHEN purchase_rank = 1 THEN order_date END) AS first_purchase, MAX(CASE WHEN purchase_rank = 2 THEN order_date END) AS second_purchase FROM user_purchases WHERE purchase_rank <= 2 GROUP BY user_id, acquisition_channel HAVING MAX(CASE WHEN purchase_rank = 2 THEN order_date END) IS NOT NULL) SELECT acquisition_channel, COUNT(*) AS repeat_users, AVG(EXTRACT(DAY FROM second_purchase - first_purchase)) AS avg_days_to_repeat, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY EXTRACT(DAY FROM second_purchase - first_purchase)) AS median_days, MIN(EXTRACT(DAY FROM second_purchase - first_purchase)) AS fastest_repeat, MAX(EXTRACT(DAY FROM second_purchase - first_purchase)) AS slowest_repeat FROM first_second GROUP BY acquisition_channel ORDER BY avg_days_to_repeat;
+
+**Output example:**
+| acquisition_channel | repeat_users | avg_days_to_repeat | median_days |
+|---|---|---|---|
+| Organic Search | 1200 | 18 | 14 |
+| Paid Social | 800 | 25 | 19 |
+| Referral | 2500 | 12 | 10 |
+
+**Insight:** Referral channel drives fastest repeat purchase (12 days). Viral loop exists. Paid social slowest. Optimize: invest more in referral incentives. Real business impact: reduce payback period from 45 days to 30 days = 50% faster ROI.`,
+      },
+      {
+        q: "Your company's north star metric is weekly active users. WAU grew 20% last quarter but revenue grew only 3%. What is likely happening and how would you investigate?",
+        subcategory: "case_studies",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "saas",
+        a: `The gap between user growth (20%) and revenue growth (3%) signals deterioration in unit economics. Users are getting cheaper to you (in terms of revenue per user). Common causes: (1) Low ARPU users flooding in. You acquired price-sensitive, inactive users (via cheap channels or discounts). They're active but spend little. (2) Churn in high-value cohort. High-spending users left; new users have low LTV. (3) Feature dilution. Free tier expanded, users moved from paid to free. (4) Price reduction. You cut prices to drive growth; activation up but revenue down.
+
+Investigation plan: (1) Cohort analysis. Segment by acquisition channel. Did organic grow 20% (good signal) or paid ads channel 50% but paid users have 0.1x revenue? Pinpoint the leak. (2) ARPU by cohort. Calculate revenue per WAU for each month. It's declining month-over-month (this confirms the problem). (3) Mix shift. Of new users, what % are free tier vs paid? Compare to prior quarter. (4) Churn. Segment churned users by spend. Did high-spenders churn? (5) Feature adoption. Did free features (collaboration, unlimited storage) steal paid feature adoption?
+
+Example results: New users (20% WAU growth) are 80% free tier, 0% monetization. Churned users were 40% paid, 60% revenue. Combined: new cohorts bring zero revenue; exiting cohorts were high-value. → problem is churn, not growth.
+
+Recommendation: Fix retention of paid users (quick win, immediate revenue impact). Growth can wait. Real solution: paid ARPU down 20%, but free users up 100%. Shift strategy: fewer free trial users, focus on converting to paid earlier. Expected: 3% revenue growth → 12% within 2 quarters if you shift mix.`,
+      },
+      {
+        q: "Write a Python script that takes daily revenue data and automatically identifies the top 3 anomalies with their likely causes by correlating with external events data.",
+        subcategory: "python",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "general",
+        a: `\`\`\`python
+import pandas as pd
+import numpy as np
+from scipy import stats
+from datetime import datetime, timedelta
+
+def detect_anomalies(revenue_df, events_df, top_n=3):
+    """
+    revenue_df: DataFrame with columns [date, revenue]
+    events_df: DataFrame with columns [date, event_name, event_type]
+    Returns: top 3 anomalies with likely causes
+    """
+    # Calculate baseline (rolling 30-day median)
+    revenue_df['baseline'] = revenue_df['revenue'].rolling(30, center=True).median()
+    revenue_df['deviation'] = revenue_df['revenue'] - revenue_df['baseline']
+    revenue_df['zscore'] = np.abs((revenue_df['revenue'] - revenue_df['baseline']) / revenue_df['baseline'].std())
+
+    # Find anomalies (zscore > 2)
+    anomalies = revenue_df[revenue_df['zscore'] > 2].sort_values('zscore', ascending=False).head(top_n)
+
+    results = []
+    for idx, row in anomalies.iterrows():
+        date = row['date']
+
+        # Find correlated events within ±3 days
+        event_window = events_df[(events_df['date'] >= date - timedelta(3)) &
+                                  (events_df['date'] <= date + timedelta(3))]
+
+        # Classify cause
+        causes = []
+        if len(event_window) > 0:
+            for _, event in event_window.iterrows():
+                if 'campaign' in event['event_type'].lower() or 'promotion' in event['event_type'].lower():
+                    causes.append(f"Marketing: {event['event_name']}")
+                elif 'outage' in event['event_type'].lower():
+                    causes.append(f"Outage: {event['event_name']}")
+                elif 'holiday' in event['event_type'].lower():
+                    causes.append(f"Holiday: {event['event_name']}")
+                else:
+                    causes.append(event['event_name'])
+        else:
+            causes = ["No correlated events (possible data error or organic spike)"]
+
+        results.append({
+            'date': date,
+            'revenue': row['revenue'],
+            'baseline': row['baseline'],
+            'deviation_pct': (row['deviation'] / row['baseline']) * 100,
+            'zscore': row['zscore'],
+            'likely_causes': causes
+        })
+
+    return results
+
+# Example usage
+revenue = pd.read_csv('daily_revenue.csv')
+events = pd.read_csv('events.csv')
+anomalies = detect_anomalies(revenue, events)
+
+for anom in anomalies:
+    print(f"Date: {anom['date']}, Revenue: ₹{anom['revenue']:,.0f}, Deviation: {anom['deviation_pct']:.1f}%")
+    print(f"  Likely causes: {', '.join(anom['likely_causes'])}\n")
+\`\`\`
+
+Output:
+\`\`\`
+Date: 2024-03-15, Revenue: ₹5.2M, Deviation: +85.3%
+  Likely causes: Marketing: Holi campaign launch, Holiday: Holi festival
+
+Date: 2024-02-10, Revenue: ₹1.1M, Deviation: -75%
+  Likely causes: Outage: Payment gateway down for 8 hours
+
+Date: 2024-01-26, Revenue: ₹8.9M, Deviation: +120%
+  Likely causes: No correlated events (investigate viral growth / organic spike)
+\`\`\`
+
+Insight: Automatically flags revenue swings and suggests investigations. Saves 2-3 hours of manual analysis daily.`,
+      },
+      {
+        q: "Estimate how many machine learning models are running in production across all Indian startups. Walk through your assumptions layer by layer.",
+        subcategory: "case_studies",
+        difficulty: "Easy",
+        level: "junior_ds",
+        domain: "general",
+        a: `**Step 1: How many AI/ML startups exist in India?**
+- Indian startup ecosystem: ~100,000 startups total
+- AI/ML-specific: ~2-3% of ecosystem (from Nasscom, startup databases)
+- Estimate: 2500 AI/ML startups
+
+**Step 2: How many use ML in production?**
+- Early stage (seed/A): 40% use ML (mostly experiments, 1-2 models)
+- Growth stage (B/C): 70% in production (3-10 models each)
+- Late stage (D+): 95% in production (10-50 models each)
+- Distribution: 60% early, 30% growth, 10% late
+- Fraction in production: 60% × 40% + 30% × 70% + 10% × 95% = 54%
+- Startups with live models: 2500 × 54% = 1350 startups
+
+**Step 3: Models per startup:**
+- Early: avg 1.5 models (recommendation, prediction)
+- Growth: avg 6 models (personalization, fraud, churn, ranking, clustering, demand)
+- Late: avg 25 models (everything above, + A/B testing models, canary deployments, ensemble models)
+
+**Step 4: Calculate total models:**
+- Early (800 startups × 54% using ML = 432): 432 × 1.5 = 650 models
+- Growth (300 startups × 70% = 210): 210 × 6 = 1260 models
+- Late (50 startups × 95% = 47.5): 47.5 × 25 = 1188 models
+- **Total: 3098 models ≈ 3000 production ML models**
+
+**Sanity check:** Does 3000 seem right? India has ~1.5 trillion dollars GDP, growing startups = maybe 0.1-0.2% of economic output is AI/ML. Rough alignment suggests 3000-5000 is reasonable.
+
+**Reality note:** This counts only startups. Add: 500 large corporates × 50 models = 25,000 models. Banks, insurance, e-commerce giants. Total across India: ~25,000-30,000 production ML models. But pure "startup" estimate: 3000.`,
+      },
+      {
+        q: "Write a SQL query that builds a funnel analysis showing drop-off rates at each stage: app open, search, product view, add to cart, checkout, payment success.",
+        subcategory: "sql_data",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "ecommerce",
+        company: "Amazon",
+        a: `WITH funnel_stages AS (SELECT user_id, 'app_open' AS stage, COUNT(*) AS users FROM events WHERE event_type = 'app_opened' AND DATE(timestamp) >= CURRENT_DATE - INTERVAL '7 days' GROUP BY user_id UNION ALL SELECT DISTINCT user_id, 'search', 1 FROM events WHERE event_type = 'search' AND DATE(timestamp) >= CURRENT_DATE - INTERVAL '7 days' UNION ALL SELECT DISTINCT user_id, 'product_view', 1 FROM events WHERE event_type = 'product_viewed' AND DATE(timestamp) >= CURRENT_DATE - INTERVAL '7 days' UNION ALL SELECT DISTINCT user_id, 'add_to_cart', 1 FROM events WHERE event_type = 'add_to_cart' AND DATE(timestamp) >= CURRENT_DATE - INTERVAL '7 days' UNION ALL SELECT DISTINCT user_id, 'checkout', 1 FROM events WHERE event_type = 'checkout_started' AND DATE(timestamp) >= CURRENT_DATE - INTERVAL '7 days' UNION ALL SELECT DISTINCT user_id, 'payment_success', 1 FROM orders WHERE order_status = 'completed' AND DATE(created_at) >= CURRENT_DATE - INTERVAL '7 days'), users_per_stage AS (SELECT 'app_open' AS stage, COUNT(DISTINCT user_id) AS users FROM funnel_stages WHERE stage = 'app_open' UNION ALL SELECT 'search', COUNT(DISTINCT user_id) FROM funnel_stages WHERE stage = 'search' UNION ALL SELECT 'product_view', COUNT(DISTINCT user_id) FROM funnel_stages WHERE stage = 'product_view' UNION ALL SELECT 'add_to_cart', COUNT(DISTINCT user_id) FROM funnel_stages WHERE stage = 'add_to_cart' UNION ALL SELECT 'checkout', COUNT(DISTINCT user_id) FROM funnel_stages WHERE stage = 'checkout' UNION ALL SELECT 'payment_success', COUNT(DISTINCT user_id) FROM funnel_stages WHERE stage = 'payment_success') SELECT stage, users, LAG(users) OVER (ORDER BY CASE stage WHEN 'app_open' THEN 1 WHEN 'search' THEN 2 WHEN 'product_view' THEN 3 WHEN 'add_to_cart' THEN 4 WHEN 'checkout' THEN 5 ELSE 6 END) AS prev_stage_users, ROUND(100.0 * users / LAG(users) OVER (ORDER BY CASE stage WHEN 'app_open' THEN 1 WHEN 'search' THEN 2 WHEN 'product_view' THEN 3 WHEN 'add_to_cart' THEN 4 WHEN 'checkout' THEN 5 ELSE 6 END), 2) AS conversion_pct, ROUND(100.0 * (1 - users / LAG(users) OVER (ORDER BY CASE stage WHEN 'app_open' THEN 1 WHEN 'search' THEN 2 WHEN 'product_view' THEN 3 WHEN 'add_to_cart' THEN 4 WHEN 'checkout' THEN 5 ELSE 6 END)), 2) AS dropoff_pct FROM users_per_stage ORDER BY CASE stage WHEN 'app_open' THEN 1 WHEN 'search' THEN 2 WHEN 'product_view' THEN 3 WHEN 'add_to_cart' THEN 4 WHEN 'checkout' THEN 5 ELSE 6 END;
+
+Example output:
+| stage | users | conversion_pct | dropoff_pct |
+|---|---|---|---|
+| app_open | 100000 | 100 | 0 |
+| search | 65000 | 65 | 35 |
+| product_view | 42000 | 64.6 | 35.4 |
+| add_to_cart | 18000 | 42.9 | 57.1 |
+| checkout | 12000 | 66.7 | 33.3 |
+| payment_success | 9600 | 80 | 20 |
+
+**Insight:** Biggest drop (57%) is add_to_cart to checkout—cart abandonment. Optimize: simplified checkout, payment options, trust badges. Low-hanging fruit.`,
+      },
+      {
+        q: "Explain the attention mechanism in transformers without using any jargon. Then explain why it made BERT and GPT possible when previous architectures couldn't scale.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "general",
+        company: "Google",
+        a: `**No jargon version:** Imagine you're reading a sentence and you need to understand what 'it' refers to. You look back at all previous words and assign weights: 'it' might refer to 'the dog' (80% weight), 'the cat' (15%), 'the house' (5%). Attention does this: for each word, it calculates how much to focus on every other word in the sentence. Then it pulls information from those words proportional to the focus weights. This is how transformers understand context.
+
+**Why previous models failed:** RNNs and LSTMs processed words sequentially, left-to-right. Problem: early words had to carry information all the way to the end of a 500-word document, and information got lost or diluted. Also, you couldn't parallelize—process word-by-word is slow on GPUs.
+
+**Why attention scales:** Transformers process all words simultaneously. Each word looks at all others directly (no sequential bottleneck). So word-1000 can directly reference word-1 with full strength—information doesn't degrade. This enabled two things: (1) Parallel processing—train 32 sequences at once instead of 32 words from 1 sequence. 100x speedup. (2) Longer context—BERT uses 512 tokens. GPT-3 uses 2048 tokens. RNNs maxed out at 100 tokens before gradients vanished.
+
+**The scaling law:** With RNNs, adding layers hurt (vanishing gradients). With transformers, you can stack 24, 48, even 175 layers (GPT-3). More layers = better understanding. But computational cost grows linearly (good!), not exponentially.
+
+**Practical impact:** Pre-train BERT on Wikipedia (1.3B words). Transfer to any downstream task (translation, Q&A, sentiment) and fine-tune in hours, not weeks. Previous state-of-the-art needed task-specific architectures. Transformers are one-size-fits-all because attention is so general.
+
+**Why this matters:** Attention unlocked scaling. GPT-3 (175B parameters) is 100x larger than BERT. Only possible because attention is efficient. RNN of similar size would be impossible to train.`,
+      },
+      {
+        q: "You need to build a model that works across 5 different countries. Each country has different data distributions and regulations. Would you build 5 separate models or one unified model? Defend your choice.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "general",
+        company: "Amazon",
+        a: `Short answer: Start with one unified model, but regionalize features and predictions. Here's why:
+
+**Unified model advantages:** (1) Data pooling. 100K Indian users + 50K Brazilian users + 30K German users = 180K training samples. Separate models have 1/3 of data each, less reliable. (2) Transfer learning. If pattern in India applies to Brazil (e.g., price sensitivity), unified model learns once, not twice. (3) Operational simplicity. One model, one pipeline, one monitoring dashboard. (4) Cold-start. New market (Turkey, 10K users)? Add to unified model immediately. Separate model would need to learn from scratch.
+
+**Separate model drawbacks:** (1) 5 models = 5x monitoring, 5x retraining, 5x on-call duty. (2) Data fragmentation. 50K samples in each country might not be enough for complex patterns. (3) Missed patterns. Price elasticity in India might be 40%, Brazil 45%, Germany 50%. Unified model learns this variation. Separate models would estimate each at 42% ± large error.
+
+**My recommendation—hybrid approach:** (1) Unified base model trained on all 180K users. (2) Regional features layered on top. Example: feature 'price_per_capita_gdp' is globally meaningful but value differs by country. One feature, regional interpretation. (3) Separate prediction calibration per country. India model predicts churn probability 0-100%. But 'probability 50%' might mean 30% actual churn in India, 60% in Brazil. Post-hoc calibration per region. (4) Regulatory compliance. GDPR requires European models respect data locality. Store EU users' training data in EU. But learn from global patterns with federated learning (train separate models in each region, share gradients, not data).
+
+**Tradeoff:** More complex (unified + regional tweaks) than pure separate. But simpler than 5 separate pipelines, and more accurate than pure unified.
+
+**Expected impact:** Unified + regional: 85% accuracy across all 5 countries. Pure unified: 78%. Pure separate: 73% (insufficient data per region). Regional calibration adds 7%, complexity adds 2-3 weeks engineering. Worth it.`,
+      },
+      {
+        q: "Explain the difference between model interpretability and model explainability. Your manager thinks they're the same thing. Convince them otherwise with a practical example.",
+        subcategory: "machine_learning",
+        difficulty: "Medium",
+        level: "mid_ds",
+        domain: "general",
+        a: `**Interpretability = the model itself is understandable.** You can read the logic. Linear regression: y = 2×age - 0.5×income + 5. Interpretation: for every year older, prediction increases by 2 units (controlling for income). Simple decision tree: if income > 100K, predict high churn. Interpretable: anyone can see the logic.
+
+**Explainability = you can explain ANY model's predictions (even black-boxes).** You don't understand the full model, but you understand this specific prediction. Example: neural network's prediction for customer X: 'This customer has 70% churn probability because: (1) 3 failed login attempts (60% impact), (2) 0 purchases last month (8% impact), (3) account age 1 month (2% impact).' Doesn't mean you understand the entire model, just this prediction.
+
+**Practical example—loan approval:**
+
+Manager says: "We need an interpretable model so we can explain loan approvals to regulators."
+
+I say: "Let's clarify what we actually need."
+
+Option A: Interpretable model (simple): Logistic regression. "Loan approved because credit score > 700 AND income > ₹5L. Declined because credit score 680."
+- Pro: Regulators love this. Simple rule.
+- Con: Accuracy 75%. Loan default rate 12%.
+
+Option B: Explainable model (complex + SHAP): Neural network. Same 75% accuracy but we add SHAP explanations. "Loan approved because: credit score (30% importance), income (25%), employment stability (20%), debt ratio (15%), age (10%). Despite low credit score, other factors overrode."
+- Pro: Accuracy 88%. Default rate 6%. Regulators accept SHAP explanations.
+- Con: Slightly harder to explain, but we can show SHAP plots.
+
+**Real outcome:** We choose Option B. Regulators want accuracy + explainability, not simplicity alone. A bad loan decision (even if simple to explain) is worse than a good decision (even if complex to explain).
+
+**Manager convinced:** "I see—interpretability is nice-to-have. Explainability is must-have. Let's use explainable models with SHAP."`,
+      },
+      {
+        q: "What is contrastive learning? Explain how it works and give two business applications where it outperforms supervised learning.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "general",
+        a: `**Intuition:** Show a model two images: one of a cat, one of a dog. Tell it 'these are different.' Then show a cat and a slightly rotated cat. Tell it 'these are the same.' The model learns embeddings (numerical representations) where similar things cluster close, dissimilar things spread far. No labels needed.
+
+**How it works:** (1) Take an image. Create two versions: slightly blurred, rotated, cropped (same cat, different augmentations). (2) Pass both through the model, get embeddings (vectors). (3) Loss function: pull embeddings of the two versions close together (minimize distance). Pull embeddings of two different cats apart (maximize distance). (4) After training, embeddings capture semantic meaning.
+
+**Why useful:** Unsupervised pre-training. You learn rich representations without labeled data. Then fine-tune on downstream tasks with small labeled datasets.
+
+**Business applications:**
+
+**1. Fashion e-commerce (inventory matching):** Retailers upload product images. Different angles, lighting, backgrounds. Traditional supervised learning: label each as 'shirt', 'pants', etc. Requires 10,000 labels.
+
+Contrastive learning: Take images of same product (different angles). Tell model 'these are the same.' Take images of different products. Tell model 'these are different.' No labels needed. Result: embeddings where 'blue denim shirt from angle 1' clusters near 'blue denim shirt from angle 3,' both far from 'red sweater.'
+
+**Business impact:** Instead of 10,000 labeled images (₹50L cost), use 100,000 unlabeled product photos (free from user uploads). Accuracy 95% vs 78% from supervised baseline. False matches (showing 'red sweater' when customer searches 'blue shirt') drop 60%.
+
+**2. E-commerce recommendation (cold-start for new products):** New product launches daily. No purchase history, no user interactions. Supervised model can't rank.
+
+Contrastive learning: Embed product images, descriptions, reviews using contrastive loss. Products similar to bestsellers (same category, price range, aesthetic) cluster nearby. New 'blue handbag' is close to 'similar blue handbags,' which have high engagement.
+
+**Business impact:** New product ranking improves from random to 70th percentile immediately (without explicit training). Recommend it to users who liked similar products. 15% faster time-to-profitability for new SKUs.
+
+**Why beats supervised:** Supervised needs labels for every product-user pair (millions). Contrastive learns from product features alone. Scales to billions of products.`,
+      },
+      {
+        q: "What is the difference between model calibration and model discrimination? Your model has AUC of 0.92 but the predicted probabilities don't match actual frequencies. How do you fix this?",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "general",
+        a: `**Discrimination:** Does the model rank customers correctly? AUC 0.92 means if you pick a random churner and a random non-churner, the model ranks the churner higher 92% of the time. High discrimination = good ranking ability.
+
+**Calibration:** Are the predicted probabilities accurate? If model says 'customer has 70% churn probability,' do 70% of such customers actually churn? Or do 90% churn (overconfident)? Calibration = alignment between predicted probability and reality.
+
+**Your problem:** High AUC (0.92 = good ranking) but poor calibration. Example: model predicts probabilities [0.3, 0.5, 0.7, 0.9]. Actual outcomes [0, 0, 1, 1]. AUC measures ranking (0.3 < 0.5 < 0.7 < 0.9 and outcomes 0 < 1), so AUC is good. But calibration is poor: probability 0.3 had 0% churn, good. Probability 0.9 had 100%, good. But probability 0.5 had 0% churn when 50% was expected. Miscalibrated.
+
+**Causes:** (1) Training/test data drift. Model trained on 2023 churn patterns; 2024 patterns different. Probabilities now overconfident. (2) Class imbalance. Churn is 2% of data. Model learned 'rarely predict high probability' to avoid false positives. (3) Threshold optimization. You tuned the decision threshold for profit (call if prob > 0.45), but this warped probabilities.
+
+**Fix—post-hoc calibration:** (1) **Platt scaling** (simple). Fit a logistic regression: true_label ~ predicted_probability. This re-maps probabilities. (2) **Isotonic regression** (flexible). Fit a monotonic function: true_label ~ predicted_probability. Handles non-linear miscalibration. (3) **Temperature scaling.** Divide predicted logit by a temperature parameter (learned on validation set). Reduces overconfidence.
+
+**Example:**
+- Original: model predicts 0.7, calibration function says 'actual probability is 0.55'
+- After calibration: model outputs 0.55 (calibrated)
+- Now AUC stays 0.92 (ranking unchanged), but probabilities are accurate
+
+**Code:** Use sklearn.calibration.CalibratedClassifierCV. Fit on validation set (not test), apply to test.
+
+**Result:** AUC stays 0.92 (discrimination unchanged). Calibration error drops from 0.15 to 0.02. Now predictions are trustworthy for business decisions (e.g., 'customers with >70% churn risk' are actually 70% likely to churn, not 85%).`,
+      },
+      {
+        q: "Write a Python implementation of a simple A/B test analyzer that takes control and treatment group data, calculates statistical significance, confidence intervals, and effect size.",
+        subcategory: "python",
+        difficulty: "Hard",
+        level: "senior_ds",
+        domain: "general",
+        a: `\`\`\`python
+from scipy import stats
+import numpy as np
+from dataclasses import dataclass
+
+@dataclass
+class ABTestResult:
+    control_mean: float
+    treatment_mean: float
+    effect_size: float
+    t_statistic: float
+    p_value: float
+    ci_lower: float
+    ci_upper: float
+    significant: bool
+    power: float
+
+def analyze_ab_test(control: list, treatment: list, alpha=0.05, min_effect=0.05):
+    """
+    control: list of outcomes (e.g., [1, 0, 1, 0, ...] for binary, or [0.5, 0.6, ...] for continuous)
+    treatment: list of outcomes
+    alpha: significance level (0.05 = 95% confidence)
+    min_effect: minimum practical effect size (for power calculation)
+    """
+    control = np.array(control)
+    treatment = np.array(treatment)
+
+    # Descriptive stats
+    control_mean = np.mean(control)
+    treatment_mean = np.mean(treatment)
+    control_std = np.std(control, ddof=1)
+    treatment_std = np.std(treatment, ddof=1)
+    n_control = len(control)
+    n_treatment = len(treatment)
+
+    # Two-sample t-test
+    t_stat, p_value = stats.ttest_ind(treatment, control)
+
+    # Effect size (Cohen's d)
+    pooled_std = np.sqrt(((n_control - 1) * control_std**2 + (n_treatment - 1) * treatment_std**2) / (n_control + n_treatment - 2))
+    cohens_d = (treatment_mean - control_mean) / pooled_std if pooled_std > 0 else 0
+
+    # Confidence interval (95%) for difference
+    se_diff = np.sqrt((control_std**2 / n_control) + (treatment_std**2 / n_treatment))
+    t_critical = stats.t.ppf(1 - alpha/2, df=n_control + n_treatment - 2)
+    ci_lower = (treatment_mean - control_mean) - t_critical * se_diff
+    ci_upper = (treatment_mean - control_mean) + t_critical * se_diff
+
+    # Statistical power (post-hoc)
+    # Power = probability of rejecting null if true effect exists
+    # Approximate: if observed effect > critical effect, power is high
+    critical_effect = t_critical * np.sqrt((1/n_control) + (1/n_treatment))
+    power = 1 - stats.norm.cdf(critical_effect, loc=abs(cohens_d), scale=1)
+
+    significant = p_value < alpha
+
+    return ABTestResult(
+        control_mean=control_mean,
+        treatment_mean=treatment_mean,
+        effect_size=cohens_d,
+        t_statistic=t_stat,
+        p_value=p_value,
+        ci_lower=ci_lower,
+        ci_upper=ci_upper,
+        significant=significant,
+        power=power
+    )
+
+def print_results(result: ABTestResult):
+    print(f"Control mean: {result.control_mean:.4f}")
+    print(f"Treatment mean: {result.treatment_mean:.4f}")
+    print(f"Lift: {(result.treatment_mean - result.control_mean) / result.control_mean * 100:.2f}%")
+    print(f"Cohen's d (effect size): {result.effect_size:.4f}")
+    print(f"t-statistic: {result.t_statistic:.4f}")
+    print(f"p-value: {result.p_value:.6f}")
+    print(f"95% CI for difference: [{result.ci_lower:.4f}, {result.ci_upper:.4f}]")
+    print(f"Statistically significant: {result.significant}")
+    print(f"Power: {result.power:.2%}")
+
+# Example
+control_conversions = [0, 1, 1, 0, 0, 1, 0, 1, 0, 1] * 50  # 500 users, 50% conversion
+treatment_conversions = [0, 1, 1, 1, 0, 1, 0, 1, 1, 1] * 50  # 500 users, 60% conversion
+
+result = analyze_ab_test(control_conversions, treatment_conversions)
+print_results(result)
+\`\`\`
+
+Output:
+\`\`\`
+Control mean: 0.5000
+Treatment mean: 0.6000
+Lift: 20.00%
+Cohen's d (effect size): 0.2000
+t-statistic: 3.1623
+p-value: 0.001602
+95% CI for difference: [0.0400, 0.1600]
+Statistically significant: True
+Power: 0.87
+\`\`\`
+
+**Interpretation:** 20% lift is real (p < 0.05). Power 87% means if we repeat, we'd detect this effect 87% of the time. Practical.`,
+      },
+      {
+        q: "Explain how knowledge distillation works. Your production model needs to run on mobile devices with 100ms latency. The current model takes 2 seconds on a GPU. Walk through your approach.",
+        subcategory: "machine_learning",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "general",
+        a: `**Knowledge distillation:** A large, slow teacher model (e.g., 100M parameters, 2 seconds) teaches a small student model (5M parameters, 100ms) to mimic its predictions. The student doesn't learn from raw data; it learns from the teacher's soft predictions (probabilities, not hard labels).
+
+**Why this works:** The teacher has learned rich patterns. Instead of student learning from scratch on raw data (inefficient, needs lots of data), it copies the teacher's reasoning. Soft targets (e.g., 'this image is 60% dog, 30% wolf, 10% fox') are more informative than hard targets ('dog' or 'not dog').
+
+**Your scenario—step by step:**
+
+Step 1: Train the teacher on GPU (2 seconds inference). This already exists; assume 88% accuracy on mobile classification.
+
+Step 2: Build a student architecture. 20x smaller. Start with 5M parameters (vs teacher's 100M). Target: <100ms on mobile.
+
+Step 3: Create soft labels. Run teacher on 100K training images. Capture not just 'dog' label, but probability distribution: [0.92, 0.05, 0.02, 0.01] (92% dog, 5% wolf, 2% fox, 1% other). Store these.
+
+Step 4: Train student on soft labels. Loss = α × (student vs. teacher distribution) + (1-α) × (student vs. hard label). Typical α = 0.7. This biases student toward mimicking teacher but still learns the ground truth.
+
+Step 5: Optimize for latency. Quantize student (compress weights from float32 to int8). Model size: 20M → 5M. Inference: 1.2 seconds → 80ms on mobile. Within budget.
+
+Step 6: Validate. Student accuracy: 85% (lost 3% from teacher, acceptable for 20x speedup). On test set: 87% (sometimes even beats teacher due to regularization).
+
+**Expected results:**
+- Teacher: 88% accuracy, 2 seconds
+- Student (post-distillation): 85% accuracy, 80ms
+- Student (quantized): 85% accuracy, 45ms
+
+**Why this wins vs other approaches:**
+- Pruning (remove connections): 88% → 82%, still slow
+- Quantization alone (compress weights): 88% → 84%, 600ms (not enough)
+- Distillation + quantization: 85% accuracy, 45ms. Best trade-off.
+
+**Business impact:** Deploy to mobile. Serve predictions in real-time. No cloud call (privacy win, latency win). Revenue: users stay on app (fast) vs leave (slow).`,
+      },
+      {
+        q: "What is the difference between MAB (Multi-Armed Bandit) and traditional A/B testing? Design a MAB system for personalizing push notification timing for a food delivery app.",
+        subcategory: "statistics",
+        difficulty: "Hard",
+        level: "lead_ds",
+        domain: "ecommerce",
+        company: "Swiggy",
+        a: `**A/B testing:** Run two variants (A and B) in parallel on random users. Collect data for 1-2 weeks, then choose winner based on statistical significance. Fixed budget: if running test on 10K users, that's 10K users × experiment cost (lower conversion, lost revenue). Learn slowly.
+
+**Multi-Armed Bandit (MAB):** Continuously learn and optimize in real-time. Early on, explore equally (try all timing options). As data accumulates, gradually shift traffic toward the winning variant. Keep exploring a small amount (2-5%) to detect if other options become better.
+
+**Key difference:** A/B testing freezes both variants for the duration. MAB adapts on-the-fly. MAB is 'online learning'—learn and act simultaneously.
+
+**Your design—MAB for push notification timing:**
+
+Variants (arms): 8 AM (breakfast), 12 PM (lunch offer), 6 PM (dinner offer), 9 PM (late-night promo), 7 AM, 11 AM, 5 PM, 8 PM.
+
+**Algorithm—Thompson Sampling (recommended for this):**
+1. Maintain a success rate estimate for each arm. Initially, assume all equal (uniform prior).
+2. For each user, sample from each arm's distribution, pick the arm with highest sampled value.
+3. Send push at the sampled time.
+4. Record outcome: did user click? Open app? Place order?
+5. Update estimates. If 8 AM has 40% click rate (vs 12 PM's 25%), 8 AM's distribution shifts upward.
+6. Repeat: next user is more likely to get 8 AM (exploitation), but still has 10% chance of 12 PM (exploration).
+
+**Results over time:**
+- Week 1: All timings ~25% click rate each (random). Traffic split: 12.5% each.
+- Week 2: 8 AM emerges as winner (35% click rate). Traffic split: 8 AM 30%, others 8.75% each.
+- Week 4: 8 AM dominates (40%), but we still test others. 8 AM 50%, others 6.25% each.
+- Steady state: 8 AM 60%, rest 5% each (exploration budget).
+
+**Expected business impact:**
+- A/B test: Run for 1 week, get winner. Lose 1 week of sub-optimal traffic = 100K users × 10% lift loss = 10K missed orders.
+- MAB: Shift to winner gradually. Lose only 30K missed orders (learning faster). Bonus: detect and shift back if a new best time emerges (8 PM becomes better in winter). A/B test can't adapt.
+
+**Code:** Use Thompson Sampling library (or simple Bayesian update). Beta distribution per arm (prior: Beta(1,1), update with successes/failures).
+
+**Real metric:** MAB 12% lift over A/B testing because it loses less traffic during learning and adapts to seasonal changes.`,
+      },
+      {
+        q: "Your company wants to implement a data mesh architecture instead of a centralized data warehouse. What are the tradeoffs and when does data mesh actually make sense vs being hype?",
+        subcategory: "system_design",
+        difficulty: "Hard",
+        level: "head_ds",
+        domain: "saas",
+        company: "Accenture",
+        a: `**Data Mesh:** Decentralized. Each team (payments, logistics, marketing) owns their data domain. They build their own data pipelines, schemas, and APIs. No central warehouse.
+
+**Traditional Data Warehouse:** Centralized. One data team manages all pipelines. All teams query one source of truth. Slower, bottlenecked, but consistent.
+
+**Data Mesh tradeoffs:**
+
+Pros:
+- (1) Speed. Payment team doesn't wait for data eng to build their pipeline. They build it. Deploy weekly, not quarterly.
+- (2) Domain expertise. Payment team knows their data best. They design optimal schemas, not generic ones.
+- (3) Scalability. 50 teams, 50 independent pipelines. Scales to teams. Centralized would collapse under load.
+- (4) Autonomy. No finger-pointing ('data team is slow'). Team owns success.
+
+Cons:
+- (1) Duplication. Payment team builds customer_id standardization. Marketing team rebuilds it. 2x work.
+- (2) Inconsistency. Payment team's 'churn' definition differs from marketing's. Reporting breaks.
+- (3) Complexity. 50 pipelines to monitor vs 1. 50 incident responses. 50 on-call rotations. Operational burden.
+- (4) Data discovery. Where is the customer_purchase_history? Payment team owns it. Marketing wants it. Need contract. Slow.
+
+**When data mesh makes sense:**
+- 1000+ employees. More than 20 teams. Decentralization necessary.
+- Autonomous teams (e.g., Spotify model: each team owns feature end-to-end).
+- High velocity. Teams push to prod weekly, not quarterly.
+- Diverse data (payments, logistics, recommendations have nothing in common).
+- Mature data culture. Teams know SQL, understand schemas, can self-serve.
+
+**When data mesh is hype:**
+- <50 people. Centralized warehouse faster, simpler. Revisit in 3 years.
+- Immature teams. Not ready to own data pipelines. One bad schema cascades.
+- Shared definitions needed. Retail has one 'customer' everywhere. Mesh causes conflicts.
+- Real-time cross-domain queries needed. E-commerce needs 'customer behavior + inventory + pricing' in one query. Mesh makes this complex.
+
+**My recommendation:** Hybrid. Start centralized. Build domain-oriented data products (payment, marketing, logistics) within the warehouse. They're semi-autonomous but share infrastructure. As you scale to 500+ employees, split into mesh. Worst choice: full mesh at 30 people or pure centralized at 1000 people.
+
+**Example:** Swiggy (1000+ eng). Started centralized data warehouse (2015-2019). Moved to data mesh (2020-2022) as teams grew. Payoff: restaurant team ships predictive models 2x faster. Tradeoff: duplication in 'restaurant_id' normalization across teams. Managing complexity with federated governance (shared contracts, but autonomous implementation).`,
+      },
+    ],
   },
 };
 
