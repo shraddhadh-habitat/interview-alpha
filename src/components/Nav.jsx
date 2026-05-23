@@ -226,7 +226,12 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       }}>
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
-          <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 400, letterSpacing: -0.5, cursor: 'pointer' }} onClick={() => handleNav('interview')}>
+          <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 400, letterSpacing: -0.5, cursor: 'pointer' }} onClick={() => {
+            if (page === 'interview') {
+              window.dispatchEvent(new CustomEvent('ia:reset-interview'));
+            }
+            handleNav('interview');
+          }}>
             <span style={{ color: C.text }}>I</span><span style={{ color: '#FDCD34' }}>A</span><sup style={{ fontSize: 10, color: C.textMuted, verticalAlign: 'super' }}>™</sup>
           </span>
         </div>

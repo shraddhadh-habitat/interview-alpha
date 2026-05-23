@@ -857,6 +857,17 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   const [lastScore, setLastScore] = useState(null);
   const [weakestCompetency, setWeakestCompetency] = useState(null);
 
+  // ─── Reset phase to landing on mount or when requested ───
+  useEffect(() => {
+    setPhase("landing");
+  }, []);
+
+  useEffect(() => {
+    const handleReset = () => setPhase("landing");
+    window.addEventListener('ia:reset-interview', handleReset);
+    return () => window.removeEventListener('ia:reset-interview', handleReset);
+  }, []);
+
   // ─── Fetch practice attempts and calculate metrics ───
   useEffect(() => {
     if (!user) { setStreak(0); setPracticeAttempts([]); return; }
