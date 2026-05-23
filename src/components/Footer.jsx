@@ -132,8 +132,12 @@ export default function Footer() {
             {/* Legal sub-section */}
             <div style={{ marginBottom: 32 }}>
               <FooterHeading>Legal</FooterHeading>
-              <FooterLink href="/terms">Terms of Service</FooterLink>
-              <FooterLink href="/privacy">Privacy Policy</FooterLink>
+              <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'terms' }))}>
+                Terms of Service
+              </FooterLink>
+              <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'privacy' }))}>
+                Privacy Policy
+              </FooterLink>
             </div>
 
             {/* Contact sub-section */}

@@ -19,6 +19,8 @@ import About from './pages/About';
 import Careers from './pages/Careers';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import TermsOfService from './pages/TermsOfService';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import DemoTutorial from './components/DemoTutorial';
@@ -684,6 +686,8 @@ export default function App() {
           {page === 'careers'   && <Careers />}
           {page === 'blog'      && <Blog />}
           {page === 'blog-feedback-black-hole' && <BlogPost />}
+          {page === 'terms' && <TermsOfService />}
+          {page === 'privacy' && <PrivacyPolicy />}
         </div>
         <Footer />
         {user && !showQuickStart && <ReviewWidget user={user} profile={profile} />}
