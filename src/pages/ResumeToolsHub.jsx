@@ -34,13 +34,15 @@ function ResumeScore() {
 
   return (
     <div style={{
-      minHeight: '100vh',
+      width: '100%',
+      minHeight: '100%',
       background: C.bg,
       fontFamily: "'Plus Jakarta Sans', sans-serif",
       color: C.text,
       paddingTop: 0,
+      boxSizing: 'border-box',
     }}>
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '32px 28px 48px 28px' }}>
+      <div style={{ width: '100%', maxWidth: 1080, margin: '0 auto', padding: '32px 28px 48px 28px', boxSizing: 'border-box' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <h1 style={{
             fontFamily: "'Instrument Serif', serif",
@@ -231,11 +233,11 @@ export default function ResumeToolsHub({ user }) {
       </div>
 
       {/* Tab Content */}
-      <div>
+      <div style={{ width: '100%', boxSizing: 'border-box' }}>
         {activeTab === 'ats-checker' && <ATSChecker user={user} />}
         {activeTab === 'resume-optimizer' && <ResumeOptimizer user={user} />}
         {activeTab === 'templates' && (
-          <div style={{ paddingTop: 0 }}>
+          <div style={{ width: '100%', paddingTop: 0, boxSizing: 'border-box' }}>
             <ResumeTemplates hideAtsButton={true} />
           </div>
         )}
