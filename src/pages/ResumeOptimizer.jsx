@@ -54,7 +54,7 @@ async function extractFileText(file) {
   throw new Error('Please upload your resume as PDF or DOCX, or paste the text directly.');
 }
 
-const TAILOR_SYSTEM_PROMPT = `You are an expert resume consultant. Given a resume and a job description, analyze the match and provide tailored improvements.
+const OPTIMIZE_SYSTEM_PROMPT = `You are an expert resume consultant. Given a resume and a job description, analyze the match and provide optimized improvements.
 
 Respond in this exact JSON format:
 {
@@ -65,7 +65,7 @@ Respond in this exact JSON format:
     { "original": "original text", "tailored": "rewritten text matching JD keywords" }
   ],
   "skills_to_add": ["skill1", "skill2"],
-  "summary_rewrite": "A professional summary paragraph tailored to this specific role...",
+  "summary_rewrite": "A professional summary paragraph optimized for this specific role...",
   "overall_advice": "One paragraph of strategic advice on positioning for this role"
 }
 
@@ -108,7 +108,7 @@ function HighlightedText({ text, keywords }) {
   );
 }
 
-export default function ResumeTailor({ user }) {
+export default function ResumeOptimizer({ user }) {
   const { requireAuth } = useAuth();
   const [resumeText, setResumeText] = useState('');
   const [jdText, setJdText] = useState('');
@@ -141,7 +141,7 @@ export default function ResumeTailor({ user }) {
     }
   };
 
-  const runTailorCheck = async () => {
+  const runOptimizeCheck = async () => {
     if (resumeText.trim().length < 200) {
       setError('Please paste or upload a resume with at least 200 characters.');
       return;
@@ -164,7 +164,7 @@ export default function ResumeTailor({ user }) {
         body: JSON.stringify({
           model: 'claude-sonnet-4-6',
           max_tokens: 4096,
-          system: TAILOR_SYSTEM_PROMPT,
+          system: OPTIMIZE_SYSTEM_PROMPT,
           messages: [{ role: 'user', content: userMessage }],
           stream: true,
         }),
@@ -207,14 +207,14 @@ export default function ResumeTailor({ user }) {
       const parsedResult = JSON.parse(jsonMatch[0]);
       setResult(parsedResult);
     } catch (err) {
-      setError(err.message || 'Could not tailor resume. Please try again.');
+      setError(err.message || 'Could not optimize resume. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleTailor = () => {
-    requireAuth('Sign in to tailor your resume', runTailorCheck);
+  const handleOptimize = () => {
+    requireAuth('Sign in to optimize your resume', runOptimizeCheck);
   };
 
   const handleCopy = async (text, idx) => {
@@ -254,7 +254,7 @@ export default function ResumeTailor({ user }) {
     <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
       <style>{`
         @media (max-width: 768px) {
-          .tailor-input-grid { grid-template-columns: 1fr !important; }
+          .optimize-input-grid { grid-template-columns: 1fr !important; }
           .keyword-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
@@ -271,7 +271,7 @@ export default function ResumeTailor({ user }) {
             marginBottom: '12px',
           }}
         >
-          Resume Tailor
+          Resume Optimizer
         </h1>
         <p
           style={{
@@ -284,7 +284,7 @@ export default function ResumeTailor({ user }) {
             marginRight: 'auto',
           }}
         >
-          Paste your resume and a job description. AI tailors your resume to match the role, highlighting relevant experience and adding missing keywords.
+          Paste your resume and a job description. AI optimizes your resume to match the role, highlighting relevant experience and adding missing keywords.
         </p>
       </div>
 
@@ -292,7 +292,7 @@ export default function ResumeTailor({ user }) {
         <>
           {/* Input Section */}
           <div
-            className="tailor-input-grid"
+            className="optimize-input-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
@@ -409,7 +409,7 @@ export default function ResumeTailor({ user }) {
           {/* Submit Button */}
           <div style={{ marginBottom: '32px' }}>
             <button
-              onClick={handleTailor}
+              onClick={handleOptimize}
               disabled={loading}
               style={{
                 width: '100%',
@@ -424,7 +424,7 @@ export default function ResumeTailor({ user }) {
                 opacity: loading ? 0.7 : 1,
               }}
             >
-              {loading ? 'Tailoring your resume...' : 'Tailor My Resume'}
+              {loading ? 'Optimizing your resume...' : 'Optimize My Resume'}
             </button>
             <p
               style={{
@@ -821,7 +821,7 @@ export default function ResumeTailor({ user }) {
                 cursor: 'pointer',
               }}
             >
-              Tailor for another role
+              Optimize for another role
             </button>
           </div>
         </>

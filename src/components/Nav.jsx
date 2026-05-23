@@ -51,7 +51,7 @@ const PUBLIC_TABS = [
   { id: 'practice',   label: 'Practice' },
   { id: 'scorecard',  label: 'Scorecard' },
   { id: 'ats-checker', label: 'ATS Checker' },
-  { id: 'resume-tailor', label: 'Resume Tailor' },
+  { id: 'resume-optimizer', label: 'Resume Optimizer' },
   { id: 'salary',     label: 'Salary Guide' },
 ];
 

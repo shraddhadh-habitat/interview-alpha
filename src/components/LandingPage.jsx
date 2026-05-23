@@ -1010,7 +1010,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              ATS score checker and AI resume tailor for every application
+              ATS score checker and AI resume optimizer for every application
             </p>
           </div>
         </div>
