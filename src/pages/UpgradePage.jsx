@@ -13,8 +13,9 @@ const C = {
 };
 
 const PLANS = {
-  monthly: { label: 'Monthly', price: 699,  period: '/month', saves: null },
-  yearly:  { label: 'Yearly',  price: 6999, period: '/year',  saves: 'Save ₹1,389' },
+  monthly:   { label: 'Monthly',   price: 799,   period: '/month',   saves: null,          badge: null },
+  quarterly: { label: 'Quarterly', price: 1999,  period: '/quarter', saves: null,          badge: 'Save 17%' },
+  yearly:    { label: 'Yearly',    price: 6999,  period: '/year',    saves: null,          badge: 'Most Popular' },
 };
 
 const DISCOUNT_CODES = {
@@ -23,8 +24,8 @@ const DISCOUNT_CODES = {
   'FOUNDER20':  { percent: 20, description: '20% Founder Discount',          active: true, maxUses: 20,  currentUses: 0 },
 };
 
-const FREE_FEATURES  = ['1 free AI session', 'Browse 1100+ question bank', 'Read expert answers'];
-const PRO_FEATURES   = ['100 AI sessions per month', 'Live interviews + practice evaluations', 'Full feedback scorecard per session', 'Voice-to-text answers', 'Full session history', 'Leaderboard ranking'];
+const FREE_FEATURES  = ['Free to start', 'Browse 1100+ question bank', 'Read expert answers', 'Salary Guide'];
+const PRO_FEATURES   = ['Unlimited AI interview sessions', 'Unlimited practice with AI scoring', 'Unlimited ATS Resume Checker', 'Unlimited Resume Optimizer', 'Resume Templates access', 'Scorecard & progress tracking', 'Company-specific interview prep', 'Priority support'];
 
 const globalStyles = `
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -179,7 +180,7 @@ export default function UpgradePage({ user, profile, onBack }) {
             Go Pro. Land the Role.
           </h1>
           <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, maxWidth: 480, margin: '0 auto' }}>
-            100 AI sessions per month  . mock interviews, practice evaluations, and complete session history  . everything you need to land the role.
+            Unlimited AI interviews, resume tools, and practice evaluations  . everything you need to ace any role.
           </p>
         </div>
 
@@ -198,12 +199,13 @@ export default function UpgradePage({ user, profile, onBack }) {
               ))}
               {/* Feature rows */}
               {[
-                ['AI Sessions / Month', '3 (free)', '100'],
-                ['Live Interviews',     '3 (free)', '100 sessions/mo'],
-                ['Feedback Scorecard', '✓', '✓'],
-                ['Voice-to-Text', '✓', '✓'],
-                ['Session History', '✓', '✓'],
-                ['Leaderboard', '✓', '✓'],
+                ['AI Sessions',           'Limited', 'Unlimited'],
+                ['Practice Evaluations',  'Limited', 'Unlimited'],
+                ['ATS Resume Checker',    '—', 'Unlimited'],
+                ['Resume Optimizer',      '—', 'Unlimited'],
+                ['Resume Templates',      '—', '✓'],
+                ['Progress Tracking',     '✓', '✓'],
+                ['Company Interview Prep', '—', '✓'],
               ].map(([feat, freeVal, proVal]) => (
                 <div key={feat} style={{ display: 'contents' }}>
                   <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{feat}</div>
@@ -215,16 +217,18 @@ export default function UpgradePage({ user, profile, onBack }) {
             </div>
 
             {/* Pricing cards */}
-            <div className="up-plans" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24, alignItems: 'start' }}>
+            <div className="up-plans" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24, alignItems: 'start' }}>
               {Object.entries(PLANS).map(([key, p]) => {
                 const isYearly = key === 'yearly';
+                const monthlyPrice = key === 'quarterly' ? Math.round(p.price / 3) : key === 'yearly' ? Math.round(p.price / 12) : p.price;
+
                 const btn = (
                   <button
                     onClick={() => handleSelectPlan(key)}
                     disabled={isPending || isActive}
                     style={{
                       padding: '24px 20px', background: '#FFFFFF',
-                      border: isYearly ? 'none' : `1px solid ${C.border}`,
+                      border: isYearly ? `2px solid ${C.yellow}` : `1px solid ${C.border}`,
                       borderRadius: 20, cursor: isPending || isActive ? 'not-allowed' : 'pointer',
                       textAlign: 'left', position: 'relative',
                       transition: 'all 0.2s', opacity: isPending || isActive ? 0.6 : 1,
@@ -236,34 +240,50 @@ export default function UpgradePage({ user, profile, onBack }) {
                       <span style={{ fontSize: 36, fontWeight: 700, color: C.text }}>₹{p.price.toLocaleString('en-IN')}</span>
                       <span style={{ fontSize: 12, color: C.textMuted }}>{p.period}</span>
                     </div>
-                    {p.saves && <div style={{ fontSize: 13, color: C.success, fontWeight: 600, marginBottom: 8 }}>{p.saves}</div>}
+                    {(key === 'quarterly' || key === 'yearly') && (
+                      <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>₹{monthlyPrice.toLocaleString('en-IN')}/month</div>
+                    )}
                     <div style={{
                       marginTop: 16, padding: '10px 16px',
-                      background: isYearly ? 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)' : C.bg,
+                      background: isYearly ? C.yellow : C.bg,
                       border: isYearly ? 'none' : `1px solid ${C.border}`,
                       borderRadius: 12, fontSize: 14,
-                      color: isYearly ? '#fff' : C.green,
+                      color: isYearly ? C.text : C.green,
                       textAlign: 'center', fontWeight: 600,
                     }}>
-                      {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Plan'}
+                      {isPending ? 'Pending' : isActive ? 'Active' : `Choose ${p.label}`}
                     </div>
                   </button>
                 );
+
                 if (isYearly) {
                   return (
-                    <div key={key} style={{ position: 'relative', paddingTop: 14 }}>
+                    <div key={key} style={{ position: 'relative', paddingTop: 20 }}>
                       <div style={{
                         position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-                        background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)',
-                        color: '#fff', fontSize: 10, padding: '3px 14px', borderRadius: 20, fontWeight: 700,
+                        background: C.yellow,
+                        color: C.text, fontSize: 10, padding: '3px 12px', borderRadius: 20, fontWeight: 700,
                         whiteSpace: 'nowrap', zIndex: 1,
-                      }}>Best Value</div>
-                      <div style={{ background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)', padding: 2, borderRadius: 22 }}>
-                        <div style={{ background: '#FFFFFF', borderRadius: 20, overflow: 'hidden' }}>{btn}</div>
-                      </div>
+                      }}>{p.badge}</div>
+                      {btn}
                     </div>
                   );
                 }
+
+                if (key === 'quarterly' && p.badge) {
+                  return (
+                    <div key={key} style={{ position: 'relative', paddingTop: 20 }}>
+                      <div style={{
+                        position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
+                        background: C.green,
+                        color: '#fff', fontSize: 10, padding: '3px 12px', borderRadius: 20, fontWeight: 700,
+                        whiteSpace: 'nowrap', zIndex: 1,
+                      }}>{p.badge}</div>
+                      {btn}
+                    </div>
+                  );
+                }
+
                 return <div key={key}>{btn}</div>;
               })}
             </div>

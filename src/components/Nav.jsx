@@ -198,6 +198,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     { id: 'interview', label: 'Interview' },
     { id: 'practice', label: 'Practice Q&A' },
     { id: 'scorecard', label: 'Scorecard' },
+    { id: 'resume-tools', label: 'Resume Tools' },
     { id: 'salary', label: 'Salary Guide' },
     ...(isAdmin ? [{ id: 'resources', label: 'Learning Resources' }] : []),
     ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
