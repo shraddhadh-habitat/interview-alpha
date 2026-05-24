@@ -187,6 +187,26 @@ export default function ResumeToolsHub({ user }) {
         <style>{`
           .resume-tabs::-webkit-scrollbar { display: none; }
           .resume-tabs { -ms-overflow-style: none; scrollbar-width: none; }
+          .resume-tab-btn {
+            background: none;
+            border: none;
+            transition: all 0.2s;
+          }
+          .resume-tab-btn.inactive {
+            background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+          .resume-tab-btn.inactive:hover {
+            opacity: 0.85;
+          }
+          .resume-tab-btn.active {
+            background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%);
+            border-radius: 8px;
+            color: #ffffff;
+            -webkit-text-fill-color: unset;
+          }
           @media (max-width: 768px) {
             .resume-tab-btn { padding: 12px 14px !important; font-size: 12px !important; min-height: 44px !important; }
           }
@@ -199,30 +219,27 @@ export default function ResumeToolsHub({ user }) {
           {tabs.map(tab => (
             <button
               key={tab.id}
-              className="resume-tab-btn"
+              className={`resume-tab-btn ${activeTab === tab.id ? 'active' : 'inactive'}`}
               onClick={() => setActiveTab(tab.id)}
               style={{
-                padding: '16px 24px',
-                minHeight: 60,
-                background: 'none',
-                border: 'none',
+                padding: activeTab === tab.id ? '6px 14px' : '16px 24px',
+                minHeight: activeTab === tab.id ? 'auto' : 60,
                 fontSize: 14,
                 fontWeight: 600,
-                color: activeTab === tab.id ? C.text : C.textMuted,
+                color: activeTab === tab.id ? '#ffffff' : undefined,
                 cursor: 'pointer',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
-                borderBottom: activeTab === tab.id ? `3px solid ${C.yellow}` : '3px solid transparent',
-                transition: 'all 0.2s',
+                borderBottom: 'none',
                 whiteSpace: 'nowrap',
               }}
               onMouseEnter={e => {
                 if (activeTab !== tab.id) {
-                  e.currentTarget.style.color = C.text;
+                  e.currentTarget.style.opacity = '0.85';
                 }
               }}
               onMouseLeave={e => {
                 if (activeTab !== tab.id) {
-                  e.currentTarget.style.color = C.textMuted;
+                  e.currentTarget.style.opacity = '1';
                 }
               }}
             >
