@@ -1248,7 +1248,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     }
   `;
 
-  const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)';
+  const RAINBOW = 'var(--gradient-brand)';
 
   // ─── Landing ───
   if (phase === "landing") {

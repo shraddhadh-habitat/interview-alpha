@@ -32,7 +32,7 @@ import ReviewWidget from './components/ReviewWidget';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
-const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)';
+const RAINBOW = 'var(--gradient-brand)';
 const RC = {
   bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#5C5C57', border: '#E8E6E1',
   green: '#16A34A',

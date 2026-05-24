@@ -377,7 +377,7 @@ export default function UpgradePage({ user, profile, onBack }) {
               {/* QR code side */}
               <div style={{ textAlign: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, justifyContent: 'center' }}>
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff', flexShrink: 0 }}>1</div>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff', flexShrink: 0 }}>1</div>
                   <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Scan & Pay</span>
                 </div>
                 <div style={{ width: 220, height: 220, margin: '0 auto', background: C.bgMuted, border: `2px dashed ${C.border}`, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>

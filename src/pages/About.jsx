@@ -7,7 +7,7 @@ const C = {
   border: '#E8E6E1',
 };
 
-const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)';
+const RAINBOW = 'var(--gradient-brand)';
 
 function FounderAvatar() {
   const [imageLoaded, setImageLoaded] = React.useState(true);

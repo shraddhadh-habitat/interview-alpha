@@ -797,7 +797,7 @@ export default function ResumeOptimizer({ user }) {
                 flex: 1,
                 minWidth: '200px',
                 height: '48px',
-                background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
+                background: 'var(--gradient-brand)',
                 color: 'white',
                 border: 'none',
                 borderRadius: '12px',

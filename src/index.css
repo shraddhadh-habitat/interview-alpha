@@ -32,6 +32,10 @@
   --badge-text: #2e7d4f;
   --badge-dot: #22c55e;
 
+  /* Brand Gradient (Mint → Teal → Purple) */
+  --gradient-brand: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%);
+  --gradient-brand-text: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%);
+
   /* Legacy aliases for backwards compatibility */
   --accent: var(--text-primary);
   --accent-bg: var(--bg-card);
@@ -114,30 +118,69 @@ body {
   flex-shrink: 0;
 }
 
-/* ─── CTA Button ─── */
-.btn-cta {
-  background: var(--gradient-cta);
+/* ─── CTA Button (Brand Gradient) ─── */
+.btn-cta,
+button[type="submit"],
+.cta-button,
+[class*="cta"],
+[class*="begin-session"],
+[class*="start-session"],
+[class*="answer"],
+[class*="submit"],
+a[class*="btn-primary"],
+.btn-primary:not(.btn-ghost):not(.btn-link):not(.btn-danger),
+button:not([class*="ghost"]):not([class*="link"]):not([class*="danger"]):not([class*="secondary"]):not([class*="outline"]) {
+  background: var(--gradient-brand);
   background-size: 200% auto;
   color: #ffffff;
   font-family: 'DM Sans', sans-serif;
   font-weight: 600;
   font-size: 1.05rem;
   border: none;
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 16px 40px;
   cursor: pointer;
-  transition: background-position 0.4s ease, transform 0.15s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.35);
+  transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(168, 230, 207, 0.3);
 }
 
-.btn-cta:hover {
-  background-position: right center;
+.btn-cta:hover,
+button[type="submit"]:hover,
+.cta-button:hover,
+[class*="cta"]:hover,
+[class*="begin-session"]:hover,
+[class*="start-session"]:hover,
+[class*="answer"]:hover,
+[class*="submit"]:hover,
+a[class*="btn-primary"]:hover,
+.btn-primary:hover {
+  opacity: 0.92;
   transform: translateY(-1px);
-  box-shadow: 0 6px 28px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 6px 24px rgba(167, 139, 250, 0.4);
 }
 
-.btn-cta:active {
+.btn-cta:active,
+button[type="submit"]:active {
   transform: translateY(0);
+}
+
+/* Secondary & Outline Buttons */
+.btn-secondary,
+.btn-outline,
+.icon-button,
+[class*="btn-secondary"],
+[class*="btn-outline"] {
+  background: var(--gradient-brand);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  transition: opacity 0.2s ease;
+}
+
+.btn-secondary:hover,
+.btn-outline:hover,
+.icon-button:hover {
+  opacity: 0.92;
 }
 
 /* ─── Stat Card ─── */
@@ -199,6 +242,83 @@ body {
   font-weight: 600;
   color: var(--text-muted);
   font-family: 'DM Sans', sans-serif;
+}
+
+/* ─── Navigation & Tabs (Brand Gradient) ─── */
+.tab-active,
+[role="tab"][aria-selected="true"],
+[class*="tab"][class*="active"],
+[class*="tab"][class*="selected"],
+nav a.active,
+nav a[aria-current="page"],
+nav [class*="active"],
+aside [class*="active"],
+[class*="sidebar"] [class*="active"],
+[class*="nav-item"][class*="active"] {
+  background: var(--gradient-brand);
+  color: #ffffff;
+  border-radius: 8px;
+  border-bottom: none;
+  border: none;
+  transition: opacity 0.2s ease;
+}
+
+.tab-active:hover,
+[role="tab"][aria-selected="true"]:hover,
+nav a.active:hover,
+nav a[aria-current="page"]:hover {
+  opacity: 0.92;
+}
+
+/* ─── Badges / Pills / Tags (Brand Gradient) ─── */
+.badge,
+.pill,
+[class*="badge"],
+[class*="tag"],
+[class*="chip"],
+[class*="level-pill"],
+[class*="status-pill"] {
+  background: var(--gradient-brand);
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* ─── Welcome / Greeting Text (Brand Gradient Text) ─── */
+.welcome-heading,
+[class*="welcome"],
+h1[class*="greeting"],
+.greeting-text {
+  background: var(--gradient-brand-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+/* ─── Logo / Brand Mark ─── */
+.logo,
+[class*="logo"],
+[class*="brand-mark"],
+[class*="ia-logo"],
+svg.logo,
+img.logo {
+  background: var(--gradient-brand-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Progress Bars / Score Indicators ─── */
+[class*="progress-bar"] > *,
+[class*="progress-fill"],
+[class*="score-fill"],
+[role="progressbar"] > * {
+  background: linear-gradient(90deg, #a8e6cf 0%, #7ec8c8 30%, #a78bfa 70%, #c084fc 100%);
+  border-radius: 4px;
 }
 
 /* ─── Button micro-interactions ─── */
