@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import useTextToSpeech from '../hooks/useTextToSpeech';
+import FormattedAnswer from '../components/FormattedAnswer';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -13,55 +14,6 @@ const C = {
   yellow: '#FDCD34', yellowLight: 'rgba(253, 205, 52, 0.12)', yellowBorder: 'rgba(253, 205, 52, 0.2)',
 };
 
-// Format text into properly structured paragraphs with bold terms
-const formatText = (text) => {
-  if (!text) return [];
-
-  // Add line breaks before key terms and patterns
-  let formatted = text
-    .replace(/\.\s+([A-Z][a-z]+\s*[:.])/g, '.\n\n$1')
-    .replace(/(Lift:)/g, '\n$1')
-    .replace(/(Model fitting:)/g, '\n$1')
-    .replace(/(Robustness:)/g, '\n$1')
-    .replace(/(Overfitting:)/g, '\n$1')
-    .replace(/(Underfitting:)/g, '\n$1')
-    .replace(/(Design of Experiments)/g, '\n$1')
-    .replace(/(Example[s]?:)/g, '\n$1')
-    .replace(/(Goal:)/g, '\n$1')
-    .replace(/(Tradeoff[s]?:)/g, '\n$1')
-    .replace(/(Metrics?:)/g, '\n$1')
-    .replace(/(Risk[s]?:)/g, '\n$1')
-    .replace(/(Approach[es]?:)/g, '\n$1')
-    .replace(/(Solution[s]?:)/g, '\n$1')
-    .replace(/(Real[- ]world|Real scenario)/g, '\n$1')
-    .replace(/(Best practice|Pitfall[s]?)/g, '\n$1')
-    .replace(/(Challenge[s]?:)/g, '\n$1')
-    .replace(/(Clarification[s]?:)/g, '\n$1')
-    .replace(/(Step \d+)/g, '\n$1');
-
-  // Split into paragraphs
-  const paragraphs = formatted.split('\n').filter(p => p.trim());
-
-  return paragraphs.map((p, i) => {
-    const trimmed = p.trim();
-
-    // Check if it's a clarifying question section
-    if (trimmed.toLowerCase().includes('before') && trimmed.includes(':')) {
-      return (
-        <p key={i} style={{ marginBottom: 8, lineHeight: 1.7, fontStyle: 'italic', color: C.text, fontSize: 13 }}>
-          {trimmed}
-        </p>
-      );
-    }
-
-    // Bold text before colons
-    const bolded = trimmed.replace(/^([^:]+:)/, '<strong>$1</strong>');
-
-    return (
-      <p key={i} style={{ marginBottom: 8, lineHeight: 1.7, color: C.text, fontSize: 13 }} dangerouslySetInnerHTML={{ __html: bolded }} />
-    );
-  });
-};
 
 const globalStyles = `
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -367,7 +319,7 @@ function FeedbackPanel({ result, attemptNumber }) {
           </div>
           <div style={{ padding: '16px 20px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16, maxWidth: 720 }}>
             <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              {formatText(feedback_text)}
+              <FormattedAnswer text={feedback_text} />
             </div>
           </div>
         </div>

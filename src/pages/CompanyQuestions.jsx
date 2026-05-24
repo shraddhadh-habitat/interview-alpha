@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import useTextToSpeech from '../hooks/useTextToSpeech';
+import FormattedAnswer from '../components/FormattedAnswer';
 
 const TEASER_LEN = 120;
 
@@ -16,15 +17,15 @@ function BlurredAnswer({ text, bgColor = '#F5F3EF' }) {
   };
 
   if (user || !hasMore) {
-    return <div style={containerStyle}>{formatAnswer(text)}</div>;
+    return <div style={containerStyle}><FormattedAnswer text={text} /></div>;
   }
 
   return (
     <div>
-      <div style={containerStyle}>{formatAnswer(teaser)}</div>
+      <div style={containerStyle}><FormattedAnswer text={teaser} /></div>
       <div style={{ position: 'relative', overflow: 'hidden' }}>
         <div style={{ ...containerStyle, filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none' }}>
-          {formatAnswer(rest)}
+          <FormattedAnswer text={rest} />
         </div>
         <div style={{
           position: 'absolute', inset: 0,
@@ -64,54 +65,6 @@ const C = {
 };
 const NAV_H = 60;
 
-// Format answer text into properly structured paragraphs with bold terms
-const formatAnswer = (text) => {
-  if (!text) return [];
-
-  // Add line breaks before key terms and patterns
-  let formatted = text
-    .replace(/\.\s+([A-Z][a-z]+\s*[:.])/g, '.\n\n$1')
-    .replace(/(Lift:)/g, '\n$1')
-    .replace(/(Model fitting:)/g, '\n$1')
-    .replace(/(Robustness:)/g, '\n$1')
-    .replace(/(Overfitting:)/g, '\n$1')
-    .replace(/(Underfitting:)/g, '\n$1')
-    .replace(/(Design of Experiments)/g, '\n$1')
-    .replace(/(Example[s]?:)/g, '\n$1')
-    .replace(/(Goal:)/g, '\n$1')
-    .replace(/(Tradeoff[s]?:)/g, '\n$1')
-    .replace(/(Metrics?:)/g, '\n$1')
-    .replace(/(Risk[s]?:)/g, '\n$1')
-    .replace(/(Approach[es]?:)/g, '\n$1')
-    .replace(/(Solution[s]?:)/g, '\n$1')
-    .replace(/(Real[- ]world|Real scenario)/g, '\n$1')
-    .replace(/(Best practice|Pitfall[s]?)/g, '\n$1')
-    .replace(/(Challenge[s]?:)/g, '\n$1')
-    .replace(/(Step \d+)/g, '\n$1');
-
-  // Split into paragraphs
-  const paragraphs = formatted.split('\n').filter(p => p.trim());
-
-  return paragraphs.map((p, i) => {
-    const trimmed = p.trim();
-
-    // Check if it's a clarifying question section
-    if (trimmed.toLowerCase().includes('before') && trimmed.includes(':')) {
-      return (
-        <p key={i} style={{ marginBottom: 12, lineHeight: 1.7, fontStyle: 'italic', color: C.text, fontSize: 14 }}>
-          {trimmed}
-        </p>
-      );
-    }
-
-    // Bold text before colons
-    const bolded = trimmed.replace(/^([^:]+:)/, '<strong>$1</strong>');
-
-    return (
-      <p key={i} style={{ marginBottom: 12, lineHeight: 1.7, color: C.textMuted, fontSize: 14 }} dangerouslySetInnerHTML={{ __html: bolded }} />
-    );
-  });
-};
 
 const DIFF = {
   Easy:   { bg: 'rgba(22,163,74,0.08)',   color: '#16A34A', border: 'rgba(22,163,74,0.2)' },
