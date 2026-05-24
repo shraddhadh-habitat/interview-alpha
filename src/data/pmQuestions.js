@@ -39072,7 +39072,7 @@ Expected outcome: Japan LAC (lifetime acquisition cost) might be 50% higher than
 **The Problem:**
 - User saves $3
 - Driver loses $0.75
-- Uber gains $2.25 from PoolCharthat's a winner for users/Uber, loser for drivers
+- Uber gains $2.25 from Pool. That's a winner for users/Uber, loser for drivers
 - Drivers avoid Pool; capacity utilization drops. Model breaks.
 
 **Solution: Variable pricing based on pool efficiency.**
@@ -39092,7 +39092,7 @@ If 2 users save 15 min each at ₹500/hour wage: value created = 30 min × ₹50
 
 Instead of flat 30% discount, use:
 
-```
+\`\`\`
 Pool discount = MIN(30%, 50% of value_created_for_both_users / solo_ride_price)
 
 Example:
@@ -39108,7 +39108,7 @@ Driver split:
 - New driver rate: ₹540 (vs ₹450 solo after cost) = 8% premium for Pool
 
 Result: User saves 13.8%, driver earns 8% more, Uber loses 5 points but maintains driver satisfaction.
-```
+\`\`\`
 
 **Step 3—test with pricing matrix:**
 
@@ -39206,7 +39206,7 @@ Expected finding: Yes. Users with 3+ courses have 5x higher lifetime value (stic
 
 **Recommended decision framework:**
 
-```
+\`\`\`
 For each of 470 courses:
 IF completion_rate >= 30% AND margin_contribution >= ₹500K THEN KEEP
 ELSE IF enrolled_users > enrolled_users_of_feeder_to_top_30 THEN KEEP (funnel builder)
@@ -39214,7 +39214,7 @@ ELSE IF avg_revenue_per_enrollment >= ₹200 THEN KEEP (niche, high-value)
 ELSE CONSIDER_CUTTING
 
 Expected outcome: Keep 80-100 of 470 (data-driven), cut 370.
-```
+\`\`\`
 
 **Expected impact:**
 
@@ -39240,66 +39240,66 @@ Expected outcome: Keep 80-100 of 470 (data-driven), cut 370.
 
 - **Days since last payment**: Was it on time or late?
   - On-time = 0 days. Late = 5, 10, 20 days (riskier).
-  - Feature: `days_late_last_payment`, `pct_on_time_last_12mo` (if <70%, risky).
+  - Feature: \`days_late_last_payment\`, \`pct_on_time_last_12mo\` (if <70%, risky).
 
 - **Payment consistency variance**: Do they pay on day 5, then day 35, then day 10? Inconsistency = unreliable.
-  - Feature: `std_dev_days_late_last_6mo` (high std = risky).
+  - Feature: \`std_dev_days_late_last_6mo\` (high std = risky).
 
 - **Trend**: Is payment lateness getting worse?
-  - Feature: `avg_days_late_last_3mo` vs `avg_days_late_prior_3mo` (increasing = risky).
+  - Feature: \`avg_days_late_last_3mo\` vs \`avg_days_late_prior_3mo\` (increasing = risky).
 
 - **Minimum payment ratio**: Do they pay full balance or minimum only?
-  - Feature: `pct_payments_minimum_only` (high = cash flow stressed).
+  - Feature: \`pct_payments_minimum_only\` (high = cash flow stressed).
 
 **2. Spending behavior:**
 
 - **Spending velocity**: Is it normal or spiking?
-  - Feature: `spends_last_month` vs `median_spend_last_12mo` (if 50%+ above normal, possible overspend).
+  - Feature: \`spends_last_month\` vs \`median_spend_last_12mo\` (if 50%+ above normal, possible overspend).
 
 - **Spend variance**: Are there sudden spikes (emergency)?
-  - Feature: `std_dev_daily_spends`, `max_single_day_spend` (high variability = possible hardship).
+  - Feature: \`std_dev_daily_spends\`, \`max_single_day_spend\` (high variability = possible hardship).
 
 - **Card usage frequency**: Are they using it less (sign of financial distress) or more (overleveraging)?
-  - Feature: `transaction_count_trend` (declining usage = warning sign).
+  - Feature: \`transaction_count_trend\` (declining usage = warning sign).
 
 - **Merchant category**: Risky categories (cash advances, wire transfers) vs safe (groceries)?
-  - Feature: `pct_spends_cash_advances`, `pct_spends_gambling` (risky = higher delinquency).
+  - Feature: \`pct_spends_cash_advances\`, \`pct_spends_gambling\` (risky = higher delinquency).
 
 **3. Credit utilization:**
 
 - **Credit utilization ratio**: Are they maxing out the card?
-  - Feature: `credit_utilization_last_3mo` (>90% = stressed).
+  - Feature: \`credit_utilization_last_3mo\` (>90% = stressed).
 
 - **Balance growth**: Is outstanding balance increasing (borrowing more)?
-  - Feature: `balance_trend_6mo` (if growing 20%+ month-over-month while spends flat = concerning).
+  - Feature: \`balance_trend_6mo\` (if growing 20%+ month-over-month while spends flat = concerning).
 
 - **Approaching limit**: How close to credit limit?
-  - Feature: `days_until_credit_limit_reached` (if 15 days at current spend = risky).
+  - Feature: \`days_until_credit_limit_reached\` (if 15 days at current spend = risky).
 
 **4. Demographic & macro features:**
 
 - **Age, income, employment**: Are they in high-risk segments?
-  - Feature: `age` (18-25 = higher delinquency), `income_bracket` (<₹5L = higher delinquency).
+  - Feature: \`age\` (18-25 = higher delinquency), \`income_bracket\` (<₹5L = higher delinquency).
 
 - **Employment stability**: Have they had same employer last 24 months?
-  - Feature: `employment_tenure` (if recently switched = risk).
+  - Feature: \`employment_tenure\` (if recently switched = risk).
 
 - **External economic**: Is their region in recession?
-  - Feature: `regional_unemployment_rate`, `inflation_rate` (macro risk).
+  - Feature: \`regional_unemployment_rate\`, \`inflation_rate\` (macro risk).
 
 - **Loan-to-income**: Are they over-leveraged across all credit?
-  - Feature: `total_debt_to_income_ratio` (if >50%, risky).
+  - Feature: \`total_debt_to_income_ratio\` (if >50%, risky).
 
 **5. Interaction features (non-linear signals):**
 
 - **Spending_variance × payment_variance**: Erratic spender + erratic payer = highest risk.
-  - Feature: `spending_volatility × payment_volatility`.
+  - Feature: \`spending_volatility × payment_volatility\`.
 
 - **Balance_growth × utilization**: Growing balance + high utilization = debt spiral.
-  - Feature: `(balance_growth_rate) × (credit_utilization)`.
+  - Feature: \`(balance_growth_rate) × (credit_utilization)\`.
 
 - **Recent_late_payment × spending_spike**: Just paid late, then spent more = warning sign.
-  - Feature: `days_late_last_payment × (spends_last_month / median_spend)`.
+  - Feature: \`days_late_last_payment × (spends_last_month / median_spend)\`.
 
 **Example feature set (15-20 features):**
 
@@ -39511,7 +39511,7 @@ GROUP BY HOUR(T5);
 
 **Recommendation: Treatment 3 (personalized balance)**
 
-Implement: For each user, calculate `affinity_to_friend_content` (historical engagement on friend posts vs influencer posts). If high affinity, show 60% friend content. If low affinity, show 70% influencer. Middle ground: 50/50.
+Implement: For each user, calculate \`affinity_to_friend_content\` (historical engagement on friend posts vs influencer posts). If high affinity, show 60% friend content. If low affinity, show 70% influencer. Middle ground: 50/50.
 
 **Why this works:**
 
@@ -39662,7 +39662,7 @@ Use when: you want maximum accuracy and have compute budget.
 
 **My Kaggle strategy:**
 
-```
+\`\`\`
 Level 0 (base models):
 - XGBoost (tuned hyperparameters)
 - LightGBM (tuned)
@@ -39687,10 +39687,10 @@ At test time:
     Average predictions from 5 models (trained on folds)
   Feed averaged predictions to meta-model
   Output meta-model prediction
-```
+\`\`\`
 
 Expected improvement: averaging 78%, blending 79%, stacking 80% (1-2% gain, typical for Kaggle).
-```
+\`\`\`
 
 **Tradeoff:** Stacking is slowest but most accurate. Use blending if time-constrained. Simple averaging as baseline.`,
       },
@@ -39709,7 +39709,7 @@ K-means initializes k centroids randomly, then iterates. If you're unlucky with 
 
 **Make it stable:**
 
-**1. Set random seed:** `np.random.seed(42)` before k-means. This makes initialization reproducible. But doesn't solve poor initialization problem.
+**1. Set random seed:** \`np.random.seed(42)\` before k-means. This makes initialization reproducible. But doesn't solve poor initialization problem.
 
 **2. Use k-means++:** Initialize first centroid randomly, then each subsequent centroid far from existing ones (probabilistically). Reduces poor local optima risk. Slower initialization (O(nk) vs O(k)) but better stability.
 
