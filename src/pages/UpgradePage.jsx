@@ -210,7 +210,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                 <div key={feat} style={{ display: 'contents' }}>
                   <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{feat}</div>
                   <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{freeVal}</div>
-                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif', fontWeight: 600" }}>{proVal}</div>
+                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{proVal}</div>
                 </div>
               ))}
             </div>
@@ -228,7 +228,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                     disabled={isPending || isActive}
                     style={{
                       padding: '24px 20px', background: '#FFFFFF',
-                      border: isYearly ? `2px solid ${C.yellow}` : `1px solid ${C.border}`,
+                      border: isYearly ? '2px solid #a78bfa' : `1px solid ${C.border}`,
                       borderRadius: 20, cursor: isPending || isActive ? 'not-allowed' : 'pointer',
                       textAlign: 'left', position: 'relative',
                       transition: 'all 0.2s', opacity: isPending || isActive ? 0.6 : 1,
@@ -245,10 +245,10 @@ export default function UpgradePage({ user, profile, onBack }) {
                     )}
                     <div style={{
                       marginTop: 16, padding: '10px 16px',
-                      background: isYearly ? C.yellow : C.bg,
+                      background: isYearly ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : C.bg,
                       border: isYearly ? 'none' : `1px solid ${C.border}`,
                       borderRadius: 12, fontSize: 14,
-                      color: isYearly ? C.text : C.green,
+                      color: isYearly ? '#ffffff' : 'var(--text-secondary)',
                       textAlign: 'center', fontWeight: 600,
                     }}>
                       {isPending ? 'Pending' : isActive ? 'Active' : `Choose ${p.label}`}
@@ -261,8 +261,8 @@ export default function UpgradePage({ user, profile, onBack }) {
                     <div key={key} style={{ position: 'relative', paddingTop: 20 }}>
                       <div style={{
                         position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-                        background: C.yellow,
-                        color: C.text, fontSize: 10, padding: '3px 12px', borderRadius: 20, fontWeight: 700,
+                        background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                        color: '#ffffff', fontSize: 10, padding: '3px 12px', borderRadius: 20, fontWeight: 700,
                         whiteSpace: 'nowrap', zIndex: 1,
                       }}>{p.badge}</div>
                       {btn}
@@ -275,7 +275,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                     <div key={key} style={{ position: 'relative', paddingTop: 20 }}>
                       <div style={{
                         position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-                        background: C.green,
+                        background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                         color: '#fff', fontSize: 10, padding: '3px 12px', borderRadius: 20, fontWeight: 700,
                         whiteSpace: 'nowrap', zIndex: 1,
                       }}>{p.badge}</div>
@@ -346,7 +346,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                   />
                   <button
                     onClick={handleApplyDiscount}
-                    style={{ padding: '9px 16px', background: C.green, border: 'none', borderRadius: 10, color: '#fff', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, whiteSpace: 'nowrap' }}
+                    style={{ padding: '9px 16px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 10, color: '#fff', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, whiteSpace: 'nowrap' }}
                   >
                     Apply
                   </button>
@@ -393,10 +393,10 @@ export default function UpgradePage({ user, profile, onBack }) {
                 </div>
                 <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4 }}>UPI ID</div>
                 <div style={{ fontSize: 13, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{upiId}</div>
-                <div style={{ marginTop: 12, padding: '8px 12px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 12, fontSize: 13, color: C.green, fontFamily: "'Instrument Serif', serif", fontWeight: 700, textAlign: 'center' }}>
+                <div style={{ marginTop: 12, padding: '8px 12px', background: '#f0ede8', border: `1px solid #e4e1db`, borderRadius: 12, fontSize: 13, fontFamily: "'Instrument Serif', serif", fontWeight: 700, textAlign: 'center', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                   {appliedDiscount ? (
                     <>
-                      <span style={{ textDecoration: 'line-through', color: C.textMuted, marginRight: 6, fontWeight: 400, fontSize: 11 }}>
+                      <span style={{ textDecoration: 'line-through', color: '#6b6b6b', marginRight: 6, fontWeight: 400, fontSize: 11, WebkitTextFillColor: '#6b6b6b', background: 'unset' }}>
                         ₹{PLANS[plan].price.toLocaleString('en-IN')}
                       </span>
                       ₹{discountedPrice(PLANS[plan].price).toLocaleString('en-IN')}
@@ -438,7 +438,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                   disabled={submitting || !upiRef.trim()}
                   style={{
                     width: '100%', padding: '13px 0',
-                    background: submitting || !upiRef.trim() ? C.bgMuted : C.green,
+                    background: submitting || !upiRef.trim() ? C.bgMuted : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                     border: 'none', borderRadius: 12,
                     color: submitting || !upiRef.trim() ? C.textMuted : '#fff',
                     fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
@@ -469,9 +469,9 @@ export default function UpgradePage({ user, profile, onBack }) {
             </p>
             <button
               onClick={onBack}
-              style={{ padding: '12px 32px', background: C.green, border: 'none', borderRadius: 12, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}
-              onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
-              onMouseLeave={e => e.currentTarget.style.background = C.green}
+              style={{ padding: '12px 32px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 12, color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '0.92'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
             >
               Back to Interview
             </button>
