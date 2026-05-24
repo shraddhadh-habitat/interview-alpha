@@ -256,7 +256,7 @@ function CTABanner({ text, onClick }) {
         onClick={onClick}
         className="cta-banner-btn"
         style={{
-          background: C.text,
+          background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
           color: '#fff',
           border: 'none',
           borderRadius: '8px',
@@ -269,8 +269,8 @@ function CTABanner({ text, onClick }) {
           transition: 'all 0.2s',
           flexShrink: 0,
         }}
-        onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
-        onMouseLeave={e => e.currentTarget.style.background = C.text}
+        onMouseEnter={e => e.currentTarget.style.opacity = '0.92'}
+        onMouseLeave={e => e.currentTarget.style.opacity = '1'}
       >
         Answer your first question
       </button>
@@ -304,9 +304,9 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
                 style={{
                   padding: '8px 16px',
                   borderRadius: 8,
-                  border: `2px solid ${selectedRole === role ? C.green : C.border}`,
-                  background: selectedRole === role ? C.greenLight : 'transparent',
-                  color: selectedRole === role ? C.green : C.textMuted,
+                  border: selectedRole === role ? 'none' : `2px solid ${C.border}`,
+                  background: selectedRole === role ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : 'transparent',
+                  color: selectedRole === role ? '#ffffff' : C.textMuted,
                   fontWeight: 600,
                   fontSize: 13,
                   cursor: 'pointer',
@@ -350,8 +350,9 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
             ).map(t => (
               <span key={t} style={{
                 padding: '4px 12px',
-                background: C.greenLight, border: `1px solid ${C.greenBorder}`,
-                borderRadius: 20, fontSize: 10, color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                border: 'none',
+                borderRadius: 20, fontSize: 10, color: '#ffffff', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5, fontWeight: 600,
               }}>{t}</span>
             ))}
           </div>
@@ -384,7 +385,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
                   {IN_SALARIES.map((row, i) => (
                     <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                       <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
-                      <td style={{ padding: '12px 14px', color: C.green, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
+                      <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc}</td>
                       <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
@@ -408,7 +409,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
                   {US_SALARIES.map((row, i) => (
                     <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                       <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
-                      <td style={{ padding: '12px 14px', color: C.green, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
+                      <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc}</td>
                       <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
@@ -512,8 +513,8 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
                   <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                     <td style={{ padding: '12px 14px', fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13 }}>{row.company}</td>
                     <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap' }}>{row.levels}</td>
-                    <td style={{ padding: '12px 14px', color: C.green, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif', whiteSpace: 'nowrap'" }}>{row.tc_in}</td>
-                    <td style={{ padding: '12px 14px', color: C.green, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'nowrap' }}>{row.tc_us}</td>
+                    <td style={{ padding: '12px 14px', fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'nowrap', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc_in}</td>
+                    <td style={{ padding: '12px 14px', fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'nowrap', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc_us}</td>
                     <td style={{ padding: '12px 14px', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{row.notes}</td>
                   </tr>
                 ))}
@@ -554,7 +555,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
                   {DS_IN_SALARIES.map((row, i) => (
                     <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                       <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
-                      <td style={{ padding: '12px 14px', color: C.green, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
+                      <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc}</td>
                       <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
@@ -578,7 +579,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
                   {DS_US_SALARIES.map((row, i) => (
                     <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                       <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
-                      <td style={{ padding: '12px 14px', color: C.green, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{row.tc}</td>
+                      <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc}</td>
                       <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
                       <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
@@ -632,8 +633,8 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
                   <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
                     <td style={{ padding: '12px 14px', fontWeight: 700, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13 }}>{row.company}</td>
                     <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap' }}>{row.levels}</td>
-                    <td style={{ padding: '12px 14px', color: C.green, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{row.tc_in}</td>
-                    <td style={{ padding: '12px 14px', color: C.green, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{row.tc_us}</td>
+                    <td style={{ padding: '12px 14px', fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc_in}</td>
+                    <td style={{ padding: '12px 14px', fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc_us}</td>
                     <td style={{ padding: '12px 14px', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{row.notes}</td>
                   </tr>
                 ))}
