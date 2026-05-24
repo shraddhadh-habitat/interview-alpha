@@ -244,12 +244,16 @@ export default function UpgradePage({ user, profile, onBack }) {
                       <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>₹{monthlyPrice.toLocaleString('en-IN')}/month</div>
                     )}
                     <div style={{
-                      marginTop: 16, padding: '10px 16px',
-                      background: isYearly ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : C.bg,
-                      border: isYearly ? 'none' : `1px solid ${C.border}`,
-                      borderRadius: 12, fontSize: 14,
-                      color: isYearly ? '#ffffff' : 'var(--text-secondary)',
-                      textAlign: 'center', fontWeight: 600,
+                      marginTop: 16,
+                      padding: '10px 16px',
+                      background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                      border: 'none',
+                      borderRadius: 12,
+                      fontSize: 14,
+                      color: '#ffffff',
+                      WebkitTextFillColor: '#ffffff',
+                      textAlign: 'center',
+                      fontWeight: 600,
                     }}>
                       {isPending ? 'Pending' : isActive ? 'Active' : `Choose ${p.label}`}
                     </div>

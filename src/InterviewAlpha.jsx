@@ -1280,6 +1280,11 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
               fontWeight: 500,
               marginBottom: 40,
               fontFamily: "'Instrument Serif', serif",
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              display: 'inline-block',
             }}>
               Welcome back, {displayName}!
             </h1>
@@ -1480,13 +1485,20 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 onClick={() => resumeFileRef.current?.click()}
                 disabled={resumeUploading}
                 style={{
-                  background: "none", border: `1px solid ${C.border}`, borderRadius: 8,
-                  padding: "12px 16px", fontSize: 14, fontWeight: 700, color: C.textMuted,
-                  minHeight: 44, cursor: resumeUploading ? "wait" : "pointer",
-                  fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "border-color 0.2s",
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                  border: 'none',
+                  borderRadius: 8,
+                  padding: "12px 16px",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  WebkitTextFillColor: '#ffffff',
+                  minHeight: 44,
+                  cursor: resumeUploading ? "wait" : "pointer",
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: "opacity 0.2s",
+                  opacity: resumeUploading ? 0.6 : 1,
                 }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
               >
                 {resumeUploading ? "Reading file..." : "📎 Upload Resume (PDF or DOCX)"}
               </button>

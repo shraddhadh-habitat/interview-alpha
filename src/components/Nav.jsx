@@ -243,6 +243,23 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
               key={tab.id}
               className={`nav-tab${page === tab.id ? ' active' : ''}`}
               onClick={() => handleNav(tab.id)}
+              style={{
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                color: '#ffffff',
+                WebkitTextFillColor: '#ffffff',
+                border: 'none',
+                borderRadius: '10px',
+                padding: '8px 16px',
+                fontWeight: 600,
+                textDecoration: 'none',
+                display: 'inline-block',
+                cursor: 'pointer',
+                fontSize: '15px',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                whiteSpace: 'nowrap',
+                transition: 'opacity 0.2s',
+                margin: '0 4px'
+              }}
             >
               {tab.label}
             </button>

@@ -338,12 +338,13 @@ export default function ResumeOptimizer({ user }) {
                 style={{
                   width: '100%',
                   padding: '10px 16px',
-                  border: '1.5px solid #E8E6E1',
+                  border: 'none',
                   borderRadius: '8px',
-                  background: 'white',
-                  color: '#1B1B18',
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                  color: '#ffffff',
+                  WebkitTextFillColor: '#ffffff',
                   fontSize: '13px',
-                  fontWeight: 500,
+                  fontWeight: 600,
                   cursor: fileUploading ? 'not-allowed' : 'pointer',
                   opacity: fileUploading ? 0.6 : 1,
                 }}

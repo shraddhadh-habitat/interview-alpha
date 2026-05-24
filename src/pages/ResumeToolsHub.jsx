@@ -227,9 +227,12 @@ export default function ResumeToolsHub({ user }) {
                 fontSize: 14,
                 fontWeight: 600,
                 color: activeTab === tab.id ? '#ffffff' : undefined,
+                WebkitTextFillColor: activeTab === tab.id ? '#ffffff' : undefined,
+                background: activeTab === tab.id ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : 'transparent',
                 cursor: 'pointer',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
-                borderBottom: 'none',
+                border: 'none',
+                borderRadius: activeTab === tab.id ? '8px' : '0',
                 whiteSpace: 'nowrap',
               }}
               onMouseEnter={e => {

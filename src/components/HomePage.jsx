@@ -457,6 +457,11 @@ function LoggedInView({ user, onStartInterview, onContinuePractice }) {
           fontWeight: 500,
           marginBottom: 40,
           fontFamily: "'Instrument Serif', serif",
+          background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          display: 'inline-block',
         }}>
           Welcome back, {firstName}!
         </h1>
