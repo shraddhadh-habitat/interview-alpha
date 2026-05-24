@@ -69,7 +69,7 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
               height: 48,
               paddingLeft: 32,
               paddingRight: 32,
-              background: '#1B1B18',
+              background: 'var(--gradient-brand)',
               color: '#FFFFFF',
               border: 'none',
               borderRadius: 12,
@@ -79,15 +79,17 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               marginBottom: 12,
               transition: 'all 0.2s',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+              boxShadow: '0 1px 3px rgba(168, 230, 207, 0.2)',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.background = '#0F0F0D';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+              e.currentTarget.style.opacity = '0.88';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(168, 230, 207, 0.3)';
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.background = '#1B1B18';
-              e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 1px 3px rgba(168, 230, 207, 0.2)';
             }}
           >
             Try a Free Interview
@@ -164,10 +166,19 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
               textAlign: 'center',
             }}>
               <div style={{
-                fontSize: 40,
-                marginBottom: 16,
+                width: 56,
+                height: 56,
+                background: 'var(--gradient-brand)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px',
+                fontSize: 24,
+                fontWeight: 700,
+                color: '#FFFFFF',
               }}>
-                1️⃣
+                1
               </div>
               <h3 style={{
                 fontSize: 18,
@@ -195,10 +206,19 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
               textAlign: 'center',
             }}>
               <div style={{
-                fontSize: 40,
-                marginBottom: 16,
+                width: 56,
+                height: 56,
+                background: 'var(--gradient-brand)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px',
+                fontSize: 24,
+                fontWeight: 700,
+                color: '#FFFFFF',
               }}>
-                2️⃣
+                2
               </div>
               <h3 style={{
                 fontSize: 18,
@@ -226,10 +246,19 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
               textAlign: 'center',
             }}>
               <div style={{
-                fontSize: 40,
-                marginBottom: 16,
+                width: 56,
+                height: 56,
+                background: 'var(--gradient-brand)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px',
+                fontSize: 24,
+                fontWeight: 700,
+                color: '#FFFFFF',
               }}>
-                3️⃣
+                3
               </div>
               <h3 style={{
                 fontSize: 18,
@@ -376,9 +405,9 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
             height: 44,
             paddingLeft: 28,
             paddingRight: 28,
-            background: 'transparent',
-            color: C.text,
-            border: `1.5px solid ${C.border}`,
+            background: 'var(--gradient-brand)',
+            color: '#FFFFFF',
+            border: 'none',
             borderRadius: 12,
             fontSize: 15,
             fontWeight: 600,
@@ -386,14 +415,17 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             transition: 'all 0.2s',
             marginBottom: 12,
+            boxShadow: '0 1px 3px rgba(168, 230, 207, 0.2)',
           }}
           onMouseEnter={e => {
-            e.currentTarget.style.borderColor = C.text;
-            e.currentTarget.style.background = C.bgMuted;
+            e.currentTarget.style.opacity = '0.88';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(168, 230, 207, 0.3)';
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.borderColor = C.border;
-            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.opacity = '1';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(168, 230, 207, 0.2)';
           }}
         >
           Browse 1,100+ Questions

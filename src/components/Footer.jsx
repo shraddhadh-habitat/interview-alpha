@@ -1,10 +1,10 @@
 const C = {
-  bg: '#1B1B18',
-  link: 'rgba(255,255,255,0.5)',
-  linkHover: '#FFFFFF',
-  heading: 'rgba(255,255,255,0.7)',
-  muted: 'rgba(255,255,255,0.35)',
-  border: 'rgba(255,255,255,0.1)',
+  bg: '#f0ede8',
+  link: '#6b6b6b',
+  linkHover: 'var(--gradient-brand)',
+  heading: '#111111',
+  muted: '#9a9a9a',
+  border: '#e8e6e1',
 };
 
 function FooterLink({ children, onClick, href, email = false }) {
@@ -27,11 +27,23 @@ function FooterLink({ children, onClick, href, email = false }) {
         display: 'block',
         marginBottom: 12,
         fontFamily: "'Plus Jakarta Sans', sans-serif",
-        transition: 'color 0.2s',
+        transition: 'all 0.2s',
         cursor: 'pointer',
       }}
-      onMouseEnter={e => { e.currentTarget.style.color = C.linkHover; }}
-      onMouseLeave={e => { e.currentTarget.style.color = C.link; }}
+      onMouseEnter={e => {
+        e.currentTarget.style.background = 'var(--gradient-brand)';
+        e.currentTarget.style.backgroundClip = 'text';
+        e.currentTarget.style.WebkitBackgroundClip = 'text';
+        e.currentTarget.style.WebkitTextFillColor = 'transparent';
+        e.currentTarget.style.color = 'transparent';
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.color = C.link;
+        e.currentTarget.style.background = 'none';
+        e.currentTarget.style.backgroundClip = 'unset';
+        e.currentTarget.style.WebkitBackgroundClip = 'unset';
+        e.currentTarget.style.WebkitTextFillColor = 'unset';
+      }}
     >
       {children}
     </a>
@@ -151,11 +163,23 @@ export default function Footer() {
                   textDecoration: 'none',
                   display: 'block',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  transition: 'color 0.2s',
+                  transition: 'all 0.2s',
                   cursor: 'pointer',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.color = C.linkHover; }}
-                onMouseLeave={e => { e.currentTarget.style.color = C.link; }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = 'var(--gradient-brand)';
+                  e.currentTarget.style.backgroundClip = 'text';
+                  e.currentTarget.style.WebkitBackgroundClip = 'text';
+                  e.currentTarget.style.WebkitTextFillColor = 'transparent';
+                  e.currentTarget.style.color = 'transparent';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = C.link;
+                  e.currentTarget.style.background = 'none';
+                  e.currentTarget.style.backgroundClip = 'unset';
+                  e.currentTarget.style.WebkitBackgroundClip = 'unset';
+                  e.currentTarget.style.WebkitTextFillColor = 'unset';
+                }}
               >
                 communications@interviewalpha.ai
               </a>
@@ -165,7 +189,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ borderTop: '1px solid #1B1B18' }}>
+      <div style={{ borderTop: `1px solid ${C.border}` }}>
         <div className="footer-bottom" style={{ maxWidth: 1120, margin: '0 auto', padding: '24px 40px', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <p style={{ fontSize: 12, color: C.muted, margin: 0 }}>
             © 2026 InterviewAlpha.ai™. All rights reserved.
