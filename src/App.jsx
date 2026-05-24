@@ -413,9 +413,9 @@ export default function App() {
     return () => window.removeEventListener('ia:navigate', handler);
   }, []);
 
-  // Set body background to unicorn gradient frame
+  // Set body background to warm grey frame
   useEffect(() => {
-    document.body.style.background = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)';
+    document.body.style.background = '#E8E6E1';
     document.body.style.margin = '0';
     document.body.style.padding = '0';
     return () => {

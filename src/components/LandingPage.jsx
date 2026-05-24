@@ -192,13 +192,11 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 1 - Product Management */}
           <div style={{
-            background: '#FDCD34',
-            border: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '24px',
             marginBottom: '12px',
-            borderLeft: '3px solid',
-            borderImage: 'linear-gradient(180deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34) 1',
           }}>
             {/* Role label */}
             <div style={{
@@ -257,12 +255,10 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 2 - Data Science */}
           <div style={{
-            background: '#FDCD34',
-            border: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '24px',
-            borderLeft: '3px solid',
-            borderImage: 'linear-gradient(180deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34) 1',
           }}>
             {/* Role label */}
             <div style={{
@@ -856,7 +852,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         }}>
           {/* Card 1 */}
           <div style={{
-            background: '#FFF0F7',
+            background: '#F5F3EF',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -889,7 +885,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 2 */}
           <div style={{
-            background: '#F3F0FF',
+            background: '#F5F3EF',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -922,7 +918,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 3 */}
           <div style={{
-            background: '#EFF6FF',
+            background: '#F5F3EF',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -955,7 +951,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 4 */}
           <div style={{
-            background: '#ECFDF5',
+            background: '#F5F3EF',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -988,7 +984,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 5 */}
           <div style={{
-            background: '#FFFBEB',
+            background: '#F5F3EF',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
