@@ -203,11 +203,11 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '10px',
               letterSpacing: '1px',
               textTransform: 'uppercase',
-              color: '#fff',
-              fontWeight: 900,
+              color: '#1B1B18',
+              fontWeight: 700,
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: '#1B1B18',
+              background: '#F5F3EF',
               padding: '4px 12px',
               borderRadius: '4px',
               display: 'inline-block',
@@ -265,11 +265,11 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '10px',
               letterSpacing: '1px',
               textTransform: 'uppercase',
-              color: '#fff',
-              fontWeight: 900,
+              color: '#1B1B18',
+              fontWeight: 700,
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: '#1B1B18',
+              background: '#F5F3EF',
               padding: '4px 12px',
               borderRadius: '4px',
               display: 'inline-block',
@@ -336,8 +336,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         <div style={{ maxWidth: '560px', margin: '0 auto' }}>
           {/* Testimonial card */}
           <div style={{
-            background: '#FDCD34',
-            border: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '24px',
           }}>
@@ -426,8 +426,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         }}>
           {/* Card 1 */}
           <div style={{
-            background: '#FDCD34',
-            border: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '20px',
             textAlign: 'center',
@@ -436,8 +436,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: '#1B1B18',
-              color: '#fff',
+              background: '#F5F3EF',
+              color: '#1B1B18',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -473,8 +473,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 2 */}
           <div style={{
-            background: '#FDCD34',
-            border: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '20px',
             textAlign: 'center',
@@ -483,8 +483,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: '#1B1B18',
-              color: '#fff',
+              background: '#F5F3EF',
+              color: '#1B1B18',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -520,8 +520,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 3 */}
           <div style={{
-            background: '#FDCD34',
-            border: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '20px',
             textAlign: 'center',
@@ -530,8 +530,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: '#1B1B18',
-              color: '#fff',
+              background: '#F5F3EF',
+              color: '#1B1B18',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -605,8 +605,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         }}>
           {/* Card 1 */}
           <div style={{
-            background: '#FDCD34',
-            border: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -637,18 +637,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </p>
             <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
-              border: `0.5px solid ${C.border}`,
+              border: '1px solid #1B1B18',
               borderRadius: '8px',
               padding: '8px 16px',
-              color: C.text,
-              background: 'none',
+              color: '#1B1B18',
+              background: 'transparent',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 700,
-              transition: 'border-color 0.2s',
+              transition: 'all 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = '#1B1B18'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1B1B18'; }}
             >
               Start prepping
             </button>
@@ -656,8 +656,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 2 */}
           <div style={{
-            background: '#FDCD34',
-            border: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -688,18 +688,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </p>
             <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
-              border: `0.5px solid ${C.border}`,
+              border: '1px solid #1B1B18',
               borderRadius: '8px',
               padding: '8px 16px',
-              color: C.text,
-              background: 'none',
+              color: '#1B1B18',
+              background: 'transparent',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 700,
-              transition: 'border-color 0.2s',
+              transition: 'all 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = '#1B1B18'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1B1B18'; }}
             >
               Try a question
             </button>
@@ -707,8 +707,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 3 */}
           <div style={{
-            background: '#FDCD34',
-            border: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -739,18 +739,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </p>
             <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
-              border: `0.5px solid ${C.border}`,
+              border: '1px solid #1B1B18',
               borderRadius: '8px',
               padding: '8px 16px',
-              color: C.text,
-              background: 'none',
+              color: '#1B1B18',
+              background: 'transparent',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 700,
-              transition: 'border-color 0.2s',
+              transition: 'all 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = '#1B1B18'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1B1B18'; }}
             >
               Start with basics
             </button>
@@ -758,8 +758,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 4 */}
           <div style={{
-            background: '#FDCD34',
-            border: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '20px',
             transition: 'border-color 0.2s',
@@ -790,18 +790,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </p>
             <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
-              border: `0.5px solid ${C.border}`,
+              border: '1px solid #1B1B18',
               borderRadius: '8px',
               padding: '8px 16px',
-              color: C.text,
-              background: 'none',
+              color: '#1B1B18',
+              background: 'transparent',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 700,
-              transition: 'border-color 0.2s',
+              transition: 'all 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = '#1B1B18'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1B1B18'; }}
             >
               Browse questions
             </button>
