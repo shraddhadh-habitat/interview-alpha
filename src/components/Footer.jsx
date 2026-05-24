@@ -165,7 +165,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ borderTop: `1px solid ${C.border}` }}>
+      <div style={{ borderTop: '2px solid', borderImage: 'linear-gradient(90deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34) 1' }}>
         <div className="footer-bottom" style={{ maxWidth: 1120, margin: '0 auto', padding: '24px 40px', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <p style={{ fontSize: 12, color: C.muted, margin: 0 }}>
             © 2026 InterviewAlpha.ai™. All rights reserved.

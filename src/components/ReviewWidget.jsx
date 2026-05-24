@@ -9,7 +9,7 @@ const C = {
   greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',
   red: '#CF222E', redLight: 'rgba(211,47,47,0.07)', redBorder: 'rgba(211,47,47,0.18)',
 };
-const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
+const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)';
 const FONT = "'Plus Jakarta Sans', sans-serif";
 
 function Stars({ value, hover, onRate, onHover, onLeave, size = 36 }) {

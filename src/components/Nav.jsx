@@ -23,7 +23,7 @@ const C = {
 };
 
 const PRO_SESSION_LIMIT = 100;
-const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
+const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)';
 
 function SubscriptionBadge({ profile, onUpgradeClick }) {
   const status = profile?.subscription_status ?? 'free';
@@ -132,7 +132,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       position: absolute;
       bottom: 0; left: 12px; right: 12px;
       height: 3px;
-      background: #FDCD34;
+      background: linear-gradient(90deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34);
       border-radius: 2px 2px 0 0;
     }
     .nav-tab.admin { color: #1B1B18; -webkit-text-fill-color: #1B1B18; }

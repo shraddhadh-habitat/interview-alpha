@@ -572,12 +572,12 @@ export default function ATSChecker({ user }) {
                 flex: 1,
                 minWidth: '200px',
                 height: '48px',
-                background: '#1B1B18',
+                background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
                 color: 'white',
                 border: 'none',
                 borderRadius: '12px',
                 fontSize: '16px',
-                fontWeight: 600,
+                fontWeight: 700,
                 cursor: 'pointer',
               }}
             >

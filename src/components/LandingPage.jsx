@@ -117,18 +117,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               display: 'inline-block',
               height: '44px',
               padding: '0 28px',
-              background: C.text,
+              background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
               color: '#fff',
               border: 'none',
               borderRadius: '10px',
               fontSize: '15px',
-              fontWeight: 600,
+              fontWeight: 700,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               cursor: 'pointer',
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
-            onMouseLeave={e => e.currentTarget.style.background = C.text}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
           >
             Answer your first question
           </button>
@@ -197,6 +197,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             borderRadius: '16px',
             padding: '24px',
             marginBottom: '12px',
+            borderLeft: '3px solid',
+            borderImage: 'linear-gradient(180deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34) 1',
           }}>
             {/* Role label */}
             <div style={{
@@ -238,16 +240,16 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '11px',
               color: '#fff',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: '#1B1B18',
+              background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
               border: 'none',
               cursor: 'pointer',
               padding: '8px 16px',
-              fontWeight: 900,
-              transition: 'background 0.2s',
+              fontWeight: 700,
+              transition: 'opacity 0.2s',
               borderRadius: '6px',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
-            onMouseLeave={e => e.currentTarget.style.background = '#1B1B18'}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
             >
               Answer this question
             </button>
@@ -259,6 +261,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             border: 'none',
             borderRadius: '16px',
             padding: '24px',
+            borderLeft: '3px solid',
+            borderImage: 'linear-gradient(180deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34) 1',
           }}>
             {/* Role label */}
             <div style={{
@@ -300,16 +304,16 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '11px',
               color: '#fff',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: '#1B1B18',
+              background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
               border: 'none',
               cursor: 'pointer',
               padding: '8px 16px',
-              fontWeight: 900,
-              transition: 'background 0.2s',
+              fontWeight: 700,
+              transition: 'opacity 0.2s',
               borderRadius: '6px',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
-            onMouseLeave={e => e.currentTarget.style.background = '#1B1B18'}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
             >
               Answer this question
             </button>
@@ -852,7 +856,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         }}>
           {/* Card 1 */}
           <div style={{
-            background: '#FDCD34',
+            background: '#FFF0F7',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -885,7 +889,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 2 */}
           <div style={{
-            background: '#FDCD34',
+            background: '#F3F0FF',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -918,7 +922,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 3 */}
           <div style={{
-            background: '#FDCD34',
+            background: '#EFF6FF',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -951,7 +955,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 4 */}
           <div style={{
-            background: '#FDCD34',
+            background: '#ECFDF5',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -984,7 +988,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
           {/* Card 5 */}
           <div style={{
-            background: '#FDCD34',
+            background: '#FFFBEB',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
@@ -1024,7 +1028,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               height: '44px',
               paddingLeft: '32px',
               paddingRight: '32px',
-              background: C.text,
+              background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
               color: '#fff',
               border: 'none',
               borderRadius: '12px',
@@ -1034,8 +1038,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               cursor: 'pointer',
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
-            onMouseLeave={e => e.currentTarget.style.background = C.text}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
           >
             Answer your first question
           </button>

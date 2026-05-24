@@ -13,7 +13,7 @@ const C = {
 };
 
 const NAV_H = 60;
-const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
+const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)';
 
 // ── Section 1: PM Coaches & Mentors ──────────────────────────────────────────
 const COACHES = [

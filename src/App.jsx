@@ -32,7 +32,7 @@ import ReviewWidget from './components/ReviewWidget';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
-const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
+const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)';
 const RC = {
   bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#5C5C57', border: '#E8E6E1',
   green: '#16A34A',
@@ -413,9 +413,9 @@ export default function App() {
     return () => window.removeEventListener('ia:navigate', handler);
   }, []);
 
-  // Set body background to gold/bronze frame
+  // Set body background to unicorn gradient frame
   useEffect(() => {
-    document.body.style.background = 'linear-gradient(135deg, #C9A96E, #D4B87A, #BF9B5E)';
+    document.body.style.background = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)';
     document.body.style.margin = '0';
     document.body.style.padding = '0';
     return () => {

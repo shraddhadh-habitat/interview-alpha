@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
-const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399)';
+const RAINBOW = 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)';
 
 const C = {
   text: '#1B1B18', textMuted: 'rgba(27, 27, 24, 0.5)', textLight: 'rgba(27, 27, 24, 0.5)',
