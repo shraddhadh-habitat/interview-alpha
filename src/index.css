@@ -523,3 +523,243 @@ a[class*="answer"],
   fill: #ffffff !important;
   color: #ffffff !important;
 }
+
+/* ============================================
+   INTERVIEWALPHA BRAND THEME — COMPREHENSIVE
+   ============================================ */
+
+/* --- WELCOME BACK GREETING --- */
+[class*="welcome"],
+[class*="greeting"],
+[class*="Welcome"],
+span[class*="user-name"],
+p[class*="welcome"] {
+  background: var(--gradient-brand) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 700 !important;
+  color: unset !important;
+}
+
+/* --- IA LOGO --- */
+[class*="logo"] span,
+[class*="brand"] span,
+a[href="/"] span,
+[class*="logo-text"],
+[class*="brand-text"] {
+  background: var(--gradient-brand) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 900 !important;
+}
+
+/* --- ALL PRIMARY / CTA BUTTONS --- */
+button[class*="cta"],
+button[class*="primary"],
+button[class*="answer"],
+button[class*="check"],
+button[class*="upload"],
+button[class*="choose"],
+button[class*="start"],
+button[class*="try"],
+button[class*="browse"],
+button[class*="begin"],
+button[class*="submit"],
+a[class*="cta"],
+a[class*="answer"],
+[class*="cta-btn"],
+[class*="btn-primary"],
+[class*="btn-cta"],
+form button[type="submit"] {
+  background: var(--gradient-brand) !important;
+  background-size: 100% 100% !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+/* --- LEAVE A REVIEW BUTTON (floating) --- */
+[class*="leave"],
+[class*="review-float"],
+div[class*="review"] button {
+  background: var(--gradient-brand) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+}
+[class*="review"] svg,
+[class*="review"] .star,
+[class*="review"] [class*="icon"] {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+  stroke: none !important;
+}
+
+/* --- NAV TABS (main) --- */
+nav a, nav button,
+[class*="nav-tab"],
+[class*="navbar"] a,
+[class*="tab-item"],
+header nav a {
+  background: var(--gradient-brand) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+}
+
+/* --- SUB TABS (ATS Checker, Resume Optimizer, Templates, Resume Score) --- */
+[class*="sub-tab"],
+[class*="subtab"],
+[class*="inner-tab"],
+[class*="tool-tab"],
+[class*="resume-tab"],
+[class*="tab-bar"] a,
+[class*="tab-bar"] button {
+  background: var(--gradient-brand) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+/* Ensure text inside tabs is ALWAYS visible white */
+nav a *, nav button *,
+[class*="tab"] a *,
+[class*="tab"] button *,
+[class*="tab"] span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* --- CATEGORY BADGES (PRODUCT MANAGEMENT, DATA SCIENCE etc.) --- */
+[class*="category"],
+[class*="topic-tag"],
+[class*="domain"],
+[class*="question-tag"],
+[class*="badge"],
+[class*="chip"],
+span[class*="tag"] {
+  background: var(--gradient-brand) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  border-radius: 6px !important;
+}
+
+/* --- FILTER PILLS (PM, Data Science selectors) --- */
+[class*="filter"],
+[class*="role-pill"],
+[class*="selector"],
+[class*="pill"] {
+  background: var(--gradient-brand) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  border-radius: 999px !important;
+}
+
+/* --- PRICING BADGES (Most Popular, Save 17%) --- */
+[class*="popular"],
+[class*="save-badge"],
+[class*="discount"],
+[class*="savings"],
+[class*="recommended"] {
+  background: var(--gradient-brand) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  border-radius: 999px !important;
+}
+
+/* --- PRICING TABLE: "Unlimited" text and checkmarks in PRO column --- */
+[class*="pro"] td,
+[class*="pro-col"] td,
+[class*="pro-cell"],
+td[class*="pro"],
+[class*="pricing"] td:last-child span,
+[class*="pricing"] td:last-child {
+  background: var(--gradient-brand) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 600 !important;
+  color: unset !important;
+}
+
+/* --- PROGRESS BARS --- */
+[class*="progress-fill"],
+[class*="progress-bar"] > div,
+[class*="score-bar"] > div,
+[role="progressbar"] > div {
+  background: var(--gradient-brand) !important;
+}
+
+/* --- LISTEN BUTTONS --- */
+button[class*="listen"],
+[class*="listen-btn"],
+button[aria-label*="listen"],
+button[aria-label*="Listen"],
+button[class*="audio"],
+button[class*="speaker"],
+[class*="listen"][class*="pill"],
+[class*="listen"][class*="badge"] {
+  background: var(--gradient-listen) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+}
+
+/* --- FOOTER --- */
+footer,
+[class*="footer"],
+[class*="site-footer"],
+[class*="page-footer"] {
+  background: #f0ede8 !important;
+  color: #6b6b6b !important;
+  border-top: 1px solid #e4e1db !important;
+}
+footer a, [class*="footer"] a {
+  color: #6b6b6b !important;
+  -webkit-text-fill-color: #6b6b6b !important;
+}
+footer h3, footer h4,
+[class*="footer"] h3,
+[class*="footer"] h4 {
+  color: #111111 !important;
+  -webkit-text-fill-color: #111111 !important;
+  font-weight: 600 !important;
+}
+
+/* --- REMOVE STRAY GOLD UNDERLINE ON HEADINGS --- */
+h1, h2, h3 {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+h1::after, h2::after, h3::after {
+  display: none !important;
+}
+
+/* --- ATS CHECKER HEADING TITLE (gold underline fix) --- */
+[class*="page-title"],
+[class*="checker-title"],
+[class*="ats-title"] {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+/* --- UPLOAD RESUME BUTTON --- */
+[class*="upload"],
+label[class*="upload"],
+input[type="file"] + label,
+[class*="file-upload"] label {
+  background: var(--gradient-brand) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
