@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
 import { useAuth } from '../contexts/AuthContext';
 import useTextToSpeech from '../hooks/useTextToSpeech';
+import FormattedAnswer from '../components/FormattedAnswer';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -13,79 +14,6 @@ const C = {
   greenLight: 'rgba(27, 27, 24, 0.08)', greenBorder: 'rgba(27, 27, 24, 0.12)',
   yellow: '#FDCD34', yellowLight: 'rgba(253, 205, 52, 0.12)', yellowBorder: 'rgba(253, 205, 52, 0.2)',
   success: '#FDCD34', successLight: 'rgba(253, 205, 52, 0.12)', successBorder: 'rgba(253, 205, 52, 0.2)',
-};
-
-// Format answer text into properly structured paragraphs with bold terms
-const formatAnswer = (text) => {
-  if (!text) return [];
-
-  // Add line breaks before key terms and patterns
-  let formatted = text
-    .replace(/\.\s+([A-Z][a-z]+\s*[:.])/g, '.\n\n$1')
-    .replace(/(Lift:)/g, '\n$1')
-    .replace(/(Model fitting:)/g, '\n$1')
-    .replace(/(Robustness:)/g, '\n$1')
-    .replace(/(Overfitting:)/g, '\n$1')
-    .replace(/(Underfitting:)/g, '\n$1')
-    .replace(/(Design of Experiments)/g, '\n$1')
-    .replace(/(Example[s]?:)/g, '\n$1')
-    .replace(/(Goal:)/g, '\n$1')
-    .replace(/(Tradeoff[s]?:)/g, '\n$1')
-    .replace(/(Metrics?:)/g, '\n$1')
-    .replace(/(Risk[s]?:)/g, '\n$1')
-    .replace(/(Approach[es]?:)/g, '\n$1')
-    .replace(/(Solution[s]?:)/g, '\n$1')
-    .replace(/(Real[- ]world|Real scenario)/g, '\n$1')
-    .replace(/(Best practice|Pitfall[s]?)/g, '\n$1')
-    .replace(/(Challenge[s]?:)/g, '\n$1')
-    .replace(/(Clarification[s]?:)/g, '\n$1')
-    .replace(/(Step \d+)/g, '\n$1');
-
-  // Handle clarifying questions section
-  formatted = formatted.replace(
-    /(Before[^:]*:\s*|I'd want to ask[^:]*:)/g,
-    (match) => '\n' + match
-  );
-
-  // Split into paragraphs
-  const paragraphs = formatted.split('\n').filter(p => p.trim());
-
-  return paragraphs.map((p, i) => {
-    const trimmed = p.trim();
-
-    // Check if it's a clarifying question section
-    if (trimmed.toLowerCase().includes('before') && trimmed.includes(':')) {
-      return (
-        <p key={i} style={{ marginBottom: 12, lineHeight: 1.7, fontStyle: 'italic', color: C.text, fontSize: 15 }}>
-          {trimmed}
-        </p>
-      );
-    }
-
-    // Check if it's "For the purpose of this answer, I'll assume"
-    if (trimmed.toLowerCase().includes('for the purpose') || trimmed.toLowerCase().includes("i'll assume")) {
-      const bolded = trimmed.replace(/^([^.]+)/, '<strong>$1</strong>');
-      return (
-        <p key={i} style={{ marginBottom: 12, lineHeight: 1.7, color: C.text, fontSize: 15 }} dangerouslySetInnerHTML={{ __html: bolded }} />
-      );
-    }
-
-    // Check for numbered steps/questions
-    if (/^\d+\.?\s/.test(trimmed)) {
-      return (
-        <p key={i} style={{ marginBottom: 8, lineHeight: 1.7, color: C.text, fontSize: 15, marginLeft: 16 }}>
-          {trimmed}
-        </p>
-      );
-    }
-
-    // Bold text before colons
-    const bolded = trimmed.replace(/^([^:]+:)/, '<strong>$1</strong>');
-
-    return (
-      <p key={i} style={{ marginBottom: 12, lineHeight: 1.7, color: C.text, fontSize: 15 }} dangerouslySetInnerHTML={{ __html: bolded }} />
-    );
-  });
 };
 
 const PM_CATEGORY_CHIPS = [
@@ -411,16 +339,16 @@ function BlurredAnswer({ text, bgColor = 'rgb(236,247,241)' }) {
   };
 
   if (user || !hasMore) {
-    return <div style={containerStyle}>{formatAnswer(text)}</div>;
+    return <div style={containerStyle}><FormattedAnswer text={text} /></div>;
   }
 
   // For non-logged-in users with more content, show teaser
   return (
     <div>
-      <div style={containerStyle}>{formatAnswer(teaser)}</div>
+      <div style={containerStyle}><FormattedAnswer text={teaser} /></div>
       <div style={{ position: 'relative', overflow: 'hidden' }}>
         <div style={{ ...containerStyle, filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none' }}>
-          {formatAnswer(rest)}
+          <FormattedAnswer text={rest} />
         </div>
         <div style={{
           position: 'absolute', inset: 0,
