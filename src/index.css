@@ -1,10 +1,56 @@
+/* ─── InterviewAlpha Design System ─── */
+:root {
+  --bg-base: #f0ede8;         /* warm off-white page background */
+  --bg-card: #ffffff;          /* card surfaces */
+  --text-primary: #111111;     /* near-black headings */
+  --text-secondary: #6b6b6b;   /* muted body / subheadings */
+  --text-muted: #9a9a9a;       /* helper text */
+  --border-subtle: #e4e1db;    /* card borders */
+
+  /* Rainbow gradient — used on brand wordmark, numbers, and accents */
+  --gradient-rainbow: linear-gradient(
+    90deg,
+    #f4a632 0%,    /* amber  */
+    #e85d3a 18%,   /* orange-red */
+    #c94491 38%,   /* magenta */
+    #7b52d4 58%,   /* purple */
+    #3b82f6 75%,   /* blue */
+    #22c55e 100%   /* green */
+  );
+
+  /* CTA button gradient (left→right, vivid) */
+  --gradient-cta: linear-gradient(
+    90deg,
+    #f97316,  /* orange */
+    #ef4444,  /* red */
+    #a855f7,  /* purple */
+    #3b82f6   /* blue */
+  );
+
+  /* Session badge */
+  --badge-bg: #eaf4ee;
+  --badge-text: #2e7d4f;
+  --badge-dot: #22c55e;
+
+  /* Legacy aliases for backwards compatibility */
+  --accent: var(--text-primary);
+  --accent-bg: var(--bg-card);
+  --accent-border: var(--border-subtle);
+  --text-h: var(--text-primary);
+  --social-bg: var(--bg-card);
+  --shadow: 0 4px 12px rgba(0,0,0,0.1);
+  --border: var(--border-subtle);
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'DM Sans', 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
