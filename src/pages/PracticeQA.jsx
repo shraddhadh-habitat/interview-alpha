@@ -15,6 +15,79 @@ const C = {
   success: '#FDCD34', successLight: 'rgba(253, 205, 52, 0.12)', successBorder: 'rgba(253, 205, 52, 0.2)',
 };
 
+// Format answer text into properly structured paragraphs with bold terms
+const formatAnswer = (text) => {
+  if (!text) return [];
+
+  // Add line breaks before key terms and patterns
+  let formatted = text
+    .replace(/\.\s+([A-Z][a-z]+\s*[:.])/g, '.\n\n$1')
+    .replace(/(Lift:)/g, '\n$1')
+    .replace(/(Model fitting:)/g, '\n$1')
+    .replace(/(Robustness:)/g, '\n$1')
+    .replace(/(Overfitting:)/g, '\n$1')
+    .replace(/(Underfitting:)/g, '\n$1')
+    .replace(/(Design of Experiments)/g, '\n$1')
+    .replace(/(Example[s]?:)/g, '\n$1')
+    .replace(/(Goal:)/g, '\n$1')
+    .replace(/(Tradeoff[s]?:)/g, '\n$1')
+    .replace(/(Metrics?:)/g, '\n$1')
+    .replace(/(Risk[s]?:)/g, '\n$1')
+    .replace(/(Approach[es]?:)/g, '\n$1')
+    .replace(/(Solution[s]?:)/g, '\n$1')
+    .replace(/(Real[- ]world|Real scenario)/g, '\n$1')
+    .replace(/(Best practice|Pitfall[s]?)/g, '\n$1')
+    .replace(/(Challenge[s]?:)/g, '\n$1')
+    .replace(/(Clarification[s]?:)/g, '\n$1')
+    .replace(/(Step \d+)/g, '\n$1');
+
+  // Handle clarifying questions section
+  formatted = formatted.replace(
+    /(Before[^:]*:\s*|I'd want to ask[^:]*:)/g,
+    (match) => '\n' + match
+  );
+
+  // Split into paragraphs
+  const paragraphs = formatted.split('\n').filter(p => p.trim());
+
+  return paragraphs.map((p, i) => {
+    const trimmed = p.trim();
+
+    // Check if it's a clarifying question section
+    if (trimmed.toLowerCase().includes('before') && trimmed.includes(':')) {
+      return (
+        <p key={i} style={{ marginBottom: 12, lineHeight: 1.7, fontStyle: 'italic', color: C.text, fontSize: 15 }}>
+          {trimmed}
+        </p>
+      );
+    }
+
+    // Check if it's "For the purpose of this answer, I'll assume"
+    if (trimmed.toLowerCase().includes('for the purpose') || trimmed.toLowerCase().includes("i'll assume")) {
+      const bolded = trimmed.replace(/^([^.]+)/, '<strong>$1</strong>');
+      return (
+        <p key={i} style={{ marginBottom: 12, lineHeight: 1.7, color: C.text, fontSize: 15 }} dangerouslySetInnerHTML={{ __html: bolded }} />
+      );
+    }
+
+    // Check for numbered steps/questions
+    if (/^\d+\.?\s/.test(trimmed)) {
+      return (
+        <p key={i} style={{ marginBottom: 8, lineHeight: 1.7, color: C.text, fontSize: 15, marginLeft: 16 }}>
+          {trimmed}
+        </p>
+      );
+    }
+
+    // Bold text before colons
+    const bolded = trimmed.replace(/^([^:]+:)/, '<strong>$1</strong>');
+
+    return (
+      <p key={i} style={{ marginBottom: 12, lineHeight: 1.7, color: C.text, fontSize: 15 }} dangerouslySetInnerHTML={{ __html: bolded }} />
+    );
+  });
+};
+
 const PM_CATEGORY_CHIPS = [
   { id: 'behavioral',       label: 'Behavioral',           dataKeys: ['behavioral'], subcategory: null },
   { id: 'product_design',   label: 'Product Design',       dataKeys: ['product'],    subcategory: 'product_design' },
@@ -332,22 +405,22 @@ function BlurredAnswer({ text, bgColor = 'rgb(236,247,241)' }) {
   const teaser = hasMore ? text.slice(0, TEASER_LEN) : text;
   const rest = hasMore ? text.slice(TEASER_LEN) : '';
 
-  const textStyle = {
-    fontSize: 15, lineHeight: 1.8, color: C.textMuted,
+  const containerStyle = {
+    maxWidth: 720,
     fontFamily: "'Plus Jakarta Sans', sans-serif",
-    whiteSpace: 'pre-wrap',
   };
 
   if (user || !hasMore) {
-    return <div style={textStyle}>{text}</div>;
+    return <div style={containerStyle}>{formatAnswer(text)}</div>;
   }
 
+  // For non-logged-in users with more content, show teaser
   return (
     <div>
-      <div style={textStyle}>{teaser}</div>
+      <div style={containerStyle}>{formatAnswer(teaser)}</div>
       <div style={{ position: 'relative', overflow: 'hidden' }}>
-        <div style={{ ...textStyle, filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none' }}>
-          {rest}
+        <div style={{ ...containerStyle, filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none' }}>
+          {formatAnswer(rest)}
         </div>
         <div style={{
           position: 'absolute', inset: 0,
