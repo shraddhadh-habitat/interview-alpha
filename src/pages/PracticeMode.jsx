@@ -283,34 +283,32 @@ function FeedbackPanel({ result, attemptNumber }) {
               <button
                 onClick={handleSpeakFeedback}
                 title={isSpeakingFeedback ? "Stop listening" : "Listen to feedback"}
+                className="listen-btn"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: 6,
                   padding: '5px 12px',
-                  background: isSpeakingFeedback ? '#1B1B18' : 'transparent',
-                  border: `1.5px solid ${isSpeakingFeedback ? '#1B1B18' : '#E8E6E1'}`,
+                  background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
+                  border: 'none',
                   borderRadius: 20,
                   cursor: 'pointer',
                   fontSize: 13,
                   fontWeight: 600,
-                  color: isSpeakingFeedback ? '#fff' : '#5C5C57',
+                  color: '#fff',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   transition: 'all 0.2s',
                   minHeight: 44,
+                  opacity: isSpeakingFeedback ? 1 : 0.9,
                 }}
                 onMouseEnter={(e) => {
-                  if (!isSpeakingFeedback) {
-                    e.currentTarget.style.borderColor = '#1B1B18';
-                    e.currentTarget.style.color = '#1B1B18';
-                  }
+                  e.currentTarget.style.opacity = '0.88';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
                 }}
                 onMouseLeave={(e) => {
-                  if (!isSpeakingFeedback) {
-                    e.currentTarget.style.borderColor = '#E8E6E1';
-                    e.currentTarget.style.color = '#5C5C57';
-                  }
+                  e.currentTarget.style.opacity = isSpeakingFeedback ? '1' : '0.9';
+                  e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
                 {isSpeakingFeedback ? '■ Stop' : '▶ Listen'}

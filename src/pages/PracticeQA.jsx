@@ -488,36 +488,34 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
             <button
               onClick={handleSpeakQuestion}
               title={isSpeakingQuestion ? "Stop listening" : "Listen to question"}
+              className="listen-btn"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 6,
-                padding: isSpeakingQuestion ? '5px 12px' : '5px 12px',
-                background: isSpeakingQuestion ? '#1B1B18' : 'transparent',
-                border: `1.5px solid ${isSpeakingQuestion ? '#1B1B18' : '#E8E6E1'}`,
+                padding: '5px 12px',
+                background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
+                border: 'none',
                 borderRadius: 20,
                 cursor: 'pointer',
                 fontSize: 13,
                 fontWeight: 600,
-                color: isSpeakingQuestion ? '#fff' : '#5C5C57',
+                color: '#fff',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 transition: 'all 0.2s',
                 flexShrink: 0,
                 marginTop: 2,
                 minHeight: 44,
+                opacity: isSpeakingQuestion ? 1 : 0.9,
               }}
               onMouseEnter={(e) => {
-                if (!isSpeakingQuestion) {
-                  e.currentTarget.style.borderColor = '#1B1B18';
-                  e.currentTarget.style.color = '#1B1B18';
-                }
+                e.currentTarget.style.opacity = '0.88';
+                e.currentTarget.style.transform = 'translateY(-1px)';
               }}
               onMouseLeave={(e) => {
-                if (!isSpeakingQuestion) {
-                  e.currentTarget.style.borderColor = '#E8E6E1';
-                  e.currentTarget.style.color = '#5C5C57';
-                }
+                e.currentTarget.style.opacity = isSpeakingQuestion ? '1' : '0.9';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
               {isSpeakingQuestion ? '■ Stop' : '▶ Listen'}
@@ -553,34 +551,32 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                 <button
                   onClick={handleSpeakAnswer}
                   title={isSpeakingAnswer ? "Stop listening" : "Listen to answer"}
+                  className="listen-btn"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 6,
                     padding: '5px 12px',
-                    background: isSpeakingAnswer ? '#1B1B18' : 'transparent',
-                    border: `1.5px solid ${isSpeakingAnswer ? '#1B1B18' : '#E8E6E1'}`,
+                    background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
+                    border: 'none',
                     borderRadius: 20,
                     cursor: 'pointer',
                     fontSize: 13,
                     fontWeight: 600,
-                    color: isSpeakingAnswer ? '#fff' : '#5C5C57',
+                    color: '#fff',
                     fontFamily: "'Plus Jakarta Sans', sans-serif",
                     transition: 'all 0.2s',
                     minHeight: 44,
+                    opacity: isSpeakingAnswer ? 1 : 0.9,
                   }}
                   onMouseEnter={(e) => {
-                    if (!isSpeakingAnswer) {
-                      e.currentTarget.style.borderColor = '#1B1B18';
-                      e.currentTarget.style.color = '#1B1B18';
-                    }
+                    e.currentTarget.style.opacity = '0.88';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
                   }}
                   onMouseLeave={(e) => {
-                    if (!isSpeakingAnswer) {
-                      e.currentTarget.style.borderColor = '#E8E6E1';
-                      e.currentTarget.style.color = '#5C5C57';
-                    }
+                    e.currentTarget.style.opacity = isSpeakingAnswer ? '1' : '0.9';
+                    e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
                   {isSpeakingAnswer ? '■ Stop' : '▶ Listen'}

@@ -36,6 +36,9 @@
   --gradient-brand: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%);
   --gradient-brand-text: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%);
 
+  /* Listen Button Gradient (Light Purple → Gold) */
+  --gradient-listen: linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%);
+
   /* Legacy aliases for backwards compatibility */
   --accent: var(--text-primary);
   --accent-bg: var(--bg-card);
@@ -319,6 +322,73 @@ img.logo {
 [role="progressbar"] > * {
   background: linear-gradient(90deg, #a8e6cf 0%, #7ec8c8 30%, #a78bfa 70%, #c084fc 100%);
   border-radius: 4px;
+}
+
+/* ─── Listen Button (Purple to Gold Gradient) ─── */
+button[class*="listen"],
+a[class*="listen"],
+[class*="listen-btn"],
+[class*="listen-button"],
+button[aria-label*="Listen"],
+button[aria-label*="listen"],
+button[class*="audio"],
+button[class*="speaker"],
+button[aria-label*="audio"],
+button[aria-label*="speaker"],
+button[aria-label*="play"],
+[class*="audio-btn"],
+[class*="speaker-btn"],
+[class*="listen"][class*="pill"],
+[class*="listen"][class*="badge"],
+[class*="listen"][class*="chip"],
+[class*="listen"][class*="tag"],
+span[class*="listen"],
+div[class*="listen-pill"] {
+  background: var(--gradient-listen);
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+  cursor: pointer;
+}
+
+button[class*="listen"]:hover,
+button[class*="audio"]:hover,
+button[class*="speaker"]:hover,
+[class*="listen-btn"]:hover,
+[class*="listen-pill"]:hover,
+a[class*="listen"]:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* Icon-only listen buttons (circular) */
+button[class*="audio"],
+button[class*="speaker"],
+button[aria-label*="audio"],
+button[aria-label*="speaker"],
+button[aria-label*="play"],
+[class*="audio-btn"],
+[class*="speaker-btn"] {
+  border-radius: 50%;
+}
+
+/* Listen pills */
+[class*="listen"][class*="pill"],
+[class*="listen"][class*="badge"],
+[class*="listen-pill"] {
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 0.82rem;
+}
+
+/* SVG icons inside listen buttons */
+button[class*="listen"] svg,
+button[class*="audio"] svg,
+button[class*="speaker"] svg {
+  fill: #ffffff;
+  stroke: #ffffff;
 }
 
 /* ─── Button micro-interactions ─── */
