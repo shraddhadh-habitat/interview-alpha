@@ -41,7 +41,7 @@ export default function PrivacyPolicy() {
     },
     {
       title: 'THIRD-PARTY SERVICES',
-      content: 'We use the following third-party services: Supabase (database and authentication), Vercel (hosting), Anthropic (AI processing). Each has their own privacy policies. We do not share your personal information beyond what is necessary for these services to function.'
+      content: 'We use trusted third-party service providers for database management, hosting, and AI processing to operate the Platform. Each provider maintains their own privacy policies and security standards. We do not share your personal information beyond what is necessary for these services to function.'
     },
     {
       title: 'CHILDREN\'S PRIVACY',
