@@ -232,7 +232,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
             }
             handleNav('interview');
           }}>
-            <span style={{ color: C.text }}>I</span><span style={{ color: '#FDCD34' }}>A</span><sup style={{ fontSize: 10, color: C.textMuted, verticalAlign: 'super' }}>™</sup>
+            <span style={{ color: C.text }}>I</span><span style={{ background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>A</span><sup style={{ fontSize: 10, color: C.textMuted, verticalAlign: 'super' }}>™</sup>
           </span>
         </div>
 
@@ -256,7 +256,10 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
               <span style={{
                 fontSize: 13,
                 fontWeight: 600,
-                color: '#FDCD34',
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 whiteSpace: 'nowrap',
               }}>
