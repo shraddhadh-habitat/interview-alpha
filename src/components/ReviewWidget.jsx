@@ -140,8 +140,8 @@ export default function ReviewWidget({ user, profile }) {
         onClick={() => !alreadySubmitted && setShowModal(true)}
         disabled={alreadySubmitted}
         style={{
-          background: alreadySubmitted ? C.greenLight : '#0A0A0A',
-          color: alreadySubmitted ? C.green : '#fff',
+          background: alreadySubmitted ? C.greenLight : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+          color: '#fff',
           border: alreadySubmitted ? `1.5px solid ${C.greenBorder}` : 'none',
           cursor: alreadySubmitted ? 'default' : 'pointer',
         }}

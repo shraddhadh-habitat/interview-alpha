@@ -203,11 +203,11 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '10px',
               letterSpacing: '1px',
               textTransform: 'uppercase',
-              color: '#1B1B18',
+              color: '#FFFFFF',
               fontWeight: 700,
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: '#F5F3EF',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               padding: '4px 12px',
               borderRadius: '4px',
               display: 'inline-block',
@@ -265,11 +265,11 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontSize: '10px',
               letterSpacing: '1px',
               textTransform: 'uppercase',
-              color: '#1B1B18',
+              color: '#FFFFFF',
               fontWeight: 700,
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: '#F5F3EF',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               padding: '4px 12px',
               borderRadius: '4px',
               display: 'inline-block',
@@ -637,18 +637,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </p>
             <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
-              border: '1px solid #1B1B18',
+              border: 'none',
               borderRadius: '8px',
               padding: '8px 16px',
-              color: '#1B1B18',
-              background: 'transparent',
+              color: '#FFFFFF',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 700,
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = '#1B1B18'; e.currentTarget.style.color = '#fff'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1B1B18'; }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
               Start prepping
             </button>
@@ -688,18 +688,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </p>
             <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
-              border: '1px solid #1B1B18',
+              border: 'none',
               borderRadius: '8px',
               padding: '8px 16px',
-              color: '#1B1B18',
-              background: 'transparent',
+              color: '#FFFFFF',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 700,
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = '#1B1B18'; e.currentTarget.style.color = '#fff'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1B1B18'; }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
               Try a question
             </button>
@@ -739,18 +739,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </p>
             <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
-              border: '1px solid #1B1B18',
+              border: 'none',
               borderRadius: '8px',
               padding: '8px 16px',
-              color: '#1B1B18',
-              background: 'transparent',
+              color: '#FFFFFF',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 700,
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = '#1B1B18'; e.currentTarget.style.color = '#fff'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1B1B18'; }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
               Start with basics
             </button>
@@ -790,18 +790,18 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </p>
             <button onClick={() => onNavigate('practice')} style={{
               fontSize: '13px',
-              border: '1px solid #1B1B18',
+              border: 'none',
               borderRadius: '8px',
               padding: '8px 16px',
-              color: '#1B1B18',
-              background: 'transparent',
+              color: '#FFFFFF',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 700,
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = '#1B1B18'; e.currentTarget.style.color = '#fff'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1B1B18'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1B1B18'; }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
               Browse questions
             </button>

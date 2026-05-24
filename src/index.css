@@ -465,3 +465,61 @@ input:focus, textarea:focus {
 @media (max-width: 480px) {
   body { font-size: 14px; }
 }
+
+/* ─── Landing Page Fixes ─── */
+
+/* Fix 1: Navigation padding to prevent tab clipping */
+nav, [class*="navbar"], [class*="nav-container"], header {
+  padding-left: 16px !important;
+  overflow: visible !important;
+}
+
+[class*="nav-tabs"], [class*="tab-list"] {
+  overflow-x: visible !important;
+  padding-left: 8px;
+}
+
+/* Fix 2: Category badges gradient styling */
+[class*="category-badge"],
+[class*="category-tag"],
+[class*="question-category"],
+[class*="topic-badge"],
+[class*="domain-tag"],
+span[class*="badge"],
+.question-card [class*="tag"] {
+  background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Fix 3 & 4: CTA buttons full gradient rendering */
+[class*="answer-btn"],
+[class*="answer-question"],
+button[class*="answer"],
+a[class*="answer"],
+.hero-cta,
+[class*="cta-primary"] {
+  background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important;
+  background-size: 100% 100% !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 600;
+  border-radius: 12px;
+}
+
+/* Fix 5: Review button gradient */
+[class*="leave-review"], [class*="review-btn"], button[class*="review"] {
+  background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+[class*="review"] svg, [class*="review"] .star-icon {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
