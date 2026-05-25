@@ -1,10 +1,14 @@
 import React from 'react';
+import { formatLabeledText } from '../lib/formatText';
 
 export default function FormattedAnswer({ text, style = {} }) {
   if (!text) return null;
 
   const formatText = (rawText) => {
     let formatted = rawText;
+
+    // First, apply inline label formatting (Pro: Con: Use: etc. onto new lines)
+    formatted = formatLabeledText(formatted);
 
     // Split into paragraphs on double newlines or sentence boundaries before key terms
     const keyTermPattern = /(Before I dive in|For the purpose of this answer|Clarifying questions|Example:|Goal:|Tradeoff:|Trade-off:|Metrics:|Risk:|Success metrics:|V1:|Key insight:|The key thing|I'd start by|What most people miss|The biggest risk|The tradeoff here|First:|Second:|Third:|Step \d|Approach:|Framework:|Why this matters:|Bottom line:|Assumptions:)/g;

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import useTextToSpeech from '../hooks/useTextToSpeech';
 import FormattedAnswer from '../components/FormattedAnswer';
+import { formatLabeledText } from '../lib/formatText';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -376,7 +377,7 @@ function FeedbackPanel({ result, attemptNumber }) {
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Expert Rewrite</div>
           <div style={{ padding: '16px 20px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
-            {expert_rewrite}
+            {formatLabeledText(expert_rewrite)}
           </div>
         </div>
       )}

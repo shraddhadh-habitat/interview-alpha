@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { formatLabeledText } from '../lib/formatText';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -165,7 +166,7 @@ function ReviewModal({ attempt, onClose }) {
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Expert Rewrite</div>
             <div style={{ padding: '14px 18px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
-              {attempt.expert_rewrite}
+              {formatLabeledText(attempt.expert_rewrite)}
             </div>
           </div>
         )}
