@@ -226,13 +226,24 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       }}>
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
-          <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 400, letterSpacing: -0.5, cursor: 'pointer' }} onClick={() => {
+          <span style={{
+            fontFamily: "'Instrument Serif', serif",
+            fontSize: 22,
+            fontWeight: 400,
+            letterSpacing: -0.5,
+            cursor: 'pointer',
+            background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            display: 'inline-block'
+          }} onClick={() => {
             if (page === 'interview') {
               window.dispatchEvent(new CustomEvent('ia:reset-interview'));
             }
             handleNav('interview');
           }}>
-            <span style={{ color: C.text }}>I</span><span style={{ background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>A</span><sup style={{ fontSize: 10, color: C.textMuted, verticalAlign: 'super' }}>™</sup>
+            IA<sup style={{ fontSize: 10, color: C.textMuted, verticalAlign: 'super', WebkitTextFillColor: 'unset', WebkitBackgroundClip: 'unset', backgroundClip: 'unset' }}>™</sup>
           </span>
         </div>
 

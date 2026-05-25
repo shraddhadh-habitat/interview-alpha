@@ -215,6 +215,14 @@ export default function ResumeToolsHub({ user }) {
           display: 'flex',
           maxWidth: 1200,
           margin: '0 auto',
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          gap: '8px',
+          padding: '8px',
+          width: '100%',
+          boxSizing: 'border-box'
         }}>
           {tabs.map(tab => (
             <button
@@ -234,6 +242,7 @@ export default function ResumeToolsHub({ user }) {
                 border: 'none',
                 borderRadius: activeTab === tab.id ? '8px' : '0',
                 whiteSpace: 'nowrap',
+                flexShrink: 0,
               }}
               onMouseEnter={e => {
                 if (activeTab !== tab.id) {
