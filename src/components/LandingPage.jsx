@@ -319,7 +319,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
   // Trust strip section
   const TrustSection = () => (
-    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '32px' }}>
+    <div style={{ background: C.bg, paddingTop: '32px', paddingBottom: '32px' }}>
       <style>{`
         @media (max-width: 768px) {
           .trust-container { padding: 0 20px !important; }
@@ -807,7 +807,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
   // Product proof section
   const ProductProofSection = () => (
-    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '48px' }}>
+    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '0' }}>
       <style>{`
         @media (max-width: 768px) {
           .proof-container { padding: 0 20px !important; }
