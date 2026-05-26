@@ -144,7 +144,84 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
         </div>
       </section>
 
-      {/* SECTION 3 - HOW IT WORKS */}
+      {/* SECTION 3 - WHAT IS INTERVIEWALPHA */}
+      <section style={{
+        maxWidth: '800px',
+        margin: '0 auto',
+        padding: '48px 32px 0',
+        textAlign: 'center'
+      }}>
+        {/* Section label */}
+        <p style={{
+          textTransform: 'uppercase',
+          letterSpacing: '0.12em',
+          fontSize: '0.72rem',
+          color: '#9a9a9a',
+          fontWeight: 600,
+          marginBottom: '12px'
+        }}>
+          About the platform
+        </p>
+
+        {/* Heading */}
+        <h2 style={{
+          fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
+          fontWeight: 800,
+          color: '#111111',
+          marginBottom: '20px',
+          lineHeight: 1.25,
+          textDecoration: 'none',
+          borderBottom: 'none'
+        }}>
+          What is InterviewAlpha?
+        </h2>
+
+        {/* Body */}
+        <p style={{
+          fontSize: '1rem',
+          color: '#6b6b6b',
+          lineHeight: 1.8,
+          marginBottom: '16px',
+          maxWidth: '680px',
+          margin: '0 auto 16px'
+        }}>
+          InterviewAlpha is an AI-powered interview practice platform built for
+          <strong style={{ color: '#111' }}> Product Management </strong>
+          and
+          <strong style={{ color: '#111' }}> Data Science </strong>
+          aspirants. Instead of reading prep guides, you practice by actually answering
+          real interview questions — and get instant, structured feedback scored across
+          8 professional competencies.
+        </p>
+
+        <p style={{
+          fontSize: '1rem',
+          color: '#6b6b6b',
+          lineHeight: 1.8,
+          maxWidth: '680px',
+          margin: '0 auto 16px'
+        }}>
+          Every answer you give is evaluated the way a real interviewer would — on your
+          problem framing, structure, depth, and communication. You also see an expert
+          rewrite so you know not just <em>that</em> you could improve, but exactly <em>how</em>.
+        </p>
+
+        <p style={{
+          fontSize: '1rem',
+          color: '#6b6b6b',
+          lineHeight: 1.8,
+          maxWidth: '680px',
+          margin: '0 auto 0'
+        }}>
+          No fluff. No passive content. Just deliberate practice that moves the needle —
+          in under 2 minutes per session.
+        </p>
+      </section>
+
+      {/* Spacer before How It Works */}
+      <div style={{ height: '48px' }} />
+
+      {/* SECTION 4 - HOW IT WORKS */}
       <section style={{
         padding: '96px 28px',
         background: C.bg,

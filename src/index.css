@@ -990,3 +990,11 @@ section + section,
   padding-top: 48px;
   padding-bottom: 48px;
 }
+
+/* ─── What is InterviewAlpha? Section Mobile Responsive ─── */
+@media (max-width: 768px) {
+  [class*="what-is-section"],
+  section[class*="about-platform"] {
+    padding: 32px 16px 0 !important;
+  }
+}
