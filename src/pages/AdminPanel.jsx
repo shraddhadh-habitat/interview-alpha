@@ -28,54 +28,6 @@ function StatCard({ label, value, color }) {
   );
 }
 
-function DeviceStatsCard({ label, icon, count, total }) {
-  const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
-  const bgMap = {
-    '📱 Android': 'rgba(34, 197, 94, 0.08)',
-    '🍎 iOS': 'rgba(59, 130, 246, 0.08)',
-    '💻 Desktop': 'rgba(168, 85, 247, 0.08)',
-  };
-  const barMap = {
-    '📱 Android': '#22C55E',
-    '🍎 iOS': '#3B82F6',
-    '💻 Desktop': '#A855F7',
-  };
-
-  return (
-    <div style={{
-      background: bgMap[label] || C.bgCard,
-      border: `1px solid ${C.border}`,
-      borderRadius: 12,
-      padding: 20,
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-        <p style={{ fontSize: 14, fontWeight: 600, color: C.text, margin: 0 }}>
-          {icon} {label}
-        </p>
-        <span style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{count}</span>
-      </div>
-      <div style={{
-        background: 'rgba(27, 27, 24, 0.06)',
-        borderRadius: 8,
-        height: 6,
-        marginBottom: 8,
-        overflow: 'hidden',
-      }}>
-        <div style={{
-          height: '100%',
-          width: `${percentage}%`,
-          background: barMap[label] || C.green,
-          borderRadius: 8,
-          transition: 'width 0.3s',
-        }} />
-      </div>
-      <p style={{ fontSize: 12, color: C.textMuted, margin: 0 }}>
-        {percentage}% of {total} total
-      </p>
-    </div>
-  );
-}
-
 export default function AdminPanel({ user }) {
   const [requests, setRequests]     = useState([]);
   const [users, setUsers]           = useState([]);
@@ -90,6 +42,7 @@ export default function AdminPanel({ user }) {
   const [reviewActionId, setReviewActionId] = useState(null);
   const [deleteTarget, setDeleteTarget]     = useState(null); // review id pending delete confirm
   const [userFilters, setUserFilters] = useState({ email: '', name: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' });
+  const [deviceFilter, setDeviceFilter] = useState('all');
 
   // Gate  . only admin email
   if (!user || !ADMIN_EMAILS.includes(user.email.toLowerCase())) {
@@ -271,7 +224,7 @@ export default function AdminPanel({ user }) {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 24, borderBottom: `1px solid ${C.border}` }}>
-          {[['payments', 'Payment Requests'], ['users', 'Users'], ['reviews', 'Reviews'], ['devices', 'Devices']].map(([id, label]) => {
+          {[['payments', 'Payment Requests'], ['users', 'Users'], ['reviews', 'Reviews']].map(([id, label]) => {
             const pendingReviews = reviews.filter(r => r.status === 'pending').length;
             return (
               <button
@@ -399,6 +352,7 @@ export default function AdminPanel({ user }) {
                 if (f.freeSessions === 'notused' && (u.free_sessions_used ?? 0) > 0)   return false;
                 if (f.monthlySessions === 'active'   && (u.monthly_sessions_used ?? 0) === 0) return false;
                 if (f.monthlySessions === 'inactive' && (u.monthly_sessions_used ?? 0) > 0)   return false;
+                if (deviceFilter !== 'all' && u.device_type !== deviceFilter) return false;
                 return true;
               });
 
@@ -406,10 +360,55 @@ export default function AdminPanel({ user }) {
               const selectStyle = { ...inputStyle, cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235C5C57'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center', paddingRight: 28 };
               const labelStyle = { fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, display: 'block', marginBottom: 5 };
               const setF = (key, val) => setUserFilters(prev => ({ ...prev, [key]: val }));
-              const hasFilters = f.email || f.name || f.status !== 'all' || f.plan !== 'all' || f.freeSessions !== 'all' || f.monthlySessions !== 'all';
+              const hasFilters = f.email || f.name || f.status !== 'all' || f.plan !== 'all' || f.freeSessions !== 'all' || f.monthlySessions !== 'all' || deviceFilter !== 'all';
 
               return (
                 <>
+                  {/* Device filter tabs */}
+                  <div style={{ marginBottom: 16 }}>
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                      {[
+                        { label: 'All Devices',   value: 'all',     emoji: '' },
+                        { label: 'Android',       value: 'android', emoji: '🤖' },
+                        { label: 'Apple iOS',     value: 'ios',     emoji: '🍎' },
+                        { label: 'Desktop',       value: 'desktop', emoji: '💻' },
+                      ].map(({ label, value, emoji }) => (
+                        <button
+                          key={value}
+                          onClick={() => setDeviceFilter(value)}
+                          style={{
+                            background: deviceFilter === value
+                              ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)'
+                              : '#f0ede8',
+                            color: deviceFilter === value ? '#ffffff' : '#6b6b6b',
+                            WebkitTextFillColor: deviceFilter === value ? '#ffffff' : '#6b6b6b',
+                            border: 'none',
+                            borderRadius: '8px',
+                            padding: '6px 14px',
+                            fontSize: '0.82rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            whiteSpace: 'nowrap',
+                            fontFamily: "'Plus Jakarta Sans', sans-serif"
+                          }}
+                        >
+                          {emoji && <span style={{ marginRight: '4px' }}>{emoji}</span>}
+                          {label}
+                          {deviceStats && value !== 'all' && (
+                            <span style={{
+                              marginLeft: '6px',
+                              fontSize: '0.75rem',
+                              opacity: 0.85
+                            }}>
+                              ({deviceStats.breakdown[value]})
+                            </span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Filter row */}
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 12, alignItems: 'flex-end' }}>
                     <div style={{ flex: '1 1 160px', minWidth: 140 }}>
@@ -456,7 +455,7 @@ export default function AdminPanel({ user }) {
                     </div>
                     {hasFilters && (
                       <div style={{ flex: '0 0 auto', paddingBottom: 1 }}>
-                        <button onClick={() => setUserFilters({ email: '', name: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' })} style={{ background: 'none', border: 'none', color: C.green, fontSize: 11, cursor: 'pointer', textDecoration: 'underline', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '6px 0' }}>
+                        <button onClick={() => { setUserFilters({ email: '', name: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' }); setDeviceFilter('all'); }} style={{ background: 'none', border: 'none', color: C.green, fontSize: 11, cursor: 'pointer', textDecoration: 'underline', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '6px 0' }}>
                           Reset Filters
                         </button>
                       </div>
@@ -565,47 +564,6 @@ export default function AdminPanel({ user }) {
                   </tbody>
                 </table>
               </div>
-            )}
-          </div>
-        )}
-
-        {/* Devices tab */}
-        {!loading && tab === 'devices' && (
-          <div>
-            {deviceStats.total === 0 ? (
-              <div style={{ padding: '40px 0', textAlign: 'center', fontSize: 12, color: C.textMuted }}>No device data yet.</div>
-            ) : (
-              <>
-                <div style={{ marginBottom: 24 }}>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 16 }}>
-                    Total Sessions: <span style={{ color: C.green }}>{deviceStats.total}</span>
-                  </div>
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                    gap: 16,
-                  }}>
-                    <DeviceStatsCard
-                      label="📱 Android"
-                      icon="📱"
-                      count={deviceStats.breakdown.android}
-                      total={deviceStats.total}
-                    />
-                    <DeviceStatsCard
-                      label="🍎 iOS"
-                      icon="🍎"
-                      count={deviceStats.breakdown.ios}
-                      total={deviceStats.total}
-                    />
-                    <DeviceStatsCard
-                      label="💻 Desktop"
-                      icon="💻"
-                      count={deviceStats.breakdown.desktop}
-                      total={deviceStats.total}
-                    />
-                  </div>
-                </div>
-              </>
             )}
           </div>
         )}
