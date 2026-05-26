@@ -248,7 +248,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         </div>
 
         {/* Center tabs */}
-        <div className="nav-tabs" style={{ flex: 1, justifyContent: 'center', margin: '0 24px' }}>
+        <div className="nav-tabs" style={{ flex: 1, justifyContent: 'center', margin: '0 24px', overflow: 'hidden', minWidth: 0 }}>
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -278,7 +278,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         </div>
 
         {/* Right side */}
-        <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+        <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, overflow: 'visible', whiteSpace: 'nowrap' }}>
           {user ? (
             <>
               <span style={{

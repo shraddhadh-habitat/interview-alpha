@@ -19,28 +19,22 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
   const HeroSection = () => (
     <div style={{
       background: C.bg,
-      display: 'flex',
-      alignItems: 'center',
-      paddingTop: '8px',
-      paddingBottom: '24px',
+      paddingTop: '48px',
+      paddingBottom: '48px',
     }}>
       <style>{`
         @media (max-width: 768px) {
           .hero-container {
-            padding: 0 20px !important;
-            flex-direction: column !important;
+            grid-template-columns: 1fr !important;
+            padding: 32px 16px !important;
             gap: 32px !important;
-            align-items: stretch !important;
           }
           .hero-left {
-            flex: 1 !important;
             max-width: 100% !important;
           }
           .hero-right {
-            flex: 1 !important;
             max-width: 100% !important;
             width: 100% !important;
-            margin-top: 0 !important;
             gap: 12px !important;
           }
           .hero-headline { font-size: 26px !important; }
@@ -50,21 +44,19 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             width: 100% !important;
             text-align: center !important;
           }
-          .hero-card-label {
-            font-size: 10px !important;
-            letter-spacing: 1px !important;
-          }
         }
       `}</style>
 
       <div className="hero-container" style={{
-        maxWidth: '1080px',
-        width: '100%',
-        margin: '0 auto',
-        padding: '0 40px',
-        display: 'flex',
-        gap: '48px',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '40px',
         alignItems: 'center',
+        maxWidth: '1100px',
+        margin: '0 auto',
+        padding: '0 32px',
+        width: '100%',
+        boxSizing: 'border-box',
         position: 'relative',
         zIndex: 1,
       }}>
@@ -172,15 +164,27 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           >
             or browse questions free
           </button>
+
+          {/* Social proof */}
+          <p style={{
+            margin: '24px 0 0',
+            fontSize: '0.8rem',
+            color: '#9a9a9a',
+            lineHeight: 1.5,
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            Trusted by 4,000+ PM and Data Science candidates<br/>
+            preparing for Google, Amazon, Flipkart &amp; more
+          </p>
         </div>
 
-        {/* RIGHT COLUMN  . 45% — How It Works in vertical layout */}
+        {/* RIGHT COLUMN  . How It Works in vertical layout */}
         <div className="hero-right" style={{
-          flex: '0 0 45%',
-          maxWidth: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: '16px',
+          gap: '20px',
+          minWidth: 0,
+          overflow: 'hidden',
         }}>
           {/* Section label */}
           <p style={{
@@ -196,7 +200,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           </p>
 
           {/* Step 1 */}
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start', width: '100%' }}>
             <span style={{
               background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               color: '#fff',
@@ -210,25 +214,27 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontWeight: 700,
               fontSize: '0.85rem',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              flexShrink: 0,
             }}>
               1
             </span>
-            <div>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{
                 fontWeight: 600,
-                margin: '0 0 4px',
+                margin: '0 0 3px',
                 color: '#111',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontSize: '15px',
+                fontSize: '0.95rem',
               }}>
                 Pick any question
               </p>
               <p style={{
                 color: '#6b6b6b',
                 margin: 0,
-                fontSize: '0.9rem',
-                lineHeight: 1.5,
+                fontSize: '0.875rem',
+                lineHeight: 1.6,
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
+                wordWrap: 'break-word',
               }}>
                 1,100+ real questions across PM and Data Science — by company, role, or topic.
               </p>
@@ -236,7 +242,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           </div>
 
           {/* Step 2 */}
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start', width: '100%' }}>
             <span style={{
               background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               color: '#fff',
@@ -250,25 +256,27 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontWeight: 700,
               fontSize: '0.85rem',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              flexShrink: 0,
             }}>
               2
             </span>
-            <div>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{
                 fontWeight: 600,
-                margin: '0 0 4px',
+                margin: '0 0 3px',
                 color: '#111',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontSize: '15px',
+                fontSize: '0.95rem',
               }}>
                 Answer in your own words
               </p>
               <p style={{
                 color: '#6b6b6b',
                 margin: 0,
-                fontSize: '0.9rem',
-                lineHeight: 1.5,
+                fontSize: '0.875rem',
+                lineHeight: 1.6,
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
+                wordWrap: 'break-word',
               }}>
                 No scripts, no templates. Just your thinking — exactly like a real interview.
               </p>
@@ -276,7 +284,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           </div>
 
           {/* Step 3 */}
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start', width: '100%' }}>
             <span style={{
               background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               color: '#fff',
@@ -290,25 +298,27 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontWeight: 700,
               fontSize: '0.85rem',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
+              flexShrink: 0,
             }}>
               3
             </span>
-            <div>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{
                 fontWeight: 600,
-                margin: '0 0 4px',
+                margin: '0 0 3px',
                 color: '#111',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontSize: '15px',
+                fontSize: '0.95rem',
               }}>
                 Get scored in seconds
               </p>
               <p style={{
                 color: '#6b6b6b',
                 margin: 0,
-                fontSize: '0.9rem',
-                lineHeight: 1.5,
+                fontSize: '0.875rem',
+                lineHeight: 1.6,
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
+                wordWrap: 'break-word',
               }}>
                 AI scores you across 8 competencies and shows the expert version — so you know exactly what to improve.
               </p>
