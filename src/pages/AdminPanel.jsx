@@ -43,6 +43,7 @@ export default function AdminPanel({ user }) {
   const [deleteTarget, setDeleteTarget]     = useState(null); // review id pending delete confirm
   const [userFilters, setUserFilters] = useState({ email: '', name: '', phone: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' });
   const [deviceFilter, setDeviceFilter] = useState('all');
+  const [hasPhoneFilter, setHasPhoneFilter] = useState('all');
 
   // Gate  . only admin email
   if (!user || !ADMIN_EMAILS.includes(user.email.toLowerCase())) {
@@ -351,6 +352,8 @@ export default function AdminPanel({ user }) {
                 if (f.email && !(u.email || '').toLowerCase().includes(f.email.toLowerCase())) return false;
                 if (f.name  && !(u.display_name || '').toLowerCase().includes(f.name.toLowerCase())) return false;
                 if (f.phone && !(u.phone_number || '').includes(f.phone)) return false;
+                if (hasPhoneFilter === 'hasPhone' && (!u.phone_number || u.phone_number === '-' || u.phone_number === '')) return false;
+                if (hasPhoneFilter === 'noPhone' && u.phone_number && u.phone_number !== '-' && u.phone_number !== '') return false;
                 if (f.status !== 'all') {
                   const st = u.subscription_status || 'free';
                   if (f.status === 'free'    && st !== 'free')    return false;
@@ -375,7 +378,7 @@ export default function AdminPanel({ user }) {
               const selectStyle = { ...inputStyle, cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235C5C57'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center', paddingRight: 28 };
               const labelStyle = { fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, display: 'block', marginBottom: 5 };
               const setF = (key, val) => setUserFilters(prev => ({ ...prev, [key]: val }));
-              const hasFilters = f.email || f.name || f.phone || f.status !== 'all' || f.plan !== 'all' || f.freeSessions !== 'all' || f.monthlySessions !== 'all' || deviceFilter !== 'all';
+              const hasFilters = f.email || f.name || f.phone || f.status !== 'all' || f.plan !== 'all' || f.freeSessions !== 'all' || f.monthlySessions !== 'all' || deviceFilter !== 'all' || hasPhoneFilter !== 'all';
 
               return (
                 <>
@@ -398,9 +401,16 @@ export default function AdminPanel({ user }) {
                       <label style={labelStyle}>Name</label>
                       <input type="text" placeholder="Filter by name" value={f.name} onChange={e => setF('name', e.target.value)} style={inputStyle} />
                     </div>
-                    <div style={{ flex: '1 1 140px', minWidth: 120 }}>
+                    <div style={{ flex: '1 1 160px', minWidth: 140, display: 'flex', flexDirection: 'column' }}>
                       <label style={labelStyle}>Phone</label>
-                      <input type="text" placeholder="Search phone…" value={f.phone} onChange={e => setF('phone', e.target.value)} style={inputStyle} />
+                      <div style={{ display: 'flex', gap: 6, alignItems: 'stretch' }}>
+                        <input type="text" placeholder="Search phone…" value={f.phone} onChange={e => setF('phone', e.target.value)} style={{ ...inputStyle, flex: 1 }} />
+                        <select value={hasPhoneFilter} onChange={e => setHasPhoneFilter(e.target.value)} style={{ ...selectStyle, flex: '0 0 100px' }}>
+                          <option value="all">All</option>
+                          <option value="hasPhone">📞 Has</option>
+                          <option value="noPhone">No Phone</option>
+                        </select>
+                      </div>
                     </div>
                     <div style={{ flex: '1 1 130px', minWidth: 110 }}>
                       <label style={labelStyle}>Status</label>
@@ -438,7 +448,7 @@ export default function AdminPanel({ user }) {
                     </div>
                     {hasFilters && (
                       <div style={{ flex: '0 0 auto', paddingBottom: 1 }}>
-                        <button onClick={() => { setUserFilters({ email: '', name: '', phone: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' }); setDeviceFilter('all'); }} style={{ background: 'none', border: 'none', color: C.green, fontSize: 11, cursor: 'pointer', textDecoration: 'underline', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '6px 0' }}>
+                        <button onClick={() => { setUserFilters({ email: '', name: '', phone: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' }); setDeviceFilter('all'); setHasPhoneFilter('all'); }} style={{ background: 'none', border: 'none', color: C.green, fontSize: 11, cursor: 'pointer', textDecoration: 'underline', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '6px 0' }}>
                           Reset Filters
                         </button>
                       </div>
