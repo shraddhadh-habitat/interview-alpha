@@ -331,7 +331,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
   // Trust strip section
   const TrustSection = () => (
-    <div style={{ background: C.bg, paddingTop: '40px', paddingBottom: '48px' }}>
+    <div style={{ background: C.bg, paddingTop: '32px', paddingBottom: '32px' }}>
       <style>{`
         @media (max-width: 768px) {
           .trust-container { padding: 0 20px !important; }
@@ -807,7 +807,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
   // Product proof section
   const ProductProofSection = () => (
-    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '80px' }}>
+    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '48px' }}>
       <style>{`
         @media (max-width: 768px) {
           .proof-container { padding: 0 20px !important; }
@@ -1009,50 +1009,13 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </p>
           </div>
         </div>
-
-        {/* Centered CTA */}
-        <div style={{ textAlign: 'center' }}>
-          <button
-            onClick={() => onNavigate('practice')}
-            style={{
-              height: '44px',
-              paddingLeft: '32px',
-              paddingRight: '32px',
-              background: 'var(--gradient-brand)',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '12px',
-              fontSize: '15px',
-              fontWeight: 700,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >
-            Answer your first question
-          </button>
-          {!user && (
-            <p style={{
-              fontSize: '13px',
-              color: '#1B1B18',
-              marginTop: '12px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 900,
-              textShadow: '0 0 0 #1B1B18',
-            }}>
-              Free. No signup needed to browse.
-            </p>
-          )}
-        </div>
       </div>
     </div>
   );
 
   // Coming soon section
   const ComingSoonSection = () => (
-    <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
+    <div style={{ background: C.bg, paddingTop: '32px', paddingBottom: '48px' }}>
       <style>{`
         @media (max-width: 768px) {
           .coming-container { padding: 0 20px !important; }
