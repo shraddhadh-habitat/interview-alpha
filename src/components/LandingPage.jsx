@@ -402,7 +402,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
   // Question cards section (moved from hero right column)
   const QuestionCardsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '48px' }}>
+    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '0' }}>
       <style>{`
         @media (max-width: 768px) {
           .question-cards-container { padding: 0 20px !important; }
@@ -565,7 +565,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
   // Guided paths section
   const GuidedPathsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '16px', paddingBottom: '48px' }}>
+    <div style={{ background: C.bg, paddingTop: '32px', paddingBottom: '48px' }}>
       <style>{`
         @media (max-width: 768px) {
           .paths-container { padding: 0 20px !important; }
@@ -1092,16 +1092,10 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
     </div>
   );
 
-  // Section divider for consistent spacing
-  const SectionDivider = () => (
-    <div style={{ height: '64px' }} />
-  );
-
   return (
     <div>
       <HeroSection />
       <QuestionCardsSection />
-      <SectionDivider />
       <GuidedPathsSection />
       <ProductProofSection />
       <TrustSection />
