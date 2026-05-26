@@ -364,53 +364,17 @@ export default function AdminPanel({ user }) {
 
               return (
                 <>
-                  {/* Device filter tabs */}
-                  <div style={{ marginBottom: 16 }}>
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                      {[
-                        { label: 'All Devices',   value: 'all',     emoji: '' },
-                        { label: 'Android',       value: 'android', emoji: '🤖' },
-                        { label: 'Apple iOS',     value: 'ios',     emoji: '🍎' },
-                        { label: 'Desktop',       value: 'desktop', emoji: '💻' },
-                      ].map(({ label, value, emoji }) => (
-                        <button
-                          key={value}
-                          onClick={() => setDeviceFilter(value)}
-                          style={{
-                            background: deviceFilter === value
-                              ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)'
-                              : '#f0ede8',
-                            color: deviceFilter === value ? '#ffffff' : '#6b6b6b',
-                            WebkitTextFillColor: deviceFilter === value ? '#ffffff' : '#6b6b6b',
-                            border: 'none',
-                            borderRadius: '8px',
-                            padding: '6px 14px',
-                            fontSize: '0.82rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
-                            whiteSpace: 'nowrap',
-                            fontFamily: "'Plus Jakarta Sans', sans-serif"
-                          }}
-                        >
-                          {emoji && <span style={{ marginRight: '4px' }}>{emoji}</span>}
-                          {label}
-                          {deviceStats && value !== 'all' && (
-                            <span style={{
-                              marginLeft: '6px',
-                              fontSize: '0.75rem',
-                              opacity: 0.85
-                            }}>
-                              ({deviceStats.breakdown[value]})
-                            </span>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* Filter row */}
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 12, alignItems: 'flex-end' }}>
+                    <div style={{ flex: '1 1 150px', minWidth: 130 }}>
+                      <label style={labelStyle}>Device</label>
+                      <select value={deviceFilter} onChange={e => setDeviceFilter(e.target.value)} style={selectStyle}>
+                        <option value="all">All Devices</option>
+                        <option value="android">🤖 Android</option>
+                        <option value="ios">🍎 Apple iOS</option>
+                        <option value="desktop">💻 Desktop</option>
+                      </select>
+                    </div>
                     <div style={{ flex: '1 1 160px', minWidth: 140 }}>
                       <label style={labelStyle}>Email</label>
                       <input type="text" placeholder="Search email…" value={f.email} onChange={e => setF('email', e.target.value)} style={inputStyle} />
