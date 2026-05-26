@@ -11,10 +11,10 @@ export default async function handler(req, res) {
       process.env.VITE_SUPABASE_ANON_KEY
     );
 
-    // Fetch device sessions and aggregate by device type
-    const { data: sessions, error } = await supabase
-      .from('device_sessions')
-      .select('device_type', { count: 'exact' });
+    // Fetch users with device_type from profiles table
+    const { data: profiles, error } = await supabase
+      .from('profiles')
+      .select('device_type');
 
     if (error) throw error;
 
@@ -25,9 +25,9 @@ export default async function handler(req, res) {
       desktop: 0,
     };
 
-    sessions?.forEach(session => {
-      if (session.device_type && counts.hasOwnProperty(session.device_type)) {
-        counts[session.device_type]++;
+    profiles?.forEach(profile => {
+      if (profile.device_type && counts.hasOwnProperty(profile.device_type)) {
+        counts[profile.device_type]++;
       }
     });
 

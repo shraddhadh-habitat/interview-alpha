@@ -59,7 +59,7 @@ export default function AdminPanel({ user }) {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [reqRes, profileRes, statsRes, reviewRes, deviceRes, sessionsRes] = await Promise.all([
+      const [reqRes, profileRes, statsRes, reviewRes, deviceRes] = await Promise.all([
         supabase
           .from('payment_requests')
           .select('*')
@@ -68,7 +68,6 @@ export default function AdminPanel({ user }) {
         supabase.rpc('get_admin_stats'),
         supabase.rpc('get_all_reviews'),
         fetch('/api/admin/device-stats').then(r => r.json()).catch(err => ({ error: err.message })),
-        supabase.from('device_sessions').select('user_id, device_type'),
       ]);
 
       const reqs  = reqRes.data      || [];
@@ -76,22 +75,9 @@ export default function AdminPanel({ user }) {
       const s     = statsRes.data    || {};
       const revs  = reviewRes.data   || [];
       const devStats = deviceRes.error ? { total: 0, breakdown: { android: 0, ios: 0, desktop: 0 } } : deviceRes;
-      const sessions = sessionsRes.data || [];
-
-      // Map device_type to users by user_id
-      const deviceMap = {};
-      sessions.forEach(session => {
-        deviceMap[session.user_id] = session.device_type;
-      });
-
-      // Enrich users with device_type
-      const usersWithDevices = profs.map(u => ({
-        ...u,
-        device_type: deviceMap[u.id] || null
-      }));
 
       setRequests(reqs);
-      setUsers(usersWithDevices);
+      setUsers(profs);
       setReviews(revs);
       setDeviceStats(devStats);
       setStats({

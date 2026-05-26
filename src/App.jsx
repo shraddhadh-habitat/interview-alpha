@@ -415,24 +415,23 @@ export default function App() {
     return () => window.removeEventListener('ia:navigate', handler);
   }, []);
 
-  // Track device type when user logs in
+  // Track device type when user logs in or page loads
   useEffect(() => {
     if (!user) return;
 
     const trackDevice = async () => {
       const device = detectDevice();
       try {
+        // Update user profile with device info
         await supabase
-          .from('device_sessions')
-          .upsert({
-            user_id: user.id,
+          .from('profiles')
+          .update({
             device_type: device.type,
             os: device.os,
             browser: device.browser,
-            last_seen: new Date().toISOString(),
-          }, {
-            onConflict: 'user_id'
-          });
+            last_device_seen: new Date().toISOString(),
+          })
+          .eq('id', user.id);
       } catch (err) {
         console.error('Failed to track device:', err);
       }
