@@ -29,7 +29,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           .hero-container {
             padding: 0 20px !important;
             flex-direction: column !important;
-            gap: 24px !important;
+            gap: 32px !important;
+            align-items: stretch !important;
           }
           .hero-left {
             flex: 1 !important;
@@ -40,6 +41,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             max-width: 100% !important;
             width: 100% !important;
             margin-top: 0 !important;
+            gap: 12px !important;
           }
           .hero-headline { font-size: 26px !important; }
           .hero-subheadline { font-size: 15px !important; }
@@ -172,31 +174,287 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           </button>
         </div>
 
-        {/* RIGHT COLUMN  . 45% */}
+        {/* RIGHT COLUMN  . 45% — How It Works in vertical layout */}
         <div className="hero-right" style={{
           flex: '0 0 45%',
-          maxWidth: '340px',
+          maxWidth: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
         }}>
-          {/* Card label */}
-          <div className="hero-card-label" style={{
-            fontSize: '11px',
-            letterSpacing: '2px',
-            color: '#1B1B18',
-            fontWeight: 900,
-            marginBottom: '12px',
+          {/* Section label */}
+          <p style={{
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            fontSize: '0.72rem',
+            color: '#9a9a9a',
+            fontWeight: 600,
+            margin: 0,
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            textShadow: '0 0 0 #1B1B18',
           }}>
-            Sample Questions
+            Here's what happens next
+          </p>
+
+          {/* Step 1 */}
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+            <span style={{
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              color: '#fff',
+              borderRadius: '50%',
+              width: '32px',
+              height: '32px',
+              minWidth: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              1
+            </span>
+            <div>
+              <p style={{
+                fontWeight: 600,
+                margin: '0 0 4px',
+                color: '#111',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: '15px',
+              }}>
+                Pick any question
+              </p>
+              <p style={{
+                color: '#6b6b6b',
+                margin: 0,
+                fontSize: '0.9rem',
+                lineHeight: 1.5,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                1,100+ real questions across PM and Data Science — by company, role, or topic.
+              </p>
+            </div>
           </div>
 
+          {/* Step 2 */}
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+            <span style={{
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              color: '#fff',
+              borderRadius: '50%',
+              width: '32px',
+              height: '32px',
+              minWidth: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              2
+            </span>
+            <div>
+              <p style={{
+                fontWeight: 600,
+                margin: '0 0 4px',
+                color: '#111',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: '15px',
+              }}>
+                Answer in your own words
+              </p>
+              <p style={{
+                color: '#6b6b6b',
+                margin: 0,
+                fontSize: '0.9rem',
+                lineHeight: 1.5,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                No scripts, no templates. Just your thinking — exactly like a real interview.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+            <span style={{
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              color: '#fff',
+              borderRadius: '50%',
+              width: '32px',
+              height: '32px',
+              minWidth: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              3
+            </span>
+            <div>
+              <p style={{
+                fontWeight: 600,
+                margin: '0 0 4px',
+                color: '#111',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: '15px',
+              }}>
+                Get scored in seconds
+              </p>
+              <p style={{
+                color: '#6b6b6b',
+                margin: 0,
+                fontSize: '0.9rem',
+                lineHeight: 1.5,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                AI scores you across 8 competencies and shows the expert version — so you know exactly what to improve.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Trust strip section
+  const TrustSection = () => (
+    <div style={{ background: C.bg, paddingTop: '40px', paddingBottom: '48px' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .trust-container { padding: 0 20px !important; }
+        }
+      `}</style>
+      <div className="trust-container" style={{
+        maxWidth: '1080px',
+        width: '100%',
+        margin: '0 auto',
+        padding: '0 40px',
+      }}>
+        <div style={{ maxWidth: '560px', margin: '0 auto' }}>
+          {/* Testimonial card */}
+          <div style={{
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
+            borderRadius: '16px',
+            padding: '24px',
+          }}>
+            {/* Quote */}
+            <p style={{
+              fontSize: '14px',
+              fontStyle: 'italic',
+              color: '#1B1B18',
+              lineHeight: 1.7,
+              marginBottom: '16px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
+            }}>
+              "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
+            </p>
+
+            {/* Attribution */}
+            <p style={{
+              fontSize: '13px',
+              fontWeight: 500,
+              color: '#1B1B18',
+              marginBottom: '16px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
+            }}>
+              Shrey C., Product Manager
+            </p>
+
+            {/* Divider */}
+            <div style={{
+              height: '1px',
+              background: '#1B1B18',
+              margin: '16px 0',
+            }} />
+
+            {/* Proof line */}
+            <p style={{
+              fontSize: '13px',
+              color: '#1B1B18',
+              textAlign: 'center',
+              margin: 0,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 700,
+            }}>
+              Thousands signed up · Google · Amazon · Meta · Flipkart prep
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Question cards section (moved from hero right column)
+  const QuestionCardsSection = () => (
+    <div style={{ background: C.bg, paddingTop: '24px', paddingBottom: '48px' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .question-cards-container { padding: 0 20px !important; }
+          .question-cards-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+        }
+      `}</style>
+
+      {/* Visual connector from hero */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '8px 0 16px',
+        gap: '4px',
+      }}>
+        <div style={{
+          width: '1px',
+          height: '36px',
+          background: 'linear-gradient(180deg, #a78bfa 0%, transparent 100%)',
+        }} />
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M8 3L8 13M8 13L4 9M8 13L12 9"
+            stroke="#a78bfa"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+
+      <div className="question-cards-container" style={{
+        maxWidth: '1080px',
+        width: '100%',
+        margin: '0 auto',
+        padding: '0 40px',
+      }}>
+        {/* Card label */}
+        <div className="hero-card-label" style={{
+          fontSize: '11px',
+          letterSpacing: '2px',
+          color: '#1B1B18',
+          fontWeight: 900,
+          marginBottom: '24px',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          textShadow: '0 0 0 #1B1B18',
+          textAlign: 'center',
+        }}>
+          Sample Questions
+        </div>
+
+        <div className="question-cards-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '24px',
+        }}>
           {/* Card 1 - Product Management */}
           <div style={{
             background: '#FFFFFF',
             border: '1px solid #E8E6E1',
             borderRadius: '16px',
             padding: '24px',
-            marginBottom: '12px',
           }}>
             {/* Role label */}
             <div style={{
@@ -313,293 +571,6 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             >
               Answer this question
             </button>
-          </div>
-        </div>
-
-        {/* Visual connector — between hero and how it works */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          padding: '24px 0 8px',
-          gap: '6px',
-        }}>
-          <div style={{
-            width: '1px',
-            height: '40px',
-            background: 'linear-gradient(180deg, #a78bfa 0%, transparent 100%)',
-          }} />
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M8 3L8 13M8 13L4 9M8 13L12 9"
-              stroke="#a78bfa"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-      </div>
-    </div>
-  );
-
-  // Trust strip section
-  const TrustSection = () => (
-    <div style={{ background: C.bg, paddingTop: '40px', paddingBottom: '48px' }}>
-      <style>{`
-        @media (max-width: 768px) {
-          .trust-container { padding: 0 20px !important; }
-        }
-      `}</style>
-      <div className="trust-container" style={{
-        maxWidth: '1080px',
-        width: '100%',
-        margin: '0 auto',
-        padding: '0 40px',
-      }}>
-        <div style={{ maxWidth: '560px', margin: '0 auto' }}>
-          {/* Testimonial card */}
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
-            borderRadius: '16px',
-            padding: '24px',
-          }}>
-            {/* Quote */}
-            <p style={{
-              fontSize: '14px',
-              fontStyle: 'italic',
-              color: '#1B1B18',
-              lineHeight: 1.7,
-              marginBottom: '16px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
-            }}>
-              "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
-            </p>
-
-            {/* Attribution */}
-            <p style={{
-              fontSize: '13px',
-              fontWeight: 500,
-              color: '#1B1B18',
-              marginBottom: '16px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
-            }}>
-              Shrey C., Product Manager
-            </p>
-
-            {/* Divider */}
-            <div style={{
-              height: '1px',
-              background: '#1B1B18',
-              margin: '16px 0',
-            }} />
-
-            {/* Proof line */}
-            <p style={{
-              fontSize: '13px',
-              color: '#1B1B18',
-              textAlign: 'center',
-              margin: 0,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 700,
-            }}>
-              Thousands signed up · Google · Amazon · Meta · Flipkart prep
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // How it works section
-  const HowItWorksSection = () => (
-    <div id="how-it-works" style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
-      <style>{`
-        @media (max-width: 768px) {
-          .how-container { padding: 0 20px !important; }
-          .how-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
-        }
-      `}</style>
-      <div className="how-container" style={{
-        maxWidth: '1080px',
-        width: '100%',
-        margin: '0 auto',
-        padding: '0 40px',
-      }}>
-        {/* Section label */}
-        <p style={{
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          fontSize: '0.75rem',
-          color: '#9a9a9a',
-          fontWeight: 600,
-          marginBottom: '8px',
-          textAlign: 'center',
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-        }}>
-          Here's what happens next
-        </p>
-
-        {/* Section heading */}
-        <h2 style={{
-          fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-          fontWeight: 700,
-          color: '#111111',
-          textAlign: 'center',
-          marginBottom: '48px',
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-        }}>
-          How it works
-        </h2>
-
-        {/* 3 cards grid */}
-        <div className="how-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '16px',
-        }}>
-          {/* Card 1 */}
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
-            borderRadius: '16px',
-            padding: '20px',
-            textAlign: 'center',
-          }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              background: '#F5F3EF',
-              color: '#1B1B18',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '16px',
-              fontWeight: 600,
-              margin: '0 auto 16px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              1
-            </div>
-
-            <h3 style={{
-              fontSize: '15px',
-              fontWeight: 600,
-              color: '#1B1B18',
-              marginBottom: '8px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 8px 0',
-            }}>
-              Pick any question
-            </h3>
-
-            <p style={{
-              fontSize: '13px',
-              color: '#1B1B18',
-              margin: 0,
-              lineHeight: 1.6,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              1,100+ real questions across PM and Data Science — filtered by company, role, or topic.
-            </p>
-          </div>
-
-          {/* Card 2 */}
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
-            borderRadius: '16px',
-            padding: '20px',
-            textAlign: 'center',
-          }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              background: '#F5F3EF',
-              color: '#1B1B18',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '16px',
-              fontWeight: 600,
-              margin: '0 auto 16px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              2
-            </div>
-
-            <h3 style={{
-              fontSize: '15px',
-              fontWeight: 600,
-              color: '#1B1B18',
-              marginBottom: '8px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 8px 0',
-            }}>
-              Answer in your own words
-            </h3>
-
-            <p style={{
-              fontSize: '13px',
-              color: '#1B1B18',
-              margin: 0,
-              lineHeight: 1.6,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              Type freely. No scripts, no templates. Just your thinking — exactly like a real interview.
-            </p>
-          </div>
-
-          {/* Card 3 */}
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
-            borderRadius: '16px',
-            padding: '20px',
-            textAlign: 'center',
-          }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              background: '#F5F3EF',
-              color: '#1B1B18',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '16px',
-              fontWeight: 600,
-              margin: '0 auto 16px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              3
-            </div>
-
-            <h3 style={{
-              fontSize: '15px',
-              fontWeight: 600,
-              color: '#1B1B18',
-              marginBottom: '8px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 8px 0',
-            }}>
-              Get scored in seconds
-            </h3>
-
-            <p style={{
-              fontSize: '13px',
-              color: '#1B1B18',
-              margin: 0,
-              lineHeight: 1.6,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              AI scores you across 8 competencies and shows you the expert version — so you know exactly what to improve.
-            </p>
           </div>
         </div>
       </div>
@@ -1138,7 +1109,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
   return (
     <div>
       <HeroSection />
-      <HowItWorksSection />
+      <QuestionCardsSection />
       <TrustSection />
       <GuidedPathsSection />
       <ComingSoonSection />
