@@ -1092,14 +1092,21 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
     </div>
   );
 
+  // Section divider for consistent spacing
+  const SectionDivider = () => (
+    <div style={{ height: '64px' }} />
+  );
+
   return (
     <div>
       <HeroSection />
       <QuestionCardsSection />
-      <TrustSection />
+      <SectionDivider />
       <GuidedPathsSection />
-      <ComingSoonSection />
+      <SectionDivider />
       <ProductProofSection />
+      <TrustSection />
+      <ComingSoonSection />
     </div>
   );
 }
