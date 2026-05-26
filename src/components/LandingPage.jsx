@@ -20,7 +20,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
     <div style={{
       background: C.bg,
       paddingTop: '48px',
-      paddingBottom: '48px',
+      paddingBottom: '24px',
     }}>
       <style>{`
         @media (max-width: 768px) {
@@ -402,37 +402,13 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
   // Question cards section (moved from hero right column)
   const QuestionCardsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '24px', paddingBottom: '48px' }}>
+    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '48px' }}>
       <style>{`
         @media (max-width: 768px) {
           .question-cards-container { padding: 0 20px !important; }
           .question-cards-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
         }
       `}</style>
-
-      {/* Visual connector from hero */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '8px 0 16px',
-        gap: '4px',
-      }}>
-        <div style={{
-          width: '1px',
-          height: '36px',
-          background: 'linear-gradient(180deg, #a78bfa 0%, transparent 100%)',
-        }} />
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path
-            d="M8 3L8 13M8 13L4 9M8 13L12 9"
-            stroke="#a78bfa"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </div>
 
       <div className="question-cards-container" style={{
         maxWidth: '1080px',
