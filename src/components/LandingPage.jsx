@@ -807,7 +807,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
   // Product proof section
   const ProductProofSection = () => (
-    <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '80px' }}>
+    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '80px' }}>
       <style>{`
         @media (max-width: 768px) {
           .proof-container { padding: 0 20px !important; }
@@ -1103,7 +1103,6 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
       <QuestionCardsSection />
       <SectionDivider />
       <GuidedPathsSection />
-      <SectionDivider />
       <ProductProofSection />
       <TrustSection />
       <ComingSoonSection />
