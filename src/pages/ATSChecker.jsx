@@ -222,6 +222,11 @@ export default function ATSChecker({ user }) {
             color: '#1B1B18',
             marginBottom: '12px',
             margin: 0,
+            textDecoration: 'none',
+            borderBottom: 'none',
+            boxShadow: 'none',
+            outline: 'none',
+            marginTop: '24px',
           }}
         >
           ATS Resume Checker
@@ -288,15 +293,19 @@ export default function ATSChecker({ user }) {
                 disabled={fileUploading}
                 style={{
                   width: '100%',
-                  padding: '10px 16px',
+                  padding: '14px 24px',
                   border: 'none',
-                  borderRadius: '8px',
+                  borderRadius: '10px',
                   background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                   color: '#ffffff',
-                  fontSize: '13px',
+                  WebkitTextFillColor: '#ffffff',
+                  fontSize: '1rem',
                   fontWeight: 600,
                   cursor: fileUploading ? 'not-allowed' : 'pointer',
                   opacity: fileUploading ? 0.6 : 1,
+                  boxSizing: 'border-box',
+                  display: 'block',
+                  textAlign: 'center',
                 }}
               >
                 {fileUploading ? 'Uploading...' : 'Upload Resume (PDF or DOCX)'}
@@ -379,18 +388,6 @@ export default function ATSChecker({ user }) {
             >
               {loading ? 'Analyzing your resume...' : 'Check My Resume'}
             </button>
-            <p
-              style={{
-                fontSize: '12px',
-                color: 'rgba(27,27,24,0.5)',
-                textAlign: 'center',
-                marginTop: '12px',
-                margin: 0,
-                marginTop: '12px',
-              }}
-            >
-              Takes about 30 seconds. Your resume is not stored.
-            </p>
           </div>
         </>
       ) : (

@@ -213,16 +213,17 @@ export default function ResumeToolsHub({ user }) {
         `}</style>
         <div className="resume-tabs" style={{
           display: 'flex',
-          maxWidth: 1200,
           margin: '0 auto',
           overflowX: 'auto',
+          overflowY: 'visible',
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
           gap: '8px',
-          padding: '8px',
+          padding: '8px 16px',
           width: '100%',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          maxWidth: '100%',
         }}>
           {tabs.map(tab => (
             <button
