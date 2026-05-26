@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"node server.js\" \"vite\"",
+    "dev:staging": "VITE_APP_ENV=staging concurrently \"node server.js\" \"vite\"",
     "build": "vite build",
+    "build:staging": "VITE_APP_ENV=staging vite build",
+    "build:prod": "VITE_APP_ENV=production vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "node server.js"

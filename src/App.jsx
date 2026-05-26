@@ -30,6 +30,7 @@ import LoginModal from './components/LoginModal';
 import { AuthProvider } from './contexts/AuthContext';
 import QuickStart from './components/QuickStart';
 import ReviewWidget from './components/ReviewWidget';
+import EnvBanner from './components/EnvBanner';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
@@ -752,6 +753,7 @@ export default function App() {
             }}
           />
         )}
+        <EnvBanner />
       </div>
     </AuthProvider>
   );
