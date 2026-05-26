@@ -366,7 +366,7 @@ export default function AdminPanel({ user }) {
                 if (f.freeSessions === 'notused' && (u.free_sessions_used ?? 0) > 0)   return false;
                 if (f.monthlySessions === 'active'   && (u.monthly_sessions_used ?? 0) === 0) return false;
                 if (f.monthlySessions === 'inactive' && (u.monthly_sessions_used ?? 0) > 0)   return false;
-                if (deviceFilter !== 'all' && (u.device_type || 'unknown') !== deviceFilter) return false;
+                if (deviceFilter !== 'all' && u.device_type !== deviceFilter) return false;
                 return true;
               });
 
@@ -450,16 +450,22 @@ export default function AdminPanel({ user }) {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, minWidth: 700 }}>
                       <thead>
                         <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
-                          {['Email', 'Name', 'Phone', 'Status', 'Plan', 'Expires', 'Last Accessed', 'Free Sessions', 'Monthly Sessions'].map(h => (
+                          {['Device', 'Email', 'Name', 'Phone', 'Status', 'Plan', 'Expires', 'Last Accessed', 'Free Sessions', 'Monthly Sessions'].map(h => (
                             <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
                           ))}
                         </tr>
                       </thead>
                       <tbody>
                         {filtered.length === 0 ? (
-                          <tr><td colSpan={9} style={{ padding: '28px 14px', textAlign: 'center', color: C.textMuted, fontSize: 12 }}>No users match the filters.</td></tr>
+                          <tr><td colSpan={10} style={{ padding: '28px 14px', textAlign: 'center', color: C.textMuted, fontSize: 12 }}>No users match the filters.</td></tr>
                         ) : filtered.map((u, i) => (
                           <tr key={u.id} style={{ borderBottom: i < filtered.length - 1 ? `1px solid ${C.border}` : 'none' }}>
+                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, whiteSpace: 'nowrap' }}>
+                              {u.device_type === 'android' ? '🤖 Android'
+                                : u.device_type === 'ios' ? '🍎 Apple iOS'
+                                : u.device_type === 'desktop' ? '💻 Desktop'
+                                : <span style={{ color: C.textMuted, fontSize: '0.85rem' }}>—</span>}
+                            </td>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.email || ' - '}</td>
                             <td style={{ padding: '12px 14px', color: u.display_name ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.display_name || ' - '}</td>
                             <td style={{ padding: '12px 14px', color: u.phone_number ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.phone_number || ' - '}</td>
