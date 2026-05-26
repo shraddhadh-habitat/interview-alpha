@@ -164,18 +164,6 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           >
             or browse questions free
           </button>
-
-          {/* Social proof */}
-          <p style={{
-            margin: '24px 0 0',
-            fontSize: '0.8rem',
-            color: '#9a9a9a',
-            lineHeight: 1.5,
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-          }}>
-            Trusted by 4,000+ PM and Data Science candidates<br/>
-            preparing for Google, Amazon, Flipkart &amp; more
-          </p>
         </div>
 
         {/* RIGHT COLUMN  . How It Works in vertical layout */}
@@ -331,7 +319,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
 
   // Trust strip section
   const TrustSection = () => (
-    <div style={{ background: C.bg, paddingTop: '32px', paddingBottom: '32px' }}>
+    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '32px' }}>
       <style>{`
         @media (max-width: 768px) {
           .trust-container { padding: 0 20px !important; }
@@ -374,6 +362,17 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               margin: '0 0 16px 0',
             }}>
               Shrey C., Product Manager
+            </p>
+
+            {/* Social proof */}
+            <p style={{
+              fontSize: '0.82rem',
+              color: '#6b6b6b',
+              margin: '0 0 16px',
+              lineHeight: 1.5,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Trusted by 4,000+ PM and Data Science candidates preparing for Google, Amazon, Flipkart &amp; more
             </p>
 
             {/* Divider */}
