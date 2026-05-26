@@ -59,19 +59,24 @@ export default function AdminPanel({ user }) {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [reqRes, profileRes, statsRes, reviewRes, deviceRes] = await Promise.all([
+      // Query profiles table directly to ensure device_type is included
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      const [reqRes, statsRes, reviewRes, deviceRes] = await Promise.all([
         supabase
           .from('payment_requests')
           .select('*')
           .order('submitted_at', { ascending: false }),
-        supabase.rpc('get_all_users'),
         supabase.rpc('get_admin_stats'),
         supabase.rpc('get_all_reviews'),
         fetch('/api/admin/device-stats').then(r => r.json()).catch(err => ({ error: err.message })),
       ]);
 
       const reqs  = reqRes.data      || [];
-      const profs = profileRes.data  || [];
+      const profs = profiles         || [];
       const s     = statsRes.data    || {};
       const revs  = reviewRes.data   || [];
       const devStats = deviceRes.error ? { total: 0, breakdown: { android: 0, ios: 0, desktop: 0 } } : deviceRes;

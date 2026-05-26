@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from './lib/supabase';
-import { detectDevice } from './lib/detectDevice';
 import InterviewAlpha from './InterviewAlpha';
 import LandingPage from './components/LandingPage';
 import PastSessions from './pages/PastSessions';
@@ -31,6 +30,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import QuickStart from './components/QuickStart';
 import ReviewWidget from './components/ReviewWidget';
 import EnvBanner from './components/EnvBanner';
+import DeviceTracker from './components/DeviceTracker';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
@@ -415,30 +415,8 @@ export default function App() {
     return () => window.removeEventListener('ia:navigate', handler);
   }, []);
 
-  // Track device type when user logs in or page loads
-  useEffect(() => {
-    if (!user) return;
-
-    const trackDevice = async () => {
-      const device = detectDevice();
-      try {
-        // Update user profile with device info
-        await supabase
-          .from('profiles')
-          .update({
-            device_type: device.type,
-            os: device.os,
-            browser: device.browser,
-            last_device_seen: new Date().toISOString(),
-          })
-          .eq('id', user.id);
-      } catch (err) {
-        console.error('Failed to track device:', err);
-      }
-    };
-
-    trackDevice();
-  }, [user]);
+  // Device tracking is handled by DeviceTracker component
+  // which updates user profile with device info on every page load
 
   // Set body background to warm grey frame
   useEffect(() => {
@@ -646,6 +624,7 @@ export default function App() {
 
   return (
     <AuthProvider user={user}>
+      <DeviceTracker user={user} />
       {showNamePrompt && user && (
         <MissingNameModal
           user={user}
