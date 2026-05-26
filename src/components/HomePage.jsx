@@ -130,8 +130,16 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
           <p style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 16 }}>
             Shrey C.
           </p>
-          <p style={{ fontSize: 13, color: C.textMuted }}>
-            Trusted by 150+ PMs preparing for Google, Amazon, Meta, Flipkart
+          <p style={{
+            textAlign: 'center',
+            fontSize: '0.88rem',
+            color: '#6b6b6b',
+            marginTop: '16px',
+            marginBottom: '16px',
+            lineHeight: 1.6,
+          }}>
+            Trusted by 4,000+ PM and Data Science candidates preparing for{' '}
+            <strong style={{ color: '#111' }}>Google, Amazon, Flipkart,</strong> and more...
           </p>
         </div>
       </section>
