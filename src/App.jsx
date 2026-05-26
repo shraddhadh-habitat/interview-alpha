@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from './lib/supabase';
+import { detectDevice } from './lib/detectDevice';
 import InterviewAlpha from './InterviewAlpha';
 import LandingPage from './components/LandingPage';
 import PastSessions from './pages/PastSessions';
@@ -412,6 +413,32 @@ export default function App() {
     window.addEventListener('ia:navigate', handler);
     return () => window.removeEventListener('ia:navigate', handler);
   }, []);
+
+  // Track device type when user logs in
+  useEffect(() => {
+    if (!user) return;
+
+    const trackDevice = async () => {
+      const device = detectDevice();
+      try {
+        await supabase
+          .from('device_sessions')
+          .upsert({
+            user_id: user.id,
+            device_type: device.type,
+            os: device.os,
+            browser: device.browser,
+            last_seen: new Date().toISOString(),
+          }, {
+            onConflict: 'user_id'
+          });
+      } catch (err) {
+        console.error('Failed to track device:', err);
+      }
+    };
+
+    trackDevice();
+  }, [user]);
 
   // Set body background to warm grey frame
   useEffect(() => {

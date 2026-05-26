@@ -28,11 +28,60 @@ function StatCard({ label, value, color }) {
   );
 }
 
+function DeviceStatsCard({ label, icon, count, total }) {
+  const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
+  const bgMap = {
+    '📱 Android': 'rgba(34, 197, 94, 0.08)',
+    '🍎 iOS': 'rgba(59, 130, 246, 0.08)',
+    '💻 Desktop': 'rgba(168, 85, 247, 0.08)',
+  };
+  const barMap = {
+    '📱 Android': '#22C55E',
+    '🍎 iOS': '#3B82F6',
+    '💻 Desktop': '#A855F7',
+  };
+
+  return (
+    <div style={{
+      background: bgMap[label] || C.bgCard,
+      border: `1px solid ${C.border}`,
+      borderRadius: 12,
+      padding: 20,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+        <p style={{ fontSize: 14, fontWeight: 600, color: C.text, margin: 0 }}>
+          {icon} {label}
+        </p>
+        <span style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{count}</span>
+      </div>
+      <div style={{
+        background: 'rgba(27, 27, 24, 0.06)',
+        borderRadius: 8,
+        height: 6,
+        marginBottom: 8,
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          height: '100%',
+          width: `${percentage}%`,
+          background: barMap[label] || C.green,
+          borderRadius: 8,
+          transition: 'width 0.3s',
+        }} />
+      </div>
+      <p style={{ fontSize: 12, color: C.textMuted, margin: 0 }}>
+        {percentage}% of {total} total
+      </p>
+    </div>
+  );
+}
+
 export default function AdminPanel({ user }) {
   const [requests, setRequests]     = useState([]);
   const [users, setUsers]           = useState([]);
   const [reviews, setReviews]       = useState([]);
   const [stats, setStats]           = useState({ pending: 0, active: 0, total: 0 });
+  const [deviceStats, setDeviceStats] = useState({ total: 0, breakdown: { android: 0, ios: 0, desktop: 0 } });
   const [loading, setLoading]       = useState(true);
   const [actionId, setActionId]     = useState(null);
   const [tab, setTab]               = useState('payments');
@@ -57,7 +106,7 @@ export default function AdminPanel({ user }) {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [reqRes, profileRes, statsRes, reviewRes] = await Promise.all([
+      const [reqRes, profileRes, statsRes, reviewRes, deviceRes] = await Promise.all([
         supabase
           .from('payment_requests')
           .select('*')
@@ -65,16 +114,19 @@ export default function AdminPanel({ user }) {
         supabase.rpc('get_all_users'),
         supabase.rpc('get_admin_stats'),
         supabase.rpc('get_all_reviews'),
+        fetch('/api/admin/device-stats').then(r => r.json()).catch(err => ({ error: err.message })),
       ]);
 
       const reqs  = reqRes.data      || [];
       const profs = profileRes.data  || [];
       const s     = statsRes.data    || {};
       const revs  = reviewRes.data   || [];
+      const devStats = deviceRes.error ? { total: 0, breakdown: { android: 0, ios: 0, desktop: 0 } } : deviceRes;
 
       setRequests(reqs);
       setUsers(profs);
       setReviews(revs);
+      setDeviceStats(devStats);
       setStats({
         pending: s.pending_payments ?? 0,
         active:  s.active_pro       ?? 0,
@@ -219,7 +271,7 @@ export default function AdminPanel({ user }) {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 24, borderBottom: `1px solid ${C.border}` }}>
-          {[['payments', 'Payment Requests'], ['users', 'Users'], ['reviews', 'Reviews']].map(([id, label]) => {
+          {[['payments', 'Payment Requests'], ['users', 'Users'], ['reviews', 'Reviews'], ['devices', 'Devices']].map(([id, label]) => {
             const pendingReviews = reviews.filter(r => r.status === 'pending').length;
             return (
               <button
@@ -513,6 +565,47 @@ export default function AdminPanel({ user }) {
                   </tbody>
                 </table>
               </div>
+            )}
+          </div>
+        )}
+
+        {/* Devices tab */}
+        {!loading && tab === 'devices' && (
+          <div>
+            {deviceStats.total === 0 ? (
+              <div style={{ padding: '40px 0', textAlign: 'center', fontSize: 12, color: C.textMuted }}>No device data yet.</div>
+            ) : (
+              <>
+                <div style={{ marginBottom: 24 }}>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 16 }}>
+                    Total Sessions: <span style={{ color: C.green }}>{deviceStats.total}</span>
+                  </div>
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: 16,
+                  }}>
+                    <DeviceStatsCard
+                      label="📱 Android"
+                      icon="📱"
+                      count={deviceStats.breakdown.android}
+                      total={deviceStats.total}
+                    />
+                    <DeviceStatsCard
+                      label="🍎 iOS"
+                      icon="🍎"
+                      count={deviceStats.breakdown.ios}
+                      total={deviceStats.total}
+                    />
+                    <DeviceStatsCard
+                      label="💻 Desktop"
+                      icon="💻"
+                      count={deviceStats.breakdown.desktop}
+                      total={deviceStats.total}
+                    />
+                  </div>
+                </div>
+              </>
             )}
           </div>
         )}
