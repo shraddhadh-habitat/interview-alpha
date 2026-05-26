@@ -367,7 +367,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             {/* Social proof */}
             <p style={{
               fontSize: '0.82rem',
-              color: '#6b6b6b',
+              fontWeight: 700,
+              color: '#111',
               margin: '0 0 16px',
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",

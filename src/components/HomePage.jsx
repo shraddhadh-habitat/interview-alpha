@@ -133,13 +133,13 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
           <p style={{
             textAlign: 'center',
             fontSize: '0.88rem',
-            color: '#6b6b6b',
+            fontWeight: 700,
+            color: '#111',
             marginTop: '16px',
             marginBottom: '16px',
             lineHeight: 1.6,
           }}>
-            Trusted by 4,000+ PM and Data Science candidates preparing for{' '}
-            <strong style={{ color: '#111' }}>Google, Amazon, Flipkart,</strong> and more...
+            Trusted by 4,000+ PM and Data Science candidates preparing for Google, Amazon, Flipkart &amp; more
           </p>
         </div>
       </section>
