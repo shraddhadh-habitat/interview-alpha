@@ -59,30 +59,39 @@ export default function AdminPanel({ user }) {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      // Query profiles table directly to ensure device_type is included
-      const { data: profiles } = await supabase
-        .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      const [reqRes, statsRes, reviewRes, deviceRes] = await Promise.all([
+      const [reqRes, usersRes, statsRes, reviewRes, deviceRes, profilesRes] = await Promise.all([
         supabase
           .from('payment_requests')
           .select('*')
           .order('submitted_at', { ascending: false }),
+        supabase.rpc('get_all_users'),
         supabase.rpc('get_admin_stats'),
         supabase.rpc('get_all_reviews'),
         fetch('/api/admin/device-stats').then(r => r.json()).catch(err => ({ error: err.message })),
+        supabase.from('profiles').select('id, device_type, device_os'),
       ]);
 
       const reqs  = reqRes.data      || [];
-      const profs = profiles         || [];
+      const users = usersRes.data    || [];
       const s     = statsRes.data    || {};
       const revs  = reviewRes.data   || [];
       const devStats = deviceRes.error ? { total: 0, breakdown: { android: 0, ios: 0, desktop: 0 } } : deviceRes;
+      const profiles = profilesRes.data || [];
+
+      // Merge device_type from profiles into users
+      const deviceMap = {};
+      profiles.forEach(p => {
+        if (p.id) deviceMap[p.id] = { device_type: p.device_type, device_os: p.device_os };
+      });
+
+      const usersWithDevice = users.map(user => ({
+        ...user,
+        device_type: deviceMap[user.id]?.device_type || null,
+        device_os: deviceMap[user.id]?.device_os || null
+      }));
 
       setRequests(reqs);
-      setUsers(profs);
+      setUsers(usersWithDevice);
       setReviews(revs);
       setDeviceStats(devStats);
       setStats({
