@@ -315,6 +315,30 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
             </button>
           </div>
         </div>
+
+        {/* Visual connector — between hero and how it works */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: '24px 0 8px',
+          gap: '6px',
+        }}>
+          <div style={{
+            width: '1px',
+            height: '40px',
+            background: 'linear-gradient(180deg, #a78bfa 0%, transparent 100%)',
+          }} />
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path
+              d="M8 3L8 13M8 13L4 9M8 13L12 9"
+              stroke="#a78bfa"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   );
@@ -405,15 +429,28 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
         margin: '0 auto',
         padding: '0 40px',
       }}>
+        {/* Section label */}
+        <p style={{
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          fontSize: '0.75rem',
+          color: '#9a9a9a',
+          fontWeight: 600,
+          marginBottom: '8px',
+          textAlign: 'center',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
+          Here's what happens next
+        </p>
+
         {/* Section heading */}
         <h2 style={{
-          fontSize: '20px',
+          fontSize: 'clamp(1.5rem, 3vw, 2rem)',
           fontWeight: 700,
-          color: '#1B1B18',
+          color: '#111111',
           textAlign: 'center',
           marginBottom: '48px',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
-          margin: '0 0 48px 0',
         }}>
           How it works
         </h2>
@@ -467,7 +504,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              1,100+ PM questions. Or let Alpha pick for you.
+              1,100+ real questions across PM and Data Science — filtered by company, role, or topic.
             </p>
           </div>
 
@@ -504,7 +541,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
             }}>
-              Answer in your words
+              Answer in your own words
             </h3>
 
             <p style={{
@@ -514,7 +551,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              Type or speak. No prep needed. No right format.
+              Type freely. No scripts, no templates. Just your thinking — exactly like a real interview.
             </p>
           </div>
 
@@ -561,7 +598,7 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
               lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              8 competencies. What you nailed. What to fix.
+              AI scores you across 8 competencies and shows you the expert version — so you know exactly what to improve.
             </p>
           </div>
         </div>
@@ -1101,8 +1138,8 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
   return (
     <div>
       <HeroSection />
-      <TrustSection />
       <HowItWorksSection />
+      <TrustSection />
       <GuidedPathsSection />
       <ComingSoonSection />
       <ProductProofSection />
