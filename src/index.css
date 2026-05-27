@@ -481,6 +481,12 @@ button[class*="speaker"] svg {
   100% { transform: scale(2.5); opacity: 0; }
 }
 
+/* ─── Review Prompt Animations ─── */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 /* ─── Input focus transitions ─── */
 input, textarea, select {
   transition: border-color 0.2s, box-shadow 0.2s;

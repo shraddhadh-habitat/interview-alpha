@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "./lib/supabase";
 import { useAuth } from "./contexts/AuthContext";
 import ReviewsDisplay from "./components/ReviewsDisplay";
+import ReviewPrompt from "./components/ReviewPrompt";
 import { pmQuestions as PM_QUESTIONS } from "./data/pmQuestions";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
@@ -856,6 +857,8 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
   const [practiceAttempts, setPracticeAttempts] = useState([]);
   const [lastScore, setLastScore] = useState(null);
   const [weakestCompetency, setWeakestCompetency] = useState(null);
+  const [showReview, setShowReview] = useState(false);
+  const [sessionScore, setSessionScore] = useState(null);
 
   // ─── Reset phase to landing on mount or when requested ───
   useEffect(() => {
@@ -867,6 +870,14 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     window.addEventListener('ia:reset-interview', handleReset);
     return () => window.removeEventListener('ia:reset-interview', handleReset);
   }, []);
+
+  // ─── Trigger review prompt after good score ───
+  useEffect(() => {
+    if (sessionScore && sessionScore >= 6) {
+      const timer = setTimeout(() => setShowReview(true), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [sessionScore]);
 
   // ─── Fetch practice attempts and calculate metrics ───
   useEffect(() => {
@@ -1168,6 +1179,10 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     if (isEnd && user) {
       const scoreData = parseScoreFromResponse(response);
       if (scoreData) {
+        // Set session score to trigger review prompt
+        const scoreOutOf10 = Math.round(scoreData.overall_score / 10);
+        setSessionScore(scoreOutOf10);
+
         supabase.from("sessions").insert({
           user_id: user.id,
           track,
@@ -1196,6 +1211,22 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
     if (loading) return;
     sendMessage("End Interview");
   }, [loading, sendMessage]);
+
+  const handleReviewSubmit = useCallback(async ({ rating, review, score }) => {
+    if (!user) return;
+    try {
+      await supabase.from('reviews').insert({
+        user_id: user.id,
+        user_email: user.email,
+        user_name: profile?.display_name || user.email?.split('@')[0],
+        rating,
+        review_text: review,
+        session_score: score,
+      });
+    } catch (err) {
+      console.error('Failed to submit review:', err);
+    }
+  }, [user, profile]);
 
   const tracks = [
     { id: "Product Sense", icon: "◆", desc: "Design questions, user empathy, prioritization frameworks" },
@@ -1807,6 +1838,16 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       paddingTop: NAV_H,
     }}>
       <style>{globalStyles}</style>
+
+      {/* Review prompt after good score */}
+      {showReview && (
+        <ReviewPrompt
+          score={sessionScore}
+          userName={profile?.display_name}
+          onSubmit={handleReviewSubmit}
+          onDismiss={() => setShowReview(false)}
+        />
+      )}
 
       {/* Interview header */}
       <div className="ia-interview-header" style={{
