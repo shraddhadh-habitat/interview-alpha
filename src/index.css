@@ -451,6 +451,18 @@ button[class*="speaker"] svg {
   50% { box-shadow: 0 0 0 6px rgba(255,255,255,0.1); }
 }
 
+/* ─── Exit Intent Popup Animation ─── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
 /* ─── Input focus transitions ─── */
 input, textarea, select {
   transition: border-color 0.2s, box-shadow 0.2s;
