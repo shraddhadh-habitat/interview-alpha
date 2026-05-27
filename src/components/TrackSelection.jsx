@@ -1,4 +1,4 @@
-export default function TrackSelection({ user, onSelect }) {
+export default function TrackSelection({ user, profile, onSelect }) {
   return (
     <div style={{
       position: 'fixed',
@@ -42,7 +42,7 @@ export default function TrackSelection({ user, onSelect }) {
       {/* Main content */}
       <div style={{ maxWidth: '720px', width: '100%', textAlign: 'center' }}>
         <p style={{ fontSize: '0.82rem', color: '#9a9a9a', marginBottom: '8px', fontWeight: 600 }}>
-          Welcome, {user?.user_metadata?.name || user?.email?.split('@')[0]}! 👋
+          Welcome, {user?.user_metadata?.full_name || user?.user_metadata?.name || profile?.display_name || user?.email?.split('@')[0]?.replace(/[0-9]/g, '')?.replace(/\./g, ' ')}! 👋
         </p>
         <h2 style={{
           fontSize: 'clamp(1.4rem, 3vw, 2rem)',

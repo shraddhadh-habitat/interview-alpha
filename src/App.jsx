@@ -729,6 +729,7 @@ export default function App() {
         {user && showQuickStart && onboardingStep === 'track' && (
           <TrackSelection
             user={user}
+            profile={profile}
             onSelect={async (track) => {
               if (user) {
                 await supabase.from('profiles').update({ preferred_track: track }).eq('id', user.id);
