@@ -539,7 +539,7 @@ function LoggedInView({ user, onStartInterview, onContinuePractice }) {
         {/* Welcome Message */}
         <h1 style={{
           fontSize: 28,
-          fontWeight: 500,
+          fontWeight: 700,
           marginBottom: 40,
           fontFamily: "'Instrument Serif', serif",
           background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
