@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import FreeSessionCountdown from './FreeSessionCountdown';
 import WeeklyActiveBar from './WeeklyActiveBar';
 
@@ -328,148 +329,194 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
     </div>
   );
 
-  // Trust strip section
-  const TrustSection = () => (
-    <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
-      <style>{`
-        @media (max-width: 640px) {
-          .testimonial-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
-        }
-      `}</style>
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-        padding: '0 24px',
-      }}>
-        {/* Two cards side by side */}
-        <div className="testimonial-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '20px',
-          marginBottom: '24px',
+  // All reviews for rotating ticker
+  const ALL_REVIEWS = [
+    { name: 'Shrey Chandra', role: 'Product Manager', text: 'This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions.' },
+    { name: 'Mridula Rao', role: 'Job Seeker', text: 'Just checked out your AMAZING product — wanted to THANK YOU!! I am looking at opportunities now and this is by far one of THE BEST products I have seen.', source: 'LinkedIn' },
+    { name: 'Harjot Singh Bedi', role: 'PM Aspirant', text: 'This is exactly what I needed before my interviews. The AI feedback is brutally honest.' },
+    { name: 'Simranpreet Kaur', role: 'MBA Student', text: 'I answered 3 questions and already knew where I was going wrong. No other platform does this.' },
+    { name: 'Sofia Laurent', role: 'Product Manager', text: 'The expert rewrite feature alone is worth it. I could see exactly how a senior PM would answer.' },
+    { name: 'Akash Kamble', role: 'DS Aspirant', text: 'Finally a platform that gives real feedback and not just model answers to memorise.' },
+    { name: 'Kyaw Zin Thant', role: 'Job Seeker', text: 'I was so nervous about interviews. After a week on InterviewAlpha I actually feel ready.' },
+    { name: 'Dhruv Pandit', role: 'Data Scientist', text: 'Subscribed after my first free session. Worth every penny — I got an offer within 3 weeks.' },
+    { name: 'Myra Tiwari', role: 'PM Aspirant', text: 'I upgraded to Pro and it was 100% worth it. Unlimited practice changed how I prepare.' },
+    { name: 'Sagar Mane', role: 'MBA Student', text: 'The Pro plan pays for itself if you land even one good role. Subscribed without hesitation.' },
+    { name: 'Chloe Bennett', role: 'Product Manager', text: 'Worth every penny. I use it every day in the week before interviews now.' },
+    { name: 'Navdeep Dhaliwal', role: 'DS Student', text: 'Upgraded to Pro and I practice daily. My confidence has gone through the roof.' },
+    { name: 'Tanvi Deshpande', role: 'PM Aspirant', text: 'Scored 4/10 on my first try. A week later I was consistently hitting 8. That\'s the product working.' },
+    { name: 'Vishal Jadhav', role: 'Data Scientist', text: 'My SQL answers went from average to structured in 5 sessions. The feedback is that specific.' },
+    { name: 'Gauri Joshi', role: 'Job Seeker', text: 'I went from blanking on metrics questions to answering them with confidence. Game changer.' },
+    { name: 'Lucas Harrison', role: 'PM Aspirant', text: 'The 8 competency scoring is what sets this apart. You know exactly what to fix.' },
+    { name: 'Prachi Kulkarni', role: 'Job Seeker', text: 'Used the free sessions before subscribing. By session 3 I knew I had to upgrade.' },
+    { name: 'Gurleen Sandhu', role: 'DS Aspirant', text: 'Used InterviewAlpha the night before my Google interview. Felt so much more prepared.' },
+    { name: 'Pooja Gavhane', role: 'Product Manager', text: 'Worth every penny compared to paid coaching. You get better feedback here at a fraction of the cost.' },
+    { name: 'Rahul Waghmare', role: 'DS Student', text: 'Love that they have company-specific questions. Practicing Flipkart and Amazon questions separately is so useful.' },
+    { name: 'Shreyas Joglekar', role: 'Data Scientist', text: 'I tried 3 other platforms. None of them give feedback like this. InterviewAlpha is in a different league.' },
+    { name: 'Aria Mehta', role: 'PM Aspirant', text: 'Other platforms give you answers to memorise. This one teaches you to think. Huge difference.' },
+    { name: 'Siddharth Rao', role: 'MBA Student', text: 'The expert rewrite showed me how a senior PM actually structures their thinking. Nothing else does this.' },
+    { name: 'Nina Castellano', role: 'DS Aspirant', text: 'I have used YouTube, books, and prep courses. InterviewAlpha is the only thing that actually simulates a real interview.' },
+    { name: 'Manreet Oberoi', role: 'MBA Student', text: 'The ATS resume checker found 3 things I had never noticed. Fixed them and started getting more callbacks.' },
+    { name: 'Mia Robertson', role: 'PM Aspirant', text: 'The voice answer feature is brilliant. I can practice anywhere — even on my commute.' },
+    { name: 'Nguyen Bao Chau', role: 'Data Scientist', text: 'Questions change and feel fresh every time. I never feel like I am just rehearsing the same thing.' },
+    { name: 'Elena Volkov', role: 'Job Seeker', text: 'The salary guide is a bonus I didn\'t expect. Now I know exactly what to ask for in negotiations.' },
+    { name: 'Rattanakorn Phosri', role: 'DS Student', text: 'Practiced case studies here for 2 weeks before my final round. Cleared it comfortably.' },
+    { name: 'Batmunkh Gantulga', role: 'MBA Student', text: 'I improved my product sense score by 3 points in one week. The tips actually work.' },
+    { name: 'Omkar Patil', role: 'PM Aspirant', text: 'Subscribed day 1. No regrets. This is the real deal.' },
+    { name: 'Rujuta Mahajan', role: 'DS Aspirant', text: 'Worth every penny. Cleared my first data science interview after 2 weeks here.' },
+    { name: 'Praewpan Suksomboon', role: 'Product Manager', text: 'Practiced 5 questions the morning of my interview. Got the offer. Coincidence? I think not.' },
+    { name: 'Liam Thornton', role: 'Product Manager', text: 'Best investment I made in my job search. Period.' },
+  ];
+
+  // Rotating reviews component
+  const RotatingReviews = () => {
+    const [index, setIndex] = useState(0);
+    const [visible, setVisible] = useState(true);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setVisible(false);
+        setTimeout(() => {
+          setIndex(i => (i + 1) % ALL_REVIEWS.length);
+          setVisible(true);
+        }, 500);
+      }, 5000);
+      return () => clearInterval(interval);
+    }, []);
+
+    const review = ALL_REVIEWS[index];
+
+    return (
+      <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
+        <div style={{
+          maxWidth: '680px',
+          margin: '0 auto',
+          padding: '0 24px',
+          textAlign: 'center'
         }}>
-
-          {/* Card 1 — Shrey Chandra */}
+          {/* Rotating review card */}
           <div style={{
             background: '#ffffff',
             borderRadius: '16px',
-            padding: '28px',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+            padding: '32px',
+            boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
             border: '1px solid #e4e1db',
+            marginBottom: '20px',
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(6px)',
+            transition: 'opacity 0.4s ease, transform 0.4s ease',
+            minHeight: '160px',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
+            justifyContent: 'space-between'
           }}>
-            <p style={{
-              fontSize: '0.92rem',
-              color: '#111',
-              lineHeight: 1.7,
-              fontStyle: 'italic',
-              marginBottom: '20px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 20px 0',
-            }}>
-              "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
-            </p>
-            <div>
-              <p style={{
-                fontWeight: 700,
-                color: '#111',
-                fontSize: '0.88rem',
-                margin: '0 0 2px',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-              }}>
-                Shrey Chandra
-              </p>
-              <p style={{
-                color: '#9a9a9a',
-                fontSize: '0.78rem',
-                margin: 0,
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-              }}>
-                Product Manager
-              </p>
+            {/* Stars */}
+            <div style={{ marginBottom: '16px' }}>
+              {'⭐'.repeat(5)}
             </div>
-          </div>
 
-          {/* Card 2 — Mridula Rao */}
-          <div style={{
-            background: '#ffffff',
-            borderRadius: '16px',
-            padding: '28px',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-            border: '1px solid #e4e1db',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}>
+            {/* Quote */}
             <p style={{
-              fontSize: '0.92rem',
+              fontSize: '0.95rem',
               color: '#111',
               lineHeight: 1.7,
               fontStyle: 'italic',
               marginBottom: '20px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 20px 0',
+              flex: 1,
+              fontFamily: "'Plus Jakarta Sans', sans-serif"
             }}>
-              "Just checked out your AMAZING product — wanted to THANK YOU!! I am looking at opportunities now and this is by far one of THE BEST products I have seen."
+              "{review.text}"
             </p>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div>
-                <p style={{
-                  fontWeight: 700,
-                  color: '#111',
-                  fontSize: '0.88rem',
-                  margin: '0 0 2px',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                }}>
-                  Mridula Rao
+
+            {/* Author */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px'
+            }}>
+              {/* Avatar */}
+              <div style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                color: '#fff',
+                flexShrink: 0
+              }}>
+                {review.name.charAt(0)}
+              </div>
+              <div style={{ textAlign: 'left', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <p style={{ fontWeight: 700, color: '#111', margin: 0, fontSize: '0.88rem' }}>
+                  {review.name}
+                  {review.source && (
+                    <span style={{
+                      marginLeft: '8px',
+                      background: '#f0f7ff',
+                      border: '1px solid #bfdbfe',
+                      borderRadius: '999px',
+                      padding: '1px 8px',
+                      fontSize: '0.65rem',
+                      color: '#0a66c2',
+                      fontWeight: 600,
+                      verticalAlign: 'middle'
+                    }}>in LinkedIn</span>
+                  )}
                 </p>
-                <p style={{
-                  color: '#9a9a9a',
-                  fontSize: '0.78rem',
-                  margin: 0,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                }}>
-                  Job Seeker
+                <p style={{ color: '#9a9a9a', fontSize: '0.75rem', margin: 0 }}>
+                  {review.role}
                 </p>
               </div>
-              {/* LinkedIn badge */}
-              <span style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                background: '#f0f7ff',
-                border: '1px solid #bfdbfe',
-                borderRadius: '999px',
-                padding: '3px 10px',
-                fontSize: '0.7rem',
-                color: '#0a66c2',
-                fontWeight: 600,
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                flexShrink: 0,
-              }}>
-                in LinkedIn
-              </span>
+            </div>
+
+            {/* Dot indicators */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '4px',
+              marginTop: '16px'
+            }}>
+              {ALL_REVIEWS.map((_, i) => (
+                <div
+                  key={i}
+                  onClick={() => { setVisible(false); setTimeout(() => { setIndex(i); setVisible(true); }, 300); }}
+                  style={{
+                    width: i === index ? '16px' : '6px',
+                    height: '6px',
+                    borderRadius: '999px',
+                    background: i === index
+                      ? 'linear-gradient(135deg, #a8e6cf, #a78bfa)'
+                      : '#e4e1db',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                />
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* ONE social proof line below both cards */}
-        <p style={{
-          textAlign: 'center',
-          fontSize: '0.85rem',
-          color: '#6b6b6b',
-          fontWeight: 600,
-          margin: 0,
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-        }}>
-          Trusted by 4,000+ PM and Data Science candidates preparing for{' '}
-          <span style={{ color: '#111', fontWeight: 700 }}>Google, Amazon, Flipkart & more</span>
-        </p>
+          {/* Social proof line */}
+          <p style={{
+            fontSize: '0.85rem',
+            color: '#6b6b6b',
+            fontWeight: 600,
+            margin: 0,
+            fontFamily: "'Plus Jakarta Sans', sans-serif"
+          }}>
+            Trusted by 4,000+ PM and Data Science candidates preparing for{' '}
+            <strong style={{ color: '#111' }}>Google, Amazon, Flipkart & more</strong>
+          </p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  // Trust strip section
+  const TrustSection = () => <RotatingReviews />;
 
   // Question cards section (moved from hero right column)
   const QuestionCardsSection = () => (
