@@ -2,31 +2,54 @@ import { useState, useEffect } from 'react';
 import { getRandomActivity } from '../lib/activityFeed';
 
 export default function ActivityTicker() {
+  const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState('');
 
   useEffect(() => {
-    // Set initial activity
-    setActivity(getRandomActivity());
-
-    // Rotate activity every 4 seconds
-    const interval = setInterval(() => {
+    // Show after 3 seconds
+    const initial = setTimeout(() => {
       setActivity(getRandomActivity());
-    }, 4000);
+      setVisible(true);
+    }, 3000);
 
-    return () => clearInterval(interval);
+    // Rotate every 8 seconds
+    const interval = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setActivity(getRandomActivity());
+        setVisible(true);
+      }, 500);
+    }, 8000);
+
+    return () => {
+      clearTimeout(initial);
+      clearInterval(interval);
+    };
   }, []);
 
   if (!activity) return null;
 
   return (
     <div style={{
-      padding: '12px 16px',
-      background: 'rgba(22, 163, 74, 0.08)',
-      border: '1px solid rgba(22, 163, 74, 0.2)',
-      borderRadius: 8,
-      fontSize: 13,
-      color: '#0A0A0A',
-      textAlign: 'center',
+      position: 'fixed',
+      bottom: '80px',
+      left: '16px',
+      zIndex: 99999,
+      background: '#ffffff',
+      border: '1px solid #e4e1db',
+      borderRadius: '12px',
+      padding: '10px 16px',
+      boxShadow: '0 4px 16px rgba(0,0,0,0.10)',
+      fontSize: '0.78rem',
+      color: '#6b6b6b',
+      maxWidth: '280px',
+      opacity: visible ? 1 : 0,
+      transform: visible ? 'translateY(0)' : 'translateY(8px)',
+      transition: 'opacity 0.4s ease, transform 0.4s ease',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      pointerEvents: 'none',
       fontFamily: "'Plus Jakarta Sans', sans-serif",
     }}>
       ✓ {activity}

@@ -659,9 +659,7 @@ export default function App() {
           onUpgradeClick={() => setPage('upgrade')}
           isAdmin={isAdmin}
         />
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid #E8E6E1' }}>
-          <ActivityTicker />
-        </div>
+        <ActivityTicker />
         <div style={{ flex: 1 }}>
           {page === 'interview'   && (
             <LandingPage
