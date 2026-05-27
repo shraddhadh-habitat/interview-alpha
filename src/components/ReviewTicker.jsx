@@ -16,9 +16,9 @@ const REVIEWS = [
   { name: 'Rehan Ansari', role: 'DS Student', text: 'Upgraded to Pro and I practice daily. My confidence has gone through the roof.' },
 
   // Score and improvement
-  { name: 'Tara Venkatesh', role: 'PM Aspirant', text: 'Scored 4/10 on my first try. A week later I was consistently hitting 8. That\'s the product working.' },
+  { name: 'Tanvi Deshpande', role: 'PM Aspirant', text: 'Scored 4/10 on my first try. A week later I was consistently hitting 8. That\'s the product working.' },
   { name: 'Aryan Gupta', role: 'Data Scientist', text: 'My SQL answers went from average to structured in 5 sessions. The feedback is that specific.' },
-  { name: 'Meera Joshi', role: 'Job Seeker', text: 'I went from blanking on metrics questions to answering them with confidence. Game changer.' },
+  { name: 'Gauri Joshi', role: 'Job Seeker', text: 'I went from blanking on metrics questions to answering them with confidence. Game changer.' },
   { name: 'Lucas Harrison', role: 'PM Aspirant', text: 'The 8 competency scoring is what sets this apart. You know exactly what to fix.' },
   { name: 'Noor Farooqi', role: 'MBA Student', text: 'I improved my product sense score by 3 points in one week. The tips actually work.' },
 
@@ -27,10 +27,10 @@ const REVIEWS = [
   { name: 'Ethan Whitfield', role: 'Product Manager', text: 'Practiced 5 questions the morning of my interview. Got the offer. Coincidence? I think not.' },
   { name: 'Kiara Desai', role: 'PM Aspirant', text: 'My placement interview is next week and I feel calm for the first time. This platform did that.' },
   { name: 'Omar Shaikh', role: 'DS Student', text: 'Practiced case studies here for 2 weeks before my final round. Cleared it comfortably.' },
-  { name: 'Divya Lakshmanan', role: 'Job Seeker', text: 'Used the free sessions before subscribing. By session 3 I knew I had to upgrade.' },
+  { name: 'Prachi Kulkarni', role: 'Job Seeker', text: 'Used the free sessions before subscribing. By session 3 I knew I had to upgrade.' },
 
   // Comparison
-  { name: 'Karthik Balasubramanian', role: 'Data Scientist', text: 'I tried 3 other platforms. None of them give feedback like this. InterviewAlpha is in a different league.' },
+  { name: 'Shreyas Joglekar', role: 'Data Scientist', text: 'I tried 3 other platforms. None of them give feedback like this. InterviewAlpha is in a different league.' },
   { name: 'Aria Mehta', role: 'PM Aspirant', text: 'Other platforms give you answers to memorise. This one teaches you to think. Huge difference.' },
   { name: 'Siddharth Rao', role: 'MBA Student', text: 'The expert rewrite showed me how a senior PM actually structures their thinking. Nothing else does this.' },
   { name: 'Nina Castellano', role: 'DS Aspirant', text: 'I have used YouTube, books, and prep courses. InterviewAlpha is the only thing that actually simulates a real interview.' },
@@ -44,8 +44,8 @@ const REVIEWS = [
   { name: 'Luna Arora', role: 'MBA Student', text: 'The ATS resume checker found 3 things I had never noticed. Fixed them and started getting more callbacks.' },
 
   // Short punchy
-  { name: 'Rohan Singhania', role: 'PM Aspirant', text: 'Subscribed day 1. No regrets. This is the real deal.' },
-  { name: 'Ira Bhattacharya', role: 'DS Aspirant', text: 'Worth every penny. Cleared my first data science interview after 2 weeks here.' },
+  { name: 'Omkar Patil', role: 'PM Aspirant', text: 'Subscribed day 1. No regrets. This is the real deal.' },
+  { name: 'Rujuta Mahajan', role: 'DS Aspirant', text: 'Worth every penny. Cleared my first data science interview after 2 weeks here.' },
   { name: 'Liam Thornton', role: 'Product Manager', text: 'Best investment I made in my job search. Period.' },
 ];
 
