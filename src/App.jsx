@@ -395,6 +395,7 @@ export default function App() {
   });
   const [showNamePrompt, setShowNamePrompt] = useState(false);
   const [showPhonePrompt, setShowPhonePrompt] = useState(false);
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -513,6 +514,10 @@ export default function App() {
       const newCount = profile.free_sessions_used + 1;
       setProfile(prev => ({ ...prev, free_sessions_used: newCount }));
       await supabase.from('profiles').update({ free_sessions_used: newCount }).eq('id', user.id);
+      // Trigger upgrade prompt when user hits FREE_SESSION_LIMIT
+      if (newCount === FREE_SESSION_LIMIT) {
+        setShowUpgradePrompt(true);
+      }
     }
   }, [user, profile]);
 
@@ -663,6 +668,7 @@ export default function App() {
           {page === 'interview'   && (
             <LandingPage
               user={user}
+              profile={{ ...profile, free_sessions: Math.max(0, FREE_SESSION_LIMIT - profile.free_sessions_used) }}
               onNavigate={(destination) => setPage(destination)}
               onLogin={() => { setPostLoginDestination('practice'); setLoginMessage('Sign up to get AI feedback'); setShowLoginModal(true); }}
             />
@@ -731,6 +737,66 @@ export default function App() {
               }
             }}
           />
+        )}
+        {showUpgradePrompt && (
+          <div style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.5)',
+            zIndex: 99999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: "'Plus Jakarta Sans', sans-serif"
+          }}>
+            <div style={{
+              background: '#fff',
+              borderRadius: '20px',
+              padding: '40px 32px',
+              maxWidth: '420px',
+              textAlign: 'center',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.2)'
+            }}>
+              <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🎯</div>
+              <h2 style={{ fontWeight: 800, fontSize: '1.4rem', marginBottom: '12px', color: '#0A0A0A' }}>
+                You've used all 3 free sessions
+              </h2>
+              <p style={{ color: '#6b6b6b', marginBottom: '24px', lineHeight: 1.6, fontSize: '0.95rem' }}>
+                You're making real progress. Upgrade to keep practicing — unlimited sessions, all tracks, full feedback.
+              </p>
+              <button
+                onClick={() => { setShowUpgradePrompt(false); setPage('upgrade'); }}
+                style={{
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '14px 32px',
+                  fontWeight: 700,
+                  fontSize: '1rem',
+                  cursor: 'pointer',
+                  width: '100%',
+                  marginBottom: '12px',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif"
+                }}
+              >
+                Upgrade — from ₹799/month
+              </button>
+              <button
+                onClick={() => setShowUpgradePrompt(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#9a9a9a',
+                  fontSize: '0.82rem',
+                  cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif"
+                }}
+              >
+                Maybe later
+              </button>
+            </div>
+          </div>
         )}
         <EnvBanner />
       </div>

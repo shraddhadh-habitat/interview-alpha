@@ -1,3 +1,5 @@
+import FreeSessionCountdown from './FreeSessionCountdown';
+
 const C = {
   bg: '#FFFFFF',
   text: '#1B1B18',
@@ -14,7 +16,7 @@ const SAMPLE_PM_QUESTION = "WhatsApp has 500M users in India but makes almost no
 
 const SAMPLE_DS_QUESTION = "Zomato notices that restaurants with 4.1 star ratings get 3x more orders than restaurants with 4.0 stars. But your analysis shows that the 4.0 rated restaurants actually have better food quality based on repeat order rates. What's happening, how would you prove it, and what would you recommend to fix the rating system?";
 
-export default function LandingPage({ user, onNavigate, onLogin }) {
+export default function LandingPage({ user, onNavigate, onLogin, profile }) {
   // Hero section  . proper two-column layout with container
   const HeroSection = () => (
     <div style={{
@@ -102,6 +104,12 @@ export default function LandingPage({ user, onNavigate, onLogin }) {
           }}>
             Practice real interview questions. See what worked, what didn't, and how to improve in under 2 minutes.
           </p>
+
+          {/* Free Session Countdown */}
+          <FreeSessionCountdown
+            user={user}
+            freeSessions={profile?.free_sessions ?? 3}
+          />
 
           {/* Primary CTA  . inline-block, not full width */}
           <button
