@@ -43,28 +43,40 @@ export default function ActivityTickerPortal() {
       bottom: '90px',
       left: '16px',
       zIndex: 2147483647,
-      background: '#ffffff',
-      border: '1px solid #e4e1db',
-      borderRadius: '12px',
-      padding: '10px 16px',
-      boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
-      fontSize: '0.78rem',
-      color: '#444',
-      maxWidth: '280px',
+      background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+      borderRadius: '14px',
+      padding: '12px 16px',
+      boxShadow: '0 8px 32px rgba(167, 139, 250, 0.4)',
+      fontSize: '0.8rem',
+      color: '#ffffff',
+      maxWidth: '260px',
       opacity: visible ? 1 : 0,
-      transform: visible ? 'translateY(0)' : 'translateY(6px)',
-      transition: 'opacity 0.4s ease, transform 0.4s ease',
+      transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.95)',
+      transition: 'opacity 0.5s ease, transform 0.5s ease',
       display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
+      alignItems: 'flex-start',
+      gap: '10px',
       pointerEvents: 'none'
     }}>
+      {/* Pulsing dot */}
       <span style={{
-        width: '8px', height: '8px', borderRadius: '50%', flexShrink: 0,
-        background: 'linear-gradient(135deg, #a8e6cf, #a78bfa)',
-        display: 'inline-block'
+        width: '10px',
+        height: '10px',
+        borderRadius: '50%',
+        background: '#ffffff',
+        flexShrink: 0,
+        marginTop: '2px',
+        boxShadow: '0 0 0 3px rgba(255,255,255,0.3)',
+        animation: 'tickerPulse 1.5s ease-in-out infinite'
       }} />
-      {ACTIVITIES[index]}
+      <div>
+        <div style={{ fontWeight: 700, marginBottom: '2px', lineHeight: 1.3 }}>
+          🔥 {ACTIVITIES[index].split(' · ')[0]}
+        </div>
+        <div style={{ opacity: 0.85, fontSize: '0.72rem' }}>
+          ⏱ {ACTIVITIES[index].split(' · ')[1]}
+        </div>
+      </div>
     </div>,
     el
   );

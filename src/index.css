@@ -445,6 +445,12 @@ button[class*="speaker"] svg {
   40% { transform: scale(1); opacity: 1; }
 }
 
+/* ─── Activity Ticker Pulse Animation ─── */
+@keyframes tickerPulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(255,255,255,0.3); }
+  50% { box-shadow: 0 0 0 6px rgba(255,255,255,0.1); }
+}
+
 /* ─── Input focus transitions ─── */
 input, textarea, select {
   transition: border-color 0.2s, box-shadow 0.2s;
