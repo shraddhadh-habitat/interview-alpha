@@ -895,7 +895,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
   // Product proof section
   const ProductProofSection = () => (
-    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '32px' }}>
+    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '24px', marginBottom: '0' }}>
       <style>{`
         @media (max-width: 768px) {
           .proof-container { padding: 0 20px !important; }
