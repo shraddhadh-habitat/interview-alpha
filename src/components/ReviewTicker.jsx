@@ -73,61 +73,42 @@ export default function ReviewTicker() {
   const el = document.getElementById('review-ticker-root');
   if (!el) return null;
 
-  const review = REVIEWS[index];
-
   return ReactDOM.createPortal(
     <div style={{
       position: 'fixed',
-      bottom: '24px',
-      right: '24px',
-      zIndex: 999,
-      background: '#ffffff',
-      borderRadius: '16px',
-      padding: '20px 24px',
-      maxWidth: '300px',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-      border: '1px solid #e4e1db',
+      bottom: '90px',
+      right: '16px',
+      zIndex: 2147483647,
+      background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+      borderRadius: '14px',
+      padding: '12px 16px',
+      boxShadow: '0 8px 32px rgba(167, 139, 250, 0.4)',
+      fontSize: '0.8rem',
+      color: '#ffffff',
+      maxWidth: '260px',
       opacity: visible ? 1 : 0,
-      transform: visible ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.95)',
+      transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.95)',
       transition: 'opacity 0.5s ease, transform 0.5s ease',
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: '10px',
       pointerEvents: 'none'
     }}>
-      {/* Quote */}
-      <p style={{
-        fontSize: '0.88rem',
-        color: '#111',
-        lineHeight: 1.6,
-        fontStyle: 'italic',
-        marginBottom: '12px',
-        margin: '0 0 12px 0',
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
-      }}>
-        "{review.text}"
-      </p>
-
-      {/* Attribution */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '2px',
-      }}>
-        <p style={{
-          fontWeight: 700,
-          color: '#111',
-          fontSize: '0.82rem',
-          margin: 0,
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-        }}>
-          {review.name}
-        </p>
-        <p style={{
-          color: '#9a9a9a',
-          fontSize: '0.75rem',
-          margin: 0,
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-        }}>
-          {review.role}
-        </p>
+      <span style={{
+        width: '10px', height: '10px', borderRadius: '50%',
+        background: '#ffffff', flexShrink: 0, marginTop: '2px',
+        boxShadow: '0 0 0 3px rgba(255,255,255,0.3)',
+        animation: 'tickerPulse 1.5s ease-in-out infinite'
+      }} />
+      <div>
+        <div style={{ fontWeight: 700, marginBottom: '2px', lineHeight: 1.3 }}>
+          ⭐ {REVIEWS[index].name}
+        </div>
+        <div style={{ opacity: 0.9, fontSize: '0.75rem', lineHeight: 1.4 }}>
+          {REVIEWS[index].text.length > 60
+            ? REVIEWS[index].text.substring(0, 60) + '...'
+            : REVIEWS[index].text}
+        </div>
       </div>
     </div>,
     el

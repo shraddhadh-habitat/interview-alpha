@@ -349,7 +349,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           marginBottom: '24px',
         }}>
 
-          {/* Card 1 — Shrey C. */}
+          {/* Card 1 — Shrey Chandra */}
           <div style={{
             background: '#ffffff',
             borderRadius: '16px',
@@ -379,7 +379,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
                 margin: '0 0 2px',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
               }}>
-                Shrey C.
+                Shrey Chandra
               </p>
               <p style={{
                 color: '#9a9a9a',
@@ -392,7 +392,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             </div>
           </div>
 
-          {/* Card 2 — Mridula R. */}
+          {/* Card 2 — Mridula Rao */}
           <div style={{
             background: '#ffffff',
             borderRadius: '16px',
@@ -423,7 +423,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
                   margin: '0 0 2px',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                 }}>
-                  Mridula R.
+                  Mridula Rao
                 </p>
                 <p style={{
                   color: '#9a9a9a',
