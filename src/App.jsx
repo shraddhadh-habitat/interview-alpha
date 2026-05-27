@@ -659,7 +659,6 @@ export default function App() {
           onUpgradeClick={() => setPage('upgrade')}
           isAdmin={isAdmin}
         />
-        <ActivityTicker />
         <div style={{ flex: 1 }}>
           {page === 'interview'   && (
             <LandingPage
@@ -735,6 +734,7 @@ export default function App() {
         )}
         <EnvBanner />
       </div>
+      <ActivityTicker />
     </AuthProvider>
   );
 }
