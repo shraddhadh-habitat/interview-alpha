@@ -249,13 +249,24 @@ export default function AdminPanel({ user }) {
         <div style={{ marginBottom: 32 }}>
           <div style={{ fontSize: 10, letterSpacing: 5, color: C.green, textTransform: 'uppercase', marginBottom: 8 }}>Admin</div>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 700, color: C.text, marginBottom: 4 }}>Control Panel</h1>
-          <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 16 }}>{user.email}</div>
+          <div style={{ fontSize: 11, color: C.textMuted }}>{user.email}</div>
+        </div>
 
-          {/* Test Onboarding Flow button */}
+        {/* Stats */}
+        {!loading && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
+            <StatCard label="Pending Payments"   value={stats.pending} color={stats.pending > 0 ? C.yellow : C.textMuted} />
+            <StatCard label="Active Pro Users"   value={stats.active}  color={C.success} />
+            <StatCard label="Total Users"        value={stats.total}   color={C.text} />
+            <WeeklyActiveAdminCard />
+          </div>
+        )}
+
+        {/* Preview Onboarding Button */}
+        <div style={{ padding: '0 0 24px' }}>
           <button
             onClick={() => {
               sessionStorage.setItem('showOnboarding', 'true');
-              window.dispatchEvent(new CustomEvent('testOnboarding'));
               window.location.href = '/';
             }}
             style={{
@@ -272,16 +283,6 @@ export default function AdminPanel({ user }) {
             🧪 Preview Onboarding Flow
           </button>
         </div>
-
-        {/* Stats */}
-        {!loading && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
-            <StatCard label="Pending Payments"   value={stats.pending} color={stats.pending > 0 ? C.yellow : C.textMuted} />
-            <StatCard label="Active Pro Users"   value={stats.active}  color={C.success} />
-            <StatCard label="Total Users"        value={stats.total}   color={C.text} />
-            <WeeklyActiveAdminCard />
-          </div>
-        )}
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 24, borderBottom: `1px solid ${C.border}` }}>
