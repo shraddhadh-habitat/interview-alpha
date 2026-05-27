@@ -15,285 +15,287 @@ export default function Careers() {
     return () => { document.title = 'Interview Preparation Questions & Answers | InterviewAlpha.ai™'; };
   }, []);
 
-  const handleApplyMarketing = () => {
-    window.location.href = 'mailto:communications@interviewalpha.ai?subject=Marketing%20Intern%20Application%20-%20InterviewAlpha.ai';
-  };
-
-  const handleApplyGeneral = () => {
-    window.location.href = 'mailto:communications@interviewalpha.ai?subject=General%20Application%20-%20InterviewAlpha.ai';
-  };
-
   return (
     <div style={{ minHeight: '100vh', background: C.bg, paddingTop: 55, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{`
         @media (max-width: 768px) {
           .careers-container { padding: 0 20px !important; }
-          .why-join-grid { grid-template-columns: 1fr !important; }
-          .hero-title { font-size: 28px !important; }
+          .gains-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
-      <div className="careers-container" style={{ maxWidth: 800, margin: '0 auto', padding: '60px 40px' }}>
+      <div className="careers-container" style={{ maxWidth: '720px', margin: '0 auto', padding: '48px 24px' }}>
 
-        {/* ─── HERO SECTION ─── */}
-        <div style={{ marginBottom: 80, textAlign: 'center' }}>
-          <h1 className="hero-title" style={{
-            fontSize: 32,
-            fontWeight: 700,
-            color: C.text,
-            marginBottom: 16,
-            fontFamily: "'Instrument Serif', serif",
-            lineHeight: 1.2,
-          }}>
-            Join InterviewAlpha.ai
-          </h1>
-          <p style={{
-            fontSize: 16,
-            color: C.textSoft,
-            margin: 0,
-            lineHeight: 1.6,
-            maxWidth: 500,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}>
-            We're building the future of interview preparation. Join us.
-          </p>
-        </div>
+        {/* ── CAREERS PAGE ── */}
 
-        {/* ─── WHY JOIN US SECTION ─── */}
-        <div style={{ marginBottom: 80 }}>
-          <div className="why-join-grid" style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 20,
+        {/* Header */}
+        <p style={{
+          textTransform: 'uppercase',
+          letterSpacing: '0.12em',
+          fontSize: '0.72rem',
+          color: '#9a9a9a',
+          fontWeight: 600,
+          marginBottom: '12px'
+        }}>
+          We're Hiring
+        </p>
+
+        <h1 style={{
+          fontSize: 'clamp(1.8rem, 4vw, 2.4rem)',
+          fontWeight: 800,
+          color: '#111',
+          marginBottom: '12px',
+          lineHeight: 1.2
+        }}>
+          Join InterviewAlpha
+        </h1>
+
+        <p style={{
+          color: '#6b6b6b',
+          fontSize: '1rem',
+          lineHeight: 1.7,
+          marginBottom: '48px',
+          maxWidth: '560px'
+        }}>
+          We're building the best interview prep platform for PM and Data Science aspirants in India.
+          If you want to work on something that directly helps people land their dream jobs,
+          we'd love to hear from you.
+        </p>
+
+        {/* Job Card */}
+        <div style={{
+          background: '#ffffff',
+          borderRadius: '20px',
+          padding: '36px',
+          boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
+          border: '1px solid #e4e1db'
+        }}>
+          {/* Role header */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '16px',
+            marginBottom: '24px'
           }}>
-            {[
-              {
-                title: 'Early stage, real impact',
-                text: 'Every feature you ship reaches users directly. No layers of bureaucracy.',
-              },
-              {
-                title: 'Learn by building',
-                text: 'Work alongside the founder on product, growth, and AI. Perfect for your resume and your skills.',
-              },
-              {
-                title: 'Remote friendly',
-                text: 'Work from anywhere in India. We care about output, not office hours.',
-              },
-            ].map((card, i) => (
-              <div key={i} style={{
-                background: '#fff',
-                border: `0.5px solid ${C.border}`,
-                borderRadius: 16,
-                padding: 24,
-              }}>
-                <h3 style={{
-                  fontSize: 15,
+            <div>
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '10px', flexWrap: 'wrap' }}>
+                <span style={{
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                  color: '#fff',
+                  borderRadius: '6px',
+                  padding: '3px 12px',
+                  fontSize: '0.72rem',
                   fontWeight: 700,
-                  color: C.text,
-                  marginBottom: 12,
-                  fontFamily: "'Instrument Serif', serif",
-                  margin: '0 0 12px 0',
-                }}>
-                  {card.title}
-                </h3>
-                <p style={{
-                  fontSize: 13,
-                  color: C.textSoft,
+                  letterSpacing: '0.05em'
+                }}>INTERNSHIP</span>
+                <span style={{
+                  background: '#f0fdf4',
+                  color: '#16a34a',
+                  border: '1px solid #86efac',
+                  borderRadius: '6px',
+                  padding: '3px 12px',
+                  fontSize: '0.72rem',
+                  fontWeight: 600
+                }}>3 MONTHS</span>
+                <span style={{
+                  background: '#f5f3ff',
+                  color: '#7c3aed',
+                  border: '1px solid #c4b5fd',
+                  borderRadius: '6px',
+                  padding: '3px 12px',
+                  fontSize: '0.72rem',
+                  fontWeight: 600
+                }}>REMOTE</span>
+              </div>
+              <h2 style={{
+                fontSize: '1.4rem',
+                fontWeight: 800,
+                color: '#111',
+                margin: 0
+              }}>
+                Marketing & Sales Intern
+              </h2>
+            </div>
+          </div>
+
+          {/* About the role */}
+          <div style={{ marginBottom: '28px' }}>
+            <h3 style={{
+              fontSize: '0.88rem',
+              fontWeight: 700,
+              color: '#111',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              marginBottom: '12px'
+            }}>About the Role</h3>
+            <p style={{ color: '#6b6b6b', lineHeight: 1.7, fontSize: '0.92rem' }}>
+              InterviewAlpha is growing fast and we need sharp, driven interns who can help us
+              reach PM and Data Science aspirants across India. You'll work directly with the
+              founder, own real campaigns, and see your work impact thousands of job seekers.
+              This is not a coffee-fetching internship — you'll have real ownership and real results
+              to show on your resume.
+            </p>
+          </div>
+
+          {/* What you'll do */}
+          <div style={{ marginBottom: '28px' }}>
+            <h3 style={{
+              fontSize: '0.88rem',
+              fontWeight: 700,
+              color: '#111',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              marginBottom: '12px'
+            }}>What You'll Do</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {[
+                'Drive awareness of InterviewAlpha through college communities, LinkedIn, and WhatsApp groups',
+                'Identify and reach out to PM and DS aspirants through campus networks and online communities',
+                'Represent InterviewAlpha at campus events, webinars, and placement preparation groups',
+                'Create and distribute content (posts, reels, stories) that resonates with job seekers',
+                'Build relationships with placement cells, student clubs, and career counselors',
+                'Track and report on outreach metrics — signups, conversions, engagement',
+                'Gather user feedback and share insights with the product team',
+              ].map((item, i) => (
+                <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                  <span style={{
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #a8e6cf, #a78bfa)',
+                    color: '#fff',
+                    fontSize: '0.65rem',
+                    fontWeight: 700,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    marginTop: '2px'
+                  }}>{i + 1}</span>
+                  <p style={{ color: '#6b6b6b', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Who we're looking for */}
+          <div style={{ marginBottom: '28px' }}>
+            <h3 style={{
+              fontSize: '0.88rem',
+              fontWeight: 700,
+              color: '#111',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              marginBottom: '12px'
+            }}>Who We're Looking For</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {[
+                '✅ Final year BE / B.Tech or MBA student (campus placement season experience is a plus)',
+                '✅ Strong communicator — comfortable talking to people, online and offline',
+                '✅ Self-starter who doesn\'t need to be told what to do every day',
+                '✅ Genuinely interested in careers, hiring, and helping people succeed',
+                '✅ Active on LinkedIn or other social platforms',
+                '✅ Bonus: You\'ve personally prepared for interviews and know the struggle firsthand',
+              ].map((item, i) => (
+                <p key={i} style={{
+                  color: '#6b6b6b',
+                  fontSize: '0.88rem',
                   lineHeight: 1.6,
                   margin: 0,
+                  padding: '8px 12px',
+                  background: '#fafafa',
+                  borderRadius: '8px'
+                }}>{item}</p>
+              ))}
+            </div>
+          </div>
+
+          {/* What you'll gain */}
+          <div style={{ marginBottom: '36px' }}>
+            <h3 style={{
+              fontSize: '0.88rem',
+              fontWeight: 700,
+              color: '#111',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              marginBottom: '12px'
+            }}>What You'll Gain</h3>
+            <div className="gains-grid" style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '10px'
+            }}>
+              {[
+                { icon: '📜', text: 'Official internship certificate' },
+                { icon: '🚀', text: 'Real ownership — not busywork' },
+                { icon: '🤝', text: 'Direct mentorship from founder' },
+                { icon: '📊', text: 'Measurable results for your resume' },
+                { icon: '🌐', text: 'Letter of recommendation' },
+                { icon: '🎯', text: 'Access to all InterviewAlpha Pro features' },
+              ].map(({ icon, text }) => (
+                <div key={text} style={{
+                  display: 'flex',
+                  gap: '8px',
+                  alignItems: 'center',
+                  background: '#fafafa',
+                  borderRadius: '8px',
+                  padding: '10px 12px'
                 }}>
-                  {card.text}
-                </p>
-              </div>
-            ))}
+                  <span style={{ fontSize: '1rem' }}>{icon}</span>
+                  <p style={{ fontSize: '0.82rem', color: '#6b6b6b', margin: 0, fontWeight: 500 }}>{text}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* ─── OPEN POSITIONS SECTION ─── */}
-        <div style={{ marginBottom: 80 }}>
-          <h2 style={{
-            fontSize: 24,
-            fontWeight: 500,
-            color: C.text,
-            marginBottom: 32,
-            fontFamily: "'Instrument Serif', serif",
-            margin: '0 0 32px 0',
-          }}>
-            Open Positions
-          </h2>
-
-          {/* Marketing Intern Position */}
+          {/* Apply CTA */}
           <div style={{
-            background: '#fff',
-            border: `0.5px solid ${C.border}`,
-            borderRadius: 16,
-            padding: 24,
-            marginBottom: 24,
+            background: 'linear-gradient(135deg, rgba(168,230,207,0.1), rgba(167,139,250,0.1))',
+            border: '1.5px solid rgba(167,139,250,0.2)',
+            borderRadius: '14px',
+            padding: '24px',
+            textAlign: 'center'
           }}>
-            <div style={{ marginBottom: 20 }}>
-              <h3 style={{
-                fontSize: 18,
-                fontWeight: 700,
-                color: C.text,
-                marginBottom: 8,
-                fontFamily: "'Instrument Serif', serif",
-                margin: '0 0 8px 0',
-              }}>
-                Marketing Intern
-              </h3>
-              <p style={{
-                fontSize: 13,
-                color: C.textMuted,
-                margin: 0,
-                marginBottom: 12,
-              }}>
-                Internship · Remote · 3-6 months
-              </p>
-              <p style={{
-                fontSize: 13,
-                color: C.textSoft,
-                lineHeight: 1.6,
-                margin: 0,
-              }}>
-                We're looking for a hungry, creative marketing intern to help InterviewAlpha.ai reach thousands of aspiring professionals preparing for their dream roles.
-              </p>
-            </div>
-
-            <div style={{ marginBottom: 20 }}>
-              <h4 style={{
-                fontSize: 13,
-                fontWeight: 700,
-                color: C.text,
-                marginBottom: 10,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                margin: '0 0 10px 0',
-              }}>
-                Key Responsibilities
-              </h4>
-              <ul style={{
-                fontSize: 13,
-                color: C.textSoft,
-                lineHeight: 1.8,
-                margin: 0,
-                paddingLeft: 20,
-              }}>
-                <li>Manage and grow InterviewAlpha.ai's LinkedIn, Twitter, and Instagram presence</li>
-                <li>Create engaging content around interview tips, career advice, and product updates</li>
-                <li>Run outreach campaigns to PM, Data Science, and MBA communities</li>
-                <li>Track and report on content performance and user acquisition metrics</li>
-                <li>Collaborate with the founder on growth experiments and partnerships</li>
-                <li>Engage with users, gather feedback, and share insights with the product team</li>
-              </ul>
-            </div>
-
-            <div style={{ marginBottom: 20 }}>
-              <h4 style={{
-                fontSize: 13,
-                fontWeight: 700,
-                color: C.text,
-                marginBottom: 10,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                margin: '0 0 10px 0',
-              }}>
-                What We're Looking For
-              </h4>
-              <ul style={{
-                fontSize: 13,
-                color: C.textSoft,
-                lineHeight: 1.8,
-                margin: 0,
-                paddingLeft: 20,
-              }}>
-                <li>Currently pursuing or recently completed MBA, marketing, or communications degree</li>
-                <li>Strong written communication skills</li>
-                <li>Familiarity with LinkedIn, Instagram, and content marketing</li>
-                <li>Self-starter who can work independently with minimal supervision</li>
-                <li><strong>Bonus:</strong> experience with SEO, email marketing, or community building</li>
-                <li><strong>Bonus:</strong> personal interest in career development, interviewing, or edtech</li>
-              </ul>
-            </div>
-
-            <div style={{ marginBottom: 20, paddingTop: 16, borderTop: `0.5px solid ${C.border}` }}>
-              <p style={{
-                fontSize: 13,
-                color: C.textSoft,
-                margin: 0,
-              }}>
-                <strong>Stipend:</strong> Performance-based stipend + pre-placement opportunity for exceptional candidates
-              </p>
-            </div>
-
-            <button
-              onClick={handleApplyMarketing}
+            <p style={{
+              fontWeight: 700,
+              fontSize: '1rem',
+              color: '#111',
+              marginBottom: '6px'
+            }}>
+              Ready to apply?
+            </p>
+            <p style={{
+              color: '#6b6b6b',
+              fontSize: '0.85rem',
+              marginBottom: '20px'
+            }}>
+              Send your resume and a 2-line note on why you're the right fit.
+            </p>
+            <a
+              href="mailto:shraddhadh@gmail.com?subject=Application: Marketing & Sales Intern — InterviewAlpha&body=Hi Shraddha,%0A%0AI'm applying for the Marketing & Sales Intern role at InterviewAlpha.%0A%0AAbout me:%0A%0AWhy I'm a good fit:%0A%0AResume attached."
               style={{
-                height: 44,
-                padding: '0 28px',
-                background: C.text,
-                color: '#fff',
-                border: 'none',
-                borderRadius: 10,
-                fontSize: 15,
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.2s',
+                display: 'inline-block',
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                color: '#ffffff',
+                textDecoration: 'none',
+                borderRadius: '12px',
+                padding: '14px 32px',
+                fontWeight: 700,
+                fontSize: '0.95rem'
               }}
-              onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
-              onMouseLeave={e => e.currentTarget.style.background = C.text}
             >
-              Apply Now
-            </button>
+              Apply Now — Email Us →
+            </a>
+            <p style={{
+              fontSize: '0.75rem',
+              color: '#9a9a9a',
+              marginTop: '12px'
+            }}>
+              shraddhadh@gmail.com · We respond within 48 hours
+            </p>
           </div>
-        </div>
-
-        {/* ─── NO OPEN ROLES SECTION ─── */}
-        <div style={{
-          background: '#fff',
-          border: `0.5px solid ${C.border}`,
-          borderRadius: 16,
-          padding: 24,
-          textAlign: 'center',
-        }}>
-          <h3 style={{
-            fontSize: 16,
-            fontWeight: 700,
-            color: C.text,
-            marginBottom: 12,
-            fontFamily: "'Instrument Serif', serif",
-            margin: '0 0 12px 0',
-          }}>
-            No open roles that fit?
-          </h3>
-          <p style={{
-            fontSize: 13,
-            color: C.textSoft,
-            lineHeight: 1.6,
-            marginBottom: 16,
-            margin: '0 0 16px 0',
-          }}>
-            We're always looking for talented people. Send your resume and a note about why you want to join.
-          </p>
-          <button
-            onClick={handleApplyGeneral}
-            style={{
-              fontSize: 13,
-              color: C.text,
-              background: 'none',
-              border: `0.5px solid ${C.border}`,
-              borderRadius: 8,
-              padding: '8px 16px',
-              cursor: 'pointer',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 500,
-              transition: 'border-color 0.2s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
-          >
-            Send us your resume
-          </button>
         </div>
 
         <div style={{ height: 60 }} />
