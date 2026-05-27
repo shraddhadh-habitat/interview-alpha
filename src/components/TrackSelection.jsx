@@ -211,26 +211,6 @@ export default function TrackSelection({ user, onSelect }) {
             </div>
           </button>
         </div>
-
-        {/* Both option */}
-        <button
-          onClick={() => onSelect('both')}
-          style={{
-            background: 'none',
-            border: '1.5px solid #e4e1db',
-            borderRadius: '10px',
-            padding: '12px 24px',
-            color: '#6b6b6b',
-            fontSize: '0.85rem',
-            cursor: 'pointer',
-            fontWeight: 500,
-            transition: 'all 0.2s ease'
-          }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = '#a78bfa'}
-          onMouseLeave={e => e.currentTarget.style.borderColor = '#e4e1db'}
-        >
-          I'm exploring both tracks — show me a mix
-        </button>
       </div>
     </div>
   );
