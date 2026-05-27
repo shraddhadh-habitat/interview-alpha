@@ -496,10 +496,12 @@ input:focus, textarea:focus {
   .chat-bubble-user,
   .chat-bubble-ai { max-width: 95% !important; }
   .voice-btn-row { flex-direction: column !important; align-items: stretch !important; }
+  .track-selection-grid { grid-template-columns: 1fr !important; }
 }
 
 @media (max-width: 480px) {
   body { font-size: 14px; }
+  .track-selection-grid { grid-template-columns: 1fr !important; }
 }
 
 /* ─── Landing Page Fixes ─── */

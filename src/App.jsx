@@ -33,6 +33,7 @@ import EnvBanner from './components/EnvBanner';
 import DeviceTracker from './components/DeviceTracker';
 import ActivityTicker from './components/ActivityTickerPortal';
 import ExitIntentPopup from './components/ExitIntentPopup';
+import TrackSelection from './components/TrackSelection';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
@@ -378,6 +379,8 @@ export default function App() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [showQuickStart, setShowQuickStart] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState('track'); // 'track' | 'question'
+  const [selectedTrack, setSelectedTrack] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginMessage, setLoginMessage] = useState('');
   const [postLoginDestination, setPostLoginDestination] = useState(null);
@@ -707,7 +710,19 @@ export default function App() {
         </div>
         <Footer />
         {user && !showQuickStart && <ReviewWidget user={user} profile={profile} />}
-        {user && showQuickStart && (
+        {user && showQuickStart && onboardingStep === 'track' && (
+          <TrackSelection
+            user={user}
+            onSelect={async (track) => {
+              if (user) {
+                await supabase.from('profiles').update({ preferred_track: track }).eq('id', user.id);
+              }
+              setSelectedTrack(track);
+              setOnboardingStep('question');
+            }}
+          />
+        )}
+        {user && showQuickStart && onboardingStep === 'question' && (
           <QuickStart
             onDismiss={handleQuickStartDismiss}
             onSessionUsed={onSessionUsed}
