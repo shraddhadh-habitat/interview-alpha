@@ -33,6 +33,7 @@ import EnvBanner from './components/EnvBanner';
 import DeviceTracker from './components/DeviceTracker';
 import ActivityTicker from './components/ActivityTickerPortal';
 import ExitIntentPopup from './components/ExitIntentPopup';
+import ReviewTicker from './components/ReviewTicker';
 import TrackSelection from './components/TrackSelection';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
@@ -838,6 +839,7 @@ export default function App() {
       </div>
       <ActivityTicker />
       <ExitIntentPopup user={user} profile={profile} />
+      <ReviewTicker />
     </AuthProvider>
   );
 }

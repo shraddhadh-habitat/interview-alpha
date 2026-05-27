@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 
 const REVIEWS = [
   // General praise
@@ -69,9 +70,12 @@ export default function ReviewTicker() {
 
   if (!mounted) return null;
 
+  const el = document.getElementById('review-ticker-root');
+  if (!el) return null;
+
   const review = REVIEWS[index];
 
-  return (
+  return ReactDOM.createPortal(
     <div style={{
       position: 'fixed',
       bottom: '24px',
@@ -125,6 +129,7 @@ export default function ReviewTicker() {
           {review.role}
         </p>
       </div>
-    </div>
+    </div>,
+    el
   );
 }
