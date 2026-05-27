@@ -33,6 +33,7 @@ import EnvBanner from './components/EnvBanner';
 import DeviceTracker from './components/DeviceTracker';
 import ActivityTicker from './components/ActivityTickerPortal';
 import ExitIntentPopup from './components/ExitIntentPopup';
+import OnboardingQuestion from './components/OnboardingQuestion';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
@@ -381,6 +382,7 @@ export default function App() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginMessage, setLoginMessage] = useState('');
   const [postLoginDestination, setPostLoginDestination] = useState(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [profileLoaded, setProfileLoaded]   = useState(false);
   const quickStartCheckedRef = useRef(false);
 
@@ -494,6 +496,20 @@ export default function App() {
     };
     updateLastSeen();
   }, [user]);
+
+  // Show onboarding for new users or those triggered in session
+  useEffect(() => {
+    if (user && profileLoaded && sessionStorage.getItem('showOnboarding') === 'true') {
+      setShowOnboarding(true);
+    }
+
+    if (user && profileLoaded && profile) {
+      const neverPracticed = (profile.free_sessions_used ?? 3) === 3;
+      if (neverPracticed) {
+        setShowOnboarding(true);
+      }
+    }
+  }, [user, profileLoaded, profile]);
 
   const onSessionUsed = useCallback(async () => {
     if (!user) return;
@@ -631,6 +647,18 @@ export default function App() {
 
   return (
     <AuthProvider user={user}>
+      {showOnboarding && (
+        <OnboardingQuestion
+          user={user}
+          onComplete={(answer) => {
+            setShowOnboarding(false);
+            setPage('practice');
+          }}
+          onSkip={() => {
+            setShowOnboarding(false);
+          }}
+        />
+      )}
       <DeviceTracker user={user} />
       {showNamePrompt && user && (
         <MissingNameModal
