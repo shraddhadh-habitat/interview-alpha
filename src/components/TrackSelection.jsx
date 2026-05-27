@@ -36,7 +36,7 @@ export default function TrackSelection({ user, profile, onSelect }) {
         </div>
 
         {/* Step label */}
-        <p style={{ fontSize: '0.75rem', color: '#9a9a9a', margin: 0 }}>
+        <p style={{ fontSize: '0.75rem', color: '#9a9a9a', margin: 0, fontWeight: 700 }}>
           Step 1 of 3 — Choose your track
         </p>
 
