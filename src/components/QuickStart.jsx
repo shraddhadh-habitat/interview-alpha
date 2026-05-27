@@ -88,22 +88,19 @@ const DS_QUESTIONS = [
 ];
 
 // Rotate question every 20 minutes using current time
-function getRotatingQuestion(track = 'both') {
+function getRotatingQuestion(track) {
   const minutesSinceEpoch = Math.floor(Date.now() / (1000 * 60));
-  const blockIndex = Math.floor(minutesSinceEpoch / 20);
+  const block = Math.floor(minutesSinceEpoch / 20);
 
-  let questions;
   if (track === 'pm') {
-    questions = PM_QUESTIONS;
-  } else if (track === 'ds') {
-    questions = DS_QUESTIONS;
-  } else {
-    // For 'both', alternate between PM and DS questions
-    const allQuestions = [...PM_QUESTIONS, ...DS_QUESTIONS];
-    questions = allQuestions;
+    return PM_QUESTIONS[block % PM_QUESTIONS.length];
   }
-
-  return questions[blockIndex % questions.length];
+  if (track === 'ds') {
+    return DS_QUESTIONS[block % DS_QUESTIONS.length];
+  }
+  // 'both' — alternate between PM and DS based on block
+  const allQuestions = [...PM_QUESTIONS, ...DS_QUESTIONS];
+  return allQuestions[block % allQuestions.length];
 }
 
 const EXPERT_ANSWER = `This is your chance to think out loud and structure your answer like a real PM/Data Scientist would in an interview.

@@ -498,7 +498,23 @@ export default function App() {
     updateLastSeen();
   }, [user]);
 
-  // OnboardingQuestion disabled: QuickStart now handles first-time user onboarding with rotating questions
+  // Admin test mode for onboarding preview
+  useEffect(() => {
+    if (sessionStorage.getItem('showOnboarding') === 'true') {
+      setShowQuickStart(true);
+      setOnboardingStep('track');
+      setSelectedTrack(null);
+      sessionStorage.removeItem('showOnboarding');
+    }
+
+    const handleTest = () => {
+      setShowQuickStart(true);
+      setOnboardingStep('track');
+      setSelectedTrack(null);
+    };
+    window.addEventListener('testOnboarding', handleTest);
+    return () => window.removeEventListener('testOnboarding', handleTest);
+  }, []);
 
   const onSessionUsed = useCallback(async () => {
     if (!user) return;

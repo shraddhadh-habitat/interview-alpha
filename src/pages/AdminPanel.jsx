@@ -249,7 +249,28 @@ export default function AdminPanel({ user }) {
         <div style={{ marginBottom: 32 }}>
           <div style={{ fontSize: 10, letterSpacing: 5, color: C.green, textTransform: 'uppercase', marginBottom: 8 }}>Admin</div>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 700, color: C.text, marginBottom: 4 }}>Control Panel</h1>
-          <div style={{ fontSize: 11, color: C.textMuted }}>{user.email}</div>
+          <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 16 }}>{user.email}</div>
+
+          {/* Test Onboarding Flow button */}
+          <button
+            onClick={() => {
+              sessionStorage.setItem('showOnboarding', 'true');
+              window.dispatchEvent(new CustomEvent('testOnboarding'));
+              window.location.href = '/';
+            }}
+            style={{
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '10px',
+              padding: '10px 20px',
+              fontWeight: 600,
+              fontSize: '0.85rem',
+              cursor: 'pointer'
+            }}
+          >
+            🧪 Preview Onboarding Flow
+          </button>
         </div>
 
         {/* Stats */}
