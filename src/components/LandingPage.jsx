@@ -409,11 +409,6 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             flexDirection: 'column',
             justifyContent: 'space-between'
           }}>
-            {/* Stars */}
-            <div style={{ marginBottom: '16px' }}>
-              {'⭐'.repeat(5)}
-            </div>
-
             {/* Quote */}
             <p style={{
               fontSize: '0.95rem',
