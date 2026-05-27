@@ -668,7 +668,7 @@ export default function App() {
           {page === 'interview'   && (
             <LandingPage
               user={user}
-              profile={{ ...profile, free_sessions: Math.max(0, FREE_SESSION_LIMIT - profile.free_sessions_used) }}
+              profile={profile}
               onNavigate={(destination) => setPage(destination)}
               onLogin={() => { setPostLoginDestination('practice'); setLoginMessage('Sign up to get AI feedback'); setShowLoginModal(true); }}
             />

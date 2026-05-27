@@ -1,7 +1,9 @@
-export default function FreeSessionCountdown({ freeSessions, user }) {
+export default function FreeSessionCountdown({ profile, user }) {
   // Only show for logged-in users with sessions remaining
   if (!user) return null;
-  if (freeSessions === undefined || freeSessions === null) return null;
+
+  const sessionsUsed = profile?.free_sessions_used ?? 0;
+  const freeSessions = Math.max(0, 3 - sessionsUsed);
 
   const isLow = freeSessions <= 1;
   const isZero = freeSessions === 0;

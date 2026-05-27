@@ -108,7 +108,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           {/* Free Session Countdown */}
           <FreeSessionCountdown
             user={user}
-            freeSessions={profile?.free_sessions ?? 3}
+            profile={profile}
           />
 
           {/* Primary CTA  . inline-block, not full width */}
