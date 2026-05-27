@@ -386,7 +386,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
     const review = ALL_REVIEWS[index];
 
     return (
-      <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
+      <div style={{ background: C.bg, paddingTop: '0', marginTop: '0', paddingBottom: '48px' }}>
         <div style={{
           maxWidth: '680px',
           margin: '0 auto',
@@ -471,31 +471,6 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
                   {review.role}
                 </p>
               </div>
-            </div>
-
-            {/* Dot indicators */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '4px',
-              marginTop: '16px'
-            }}>
-              {ALL_REVIEWS.map((_, i) => (
-                <div
-                  key={i}
-                  onClick={() => { setVisible(false); setTimeout(() => { setIndex(i); setVisible(true); }, 300); }}
-                  style={{
-                    width: i === index ? '16px' : '6px',
-                    height: '6px',
-                    borderRadius: '999px',
-                    background: i === index
-                      ? 'linear-gradient(135deg, #a8e6cf, #a78bfa)'
-                      : '#e4e1db',
-                    transition: 'all 0.3s ease',
-                    cursor: 'pointer'
-                  }}
-                />
-              ))}
             </div>
           </div>
 
@@ -925,7 +900,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
   // Product proof section
   const ProductProofSection = () => (
-    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '0' }}>
+    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '32px' }}>
       <style>{`
         @media (max-width: 768px) {
           .proof-container { padding: 0 20px !important; }
