@@ -1,4 +1,5 @@
 import FreeSessionCountdown from './FreeSessionCountdown';
+import WeeklyActiveBar from './WeeklyActiveBar';
 
 const C = {
   bg: '#FFFFFF',
@@ -67,6 +68,8 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           flex: '0 0 55%',
           maxWidth: '100%',
         }}>
+          <WeeklyActiveBar />
+
           {/* Eyebrow */}
           <div style={{
             fontSize: '12px',
