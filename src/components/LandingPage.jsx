@@ -334,6 +334,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
       <style>{`
         @media (max-width: 768px) {
           .trust-container { padding: 0 20px !important; }
+          .testimonials-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
         }
       `}</style>
       <div className="trust-container" style={{
@@ -342,8 +343,14 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
         margin: '0 auto',
         padding: '0 40px',
       }}>
-        <div style={{ maxWidth: '560px', margin: '0 auto' }}>
-          {/* Testimonial card */}
+        <div className="testimonials-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '24px',
+          maxWidth: '1000px',
+          margin: '0 auto',
+        }}>
+          {/* Shrey C. Card */}
           <div style={{
             background: '#FFFFFF',
             border: '1px solid #E8E6E1',
@@ -356,7 +363,6 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
               fontStyle: 'italic',
               color: '#1B1B18',
               lineHeight: 1.7,
-              marginBottom: '16px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 16px 0',
             }}>
@@ -368,11 +374,85 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
               fontSize: '13px',
               fontWeight: 500,
               color: '#1B1B18',
-              marginBottom: '16px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 16px 0',
             }}>
               Shrey C., Product Manager
+            </p>
+
+            {/* Social proof */}
+            <p style={{
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              color: '#111',
+              margin: '0 0 16px',
+              lineHeight: 1.5,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              Trusted by 4,000+ PM and Data Science candidates preparing for Google, Amazon, Flipkart &amp; more
+            </p>
+
+            {/* Divider */}
+            <div style={{
+              height: '1px',
+              background: '#1B1B18',
+              margin: '16px 0',
+            }} />
+
+            {/* Proof line */}
+            <p style={{
+              fontSize: '13px',
+              color: '#1B1B18',
+              textAlign: 'center',
+              margin: 0,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 700,
+            }}>
+              Thousands signed up · Google · Amazon · Meta · Flipkart prep
+            </p>
+          </div>
+
+          {/* Mridula Rao Card */}
+          <div style={{
+            background: '#FFFFFF',
+            border: '1px solid #E8E6E1',
+            borderRadius: '16px',
+            padding: '24px',
+          }}>
+            {/* Quote */}
+            <p style={{
+              fontSize: '14px',
+              fontStyle: 'italic',
+              color: '#1B1B18',
+              lineHeight: 1.7,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
+            }}>
+              "Just checked out your AMAZING product — wanted to THANK YOU!! I am looking at opportunities now and this is by far one of THE BEST products I have seen."
+            </p>
+
+            {/* Attribution */}
+            <p style={{
+              fontSize: '13px',
+              fontWeight: 500,
+              color: '#1B1B18',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              margin: '0 0 16px 0',
+            }}>
+              Mridula Rao, Job Seeker ·
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                color: '#0A66C2',
+                fontWeight: 700,
+                marginLeft: '4px',
+              }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ display: 'inline', flexShrink: 0 }}>
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.731-2.004 1.438-.103.25-.129.599-.129.948v5.419h-3.554s.051-8.783 0-9.691h3.554v1.372c.429-.661 1.196-1.604 2.905-1.604 2.121 0 3.71 1.328 3.71 4.182v5.741zM5.337 6.556a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.784 13.896H3.553V8.761h3.568v11.691zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                LinkedIn
+              </span>
             </p>
 
             {/* Social proof */}
