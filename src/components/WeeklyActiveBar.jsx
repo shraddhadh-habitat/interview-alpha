@@ -24,7 +24,7 @@ export default function WeeklyActiveBar() {
         animation: 'livePulse 2s ease-in-out infinite'
       }} />
       <span>
-        <strong style={{ color: '#111111' }}>200+ people</strong>
+        <strong style={{ color: '#111111' }}>586 people</strong>
         {' '}practiced this week
       </span>
     </div>
