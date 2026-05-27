@@ -330,163 +330,143 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
   // Trust strip section
   const TrustSection = () => (
-    <div style={{ background: C.bg, paddingTop: '32px', paddingBottom: '32px' }}>
+    <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
       <style>{`
-        @media (max-width: 768px) {
-          .trust-container { padding: 0 20px !important; }
-          .testimonials-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+        @media (max-width: 640px) {
+          .testimonial-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
         }
       `}</style>
-      <div className="trust-container" style={{
-        maxWidth: '1080px',
-        width: '100%',
+      <div style={{
+        maxWidth: '900px',
         margin: '0 auto',
-        padding: '0 40px',
+        padding: '0 24px',
       }}>
-        <div className="testimonials-grid" style={{
+        {/* Two cards side by side */}
+        <div className="testimonial-grid" style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '24px',
-          maxWidth: '1000px',
-          margin: '0 auto',
+          gap: '20px',
+          marginBottom: '24px',
         }}>
-          {/* Shrey C. Card */}
+
+          {/* Card 1 — Shrey C. */}
           <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
+            background: '#ffffff',
             borderRadius: '16px',
-            padding: '24px',
+            padding: '28px',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+            border: '1px solid #e4e1db',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
           }}>
-            {/* Quote */}
             <p style={{
-              fontSize: '14px',
-              fontStyle: 'italic',
-              color: '#1B1B18',
+              fontSize: '0.92rem',
+              color: '#111',
               lineHeight: 1.7,
+              fontStyle: 'italic',
+              marginBottom: '20px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
+              margin: '0 0 20px 0',
             }}>
               "This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions."
             </p>
-
-            {/* Attribution */}
-            <p style={{
-              fontSize: '13px',
-              fontWeight: 500,
-              color: '#1B1B18',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
-            }}>
-              Shrey C., Product Manager
-            </p>
-
-            {/* Social proof */}
-            <p style={{
-              fontSize: '0.82rem',
-              fontWeight: 700,
-              color: '#111',
-              margin: '0 0 16px',
-              lineHeight: 1.5,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              Trusted by 4,000+ PM and Data Science candidates preparing for Google, Amazon, Flipkart &amp; more
-            </p>
-
-            {/* Divider */}
-            <div style={{
-              height: '1px',
-              background: '#1B1B18',
-              margin: '16px 0',
-            }} />
-
-            {/* Proof line */}
-            <p style={{
-              fontSize: '13px',
-              color: '#1B1B18',
-              textAlign: 'center',
-              margin: 0,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 700,
-            }}>
-              Thousands signed up · Google · Amazon · Meta · Flipkart prep
-            </p>
+            <div>
+              <p style={{
+                fontWeight: 700,
+                color: '#111',
+                fontSize: '0.88rem',
+                margin: '0 0 2px',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                Shrey C.
+              </p>
+              <p style={{
+                color: '#9a9a9a',
+                fontSize: '0.78rem',
+                margin: 0,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                Product Manager
+              </p>
+            </div>
           </div>
 
-          {/* Mridula Rao Card */}
+          {/* Card 2 — Mridula R. */}
           <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
+            background: '#ffffff',
             borderRadius: '16px',
-            padding: '24px',
+            padding: '28px',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+            border: '1px solid #e4e1db',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
           }}>
-            {/* Quote */}
             <p style={{
-              fontSize: '14px',
-              fontStyle: 'italic',
-              color: '#1B1B18',
+              fontSize: '0.92rem',
+              color: '#111',
               lineHeight: 1.7,
+              fontStyle: 'italic',
+              marginBottom: '20px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
+              margin: '0 0 20px 0',
             }}>
               "Just checked out your AMAZING product — wanted to THANK YOU!! I am looking at opportunities now and this is by far one of THE BEST products I have seen."
             </p>
-
-            {/* Attribution */}
-            <p style={{
-              fontSize: '13px',
-              fontWeight: 500,
-              color: '#1B1B18',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
-            }}>
-              Mridula Rao, Job Seeker ·
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div>
+                <p style={{
+                  fontWeight: 700,
+                  color: '#111',
+                  fontSize: '0.88rem',
+                  margin: '0 0 2px',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  Mridula R.
+                </p>
+                <p style={{
+                  color: '#9a9a9a',
+                  fontSize: '0.78rem',
+                  margin: 0,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  Job Seeker
+                </p>
+              </div>
+              {/* LinkedIn badge */}
               <span style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '4px',
-                color: '#0A66C2',
-                fontWeight: 700,
-                marginLeft: '4px',
+                background: '#f0f7ff',
+                border: '1px solid #bfdbfe',
+                borderRadius: '999px',
+                padding: '3px 10px',
+                fontSize: '0.7rem',
+                color: '#0a66c2',
+                fontWeight: 600,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                flexShrink: 0,
               }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ display: 'inline', flexShrink: 0 }}>
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.731-2.004 1.438-.103.25-.129.599-.129.948v5.419h-3.554s.051-8.783 0-9.691h3.554v1.372c.429-.661 1.196-1.604 2.905-1.604 2.121 0 3.71 1.328 3.71 4.182v5.741zM5.337 6.556a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.784 13.896H3.553V8.761h3.568v11.691zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-                LinkedIn
+                in LinkedIn
               </span>
-            </p>
-
-            {/* Social proof */}
-            <p style={{
-              fontSize: '0.82rem',
-              fontWeight: 700,
-              color: '#111',
-              margin: '0 0 16px',
-              lineHeight: 1.5,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              Trusted by 4,000+ PM and Data Science candidates preparing for Google, Amazon, Flipkart &amp; more
-            </p>
-
-            {/* Divider */}
-            <div style={{
-              height: '1px',
-              background: '#1B1B18',
-              margin: '16px 0',
-            }} />
-
-            {/* Proof line */}
-            <p style={{
-              fontSize: '13px',
-              color: '#1B1B18',
-              textAlign: 'center',
-              margin: 0,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 700,
-            }}>
-              Thousands signed up · Google · Amazon · Meta · Flipkart prep
-            </p>
+            </div>
           </div>
         </div>
+
+        {/* ONE social proof line below both cards */}
+        <p style={{
+          textAlign: 'center',
+          fontSize: '0.85rem',
+          color: '#6b6b6b',
+          fontWeight: 600,
+          margin: 0,
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
+          Trusted by 4,000+ PM and Data Science candidates preparing for{' '}
+          <span style={{ color: '#111', fontWeight: 700 }}>Google, Amazon, Flipkart & more</span>
+        </p>
       </div>
     </div>
   );
