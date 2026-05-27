@@ -28,6 +28,30 @@ function StatCard({ label, value, color }) {
   );
 }
 
+function WeeklyActiveAdminCard() {
+  const [count, setCount] = useState(null);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      const { count: raw } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true })
+        .gte('updated_at', oneWeekAgo.toISOString());
+      setCount(raw || 0);
+    };
+    fetch();
+  }, []);
+
+  return (
+    <div style={{ padding: '20px 24px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16 }}>
+      <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Active This Week</div>
+      <div style={{ fontSize: 32, fontWeight: 700, fontFamily: "'Instrument Serif', serif", color: C.green }}>{count === null ? '...' : count}</div>
+    </div>
+  );
+}
+
 export default function AdminPanel({ user }) {
   const [requests, setRequests]     = useState([]);
   const [users, setUsers]           = useState([]);
@@ -230,10 +254,11 @@ export default function AdminPanel({ user }) {
 
         {/* Stats */}
         {!loading && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 32 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
             <StatCard label="Pending Payments"   value={stats.pending} color={stats.pending > 0 ? C.yellow : C.textMuted} />
             <StatCard label="Active Pro Users"   value={stats.active}  color={C.success} />
             <StatCard label="Total Users"        value={stats.total}   color={C.text} />
+            <WeeklyActiveAdminCard />
           </div>
         )}
 
