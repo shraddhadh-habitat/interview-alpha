@@ -5,19 +5,19 @@ const REVIEWS = [
   { name: 'Ishaan Malhotra', role: 'PM Aspirant', text: 'This is exactly what I needed before my interviews. The AI feedback is brutally honest.' },
   { name: 'Aanya Srivastava', role: 'MBA Student', text: 'I answered 3 questions and already knew where I was going wrong. No other platform does this.' },
   { name: 'Sofia Laurent', role: 'Product Manager', text: 'The expert rewrite feature alone is worth it. I could see exactly how a senior PM would answer.' },
-  { name: 'Kabir Rathore', role: 'DS Aspirant', text: 'Finally a platform that gives real feedback and not just model answers to memorise.' },
+  { name: 'Akash Kamble', role: 'DS Aspirant', text: 'Finally a platform that gives real feedback and not just model answers to memorise.' },
   { name: 'Zara Kapoor', role: 'Job Seeker', text: 'I was so nervous about interviews. After a week on InterviewAlpha I actually feel ready.' },
 
   // Subscription mentions
   { name: 'Dhruv Pandit', role: 'Data Scientist', text: 'Subscribed after my first free session. Worth every penny — I got an offer within 3 weeks.' },
   { name: 'Myra Tiwari', role: 'PM Aspirant', text: 'I upgraded to Pro and it was 100% worth it. Unlimited practice changed how I prepare.' },
-  { name: 'Vihaan Nair', role: 'MBA Student', text: 'The Pro plan pays for itself if you land even one good role. Subscribed without hesitation.' },
+  { name: 'Sagar Mane', role: 'MBA Student', text: 'The Pro plan pays for itself if you land even one good role. Subscribed without hesitation.' },
   { name: 'Chloe Bennett', role: 'Product Manager', text: 'Worth every penny. I use it every day in the week before interviews now.' },
   { name: 'Rehan Ansari', role: 'DS Student', text: 'Upgraded to Pro and I practice daily. My confidence has gone through the roof.' },
 
   // Score and improvement
   { name: 'Tanvi Deshpande', role: 'PM Aspirant', text: 'Scored 4/10 on my first try. A week later I was consistently hitting 8. That\'s the product working.' },
-  { name: 'Aryan Gupta', role: 'Data Scientist', text: 'My SQL answers went from average to structured in 5 sessions. The feedback is that specific.' },
+  { name: 'Vishal Jadhav', role: 'Data Scientist', text: 'My SQL answers went from average to structured in 5 sessions. The feedback is that specific.' },
   { name: 'Gauri Joshi', role: 'Job Seeker', text: 'I went from blanking on metrics questions to answering them with confidence. Game changer.' },
   { name: 'Lucas Harrison', role: 'PM Aspirant', text: 'The 8 competency scoring is what sets this apart. You know exactly what to fix.' },
   { name: 'Noor Farooqi', role: 'MBA Student', text: 'I improved my product sense score by 3 points in one week. The tips actually work.' },
@@ -34,11 +34,11 @@ const REVIEWS = [
   { name: 'Aria Mehta', role: 'PM Aspirant', text: 'Other platforms give you answers to memorise. This one teaches you to think. Huge difference.' },
   { name: 'Siddharth Rao', role: 'MBA Student', text: 'The expert rewrite showed me how a senior PM actually structures their thinking. Nothing else does this.' },
   { name: 'Nina Castellano', role: 'DS Aspirant', text: 'I have used YouTube, books, and prep courses. InterviewAlpha is the only thing that actually simulates a real interview.' },
-  { name: 'Advait Kulkarni', role: 'Product Manager', text: 'Worth every penny compared to paid coaching. You get better feedback here at a fraction of the cost.' },
+  { name: 'Pooja Gavhane', role: 'Product Manager', text: 'Worth every penny compared to paid coaching. You get better feedback here at a fraction of the cost.' },
 
   // Specific features
   { name: 'Mia Robertson', role: 'PM Aspirant', text: 'The voice answer feature is brilliant. I can practice anywhere — even on my commute.' },
-  { name: 'Noah Patel', role: 'DS Student', text: 'Love that they have company-specific questions. Practicing Flipkart and Amazon questions separately is so useful.' },
+  { name: 'Rahul Waghmare', role: 'DS Student', text: 'Love that they have company-specific questions. Practicing Flipkart and Amazon questions separately is so useful.' },
   { name: 'Elena Volkov', role: 'Job Seeker', text: 'The salary guide is a bonus I didn\'t expect. Now I know exactly what to ask for in negotiations.' },
   { name: 'Wei Zhongming', role: 'Data Scientist', text: 'Questions change and feel fresh every time. I never feel like I am just rehearsing the same thing.' },
   { name: 'Luna Arora', role: 'MBA Student', text: 'The ATS resume checker found 3 things I had never noticed. Fixed them and started getting more callbacks.' },
