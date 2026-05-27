@@ -31,6 +31,7 @@ import QuickStart from './components/QuickStart';
 import ReviewWidget from './components/ReviewWidget';
 import EnvBanner from './components/EnvBanner';
 import DeviceTracker from './components/DeviceTracker';
+import ActivityTicker from './components/ActivityTicker';
 
 const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
 
@@ -658,6 +659,9 @@ export default function App() {
           onUpgradeClick={() => setPage('upgrade')}
           isAdmin={isAdmin}
         />
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid #E8E6E1' }}>
+          <ActivityTicker />
+        </div>
         <div style={{ flex: 1 }}>
           {page === 'interview'   && (
             <LandingPage
