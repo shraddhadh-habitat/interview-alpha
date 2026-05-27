@@ -11,17 +11,16 @@ export default function TrackSelection({ user, profile, onSelect }) {
       justifyContent: 'center',
       padding: '24px'
     }}>
-      {/* Progress bar */}
+      {/* Header with progress */}
       <div style={{
-        position: 'absolute',
-        top: '24px',
-        left: '50%',
-        transform: 'translateX(-50%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '8px'
+        gap: '8px',
+        marginBottom: '32px',
+        width: '100%'
       }}>
+        {/* Progress dots */}
         <div style={{ display: 'flex', gap: '6px' }}>
           {[1,2,3].map(i => (
             <div key={i} style={{
@@ -34,16 +33,20 @@ export default function TrackSelection({ user, profile, onSelect }) {
             }} />
           ))}
         </div>
+
+        {/* Step label */}
         <p style={{ fontSize: '0.75rem', color: '#9a9a9a', margin: 0 }}>
           Step 1 of 3 — Choose your track
+        </p>
+
+        {/* Welcome name */}
+        <p style={{ fontSize: '0.88rem', color: '#6b6b6b', margin: 0, fontWeight: 600 }}>
+          Welcome, {user?.user_metadata?.full_name || user?.user_metadata?.name || profile?.display_name || 'there'}! 👋
         </p>
       </div>
 
       {/* Main content */}
       <div style={{ maxWidth: '720px', width: '100%', textAlign: 'center' }}>
-        <p style={{ fontSize: '0.82rem', color: '#9a9a9a', marginBottom: '8px', fontWeight: 600 }}>
-          Welcome, {user?.user_metadata?.full_name || user?.user_metadata?.name || profile?.display_name || user?.email?.split('@')[0]?.replace(/[0-9]/g, '')?.replace(/\./g, ' ')}! 👋
-        </p>
         <h2 style={{
           fontSize: 'clamp(1.4rem, 3vw, 2rem)',
           fontWeight: 800,
