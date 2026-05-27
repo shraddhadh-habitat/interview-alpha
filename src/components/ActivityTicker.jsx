@@ -2,16 +2,10 @@ import { useState, useEffect } from 'react';
 import { getRandomActivity } from '../lib/activityFeed';
 
 export default function ActivityTicker() {
-  const [visible, setVisible] = useState(false);
-  const [activity, setActivity] = useState('');
+  const [visible, setVisible] = useState(true);
+  const [activity, setActivity] = useState('Ishaan answered a PM question · 2 mins ago');
 
   useEffect(() => {
-    // Show after 3 seconds
-    const initial = setTimeout(() => {
-      setActivity(getRandomActivity());
-      setVisible(true);
-    }, 3000);
-
     // Rotate every 8 seconds
     const interval = setInterval(() => {
       setVisible(false);
@@ -22,12 +16,9 @@ export default function ActivityTicker() {
     }, 8000);
 
     return () => {
-      clearTimeout(initial);
       clearInterval(interval);
     };
   }, []);
-
-  if (!activity) return null;
 
   return (
     <div style={{
