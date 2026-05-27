@@ -88,17 +88,23 @@ const DS_QUESTIONS = [
 ];
 
 // Rotate question every 20 minutes using current time
-function getRotatingQuestion() {
-  const allQuestions = [...PM_QUESTIONS, ...DS_QUESTIONS];
+function getRotatingQuestion(track = 'both') {
   const minutesSinceEpoch = Math.floor(Date.now() / (1000 * 60));
   const blockIndex = Math.floor(minutesSinceEpoch / 20);
-  return allQuestions[blockIndex % allQuestions.length];
-}
 
-const rotatingQ = getRotatingQuestion();
-const QUESTION = rotatingQ.question;
-const QUESTION_TIP = rotatingQ.tip;
-const QUESTION_CATEGORY = rotatingQ.category;
+  let questions;
+  if (track === 'pm') {
+    questions = PM_QUESTIONS;
+  } else if (track === 'ds') {
+    questions = DS_QUESTIONS;
+  } else {
+    // For 'both', alternate between PM and DS questions
+    const allQuestions = [...PM_QUESTIONS, ...DS_QUESTIONS];
+    questions = allQuestions;
+  }
+
+  return questions[blockIndex % questions.length];
+}
 
 const EXPERT_ANSWER = `This is your chance to think out loud and structure your answer like a real PM/Data Scientist would in an interview.
 
@@ -377,7 +383,11 @@ function FeedbackPanel({ result }) {
 }
 
 // ─── Main QuickStart component ───
-export default function QuickStart({ onDismiss, onSessionUsed, onExplore }) {
+export default function QuickStart({ onDismiss, onSessionUsed, onExplore, selectedTrack = 'both' }) {
+  const rotatingQ = getRotatingQuestion(selectedTrack);
+  const QUESTION = rotatingQ.question;
+  const QUESTION_TIP = rotatingQ.tip;
+  const QUESTION_CATEGORY = rotatingQ.category;
   const [mode, setMode]               = useState('text'); // 'text' | 'voice'
   const [textAnswer, setTextAnswer]   = useState('');
   const [phase, setPhase]             = useState('input'); // 'input' | 'loading' | 'feedback'
@@ -589,8 +599,8 @@ Be honest and specific. Return ONLY the JSON, no markdown, no preamble.`;
                   className="qs-toggle"
                   onClick={() => setMode('text')}
                   style={{
-                    background: mode === 'text' ? C.green : C.bg,
-                    borderColor: mode === 'text' ? C.green : C.border,
+                    background: mode === 'text' ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : C.bg,
+                    borderColor: mode === 'text' ? 'transparent' : C.border,
                     color: mode === 'text' ? '#fff' : C.textMuted,
                   }}
                 >

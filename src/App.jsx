@@ -727,6 +727,7 @@ export default function App() {
             onDismiss={handleQuickStartDismiss}
             onSessionUsed={onSessionUsed}
             onExplore={handleQuickStartExplore}
+            selectedTrack={selectedTrack}
           />
         )}
         {user && showDemo && <DemoTutorial onClose={handleDemoClose} />}
