@@ -8,8 +8,9 @@ export default function TrackSelection({ user, profile, onSelect }) {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
-      padding: '24px'
+      overflowY: 'auto',
+      WebkitOverflowScrolling: 'touch',
+      padding: '24px 16px 40px'
     }}>
       {/* Header with progress */}
       <div style={{
