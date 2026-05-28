@@ -154,7 +154,7 @@ export default function FeedbackPreview() {
       </div>
 
       {/* Feedback layout - wrapper */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
 
         {/* TOP ROW - two columns */}
         <div style={{
