@@ -79,9 +79,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             fontSize: '0.72rem',
             color: '#9a9a9a',
             fontWeight: 600,
-            marginBottom: '16px',
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            margin: 0
+            marginBottom: '16px'
           }}>
             AI interview coaching for{' '}
             <span style={{
@@ -89,7 +87,8 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              fontWeight: 700
+              fontWeight: 700,
+              whiteSpace: 'nowrap'
             }}>
               Product Management
             </span>
@@ -99,7 +98,8 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              fontWeight: 700
+              fontWeight: 700,
+              whiteSpace: 'nowrap'
             }}>
               Data Science
             </span>
