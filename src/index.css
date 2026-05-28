@@ -481,6 +481,12 @@ button[class*="speaker"] svg {
   100% { transform: scale(2.5); opacity: 0; }
 }
 
+/* ─── Progress Bar Animation ─── */
+@keyframes progressBar {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
 /* ─── Review Prompt Animations ─── */
 @keyframes slideInRight {
   from { opacity: 0; transform: translateX(20px); }

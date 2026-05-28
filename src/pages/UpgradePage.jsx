@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
 const C = {
@@ -11,6 +11,29 @@ const C = {
   red: '#1B1B18', redLight: 'rgba(27, 27, 24, 0.08)', redBorder: 'rgba(27, 27, 24, 0.12)',
   yellow: '#FDCD34', yellowLight: 'rgba(253, 205, 52, 0.12)', yellowBorder: 'rgba(253, 205, 52, 0.2)',
 };
+
+const PRICING_TESTIMONIALS = [
+  { name: 'Dhruv Pandit', role: 'Data Scientist', text: 'Subscribed after my first free session. Worth every penny. Got an offer within 3 weeks.' },
+  { name: 'Simranpreet Kaur', role: 'MBA Student', text: 'Upgraded to Pro and never looked back. The unlimited practice alone is worth it.' },
+  { name: 'Tanvi Deshpande', role: 'PM Aspirant', text: 'I was hesitant to pay but the free sessions convinced me. Best decision of my prep journey.' },
+  { name: 'Vishal Jadhav', role: 'Data Scientist', text: 'Cheaper than one coaching session and 10 times more useful. Subscribed on day 2.' },
+  { name: 'Chloe Bennett', role: 'Product Manager', text: 'Worth every penny. I use it the week before every interview now.' },
+  { name: 'Omkar Patil', role: 'PM Aspirant', text: 'The Pro plan paid for itself the day I got my offer. No brainer.' },
+  { name: 'Myra Tiwari', role: 'PM Aspirant', text: 'Unlimited practice changed everything. I went from 4 out of 10 to 8 in two weeks.' },
+  { name: 'Harjot Singh Bedi', role: 'PM Aspirant', text: 'Subscribed for a quarter during placement season. Cleared 3 interviews back to back.' },
+  { name: 'Rujuta Mahajan', role: 'DS Aspirant', text: 'Worth every rupee. The expert rewrite shows you things no coach ever told me.' },
+  { name: 'Lucas Harrison', role: 'PM Aspirant', text: 'I compared this to paid coaching at 5x the price. InterviewAlpha wins easily.' },
+  { name: 'Shreyas Joglekar', role: 'Data Scientist', text: 'Quarterly plan during campus placements was the smartest thing I did this year.' },
+  { name: 'Navdeep Dhaliwal', role: 'DS Student', text: 'Upgraded after my second free session. My confidence went through the roof.' },
+  { name: 'Aria Mehta', role: 'PM Aspirant', text: 'The company-specific questions on Pro are incredible. Practiced Flipkart questions the night before and cleared the round.' },
+  { name: 'Prachi Kulkarni', role: 'Job Seeker', text: 'Used free sessions first, subscribed the same day. By session 5 I knew this was different.' },
+  { name: 'Siddharth Rao', role: 'MBA Student', text: 'The yearly plan works out to less than a coffee a day. For interview prep that actually works, it is nothing.' },
+  { name: 'Pooja Gavhane', role: 'Product Manager', text: 'Worth every penny compared to paid coaching. Better feedback at a fraction of the cost.' },
+  { name: 'Gurleen Sandhu', role: 'DS Aspirant', text: 'Subscribed for one month before my Google interview. The structured feedback is what made the difference.' },
+  { name: 'Mia Robertson', role: 'PM Aspirant', text: 'I practice on my commute using voice mode. Pro is worth it just for that feature.' },
+  { name: 'Nguyen Bao Chau', role: 'Data Scientist', text: 'The salary guide on Pro alone was worth subscribing. Negotiated 20 percent higher than my initial offer.' },
+  { name: 'Manreet Oberoi', role: 'MBA Student', text: 'Switched from a 15000 rupee coaching program to InterviewAlpha Pro. No regrets whatsoever.' },
+];
 
 const PLANS = {
   monthly:   { label: 'Monthly',   price: 799,   period: '/month',   saves: null,          badge: null },
@@ -38,6 +61,97 @@ const globalStyles = `
     .up-payment { grid-template-columns: 1fr !important; gap: 24px !important; }
   }
 `;
+
+function PricingTestimonialTicker() {
+  const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setIndex(i => (i + 1) % PRICING_TESTIMONIALS.length);
+        setVisible(true);
+      }, 400);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const review = PRICING_TESTIMONIALS[index];
+
+  return (
+    <div style={{
+      maxWidth: 600,
+      margin: '0 auto 32px',
+      padding: '0 24px'
+    }}>
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(168,230,207,0.1), rgba(167,139,250,0.1))',
+        border: '1.5px solid rgba(167,139,250,0.2)',
+        borderRadius: 14,
+        padding: '20px 24px',
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(6px)',
+        transition: 'opacity 0.4s ease, transform 0.4s ease',
+        minHeight: 100,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 16
+      }}>
+        {/* Avatar */}
+        <div style={{
+          width: 40,
+          height: 40,
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '0.85rem',
+          fontWeight: 700,
+          color: '#fff',
+          flexShrink: 0
+        }}>
+          {review.name.charAt(0)}
+        </div>
+
+        <div style={{ flex: 1 }}>
+          <p style={{
+            fontSize: '0.85rem',
+            color: '#111',
+            lineHeight: 1.6,
+            fontStyle: 'italic',
+            margin: '0 0 8px'
+          }}>
+            "{review.text}"
+          </p>
+          <p style={{ fontWeight: 700, fontSize: '0.78rem', color: '#111', margin: '0 0 2px' }}>
+            {review.name}
+          </p>
+          <p style={{ fontSize: '0.72rem', color: '#9a9a9a', margin: 0 }}>
+            {review.role}
+          </p>
+        </div>
+      </div>
+
+      {/* Progress bar showing rotation */}
+      <div style={{
+        height: 3,
+        background: '#e4e1db',
+        borderRadius: 999,
+        marginTop: 8,
+        overflow: 'hidden'
+      }}>
+        <div style={{
+          height: '100%',
+          background: 'linear-gradient(90deg, #a8e6cf, #a78bfa)',
+          borderRadius: 999,
+          animation: 'progressBar 4s linear infinite'
+        }} />
+      </div>
+    </div>
+  );
+}
 
 function StatusBanner({ profile }) {
   const status = profile?.subscription_status;
@@ -325,6 +439,9 @@ export default function UpgradePage({ user, profile, onBack }) {
                 ))}
               </div>
             </div>
+
+            {/* Rotating testimonials ticker */}
+            <PricingTestimonialTicker />
 
             {/* Pricing cards */}
             <div style={{
