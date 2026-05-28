@@ -76,6 +76,7 @@ I would compute accuracy per segment, identify the worst-performing slices, then
 
 // ============================================================
 // COMPONENT
+// Updated spacing: AI Score and Expert Rewrite cards in tight 8px gap
 // ============================================================
 export default function FeedbackPreview() {
   const [activeTrack, setActiveTrack] = useState('pm');
