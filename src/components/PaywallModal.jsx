@@ -46,7 +46,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
           fontSize: 26, fontWeight: 700, color: C.text,
           marginBottom: 12, lineHeight: 1.2,
         }}>
-          Upgrade to keep practising
+          Upgrade to keep practicing
         </h2>
 
         <p style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.75, marginBottom: 28, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
