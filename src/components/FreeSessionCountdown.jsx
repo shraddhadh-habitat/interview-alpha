@@ -25,7 +25,7 @@ export default function FreeSessionCountdown({ profile, user }) {
       ⚠️ You've used all your free sessions.
       <span
         onClick={() => window.location.href = '/upgrade'}
-        style={{ textDecoration: 'underline', cursor: 'pointer' }}
+        style={{ textDecoration: 'underline', cursor: 'pointer', fontWeight: 600 }}
       >
         Upgrade to continue
       </span>
