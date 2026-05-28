@@ -178,25 +178,13 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
           {/* Secondary link */}
           <p style={{ fontSize: '0.82rem', marginTop: '12px', color: '#6b6b6b', lineHeight: 1.5 }}>
-            <button
-              onClick={() => onNavigate('practice')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#6b6b6b',
-                textDecoration: 'underline',
-                fontWeight: 500,
-                cursor: 'pointer',
-                padding: 0,
-                fontSize: 'inherit',
-                fontFamily: 'inherit',
-                transition: 'color 0.2s'
-              }}
-              onMouseEnter={e => e.currentTarget.style.color = C.text}
-              onMouseLeave={e => e.currentTarget.style.color = '#6b6b6b'}
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); onNavigate('practice'); }}
+              style={{ color: '#6b6b6b', textDecoration: 'underline', fontWeight: 500 }}
             >
               Or browse questions free.
-            </button>
+            </a>
             {' '}Thousands of{' '}
             <strong style={{
               background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
