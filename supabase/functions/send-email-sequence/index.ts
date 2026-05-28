@@ -3,8 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 const supabase = createClient(
-  Deno.env.get("SUPABASE_URL")!,
-  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+  "https://wcqfqwzrdjaohhkrytpq.supabase.co",
+  Deno.env.get("SERVICE_ROLE_KEY")!
 );
 
 // FROM email — change to communications@interviewalpha.ai once domain verified
