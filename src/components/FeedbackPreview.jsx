@@ -218,7 +218,7 @@ export default function FeedbackPreview() {
         </div>
 
         {/* RIGHT: Score + Expert Rewrite */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
 
           {/* Score card */}
           <div style={{
