@@ -152,7 +152,7 @@ export default function FeedbackPreview() {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gap: '20px',
-        alignItems: 'start'
+        alignItems: 'stretch'
       }}>
 
         {/* LEFT: Question + Answer */}
@@ -195,7 +195,8 @@ export default function FeedbackPreview() {
             background: '#fafafa',
             borderRadius: '14px',
             padding: '20px',
-            border: '1px solid #e4e1db'
+            border: '1px solid #e4e1db',
+            flex: 1
           }}>
             <p style={{
               fontSize: '0.72rem',
