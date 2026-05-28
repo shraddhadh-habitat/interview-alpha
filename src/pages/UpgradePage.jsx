@@ -344,102 +344,6 @@ export default function UpgradePage({ user, profile, onBack }) {
         {/* Step 1  . Plan selection */}
         {step === 1 && (
           <div style={{ animation: 'fadeUp 0.35s cubic-bezier(0.22,1,0.36,1)' }}>
-            {/* What you unlock with Pro */}
-            <div style={{
-              maxWidth: 700,
-              margin: '0 auto 48px',
-              padding: '0 24px'
-            }}>
-              <h2 style={{
-                textAlign: 'center',
-                fontSize: '1.1rem',
-                fontWeight: 700,
-                color: '#111',
-                marginBottom: 24
-              }}>
-                What changes when you go Pro
-              </h2>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {[
-                  {
-                    free: '3 practice sessions total',
-                    pro: 'Unlimited sessions, every day',
-                    icon: '🔁',
-                    impact: 'Practice as much as you need before any interview'
-                  },
-                  {
-                    free: 'PM questions only on free tier',
-                    pro: 'PM + Data Science + all future tracks',
-                    icon: '🎯',
-                    impact: 'One platform for your entire interview prep'
-                  },
-                  {
-                    free: 'General questions',
-                    pro: 'Company-specific: Google, Amazon, Flipkart, Meta, Razorpay',
-                    icon: '🏢',
-                    impact: 'Practice the exact questions asked at your target company'
-                  },
-                  {
-                    free: 'Basic feedback',
-                    pro: 'Full 8-competency score + expert rewrite on every answer',
-                    icon: '✨',
-                    impact: 'Know exactly what a senior interviewer would say instead'
-                  },
-                  {
-                    free: 'No resume tools',
-                    pro: 'ATS Checker + Resume Optimizer + Templates',
-                    icon: '📄',
-                    impact: 'Get through the screening before the interview even starts'
-                  },
-                  {
-                    free: 'No salary data',
-                    pro: 'Full Salary Guide with negotiation scripts',
-                    icon: '💰',
-                    impact: 'Know your worth and how to ask for it'
-                  },
-                ].map(({ free, pro, icon, impact }) => (
-                  <div key={icon} style={{
-                    background: '#ffffff',
-                    borderRadius: 12,
-                    padding: '16px 20px',
-                    border: '1px solid #e4e1db',
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: 16,
-                    alignItems: 'center'
-                  }}>
-                    <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                      <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: 1, filter: 'grayscale(1)', opacity: 0.5 }}>
-                        {icon}
-                      </span>
-                      <p style={{ fontSize: '0.82rem', color: '#9a9a9a', margin: 0, lineHeight: 1.5 }}>
-                        {free}
-                      </p>
-                    </div>
-                    <div style={{
-                      display: 'flex',
-                      gap: 10,
-                      alignItems: 'flex-start',
-                      background: 'linear-gradient(135deg, rgba(168,230,207,0.08), rgba(167,139,250,0.08))',
-                      borderRadius: 8,
-                      padding: 10
-                    }}>
-                      <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: 1 }}>{icon}</span>
-                      <div>
-                        <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#111', margin: '0 0 3px' }}>
-                          {pro}
-                        </p>
-                        <p style={{ fontSize: '0.75rem', color: '#6b6b6b', margin: 0 }}>
-                          {impact}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             {/* Rotating testimonials ticker */}
             <PricingTestimonialTicker />
 
@@ -659,6 +563,102 @@ export default function UpgradePage({ user, profile, onBack }) {
                 </p>
                 <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#111', margin: '0 0 2px' }}>Dhruv Pandit</p>
                 <p style={{ fontSize: '0.75rem', color: '#9a9a9a', margin: 0 }}>Data Scientist</p>
+              </div>
+            </div>
+
+            {/* What you unlock with Pro */}
+            <div style={{
+              maxWidth: 700,
+              margin: '0 auto 48px',
+              padding: '0 24px'
+            }}>
+              <h2 style={{
+                textAlign: 'center',
+                fontSize: '1.1rem',
+                fontWeight: 700,
+                color: '#111',
+                marginBottom: 24
+              }}>
+                What changes when you go Pro
+              </h2>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {[
+                  {
+                    free: '3 practice sessions total',
+                    pro: 'Unlimited sessions, every day',
+                    icon: '🔁',
+                    impact: 'Practice as much as you need before any interview'
+                  },
+                  {
+                    free: 'PM questions only on free tier',
+                    pro: 'PM + Data Science + all future tracks',
+                    icon: '🎯',
+                    impact: 'One platform for your entire interview prep'
+                  },
+                  {
+                    free: 'General questions',
+                    pro: 'Company-specific: Google, Amazon, Flipkart, Meta, Razorpay',
+                    icon: '🏢',
+                    impact: 'Practice the exact questions asked at your target company'
+                  },
+                  {
+                    free: 'Basic feedback',
+                    pro: 'Full 8-competency score + expert rewrite on every answer',
+                    icon: '✨',
+                    impact: 'Know exactly what a senior interviewer would say instead'
+                  },
+                  {
+                    free: 'No resume tools',
+                    pro: 'ATS Checker + Resume Optimizer + Templates',
+                    icon: '📄',
+                    impact: 'Get through the screening before the interview even starts'
+                  },
+                  {
+                    free: 'No salary data',
+                    pro: 'Full Salary Guide with negotiation scripts',
+                    icon: '💰',
+                    impact: 'Know your worth and how to ask for it'
+                  },
+                ].map(({ free, pro, icon, impact }) => (
+                  <div key={icon} style={{
+                    background: '#ffffff',
+                    borderRadius: 12,
+                    padding: '16px 20px',
+                    border: '1px solid #e4e1db',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: 16,
+                    alignItems: 'center'
+                  }}>
+                    <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                      <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: 1, filter: 'grayscale(1)', opacity: 0.5 }}>
+                        {icon}
+                      </span>
+                      <p style={{ fontSize: '0.82rem', color: '#9a9a9a', margin: 0, lineHeight: 1.5 }}>
+                        {free}
+                      </p>
+                    </div>
+                    <div style={{
+                      display: 'flex',
+                      gap: 10,
+                      alignItems: 'flex-start',
+                      background: 'linear-gradient(135deg, rgba(168,230,207,0.08), rgba(167,139,250,0.08))',
+                      borderRadius: 8,
+                      padding: 10
+                    }}>
+                      <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: 1 }}>{icon}</span>
+                      <div>
+                        <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#111', margin: '0 0 3px' }}>
+                          {pro}
+                        </p>
+                        <p style={{ fontSize: '0.75rem', color: '#6b6b6b', margin: 0 }}>
+                          {impact}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
