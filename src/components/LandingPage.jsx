@@ -1147,8 +1147,8 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
   return (
     <div>
       <HeroSection />
-      <QuestionCardsSection />
       <FeedbackPreview />
+      <QuestionCardsSection />
       <GuidedPathsSection />
       <ProductProofSection />
       <TrustSection />
