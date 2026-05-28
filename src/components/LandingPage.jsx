@@ -78,9 +78,9 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           <p style={{
             textTransform: 'uppercase',
             letterSpacing: '0.12em',
-            fontSize: '0.72rem',
-            color: '#9a9a9a',
-            fontWeight: 800,
+            fontSize: '0.95rem',
+            color: '#111',
+            fontWeight: 600,
             marginBottom: '16px'
           }}>
             AI interview coaching for{' '}
@@ -177,7 +177,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           )}
 
           {/* Secondary link */}
-          <p style={{ fontSize: '0.82rem', marginTop: '12px', color: '#6b6b6b', lineHeight: 1.5, fontWeight: 800 }}>
+          <p style={{ fontSize: '0.95rem', marginTop: '12px', color: '#111', lineHeight: 1.5, fontWeight: 600 }}>
             <a href="#" style={{ color: '#6b6b6b', textDecoration: 'underline', fontWeight: 500 }}>
               Or browse questions free.
             </a>
@@ -206,9 +206,9 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           <p style={{
             textTransform: 'uppercase',
             letterSpacing: '0.1em',
-            fontSize: '0.72rem',
-            color: '#9a9a9a',
-            fontWeight: 800,
+            fontSize: '0.95rem',
+            color: '#111',
+            fontWeight: 600,
             margin: 0,
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
@@ -487,12 +487,12 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
           {/* Social proof line */}
           <p style={{
-            fontSize: '0.85rem',
-            color: '#444',
+            fontSize: '0.95rem',
+            color: '#111',
             lineHeight: 1.6,
             marginTop: '16px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontWeight: 800
+            fontWeight: 600
           }}>
             Dhruv found out he was scoring 4 out of 10 on product sense. Two weeks later he had an offer.
             Mridula called it one of the best products she had ever seen.

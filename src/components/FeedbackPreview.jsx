@@ -96,9 +96,9 @@ export default function FeedbackPreview() {
         <p style={{
           textTransform: 'uppercase',
           letterSpacing: '0.12em',
-          fontSize: '0.72rem',
-          color: '#9a9a9a',
-          fontWeight: 800,
+          fontSize: '0.95rem',
+          color: '#111',
+          fontWeight: 600,
           marginBottom: '10px'
         }}>
           See it in action
@@ -112,7 +112,7 @@ export default function FeedbackPreview() {
         }}>
           This is what your feedback looks like
         </h2>
-        <p style={{ color: '#6b6b6b', fontSize: '0.92rem', fontWeight: 800 }}>
+        <p style={{ color: '#111', fontSize: '0.95rem', fontWeight: 600 }}>
           AI precision. Human expertise. Guaranteed.
         </p>
       </div>
@@ -319,10 +319,10 @@ export default function FeedbackPreview() {
       {/* Bottom CTA */}
       <p style={{
         textAlign: 'center',
-        fontSize: '0.85rem',
-        color: '#6b6b6b',
+        fontSize: '0.95rem',
+        color: '#111',
         marginTop: '28px',
-        fontWeight: 800
+        fontWeight: 600
       }}>
         Every answer you give gets feedback this detailed, in under 60 seconds.
       </p>
