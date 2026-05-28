@@ -54,7 +54,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
       <div className="hero-container" style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        gridTemplateColumns: '1.2fr 0.8fr',
         gap: '40px',
         alignItems: 'center',
         maxWidth: '1100px',
@@ -69,6 +69,8 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
         <div className="hero-left" style={{
           flex: '0 0 55%',
           maxWidth: '100%',
+          minWidth: 0,
+          overflow: 'visible'
         }}>
           <WeeklyActiveBar />
 
@@ -87,8 +89,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              fontWeight: 700,
-              whiteSpace: 'nowrap'
+              fontWeight: 700
             }}>
               Product Management
             </span>
@@ -98,8 +99,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              fontWeight: 700,
-              whiteSpace: 'nowrap'
+              fontWeight: 700
             }}>
               Data Science
             </span>
@@ -200,15 +200,11 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           </button>
 
           <p style={{
-            fontSize: '0.78rem',
+            fontSize: '0.82rem',
             marginTop: '10px',
             lineHeight: 1.4,
             fontWeight: 500,
-            color: '#6b6b6b',
-            whiteSpace: 'nowrap',
-            overflow: 'visible',
-            width: 'max-content',
-            maxWidth: '100%'
+            color: '#6b6b6b'
           }}>
             Thousands of{' '}
             <strong style={{
