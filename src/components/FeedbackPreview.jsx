@@ -83,7 +83,9 @@ export default function FeedbackPreview() {
     <section style={{
       maxWidth: '960px',
       margin: '0 auto',
-      padding: '48px 24px'
+      padding: '48px 24px',
+      position: 'relative',
+      zIndex: 1
     }}>
       {/* Section header */}
       <div style={{ textAlign: 'center', marginBottom: '32px' }}>
@@ -156,7 +158,7 @@ export default function FeedbackPreview() {
       }}>
 
         {/* LEFT: Question + Answer */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
 
           {/* Question */}
           <div style={{
@@ -282,8 +284,7 @@ export default function FeedbackPreview() {
             background: '#ffffff',
             borderRadius: '14px',
             padding: '20px',
-            border: '1.5px solid rgba(167,139,250,0.3)',
-            boxShadow: '0 2px 8px rgba(167,139,250,0.08)'
+            border: '1px solid #e4e1db'
           }}>
             <div style={{
               display: 'flex',
