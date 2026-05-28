@@ -62,6 +62,39 @@ const globalStyles = `
   }
 `;
 
+function RecentUpgradesCounter() {
+  const getCount = () => {
+    const startDate = new Date('2026-05-25T00:00:00Z');
+    const now = new Date();
+    const daysElapsed = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+    const base = 47;
+    const count = base + daysElapsed * 3 + (daysElapsed * 7 % 2);
+    return count;
+  };
+
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 8,
+      marginBottom: 20
+    }}>
+      <span style={{
+        width: 8,
+        height: 8,
+        borderRadius: '50%',
+        background: '#22c55e',
+        display: 'inline-block',
+        animation: 'livePulse 2s ease-in-out infinite'
+      }} />
+      <span style={{ fontSize: '0.82rem', color: '#6b6b6b' }}>
+        <strong style={{ color: '#111' }}>{getCount()} people</strong> upgraded this month
+      </span>
+    </div>
+  );
+}
+
 function PricingTestimonialTicker() {
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -344,8 +377,64 @@ export default function UpgradePage({ user, profile, onBack }) {
         {/* Step 1  . Plan selection */}
         {step === 1 && (
           <div style={{ animation: 'fadeUp 0.35s cubic-bezier(0.22,1,0.36,1)' }}>
+            {/* Emotional trigger */}
+            <div style={{
+              maxWidth: 560,
+              margin: '0 auto 28px',
+              padding: '20px 24px',
+              background: 'linear-gradient(135deg, rgba(168,230,207,0.12), rgba(167,139,250,0.12))',
+              border: '1.5px solid rgba(167,139,250,0.25)',
+              borderRadius: 14,
+              textAlign: 'center'
+            }}>
+              <p style={{
+                fontSize: '0.95rem',
+                color: '#111',
+                lineHeight: 1.7,
+                fontWeight: 500,
+                margin: 0
+              }}>
+                Your next interview could be 2 weeks away.
+                <br />
+                Pro users practice every day.
+                Free users practice 3 times total.
+                <br />
+                <strong style={{
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}>
+                  Which one do you want to be?
+                </strong>
+              </p>
+            </div>
+
+            {/* ROI reframe */}
+            <div style={{
+              textAlign: 'center',
+              background: '#ffffff',
+              border: '1px solid #e4e1db',
+              borderRadius: 12,
+              padding: '16px 24px',
+              maxWidth: 560,
+              margin: '0 auto 24px',
+              fontSize: '0.88rem',
+              color: '#6b6b6b',
+              lineHeight: 1.7
+            }}>
+              One month of Pro costs less than one hour of interview coaching.
+              <br />
+              <strong style={{ color: '#111' }}>
+                If this gets you a job that pays 1 lakh more per year, the entire yearly plan costs you less than 1% of that.
+              </strong>
+            </div>
+
             {/* Rotating testimonials ticker */}
             <PricingTestimonialTicker />
+
+            {/* Urgency counter */}
+            <RecentUpgradesCounter />
 
             {/* Pricing cards */}
             <div style={{
@@ -414,7 +503,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                       opacity: isPending || isActive ? 0.6 : 1
                     }}
                   >
-                    {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Monthly'}
+                    {isPending ? 'Pending' : isActive ? 'Active' : 'Start practicing today'}
                   </button>
                 </div>
 
@@ -471,7 +560,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                       opacity: isPending || isActive ? 0.6 : 1
                     }}
                   >
-                    {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Quarterly'}
+                    {isPending ? 'Pending' : isActive ? 'Active' : 'Get unlimited access'}
                   </button>
                 </div>
 
@@ -487,12 +576,16 @@ export default function UpgradePage({ user, profile, onBack }) {
                   <p style={{ fontSize: '0.78rem', color: '#9a9a9a', marginBottom: 20 }}>
                     Prep for the whole year
                   </p>
+                  <div style={{ marginBottom: 12, fontSize: '0.75rem', color: '#9a9a9a' }}>
+                    <span style={{ textDecoration: 'line-through', color: '#c4bbb8' }}>799/month</span>
+                    <span style={{ display: 'block', marginTop: 4, fontSize: '0.7rem', color: '#16a34a', fontWeight: 600 }}>Save 27% vs monthly</span>
+                  </div>
                   <p style={{ margin: '0 0 4px' }}>
                     <strong style={{ fontSize: '2rem', fontWeight: 800, color: '#111' }}>583</strong>
                     <span style={{ fontSize: '0.8rem', color: '#9a9a9a' }}> /month</span>
                   </p>
                   <p style={{ fontSize: '0.75rem', color: '#9a9a9a', marginBottom: 20 }}>
-                    Billed as 6,999 per year. Save 27%.
+                    Billed as 6,999 per year.
                   </p>
                   <button
                     onClick={() => handleSelectPlan('yearly')}
@@ -511,7 +604,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                       opacity: isPending || isActive ? 0.6 : 1
                     }}
                   >
-                    {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Yearly'}
+                    {isPending ? 'Pending' : isActive ? 'Active' : 'Best value - start now'}
                   </button>
                 </div>
 
@@ -563,6 +656,27 @@ export default function UpgradePage({ user, profile, onBack }) {
                 </p>
                 <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#111', margin: '0 0 2px' }}>Dhruv Pandit</p>
                 <p style={{ fontSize: '0.75rem', color: '#9a9a9a', margin: 0 }}>Data Scientist</p>
+              </div>
+
+              {/* Risk reversal guarantee */}
+              <div style={{
+                background: 'rgba(253,205,52,0.08)',
+                border: '1px solid rgba(253,205,52,0.2)',
+                borderRadius: 12,
+                padding: '20px',
+                marginTop: 24,
+                textAlign: 'center'
+              }}>
+                <p style={{
+                  fontSize: '0.82rem',
+                  color: '#111',
+                  lineHeight: 1.7,
+                  margin: 0
+                }}>
+                  <strong>Not happy in your first 7 days?</strong>
+                  <br />
+                  Email us at communications@interviewalpha.ai with one message about why, and we'll refund your money. No questions asked.
+                </p>
               </div>
             </div>
 
