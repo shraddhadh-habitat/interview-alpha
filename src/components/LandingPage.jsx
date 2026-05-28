@@ -199,8 +199,17 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             or browse questions free
           </button>
 
-          <p style={{ fontSize: '0.78rem', color: '#9a9a9a', marginTop: '12px' }}>
-            Thousands of PM and Data Science questions and answers to practise from
+          <p style={{ fontSize: '0.88rem', marginTop: '16px', lineHeight: 1.5, fontWeight: 500, color: '#6b6b6b' }}>
+            Thousands of{' '}
+            <strong style={{
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              PM and Data Science
+            </strong>
+            {' '}questions and answers to practise from
           </p>
         </div>
 
