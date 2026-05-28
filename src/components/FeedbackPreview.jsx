@@ -198,12 +198,10 @@ export default function FeedbackPreview() {
             border: '1px solid #e4e1db'
           }}>
             <p style={{
-              fontSize: '0.7rem',
-              fontWeight: 700,
+              fontSize: '0.72rem',
+              fontWeight: 600,
               color: '#9a9a9a',
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-              margin: '0 0 10px'
+              marginBottom: '10px'
             }}>
               Sample answer
             </p>
