@@ -73,17 +73,37 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           <WeeklyActiveBar />
 
           {/* Eyebrow */}
-          <div style={{
-            fontSize: '12px',
-            letterSpacing: '3px',
+          <p style={{
             textTransform: 'uppercase',
-            color: '#1B1B18',
-            fontWeight: 700,
+            letterSpacing: '0.12em',
+            fontSize: '0.72rem',
+            color: '#9a9a9a',
+            fontWeight: 600,
             marginBottom: '16px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
+            margin: 0
           }}>
-            AI that scores your answers like a real interviewer
-          </div>
+            AI interview coaching for{' '}
+            <span style={{
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              fontWeight: 700
+            }}>
+              Product Management
+            </span>
+            {' '}and{' '}
+            <span style={{
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              fontWeight: 700
+            }}>
+              Data Science
+            </span>
+          </p>
 
           {/* Headline */}
           <h1 className="hero-headline" style={{
@@ -107,7 +127,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             maxWidth: '420px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            Practice real interview questions. See what worked, what didn't, and how to improve in under 2 minutes.
+            Practice real PM and Data Science interview questions. Get AI feedback scored across 8 competencies. See exactly what a senior interviewer would say instead.
           </p>
 
           {/* Free Session Countdown */}
@@ -177,6 +197,43 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           >
             or browse questions free
           </button>
+
+          {/* Track pills */}
+          <div style={{
+            display: 'flex',
+            gap: '10px',
+            marginTop: '16px',
+            flexWrap: 'wrap'
+          }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: '#ffffff',
+              border: '1px solid #e4e1db',
+              borderRadius: '999px',
+              padding: '5px 14px',
+              fontSize: '0.78rem',
+              color: '#6b6b6b',
+              fontWeight: 500
+            }}>
+              📦 500+ PM questions
+            </span>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: '#ffffff',
+              border: '1px solid #e4e1db',
+              borderRadius: '999px',
+              padding: '5px 14px',
+              fontSize: '0.78rem',
+              color: '#6b6b6b',
+              fontWeight: 500
+            }}>
+              📊 600+ DS questions
+            </span>
+          </div>
         </div>
 
         {/* RIGHT COLUMN  . How It Works in vertical layout */}
@@ -619,7 +676,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 12px 0',
             }}>
-              Zomato notices that restaurants with 4.1 star ratings get 3x more orders than restaurants with 4.0 stars. But your analysis shows that the 4.0 rated restaurants actually have better food quality based on repeat order rates. What's happening, how would you prove it, and what would you recommend to fix the rating system?
+              Flipkart's recommendation model shows higher CTR after an update but revenue per session drops by 8%. How do you explain this and what do you do next?
             </p>
             <button onClick={() => {
               localStorage.setItem('ia_sample_question', JSON.stringify({
@@ -962,7 +1019,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              Product sense, strategy, behavioral, metrics, technical
+              PM: Product sense, strategy, metrics, behavioral<br />DS: Statistics, ML, SQL, probability, case studies
             </p>
           </div>
 
@@ -995,7 +1052,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              Google, Amazon, Meta, Apple, Flipkart, Razorpay
+              Google, Amazon, Flipkart, Meesho, PhonePe, Razorpay, Zomato, Swiggy
             </p>
           </div>
 
@@ -1061,7 +1118,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              See how a senior PM would answer the same question
+              See how a senior PM or Data Scientist would answer the same question
             </p>
           </div>
 
