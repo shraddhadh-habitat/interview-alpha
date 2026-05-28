@@ -201,11 +201,11 @@ export default function UpgradePage({ user, profile, onBack }) {
               {[
                 ['AI Sessions',           'Limited', 'Unlimited'],
                 ['Practice Evaluations',  'Limited', 'Unlimited'],
-                ['ATS Resume Checker',    '—', 'Unlimited'],
-                ['Resume Optimizer',      '—', 'Unlimited'],
-                ['Resume Templates',      '—', '✓'],
+                ['ATS Resume Checker',    '-', 'Unlimited'],
+                ['Resume Optimizer',      '-', 'Unlimited'],
+                ['Resume Templates',      '-', '✓'],
                 ['Progress Tracking',     '✓', '✓'],
-                ['Company Interview Prep', '—', '✓'],
+                ['Company Interview Prep', '-', '✓'],
               ].map(([feat, freeVal, proVal]) => (
                 <div key={feat} style={{ display: 'contents' }}>
                   <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{feat}</div>

@@ -190,7 +190,7 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
           and
           <strong style={{ color: '#111' }}> Data Science </strong>
           aspirants. Instead of reading prep guides, you practice by actually answering
-          real interview questions — and get instant, structured feedback scored across
+          real interview questions. Get instant, structured feedback scored across
           8 professional competencies.
         </p>
 
@@ -201,7 +201,7 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
           maxWidth: '680px',
           margin: '0 auto 16px'
         }}>
-          Every answer you give is evaluated the way a real interviewer would — on your
+          Every answer you give is evaluated the way a real interviewer would. Based on your
           problem framing, structure, depth, and communication. You also see an expert
           rewrite so you know not just <em>that</em> you could improve, but exactly <em>how</em>.
         </p>
@@ -213,7 +213,7 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
           maxWidth: '680px',
           margin: '0 auto 0'
         }}>
-          No fluff. No passive content. Just deliberate practice that moves the needle —
+          No fluff. No passive content. Just deliberate practice that moves the needle.
           in under 2 minutes per session.
         </p>
       </section>

@@ -526,7 +526,7 @@ export default function AdminPanel({ user }) {
                               {u.device_type === 'android' ? '🤖 Android'
                                 : u.device_type === 'ios' ? '🍎 Apple iOS'
                                 : u.device_type === 'desktop' ? '💻 Desktop'
-                                : <span style={{ color: C.textMuted, fontSize: '0.85rem' }}>—</span>}
+                                : <span style={{ color: C.textMuted, fontSize: '0.85rem' }}>-</span>}
                             </td>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.email || ' - '}</td>
                             <td style={{ padding: '12px 14px', color: u.display_name ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.display_name || ' - '}</td>

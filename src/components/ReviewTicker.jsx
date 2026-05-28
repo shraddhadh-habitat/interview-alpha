@@ -10,7 +10,7 @@ const REVIEWS = [
   { name: 'Kyaw Zin Thant', role: 'Job Seeker', text: 'I was so nervous about interviews. After a week on InterviewAlpha I actually feel ready.' },
 
   // Subscription mentions
-  { name: 'Dhruv Pandit', role: 'Data Scientist', text: 'Subscribed after my first free session. Worth every penny — I got an offer within 3 weeks.' },
+  { name: 'Dhruv Pandit', role: 'Data Scientist', text: 'Subscribed after my first free session. Worth every penny. Got an offer within 3 weeks.' },
   { name: 'Myra Tiwari', role: 'PM Aspirant', text: 'I upgraded to Pro and it was 100% worth it. Unlimited practice changed how I prepare.' },
   { name: 'Sagar Mane', role: 'MBA Student', text: 'The Pro plan pays for itself if you land even one good role. Subscribed without hesitation.' },
   { name: 'Chloe Bennett', role: 'Product Manager', text: 'Worth every penny. I use it every day in the week before interviews now.' },
@@ -38,7 +38,7 @@ const REVIEWS = [
   { name: 'Pooja Gavhane', role: 'Product Manager', text: 'Worth every penny compared to paid coaching. You get better feedback here at a fraction of the cost.' },
 
   // Specific features
-  { name: 'Mia Robertson', role: 'PM Aspirant', text: 'The voice answer feature is brilliant. I can practice anywhere — even on my commute.' },
+  { name: 'Mia Robertson', role: 'PM Aspirant', text: 'The voice answer feature is brilliant. I can practice anywhere, even on my commute.' },
   { name: 'Rahul Waghmare', role: 'DS Student', text: 'Love that they have company-specific questions. Practicing Flipkart and Amazon questions separately is so useful.' },
   { name: 'Elena Volkov', role: 'Job Seeker', text: 'The salary guide is a bonus I didn\'t expect. Now I know exactly what to ask for in negotiations.' },
   { name: 'Nguyen Bao Chau', role: 'Data Scientist', text: 'Questions change and feel fresh every time. I never feel like I am just rehearsing the same thing.' },

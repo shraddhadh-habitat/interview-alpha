@@ -1,37 +1,37 @@
 const PM_QUESTIONS = [
   {
     category: 'PRODUCT MANAGEMENT',
-    question: "Zepto delivers in 10 minutes. A new competitor promises 7 minutes. You're the PM — do you try to match them, or do you differentiate? What's your strategy?",
-    tip: "Think about user value, unit economics, and long-term positioning — not just speed."
+    question: "Zepto delivers in 10 minutes. A new competitor promises 7 minutes. You're the PM. Do you try to match them, or do you differentiate? What's your strategy?",
+    tip: "Think about user value, unit economics, and long-term positioning. Focus on more than just speed."
   },
   {
     category: 'PRODUCT MANAGEMENT',
     question: "CRED has 35M users with high credit scores but low daily active usage. You're the PM. What's the one feature you build next and why?",
-    tip: "Focus on the engagement gap — why do users have the app but not open it daily?"
+    tip: "Focus on the engagement gap. Why do users have the app but not open it daily?"
   },
   {
     category: 'PRODUCT MANAGEMENT',
-    question: "Google Maps knows where 1 billion people are at any moment. You're the PM — what's one monetization idea that doesn't creep users out?",
+    question: "Google Maps knows where 1 billion people are at any moment. You're the PM. What's one monetization idea that doesn't creep users out?",
     tip: "Balance business value with user trust. Think about opt-in models and contextual relevance."
   },
   {
     category: 'PRODUCT MANAGEMENT',
-    question: "PhonePe wants to expand into rural India where 60% of users are first-time smartphone owners. You're the PM — what's your onboarding strategy?",
+    question: "PhonePe wants to expand into rural India where 60% of users are first-time smartphone owners. You're the PM. What's your onboarding strategy?",
     tip: "Think about literacy, language, trust barriers, and what 'simple' really means for this audience."
   },
   {
     category: 'PRODUCT MANAGEMENT',
-    question: "Notion is losing users to a simpler competitor. Your retention data shows users who create 3+ pages in week 1 never churn. You're the PM — what do you do?",
+    question: "Notion is losing users to a simpler competitor. Your retention data shows users who create 3+ pages in week 1 never churn. You're the PM. What do you do?",
     tip: "You've found your activation metric. Now think about how to engineer that behavior."
   },
   {
     category: 'PRODUCT MANAGEMENT',
-    question: "Ola's ride cancellation rate by drivers is 18%. You're the PM — diagnose the root cause and propose a solution without hurting driver earnings.",
+    question: "Ola's ride cancellation rate by drivers is 18%. You're the PM. Diagnose the root cause and propose a solution without hurting driver earnings.",
     tip: "Think about driver incentives, surge mechanics, and what trade-offs each solution creates."
   },
   {
     category: 'PRODUCT MANAGEMENT',
-    question: "LinkedIn wants to launch a feature for students with no work experience. You're the PM — what do you build and how do you measure success?",
+    question: "LinkedIn wants to launch a feature for students with no work experience. You're the PM. What do you build and how do you measure success?",
     tip: "Define who the user really is, what they need vs. want, and what success looks like in 6 months."
   },
 ];
@@ -45,7 +45,7 @@ const DS_QUESTIONS = [
   {
     category: 'DATA SCIENCE',
     question: "You built a churn model for a D2C brand. It flags 10,000 users monthly but the sales team can only call 500. How do you decide which 500?",
-    tip: "This is about prioritization under constraint — think expected value, not just churn probability."
+    tip: "This is about prioritization under constraint. Think expected value, not just churn probability."
   },
   {
     category: 'DATA SCIENCE',
@@ -70,7 +70,7 @@ const DS_QUESTIONS = [
   {
     category: 'DATA SCIENCE',
     question: "A food delivery app sees a sudden 40% spike in average delivery time on a Tuesday afternoon. You have 10 minutes to present findings to the CEO. What do you do?",
-    tip: "Think fast diagnosis — segment by city, restaurant, driver, time of day. Where does the spike concentrate?"
+    tip: "Think fast diagnosis. Segment by city, restaurant, driver, time of day. Where does the spike concentrate?"
   },
 ];
 

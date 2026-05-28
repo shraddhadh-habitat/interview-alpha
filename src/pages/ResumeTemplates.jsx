@@ -51,7 +51,7 @@ const templates = [
 const tips = [
   'Keep it to one page unless you have 10+ years of experience',
   'Start every bullet point with an action verb and include a number',
-  'Remove "References available upon request" — it wastes space',
+  'Remove "References available upon request" - it wastes space',
   'Use a standard font: Calibri, Arial, or Garamond at 10-11pt',
   'Save as PDF unless the application specifically asks for DOCX',
 ];

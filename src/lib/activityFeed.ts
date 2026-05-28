@@ -1,5 +1,5 @@
 const NAMES = [
-  // Indian — less common
+  // Indian - less common
   'Aanya', 'Ishaan', 'Zara', 'Vihaan', 'Kiara',
   'Advait', 'Tara', 'Rehan', 'Myra', 'Aryan',
   'Noor', 'Kabir', 'Ira', 'Dhruv', 'Saira',

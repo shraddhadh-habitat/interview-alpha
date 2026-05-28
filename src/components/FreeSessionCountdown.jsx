@@ -22,7 +22,7 @@ export default function FreeSessionCountdown({ profile, user }) {
       fontWeight: 600,
       color: '#dc2626'
     }}>
-      ⚠️ You've used all your free sessions —
+      ⚠️ You've used all your free sessions.
       <span
         onClick={() => window.location.href = '/upgrade'}
         style={{ textDecoration: 'underline', cursor: 'pointer' }}
@@ -66,7 +66,7 @@ export default function FreeSessionCountdown({ profile, user }) {
         color: isLow ? '#dc2626' : '#15803d'
       }}>
         {isLow
-          ? '⚠️ Only 1 free session left — use it now'
+          ? '⚠️ Only 1 free session left. Use it now'
           : `${freeSessions} free session${freeSessions !== 1 ? 's' : ''} remaining`
         }
       </span>

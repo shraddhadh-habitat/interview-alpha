@@ -19,7 +19,7 @@ const NAV_H = 60;
 const PRO_TIPS = [
   "Use the CIRCLES framework for product sense: Comprehend, Identify, Report, Cut, List, Evaluate, Summarize.",
   "Always start execution answers with clarifying the goal and defining success metrics.",
-  "In behavioral questions, use STAR: Situation, Task, Action, Result — then add what you learned.",
+  "In behavioral questions, use STAR: Situation, Task, Action, Result. Then add what you learned.",
   "For metrics questions, think: North Star metric, Input metrics, Counter metrics, Guardrails.",
   "Amazon interviews map everything to Leadership Principles. Know all 16 by heart.",
 ];

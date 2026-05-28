@@ -798,7 +798,7 @@ export default function App() {
                 You've used all 3 free sessions
               </h2>
               <p style={{ color: '#6b6b6b', marginBottom: '24px', lineHeight: 1.6, fontSize: '0.95rem' }}>
-                You're making real progress. Upgrade to keep practicing — unlimited sessions, all tracks, full feedback.
+                You're making real progress. Upgrade to keep practicing: unlimited sessions, all tracks, full feedback.
               </p>
               <button
                 onClick={() => { setShowUpgradePrompt(false); setPage('upgrade'); }}
@@ -816,7 +816,7 @@ export default function App() {
                   fontFamily: "'Plus Jakarta Sans', sans-serif"
                 }}
               >
-                Upgrade — from ₹799/month
+                Upgrade - from ₹799/month
               </button>
               <button
                 onClick={() => setShowUpgradePrompt(false)}

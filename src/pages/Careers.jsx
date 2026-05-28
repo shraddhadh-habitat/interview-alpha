@@ -134,7 +134,7 @@ export default function Careers() {
               InterviewAlpha is growing fast and we need sharp, driven interns who can help us
               reach PM and Data Science aspirants across India. You'll work directly with the
               founder, own real campaigns, and see your work impact thousands of job seekers.
-              This is not a coffee-fetching internship — you'll have real ownership and real results
+              This is not a coffee-fetching internship. You'll have real ownership and real results
               to show on your resume.
             </p>
           </div>
@@ -156,7 +156,7 @@ export default function Careers() {
                 'Represent InterviewAlpha at campus events, webinars, and placement preparation groups',
                 'Create and distribute content (posts, reels, stories) that resonates with job seekers',
                 'Build relationships with placement cells, student clubs, and career counselors',
-                'Track and report on outreach metrics — signups, conversions, engagement',
+                'Track and report on outreach metrics: signups, conversions, engagement',
                 'Gather user feedback and share insights with the product team',
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
@@ -193,7 +193,7 @@ export default function Careers() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {[
                 '✅ Final year BE / B.Tech or MBA student (campus placement season experience is a plus)',
-                '✅ Strong communicator — comfortable talking to people, online and offline',
+                '✅ Strong communicator. Comfortable talking to people, online and offline',
                 '✅ Self-starter who doesn\'t need to be told what to do every day',
                 '✅ Genuinely interested in careers, hiring, and helping people succeed',
                 '✅ Active on LinkedIn or other social platforms',
@@ -229,7 +229,7 @@ export default function Careers() {
             }}>
               {[
                 { icon: '📜', text: 'Official internship certificate' },
-                { icon: '🚀', text: 'Real ownership — not busywork' },
+                { icon: '🚀', text: 'Real ownership, not busywork' },
                 { icon: '🤝', text: 'Direct mentorship from founder' },
                 { icon: '📊', text: 'Measurable results for your resume' },
                 { icon: '🌐', text: 'Letter of recommendation' },
@@ -274,7 +274,7 @@ export default function Careers() {
               Send your resume and a 2-line note on why you're the right fit.
             </p>
             <a
-              href="mailto:shraddhadh@gmail.com?subject=Application: Marketing & Sales Intern — InterviewAlpha&body=Hi Shraddha,%0A%0AI'm applying for the Marketing & Sales Intern role at InterviewAlpha.%0A%0AAbout me:%0A%0AWhy I'm a good fit:%0A%0AResume attached."
+              href="mailto:shraddhadh@gmail.com?subject=Application: Marketing and Sales Intern - InterviewAlpha&body=Hi Shraddha,%0A%0AI'm applying for the Marketing and Sales Intern role at InterviewAlpha.%0A%0AAbout me:%0A%0AWhy I'm a good fit:%0A%0AResume attached."
               style={{
                 display: 'inline-block',
                 background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
@@ -286,7 +286,7 @@ export default function Careers() {
                 fontSize: '0.95rem'
               }}
             >
-              Apply Now — Email Us →
+              Apply Now - Email Us →
             </a>
             <p style={{
               fontSize: '0.75rem',

@@ -7,7 +7,7 @@
   --text-muted: #9a9a9a;       /* helper text */
   --border-subtle: #e4e1db;    /* card borders */
 
-  /* Rainbow gradient — used on brand wordmark, numbers, and accents */
+  /* Rainbow gradient - used on brand wordmark, numbers, and accents */
   --gradient-rainbow: linear-gradient(
     90deg,
     #f4a632 0%,    /* amber  */
@@ -569,7 +569,7 @@ a[class*="answer"],
 }
 
 /* ============================================
-   INTERVIEWALPHA BRAND THEME — COMPREHENSIVE
+   INTERVIEWALPHA BRAND THEME - COMPREHENSIVE
    ============================================ */
 
 /* --- WELCOME BACK GREETING --- */
@@ -836,7 +836,7 @@ html, body {
     overflow-x: hidden !important;
   }
 
-  /* Nav tabs — horizontal scroll on mobile */
+  /* Nav tabs - horizontal scroll on mobile */
   nav,
   [class*="navbar"],
   [class*="nav-container"],
@@ -855,7 +855,7 @@ html, body {
     display: none;
   }
 
-  /* Each nav tab — don't compress */
+  /* Each nav tab - don't compress */
   nav a,
   nav button,
   [class*="nav-tab"],
@@ -867,7 +867,7 @@ html, body {
     min-height: 40px !important;
   }
 
-  /* Sub-tabs — horizontal scroll with hidden scrollbar */
+  /* Sub-tabs - horizontal scroll with hidden scrollbar */
   [class*="sub-tab"],
   [class*="subtab"],
   [class*="tab-bar"],
@@ -898,7 +898,7 @@ html, body {
     font-size: 0.85rem !important;
   }
 
-  /* CTA Buttons — full width on mobile */
+  /* CTA Buttons - full width on mobile */
   button[class*="cta"],
   button[class*="submit"],
   button[class*="check"],
@@ -926,7 +926,7 @@ html, body {
     width: 100% !important;
   }
 
-  /* Leave a Review button — compact on mobile */
+  /* Leave a Review button - compact on mobile */
   [class*="leave"],
   [class*="review-float"],
   button[class*="review"] {
@@ -963,7 +963,7 @@ html, body {
     }
   }
 
-  /* Hamburger menu button — compact */
+  /* Hamburger menu button - compact */
   [class*="hamburger"],
   [class*="menu-toggle"],
   [class*="mobile-menu"],
@@ -993,7 +993,7 @@ html, body {
     fill: #ffffff !important;
   }
 
-  /* Pricing grid — stack on mobile */
+  /* Pricing grid - stack on mobile */
   [class*="pricing"],
   [class*="plan"],
   [class*="upgrade"] {

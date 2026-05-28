@@ -14,7 +14,7 @@ export default function ReviewPrompt({ score, userName, onSubmit, onDismiss }) {
     if (star >= 4) {
       setStep('write');
     } else {
-      // Low rating — ask for feedback privately
+      // Low rating - ask for feedback privately
       setStep('write');
     }
   };
@@ -86,7 +86,7 @@ export default function ReviewPrompt({ score, userName, onSubmit, onDismiss }) {
               fontWeight: 800, fontSize: '1.2rem',
               color: '#111', marginBottom: '8px', textAlign: 'center'
             }}>
-              You scored {score}/10 — nice work!
+              You scored {score}/10. Nice work!
             </h3>
             <p style={{
               color: '#6b6b6b', fontSize: '0.88rem',

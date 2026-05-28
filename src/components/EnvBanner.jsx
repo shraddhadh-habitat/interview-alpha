@@ -5,7 +5,7 @@ export default function EnvBanner() {
   const bannerStyle = env === 'staging'
     ? {
         background: 'linear-gradient(135deg, #f97316, #ef4444)',  // orange-red for staging
-        label: '⚠️ STAGING ENVIRONMENT — Not live'
+        label: '⚠️ STAGING ENVIRONMENT - Not live'
       }
     : {
         background: 'linear-gradient(135deg, #22c55e, #16a34a)',  // green for local

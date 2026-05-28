@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 // ============================================================
-// TRACKS DATA — Add new tracks here in future
+// TRACKS DATA: Add new tracks here in future
 // Each track needs: id, label, emoji, color, example
 // ============================================================
 const TRACKS = [
@@ -12,8 +12,8 @@ const TRACKS = [
     color: '#a78bfa',
     example: {
       category: 'PRODUCT MANAGEMENT',
-      question: "Zepto delivers in 10 minutes. A competitor just announced 7-minute delivery. You're the PM — do you match them or differentiate? What's your strategy?",
-      sampleAnswer: "I wouldn't chase the 7-minute promise immediately. First, I'd look at whether delivery speed is actually the #1 churn reason — it might be product quality or pricing. If data shows speed matters, I'd A/B test 8-min delivery in 2 pilot cities before committing infra costs. Meanwhile I'd differentiate on reliability — guaranteed 10 mins, every time — since broken promises hurt more than slow ones.",
+      question: "Zepto delivers in 10 minutes. A competitor just announced 7-minute delivery. You're the PM. Do you match them or differentiate? What's your strategy?",
+      sampleAnswer: "I wouldn't chase the 7-minute promise immediately. First, I'd look at whether delivery speed is actually the #1 churn reason. It might be product quality or pricing. If data shows speed matters, I'd A/B test 8-min delivery in 2 pilot cities before committing infra costs. Meanwhile I'd differentiate on reliability. Guaranteed 10 mins, every time. Since broken promises hurt more than slow ones.",
       overallScore: 7,
       competencies: [
         { label: 'Problem Framing',      score: 8 },
@@ -25,7 +25,7 @@ const TRACKS = [
         { label: 'Trade-off Analysis',   score: 7 },
         { label: 'Execution Clarity',    score: 6 },
       ],
-      expertRewrite: "Before deciding on speed, I'd validate the assumption. I'd pull churn data segmented by delivery time — if less than 15% of churned users cited speed, matching 7 mins is a costly distraction. My strategy: differentiate on reliability with a 'Zepto Promise' — guaranteed 10 mins or your next order free. This builds trust, is defensible, and costs less than shaving 3 mins off logistics. If speed data proves critical, I'd test 8-min delivery in Mumbai and Bangalore first, measure NPS delta, then decide on full rollout.",
+      expertRewrite: "Before deciding on speed, I'd validate the assumption. I'd pull churn data segmented by delivery time. If less than 15% of churned users cited speed, matching 7 mins is a costly distraction. My strategy: differentiate on reliability with a 'Zepto Promise'. Guaranteed 10 mins or your next order free. This builds trust, is defensible, and costs less than shaving 3 mins off logistics. If speed data proves critical, I'd test 8-min delivery in Mumbai and Bangalore first, measure NPS delta, then decide on full rollout.",
     }
   },
   {
@@ -36,7 +36,7 @@ const TRACKS = [
     example: {
       category: 'DATA SCIENCE',
       question: "Zomato's delivery time prediction model is 91% accurate overall, but restaurant partners say it's wrong 'all the time.' How do you investigate this gap?",
-      sampleAnswer: "91% overall accuracy can hide poor performance in specific segments. I'd start by breaking down accuracy by restaurant type, city, time of day, and order size. The partners saying it's wrong 'all the time' suggests the errors are concentrated — maybe in peak hours or specific cuisines. I'd look at the confusion matrix and check if the model systematically over or under predicts for certain groups.",
+      sampleAnswer: "91% overall accuracy can hide poor performance in specific segments. I'd start by breaking down accuracy by restaurant type, city, time of day, and order size. The partners saying it's wrong 'all the time' suggests the errors are concentrated. Maybe in peak hours or specific cuisines. I'd look at the confusion matrix and check if the model systematically over or under predicts for certain groups.",
       overallScore: 7,
       competencies: [
         { label: 'Problem Decomposition', score: 8 },
@@ -48,11 +48,11 @@ const TRACKS = [
         { label: 'Technical Depth',       score: 8 },
         { label: 'Actionability',         score: 6 },
       ],
-      expertRewrite: "This is a classic aggregate vs. segment accuracy problem. Overall 91% accuracy is misleading — I'd immediately segment performance by restaurant category, order volume tier, city, and time slot. My hypothesis: the model was trained on historical data that over-represents high-volume restaurants, so it performs well on average but fails on edge cases like new restaurants or weekend peak slots. I'd compute accuracy per segment, identify the worst-performing slices, then retrain with stratified sampling or build separate models per segment. I'd also talk to 5 restaurant partners to understand which specific predictions feel wrong — qualitative signal often points directly at the data problem.",
+      expertRewrite: "This is a classic aggregate vs. segment accuracy problem. Overall 91% accuracy is misleading. I'd immediately segment performance by restaurant category, order volume tier, city, and time slot. My hypothesis: the model was trained on historical data that over-represents high-volume restaurants, so it performs well on average but fails on edge cases like new restaurants or weekend peak slots. I'd compute accuracy per segment, identify the worst-performing slices, then retrain with stratified sampling or build separate models per segment. I'd also talk to 5 restaurant partners to understand which specific predictions feel wrong. Qualitative signal often points directly at the data problem.",
     }
   },
   // ============================================================
-  // ADD NEW TRACKS HERE IN FUTURE — example:
+  // ADD NEW TRACKS HERE IN FUTURE: example:
   // {
   //   id: 'swe',
   //   label: 'Software Engineering',
@@ -155,7 +155,7 @@ export default function FeedbackPreview() {
         alignItems: 'start'
       }}>
 
-        {/* LEFT — Question + Answer */}
+        {/* LEFT: Question + Answer */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
           {/* Question */}
@@ -219,7 +219,7 @@ export default function FeedbackPreview() {
           </div>
         </div>
 
-        {/* RIGHT — Score + Expert Rewrite */}
+        {/* RIGHT: Score + Expert Rewrite */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
           {/* Score card */}
@@ -323,7 +323,7 @@ export default function FeedbackPreview() {
         color: '#6b6b6b',
         marginTop: '28px'
       }}>
-        Every answer you give gets feedback this detailed — in under 60 seconds.
+        Every answer you give gets feedback this detailed, in under 60 seconds.
       </p>
     </section>
   );

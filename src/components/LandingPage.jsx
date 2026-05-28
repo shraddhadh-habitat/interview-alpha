@@ -237,7 +237,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 wordWrap: 'break-word',
               }}>
-                1,100+ real questions across PM and Data Science — by company, role, or topic.
+                1,100+ real questions across PM and Data Science by company, role, or topic.
               </p>
             </div>
           </div>
@@ -279,7 +279,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 wordWrap: 'break-word',
               }}>
-                No scripts, no templates. Just your thinking — exactly like a real interview.
+                No scripts, no templates. Just your thinking, exactly like a real interview.
               </p>
             </div>
           </div>
@@ -321,7 +321,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 wordWrap: 'break-word',
               }}>
-                AI scores you across 8 competencies and shows the expert version — so you know exactly what to improve.
+                AI scores you across 8 competencies and shows the expert version, so you know exactly what to improve.
               </p>
             </div>
           </div>
@@ -333,13 +333,13 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
   // All reviews for rotating ticker
   const ALL_REVIEWS = [
     { name: 'Shrey Chandra', role: 'Product Manager', text: 'This is something amazing for product managers. I often find it difficult to find a resource where I can practice actual product sense questions.' },
-    { name: 'Mridula Rao', role: 'Job Seeker', text: 'Just checked out your AMAZING product — wanted to THANK YOU!! I am looking at opportunities now and this is by far one of THE BEST products I have seen.', source: 'LinkedIn' },
+    { name: 'Mridula Rao', role: 'Job Seeker', text: 'Just checked out your AMAZING product. Wanted to THANK YOU!! I am looking at opportunities now and this is by far one of THE BEST products I have seen.', source: 'LinkedIn' },
     { name: 'Harjot Singh Bedi', role: 'PM Aspirant', text: 'This is exactly what I needed before my interviews. The AI feedback is brutally honest.' },
     { name: 'Simranpreet Kaur', role: 'MBA Student', text: 'I answered 3 questions and already knew where I was going wrong. No other platform does this.' },
     { name: 'Sofia Laurent', role: 'Product Manager', text: 'The expert rewrite feature alone is worth it. I could see exactly how a senior PM would answer.' },
     { name: 'Akash Kamble', role: 'DS Aspirant', text: 'Finally a platform that gives real feedback and not just model answers to memorise.' },
     { name: 'Kyaw Zin Thant', role: 'Job Seeker', text: 'I was so nervous about interviews. After a week on InterviewAlpha I actually feel ready.' },
-    { name: 'Dhruv Pandit', role: 'Data Scientist', text: 'Subscribed after my first free session. Worth every penny — I got an offer within 3 weeks.' },
+    { name: 'Dhruv Pandit', role: 'Data Scientist', text: 'Subscribed after my first free session. Worth every penny. Got an offer within 3 weeks.' },
     { name: 'Myra Tiwari', role: 'PM Aspirant', text: 'I upgraded to Pro and it was 100% worth it. Unlimited practice changed how I prepare.' },
     { name: 'Sagar Mane', role: 'MBA Student', text: 'The Pro plan pays for itself if you land even one good role. Subscribed without hesitation.' },
     { name: 'Chloe Bennett', role: 'Product Manager', text: 'Worth every penny. I use it every day in the week before interviews now.' },
@@ -357,7 +357,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
     { name: 'Siddharth Rao', role: 'MBA Student', text: 'The expert rewrite showed me how a senior PM actually structures their thinking. Nothing else does this.' },
     { name: 'Nina Castellano', role: 'DS Aspirant', text: 'I have used YouTube, books, and prep courses. InterviewAlpha is the only thing that actually simulates a real interview.' },
     { name: 'Manreet Oberoi', role: 'MBA Student', text: 'The ATS resume checker found 3 things I had never noticed. Fixed them and started getting more callbacks.' },
-    { name: 'Mia Robertson', role: 'PM Aspirant', text: 'The voice answer feature is brilliant. I can practice anywhere — even on my commute.' },
+    { name: 'Mia Robertson', role: 'PM Aspirant', text: 'The voice answer feature is brilliant. I can practice anywhere, even on my commute.' },
     { name: 'Nguyen Bao Chau', role: 'Data Scientist', text: 'Questions change and feel fresh every time. I never feel like I am just rehearsing the same thing.' },
     { name: 'Elena Volkov', role: 'Job Seeker', text: 'The salary guide is a bonus I didn\'t expect. Now I know exactly what to ask for in negotiations.' },
     { name: 'Rattanakorn Phosri', role: 'DS Student', text: 'Practiced case studies here for 2 weeks before my final round. Cleared it comfortably.' },
