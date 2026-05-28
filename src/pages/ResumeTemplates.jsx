@@ -59,22 +59,19 @@ const tips = [
 function TemplatePreview({ template }) {
   return (
     <div style={{
-      background: '#F5F3F0',
-      borderRadius: 8,
-      padding: 16,
-      marginBottom: 16,
-      minHeight: 120,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 8,
+      background: '#f9f8f6',
+      borderRadius: '8px',
+      padding: '12px',
+      marginBottom: '16px',
+      border: '1px solid #e4e1db'
     }}>
-      {template.sections.map((section, i) => (
-        <div key={i} style={{
-          height: 2,
-          background: '#E8E6E1',
-          borderRadius: 1,
-          opacity: 0.6 - (i * 0.08),
-        }} />
+      {/* Name line */}
+      <div style={{ height: '8px', background: 'linear-gradient(90deg, #a8e6cf, #a78bfa)', borderRadius: '4px', width: '60%', marginBottom: '6px' }} />
+      {/* Contact line */}
+      <div style={{ height: '4px', background: '#e4e1db', borderRadius: '4px', width: '80%', marginBottom: '12px' }} />
+      {/* Section lines */}
+      {[90, 70, 80, 60, 75].map((w, i) => (
+        <div key={i} style={{ height: '4px', background: '#e4e1db', borderRadius: '4px', width: w + '%', marginBottom: '5px' }} />
       ))}
     </div>
   );
@@ -129,7 +126,7 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
       </div>
 
       {/* Templates Grid */}
-      <div className="templates-container" style={{ width: '100%', maxWidth: 1080, margin: '0 auto', padding: '48px 28px', boxSizing: 'border-box' }}>
+      <div className="templates-container" style={{ width: '100%', maxWidth: 1080, margin: '0 auto', paddingTop: '24px', paddingBottom: '48px', paddingLeft: '28px', paddingRight: '28px', boxSizing: 'border-box' }}>
         <div className="templates-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -154,14 +151,15 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
               </h3>
 
               <span style={{
-                display: 'inline-block',
-                fontSize: 12,
-                background: C.yellow,
-                color: C.text,
-                padding: '4px 8px',
-                borderRadius: 4,
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '999px',
+                padding: '3px 12px',
+                fontSize: '0.72rem',
                 fontWeight: 600,
-                marginBottom: 12,
+                display: 'inline-block',
+                marginBottom: '10px'
               }}>
                 {template.bestFor}
               </span>
@@ -204,31 +202,28 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
                 className="template-button"
                 href={`mailto:communications@interviewalpha.ai?subject=Request Template: ${template.name}`}
                 style={{
-                  display: 'flex',
-                  width: '100%',
-                  minHeight: 44,
-                  background: C.text,
-                  color: '#FFFFFF',
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                  color: '#ffffff',
                   border: 'none',
-                  borderRadius: 10,
-                  fontSize: 14,
-                  fontWeight: 600,
+                  borderRadius: '10px',
+                  fontWeight: 700,
+                  width: '100%',
+                  padding: '12px',
                   cursor: 'pointer',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  textDecoration: 'none',
+                  fontSize: '0.88rem',
+                  display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  textDecoration: 'none',
                   transition: 'all 0.2s',
                   boxSizing: 'border-box',
-                  padding: '10px 16px',
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = '#0F0F0D';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                  e.currentTarget.style.opacity = '0.9';
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.background = C.text;
-                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.opacity = '1';
                 }}
               >
                 Download Template
