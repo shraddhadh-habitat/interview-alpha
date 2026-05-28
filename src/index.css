@@ -1031,6 +1031,14 @@ html, body {
   .feedback-preview-grid {
     grid-template-columns: 1fr !important;
   }
+
+  /* Feedback preview competency labels - never wrap */
+  .feedback-preview-grid span[style*="color: rgb(107, 107, 107)"],
+  .feedback-preview-grid span {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
 }
 
 /* ─── Global Section Spacing ─── */

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // ============================================================
 // TRACKS DATA: Add new tracks here in future
@@ -80,6 +80,13 @@ I would compute accuracy per segment, identify the worst-performing slices, then
 // ============================================================
 export default function FeedbackPreview() {
   const [activeTrack, setActiveTrack] = useState('pm');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const track = TRACKS.find(t => t.id === activeTrack);
   const ex = track.example;
@@ -160,9 +167,9 @@ export default function FeedbackPreview() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
 
         {/* TOP ROW - two columns */}
-        <div style={{
+        <div className="feedback-preview-grid" style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
           gap: '16px',
           alignItems: 'start'
         }}>
@@ -262,10 +269,11 @@ export default function FeedbackPreview() {
                   <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    marginBottom: '4px'
+                    marginBottom: '4px',
+                    gap: '8px'
                   }}>
-                    <span style={{ fontSize: '0.74rem', color: '#6b6b6b' }}>{label}</span>
-                    <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111' }}>{score}/10</span>
+                    <span style={{ fontSize: '0.74rem', color: '#6b6b6b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</span>
+                    <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111', whiteSpace: 'nowrap', flexShrink: 0 }}>{score}/10</span>
                   </div>
                   <div style={{
                     height: '6px',
