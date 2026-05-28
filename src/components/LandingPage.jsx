@@ -24,8 +24,8 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
   const HeroSection = () => (
     <div style={{
       background: C.bg,
-      paddingTop: '48px',
-      paddingBottom: '24px',
+      paddingTop: '40px',
+      paddingBottom: '40px',
     }}>
       <style>{`
         @media (max-width: 768px) {
@@ -402,7 +402,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
     const review = ALL_REVIEWS[index];
 
     return (
-      <div style={{ background: C.bg, paddingTop: '0', marginTop: '0', paddingBottom: '48px' }}>
+      <div style={{ background: C.bg, paddingTop: '40px', marginTop: '0', paddingBottom: '40px' }}>
         <div style={{
           maxWidth: '680px',
           margin: '0 auto',
@@ -508,7 +508,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
   // Question cards section (moved from hero right column)
   const QuestionCardsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '0' }}>
+    <div style={{ background: C.bg, paddingTop: '40px', paddingBottom: '40px' }}>
       <style>{`
         @media (max-width: 768px) {
           .question-cards-container { padding: 0 20px !important; }
@@ -671,7 +671,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
   // Guided paths section
   const GuidedPathsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '32px', paddingBottom: '48px' }}>
+    <div style={{ background: C.bg, paddingTop: '40px', paddingBottom: '40px' }}>
       <style>{`
         @media (max-width: 768px) {
           .paths-container { padding: 0 20px !important; }
@@ -913,7 +913,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
   // Product proof section
   const ProductProofSection = () => (
-    <div style={{ background: C.bg, paddingTop: '0', paddingBottom: '24px', marginBottom: '0' }}>
+    <div style={{ background: C.bg, paddingTop: '40px', paddingBottom: '40px', marginBottom: '0' }}>
       <style>{`
         @media (max-width: 768px) {
           .proof-container { padding: 0 20px !important; }
@@ -1121,7 +1121,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
   // Coming soon section
   const ComingSoonSection = () => (
-    <div style={{ background: C.bg, paddingTop: '32px', paddingBottom: '48px' }}>
+    <div style={{ background: C.bg, paddingTop: '40px', paddingBottom: '40px' }}>
       <style>{`
         @media (max-width: 768px) {
           .coming-container { padding: 0 20px !important; }

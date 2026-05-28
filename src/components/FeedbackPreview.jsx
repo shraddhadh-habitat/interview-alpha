@@ -87,7 +87,7 @@ export default function FeedbackPreview() {
     <section style={{
       maxWidth: '960px',
       margin: '0 auto',
-      padding: '48px 24px',
+      padding: '40px 24px',
       position: 'relative',
       zIndex: 1
     }}>
