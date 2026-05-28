@@ -59,6 +59,8 @@ const globalStyles = `
     .up-compare-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .up-plans { grid-template-columns: 1fr !important; }
     .up-payment { grid-template-columns: 1fr !important; gap: 24px !important; }
+    .up-emotional-trigger { font-size: 0.88rem !important; }
+    .up-roi-reframe { font-size: 0.88rem !important; }
   }
 `;
 
@@ -75,8 +77,8 @@ function RecentUpgradesCounter() {
     const hoursThisWeek = Math.floor((now - startOfWeek) / (1000 * 60 * 60));
     const blocksThisWeek = Math.floor(hoursThisWeek / 4);
 
-    // Start at 12 at beginning of week, add 1-2 every 4 hours
-    const count = 12 + blocksThisWeek + (blocksThisWeek * 3 % 2);
+    // Start at 17 at beginning of week, add 1-2 every 4 hours
+    const count = 17 + blocksThisWeek + (blocksThisWeek * 3 % 2);
 
     // Cap at 28 so it resets believably each week
     return Math.min(count, 28);
@@ -320,9 +322,9 @@ export default function UpgradePage({ user, profile, onBack }) {
         {/* Back */}
         <button
           onClick={onBack}
-          style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 32, padding: 0 }}
+          style={{ fontSize: '0.78rem', color: '#9a9a9a', textDecoration: 'none', display: 'inline-block', marginBottom: '24px', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: 0 }}
           onMouseEnter={e => e.currentTarget.style.color = C.green}
-          onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
+          onMouseLeave={e => e.currentTarget.style.color = '#9a9a9a'}
         >
           ← Back
         </button>
@@ -388,7 +390,7 @@ export default function UpgradePage({ user, profile, onBack }) {
         {step === 1 && (
           <div style={{ animation: 'fadeUp 0.35s cubic-bezier(0.22,1,0.36,1)' }}>
             {/* Emotional trigger */}
-            <div style={{
+            <div className="up-emotional-trigger" style={{
               maxWidth: 560,
               margin: '0 auto 28px',
               padding: '20px 24px',
@@ -421,7 +423,7 @@ export default function UpgradePage({ user, profile, onBack }) {
             </div>
 
             {/* ROI reframe */}
-            <div style={{
+            <div className="up-roi-reframe" style={{
               textAlign: 'center',
               background: '#ffffff',
               border: '1px solid #e4e1db',
@@ -685,10 +687,18 @@ export default function UpgradePage({ user, profile, onBack }) {
                 }}>
                   <strong>Not happy in your first 7 days?</strong>
                   <br />
-                  Email us at communications@interviewalpha.ai with one message about why, and we'll refund your money. No questions asked.
+                  Email us at communications@interviewalpha.ai with one message about why, and we'll sort it out. No complicated process. Just a human response within 24 hours.
                 </p>
               </div>
             </div>
+
+            {/* Divider before comparison */}
+            <div style={{
+              maxWidth: 700,
+              margin: '40px auto',
+              height: '1px',
+              background: '#e4e1db'
+            }} />
 
             {/* What you unlock with Pro */}
             <div style={{
