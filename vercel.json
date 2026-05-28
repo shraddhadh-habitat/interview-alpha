@@ -3,5 +3,11 @@
   "outputDirectory": "dist",
   "rewrites": [
     { "source": "/api/messages", "destination": "/api/messages" }
+  ],
+  "crons": [
+    {
+      "path": "/api/send-emails",
+      "schedule": "0 9 * * *"
+    }
   ]
 }
