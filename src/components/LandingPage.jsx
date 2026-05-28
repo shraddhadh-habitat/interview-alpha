@@ -177,7 +177,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           )}
 
           {/* Secondary link */}
-          <p style={{ fontSize: '0.82rem', marginTop: '12px', color: '#6b6b6b', lineHeight: 1.5, fontWeight: 600 }}>
+          <p style={{ fontSize: '0.82rem', marginTop: '12px', color: '#6b6b6b', lineHeight: 1.5, fontWeight: 700 }}>
             <a href="#" style={{ color: '#6b6b6b', textDecoration: 'underline', fontWeight: 500 }}>
               Or browse questions free.
             </a>
@@ -492,7 +492,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             lineHeight: 1.6,
             marginTop: '16px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontWeight: 600
+            fontWeight: 700
           }}>
             Dhruv found out he was scoring 4 out of 10 on product sense. Two weeks later he had an offer.
             Mridula called it one of the best products she had ever seen.

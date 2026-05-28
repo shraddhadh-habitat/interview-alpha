@@ -112,8 +112,8 @@ export default function FeedbackPreview() {
         }}>
           This is what your feedback looks like
         </h2>
-        <p style={{ color: '#6b6b6b', fontSize: '0.92rem', fontWeight: 600 }}>
-          Real AI scoring. Real expert rewrite. Every single answer.
+        <p style={{ color: '#6b6b6b', fontSize: '0.92rem', fontWeight: 700 }}>
+          AI precision. Human expertise. Guaranteed.
         </p>
       </div>
 
@@ -322,7 +322,7 @@ export default function FeedbackPreview() {
         fontSize: '0.85rem',
         color: '#6b6b6b',
         marginTop: '28px',
-        fontWeight: 600
+        fontWeight: 700
       }}>
         Every answer you give gets feedback this detailed, in under 60 seconds.
       </p>
