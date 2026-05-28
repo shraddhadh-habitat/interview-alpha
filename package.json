@@ -11,7 +11,9 @@
     "build:prod": "VITE_APP_ENV=production vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "node server.js"
+    "server": "node server.js",
+    "test:mobile": "playwright test tests/mobile.spec.js",
+    "test:mobile:report": "playwright test tests/mobile.spec.js --reporter=html && playwright show-report tests/report"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.3",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@playwright/test": "^1.60.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",

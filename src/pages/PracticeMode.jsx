@@ -582,6 +582,13 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           feedback_text: parsed.feedback_text,
           from_voice: fromVoice,
         });
+
+        // Increment free_sessions_used in profiles
+        if (profile?.subscription_status === 'free') {
+          const newCount = (profile.free_sessions_used || 0) + 1;
+          await supabase.from('profiles').update({ free_sessions_used: newCount }).eq('id', user.id);
+        }
+
         if (prevBestScore === null || parsed.score > prevBestScore) {
           setPrevBestScore(parsed.score);
         }

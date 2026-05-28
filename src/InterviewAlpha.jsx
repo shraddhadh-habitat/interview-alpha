@@ -1194,8 +1194,16 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
           alpha_rewrite: scoreData.the_alpha_rewrite,
           next_drill: scoreData.next_drill,
           messages: updatedMessages,
-        }).then(({ error: saveErr }) => {
-          if (saveErr) console.error("Failed to save session:", saveErr);
+        }).then(async ({ error: saveErr }) => {
+          if (saveErr) {
+            console.error("Failed to save session:", saveErr);
+          } else {
+            // Increment free_sessions_used in profiles
+            if (profile?.subscription_status === 'free') {
+              const newCount = (profile.free_sessions_used || 0) + 1;
+              await supabase.from('profiles').update({ free_sessions_used: newCount }).eq('id', user.id);
+            }
+          }
         });
       }
     }
