@@ -173,128 +173,377 @@ export default function UpgradePage({ user, profile, onBack }) {
         {/* Status banners */}
         <StatusBanner profile={profile} />
 
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <div style={{ fontSize: 10, letterSpacing: 5, color: C.green, textTransform: 'uppercase', marginBottom: 12 }}>Upgrade</div>
-          <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12 }}>
-            Go Pro. Land the Role.
-          </h1>
-          <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, maxWidth: 480, margin: '0 auto' }}>
-            Unlimited AI interviews, resume tools, and practice evaluations  . everything you need to ace any role.
+        {/* Pricing page header */}
+        <div style={{ textAlign: 'center', marginBottom: 48, padding: '0 24px' }}>
+          <p style={{
+            textTransform: 'uppercase',
+            letterSpacing: '0.12em',
+            fontSize: '0.72rem',
+            color: '#9a9a9a',
+            fontWeight: 600,
+            marginBottom: 12
+          }}>
+            Upgrade
           </p>
+
+          <h1 style={{
+            fontSize: 'clamp(1.8rem, 4vw, 2.6rem)',
+            fontWeight: 900,
+            color: '#111',
+            marginBottom: 16,
+            lineHeight: 1.2,
+            fontFamily: 'Georgia, serif'
+          }}>
+            Practice like your next interview<br />
+            is in 48 hours.
+          </h1>
+
+          <p style={{
+            color: '#6b6b6b',
+            fontSize: '1rem',
+            lineHeight: 1.7,
+            maxWidth: 520,
+            margin: '0 auto 24px'
+          }}>
+            Free users get 3 sessions. Pro users get unlimited practice, all tracks, all companies, and feedback that actually tells you what to fix.
+          </p>
+
+          {/* Social proof line */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            background: '#f0fdf4',
+            border: '1px solid #86efac',
+            borderRadius: 999,
+            padding: '6px 16px',
+            fontSize: '0.8rem',
+            color: '#16a34a',
+            fontWeight: 600,
+            marginBottom: 8
+          }}>
+            <span>✓</span>
+            Users who practice 3x a week report feeling 2x more confident going into interviews
+          </div>
         </div>
 
         {/* Step 1  . Plan selection */}
         {step === 1 && (
           <div style={{ animation: 'fadeUp 0.35s cubic-bezier(0.22,1,0.36,1)' }}>
-            {/* Plan comparison table  . scrollable on narrow screens */}
-            <div className="up-compare-wrap" style={{ marginBottom: 32, borderRadius: 12, border: `1px solid ${C.border}` }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0, borderRadius: 12, overflow: 'hidden', minWidth: 320 }}>
-              {/* Header row */}
-              <div style={{ padding: '14px 16px', background: C.bgMuted, borderBottom: `1px solid ${C.border}` }} />
-              {['Free', 'Pro'].map(tier => (
-                <div key={tier} style={{ padding: '14px 16px', background: tier === 'Pro' ? C.greenLight : C.bgMuted, borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center' }}>
-                  <span style={{ fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: tier === 'Pro' ? C.green : C.textMuted, fontWeight: 600 }}>{tier}</span>
-                </div>
-              ))}
-              {/* Feature rows */}
-              {[
-                ['AI Sessions',           'Limited', 'Unlimited'],
-                ['Practice Evaluations',  'Limited', 'Unlimited'],
-                ['ATS Resume Checker',    '-', 'Unlimited'],
-                ['Resume Optimizer',      '-', 'Unlimited'],
-                ['Resume Templates',      '-', '✓'],
-                ['Progress Tracking',     '✓', '✓'],
-                ['Company Interview Prep', '-', '✓'],
-              ].map(([feat, freeVal, proVal]) => (
-                <div key={feat} style={{ display: 'contents' }}>
-                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{feat}</div>
-                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{freeVal}</div>
-                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, borderLeft: `1px solid ${C.border}`, textAlign: 'center', fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{proVal}</div>
-                </div>
-              ))}
-            </div>
+            {/* What you unlock with Pro */}
+            <div style={{
+              maxWidth: 700,
+              margin: '0 auto 48px',
+              padding: '0 24px'
+            }}>
+              <h2 style={{
+                textAlign: 'center',
+                fontSize: '1.1rem',
+                fontWeight: 700,
+                color: '#111',
+                marginBottom: 24
+              }}>
+                What changes when you go Pro
+              </h2>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {[
+                  {
+                    free: '3 practice sessions total',
+                    pro: 'Unlimited sessions, every day',
+                    icon: '🔁',
+                    impact: 'Practice as much as you need before any interview'
+                  },
+                  {
+                    free: 'PM questions only on free tier',
+                    pro: 'PM + Data Science + all future tracks',
+                    icon: '🎯',
+                    impact: 'One platform for your entire interview prep'
+                  },
+                  {
+                    free: 'General questions',
+                    pro: 'Company-specific: Google, Amazon, Flipkart, Meta, Razorpay',
+                    icon: '🏢',
+                    impact: 'Practice the exact questions asked at your target company'
+                  },
+                  {
+                    free: 'Basic feedback',
+                    pro: 'Full 8-competency score + expert rewrite on every answer',
+                    icon: '✨',
+                    impact: 'Know exactly what a senior interviewer would say instead'
+                  },
+                  {
+                    free: 'No resume tools',
+                    pro: 'ATS Checker + Resume Optimizer + Templates',
+                    icon: '📄',
+                    impact: 'Get through the screening before the interview even starts'
+                  },
+                  {
+                    free: 'No salary data',
+                    pro: 'Full Salary Guide with negotiation scripts',
+                    icon: '💰',
+                    impact: 'Know your worth and how to ask for it'
+                  },
+                ].map(({ free, pro, icon, impact }) => (
+                  <div key={icon} style={{
+                    background: '#ffffff',
+                    borderRadius: 12,
+                    padding: '16px 20px',
+                    border: '1px solid #e4e1db',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: 16,
+                    alignItems: 'center'
+                  }}>
+                    <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                      <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: 1, filter: 'grayscale(1)', opacity: 0.5 }}>
+                        {icon}
+                      </span>
+                      <p style={{ fontSize: '0.82rem', color: '#9a9a9a', margin: 0, lineHeight: 1.5 }}>
+                        {free}
+                      </p>
+                    </div>
+                    <div style={{
+                      display: 'flex',
+                      gap: 10,
+                      alignItems: 'flex-start',
+                      background: 'linear-gradient(135deg, rgba(168,230,207,0.08), rgba(167,139,250,0.08))',
+                      borderRadius: 8,
+                      padding: 10
+                    }}>
+                      <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: 1 }}>{icon}</span>
+                      <div>
+                        <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#111', margin: '0 0 3px' }}>
+                          {pro}
+                        </p>
+                        <p style={{ fontSize: '0.75rem', color: '#6b6b6b', margin: 0 }}>
+                          {impact}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Pricing cards */}
-            <div className="up-plans" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24, alignItems: 'start' }}>
-              {Object.entries(PLANS).map(([key, p]) => {
-                const isYearly = key === 'yearly';
-                const monthlyPrice = key === 'quarterly' ? Math.round(p.price / 3) : key === 'yearly' ? Math.round(p.price / 12) : p.price;
+            <div style={{
+              maxWidth: 800,
+              margin: '0 auto 32px',
+              padding: '0 24px'
+            }}>
+              <h2 style={{
+                textAlign: 'center',
+                fontSize: '1.1rem',
+                fontWeight: 700,
+                color: '#111',
+                marginBottom: 8
+              }}>
+                Simple pricing. Cancel anytime.
+              </h2>
+              <p style={{
+                textAlign: 'center',
+                fontSize: '0.82rem',
+                color: '#9a9a9a',
+                marginBottom: 28
+              }}>
+                Pay via UPI. Manual verification within 24 hours.
+              </p>
 
-                const btn = (
+              <div className="up-plans" style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gap: 16,
+                alignItems: 'start'
+              }}>
+
+                {/* Monthly */}
+                <div style={{
+                  background: '#ffffff',
+                  borderRadius: 16,
+                  padding: '28px 24px',
+                  border: '1px solid #e4e1db',
+                  textAlign: 'center'
+                }}>
+                  <p style={{ fontWeight: 700, color: '#111', marginBottom: 4 }}>Monthly</p>
+                  <p style={{ fontSize: '0.78rem', color: '#9a9a9a', marginBottom: 20 }}>
+                    Try Pro risk-free
+                  </p>
+                  <p style={{ margin: '0 0 4px' }}>
+                    <strong style={{ fontSize: '2rem', fontWeight: 800, color: '#111' }}>799</strong>
+                    <span style={{ fontSize: '0.8rem', color: '#9a9a9a' }}> /month</span>
+                  </p>
+                  <p style={{ fontSize: '0.75rem', color: '#9a9a9a', marginBottom: 20 }}>
+                    Billed monthly
+                  </p>
                   <button
-                    onClick={() => handleSelectPlan(key)}
+                    onClick={() => handleSelectPlan('monthly')}
                     disabled={isPending || isActive}
                     style={{
-                      padding: '24px 20px', background: '#FFFFFF',
-                      border: isYearly ? '2px solid #a78bfa' : `1px solid ${C.border}`,
-                      borderRadius: 20, cursor: isPending || isActive ? 'not-allowed' : 'pointer',
-                      textAlign: 'left', position: 'relative',
-                      transition: 'all 0.2s', opacity: isPending || isActive ? 0.6 : 1,
-                      width: '100%', boxSizing: 'border-box',
+                      background: isPending || isActive ? '#e4e1db' : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                      color: isPending || isActive ? '#9a9a9a' : '#ffffff',
+                      border: 'none',
+                      borderRadius: 10,
+                      padding: 12,
+                      fontWeight: 700,
+                      fontSize: '0.88rem',
+                      cursor: isPending || isActive ? 'not-allowed' : 'pointer',
+                      width: '100%',
+                      fontFamily: 'inherit',
+                      opacity: isPending || isActive ? 0.6 : 1
                     }}
                   >
-                    <div style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, marginBottom: 12 }}>{p.label}</div>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 8 }}>
-                      <span style={{ fontSize: 36, fontWeight: 700, color: C.text }}>₹{p.price.toLocaleString('en-IN')}</span>
-                      <span style={{ fontSize: 12, color: C.textMuted }}>{p.period}</span>
-                    </div>
-                    {(key === 'quarterly' || key === 'yearly') && (
-                      <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>₹{monthlyPrice.toLocaleString('en-IN')}/month</div>
-                    )}
-                    <div style={{
-                      marginTop: 16,
-                      padding: '10px 16px',
-                      background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                      border: 'none',
-                      borderRadius: 12,
-                      fontSize: 14,
-                      color: '#ffffff',
-                      WebkitTextFillColor: '#ffffff',
-                      textAlign: 'center',
-                      fontWeight: 600,
-                    }}>
-                      {isPending ? 'Pending' : isActive ? 'Active' : `Choose ${p.label}`}
-                    </div>
+                    {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Monthly'}
                   </button>
-                );
+                </div>
 
-                if (isYearly) {
-                  return (
-                    <div key={key} style={{ position: 'relative', paddingTop: 20 }}>
-                      <div style={{
-                        position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-                        background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                        color: '#ffffff', fontSize: 10, padding: '3px 12px', borderRadius: 20, fontWeight: 700,
-                        whiteSpace: 'nowrap', zIndex: 1,
-                      }}>{p.badge}</div>
-                      {btn}
-                    </div>
-                  );
-                }
+                {/* Quarterly - recommended */}
+                <div style={{
+                  background: '#ffffff',
+                  borderRadius: 16,
+                  padding: '28px 24px',
+                  border: '2px solid #a78bfa',
+                  textAlign: 'center',
+                  position: 'relative',
+                  boxShadow: '0 4px 24px rgba(167,139,250,0.15)'
+                }}>
+                  <div style={{
+                    position: 'absolute',
+                    top: -12,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                    color: '#fff',
+                    borderRadius: 999,
+                    padding: '3px 14px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    whiteSpace: 'nowrap'
+                  }}>
+                    Most Popular
+                  </div>
+                  <p style={{ fontWeight: 700, color: '#111', marginBottom: 4 }}>Quarterly</p>
+                  <p style={{ fontSize: '0.78rem', color: '#9a9a9a', marginBottom: 20 }}>
+                    Best for placement season
+                  </p>
+                  <p style={{ margin: '0 0 4px' }}>
+                    <strong style={{ fontSize: '2rem', fontWeight: 800, color: '#111' }}>666</strong>
+                    <span style={{ fontSize: '0.8rem', color: '#9a9a9a' }}> /month</span>
+                  </p>
+                  <p style={{ fontSize: '0.75rem', color: '#9a9a9a', marginBottom: 20 }}>
+                    Billed as 1,999 every 3 months. Save 17%.
+                  </p>
+                  <button
+                    onClick={() => handleSelectPlan('quarterly')}
+                    disabled={isPending || isActive}
+                    style={{
+                      background: isPending || isActive ? '#e4e1db' : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                      color: isPending || isActive ? '#9a9a9a' : '#ffffff',
+                      border: 'none',
+                      borderRadius: 10,
+                      padding: 12,
+                      fontWeight: 700,
+                      fontSize: '0.88rem',
+                      cursor: isPending || isActive ? 'not-allowed' : 'pointer',
+                      width: '100%',
+                      fontFamily: 'inherit',
+                      opacity: isPending || isActive ? 0.6 : 1
+                    }}
+                  >
+                    {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Quarterly'}
+                  </button>
+                </div>
 
-                if (key === 'quarterly' && p.badge) {
-                  return (
-                    <div key={key} style={{ position: 'relative', paddingTop: 20 }}>
-                      <div style={{
-                        position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-                        background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                        color: '#fff', fontSize: 10, padding: '3px 12px', borderRadius: 20, fontWeight: 700,
-                        whiteSpace: 'nowrap', zIndex: 1,
-                      }}>{p.badge}</div>
-                      {btn}
-                    </div>
-                  );
-                }
+                {/* Yearly */}
+                <div style={{
+                  background: '#ffffff',
+                  borderRadius: 16,
+                  padding: '28px 24px',
+                  border: '1px solid #e4e1db',
+                  textAlign: 'center'
+                }}>
+                  <p style={{ fontWeight: 700, color: '#111', marginBottom: 4 }}>Yearly</p>
+                  <p style={{ fontSize: '0.78rem', color: '#9a9a9a', marginBottom: 20 }}>
+                    Prep for the whole year
+                  </p>
+                  <p style={{ margin: '0 0 4px' }}>
+                    <strong style={{ fontSize: '2rem', fontWeight: 800, color: '#111' }}>583</strong>
+                    <span style={{ fontSize: '0.8rem', color: '#9a9a9a' }}> /month</span>
+                  </p>
+                  <p style={{ fontSize: '0.75rem', color: '#9a9a9a', marginBottom: 20 }}>
+                    Billed as 6,999 per year. Save 27%.
+                  </p>
+                  <button
+                    onClick={() => handleSelectPlan('yearly')}
+                    disabled={isPending || isActive}
+                    style={{
+                      background: isPending || isActive ? '#e4e1db' : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                      color: isPending || isActive ? '#9a9a9a' : '#ffffff',
+                      border: 'none',
+                      borderRadius: 10,
+                      padding: 12,
+                      fontWeight: 700,
+                      fontSize: '0.88rem',
+                      cursor: isPending || isActive ? 'not-allowed' : 'pointer',
+                      width: '100%',
+                      fontFamily: 'inherit',
+                      opacity: isPending || isActive ? 0.6 : 1
+                    }}
+                  >
+                    {isPending ? 'Pending' : isActive ? 'Active' : 'Choose Yearly'}
+                  </button>
+                </div>
 
-                return <div key={key}>{btn}</div>;
-              })}
+              </div>
             </div>
 
-            <p style={{ fontSize: 11, color: C.textMuted, textAlign: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Pay via UPI · Manual verification within 24 hours · No subscription auto-renewal
-            </p>
+            {/* Trust signals */}
+            <div style={{
+              maxWidth: 600,
+              margin: '0 auto 48px',
+              padding: '0 24px'
+            }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gap: 12,
+                textAlign: 'center'
+              }}>
+                {[
+                  { icon: '🔒', title: 'Cancel anytime', desc: 'No questions asked' },
+                  { icon: '⚡', title: 'Instant access', desc: 'Within 24 hours of payment' },
+                  { icon: '💬', title: 'Real support', desc: 'Email us anytime' },
+                ].map(({ icon, title, desc }) => (
+                  <div key={title}>
+                    <p style={{ fontSize: '1.4rem', margin: '0 0 6px' }}>{icon}</p>
+                    <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#111', margin: '0 0 3px' }}>{title}</p>
+                    <p style={{ fontSize: '0.75rem', color: '#9a9a9a', margin: 0 }}>{desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Testimonial on pricing page */}
+              <div style={{
+                background: '#ffffff',
+                borderRadius: 12,
+                padding: 20,
+                border: '1px solid #e4e1db',
+                marginTop: 24,
+                textAlign: 'center'
+              }}>
+                <p style={{
+                  fontSize: '0.88rem',
+                  color: '#111',
+                  fontStyle: 'italic',
+                  lineHeight: 1.7,
+                  marginBottom: 12
+                }}>
+                  "Subscribed after my first free session. Worth every penny. Got an offer within 3 weeks."
+                </p>
+                <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#111', margin: '0 0 2px' }}>Dhruv Pandit</p>
+                <p style={{ fontSize: '0.75rem', color: '#9a9a9a', margin: 0 }}>Data Scientist</p>
+              </div>
+            </div>
           </div>
         )}
 
