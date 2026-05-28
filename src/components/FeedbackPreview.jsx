@@ -149,81 +149,79 @@ export default function FeedbackPreview() {
         ))}
       </div>
 
-      {/* Two column layout */}
-      <div className="feedback-preview-grid" style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '20px',
-        alignItems: 'stretch'
-      }}>
+      {/* Feedback layout - wrapper */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-        {/* LEFT: Question + Answer */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
+        {/* TOP ROW - two columns */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '16px',
+          alignItems: 'start'
+        }}>
+          {/* LEFT - Question + Sample Answer */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
 
-          {/* Question */}
-          <div style={{
-            background: '#ffffff',
-            borderRadius: '14px',
-            padding: '24px',
-            border: '1px solid #e4e1db',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-          }}>
-            <span style={{
-              display: 'inline-block',
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              color: '#fff',
-              borderRadius: '6px',
-              padding: '3px 10px',
-              fontSize: '0.7rem',
-              fontWeight: 700,
-              letterSpacing: '0.05em',
-              marginBottom: '12px'
+            {/* Question */}
+            <div style={{
+              background: '#ffffff',
+              borderRadius: '14px',
+              padding: '24px',
+              border: '1px solid #e4e1db',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}>
-              {ex.category}
-            </span>
-            <p style={{
-              fontSize: '0.92rem',
-              color: '#111',
-              lineHeight: 1.7,
-              fontWeight: 500,
-              margin: 0
+              <span style={{
+                display: 'inline-block',
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                color: '#fff',
+                borderRadius: '6px',
+                padding: '3px 10px',
+                fontSize: '0.7rem',
+                fontWeight: 700,
+                letterSpacing: '0.05em',
+                marginBottom: '12px'
+              }}>
+                {ex.category}
+              </span>
+              <p style={{
+                fontSize: '0.92rem',
+                color: '#111',
+                lineHeight: 1.7,
+                fontWeight: 500,
+                margin: 0
+              }}>
+                {ex.question}
+              </p>
+            </div>
+
+            {/* Sample answer */}
+            <div style={{
+              background: '#fafafa',
+              borderRadius: '14px',
+              padding: '20px',
+              border: '1px solid #e4e1db'
             }}>
-              {ex.question}
-            </p>
+              <p style={{
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                color: '#9a9a9a',
+                marginBottom: '10px'
+              }}>
+                Sample answer
+              </p>
+              <p style={{
+                fontSize: '0.84rem',
+                color: '#444',
+                lineHeight: 1.7,
+                margin: 0,
+                fontStyle: 'italic'
+              }}>
+                "{ex.sampleAnswer}"
+              </p>
+            </div>
           </div>
 
-          {/* Sample answer */}
-          <div style={{
-            background: '#fafafa',
-            borderRadius: '14px',
-            padding: '20px',
-            border: '1px solid #e4e1db',
-            flex: 1
-          }}>
-            <p style={{
-              fontSize: '0.72rem',
-              fontWeight: 600,
-              color: '#9a9a9a',
-              marginBottom: '10px'
-            }}>
-              Sample answer
-            </p>
-            <p style={{
-              fontSize: '0.84rem',
-              color: '#444',
-              lineHeight: 1.7,
-              margin: 0,
-              fontStyle: 'italic'
-            }}>
-              "{ex.sampleAnswer}"
-            </p>
-          </div>
-        </div>
-
-        {/* RIGHT: Score + Expert Rewrite */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-
-          {/* Score card */}
+          {/* RIGHT - AI Score only */}
           <div style={{
             background: '#ffffff',
             borderRadius: '14px',
@@ -278,42 +276,38 @@ export default function FeedbackPreview() {
               </div>
             ))}
           </div>
-
-          {/* Expert rewrite */}
-          <div style={{
-            background: '#ffffff',
-            borderRadius: '14px',
-            padding: '20px',
-            border: '1px solid #e4e1db'
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              marginBottom: '12px'
-            }}>
-              <span>✨</span>
-              <p style={{
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                color: '#a78bfa',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                margin: 0
-              }}>
-                Expert Rewrite
-              </p>
-            </div>
-            <p style={{
-              fontSize: '0.82rem',
-              color: '#444',
-              lineHeight: 1.7,
-              margin: 0
-            }}>
-              "{ex.expertRewrite}"
-            </p>
-          </div>
         </div>
+
+        {/* BOTTOM ROW - Expert Rewrite full width */}
+        <div style={{
+          background: '#ffffff',
+          borderRadius: '14px',
+          padding: '24px',
+          border: '1px solid #e4e1db',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+          width: '100%'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
+            <span>✨</span>
+            <p style={{
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              color: '#a78bfa',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              margin: 0
+            }}>Expert Rewrite</p>
+          </div>
+          <p style={{
+            fontSize: '0.88rem',
+            color: '#444',
+            lineHeight: 1.7,
+            margin: 0
+          }}>
+            "{ex.expertRewrite}"
+          </p>
+        </div>
+
       </div>
 
       {/* Bottom CTA */}
