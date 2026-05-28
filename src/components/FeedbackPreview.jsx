@@ -98,7 +98,7 @@ export default function FeedbackPreview() {
           letterSpacing: '0.12em',
           fontSize: '0.72rem',
           color: '#9a9a9a',
-          fontWeight: 700,
+          fontWeight: 800,
           marginBottom: '10px'
         }}>
           See it in action
@@ -112,7 +112,7 @@ export default function FeedbackPreview() {
         }}>
           This is what your feedback looks like
         </h2>
-        <p style={{ color: '#6b6b6b', fontSize: '0.92rem', fontWeight: 700 }}>
+        <p style={{ color: '#6b6b6b', fontSize: '0.92rem', fontWeight: 800 }}>
           AI precision. Human expertise. Guaranteed.
         </p>
       </div>
@@ -322,7 +322,7 @@ export default function FeedbackPreview() {
         fontSize: '0.85rem',
         color: '#6b6b6b',
         marginTop: '28px',
-        fontWeight: 700
+        fontWeight: 800
       }}>
         Every answer you give gets feedback this detailed, in under 60 seconds.
       </p>
