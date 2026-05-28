@@ -670,7 +670,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
 
   // Guided paths section
   const GuidedPathsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '40px' }}>
+    <div style={{ background: C.bg, paddingTop: '0' }}>
       <style>{`
         @media (max-width: 768px) {
           .paths-container { padding: 0 20px !important; }

@@ -89,6 +89,8 @@ export default function FeedbackPreview() {
       maxWidth: '960px',
       margin: '0 auto',
       padding: '40px 24px',
+      paddingBottom: '0',
+      marginBottom: '0',
       position: 'relative',
       zIndex: 1
     }}>
@@ -324,7 +326,8 @@ export default function FeedbackPreview() {
         textAlign: 'center',
         fontSize: '0.95rem',
         color: '#111',
-        marginTop: '28px',
+        marginTop: '16px',
+        marginBottom: '0',
         fontWeight: 600
       }}>
         Every answer you give gets feedback this detailed, in under 60 seconds.
