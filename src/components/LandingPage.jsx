@@ -127,9 +127,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             maxWidth: '480px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            Most candidates think they are prepared. They studied the questions, read the frameworks, watched the videos. Then they sit across from an interviewer and go blank. Because they practised theory, not thinking.
-            <br /><br />
-            InterviewAlpha fixes that. Answer one real question right now and find out exactly where you stand.
+            Most candidates think they are prepared. They studied the questions, read the frameworks, watched the videos. Then they sit across from an interviewer and go blank. The problem is not effort; it's that they practised theory, not thinking. InterviewAlpha fixes that. Answer one real question right now and find out exactly where you stand.
           </p>
 
           {/* Free Session Countdown */}
@@ -200,42 +198,9 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             or browse questions free
           </button>
 
-          {/* Track pills */}
-          <div style={{
-            display: 'flex',
-            gap: '10px',
-            marginTop: '16px',
-            flexWrap: 'wrap'
-          }}>
-            <span style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: '#ffffff',
-              border: '1px solid #e4e1db',
-              borderRadius: '999px',
-              padding: '5px 14px',
-              fontSize: '0.78rem',
-              color: '#6b6b6b',
-              fontWeight: 500
-            }}>
-              📦 500+ PM questions
-            </span>
-            <span style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: '#ffffff',
-              border: '1px solid #e4e1db',
-              borderRadius: '999px',
-              padding: '5px 14px',
-              fontSize: '0.78rem',
-              color: '#6b6b6b',
-              fontWeight: 500
-            }}>
-              📊 600+ DS questions
-            </span>
-          </div>
+          <p style={{ fontSize: '0.78rem', color: '#9a9a9a', marginTop: '12px' }}>
+            Thousands of PM and Data Science questions and answers to practise from
+          </p>
         </div>
 
         {/* RIGHT COLUMN  . How It Works in vertical layout */}
