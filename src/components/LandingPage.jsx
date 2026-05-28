@@ -115,7 +115,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             maxWidth: '480px',
             fontFamily: "'Instrument Serif', serif",
           }}>
-            Answer one interview question. Get instant feedback.
+            Your next interview is coming. Are you actually ready?
           </h1>
 
           {/* Subheadline */}
@@ -124,10 +124,12 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             color: C.textSoft,
             lineHeight: 1.6,
             marginBottom: '28px',
-            maxWidth: '420px',
+            maxWidth: '480px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            Practice real PM and Data Science interview questions. Get AI feedback scored across 8 competencies. See exactly what a senior interviewer would say instead.
+            Most candidates think they are prepared. They studied the questions, read the frameworks, watched the videos. Then they sit across from an interviewer and go blank. Because they practised theory, not thinking.
+            <br /><br />
+            InterviewAlpha fixes that. Answer one real question right now and find out exactly where you stand.
           </p>
 
           {/* Free Session Countdown */}
@@ -531,12 +533,13 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           <p style={{
             fontSize: '0.85rem',
             color: '#6b6b6b',
-            fontWeight: 600,
-            margin: 0,
+            lineHeight: 1.6,
+            marginTop: '16px',
             fontFamily: "'Plus Jakarta Sans', sans-serif"
           }}>
-            Trusted by 4,000+ PM and Data Science candidates preparing for{' '}
-            <strong style={{ color: '#111' }}>Google, Amazon, Flipkart & more</strong>
+            Dhruv found out he was scoring 4 out of 10 on product sense. Two weeks later he had an offer.
+            Mridula called it one of the best products she had ever seen.
+            Thousands of PM and DS aspirants are practising right now. Your interview could be next week.
           </p>
         </div>
       </div>
