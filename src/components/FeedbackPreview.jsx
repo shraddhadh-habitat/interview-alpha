@@ -225,72 +225,72 @@ export default function FeedbackPreview() {
             </div>
           </div>
 
-          {/* RIGHT - AI Score only */}
-          <div style={{
-            background: '#ffffff',
-            borderRadius: '14px',
-            padding: '24px',
-            border: '1px solid #e4e1db',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-          }}>
+          {/* RIGHT - AI Score + Expert Rewrite in flex column */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {/* AI Score card */}
             <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '20px'
+              background: '#ffffff',
+              borderRadius: '14px',
+              padding: '24px',
+              border: '1px solid #e4e1db',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}>
-              <p style={{ fontWeight: 700, fontSize: '0.88rem', color: '#111', margin: 0 }}>
-                AI Score
-              </p>
               <div style={{
-                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                borderRadius: '999px',
-                padding: '4px 16px',
-                color: '#fff',
-                fontWeight: 800,
-                fontSize: '1rem'
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '20px'
               }}>
-                {ex.overallScore} / 10
+                <p style={{ fontWeight: 700, fontSize: '0.88rem', color: '#111', margin: 0 }}>
+                  AI Score
+                </p>
+                <div style={{
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                  borderRadius: '999px',
+                  padding: '4px 16px',
+                  color: '#fff',
+                  fontWeight: 800,
+                  fontSize: '1rem'
+                }}>
+                  {ex.overallScore} / 10
+                </div>
               </div>
+
+              {ex.competencies.map(({ label, score }) => (
+                <div key={label} style={{ marginBottom: '10px' }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '4px'
+                  }}>
+                    <span style={{ fontSize: '0.74rem', color: '#6b6b6b' }}>{label}</span>
+                    <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111' }}>{score}/10</span>
+                  </div>
+                  <div style={{
+                    height: '6px',
+                    background: '#f0ede8',
+                    borderRadius: '999px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      height: '100%',
+                      width: `${score * 10}%`,
+                      background: 'linear-gradient(90deg, #a8e6cf, #a78bfa)',
+                      borderRadius: '999px'
+                    }} />
+                  </div>
+                </div>
+              ))}
             </div>
 
-            {ex.competencies.map(({ label, score }) => (
-              <div key={label} style={{ marginBottom: '10px' }}>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  marginBottom: '4px'
-                }}>
-                  <span style={{ fontSize: '0.74rem', color: '#6b6b6b' }}>{label}</span>
-                  <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111' }}>{score}/10</span>
-                </div>
-                <div style={{
-                  height: '6px',
-                  background: '#f0ede8',
-                  borderRadius: '999px',
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    height: '100%',
-                    width: `${score * 10}%`,
-                    background: 'linear-gradient(90deg, #a8e6cf, #a78bfa)',
-                    borderRadius: '999px'
-                  }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* BOTTOM ROW - Expert Rewrite full width */}
-        <div style={{
-          background: '#ffffff',
-          borderRadius: '14px',
-          padding: '24px',
-          border: '1px solid #e4e1db',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-          width: '100%'
-        }}>
+            {/* Expert Rewrite card */}
+            <div style={{
+              background: '#ffffff',
+              borderRadius: '14px',
+              padding: '24px',
+              border: '1px solid #e4e1db',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+            }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
             <span>✨</span>
             <p style={{
@@ -302,16 +302,18 @@ export default function FeedbackPreview() {
               margin: 0
             }}>Expert Rewrite</p>
           </div>
-          {ex.expertRewrite.split('\n\n').map((paragraph, i) => (
-            <p key={i} style={{
-              fontSize: '0.88rem',
-              color: '#444',
-              lineHeight: 1.7,
-              margin: i === 0 ? '0 0 12px' : '0'
-            }}>
-              {paragraph}
-            </p>
-          ))}
+              {ex.expertRewrite.split('\n\n').map((paragraph, i) => (
+                <p key={i} style={{
+                  fontSize: '0.88rem',
+                  color: '#444',
+                  lineHeight: 1.7,
+                  margin: i === 0 ? '0 0 12px' : '0'
+                }}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </div>
         </div>
 
       </div>
