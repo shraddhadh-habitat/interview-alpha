@@ -139,22 +139,6 @@ function ResumeScore() {
             </div>
           ))}
         </div>
-
-        <div style={{
-          background: 'rgba(253, 205, 52, 0.1)',
-          border: '1px solid rgba(253, 205, 52, 0.2)',
-          borderRadius: 12,
-          padding: 16,
-          textAlign: 'center',
-        }}>
-          <p style={{
-            fontSize: 13,
-            color: C.textMuted,
-            margin: 0,
-          }}>
-            ✨ Coming soon: AI-powered detailed scoring. For now, these are example scores.
-          </p>
-        </div>
       </div>
     </div>
   );
