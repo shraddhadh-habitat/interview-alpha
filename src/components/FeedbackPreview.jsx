@@ -25,7 +25,9 @@ const TRACKS = [
         { label: 'Trade-off Analysis',   score: 7 },
         { label: 'Execution Clarity',    score: 6 },
       ],
-      expertRewrite: "Before deciding on speed, I'd validate the assumption. I'd pull churn data segmented by delivery time. If less than 15% of churned users cited speed, matching 7 mins is a costly distraction. My strategy: differentiate on reliability with a 'Zepto Promise'. Guaranteed 10 mins or your next order free. This builds trust, is defensible, and costs less than shaving 3 mins off logistics. If speed data proves critical, I'd test 8-min delivery in Mumbai and Bangalore first, measure NPS delta, then decide on full rollout.",
+      expertRewrite: `Before deciding on speed, I would validate the assumption. I would pull churn data segmented by delivery time. If less than 15% of churned users cited speed, matching 7 mins is a costly distraction.
+
+I would differentiate on reliability with a Zepto Promise. Guaranteed 10 mins or your next order free. This builds trust, is defensible, and costs less than shaving 3 mins off logistics. If speed data proves critical, I would test 8-min delivery in Mumbai and Bangalore first, measure NPS delta, then decide on full rollout.`,
     }
   },
   {
@@ -48,7 +50,9 @@ const TRACKS = [
         { label: 'Technical Depth',       score: 8 },
         { label: 'Actionability',         score: 6 },
       ],
-      expertRewrite: "This is a classic aggregate vs. segment accuracy problem. Overall 91% accuracy is misleading. I'd immediately segment performance by restaurant category, order volume tier, city, and time slot. My hypothesis: the model was trained on historical data that over-represents high-volume restaurants, so it performs well on average but fails on edge cases like new restaurants or weekend peak slots. I'd compute accuracy per segment, identify the worst-performing slices, then retrain with stratified sampling or build separate models per segment. I'd also talk to 5 restaurant partners to understand which specific predictions feel wrong. Qualitative signal often points directly at the data problem.",
+      expertRewrite: `This is a classic aggregate vs. segment accuracy problem. Overall 91% accuracy is misleading. I would immediately segment performance by restaurant category, order volume tier, city, and time slot. My hypothesis: the model was trained on historical data that over-represents high-volume restaurants, so it performs well on average but fails on edge cases like new restaurants or weekend peak slots.
+
+I would compute accuracy per segment, identify the worst-performing slices, then retrain with stratified sampling or build separate models per segment. I would also talk to 5 restaurant partners to understand which specific predictions feel wrong. Qualitative signal often points directly at the data problem.`,
     }
   },
   // ============================================================
@@ -298,14 +302,16 @@ export default function FeedbackPreview() {
               margin: 0
             }}>Expert Rewrite</p>
           </div>
-          <p style={{
-            fontSize: '0.88rem',
-            color: '#444',
-            lineHeight: 1.7,
-            margin: 0
-          }}>
-            "{ex.expertRewrite}"
-          </p>
+          {ex.expertRewrite.split('\n\n').map((paragraph, i) => (
+            <p key={i} style={{
+              fontSize: '0.88rem',
+              color: '#444',
+              lineHeight: 1.7,
+              margin: i === 0 ? '0 0 12px' : '0'
+            }}>
+              {paragraph}
+            </p>
+          ))}
         </div>
 
       </div>
