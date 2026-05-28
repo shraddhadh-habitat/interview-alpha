@@ -226,16 +226,14 @@ export default function FeedbackPreview() {
             </div>
           </div>
 
-          {/* RIGHT - AI Score + Expert Rewrite in flex column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '0' }}>
-            {/* AI Score card */}
-            <div style={{
-              background: '#ffffff',
-              borderRadius: '14px',
-              padding: '24px',
-              border: '1px solid #e4e1db',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-            }}>
+          {/* RIGHT - AI Score only */}
+          <div style={{
+            background: '#ffffff',
+            borderRadius: '14px',
+            padding: '24px',
+            border: '1px solid #e4e1db',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+          }}>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -282,18 +280,20 @@ export default function FeedbackPreview() {
                   </div>
                 </div>
               ))}
-            </div>
+          </div>
+        </div>
 
-            {/* Expert Rewrite card */}
-            <div style={{
-              background: '#ffffff',
-              borderRadius: '14px',
-              padding: '20px',
-              border: '1px solid #e4e1db',
-              marginTop: '0',
-              paddingTop: '20px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-            }}>
+        {/* Expert Rewrite - Full Width */}
+        <div style={{
+          background: '#ffffff',
+          borderRadius: '14px',
+          padding: '24px',
+          border: '1px solid #e4e1db',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+          width: '100%',
+          boxSizing: 'border-box',
+          marginTop: '0'
+        }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
             <span>✨</span>
             <p style={{
@@ -305,18 +305,16 @@ export default function FeedbackPreview() {
               margin: 0
             }}>Expert Rewrite</p>
           </div>
-              {ex.expertRewrite.split('\n\n').map((paragraph, i) => (
-                <p key={i} style={{
-                  fontSize: '0.88rem',
-                  color: '#444',
-                  lineHeight: 1.7,
-                  margin: i === 0 ? '0 0 12px' : '0'
-                }}>
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </div>
+          {ex.expertRewrite.split('\n\n').map((paragraph, i) => (
+            <p key={i} style={{
+              fontSize: '0.88rem',
+              color: '#444',
+              lineHeight: 1.7,
+              margin: i === 0 ? '0 0 12px' : '0'
+            }}>
+              {paragraph}
+            </p>
+          ))}
         </div>
 
       </div>
