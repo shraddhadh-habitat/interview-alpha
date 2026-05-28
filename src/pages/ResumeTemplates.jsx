@@ -56,27 +56,6 @@ const tips = [
   'Save as PDF unless the application specifically asks for DOCX',
 ];
 
-function TemplatePreview({ template }) {
-  return (
-    <div style={{
-      background: '#f9f8f6',
-      borderRadius: '8px',
-      padding: '12px',
-      marginBottom: '16px',
-      border: '1px solid #e4e1db'
-    }}>
-      {/* Name line */}
-      <div style={{ height: '8px', background: 'linear-gradient(90deg, #a8e6cf, #a78bfa)', borderRadius: '4px', width: '60%', marginBottom: '6px' }} />
-      {/* Contact line */}
-      <div style={{ height: '4px', background: '#e4e1db', borderRadius: '4px', width: '80%', marginBottom: '12px' }} />
-      {/* Section lines */}
-      {[90, 70, 80, 60, 75].map((w, i) => (
-        <div key={i} style={{ height: '4px', background: '#e4e1db', borderRadius: '4px', width: w + '%', marginBottom: '5px' }} />
-      ))}
-    </div>
-  );
-}
-
 export default function ResumeTemplates({ hideAtsButton = false }) {
   return (
     <div style={{
@@ -196,8 +175,6 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
                 </p>
               </div>
 
-              <TemplatePreview template={template} />
-
               <a
                 className="template-button"
                 href={`mailto:communications@interviewalpha.ai?subject=Request Template: ${template.name}`}
@@ -268,17 +245,17 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
                 gap: 16,
               }}>
                 <div style={{
-                  minWidth: 24,
-                  height: 24,
-                  background: C.yellow,
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                  color: '#ffffff',
                   borderRadius: '50%',
+                  width: '28px',
+                  height: '28px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 12,
                   fontWeight: 700,
-                  color: C.text,
-                  flexShrink: 0,
+                  fontSize: '0.82rem',
+                  flexShrink: 0
                 }}>
                   {idx + 1}
                 </div>
