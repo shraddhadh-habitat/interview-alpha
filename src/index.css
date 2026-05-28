@@ -1020,6 +1020,11 @@ html, body {
     padding: 32px 16px !important;
     gap: 32px !important;
   }
+
+  /* Feedback preview stacks on mobile */
+  .feedback-preview-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 /* ─── Global Section Spacing ─── */

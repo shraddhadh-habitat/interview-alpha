@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import FreeSessionCountdown from './FreeSessionCountdown';
 import WeeklyActiveBar from './WeeklyActiveBar';
+import FeedbackPreview from './FeedbackPreview';
 
 const C = {
   bg: '#FFFFFF',
@@ -1147,6 +1148,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
     <div>
       <HeroSection />
       <QuestionCardsSection />
+      <FeedbackPreview />
       <GuidedPathsSection />
       <ProductProofSection />
       <TrustSection />
