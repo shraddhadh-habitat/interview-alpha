@@ -177,36 +177,27 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           )}
 
           {/* Secondary link */}
-          <button
-            onClick={() => onNavigate('practice')}
-            style={{
-              display: 'block',
-              marginTop: '8px',
-              background: 'none',
-              border: 'none',
-              color: C.textSoft,
-              fontSize: '14px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              cursor: 'pointer',
-              textDecoration: 'underline',
-              padding: 0,
-              transition: 'color 0.2s',
-              fontWeight: 700,
-            }}
-            onMouseEnter={e => e.currentTarget.style.color = C.text}
-            onMouseLeave={e => e.currentTarget.style.color = C.textSoft}
-          >
-            or browse questions free
-          </button>
-
-          <p style={{
-            fontSize: '0.82rem',
-            marginTop: '10px',
-            lineHeight: 1.4,
-            fontWeight: 500,
-            color: '#6b6b6b'
-          }}>
-            Thousands of{' '}
+          <p style={{ fontSize: '0.82rem', marginTop: '12px', color: '#6b6b6b', lineHeight: 1.5 }}>
+            <button
+              onClick={() => onNavigate('practice')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#6b6b6b',
+                textDecoration: 'underline',
+                fontWeight: 500,
+                cursor: 'pointer',
+                padding: 0,
+                fontSize: 'inherit',
+                fontFamily: 'inherit',
+                transition: 'color 0.2s'
+              }}
+              onMouseEnter={e => e.currentTarget.style.color = C.text}
+              onMouseLeave={e => e.currentTarget.style.color = '#6b6b6b'}
+            >
+              Or browse questions free.
+            </button>
+            {' '}Thousands of{' '}
             <strong style={{
               background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               WebkitBackgroundClip: 'text',
@@ -215,7 +206,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             }}>
               PM and Data Science
             </strong>
-            {' '}questions and answers to practise from
+            {' '}questions and answers to practise from.
           </p>
         </div>
 
