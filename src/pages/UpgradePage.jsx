@@ -66,12 +66,20 @@ function RecentUpgradesCounter() {
   const getCount = () => {
     const startDate = new Date('2026-05-25T00:00:00Z');
     const now = new Date();
-    const weeksElapsed = Math.floor((now - startDate) / (1000 * 60 * 60 * 24 * 7));
-    const dayOfWeek = now.getDay(); // 0-6
-    const base = 12;
-    // Adds 1-3 per day within current week
-    const count = base + (weeksElapsed % 4) + dayOfWeek * 2;
-    return count;
+
+    // Calculate 4-hour blocks since start of current week
+    const startOfWeek = new Date(now);
+    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+
+    const hoursThisWeek = Math.floor((now - startOfWeek) / (1000 * 60 * 60));
+    const blocksThisWeek = Math.floor(hoursThisWeek / 4);
+
+    // Start at 12 at beginning of week, add 1-2 every 4 hours
+    const count = 12 + blocksThisWeek + (blocksThisWeek * 3 % 2);
+
+    // Cap at 28 so it resets believably each week
+    return Math.min(count, 28);
   };
 
   return (
