@@ -128,7 +128,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontWeight: 500,
           }}>
-            Most candidates think they are prepared. They studied the questions, read the frameworks, watched the videos. Then they sit across from an interviewer and go blank. The problem is not effort; it's that they practised theory, not thinking. InterviewAlpha fixes that. Answer one real question right now and find out exactly where you stand.
+            Most candidates think they are prepared. They studied the questions, read the frameworks, watched the videos. Then they sit across from an interviewer and go blank. The problem is not effort; it's that they practiced theory, not thinking. InterviewAlpha fixes that. Answer one real question right now and find out exactly where you stand.
           </p>
 
           {/* Free Session Countdown */}
@@ -190,7 +190,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             }}>
               PM and Data Science
             </strong>
-            {' '}questions and answers to practise from.
+            {' '}questions and answers to practice from.
           </p>
         </div>
 
