@@ -271,7 +271,9 @@ export default function ResumeOptimizer({ user }) {
             color: '#1B1B18',
             margin: 0,
             marginBottom: '12px',
-            marginTop: '24px',
+            marginTop: '48px',
+            textDecoration: 'none',
+            borderBottom: 'none',
           }}
         >
           Resume Optimizer
