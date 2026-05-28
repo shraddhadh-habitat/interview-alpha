@@ -50,6 +50,10 @@ function ResumeScore() {
             fontWeight: 600,
             marginBottom: 12,
             color: C.text,
+            marginTop: '48px',
+            textDecoration: 'none',
+            borderBottom: 'none',
+            boxShadow: 'none'
           }}>
             Resume Quality Score
           </h1>
