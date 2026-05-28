@@ -200,12 +200,15 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
           </button>
 
           <p style={{
-            fontSize: '0.85rem',
-            marginTop: '12px',
-            lineHeight: 1.5,
+            fontSize: '0.78rem',
+            marginTop: '10px',
+            lineHeight: 1.4,
             fontWeight: 500,
             color: '#6b6b6b',
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            overflow: 'visible',
+            width: 'max-content',
+            maxWidth: '100%'
           }}>
             Thousands of{' '}
             <strong style={{
