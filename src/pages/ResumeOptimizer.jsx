@@ -271,6 +271,7 @@ export default function ResumeOptimizer({ user }) {
             color: '#1B1B18',
             margin: 0,
             marginBottom: '12px',
+            marginTop: '24px',
           }}
         >
           Resume Optimizer
@@ -337,6 +338,7 @@ export default function ResumeOptimizer({ user }) {
                 disabled={fileUploading}
                 style={{
                   width: '100%',
+                  boxSizing: 'border-box',
                   padding: '10px 16px',
                   border: 'none',
                   borderRadius: '8px',
@@ -415,30 +417,19 @@ export default function ResumeOptimizer({ user }) {
               onClick={handleOptimize}
               disabled={loading}
               style={{
-                width: '100%',
-                height: '48px',
-                background: loading ? '#999' : '#1B1B18',
-                color: 'white',
+                background: loading ? '#999' : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                color: '#ffffff',
                 border: 'none',
                 borderRadius: '12px',
-                fontSize: '16px',
-                fontWeight: 600,
+                fontWeight: 700,
+                width: '100%',
+                padding: '16px',
+                fontSize: '1rem',
                 cursor: loading ? 'not-allowed' : 'pointer',
-                opacity: loading ? 0.7 : 1,
               }}
             >
               {loading ? 'Optimizing your resume...' : 'Optimize My Resume'}
             </button>
-            <p
-              style={{
-                fontSize: '12px',
-                color: 'rgba(27,27,24,0.5)',
-                textAlign: 'center',
-                margin: '12px 0 0 0',
-              }}
-            >
-              AI rewrites your bullet points to match the JD. Takes about 45 seconds.
-            </p>
           </div>
         </>
       ) : (
