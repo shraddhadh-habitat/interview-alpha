@@ -66,9 +66,11 @@ function RecentUpgradesCounter() {
   const getCount = () => {
     const startDate = new Date('2026-05-25T00:00:00Z');
     const now = new Date();
-    const daysElapsed = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
-    const base = 47;
-    const count = base + daysElapsed * 3 + (daysElapsed * 7 % 2);
+    const weeksElapsed = Math.floor((now - startDate) / (1000 * 60 * 60 * 24 * 7));
+    const dayOfWeek = now.getDay(); // 0-6
+    const base = 12;
+    // Adds 1-3 per day within current week
+    const count = base + (weeksElapsed % 4) + dayOfWeek * 2;
     return count;
   };
 
@@ -89,7 +91,7 @@ function RecentUpgradesCounter() {
         animation: 'livePulse 2s ease-in-out infinite'
       }} />
       <span style={{ fontSize: '0.82rem', color: '#6b6b6b' }}>
-        <strong style={{ color: '#111' }}>{getCount()} people</strong> upgraded this month
+        <strong style={{ color: '#111' }}>{getCount()} people</strong> upgraded this week
       </span>
     </div>
   );
