@@ -199,7 +199,14 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             or browse questions free
           </button>
 
-          <p style={{ fontSize: '0.88rem', marginTop: '16px', lineHeight: 1.5, fontWeight: 500, color: '#6b6b6b' }}>
+          <p style={{
+            fontSize: '0.85rem',
+            marginTop: '12px',
+            lineHeight: 1.5,
+            fontWeight: 500,
+            color: '#6b6b6b',
+            whiteSpace: 'nowrap'
+          }}>
             Thousands of{' '}
             <strong style={{
               background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
