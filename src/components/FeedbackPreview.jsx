@@ -227,7 +227,7 @@ export default function FeedbackPreview() {
           </div>
 
           {/* RIGHT - AI Score + Expert Rewrite in flex column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '0' }}>
             {/* AI Score card */}
             <div style={{
               background: '#ffffff',
@@ -288,8 +288,10 @@ export default function FeedbackPreview() {
             <div style={{
               background: '#ffffff',
               borderRadius: '14px',
-              padding: '24px',
+              padding: '20px',
               border: '1px solid #e4e1db',
+              marginTop: '0',
+              paddingTop: '20px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
