@@ -164,7 +164,7 @@ export default function AuthPage() {
           </h1>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 40 }}>
             {[
-              { icon: '🎯', text: '1,100+ Expert PM Questions' },
+              { icon: '🎯', text: 'Thousands of Expert PM Questions' },
               { icon: '🤖', text: 'AI Interviewer with Real-Time Feedback' },
               { icon: '📊', text: 'Personalized Scorecard & Study Plan' },
             ].map(({ icon, text }) => (

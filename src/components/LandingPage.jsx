@@ -262,7 +262,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 wordWrap: 'break-word',
               }}>
-                1,100+ real questions across PM and Data Science by company, role, or topic.
+                Thousands of real questions across PM and Data Science by company, role, or topic.
               </p>
             </div>
           </div>

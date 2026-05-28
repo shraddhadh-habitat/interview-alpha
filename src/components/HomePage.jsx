@@ -513,7 +513,7 @@ function LoggedOutView({ onStartInterview, onBrowse }) {
             e.currentTarget.style.boxShadow = '0 1px 3px rgba(168, 230, 207, 0.2)';
           }}
         >
-          Browse 1,100+ Questions
+          Browse Thousands of Questions
         </button>
         <p style={{
           fontSize: 13,

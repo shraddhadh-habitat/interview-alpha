@@ -47,7 +47,7 @@ const DISCOUNT_CODES = {
   'FOUNDER20':  { percent: 20, description: '20% Founder Discount',          active: true, maxUses: 20,  currentUses: 0 },
 };
 
-const FREE_FEATURES  = ['Free to start', 'Browse 1100+ question bank', 'Read expert answers', 'Salary Guide'];
+const FREE_FEATURES  = ['Free to start', 'Browse thousands of questions', 'Read expert answers', 'Salary Guide'];
 const PRO_FEATURES   = ['Unlimited AI interview sessions', 'Unlimited practice with AI scoring', 'Unlimited ATS Resume Checker', 'Unlimited Resume Optimizer', 'Resume Templates access', 'Scorecard & progress tracking', 'Company-specific interview prep', 'Priority support'];
 
 const globalStyles = `

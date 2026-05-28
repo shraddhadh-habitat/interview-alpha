@@ -15,7 +15,7 @@ const STEPS = [
     label: 'Welcome',
     title: 'Welcome to InterviewAlpha.ai',
     subtitle: 'Your AI-powered PM interview coach',
-    body: `InterviewAlpha.ai gives you everything you need to land your next PM role: from live mock interviews with real-time feedback, to a 1100+ question practice bank covering every level from APM to CPO.`,
+    body: `InterviewAlpha.ai gives you everything you need to land your next PM role: from live mock interviews with real-time feedback, to thousands of practice questions covering every level from APM to CPO.`,
   },
   {
     id: 'profile',
@@ -37,7 +37,7 @@ const STEPS = [
     id: 'practiceqa',
     icon: '≡',
     label: 'Practice Q&A',
-    title: 'Browse 1100+ PM Questions',
+    title: 'Browse Thousands of PM Questions',
     subtitle: 'Expert answers across every designation',
     body: `The Practice Q&A library covers every PM level from Associate PM to CPO across both product and behavioral question categories.\n\nFilter by designation, search by keyword, and expand any question to read a structured expert answer that demonstrates the frameworks and thinking patterns a top PM would use.\n\nThese are frameworks, not scripts. Replace example stories with your own.`,
   },
