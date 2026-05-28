@@ -11,8 +11,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const cronSecret = process.env.CRON_SECRET;
+    const supabaseUrl = process.env.VITE_SUPABASE_URL;
+    const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY;
 
     const response = await fetch(
       `${supabaseUrl}/functions/v1/send-email-sequence`,
