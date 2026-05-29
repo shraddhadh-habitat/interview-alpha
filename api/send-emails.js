@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   console.log('RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY);
   console.log('RESEND_API_KEY starts with:', process.env.RESEND_API_KEY?.substring(0, 8));
 
-  // For testing — only send to shraddhadh@gmail.com
+  // For testing — only send to interviewalpha.ai@gmail.com
   const testMode = true;
   console.log('Test mode:', testMode);
 
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       if (!user.email) continue;
       const name = user.display_name || user.email.split('@')[0] || 'there';
       const sessionsLeft = Math.max(0, 3 - (user.free_sessions_used || 0));
-      const recipient = testMode ? 'shraddhadh@gmail.com' : user.email;
+      const recipient = testMode ? 'interviewalpha.ai@gmail.com' : user.email;
 
       // Day 1 — never received welcome email
       if (!user.email_day1_sent) {
