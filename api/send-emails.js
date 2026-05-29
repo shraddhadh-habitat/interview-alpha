@@ -71,8 +71,8 @@ async function sendResendEmail(to, subject, html) {
   });
   const data = await response.json();
   console.log('Resend response:', JSON.stringify(data));
-  if (data.error) {
-    throw new Error(`Resend error: ${data.error} - ${data.message}`);
+  if (data.statusCode >= 400 || data.error) {
+    throw new Error(`Resend error: ${data.statusCode} ${data.message}`);
   }
   return data;
 }
