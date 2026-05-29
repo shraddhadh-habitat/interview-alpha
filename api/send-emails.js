@@ -10,6 +10,9 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
+  console.log('RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY);
+  console.log('RESEND_API_KEY starts with:', process.env.RESEND_API_KEY?.substring(0, 8));
+
   const supabaseAdmin = createClient(
     process.env.VITE_SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -66,7 +69,12 @@ async function sendResendEmail(to, subject, html) {
     },
     body: JSON.stringify({ from: 'InterviewAlpha <onboarding@resend.dev>', to, subject, html })
   });
-  return response.json();
+  const data = await response.json();
+  console.log('Resend response:', JSON.stringify(data));
+  if (data.error) {
+    throw new Error(`Resend error: ${data.error} - ${data.message}`);
+  }
+  return data;
 }
 
 function day1Html(name) {
