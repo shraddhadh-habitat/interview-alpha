@@ -2,7 +2,8 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/api/messages", "destination": "/api/messages" }
+    { "source": "/api/messages", "destination": "/api/messages" },
+    { "source": "/api/send-emails", "destination": "/api/send-emails" }
   ],
   "crons": [
     {
