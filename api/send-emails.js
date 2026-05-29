@@ -13,6 +13,10 @@ export default async function handler(req, res) {
   console.log('RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY);
   console.log('RESEND_API_KEY starts with:', process.env.RESEND_API_KEY?.substring(0, 8));
 
+  // For testing — only send to shraddhadh@gmail.com
+  const testMode = true;
+  console.log('Test mode:', testMode);
+
   const supabaseAdmin = createClient(
     process.env.VITE_SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -32,22 +36,23 @@ export default async function handler(req, res) {
       if (!user.email) continue;
       const name = user.display_name || user.email.split('@')[0] || 'there';
       const sessionsLeft = Math.max(0, 3 - (user.free_sessions_used || 0));
+      const recipient = testMode ? 'shraddhadh@gmail.com' : user.email;
 
       // Day 1 — never received welcome email
       if (!user.email_day1_sent) {
-        await sendResendEmail(user.email, `${name}, here is how to make the most of your 3 free sessions`, day1Html(name));
+        await sendResendEmail(recipient, `${name}, here is how to make the most of your 3 free sessions`, day1Html(name));
         await supabaseAdmin.from('profiles').update({ email_day1_sent: true }).eq('id', user.id);
         sent++;
       }
       // Day 3 — got welcome email, still has sessions, not reminded yet
       else if (user.email_day1_sent && sessionsLeft > 0 && !user.email_day3_sent) {
-        await sendResendEmail(user.email, `${name}, you have ${sessionsLeft} free session${sessionsLeft !== 1 ? 's' : ''} left`, day3Html(name, sessionsLeft));
+        await sendResendEmail(recipient, `${name}, you have ${sessionsLeft} free session${sessionsLeft !== 1 ? 's' : ''} left`, day3Html(name, sessionsLeft));
         await supabaseAdmin.from('profiles').update({ email_day3_sent: true }).eq('id', user.id);
         sent++;
       }
       // Day 5 — used all sessions, not nudged to upgrade yet
       else if (sessionsLeft === 0 && !user.email_day5_sent) {
-        await sendResendEmail(user.email, `${name}, your free sessions are used. Here is what Pro users do differently.`, day5Html(name));
+        await sendResendEmail(recipient, `${name}, your free sessions are used. Here is what Pro users do differently.`, day5Html(name));
         await supabaseAdmin.from('profiles').update({ email_day5_sent: true }).eq('id', user.id);
         sent++;
       }
