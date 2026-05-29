@@ -18,29 +18,32 @@ export default async function handler(req, res) {
   try {
     const { data: users, error } = await supabaseAdmin
       .from('profiles')
-      .select('id,email,display_name,submitted_at,free_sessions_used,email_day1_sent,email_day3_sent,email_day5_sent')
+      .select('id,email,display_name,updated_at,free_sessions_used,email_day1_sent,email_day3_sent,email_day5_sent')
       .neq('subscription_status', 'pro');
 
     if (error) throw error;
 
     let sent = 0;
-    const now = new Date();
 
     for (const user of users || []) {
       if (!user.email) continue;
       const name = user.display_name || user.email.split('@')[0] || 'there';
-      const days = Math.floor((now - new Date(user.submitted_at)) / (1000 * 60 * 60 * 24));
       const sessionsLeft = Math.max(0, 3 - (user.free_sessions_used || 0));
 
-      if (days >= 1 && !user.email_day1_sent) {
+      // Day 1 — never received welcome email
+      if (!user.email_day1_sent) {
         await sendResendEmail(user.email, `${name}, here is how to make the most of your 3 free sessions`, day1Html(name));
         await supabaseAdmin.from('profiles').update({ email_day1_sent: true }).eq('id', user.id);
         sent++;
-      } else if (days >= 3 && sessionsLeft > 0 && !user.email_day3_sent) {
+      }
+      // Day 3 — got welcome email, still has sessions, not reminded yet
+      else if (user.email_day1_sent && sessionsLeft > 0 && !user.email_day3_sent) {
         await sendResendEmail(user.email, `${name}, you have ${sessionsLeft} free session${sessionsLeft !== 1 ? 's' : ''} left`, day3Html(name, sessionsLeft));
         await supabaseAdmin.from('profiles').update({ email_day3_sent: true }).eq('id', user.id);
         sent++;
-      } else if (sessionsLeft === 0 && days >= 2 && !user.email_day5_sent) {
+      }
+      // Day 5 — used all sessions, not nudged to upgrade yet
+      else if (sessionsLeft === 0 && !user.email_day5_sent) {
         await sendResendEmail(user.email, `${name}, your free sessions are used. Here is what Pro users do differently.`, day5Html(name));
         await supabaseAdmin.from('profiles').update({ email_day5_sent: true }).eq('id', user.id);
         sent++;
