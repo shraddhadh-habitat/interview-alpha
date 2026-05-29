@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   try {
     const { data: users, error } = await supabaseAdmin
       .from('profiles')
-      .select('id,email,display_name,created_at,free_sessions_used,email_day1_sent,email_day3_sent,email_day5_sent')
+      .select('id,email,display_name,submitted_at,free_sessions_used,email_day1_sent,email_day3_sent,email_day5_sent')
       .neq('subscription_status', 'pro');
 
     if (error) throw error;
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     for (const user of users || []) {
       if (!user.email) continue;
       const name = user.display_name || user.email.split('@')[0] || 'there';
-      const days = Math.floor((now - new Date(user.created_at)) / (1000 * 60 * 60 * 24));
+      const days = Math.floor((now - new Date(user.submitted_at)) / (1000 * 60 * 60 * 24));
       const sessionsLeft = Math.max(0, 3 - (user.free_sessions_used || 0));
 
       if (days >= 1 && !user.email_day1_sent) {
