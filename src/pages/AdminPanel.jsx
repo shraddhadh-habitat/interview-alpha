@@ -46,8 +46,29 @@ function WeeklyActiveAdminCard() {
 
   return (
     <div style={{ padding: '20px 24px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16 }}>
-      <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Active This Week</div>
+      <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Profiles Updated This Week</div>
       <div style={{ fontSize: 32, fontWeight: 700, fontFamily: "'Instrument Serif', serif", color: C.green }}>{count === null ? '...' : count}</div>
+    </div>
+  );
+}
+
+function TotalSessionsCard() {
+  const [sessionCount, setSessionCount] = useState(null);
+
+  useEffect(() => {
+    const fetchSessions = async () => {
+      const { count } = await supabase
+        .from('sessions')
+        .select('*', { count: 'exact', head: true });
+      setSessionCount(count);
+    };
+    fetchSessions();
+  }, []);
+
+  return (
+    <div style={{ padding: '20px 24px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 16 }}>
+      <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Total Practice Sessions</div>
+      <div style={{ fontSize: 32, fontWeight: 700, fontFamily: "'Instrument Serif', serif", color: C.success }}>{sessionCount === null ? '...' : sessionCount}</div>
     </div>
   );
 }
@@ -254,11 +275,12 @@ export default function AdminPanel({ user }) {
 
         {/* Stats */}
         {!loading && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 32 }}>
             <StatCard label="Pending Payments"   value={stats.pending} color={stats.pending > 0 ? C.yellow : C.textMuted} />
             <StatCard label="Active Pro Users"   value={stats.active}  color={C.success} />
             <StatCard label="Total Users"        value={stats.total}   color={C.text} />
             <WeeklyActiveAdminCard />
+            <TotalSessionsCard />
           </div>
         )}
 
