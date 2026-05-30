@@ -538,7 +538,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
       </button>
 
       {/* Answer panel */}
-      {isOpen && (
+      {user && isOpen && (
         <div style={{
           borderTop: `1px solid ${C.greenBorder}`,
           background: C.greenLight,
