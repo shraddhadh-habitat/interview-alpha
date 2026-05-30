@@ -38,14 +38,14 @@ export default function ExitIntentPopup({ user, profile }) {
           title: 'One more free question?',
           message: 'You have ' + freeSessions + ' free session' + (freeSessions !== 1 ? 's' : '') + ' left.',
           cta: 'Answer a question now',
-          ctaLink: '/dashboard'
+          page: 'practice'
         }
       : {
           emoji: '🚀',
           title: 'Ready to level up?',
           message: 'You\'ve mastered your free sessions. Unlock unlimited practice.',
           cta: 'See upgrade options',
-          ctaLink: '/upgrade'
+          page: 'upgrade'
         }
     : {
         emoji: '🎯',
@@ -53,6 +53,17 @@ export default function ExitIntentPopup({ user, profile }) {
         message: 'No credit card needed. Answer one question right now.',
         cta: 'Try one free question',
       };
+
+  const handleCTA = () => {
+    if (config.page) {
+      // Authenticated user: navigate to the specified page
+      window.dispatchEvent(new CustomEvent('ia:navigate', { detail: config.page }));
+    } else {
+      // Unauthenticated user: show login modal
+      requireAuth('Sign in to start your free session');
+    }
+    setShow(false);
+  };
 
   return (
     <>
@@ -145,7 +156,7 @@ export default function ExitIntentPopup({ user, profile }) {
             Maybe later
           </button>
           <button
-            onClick={() => requireAuth('Sign in to start your free session')}
+            onClick={handleCTA}
             style={{
               flex: 1,
               padding: '12px 16px',
