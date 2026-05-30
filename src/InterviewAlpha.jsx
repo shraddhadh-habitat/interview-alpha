@@ -1201,7 +1201,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             // Increment free_sessions_used in profiles
             const { data: freshProfile } = await supabase
               .from('profiles')
-              .select('free_sessions_used, subscription_status')
+              .select('free_sessions_used, monthly_sessions_used, subscription_status')
               .eq('id', user.id)
               .single();
 
@@ -1212,6 +1212,16 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
                 .update({ free_sessions_used: newCount })
                 .eq('id', user.id);
               if (error) console.error('Session count update failed:', error);
+            }
+
+            // Increment monthly_sessions_used for active/paid subscribers
+            if (freshProfile?.subscription_status === 'active') {
+              const newMonthlyCount = (freshProfile?.monthly_sessions_used || 0) + 1;
+              const { error: monthlyError } = await supabase
+                .from('profiles')
+                .update({ monthly_sessions_used: newMonthlyCount })
+                .eq('id', user.id);
+              if (monthlyError) console.error('Monthly session count update failed:', monthlyError);
             }
           }
         });
