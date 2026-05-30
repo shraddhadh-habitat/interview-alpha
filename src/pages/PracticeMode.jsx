@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import useTextToSpeech from '../hooks/useTextToSpeech';
+import useAuth from '../hooks/useAuth';
 import FormattedAnswer from '../components/FormattedAnswer';
 import { formatLabeledText } from '../lib/formatText';
 
@@ -413,6 +414,7 @@ export default function PracticeMode({ question, questionId, designation, catego
   const [showExpert, setShowExpert] = useState(false);
 
   const voice = useVoiceToText();
+  const { requireAuth } = useAuth();
 
   // Fetch existing attempt count and best score on mount
   useEffect(() => {
@@ -939,46 +941,106 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
         {/* Feedback result */}
         {result && !loading && (
-          <>
-            <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} />
-            <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
+          user ? (
+            <>
+              <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} />
+              <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
+                <button
+                  onClick={handleTryAgain}
+                  style={{
+                    flex: 1, minWidth: 140, padding: '13px 0',
+                    background: C.green, border: 'none', borderRadius: 12,
+                    color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+                    transition: 'background 0.2s',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
+                  onMouseLeave={e => e.currentTarget.style.background = C.green}
+                >
+                  Try Again (#{attemptNumber})
+                </button>
+                {onNextQuestion && (
+                  <button
+                    onClick={onNextQuestion}
+                    style={{
+                      flex: 1, minWidth: 140, padding: '13px 0',
+                      background: 'transparent', border: `1px solid ${C.green}`, borderRadius: 12,
+                      color: C.green, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                      cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                  >
+                    Next Question
+                  </button>
+                )}
+                <button
+                  onClick={onBack}
+                  style={{
+                    flex: 1, minWidth: 140, padding: '13px 0',
+                    background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 12,
+                    color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
+                >
+                  ← Back to Q&A
+                </button>
+              </div>
+            </>
+          ) : (
+            <div style={{
+              background: C.bgMuted,
+              border: `1px solid ${C.border}`,
+              borderRadius: 16,
+              padding: '32px 24px',
+              textAlign: 'center',
+              animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)',
+            }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 8, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                Sign in to see your score and the expert rewrite
+              </div>
+              <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 20, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                Get detailed feedback on your response and learn from the expert answer.
+              </div>
               <button
-                onClick={handleTryAgain}
+                onClick={() => requireAuth('Sign in to see your score and the expert rewrite')}
                 style={{
-                  flex: 1, minWidth: 140, padding: '13px 0',
-                  background: C.green, border: 'none', borderRadius: 12,
-                  color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+                  padding: '10px 24px',
+                  background: C.green,
+                  border: 'none',
+                  borderRadius: 8,
+                  color: '#fff',
+                  fontSize: 11,
+                  letterSpacing: 1.5,
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 600,
                   transition: 'background 0.2s',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
                 onMouseLeave={e => e.currentTarget.style.background = C.green}
               >
-                Try Again (#{attemptNumber})
+                Sign In
               </button>
-              {onNextQuestion && (
-                <button
-                  onClick={onNextQuestion}
-                  style={{
-                    flex: 1, minWidth: 140, padding: '13px 0',
-                    background: 'transparent', border: `1px solid ${C.green}`, borderRadius: 12,
-                    color: C.green, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    transition: 'all 0.2s',
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-                >
-                  Next Question
-                </button>
-              )}
               <button
                 onClick={onBack}
                 style={{
-                  flex: 1, minWidth: 140, padding: '13px 0',
-                  background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 12,
-                  color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  marginTop: 12,
+                  padding: '10px 24px',
+                  background: 'transparent',
+                  border: `1px solid ${C.border}`,
+                  borderRadius: 8,
+                  color: C.textMuted,
+                  fontSize: 11,
+                  letterSpacing: 1.5,
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
                   transition: 'all 0.2s',
                 }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
@@ -987,7 +1049,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 ← Back to Q&A
               </button>
             </div>
-          </>
+          )
         )}
 
         <div style={{ height: 60 }} />

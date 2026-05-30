@@ -410,7 +410,7 @@ function ScoreBadge({ score, attempts }) {
   );
 }
 
-function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData, onReport, tts }) {
+function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData, onReport, tts, user }) {
   const [isSpeakingQuestion, setIsSpeakingQuestion] = useState(false);
   const [isSpeakingAnswer, setIsSpeakingAnswer] = useState(false);
 
@@ -455,7 +455,13 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
     }}>
       {/* Question row */}
       <button
-        onClick={onToggle}
+        onClick={() => {
+          if (!user) {
+            onPractice();
+          } else {
+            onToggle();
+          }
+        }}
         style={{
           width: '100%', display: 'flex', alignItems: 'flex-start', gap: 16,
           padding: '18px 22px', background: 'transparent', border: 'none',
@@ -547,7 +553,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
               }}>
                 Expert Answer
               </span>
-              {tts.isSupported && (
+              {tts.isSupported && user && (
                 <button
                   onClick={handleSpeakAnswer}
                   title={isSpeakingAnswer ? "Stop listening" : "Listen to answer"}
@@ -1441,6 +1447,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 practiceData={practiceStats[item.key] || null}
                 onReport={() => requireAuth('Sign up to report question issues', () => setReportTarget(item.key))}
                 tts={tts}
+                user={user}
               />
             ))}
           </div>
