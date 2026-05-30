@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import useTextToSpeech from '../hooks/useTextToSpeech';
-import useAuth from '../hooks/useAuth';
+import { useAuth } from '../contexts/AuthContext';
 import FormattedAnswer from '../components/FormattedAnswer';
 import { formatLabeledText } from '../lib/formatText';
 
