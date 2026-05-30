@@ -1199,9 +1199,19 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             console.error("Failed to save session:", saveErr);
           } else {
             // Increment free_sessions_used in profiles
-            if (profile?.subscription_status === 'free') {
-              const newCount = (profile.free_sessions_used || 0) + 1;
-              await supabase.from('profiles').update({ free_sessions_used: newCount }).eq('id', user.id);
+            const { data: freshProfile } = await supabase
+              .from('profiles')
+              .select('free_sessions_used, subscription_status')
+              .eq('id', user.id)
+              .single();
+
+            if (!freshProfile?.subscription_status || freshProfile?.subscription_status === 'free') {
+              const newCount = (freshProfile?.free_sessions_used || 0) + 1;
+              const { error } = await supabase
+                .from('profiles')
+                .update({ free_sessions_used: newCount })
+                .eq('id', user.id);
+              if (error) console.error('Session count update failed:', error);
             }
           }
         });
