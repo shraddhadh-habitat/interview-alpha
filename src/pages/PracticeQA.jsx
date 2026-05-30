@@ -434,6 +434,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
 
   const handleSpeakAnswer = (e) => {
     e.stopPropagation();
+    if (!user) return; // Only authenticated users can listen to expert answers
     if (tts.isSpeaking) {
       tts.stop();
       setIsSpeakingAnswer(false);
@@ -1438,12 +1439,12 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                 index={displayIndex}
                 isOpen={expandedKeys.has(item.key)}
                 onToggle={() => toggleCard(item.key)}
-                onPractice={() => requireAuth('Sign up to practice with AI scoring', () => setPracticeQuestion({
+                onPractice={() => setPracticeQuestion({
                   question: item.question,
                   questionId: item.key,
                   designation: item.level,
                   category: item.dataCategory,
-                }))}
+                })}
                 practiceData={practiceStats[item.key] || null}
                 onReport={() => requireAuth('Sign up to report question issues', () => setReportTarget(item.key))}
                 tts={tts}
