@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function ExitIntentPopup({ user, profile }) {
+  const { requireAuth } = useAuth();
   const [show, setShow] = useState(false);
   const [canTrigger, setCanTrigger] = useState(false);
 
@@ -50,7 +52,6 @@ export default function ExitIntentPopup({ user, profile }) {
         title: 'Try PM interview prep free',
         message: 'No credit card needed. Answer one question right now.',
         cta: 'Try one free question',
-        ctaLink: '/signup'
       };
 
   return (
@@ -144,7 +145,7 @@ export default function ExitIntentPopup({ user, profile }) {
             Maybe later
           </button>
           <button
-            onClick={() => window.location.href = config.ctaLink}
+            onClick={() => requireAuth('Sign in to start your free session')}
             style={{
               flex: 1,
               padding: '12px 16px',
