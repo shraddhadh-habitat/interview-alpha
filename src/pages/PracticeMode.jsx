@@ -64,6 +64,83 @@ function useVoiceToText() {
     };
   }, []);
 
+  // Internal: creates and starts a recognition instance (shared by startChunk and restart)
+  const createAndStartRecognition = useCallback((onFailure, isRestart = false) => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { if (onFailure) onFailure(); return; }
+
+    const r = new SR();
+    r.lang             = 'en-US';
+    r.continuous       = false;      // MUST be false  -  true crashes Android Chrome
+    r.interimResults   = !isAndroid; // false on Android (true causes duplicate delivery)
+    r.maxAlternatives  = 1;
+
+    r.onstart = () => console.log('[Voice] Recognition started');
+
+    r.onresult = (e) => {
+      console.log('[Voice] onresult  -  resultIndex:', e.resultIndex, 'total:', e.results.length);
+      if (isAndroid) {
+        const text = e.results[0][0].transcript.trim();
+        if (text) setTranscript(prev => prev + (prev.trim() ? ' ' : '') + text);
+      } else {
+        let newFinal = '', interim = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) newFinal += e.results[i][0].transcript + ' ';
+          else interim += e.results[i][0].transcript;
+        }
+        if (newFinal.trim()) {
+          setTranscript(prev => prev + (prev.trim() ? ' ' : '') + newFinal.trim());
+        }
+        setInterimTranscript(interim);
+      }
+    };
+
+    r.onerror = (e) => {
+      console.error('[Voice] onerror:', e.error);
+      shouldRestartRef.current = false;
+      clearInterval(timerRef.current);
+      setIsListening(false);
+      setInterimTranscript('');
+      if (e.error === 'not-allowed') {
+        setVoiceError('Microphone access denied. Please allow microphone in browser settings.');
+        if (onFailure) onFailure();
+      } else if (e.error !== 'no-speech') {
+        setVoiceError('Voice input failed. Please type your answer instead.');
+        if (onFailure) onFailure();
+      }
+    };
+
+    r.onend = () => {
+      console.log('[Voice] onend - shouldRestart:', shouldRestartRef.current);
+      clearInterval(timerRef.current);
+
+      if (shouldRestartRef.current) {
+        console.log('[Voice] Auto-restarting recognition...');
+        // Restart immediately - skip getUserMedia, just create new recognition
+        createAndStartRecognition(null, true);
+      } else {
+        setIsListening(false);
+        setInterimTranscript('');
+      }
+    };
+
+    recognitionRef.current = r;
+    try {
+      if (!isRestart) {
+        // Only start the timer on initial start, not on auto-restart
+        timerRef.current = setInterval(() => setDuration(d => d + 1), 1000);
+      }
+      r.start();
+      console.log('[Voice] start() called');
+    } catch (err) {
+      console.error('[Voice] start() threw:', err);
+      clearInterval(timerRef.current);
+      setIsListening(false);
+      setVoiceError('Could not start voice input. Please type your answer.');
+      if (onFailure) onFailure();
+    }
+  }, [isAndroid]);
+
   // startChunk: creates a NEW recognition instance and records one chunk.
   // Appends the result to the existing transcript (chunk-based approach).
   // Call this for both "Start Recording" and "Continue Recording".
@@ -75,89 +152,15 @@ function useVoiceToText() {
     console.log('[Voice] Recognition starting...');
     setVoiceError('');
     shouldRestartRef.current = true; // User is recording - enable auto-restart on pause
-    // Optimistic: show Listening state before getUserMedia resolves
     setIsListening(true);
-    timerRef.current = setInterval(() => setDuration(d => d + 1), 1000);
 
     // Step 1: request mic permission explicitly.
-    // Getting then immediately stopping the stream grants permission so that
-    // Chrome's user-gesture check passes for recognition.start() in the .then().
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then((stream) => {
         // Release the stream  -  we only needed the permission prompt
         stream.getTracks().forEach(t => t.stop());
-
-        // Step 2: create a FRESH recognition instance every time
-        const r = new SR();
-        r.lang             = 'en-US';
-        r.continuous       = false;      // MUST be false  -  true crashes Android Chrome
-        r.interimResults   = !isAndroid; // false on Android (true causes duplicate delivery)
-        r.maxAlternatives  = 1;
-
-        r.onstart = () => console.log('[Voice] Recognition started');
-
-        r.onresult = (e) => {
-          console.log('[Voice] onresult  -  resultIndex:', e.resultIndex, 'total:', e.results.length);
-          if (isAndroid) {
-            // interimResults=false: results[0][0] is the complete final transcript
-            const text = e.results[0][0].transcript.trim();
-            if (text) setTranscript(prev => prev + (prev.trim() ? ' ' : '') + text);
-          } else {
-            // Desktop: process only new results, show interim as live preview
-            let newFinal = '', interim = '';
-            for (let i = e.resultIndex; i < e.results.length; i++) {
-              if (e.results[i].isFinal) newFinal += e.results[i][0].transcript + ' ';
-              else interim += e.results[i][0].transcript;
-            }
-            if (newFinal.trim()) {
-              setTranscript(prev => prev + (prev.trim() ? ' ' : '') + newFinal.trim());
-            }
-            setInterimTranscript(interim);
-          }
-        };
-
-        r.onerror = (e) => {
-          console.error('[Voice] onerror:', e.error);
-          shouldRestartRef.current = false; // Disable auto-restart on error
-          clearInterval(timerRef.current);
-          setIsListening(false);
-          setInterimTranscript('');
-          if (e.error === 'not-allowed') {
-            setVoiceError('Microphone access denied. Please allow microphone in browser settings.');
-            if (onFailure) onFailure();
-          } else if (e.error !== 'no-speech') {
-            setVoiceError('Voice input failed. Please type your answer instead.');
-            if (onFailure) onFailure();
-          }
-        };
-
-        r.onend = () => {
-          // continuous=false: onend fires after each utterance pause on ALL platforms.
-          // If user didn't manually stop recording, auto-restart to allow long answers.
-          console.log('[Voice] onend');
-          clearInterval(timerRef.current);
-          setIsListening(false);
-          setInterimTranscript('');
-
-          // Auto-restart if user is still recording
-          if (shouldRestartRef.current) {
-            console.log('[Voice] Auto-restarting recognition to continue recording...');
-            // Use setTimeout to avoid race conditions
-            setTimeout(() => startChunk(), 100);
-          }
-        };
-
-        recognitionRef.current = r;
-        try {
-          r.start();
-          console.log('[Voice] start() called');
-        } catch (err) {
-          console.error('[Voice] start() threw:', err);
-          clearInterval(timerRef.current);
-          setIsListening(false);
-          setVoiceError('Could not start voice input. Please type your answer.');
-          if (onFailure) onFailure();
-        }
+        // Step 2: create and start recognition with permission granted
+        createAndStartRecognition(onFailure, false);
       })
       .catch((err) => {
         console.error('[Voice] getUserMedia denied:', err);
@@ -166,7 +169,7 @@ function useVoiceToText() {
         setVoiceError('Microphone access denied. Please allow microphone in browser settings and try again.');
         if (onFailure) onFailure();
       });
-  }, [isAndroid]);
+  }, [createAndStartRecognition]);
 
   const stopListening = useCallback(() => {
     console.log('[Voice] stopListening called');
