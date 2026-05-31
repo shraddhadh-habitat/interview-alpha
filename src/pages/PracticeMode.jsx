@@ -53,10 +53,12 @@ function useVoiceToText() {
 
   const recognitionRef = useRef(null);
   const timerRef       = useRef(null);
+  const shouldRestartRef = useRef(false);
 
   // Clean up on unmount only
   useEffect(() => {
     return () => {
+      shouldRestartRef.current = false;
       clearInterval(timerRef.current);
       try { recognitionRef.current?.stop(); } catch {}
     };
@@ -72,6 +74,7 @@ function useVoiceToText() {
 
     console.log('[Voice] Recognition starting...');
     setVoiceError('');
+    shouldRestartRef.current = true; // User is recording - enable auto-restart on pause
     // Optimistic: show Listening state before getUserMedia resolves
     setIsListening(true);
     timerRef.current = setInterval(() => setDuration(d => d + 1), 1000);
@@ -115,6 +118,7 @@ function useVoiceToText() {
 
         r.onerror = (e) => {
           console.error('[Voice] onerror:', e.error);
+          shouldRestartRef.current = false; // Disable auto-restart on error
           clearInterval(timerRef.current);
           setIsListening(false);
           setInterimTranscript('');
@@ -129,12 +133,18 @@ function useVoiceToText() {
 
         r.onend = () => {
           // continuous=false: onend fires after each utterance pause on ALL platforms.
-          // On Android this is expected  -  the component shows "Continue Recording".
-          // On desktop the user can also continue with another chunk.
+          // If user didn't manually stop recording, auto-restart to allow long answers.
           console.log('[Voice] onend');
           clearInterval(timerRef.current);
           setIsListening(false);
           setInterimTranscript('');
+
+          // Auto-restart if user is still recording
+          if (shouldRestartRef.current) {
+            console.log('[Voice] Auto-restarting recognition to continue recording...');
+            // Use setTimeout to avoid race conditions
+            setTimeout(() => startChunk(), 100);
+          }
         };
 
         recognitionRef.current = r;
@@ -160,6 +170,7 @@ function useVoiceToText() {
 
   const stopListening = useCallback(() => {
     console.log('[Voice] stopListening called');
+    shouldRestartRef.current = false; // User manually stopped - do not auto-restart
     clearInterval(timerRef.current);
     try { recognitionRef.current?.stop(); } catch {}
     setIsListening(false);
@@ -168,6 +179,7 @@ function useVoiceToText() {
 
   // resetVoice: full reset (called by Re-Record)
   const resetVoice = useCallback(() => {
+    shouldRestartRef.current = false;
     clearInterval(timerRef.current);
     try { recognitionRef.current?.stop(); } catch {}
     setIsListening(false);
