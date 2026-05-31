@@ -338,11 +338,12 @@ function BlurredAnswer({ text, bgColor = 'rgb(236,247,241)' }) {
     fontFamily: "'Plus Jakarta Sans', sans-serif",
   };
 
-  if (user || !hasMore) {
+  // Only show full answer if user is logged in
+  if (user) {
     return <div style={containerStyle}><FormattedAnswer text={text} /></div>;
   }
 
-  // For non-logged-in users with more content, show teaser
+  // For non-logged-in users, always show blurred version (even for short answers)
   return (
     <div>
       <div style={containerStyle}><FormattedAnswer text={teaser} /></div>
