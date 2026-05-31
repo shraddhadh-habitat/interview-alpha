@@ -154,21 +154,27 @@ function useVoiceToText() {
     shouldRestartRef.current = true; // User is recording - enable auto-restart on pause
     setIsListening(true);
 
-    // Step 1: request mic permission explicitly.
-    navigator.mediaDevices.getUserMedia({ audio: true })
-      .then((stream) => {
-        // Release the stream  -  we only needed the permission prompt
-        stream.getTracks().forEach(t => t.stop());
-        // Step 2: create and start recognition with permission granted
-        createAndStartRecognition(onFailure, false);
-      })
-      .catch((err) => {
-        console.error('[Voice] getUserMedia denied:', err);
-        clearInterval(timerRef.current);
-        setIsListening(false);
-        setVoiceError('Microphone access denied. Please allow microphone in browser settings and try again.');
-        if (onFailure) onFailure();
-      });
+    // Try to start recognition immediately (fast path - permission already granted)
+    createAndStartRecognition(
+      // onFailure callback: if immediate start fails, request permission and retry
+      () => {
+        console.log('[Voice] Immediate start failed, requesting getUserMedia permission...');
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then((stream) => {
+            stream.getTracks().forEach(t => t.stop());
+            // Retry recognition with permission granted
+            createAndStartRecognition(onFailure, false);
+          })
+          .catch((err) => {
+            console.error('[Voice] getUserMedia denied:', err);
+            clearInterval(timerRef.current);
+            setIsListening(false);
+            setVoiceError('Microphone access denied. Please allow microphone in browser settings and try again.');
+            if (onFailure) onFailure();
+          });
+      },
+      false
+    );
   }, [createAndStartRecognition]);
 
   const stopListening = useCallback(() => {
