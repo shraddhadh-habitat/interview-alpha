@@ -104,18 +104,33 @@ export default function AdminPanel({ user }) {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [reqRes, profilesRes, reviewRes] = await Promise.all([
+      // Get session for authorization header
+      const { data: { session } } = await supabase.auth.getSession();
+
+      // Fetch requests and reviews in parallel with user data from server
+      const [reqRes, usersResponse, reviewRes] = await Promise.all([
         supabase
           .from('payment_requests')
           .select('*')
           .order('submitted_at', { ascending: false }),
-        supabase.from('profiles').select('id, email, display_name, phone_number, device_type, device_os, subscription_status, free_sessions_used, monthly_sessions_used, last_seen_at, updated_at, submitted_at, email_day1_sent, email_day3_sent, email_day5_sent'),
+        // Fetch users via server endpoint (uses service role key to bypass RLS)
+        fetch('/api/admin/users', {
+          headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {}
+        }),
         supabase.rpc('get_all_reviews'),
       ]);
 
       const reqs = reqRes.data || [];
-      const profiles = profilesRes.data || [];
       const revs = reviewRes.data || [];
+
+      // Parse user response from server
+      let profiles = [];
+      if (usersResponse.ok) {
+        const { users } = await usersResponse.json();
+        profiles = users || [];
+      } else {
+        console.error('[AdminPanel] Failed to fetch users:', usersResponse.status, await usersResponse.text());
+      }
 
       // Calculate summary stats from profiles
       const totalUsers = profiles.length;

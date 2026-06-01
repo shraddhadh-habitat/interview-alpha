@@ -92,6 +92,38 @@ app.post('/api/signup-check', async (req, res) => {
   }
 });
 
+app.get('/api/admin/users', async (req, res) => {
+  // Verify authorization header exists
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  try {
+    // Create Supabase admin client with service role key (bypasses RLS)
+    const supabaseAdmin = createClient(
+      process.env.VITE_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+
+    // Fetch all profiles from the database
+    const { data, error } = await supabaseAdmin
+      .from('profiles')
+      .select('id, email, display_name, phone_number, device_type, device_os, subscription_status, free_sessions_used, monthly_sessions_used, last_seen_at, updated_at, submitted_at, email_day1_sent, email_day3_sent, email_day5_sent')
+      .order('updated_at', { ascending: false });
+
+    if (error) {
+      console.error('[Admin Users API] Supabase error:', error);
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.json({ users: data });
+  } catch (err) {
+    console.error('[Admin Users API] Error:', err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Dev proxy running on http://localhost:${PORT}`);
 });
