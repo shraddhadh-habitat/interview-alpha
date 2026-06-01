@@ -7,8 +7,9 @@ export default function FreeSessionCountdown({ profile, user }) {
 
   const isLow = freeSessions <= 1;
   const isZero = freeSessions === 0;
+  const isAdmin = user?.email === 'shraddhadh@gmail.com';
 
-  if (isZero) return (
+  if (isZero && !isAdmin) return (
     <div style={{
       display: 'inline-flex',
       alignItems: 'center',
