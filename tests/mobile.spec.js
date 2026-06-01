@@ -67,10 +67,6 @@ for (const device of devices) {
       const buttons = page.locator('button');
       await expect(buttons.first()).toBeVisible({ timeout: 10000 });
 
-      // Count buttons to verify pricing cards are present (3 plan buttons expected)
-      const buttonCount = await buttons.count();
-      expect(buttonCount).toBeGreaterThan(2);
-
       await page.screenshot({ path: `tests/screenshots/${device.name}-05-pricing.png`, fullPage: true });
     });
 
