@@ -341,7 +341,6 @@ function useVoiceToText() {
         r.onend = () => {
           // continuous=false: onend fires after each utterance pause on all platforms.
           // The user taps "Continue Recording" for longer answers.
-          clearInterval(timerRef.current);
           setIsListening(false);
           setInterimTranscript("");
         };
