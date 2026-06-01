@@ -4,7 +4,8 @@
   "rewrites": [
     { "source": "/api/messages", "destination": "/api/messages" },
     { "source": "/api/admin/users", "destination": "/api/admin/users" },
-    { "source": "/api/signup-check", "destination": "/api/signup-check" }
+    { "source": "/api/signup-check", "destination": "/api/signup-check" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "crons": [
     {
