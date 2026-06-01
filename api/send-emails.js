@@ -72,7 +72,7 @@ async function sendResendEmail(to, subject, html) {
       'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ from: 'InterviewAlpha <onboarding@resend.dev>', to, subject, html })
+    body: JSON.stringify({ from: 'InterviewAlpha <communications@interviewalpha.ai>', to, subject, html })
   });
   const data = await response.json();
   console.log('Resend response:', JSON.stringify(data));
