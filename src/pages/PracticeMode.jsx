@@ -112,7 +112,6 @@ function useVoiceToText() {
 
     r.onend = () => {
       console.log('[Voice] onend - shouldRestart:', shouldRestartRef.current);
-      clearInterval(timerRef.current);
 
       if (shouldRestartRef.current) {
         console.log('[Voice] Auto-restarting recognition...');
