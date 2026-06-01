@@ -19,11 +19,13 @@ function AuthForm({ tab, mobile, onSuccess }) {
   const [loading, setLoading]             = useState(false);
   const [error, setError]                 = useState('');
   const [forgotSent, setForgotSent]       = useState(false);
+  const [step, setStep]                   = useState('form'); // 'form' or 'verify-email'
 
   // Reset on tab change
   useEffect(() => {
     setError('');
     setForgotSent(false);
+    setStep('form');
   }, [tab]);
 
   const handleSubmit = async (e) => {
@@ -45,18 +47,32 @@ function AuthForm({ tab, mobile, onSuccess }) {
         if (password.length < 8) { setError('Password must be at least 8 characters.'); return; }
         if (password !== confirmPassword) { setError('Passwords do not match.'); return; }
 
-        const { data, error: err } = await supabase.auth.signUp({ email, password });
+        const { data, error: err } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: 'https://interviewalpha.ai'
+          }
+        });
         if (err) throw err;
 
-        // Get device info for new signup
-        const ua = navigator.userAgent;
-        const isAndroid = /android/i.test(ua);
-        const isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        const deviceType = isAndroid ? 'android' : isIOS ? 'ios' : 'desktop';
-        const deviceOS = isAndroid ? 'Android' : isIOS ? 'iOS' : /windows/i.test(ua) ? 'Windows' : /mac/i.test(ua) ? 'MacOS' : 'Other';
-
-        // Save name, phone, and device info to profile; mark as just-signed-up to skip the name prompt
         if (data?.user) {
+          // Store signup data in localStorage to be used after email verification
+          localStorage.setItem('ia:pending_signup', JSON.stringify({
+            userId: data.user.id,
+            email,
+            display_name: name.trim(),
+            phone_number: phoneDigits
+          }));
+
+          // Get device info for new signup
+          const ua = navigator.userAgent;
+          const isAndroid = /android/i.test(ua);
+          const isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+          const deviceType = isAndroid ? 'android' : isIOS ? 'ios' : 'desktop';
+          const deviceOS = isAndroid ? 'Android' : isIOS ? 'iOS' : /windows/i.test(ua) ? 'Windows' : /mac/i.test(ua) ? 'MacOS' : 'Other';
+
+          // Save device info immediately, profile will be completed after email verification
           await supabase.from('profiles').upsert({
             id: data.user.id,
             email,
@@ -65,9 +81,9 @@ function AuthForm({ tab, mobile, onSuccess }) {
             device_type: deviceType,
             device_os: deviceOS
           });
+
+          setStep('verify-email');
         }
-        localStorage.setItem('ia:just_signed_up', '1');
-        onSuccess();
       } else {
         const { error: err } = await supabase.auth.signInWithPassword({ email, password });
         if (err) throw err;
@@ -99,6 +115,23 @@ function AuthForm({ tab, mobile, onSuccess }) {
     }
   };
 
+  const resendVerification = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const { error: err } = await supabase.auth.resend({
+        type: 'signup',
+        email: email
+      });
+      if (err) throw err;
+      setError('Verification email resent. Check your inbox.');
+    } catch (err) {
+      setError('Could not resend verification email. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const inputStyle = {
     width: '100%', padding: '13px 16px',
     border: `1.5px solid ${C.border}`, borderRadius: 12,
@@ -123,6 +156,28 @@ function AuthForm({ tab, mobile, onSuccess }) {
         <p style={{ fontSize: 14, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>
           Password reset link sent to <strong>{email}</strong>
         </p>
+      </div>
+    );
+  }
+
+  if (step === 'verify-email') {
+    return (
+      <div style={{ textAlign: 'center', padding: '20px 0' }}>
+        <div style={{ fontSize: 32, marginBottom: 12 }}>📧</div>
+        <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 20, color: C.text, marginBottom: 8 }}>Check your email</div>
+        <p style={{ fontSize: 14, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, marginBottom: 20 }}>
+          We sent a verification link to <strong>{email}</strong>.<br />Click the link to activate your account and get your 3 free sessions.
+        </p>
+        <p style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          Did not receive it? Check your spam folder or{' '}
+          <span
+            onClick={resendVerification}
+            style={{ color: '#7ec8c8', cursor: 'pointer', textDecoration: 'underline', fontWeight: 600 }}
+          >
+            {loading ? 'Resending...' : 'resend the email'}
+          </span>
+        </p>
+        {error && <p style={{ fontSize: 12, color: C.text, marginTop: 12, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{error}</p>}
       </div>
     );
   }

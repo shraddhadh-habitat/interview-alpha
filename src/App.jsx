@@ -261,6 +261,83 @@ function MissingNameModal({ user, onSave }) {
   );
 }
 
+function VerifyEmailModal({ user, onDismiss }) {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleResend = async () => {
+    setLoading(true);
+    setMessage('');
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: user.email
+      });
+      if (error) throw error;
+      setMessage('Verification email resent. Check your inbox.');
+    } catch (err) {
+      setMessage('Could not resend email. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(0,0,0,0.6)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '0 16px', fontFamily: "'Plus Jakarta Sans', sans-serif",
+    }}>
+      <style>{`@keyframes mnFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }`}</style>
+      <div style={{
+        background: '#fff', borderRadius: 20, padding: '36px 32px',
+        width: '100%', maxWidth: 420,
+        boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+        animation: 'mnFadeUp 0.3s cubic-bezier(0.22,1,0.36,1)',
+        textAlign: 'center',
+      }}>
+        <div style={{ fontSize: '3rem', marginBottom: '16px' }}>📧</div>
+        <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 26, fontWeight: 400, color: '#0A0A0A', marginBottom: 8 }}>
+          Verify Your Email
+        </div>
+        <p style={{ fontSize: 14, color: '#5C5C57', marginBottom: 24, lineHeight: 1.6 }}>
+          We sent a verification link to <strong>{user.email}</strong>. Click it to activate your account.
+        </p>
+        {message && (
+          <p style={{ fontSize: 12, color: message.includes('resent') ? '#16A34A' : '#CF222E', marginBottom: 16 }}>
+            {message}
+          </p>
+        )}
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button
+            onClick={handleResend}
+            disabled={loading}
+            style={{
+              flex: 1, padding: '11px 0', background: '#16A34A', border: 'none', borderRadius: 12,
+              color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+              cursor: loading ? 'wait' : 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+              opacity: loading ? 0.7 : 1,
+            }}
+          >
+            {loading ? 'Resending...' : 'Resend Email'}
+          </button>
+          <button
+            onClick={onDismiss}
+            style={{
+              flex: 1, padding: '11px 0', background: 'transparent', border: '1px solid #E8E6E1', borderRadius: 12,
+              color: '#5C5C57', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+              cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}
+          >
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function MissingPhoneModal({ user, onSave }) {
   const [phone, setPhone] = useState('');
   const [saving, setSaving] = useState(false);
@@ -400,6 +477,7 @@ export default function App() {
   const [showNamePrompt, setShowNamePrompt] = useState(false);
   const [showPhonePrompt, setShowPhonePrompt] = useState(false);
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
+  const [showVerifyEmailPrompt, setShowVerifyEmailPrompt] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -608,6 +686,12 @@ export default function App() {
   }, [user]);
 
   const checkSession = useCallback(() => {
+    // Check if email is verified
+    if (user && !user.email_confirmed_at) {
+      setShowVerifyEmailPrompt(true);
+      return false;
+    }
+
     const { subscription_status: status, free_sessions_used: used, monthly_sessions_used: monthly } = profile;
 
     if (status === 'active') {
@@ -619,7 +703,7 @@ export default function App() {
     if (used < FREE_SESSION_LIMIT) return true;
     setShowPaywall(true);
     return false;
-  }, [profile]);
+  }, [profile, user]);
 
   // LandingPage handlers
   const handleLandingPrimaryCTA = useCallback(() => {
@@ -669,6 +753,12 @@ export default function App() {
             setProfile(prev => ({ ...prev, phone_number: phoneNumber }));
             setShowPhonePrompt(false);
           }}
+        />
+      )}
+      {showVerifyEmailPrompt && user && (
+        <VerifyEmailModal
+          user={user}
+          onDismiss={() => setShowVerifyEmailPrompt(false)}
         />
       )}
       <style>{`
