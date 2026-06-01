@@ -103,11 +103,14 @@ export default function AdminPanel({ user }) {
 
   const loadData = useCallback(async () => {
     setLoading(true);
+    console.log('[AdminPanel] loadData started');
     try {
       // Get session for authorization header
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('[AdminPanel] Session token:', session?.access_token?.substring(0, 20) + '...');
 
       // Fetch requests and reviews in parallel with user data from serverless function
+      console.log('[AdminPanel] Fetching from /api/admin-users...');
       const [reqRes, usersResponse, reviewRes] = await Promise.all([
         supabase
           .from('payment_requests')
@@ -125,18 +128,39 @@ export default function AdminPanel({ user }) {
 
       // Parse user response from serverless function
       let profiles = [];
+      console.log('[AdminPanel] Users response status:', usersResponse.status, 'ok:', usersResponse.ok);
+
       if (usersResponse.ok) {
         const { users } = await usersResponse.json();
+        console.log('[AdminPanel] Parsed users:', users?.length || 0, 'users');
         profiles = users || [];
       } else {
-        console.error('[AdminPanel] Failed to fetch users:', usersResponse.status);
+        console.error('[AdminPanel] Failed to fetch users - HTTP', usersResponse.status);
         try {
           const errorData = await usersResponse.json();
-          console.error('[AdminPanel] Error details:', errorData);
+          console.error('[AdminPanel] Server error details:', errorData);
         } catch (e) {
-          console.error('[AdminPanel] Could not parse error response');
+          const errorText = await usersResponse.text();
+          console.error('[AdminPanel] Response text:', errorText);
+        }
+
+        // Fallback: try direct query if serverless function fails
+        // (only works if RLS is disabled on profiles table)
+        console.log('[AdminPanel] Attempting fallback: direct Supabase query...');
+        const { data: fallbackUsers, error: fallbackError } = await supabase
+          .from('profiles')
+          .select('id, email, display_name, phone_number, device_type, device_os, subscription_status, free_sessions_used, monthly_sessions_used, last_seen_at, updated_at, submitted_at, email_day1_sent, email_day3_sent, email_day5_sent')
+          .order('updated_at', { ascending: false });
+
+        if (fallbackError) {
+          console.error('[AdminPanel] Fallback query also failed:', fallbackError);
+        } else {
+          console.log('[AdminPanel] Fallback succeeded, got', fallbackUsers?.length || 0, 'users');
+          profiles = fallbackUsers || [];
         }
       }
+
+      console.log('[AdminPanel] Final profiles count:', profiles.length);
 
       // Calculate summary stats from profiles
       const totalUsers = profiles.length;
