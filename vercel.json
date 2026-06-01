@@ -2,7 +2,9 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/api/messages", "destination": "/api/messages" }
+    { "source": "/api/messages", "destination": "/api/messages" },
+    { "source": "/api/admin/users", "destination": "/api/admin/users" },
+    { "source": "/api/signup-check", "destination": "/api/signup-check" }
   ],
   "crons": [
     {
