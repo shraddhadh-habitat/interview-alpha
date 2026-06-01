@@ -626,25 +626,19 @@ export default function App() {
 
   // Show ForceFirstQuestion once for new users who have never practiced
   useEffect(() => {
-    // Strict guard: only show if ALL conditions are met
-    const shouldShow =
-      // User must be logged in with valid ID
-      user && user.id &&
-      // Profile must be loaded from Supabase
-      profileLoaded && profile &&
-      // User must have never practiced
-      (profile.free_sessions_used || 0) === 0 &&
-      (profile.monthly_sessions_used || 0) === 0 &&
-      // User must not have already seen the force question
-      !localStorage.getItem('ia:force_question_shown');
+    if (!user || !profileLoaded) return;
 
-    if (shouldShow) {
-      setUserPreferredTrack(profile.preferred_track || 'pm');
+    const hasNeverPracticed =
+      (profile?.free_sessions_used || 0) === 0 &&
+      (profile?.monthly_sessions_used || 0) === 0;
+
+    const hasSeenForceQuestion = localStorage.getItem('ia:force_question_shown');
+
+    if (hasNeverPracticed && !hasSeenForceQuestion) {
+      setUserPreferredTrack(profile?.preferred_track || 'pm');
       setShowForceQuestion(true);
-    } else {
-      setShowForceQuestion(false);
     }
-  }, [user, profileLoaded, profile]);
+  }, [user, profileLoaded, profile.free_sessions_used, profile.monthly_sessions_used]);
 
   // Show QuickStart once for first-time users (0 sessions, never seen before).
   // Only runs after profile is confirmed loaded from Supabase (profileLoaded flag).
