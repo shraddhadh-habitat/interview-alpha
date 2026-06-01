@@ -103,66 +103,29 @@ export default function AdminPanel({ user }) {
 
   const loadData = useCallback(async () => {
     setLoading(true);
-    console.log('[AdminPanel] loadData started');
     try {
-      // Get session for authorization header
-      const { data: { session } } = await supabase.auth.getSession();
-      console.log('[AdminPanel] Session token:', session?.access_token?.substring(0, 20) + '...');
-
-      // Fetch requests and reviews in parallel with user data from serverless function
-      console.log('[AdminPanel] Fetching from /api/admin-users...');
-      const [reqRes, usersResponse, reviewRes] = await Promise.all([
+      // Fetch requests, users, and reviews in parallel
+      const [reqRes, usersRes, reviewRes] = await Promise.all([
         supabase
           .from('payment_requests')
           .select('*')
           .order('submitted_at', { ascending: false }),
-        // Fetch users via Vercel serverless function (uses service role key to bypass RLS)
-        fetch('/api/admin-users', {
-          headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {}
-        }),
+        supabase
+          .from('profiles')
+          .select('id, email, display_name, phone_number, device_type, device_os, subscription_status, free_sessions_used, monthly_sessions_used, last_seen_at, updated_at, email_day1_sent, email_day3_sent, email_day5_sent')
+          .order('updated_at', { ascending: false }),
         supabase.rpc('get_all_reviews'),
       ]);
 
       const reqs = reqRes.data || [];
+      const { data, error } = usersRes;
       const revs = reviewRes.data || [];
 
-      // Parse user response from serverless function
-      let profiles = [];
-      console.log('[AdminPanel] Users response status:', usersResponse.status, 'ok:', usersResponse.ok);
-
-      if (usersResponse.ok) {
-        const { users } = await usersResponse.json();
-        console.log('[AdminPanel] Parsed users:', users?.length || 0, 'users');
-        profiles = users || [];
-      } else {
-        console.error('[AdminPanel] Failed to fetch users - HTTP', usersResponse.status);
-        try {
-          const errorData = await usersResponse.json();
-          console.error('[AdminPanel] Server error details:', errorData);
-        } catch (e) {
-          const errorText = await usersResponse.text();
-          console.error('[AdminPanel] Response text:', errorText);
-        }
-
-        // Fallback: try direct query if serverless function fails
-        // (only works if RLS is disabled on profiles table)
-        console.log('[AdminPanel] Attempting fallback: direct Supabase query...');
-        const { data: fallbackUsers, error: fallbackError } = await supabase
-          .from('profiles')
-          .select('id, email, display_name, phone_number, device_type, device_os, subscription_status, free_sessions_used, monthly_sessions_used, last_seen_at, updated_at, submitted_at, email_day1_sent, email_day3_sent, email_day5_sent')
-          .order('updated_at', { ascending: false });
-
-        if (fallbackError) {
-          console.error('[AdminPanel] Fallback query also failed:', fallbackError);
-        } else {
-          console.log('[AdminPanel] Fallback succeeded, got', fallbackUsers?.length || 0, 'users');
-          profiles = fallbackUsers || [];
-        }
-      }
-
-      console.log('[AdminPanel] Final profiles count:', profiles.length);
+      console.log('Users fetched:', data?.length, 'Error:', error);
+      if (!error && data) setUsers(data);
 
       // Calculate summary stats from profiles
+      const profiles = data || [];
       const totalUsers = profiles.length;
       const proUsers = profiles.filter(p => p.subscription_status === 'pro').length;
       const freeUsers = profiles.filter(p => p.subscription_status !== 'pro').length;
@@ -171,7 +134,6 @@ export default function AdminPanel({ user }) {
       const mobileUsers = profiles.filter(p => p.device_type === 'android' || p.device_type === 'ios' || p.device_type === 'mobile').length;
 
       setRequests(reqs);
-      setUsers(profiles);
       setReviews(revs);
       setStats({
         total: totalUsers,
