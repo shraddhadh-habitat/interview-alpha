@@ -705,39 +705,41 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               </div>
             )}
           </div>
-          {/* View Expert Answer collapsible */}
-          <div style={{ borderTop: `1px solid ${C.border}` }}>
-            <button
-              onClick={() => setShowExpert(v => !v)}
-              style={{
-                width: '100%', padding: '12px 24px',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                background: showExpert ? C.bgSoft : 'transparent',
-                border: 'none', cursor: 'pointer',
-                fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                transition: 'all 0.2s',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.color = C.green; }}
-              onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
-            >
-              <span>View Expert Answer</span>
-              <span style={{ fontSize: 14, transition: 'transform 0.2s', display: 'inline-block', transform: showExpert ? 'rotate(180deg)' : 'rotate(0deg)' }}>▾</span>
-            </button>
-            {showExpert && (
-              <div style={{
-                padding: '0 24px 20px',
-                background: C.bgSoft,
-                borderTop: `1px solid ${C.border}`,
-                animation: 'fadeUp 0.2s ease',
-              }}>
-                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: '16px 0 10px' }}>Expert Answer</div>
-                <p style={{ fontSize: 13, lineHeight: 1.8, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, whiteSpace: 'pre-wrap' }}>
-                  {question.a}
-                </p>
-              </div>
-            )}
-          </div>
+          {/* View Expert Answer collapsible - only for logged-in users */}
+          {user && (
+            <div style={{ borderTop: `1px solid ${C.border}` }}>
+              <button
+                onClick={() => setShowExpert(v => !v)}
+                style={{
+                  width: '100%', padding: '12px 24px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  background: showExpert ? C.bgSoft : 'transparent',
+                  border: 'none', cursor: 'pointer',
+                  fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                  color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = C.green; }}
+                onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; }}
+              >
+                <span>View Expert Answer</span>
+                <span style={{ fontSize: 14, transition: 'transform 0.2s', display: 'inline-block', transform: showExpert ? 'rotate(180deg)' : 'rotate(0deg)' }}>▾</span>
+              </button>
+              {showExpert && (
+                <div style={{
+                  padding: '0 24px 20px',
+                  background: C.bgSoft,
+                  borderTop: `1px solid ${C.border}`,
+                  animation: 'fadeUp 0.2s ease',
+                }}>
+                  <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: '16px 0 10px' }}>Expert Answer</div>
+                  <p style={{ fontSize: 13, lineHeight: 1.8, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, whiteSpace: 'pre-wrap' }}>
+                    {question.a}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div style={{ marginBottom: 16 }} />
