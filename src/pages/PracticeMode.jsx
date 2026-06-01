@@ -499,7 +499,12 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
     if (!answerText.trim()) return;
 
     // ─── Session gate ───
-    if (checkSession && !checkSession()) return;
+    const sessionCheckResult = checkSession ? checkSession() : null;
+    console.log('[Submit] checkSession result:', sessionCheckResult);
+    console.log('[Submit] user:', user?.id);
+    console.log('[Submit] answerText length:', answerText?.length);
+
+    if (checkSession && !sessionCheckResult) return;
     if (onSessionUsed) await onSessionUsed();
 
     setLoading(true);
