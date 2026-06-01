@@ -53,5 +53,60 @@ export const consultingQuestions = [
     roundType: "Case Interview with Implementation Focus",
     whatInterviewerTests: "Process thinking, root cause analysis, practical problem solving, implementation realism",
     commonMistakes: ["Jumping to technology solutions without understanding where time is lost", "Ignoring the change management side of process redesign", "Not separating simple cases from complex ones", "Recommending a full system overhaul when targeted fixes deliver faster results"]
+  },
+  {
+    q: "A large Indian public sector bank with 80,000 employees wants to become digital-first in three years. The new CEO has asked you to design the transformation roadmap. Where do you start?",
+    subcategory: "Transformation Consultant",
+    difficulty: "Hard",
+    domain: "consulting",
+    a: "Three years to transform an 80,000-person public sector bank is ambitious. The biggest risk is not technology. It is change at scale inside an organization with strong legacy culture, union considerations, and regulatory constraints. I would structure the roadmap across three horizons. In the first six months the focus is on creating urgency and building the foundation. A baseline diagnostic of digital capability and customer experience gaps. And critically identifying 20 to 30 internal champions across business and IT who will drive change from within. External consultants cannot transform a public sector bank. Internal ownership is non-negotiable. In months 6 to 18 the focus shifts to proof points. Rather than transforming everything at once identify two or three customer journeys like home loan applications or account opening and redesign them end to end with a small agile team. Visible wins build political capital for harder changes. In months 18 to 36 scale what works, decommission legacy systems, and embed new ways of working. This is also where workforce reskilling becomes critical. With 80,000 employees the bank cannot hire its way to digital. The single most important success factor is governance. Every transformation I have seen fail in large public sector organizations failed because there was no empowered decision-making body that could cut through bureaucracy fast enough.",
+    companies: ['Deloitte', 'EY', 'KPMG', 'PwC', 'Accenture', 'Capgemini Invent', 'IBM Consulting'],
+    roundType: "Case Interview with Organizational Change Component",
+    whatInterviewerTests: "Change management at scale, phased transformation thinking, stakeholder complexity, realistic implementation planning",
+    commonMistakes: ["Treating this as primarily a technology implementation", "Proposing a big bang transformation instead of a phased approach with early wins", "Underestimating union dynamics and regulatory approval timelines", "Not addressing talent reskilling at scale"]
+  },
+  {
+    q: "A large cement manufacturer in India is running its plants at 68% utilization while the industry average is 82%. The COO wants to understand why and what to do. How do you approach this?",
+    subcategory: "Operations Consultant",
+    difficulty: "Hard",
+    domain: "consulting",
+    a: "A 14-percentage-point gap versus industry is significant and could have multiple root causes. I would not assume it is purely a demand problem or purely an operations problem without data. I would structure my diagnosis across three areas. Demand side, supply side, and plant-level operations. On demand I would ask whether the 68% reflects a regional demand shortfall or a commercial problem like pricing or distribution gaps. On supply I would check for raw material constraints, power availability issues, or logistics bottlenecks forcing downtime. On plant operations I would look at planned versus unplanned downtime. In cement, unplanned maintenance shutdowns and kiln reliability are common culprits. I would also check if the product mix is creating inefficiencies like frequent grade changes requiring line reconfiguration. Before going further I would want plant-wise utilization breakdown, maintenance downtime logs for the last 12 months, and order fulfillment rates by region. My hypothesis is that the gap is a combination of geographic demand concentration that does not match plant locations and higher-than-industry unplanned downtime from deferred maintenance. Recommendations would likely include a predictive maintenance program, a distribution network review, and potentially capacity rationalization if certain plants are structurally uneconomic.",
+    companies: ['Kearney', 'Deloitte', 'Accenture', 'PwC', 'EY', 'Bain & Company', 'Boston Consulting Group'],
+    roundType: "Operations Case Interview",
+    whatInterviewerTests: "Operations diagnosis, cost and capacity analysis, root cause thinking, quantitative reasoning",
+    commonMistakes: ["Assuming low utilization is always a demand problem", "Not separating planned from unplanned downtime", "Ignoring plant-level granularity and treating all plants as having the same problem", "Recommending capacity additions when the issue is utilization of existing capacity"]
+  },
+  {
+    q: "A large Indian retail chain with 500 stores wants to implement AI-driven demand forecasting to reduce inventory waste. The CTO is excited. The operations team is skeptical. How do you approach this engagement?",
+    subcategory: "Technology Consultant",
+    difficulty: "Hard",
+    domain: "consulting",
+    a: "This is a case where the technology solution is relatively straightforward but the organizational challenge is the real problem. The CTO excitement and operations skepticism tell me adoption risk is higher than technical risk. I would structure my approach in three phases. First before any technology decision I would spend two weeks with the operations team to understand why they are skeptical. Is it distrust of data quality, fear of job impact, or past experience with failed IT projects? In my experience skepticism at this stage usually means the operations team has legitimate concerns that have not been heard. Second I would do a rapid diagnostic of the data foundation. AI-driven forecasting is only as good as the data feeding it. I would assess quality of historical sales data, integration between POS systems and inventory management, and consistency across all 500 stores. In Indian retail data quality is almost always a bigger problem than the algorithm. Third I would recommend a pilot approach. Pick 20 to 30 stores across different formats and geographies, run the AI model in parallel with the existing process for 90 days, and measure accuracy improvement and inventory reduction. The governance recommendation I would make is to create a joint business-technology steering committee so operations leaders feel ownership of the outcome.",
+    companies: ['Accenture', 'Deloitte', 'IBM Consulting', 'Capgemini', 'Infosys Consulting', 'TCS Consulting', 'Wipro Consulting', 'Cognizant Consulting'],
+    roundType: "Technology-Business Case Interview",
+    whatInterviewerTests: "Technology-business bridge, adoption risk thinking, data foundation assessment, phased implementation judgment",
+    commonMistakes: ["Treating this as purely a technology implementation project", "Skipping the data quality assessment and assuming clean data exists", "Proposing a full 500-store rollout without a pilot", "Not addressing organizational resistance explicitly in the plan"]
+  },
+  {
+    q: "A family-owned Indian conglomerate is considering selling a minority stake to a global private equity firm. The promoter family is nervous. As their advisor, what would you tell them?",
+    subcategory: "Advisory Consultant",
+    difficulty: "Hard",
+    domain: "consulting",
+    a: "This is a situation where my job is to give the family honest advice not tell them what they want to hear. I would structure my advisory around three questions. What does the PE firm bring beyond capital? What are the real governance and control implications? And is this the right time given the valuation environment? On what PE brings I would push the family to be specific. If they need growth capital for expansion that is a legitimate reason. If they want operational expertise or global access that the firm genuinely provides that is also valid. But if the primary motivation is to monetize and the family is not aligned on using the capital productively the deal is likely to create friction rather than value. On governance I would be direct. A minority PE investor will require board representation, information rights, and likely veto powers on certain decisions. That is a meaningful change for a family that has run this business independently. I would walk them through exactly what they are giving up in terms of decision-making speed and confidentiality. On timing I would look at current valuation relative to historical multiples and the PE firm fund lifecycle. My honest advice is that this decision is as much about readiness for a different kind of partnership as it is about financial terms. I would recommend they spend two to three months getting clear on what they actually want before negotiating term sheets.",
+    companies: ['Deloitte', 'PwC', 'EY', 'KPMG', 'Protiviti', 'Alvarez & Marsal'],
+    roundType: "Advisory Case and Fit Interview",
+    whatInterviewerTests: "Client advisory judgment, intellectual honesty, ability to give clear directional advice, understanding of PE dynamics",
+    commonMistakes: ["Treating this as a pure transaction question without addressing family dynamics", "Not explaining governance implications clearly", "Giving a generic pros and cons list instead of a clear directional recommendation", "Ignoring the exit scenario for the PE firm and its implications for the family"]
+  },
+  {
+    q: "A large Indian private bank has just acquired a mid-size NBFC. The RBI has asked the bank to submit a risk integration report within 90 days. You are leading the risk workstream. How do you approach this?",
+    subcategory: "Risk Consultant",
+    difficulty: "Hard",
+    domain: "consulting",
+    a: "A 90-day regulatory deadline with an acquisition integration in progress is high-stakes and time-constrained. I would not try to boil the ocean. I would prioritize ruthlessly. In the first two weeks I would focus entirely on understanding what the RBI specifically expects in this report. I would review the acquisition approval conditions, any prior RBI observations on either entity, and the regulatory framework for NBFC-bank mergers. The three risk areas I would focus on are credit risk given that NBFC loan books often have different underwriting standards. Liquidity risk since NBFCs fund themselves very differently and the combined entity ALM profile will have changed materially. And operational risk particularly around integration of systems processes and people. For each area I would quickly assess the NBFC existing risk governance framework, identify gaps relative to bank-grade standards, and propose a time-bound remediation plan. The RBI will want to see not just what the risks are but what we are doing about them and by when. The critical success factor is access. We need the NBFC loan book data, treasury data, and internal audit reports within the first two weeks or we cannot meet the 90-day deadline. I would escalate immediately if that access is not forthcoming.",
+    companies: ['EY', 'KPMG', 'Deloitte', 'PwC', 'Protiviti', 'Grant Thornton'],
+    roundType: "Risk and Controls Case Interview",
+    whatInterviewerTests: "Risk identification, regulatory awareness, controls thinking, structured risk assessment under time pressure",
+    commonMistakes: ["Starting with a broad risk framework rather than what the RBI specifically requires", "Underestimating credit quality differences between NBFC and bank loan books", "Not flagging data access as a critical dependency upfront", "Treating this as a documentation exercise rather than a genuine risk assessment with remediation commitments"]
   }
 ];
