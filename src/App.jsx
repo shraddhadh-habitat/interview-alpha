@@ -686,10 +686,15 @@ export default function App() {
   }, [user]);
 
   const checkSession = useCallback(() => {
-    // Check if email is verified
+    // Only show verify prompt for users who signed up after email verification was enabled
+    // Existing users are grandfathered in
     if (user && !user.email_confirmed_at) {
-      setShowVerifyEmailPrompt(true);
-      return false;
+      const verificationLaunchDate = new Date('2026-05-29T00:00:00Z');
+      const userCreatedAt = new Date(user.created_at);
+      if (userCreatedAt > verificationLaunchDate) {
+        setShowVerifyEmailPrompt(true);
+        return false;
+      }
     }
 
     const { subscription_status: status, free_sessions_used: used, monthly_sessions_used: monthly } = profile;
