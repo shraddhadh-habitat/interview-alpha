@@ -998,6 +998,32 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     }
   }, []);
 
+  // Pre-load question from force first question for new users
+  useEffect(() => {
+    const preloaded = localStorage.getItem('ia:preloaded_question');
+    if (preloaded) {
+      try {
+        const { question, track } = JSON.parse(preloaded);
+        // Set the track if it's different from current
+        if (track !== selectedRole) {
+          setSelectedRole(track);
+        }
+        // Set the question
+        setPracticeQuestion({
+          question: { q: question, a: '' },
+          questionId: 'force-first-' + Date.now(),
+          designation: 'force-first',
+          category: track === 'ds' ? 'fundamentals' : 'product_design',
+        });
+        // Clear it so it only loads once
+        localStorage.removeItem('ia:preloaded_question');
+      } catch (e) {
+        console.error('Failed to load preloaded question', e);
+      }
+    }
+  }, []);
+
+
   // Load practice stats for current user
   useEffect(() => {
     if (!user) return;
