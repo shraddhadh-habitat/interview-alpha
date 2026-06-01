@@ -107,14 +107,14 @@ export default function AdminPanel({ user }) {
       // Get session for authorization header
       const { data: { session } } = await supabase.auth.getSession();
 
-      // Fetch requests and reviews in parallel with user data from server
+      // Fetch requests and reviews in parallel with user data from serverless function
       const [reqRes, usersResponse, reviewRes] = await Promise.all([
         supabase
           .from('payment_requests')
           .select('*')
           .order('submitted_at', { ascending: false }),
-        // Fetch users via server endpoint (uses service role key to bypass RLS)
-        fetch('/api/admin/users', {
+        // Fetch users via Vercel serverless function (uses service role key to bypass RLS)
+        fetch('/api/admin-users', {
           headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {}
         }),
         supabase.rpc('get_all_reviews'),
@@ -123,13 +123,19 @@ export default function AdminPanel({ user }) {
       const reqs = reqRes.data || [];
       const revs = reviewRes.data || [];
 
-      // Parse user response from server
+      // Parse user response from serverless function
       let profiles = [];
       if (usersResponse.ok) {
         const { users } = await usersResponse.json();
         profiles = users || [];
       } else {
-        console.error('[AdminPanel] Failed to fetch users:', usersResponse.status, await usersResponse.text());
+        console.error('[AdminPanel] Failed to fetch users:', usersResponse.status);
+        try {
+          const errorData = await usersResponse.json();
+          console.error('[AdminPanel] Error details:', errorData);
+        } catch (e) {
+          console.error('[AdminPanel] Could not parse error response');
+        }
       }
 
       // Calculate summary stats from profiles
