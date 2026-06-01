@@ -106,7 +106,7 @@ for (const device of devices) {
     });
 
     test('Practice page loads correctly', async ({ page }) => {
-      await page.goto(`${BASE_URL}`);
+      await page.goto('/');
       await page.waitForLoadState('networkidle');
 
       // Click on practice section
@@ -119,7 +119,7 @@ for (const device of devices) {
     });
 
     test('Text input form responsive', async ({ page }) => {
-      await page.goto(`${BASE_URL}`);
+      await page.goto('/');
       await page.waitForLoadState('networkidle');
 
       const textarea = page.locator('textarea').first();
