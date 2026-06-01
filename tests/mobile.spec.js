@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = 'http://localhost:5173';
+// Use baseURL from playwright.config.js
 
 const devices = [
   { name: 'ios-iphone14', viewport: { width: 390, height: 844 }, userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15' },
@@ -20,13 +20,13 @@ for (const device of devices) {
     test.use({ viewport: device.viewport, userAgent: device.userAgent });
 
     test('Homepage loads', async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto('/');
       expect(await page.title()).toMatch(/Interview|Alpha/i);
       await page.screenshot({ path: `tests/screenshots/${device.name}-01-homepage.png`, fullPage: true });
     });
 
     test('No horizontal scroll', async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto('/');
       await page.waitForLoadState('networkidle');
       const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
       const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
@@ -34,14 +34,14 @@ for (const device of devices) {
     });
 
     test('Hero section visible', async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto('/');
       const h1 = page.locator('h1').first();
       await expect(h1).toBeVisible();
       await page.screenshot({ path: `tests/screenshots/${device.name}-02-hero.png` });
     });
 
     test('Feedback preview responsive', async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto('/');
       await page.waitForLoadState('networkidle');
       const section = page.locator('section').filter({ hasText: /See it in action/ }).first();
       if (await section.isVisible()) await section.scrollIntoViewIfNeeded();
@@ -49,7 +49,7 @@ for (const device of devices) {
     });
 
     test('CTA buttons visible', async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto('/');
       await page.waitForLoadState('networkidle');
       await page.waitForTimeout(1000);
       const buttons = page.locator('button').filter({ hasText: /answer|start|browse/i });
@@ -59,7 +59,7 @@ for (const device of devices) {
     });
 
     test('Pricing page loads with all 3 cards', async ({ page }) => {
-      await page.goto(`${BASE_URL}/upgrade`);
+      await page.goto('/upgrade');
       await page.waitForLoadState('networkidle');
 
       await expect(page.locator('text=Monthly')).toBeVisible();
@@ -70,7 +70,7 @@ for (const device of devices) {
     });
 
     test('Resume tools page loads', async ({ page }) => {
-      await page.goto(BASE_URL);
+      await page.goto('/');
       await page.waitForLoadState('networkidle');
 
       const resumeTab = page.locator('text=Resume Tools').first();
@@ -87,7 +87,7 @@ for (const device of devices) {
         if (msg.type() === 'error') errors.push(msg.text());
       });
 
-      await page.goto(BASE_URL);
+      await page.goto('/');
       await page.waitForLoadState('networkidle');
       await page.waitForTimeout(2000);
 
