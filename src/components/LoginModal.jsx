@@ -33,15 +33,38 @@ function AuthForm({ tab, mobile, onSuccess }) {
     try {
       if (tab === 'signup') {
         if (name.trim().length < 2) { setError('Please enter your full name (at least 2 characters).'); return; }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.trim())) { setError('Please enter a valid email address.'); return; }
+
         const phoneDigits = phone.replace(/\D/g, '');
-        if (phoneDigits.length < 10) { setError('Please enter a valid mobile number.'); return; }
+        if (phoneDigits.length < 10) { setError('Please enter a valid 10-digit mobile number.'); return; }
+        if (phoneDigits.length > 15) { setError('Please enter a valid mobile number.'); return; }
+
         if (password.length < 8) { setError('Password must be at least 8 characters.'); return; }
         if (password !== confirmPassword) { setError('Passwords do not match.'); return; }
+
         const { data, error: err } = await supabase.auth.signUp({ email, password });
         if (err) throw err;
-        // Save name and phone to profile; mark as just-signed-up to skip the name prompt
+
+        // Get device info for new signup
+        const ua = navigator.userAgent;
+        const isAndroid = /android/i.test(ua);
+        const isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const deviceType = isAndroid ? 'android' : isIOS ? 'ios' : 'desktop';
+        const deviceOS = isAndroid ? 'Android' : isIOS ? 'iOS' : /windows/i.test(ua) ? 'Windows' : /mac/i.test(ua) ? 'MacOS' : 'Other';
+
+        // Save name, phone, and device info to profile; mark as just-signed-up to skip the name prompt
         if (data?.user) {
-          await supabase.from('profiles').upsert({ id: data.user.id, email, display_name: name.trim(), phone_number: phoneDigits });
+          await supabase.from('profiles').upsert({
+            id: data.user.id,
+            email,
+            display_name: name.trim(),
+            phone_number: phoneDigits,
+            device_type: deviceType,
+            device_os: deviceOS
+          });
         }
         localStorage.setItem('ia:just_signed_up', '1');
         onSuccess();

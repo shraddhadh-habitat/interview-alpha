@@ -19,21 +19,24 @@ export default function DeviceTracker({ user }) {
         : /mac/i.test(ua) ? 'MacOS' : 'Other';
 
       try {
+        console.log('[DeviceTracker] Attempting to track device:', { deviceType, deviceOS, userId: user.id });
+
         const { error } = await supabase
           .from('profiles')
           .update({
             device_type: deviceType,
-            device_os: deviceOS
+            device_os: deviceOS,
+            updated_at: new Date().toISOString()
           })
           .eq('id', user.id);
 
         if (error) {
-          console.error('Device tracking error:', error);
+          console.error('[DeviceTracker] Error updating device info:', error);
         } else {
-          console.log('Device tracked:', deviceType);
+          console.log('[DeviceTracker] Device tracked successfully:', deviceType);
         }
       } catch (err) {
-        console.error('Device tracking exception:', err);
+        console.error('[DeviceTracker] Exception:', err);
       }
     };
 
