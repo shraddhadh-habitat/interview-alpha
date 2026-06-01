@@ -686,6 +686,9 @@ export default function App() {
   }, [user]);
 
   const checkSession = useCallback(() => {
+    // Admin gets unlimited sessions
+    if (user?.email === 'shraddhadh@gmail.com') return true;
+
     // Only show verify prompt for users who signed up after email verification was enabled
     // Existing users are grandfathered in
     if (user && !user.email_confirmed_at) {
