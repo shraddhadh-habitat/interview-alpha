@@ -697,15 +697,19 @@ export default function App() {
       }
     }
 
-    const { subscription_status: status, free_sessions_used: used, monthly_sessions_used: monthly } = profile;
+    const status = profile?.subscription_status;
+    const used = profile?.free_sessions_used || 0;
+    const monthly = profile?.monthly_sessions_used || 0;
 
     if (status === 'active') {
-      if ((monthly ?? 0) >= PRO_SESSION_LIMIT) { setPage('upgrade'); return false; }
+      if (monthly >= PRO_SESSION_LIMIT) { setPage('upgrade'); return false; }
       return true;
     }
     if (status === 'pending') { setPage('upgrade'); return false; }
     if (status === 'expired') { setPage('upgrade'); return false; }
+    // Free and undefined users: allow if free sessions remaining
     if (used < FREE_SESSION_LIMIT) return true;
+
     setShowPaywall(true);
     return false;
   }, [profile, user]);
