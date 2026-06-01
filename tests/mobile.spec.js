@@ -8,10 +8,15 @@ const devices = [
   { name: 'ios-iphone14pm', viewport: { width: 430, height: 932 }, userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15' },
   { name: 'android-galaxys9', viewport: { width: 360, height: 740 }, userAgent: 'Mozilla/5.0 (Linux; Android 8.0; SM-G960F) AppleWebKit/537.36' },
   { name: 'android-pixel7', viewport: { width: 412, height: 915 }, userAgent: 'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36' },
+  // Desktop and Laptop viewports
+  { name: 'desktop-1920x1080', viewport: { width: 1920, height: 1080 }, userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' },
+  { name: 'laptop-1366x768', viewport: { width: 1366, height: 768 }, userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' },
+  { name: 'laptop-macbook-pro-14', viewport: { width: 1512, height: 982 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' },
+  { name: 'tablet-ipad-pro', viewport: { width: 1024, height: 1366 }, userAgent: 'Mozilla/5.0 (iPad; CPU OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1' },
 ];
 
 for (const device of devices) {
-  test.describe(`Mobile: ${device.name}`, () => {
+  test.describe(`${device.name}`, () => {
     test.use({ viewport: device.viewport, userAgent: device.userAgent });
 
     test('Homepage loads', async ({ page }) => {
@@ -59,15 +64,25 @@ for (const device of devices) {
   MANUAL TEST: Email Verification Flow
 
   The email verification feature requires Supabase email configuration to test end-to-end.
-  To test manually across mobile devices:
+  To test manually across all devices:
 
   1. Start dev server: npm run dev
   2. Open each device in browser DevTools mobile emulation:
+
+     MOBILE:
      - iPhone 14 (390x844)
      - iPhone SE (375x667)
      - iPhone 14 Pro Max (430x932)
      - Galaxy S9 (360x740)
      - Pixel 7 (412x915)
+
+     TABLET:
+     - iPad Pro (1024x1366)
+
+     DESKTOP/LAPTOP:
+     - 1920x1080 (Windows Desktop)
+     - 1366x768 (Windows Laptop)
+     - MacBook Pro 14" (1512x982)
 
   3. For each device, perform signup flow:
      a. Click "Get Started" or similar CTA button
