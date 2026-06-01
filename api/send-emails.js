@@ -31,8 +31,10 @@ export default async function handler(req, res) {
     if (error) throw error;
 
     let sent = 0;
+    const MAX_PER_RUN = 90;
 
     for (const user of users || []) {
+      if (sent >= MAX_PER_RUN) break;
       if (!user.email) continue;
       const name = user.display_name || user.email.split('@')[0] || 'there';
       const sessionsLeft = Math.max(0, 3 - (user.free_sessions_used || 0));

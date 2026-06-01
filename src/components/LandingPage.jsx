@@ -191,6 +191,18 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             </strong>
             {' '}questions and answers to practice from.
           </p>
+
+          {/* Social proof */}
+          <p style={{
+            fontSize: '0.85rem',
+            color: '#6b6b6b',
+            lineHeight: 1.7,
+            fontWeight: 600,
+            maxWidth: '480px',
+            marginTop: '16px'
+          }}>
+            Dhruv found out he was scoring 4 out of 10 on product sense. Two weeks later he had an offer. Mridula called it one of the best products she had ever seen. Thousands of PM and DS aspirants are practicing right now. Your interview could be next week.
+          </p>
         </div>
 
         {/* RIGHT COLUMN  . How It Works in vertical layout */}
@@ -484,19 +496,6 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             </div>
           </div>
 
-          {/* Social proof line */}
-          <p style={{
-            fontSize: '0.95rem',
-            color: '#111',
-            lineHeight: 1.6,
-            marginTop: '16px',
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontWeight: 600
-          }}>
-            Dhruv found out he was scoring 4 out of 10 on product sense. Two weeks later he had an offer.
-            Mridula called it one of the best products she had ever seen.
-            Thousands of PM and DS aspirants are practicing right now. Your interview could be next week.
-          </p>
         </div>
       </div>
     );
