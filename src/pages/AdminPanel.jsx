@@ -164,18 +164,16 @@ export default function AdminPanel({ user }) {
 
       // Calculate summary stats from profiles
       const totalUsers = profiles.length;
-      const proUsers = profiles.filter(p => p.subscription_status === 'active').length;
-      const freeUsers = profiles.filter(p => !p.subscription_status || p.subscription_status === 'free').length;
+      const proUsers = profiles.filter(p => p.subscription_status === 'pro').length;
+      const freeUsers = profiles.filter(p => p.subscription_status !== 'pro').length;
       const practicedUsers = profiles.filter(p => (p.free_sessions_used ?? 0) > 0 || (p.monthly_sessions_used ?? 0) > 0).length;
       const withPhoneUsers = profiles.filter(p => p.phone_number && p.phone_number !== '' && p.phone_number !== '-').length;
-      const mobileUsers = profiles.filter(p => p.device_type === 'android' || p.device_type === 'ios').length;
+      const mobileUsers = profiles.filter(p => p.device_type === 'android' || p.device_type === 'ios' || p.device_type === 'mobile').length;
 
       setRequests(reqs);
       setUsers(profiles);
       setReviews(revs);
       setStats({
-        pending: 0,
-        active: proUsers,
         total: totalUsers,
         pro: proUsers,
         free: freeUsers,
@@ -206,8 +204,8 @@ export default function AdminPanel({ user }) {
       if (hasPhoneFilter === 'noPhone' && u.phone_number && u.phone_number !== '-' && u.phone_number !== '') return false;
       if (f.status !== 'all') {
         const st = u.subscription_status || 'free';
-        if (f.status === 'free' && st !== 'free') return false;
-        if (f.status === 'active' && st !== 'active') return false;
+        if (f.status === 'free' && st === 'pro') return false;
+        if (f.status === 'pro' && st !== 'pro') return false;
         if (f.status === 'expired' && st !== 'expired') return false;
       }
       if (f.device !== 'all' && u.device_type !== f.device) return false;
