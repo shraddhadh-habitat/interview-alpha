@@ -192,16 +192,39 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
             {' '}questions and answers to practice from.
           </p>
 
-          {/* Social proof */}
-          <p style={{
-            fontSize: '0.85rem',
-            color: '#6b6b6b',
-            lineHeight: 1.7,
-            fontWeight: 600,
-            maxWidth: '480px',
+          {/* Outcome proof */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
             marginTop: '16px'
           }}>
-            Dhruv found out he was scoring 4 out of 10 on product sense. Two weeks later he had an offer. Mridula called it one of the best products she had ever seen. Thousands of PM and DS aspirants are practicing right now. Your interview could be next week.
+            <span style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: '#22c55e',
+              flexShrink: 0,
+              display: 'inline-block'
+            }} />
+            <p style={{
+              fontSize: '0.82rem',
+              color: '#6b6b6b',
+              fontWeight: 600,
+              margin: 0
+            }}>
+              Dhruv scored 4 out of 10 on his first try. Two weeks later he had an offer.
+            </p>
+          </div>
+
+          {/* Community proof */}
+          <p style={{
+            fontSize: '0.78rem',
+            color: '#9a9a9a',
+            marginTop: '8px',
+            fontWeight: 500
+          }}>
+            Thousands of PM and DS aspirants practicing right now. Your interview could be next week.
           </p>
         </div>
 
