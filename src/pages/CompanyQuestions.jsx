@@ -16,10 +16,12 @@ function BlurredAnswer({ text, bgColor = '#F5F3EF' }) {
     maxWidth: 720,
   };
 
-  if (user || !hasMore) {
+  // Only show full answer if user is logged in
+  if (user) {
     return <div style={containerStyle}><FormattedAnswer text={text} /></div>;
   }
 
+  // For non-logged-in users, always show blurred version (even for short answers)
   return (
     <div>
       <div style={containerStyle}><FormattedAnswer text={teaser} /></div>
