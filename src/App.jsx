@@ -29,7 +29,6 @@ import LoginModal from './components/LoginModal';
 import { AuthProvider } from './contexts/AuthContext';
 import QuickStart from './components/QuickStart';
 import ReviewWidget from './components/ReviewWidget';
-import ForceFirstQuestion from './components/ForceFirstQuestion';
 import EnvBanner from './components/EnvBanner';
 import DeviceTracker from './components/DeviceTracker';
 import ActivityTicker from './components/ActivityTickerPortal';
@@ -459,8 +458,6 @@ export default function App() {
   const [showQuickStart, setShowQuickStart] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState('track'); // 'track' | 'question'
   const [selectedTrack, setSelectedTrack] = useState(null);
-  const [showForceQuestion, setShowForceQuestion] = useState(false);
-  const [userPreferredTrack, setUserPreferredTrack] = useState('pm');
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginMessage, setLoginMessage] = useState('');
   const [postLoginDestination, setPostLoginDestination] = useState(null);
@@ -624,22 +621,6 @@ export default function App() {
     }
   }, [user, profile]);
 
-  // Show ForceFirstQuestion once for new users who have never practiced
-  useEffect(() => {
-    if (!user || !profileLoaded) return;
-
-    const hasNeverPracticed =
-      (profile?.free_sessions_used || 0) === 0 &&
-      (profile?.monthly_sessions_used || 0) === 0;
-
-    const hasSeenForceQuestion = localStorage.getItem('ia:force_question_shown');
-
-    if (hasNeverPracticed && !hasSeenForceQuestion) {
-      setUserPreferredTrack(profile?.preferred_track || 'pm');
-      setShowForceQuestion(true);
-    }
-  }, [user, profileLoaded, profile.free_sessions_used, profile.monthly_sessions_used]);
-
   // Show QuickStart once for first-time users (0 sessions, never seen before).
   // Only runs after profile is confirmed loaded from Supabase (profileLoaded flag).
   useEffect(() => {
@@ -697,18 +678,6 @@ export default function App() {
     setShowQuickStart(false);
     setPage('practice');
   }, [user]);
-
-  const handleForceQuestionStart = useCallback((question, track) => {
-    // Mark as shown so it does not appear again
-    localStorage.setItem('ia:force_question_shown', 'true');
-    setShowForceQuestion(false);
-
-    // Store the pre-selected question so interview tab can pick it up
-    localStorage.setItem('ia:preloaded_question', JSON.stringify({ question, track }));
-
-    // Navigate to interview tab
-    setPage('interview');
-  }, []);
 
   const handleDemoClose = useCallback(async () => {
     setShowDemo(false);
@@ -795,13 +764,6 @@ export default function App() {
         <VerifyEmailModal
           user={user}
           onDismiss={() => setShowVerifyEmailPrompt(false)}
-        />
-      )}
-      {showForceQuestion && (
-        <ForceFirstQuestion
-          user={user}
-          preferredTrack={userPreferredTrack}
-          onStart={handleForceQuestionStart}
         />
       )}
       <style>{`
