@@ -25,7 +25,9 @@ export default async function handler(req, res) {
   try {
     const { data: users, error } = await supabaseAdmin
       .from('profiles')
-      .select('id,email,display_name,updated_at,free_sessions_used,subscription_status,email_day1_sent,email_day3_sent,email_day5_sent,email_count');
+      .select('id,email,display_name,updated_at,free_sessions_used,subscription_status,email_day1_sent,email_day3_sent,email_day5_sent,email_count')
+      .order('email_count', { ascending: true })
+      .limit(90);
 
     if (error) throw error;
 
