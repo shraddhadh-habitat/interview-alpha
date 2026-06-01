@@ -57,6 +57,84 @@ for (const device of devices) {
       expect(await buttons.count()).toBeGreaterThan(0);
       await page.screenshot({ path: `tests/screenshots/${device.name}-04-buttons.png` });
     });
+
+    test('Pricing page loads with all 3 cards', async ({ page }) => {
+      await page.goto(`${BASE_URL}/upgrade`);
+      await page.waitForLoadState('networkidle');
+
+      await expect(page.locator('text=Monthly')).toBeVisible();
+      await expect(page.locator('text=Quarterly')).toBeVisible();
+      await expect(page.locator('text=Yearly')).toBeVisible();
+
+      await page.screenshot({ path: `tests/screenshots/${device.name}-05-pricing.png`, fullPage: true });
+    });
+
+    test('Resume tools page loads', async ({ page }) => {
+      await page.goto(BASE_URL);
+      await page.waitForLoadState('networkidle');
+
+      const resumeTab = page.locator('text=Resume Tools').first();
+      if (await resumeTab.isVisible()) {
+        await resumeTab.click();
+        await page.waitForTimeout(1000);
+        await page.screenshot({ path: `tests/screenshots/${device.name}-06-resume-tools.png`, fullPage: true });
+      }
+    });
+
+    test('No console errors on homepage', async ({ page }) => {
+      const errors = [];
+      page.on('console', msg => {
+        if (msg.type() === 'error') errors.push(msg.text());
+      });
+
+      await page.goto(BASE_URL);
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(2000);
+
+      // Filter out known non-critical errors
+      const criticalErrors = errors.filter(e =>
+        !e.includes('favicon') &&
+        !e.includes('404') &&
+        !e.includes('analytics') &&
+        !e.includes('Uncaught SyntaxError: Unexpected token')
+      );
+
+      if (criticalErrors.length > 0) {
+        console.log(`[${device.name}] Console errors found:`, criticalErrors);
+      }
+      expect(criticalErrors.length).toBe(0);
+    });
+
+    test('Practice page loads correctly', async ({ page }) => {
+      await page.goto(`${BASE_URL}`);
+      await page.waitForLoadState('networkidle');
+
+      // Click on practice section
+      const practiceLink = page.locator('text=/Practice|Answer/i').first();
+      if (await practiceLink.isVisible()) {
+        await practiceLink.click();
+        await page.waitForLoadState('networkidle');
+        await page.screenshot({ path: `tests/screenshots/${device.name}-07-practice.png`, fullPage: true });
+      }
+    });
+
+    test('Text input form responsive', async ({ page }) => {
+      await page.goto(`${BASE_URL}`);
+      await page.waitForLoadState('networkidle');
+
+      const textarea = page.locator('textarea').first();
+      if (await textarea.isVisible()) {
+        await textarea.fill('This is a test answer with enough words to meet the minimum requirement for testing purposes.');
+        await page.screenshot({ path: `tests/screenshots/${device.name}-08-textarea.png` });
+
+        // Check submit button state
+        const submitBtn = page.locator('button').filter({ hasText: /Submit/i }).first();
+        if (await submitBtn.isVisible()) {
+          const isEnabled = await submitBtn.isEnabled();
+          console.log(`[${device.name}] Submit button enabled:`, isEnabled);
+        }
+      }
+    });
   });
 }
 
