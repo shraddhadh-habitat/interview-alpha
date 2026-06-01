@@ -77,7 +77,7 @@ export default function AdminPanel({ user }) {
   const [requests, setRequests]     = useState([]);
   const [users, setUsers]           = useState([]);
   const [reviews, setReviews]       = useState([]);
-  const [stats, setStats]           = useState({ pending: 0, active: 0, total: 0 });
+  const [stats, setStats]           = useState({ pending: 0, active: 0, total: 0, pro: 0, free: 0, practiced: 0, withPhone: 0, mobile: 0 });
   const [deviceStats, setDeviceStats] = useState({ total: 0, breakdown: { android: 0, ios: 0, desktop: 0 } });
   const [loading, setLoading]       = useState(true);
   const [actionId, setActionId]     = useState(null);
@@ -85,9 +85,8 @@ export default function AdminPanel({ user }) {
   const [rejectNote, setRejectNote] = useState('');
   const [rejectTarget, setRejectTarget] = useState(null);
   const [reviewActionId, setReviewActionId] = useState(null);
-  const [deleteTarget, setDeleteTarget]     = useState(null); // review id pending delete confirm
-  const [userFilters, setUserFilters] = useState({ email: '', name: '', phone: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' });
-  const [deviceFilter, setDeviceFilter] = useState('all');
+  const [deleteTarget, setDeleteTarget]     = useState(null);
+  const [userFilters, setUserFilters] = useState({ email: '', name: '', phone: '', status: 'all', device: 'all', hasSessions: 'all', search: '' });
   const [hasPhoneFilter, setHasPhoneFilter] = useState('all');
 
   // Gate  . only admin email
@@ -105,45 +104,39 @@ export default function AdminPanel({ user }) {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [reqRes, usersRes, statsRes, reviewRes, deviceRes, profilesRes] = await Promise.all([
+      const [reqRes, profilesRes, reviewRes] = await Promise.all([
         supabase
           .from('payment_requests')
           .select('*')
           .order('submitted_at', { ascending: false }),
-        supabase.rpc('get_all_users'),
-        supabase.rpc('get_admin_stats'),
+        supabase.from('profiles').select('id, email, display_name, phone_number, device_type, device_os, subscription_status, free_sessions_used, monthly_sessions_used, last_seen_at, updated_at, submitted_at, email_day1_sent, email_day3_sent, email_day5_sent'),
         supabase.rpc('get_all_reviews'),
-        fetch('/api/admin/device-stats').then(r => r.json()).catch(err => ({ error: err.message })),
-        supabase.from('profiles').select('id, device_type, device_os'),
       ]);
 
-      const reqs  = reqRes.data      || [];
-      const users = usersRes.data    || [];
-      const s     = statsRes.data    || {};
-      const revs  = reviewRes.data   || [];
-      const devStats = deviceRes.error ? { total: 0, breakdown: { android: 0, ios: 0, desktop: 0 } } : deviceRes;
+      const reqs = reqRes.data || [];
       const profiles = profilesRes.data || [];
+      const revs = reviewRes.data || [];
 
-      // Merge device_type from profiles into users
-      const deviceMap = {};
-      profiles.forEach(p => {
-        if (p.id) deviceMap[p.id] = { device_type: p.device_type, device_os: p.device_os };
-      });
-
-      const usersWithDevice = users.map(user => ({
-        ...user,
-        device_type: deviceMap[user.id]?.device_type || null,
-        device_os: deviceMap[user.id]?.device_os || null
-      }));
+      // Calculate summary stats from profiles
+      const totalUsers = profiles.length;
+      const proUsers = profiles.filter(p => p.subscription_status === 'active').length;
+      const freeUsers = profiles.filter(p => !p.subscription_status || p.subscription_status === 'free').length;
+      const practicedUsers = profiles.filter(p => (p.free_sessions_used ?? 0) > 0 || (p.monthly_sessions_used ?? 0) > 0).length;
+      const withPhoneUsers = profiles.filter(p => p.phone_number && p.phone_number !== '' && p.phone_number !== '-').length;
+      const mobileUsers = profiles.filter(p => p.device_type === 'android' || p.device_type === 'ios').length;
 
       setRequests(reqs);
-      setUsers(usersWithDevice);
+      setUsers(profiles);
       setReviews(revs);
-      setDeviceStats(devStats);
       setStats({
-        pending: s.pending_payments ?? 0,
-        active:  s.active_pro       ?? 0,
-        total:   s.total_users      ?? 0,
+        pending: 0,
+        active: proUsers,
+        total: totalUsers,
+        pro: proUsers,
+        free: freeUsers,
+        practiced: practicedUsers,
+        withPhone: withPhoneUsers,
+        mobile: mobileUsers,
       });
     } finally {
       setLoading(false);
@@ -151,6 +144,63 @@ export default function AdminPanel({ user }) {
   }, []);
 
   useEffect(() => { loadData(); }, [loadData]);
+
+  const exportCSV = () => {
+    if (users.length === 0) {
+      alert('No users to export.');
+      return;
+    }
+
+    const f = userFilters;
+    const filtered = users.filter(u => {
+      if (f.search && !(u.email || '').toLowerCase().includes(f.search.toLowerCase()) && !(u.display_name || '').toLowerCase().includes(f.search.toLowerCase())) return false;
+      if (f.email && !(u.email || '').toLowerCase().includes(f.email.toLowerCase())) return false;
+      if (f.name && !(u.display_name || '').toLowerCase().includes(f.name.toLowerCase())) return false;
+      if (f.phone && !(u.phone_number || '').includes(f.phone)) return false;
+      if (hasPhoneFilter === 'hasPhone' && (!u.phone_number || u.phone_number === '-' || u.phone_number === '')) return false;
+      if (hasPhoneFilter === 'noPhone' && u.phone_number && u.phone_number !== '-' && u.phone_number !== '') return false;
+      if (f.status !== 'all') {
+        const st = u.subscription_status || 'free';
+        if (f.status === 'free' && st !== 'free') return false;
+        if (f.status === 'active' && st !== 'active') return false;
+        if (f.status === 'expired' && st !== 'expired') return false;
+      }
+      if (f.device !== 'all' && u.device_type !== f.device) return false;
+      if (f.hasSessions === 'yes' && (u.free_sessions_used ?? 0) === 0 && (u.monthly_sessions_used ?? 0) === 0) return false;
+      if (f.hasSessions === 'no' && ((u.free_sessions_used ?? 0) > 0 || (u.monthly_sessions_used ?? 0) > 0)) return false;
+      return true;
+    });
+
+    const headers = ['ID', 'Email', 'Name', 'Phone', 'Device', 'Device OS', 'Status', 'Free Sessions', 'Monthly Sessions', 'Last Seen', 'Updated At'];
+    const rows = filtered.map(u => [
+      u.id,
+      u.email || '',
+      u.display_name || '',
+      u.phone_number || '',
+      u.device_type || '',
+      u.device_os || '',
+      u.subscription_status || 'free',
+      u.free_sessions_used ?? 0,
+      u.monthly_sessions_used ?? 0,
+      u.last_seen_at || '',
+      u.updated_at || '',
+    ]);
+
+    const csv = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')),
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `users-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   const handleApprove = async (id) => {
     setActionId(id);
@@ -275,10 +325,13 @@ export default function AdminPanel({ user }) {
 
         {/* Stats */}
         {!loading && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 32 }}>
-            <StatCard label="Pending Payments"   value={stats.pending} color={stats.pending > 0 ? C.yellow : C.textMuted} />
-            <StatCard label="Active Pro Users"   value={stats.active}  color={C.success} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
             <StatCard label="Total Users"        value={stats.total}   color={C.text} />
+            <StatCard label="Pro Users"          value={stats.pro}     color={C.success} />
+            <StatCard label="Free Users"         value={stats.free}    color={C.yellow} />
+            <StatCard label="Practiced"          value={stats.practiced} color={C.green} />
+            <StatCard label="With Phone"         value={stats.withPhone} color={C.text} />
+            <StatCard label="Mobile Users"       value={stats.mobile}  color={C.text} />
             <WeeklyActiveAdminCard />
             <TotalSessionsCard />
           </div>
@@ -418,6 +471,7 @@ export default function AdminPanel({ user }) {
             ) : (() => {
               const f = userFilters;
               const filtered = users.filter(u => {
+                if (f.search && !(u.email || '').toLowerCase().includes(f.search.toLowerCase()) && !(u.display_name || '').toLowerCase().includes(f.search.toLowerCase())) return false;
                 if (f.email && !(u.email || '').toLowerCase().includes(f.email.toLowerCase())) return false;
                 if (f.name  && !(u.display_name || '').toLowerCase().includes(f.name.toLowerCase())) return false;
                 if (f.phone && !(u.phone_number || '').includes(f.phone)) return false;
@@ -429,17 +483,9 @@ export default function AdminPanel({ user }) {
                   if (f.status === 'active'  && st !== 'active')  return false;
                   if (f.status === 'expired' && st !== 'expired') return false;
                 }
-                if (f.plan !== 'all') {
-                  const pl = u.subscription_plan || '';
-                  if (f.plan === 'monthly' && pl !== 'monthly') return false;
-                  if (f.plan === 'yearly'  && pl !== 'yearly')  return false;
-                  if (f.plan === 'none'    && pl !== '')         return false;
-                }
-                if (f.freeSessions === 'used'    && (u.free_sessions_used ?? 0) === 0) return false;
-                if (f.freeSessions === 'notused' && (u.free_sessions_used ?? 0) > 0)   return false;
-                if (f.monthlySessions === 'active'   && (u.monthly_sessions_used ?? 0) === 0) return false;
-                if (f.monthlySessions === 'inactive' && (u.monthly_sessions_used ?? 0) > 0)   return false;
-                if (deviceFilter !== 'all' && u.device_type !== deviceFilter) return false;
+                if (f.device !== 'all' && u.device_type !== f.device) return false;
+                if (f.hasSessions === 'yes' && (u.free_sessions_used ?? 0) === 0 && (u.monthly_sessions_used ?? 0) === 0) return false;
+                if (f.hasSessions === 'no' && ((u.free_sessions_used ?? 0) > 0 || (u.monthly_sessions_used ?? 0) > 0)) return false;
                 return true;
               });
 
@@ -447,41 +493,26 @@ export default function AdminPanel({ user }) {
               const selectStyle = { ...inputStyle, cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235C5C57'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center', paddingRight: 28 };
               const labelStyle = { fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, display: 'block', marginBottom: 5 };
               const setF = (key, val) => setUserFilters(prev => ({ ...prev, [key]: val }));
-              const hasFilters = f.email || f.name || f.phone || f.status !== 'all' || f.plan !== 'all' || f.freeSessions !== 'all' || f.monthlySessions !== 'all' || deviceFilter !== 'all' || hasPhoneFilter !== 'all';
+              const hasFilters = f.search || f.email || f.name || f.phone || f.status !== 'all' || f.device !== 'all' || f.hasSessions !== 'all' || hasPhoneFilter !== 'all';
 
               return (
                 <>
                   {/* Filter row */}
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 12, alignItems: 'flex-end' }}>
+                    <div style={{ flex: '1 1 180px', minWidth: 150 }}>
+                      <label style={labelStyle}>Search</label>
+                      <input type="text" placeholder="Email or name…" value={f.search} onChange={e => setF('search', e.target.value)} style={inputStyle} />
+                    </div>
                     <div style={{ flex: '1 1 150px', minWidth: 130 }}>
                       <label style={labelStyle}>Device</label>
-                      <select value={deviceFilter} onChange={e => setDeviceFilter(e.target.value)} style={selectStyle}>
+                      <select value={f.device} onChange={e => setF('device', e.target.value)} style={selectStyle}>
                         <option value="all">All Devices</option>
                         <option value="android">🤖 Android</option>
                         <option value="ios">🍎 Apple iOS</option>
                         <option value="desktop">💻 Desktop</option>
                       </select>
                     </div>
-                    <div style={{ flex: '1 1 160px', minWidth: 140 }}>
-                      <label style={labelStyle}>Email</label>
-                      <input type="text" placeholder="Search email…" value={f.email} onChange={e => setF('email', e.target.value)} style={inputStyle} />
-                    </div>
-                    <div style={{ flex: '1 1 140px', minWidth: 120 }}>
-                      <label style={labelStyle}>Name</label>
-                      <input type="text" placeholder="Filter by name" value={f.name} onChange={e => setF('name', e.target.value)} style={inputStyle} />
-                    </div>
-                    <div style={{ flex: '1 1 160px', minWidth: 140, display: 'flex', flexDirection: 'column' }}>
-                      <label style={labelStyle}>Phone</label>
-                      <div style={{ display: 'flex', gap: 6, alignItems: 'stretch' }}>
-                        <input type="text" placeholder="Search phone…" value={f.phone} onChange={e => setF('phone', e.target.value)} style={{ ...inputStyle, flex: 1 }} />
-                        <select value={hasPhoneFilter} onChange={e => setHasPhoneFilter(e.target.value)} style={{ ...selectStyle, flex: '0 0 100px' }}>
-                          <option value="all">All</option>
-                          <option value="hasPhone">📞 Has</option>
-                          <option value="noPhone">No Phone</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div style={{ flex: '1 1 130px', minWidth: 110 }}>
+                    <div style={{ flex: '1 1 150px', minWidth: 130 }}>
                       <label style={labelStyle}>Status</label>
                       <select value={f.status} onChange={e => setF('status', e.target.value)} style={selectStyle}>
                         <option value="all">All</option>
@@ -490,38 +521,32 @@ export default function AdminPanel({ user }) {
                         <option value="expired">Expired</option>
                       </select>
                     </div>
-                    <div style={{ flex: '1 1 130px', minWidth: 110 }}>
-                      <label style={labelStyle}>Plan</label>
-                      <select value={f.plan} onChange={e => setF('plan', e.target.value)} style={selectStyle}>
+                    <div style={{ flex: '1 1 150px', minWidth: 130 }}>
+                      <label style={labelStyle}>Phone</label>
+                      <select value={hasPhoneFilter} onChange={e => setHasPhoneFilter(e.target.value)} style={selectStyle}>
                         <option value="all">All</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="yearly">Yearly</option>
-                        <option value="none">None</option>
+                        <option value="hasPhone">📞 Has</option>
+                        <option value="noPhone">No Phone</option>
                       </select>
                     </div>
                     <div style={{ flex: '1 1 150px', minWidth: 130 }}>
-                      <label style={labelStyle}>Free Sessions</label>
-                      <select value={f.freeSessions} onChange={e => setF('freeSessions', e.target.value)} style={selectStyle}>
+                      <label style={labelStyle}>Sessions</label>
+                      <select value={f.hasSessions} onChange={e => setF('hasSessions', e.target.value)} style={selectStyle}>
                         <option value="all">All</option>
-                        <option value="used">Used (&gt;0)</option>
-                        <option value="notused">Not Used (0)</option>
+                        <option value="yes">Practiced</option>
+                        <option value="no">Never Practiced</option>
                       </select>
                     </div>
-                    <div style={{ flex: '1 1 170px', minWidth: 150 }}>
-                      <label style={labelStyle}>Monthly Sessions</label>
-                      <select value={f.monthlySessions} onChange={e => setF('monthlySessions', e.target.value)} style={selectStyle}>
-                        <option value="all">All</option>
-                        <option value="active">Active (&gt;0)</option>
-                        <option value="inactive">Inactive (0)</option>
-                      </select>
-                    </div>
-                    {hasFilters && (
-                      <div style={{ flex: '0 0 auto', paddingBottom: 1 }}>
-                        <button onClick={() => { setUserFilters({ email: '', name: '', phone: '', status: 'all', plan: 'all', freeSessions: 'all', monthlySessions: 'all' }); setDeviceFilter('all'); setHasPhoneFilter('all'); }} style={{ background: 'none', border: 'none', color: C.green, fontSize: 11, cursor: 'pointer', textDecoration: 'underline', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '6px 0' }}>
-                          Reset Filters
+                    <div style={{ display: 'flex', gap: 8, paddingBottom: 1 }}>
+                      {hasFilters && (
+                        <button onClick={() => { setUserFilters({ email: '', name: '', phone: '', status: 'all', device: 'all', hasSessions: 'all', search: '' }); setHasPhoneFilter('all'); }} style={{ background: 'none', border: 'none', color: C.green, fontSize: 11, cursor: 'pointer', textDecoration: 'underline', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '6px 12px' }}>
+                          Reset
+                        </button>
+                      )}
+                      <button onClick={exportCSV} style={{ background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 8, color: '#fff', fontSize: 11, cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '6px 12px', fontWeight: 600, letterSpacing: 0.5 }}>
+                          📥 Export CSV
                         </button>
                       </div>
-                    )}
                   </div>
 
                   {/* Count */}
@@ -534,14 +559,14 @@ export default function AdminPanel({ user }) {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, minWidth: 700 }}>
                       <thead>
                         <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
-                          {['Device', 'Email', 'Name', 'Phone', 'Status', 'Plan', 'Expires', 'Last Accessed', 'Free Sessions', 'Monthly Sessions'].map(h => (
+                          {['Device', 'Email', 'Name', 'Phone', 'Status', 'Free Sess.', 'Monthly Sess.', 'Last Seen'].map(h => (
                             <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
                           ))}
                         </tr>
                       </thead>
                       <tbody>
                         {filtered.length === 0 ? (
-                          <tr><td colSpan={10} style={{ padding: '28px 14px', textAlign: 'center', color: C.textMuted, fontSize: 12 }}>No users match the filters.</td></tr>
+                          <tr><td colSpan={8} style={{ padding: '28px 14px', textAlign: 'center', color: C.textMuted, fontSize: 12 }}>No users match the filters.</td></tr>
                         ) : filtered.map((u, i) => (
                           <tr key={u.id} style={{ borderBottom: i < filtered.length - 1 ? `1px solid ${C.border}` : 'none' }}>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, whiteSpace: 'nowrap' }}>
@@ -554,11 +579,9 @@ export default function AdminPanel({ user }) {
                             <td style={{ padding: '12px 14px', color: u.display_name ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.display_name || ' - '}</td>
                             <td style={{ padding: '12px 14px', color: u.phone_number ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.phone_number || ' - '}</td>
                             <td style={{ padding: '12px 14px' }}>{subChip(u.subscription_status)}</td>
-                            <td style={{ padding: '12px 14px', color: C.textSoft, textTransform: 'capitalize' }}>{u.subscription_plan || ' - '}</td>
-                            <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{fmt(u.subscription_expires_at)}</td>
-                            <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{formatIST(u.last_seen_at)}</td>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.free_sessions_used ?? 0}</td>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.monthly_sessions_used ?? 0}</td>
+                            <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{formatIST(u.last_seen_at)}</td>
                           </tr>
                         ))}
                       </tbody>
