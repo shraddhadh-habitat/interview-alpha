@@ -52,5 +52,41 @@ for (const device of devices) {
       expect(await buttons.count()).toBeGreaterThan(0);
       await page.screenshot({ path: `tests/screenshots/${device.name}-04-buttons.png` });
     });
+
+    test('Email verification screen shows after signup attempt', async ({ page }) => {
+      await page.goto(BASE_URL);
+      await page.waitForLoadState('networkidle');
+
+      // Look for sign up button and click it
+      const signUpBtn = page.locator('button, a').filter({ hasText: /sign up|create account|get started/i }).first();
+      if (await signUpBtn.isVisible()) {
+        await signUpBtn.click();
+        await page.waitForTimeout(1000);
+      }
+
+      // Fill signup form with test data
+      const timestamp = Date.now();
+      const nameField = page.locator('input[placeholder*="name" i], input[name="name"]').first();
+      const emailField = page.locator('input[type="email"], input[placeholder*="email" i]').first();
+      const phoneField = page.locator('input[type="tel"], input[placeholder*="phone" i]').first();
+      const passwordField = page.locator('input[type="password"]').first();
+
+      if (await nameField.isVisible()) await nameField.fill('Test User');
+      if (await emailField.isVisible()) await emailField.fill(`test${timestamp}@mailinator.com`);
+      if (await phoneField.isVisible()) await phoneField.fill('9876543210');
+      if (await passwordField.isVisible()) await passwordField.fill('TestPassword123');
+
+      // Submit form
+      const submitBtn = page.locator('button').filter({ hasText: /create account|sign up|submit/i }).first();
+      if (await submitBtn.isVisible()) await submitBtn.click();
+      await page.waitForTimeout(3000);
+
+      // Check verification screen appears
+      await page.screenshot({ path: `tests/screenshots/email-verification-${device.name}.png` });
+
+      // Verify the check email screen is shown
+      const verifyText = page.locator('text=/check your email|verify|confirmation/i').first();
+      await expect(verifyText).toBeVisible({ timeout: 5000 });
+    });
   });
 }
