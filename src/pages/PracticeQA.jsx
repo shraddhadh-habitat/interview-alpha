@@ -165,16 +165,16 @@ const CONSULTING_DOMAIN_CHIPS = [
 ];
 
 const CONSULTING_CATEGORY_CHIPS = [
-  { id: 'profitability', label: 'Profitability Case', dataKeys: ['case_interview'] },
-  { id: 'market_entry', label: 'Market Entry', dataKeys: ['case_interview'] },
-  { id: 'market_sizing', label: 'Market Sizing', dataKeys: ['case_interview'] },
-  { id: 'growth_strategy', label: 'Growth Strategy', dataKeys: ['case_interview'] },
-  { id: 'operations', label: 'Operations', dataKeys: ['case_interview'] },
-  { id: 'merger_acquisition', label: 'M&A / Due Diligence', dataKeys: ['case_interview'] },
-  { id: 'digital_transformation', label: 'Digital Transformation', dataKeys: ['case_interview'] },
-  { id: 'risk_compliance', label: 'Risk & Compliance', dataKeys: ['case_interview'] },
-  { id: 'people_org', label: 'People & Organization', dataKeys: ['case_interview'] },
-  { id: 'supply_chain', label: 'Supply Chain', dataKeys: ['case_interview'] },
+  { id: 'profitability', label: 'Profitability Case', dataKeys: ['case_interview'], subcategory: 'Consultant' },
+  { id: 'market_entry', label: 'Market Entry', dataKeys: ['case_interview'], subcategory: 'Strategy Consultant' },
+  { id: 'market_sizing', label: 'Market Sizing', dataKeys: ['case_interview'], subcategory: 'Management Consultant' },
+  { id: 'growth_strategy', label: 'Growth Strategy', dataKeys: ['case_interview'], subcategory: 'Business Consultant' },
+  { id: 'operations', label: 'Operations', dataKeys: ['case_interview'], subcategory: 'Operations Consultant' },
+  { id: 'merger_acquisition', label: 'M&A / Due Diligence', dataKeys: ['case_interview'], subcategory: 'Financial Advisory Consultant' },
+  { id: 'digital_transformation', label: 'Digital Transformation', dataKeys: ['case_interview'], subcategory: 'Digital Consultant' },
+  { id: 'risk_compliance', label: 'Risk & Compliance', dataKeys: ['case_interview'], subcategory: 'Risk Consultant' },
+  { id: 'people_org', label: 'People & Organization', dataKeys: ['case_interview'], subcategory: 'Human Capital Consultant' },
+  { id: 'supply_chain', label: 'Supply Chain', dataKeys: ['case_interview'], subcategory: 'Supply Chain Consultant' },
 ];
 
 const ROLES = {
@@ -833,8 +833,18 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
 
         const effectiveDifficulty = q.difficulty || getDifficulty(level);
         if (difficulty && effectiveDifficulty !== difficulty) continue;
-        if (company && (!q.company || q.company.toLowerCase() !== company.toLowerCase())) continue;
-        if (domain && (!q.domain || q.domain.toLowerCase() !== domain.toLowerCase())) continue;
+        if (company) {
+          if (selectedRole === 'consulting') {
+            const firms = (q.companies || []).map(c => c.toLowerCase());
+            const chipLabel = (CONSULTING_COMPANY_CHIPS.find(c => c.id === company)?.label || '').toLowerCase();
+            if (!firms.some(f => f.includes(chipLabel) || chipLabel.includes(f.split(' ')[0]))) continue;
+          } else {
+            if (!q.company || q.company.toLowerCase() !== company.toLowerCase()) continue;
+          }
+        }
+        if (domain && selectedRole !== 'consulting') {
+          if (!q.domain || q.domain.toLowerCase() !== domain.toLowerCase()) continue;
+        }
         if (subcategoryFilter && q.subcategory && q.subcategory !== subcategoryFilter) continue;
         count++;
       }
@@ -1168,11 +1178,17 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
           // Company filter
           if (filterCompany) {
-            if (!q.company || q.company.toLowerCase() !== filterCompany.toLowerCase()) continue;
+            if (selectedRole === 'consulting') {
+              const firms = (q.companies || []).map(c => c.toLowerCase());
+              const chipLabel = (CONSULTING_COMPANY_CHIPS.find(c => c.id === filterCompany)?.label || '').toLowerCase();
+              if (!firms.some(f => f.includes(chipLabel) || chipLabel.includes(f.split(' ')[0]))) continue;
+            } else {
+              if (!q.company || q.company.toLowerCase() !== filterCompany.toLowerCase()) continue;
+            }
           }
 
           // Domain filter
-          if (filterDomain) {
+          if (filterDomain && selectedRole !== 'consulting') {
             if (!q.domain || q.domain.toLowerCase() !== filterDomain.toLowerCase()) continue;
           }
 
