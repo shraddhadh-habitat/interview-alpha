@@ -164,6 +164,19 @@ const CONSULTING_DOMAIN_CHIPS = [
   { id: 'supply_chain', label: 'Supply Chain' },
 ];
 
+const CONSULTING_CATEGORY_CHIPS = [
+  { id: 'profitability', label: 'Profitability Case', dataKeys: ['case_interview'] },
+  { id: 'market_entry', label: 'Market Entry', dataKeys: ['case_interview'] },
+  { id: 'market_sizing', label: 'Market Sizing', dataKeys: ['case_interview'] },
+  { id: 'growth_strategy', label: 'Growth Strategy', dataKeys: ['case_interview'] },
+  { id: 'operations', label: 'Operations', dataKeys: ['case_interview'] },
+  { id: 'merger_acquisition', label: 'M&A / Due Diligence', dataKeys: ['case_interview'] },
+  { id: 'digital_transformation', label: 'Digital Transformation', dataKeys: ['case_interview'] },
+  { id: 'risk_compliance', label: 'Risk & Compliance', dataKeys: ['case_interview'] },
+  { id: 'people_org', label: 'People & Organization', dataKeys: ['case_interview'] },
+  { id: 'supply_chain', label: 'Supply Chain', dataKeys: ['case_interview'] },
+];
+
 const ROLES = {
   pm: {
     id: 'pm',
@@ -755,7 +768,7 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
     const dsLevel = pmQuestions['Data Scientist'];
     categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
   } else if (selectedRole === 'consulting') {
-    categoryChips = [];
+    categoryChips = CONSULTING_CATEGORY_CHIPS;
   } else {
     categoryChips = PM_CATEGORY_CHIPS;
   }
@@ -928,9 +941,7 @@ function FilterContent({
 
       {/* Scrollable sections */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px 20px' }}>
-        {selectedRole !== 'consulting' && (
-          <FilterDropdown label="Category" value={filterCategory} onChange={setFilterCategory} options={categoryOptions} />
-        )}
+        <FilterDropdown label="Category" value={filterCategory} onChange={setFilterCategory} options={categoryOptions} />
         {expLevelOptions.length > 1 && (
           <FilterDropdown label="Experience Level" value={filterExpLevel} onChange={setFilterExpLevel} options={expLevelOptions} />
         )}
@@ -1078,7 +1089,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       const dsLevel = pmQuestions['Data Scientist'];
       categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
     } else if (selectedRole === 'consulting') {
-      categoryChips = [];
+      categoryChips = CONSULTING_CATEGORY_CHIPS;
     } else {
       categoryChips = PM_CATEGORY_CHIPS;
     }
@@ -1188,7 +1199,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       const dsLevel = pmQuestions['Data Scientist'];
       categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
     } else if (selectedRole === 'consulting') {
-      categoryChips = [];
+      categoryChips = CONSULTING_CATEGORY_CHIPS;
     } else {
       categoryChips = PM_CATEGORY_CHIPS;
     }
