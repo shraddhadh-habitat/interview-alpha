@@ -134,6 +134,36 @@ const DS_DOMAIN_CHIPS = [
   { id: 'general',    label: 'General' },
 ];
 
+const CONSULTING_COMPANY_CHIPS = [
+  { id: 'mckinsey', label: 'McKinsey' },
+  { id: 'deloitte', label: 'Deloitte' },
+  { id: 'pwc', label: 'PwC' },
+  { id: 'ey', label: 'EY' },
+  { id: 'kpmg', label: 'KPMG' },
+  { id: 'accenture', label: 'Accenture' },
+  { id: 'bcg', label: 'BCG' },
+  { id: 'bain', label: 'Bain & Company' },
+  { id: 'kearney', label: 'Kearney' },
+  { id: 'ibm', label: 'IBM Consulting' },
+  { id: 'strategy_and', label: 'Strategy&' },
+  { id: 'ey_parthenon', label: 'EY-Parthenon' },
+  { id: 'capgemini', label: 'Capgemini Invent' },
+  { id: 'publicis', label: 'Publicis Sapient' },
+  { id: 'alvarez', label: 'Alvarez & Marsal' },
+];
+
+const CONSULTING_DOMAIN_CHIPS = [
+  { id: 'strategy', label: 'Strategy' },
+  { id: 'operations', label: 'Operations' },
+  { id: 'technology', label: 'Technology' },
+  { id: 'risk', label: 'Risk & Controls' },
+  { id: 'transformation', label: 'Transformation' },
+  { id: 'human_capital', label: 'Human Capital' },
+  { id: 'financial_advisory', label: 'Financial Advisory' },
+  { id: 'digital', label: 'Digital' },
+  { id: 'supply_chain', label: 'Supply Chain' },
+];
+
 const ROLES = {
   pm: {
     id: 'pm',
@@ -842,7 +872,11 @@ function FilterContent({
         countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: opt.id, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
       );
 
-  const companyChips = selectedRole === 'ds' ? DS_COMPANY_CHIPS : PM_COMPANY_CHIPS;
+  const companyChips = selectedRole === 'ds'
+    ? DS_COMPANY_CHIPS
+    : selectedRole === 'consulting'
+    ? CONSULTING_COMPANY_CHIPS
+    : PM_COMPANY_CHIPS;
   const companyOptions = [
     { id: '', label: 'All' },
     ...companyChips,
@@ -851,7 +885,11 @@ function FilterContent({
     countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: opt.id, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
   );
 
-  const domainChips = selectedRole === 'ds' ? DS_DOMAIN_CHIPS : PM_DOMAIN_CHIPS;
+  const domainChips = selectedRole === 'ds'
+    ? DS_DOMAIN_CHIPS
+    : selectedRole === 'consulting'
+    ? CONSULTING_DOMAIN_CHIPS
+    : PM_DOMAIN_CHIPS;
   const domainOptions = [
     { id: '', label: 'All' },
     ...domainChips,
@@ -890,7 +928,9 @@ function FilterContent({
 
       {/* Scrollable sections */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px 20px' }}>
-        <FilterDropdown label="Category" value={filterCategory} onChange={setFilterCategory} options={categoryOptions} />
+        {selectedRole !== 'consulting' && (
+          <FilterDropdown label="Category" value={filterCategory} onChange={setFilterCategory} options={categoryOptions} />
+        )}
         {expLevelOptions.length > 1 && (
           <FilterDropdown label="Experience Level" value={filterExpLevel} onChange={setFilterExpLevel} options={expLevelOptions} />
         )}
@@ -1152,7 +1192,11 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     } else {
       categoryChips = PM_CATEGORY_CHIPS;
     }
-    const domainChips = selectedRole === 'ds' ? DS_DOMAIN_CHIPS : PM_DOMAIN_CHIPS;
+    const domainChips = selectedRole === 'ds'
+      ? DS_DOMAIN_CHIPS
+      : selectedRole === 'consulting'
+      ? CONSULTING_DOMAIN_CHIPS
+      : PM_DOMAIN_CHIPS;
 
     const tags = [];
     if (filterCategory) tags.push({ key: `cat-${filterCategory}`, label: categoryChips.find(c => c.id === filterCategory)?.label || filterCategory, prefix: 'cat', val: filterCategory });
