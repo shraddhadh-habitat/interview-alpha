@@ -69,6 +69,27 @@ The goal of this meeting is not to win the argument. It is to leave with at leas
         roundType: "Case Interview with Leadership Component",
         whatInterviewerTests: "Stakeholder management, change management thinking, client handling, implementation mindset",
         commonMistakes: ["Treating this as purely a presentation challenge", "Going in with the same deck hoping for a different reaction", "Escalating to the partner without attempting direct engagement first", "Not acknowledging the plant heads domain expertise"]
+      },
+      {
+        q: "You are leading a cost reduction engagement at a large Indian FMCG company. The analysis shows that closing 3 underperforming regional offices and centralizing operations will save 40 crore rupees annually. The regional heads have gone directly to the CEO to block the recommendation. How do you handle this?",
+        subcategory: "Senior Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `This situation has two parallel problems that need to be managed simultaneously. The substantive problem of whether the recommendation is right, and the political problem of senior stakeholders bypassing the normal engagement process to kill a finding they do not like.
+
+I would start by separating these two problems cleanly in my own mind before deciding how to respond, because conflating them leads to bad decisions in both dimensions.
+
+On the substantive question, I would first do a genuine self-critical review of the recommendation. Regional heads often have legitimate knowledge about customer relationships, regulatory requirements, and operational dependencies that a consulting team working primarily with central data may have missed. Before defending the recommendation I would ask: is there anything in their objection that reflects a real operational risk we have not adequately modeled? If yes, the recommendation needs to be revised. Intellectual honesty here is not weakness. It is what separates a good consultant from one who defends findings regardless of new information.
+
+On the political problem, the regional heads going directly to the CEO is a signal that the engagement process broke down somewhere. Either we did not involve them early enough in the analysis, we did not create a safe enough space for them to raise concerns through normal channels, or the change is genuinely threatening enough that they felt escalation was their only option. Understanding which of these is true shapes the response.
+
+My approach would be to request a joint session with the CEO, the regional heads, and our team where we present the full analysis transparently including our assumptions, the sensitivity of the savings estimate, and the risks we modeled. I would explicitly invite the regional heads to present their concerns with data. This does three things. It demonstrates confidence in the analysis. It respects the regional heads by giving them a formal platform rather than dismissing their concerns. And it puts the decision back where it belongs, with the CEO, with full information.
+
+The worst outcome would be to dig in defensively or to quietly water down the recommendation without surfacing the trade-offs explicitly. The CEO needs to make this decision with clear information about what the savings are, what the risks are, and what has been raised in objection.`,
+        companies: ['Deloitte', 'EY', 'KPMG', 'PwC', 'Accenture', 'IBM Consulting', 'Capgemini Invent', 'Publicis Sapient'],
+        roundType: "Case Interview with Leadership Component",
+        whatInterviewerTests: "Political navigation, intellectual honesty, stakeholder management, decision-making under pressure",
+        commonMistakes: ["Defending the recommendation without genuinely considering the regional heads objections", "Treating this purely as a political problem and ignoring the substantive concerns", "Escalating aggressively rather than creating a collaborative resolution process", "Watering down the recommendation without transparent trade-off discussion"]
       }
     ]
   },
@@ -202,6 +223,27 @@ These three changes, implemented together, could realistically bring the turnaro
         roundType: "Case Interview with Implementation Focus",
         whatInterviewerTests: "Process thinking, root cause analysis, practical problem solving, implementation realism",
         commonMistakes: ["Jumping to technology solutions without understanding where time is lost", "Ignoring the change management side of process redesign", "Not separating simple cases from complex ones", "Recommending a full system overhaul when targeted fixes deliver faster results"]
+      },
+      {
+        q: "A large Indian retail bank has 800 branches and wants to reduce its branch network to 500 over the next two years while maintaining customer satisfaction scores. How do you help them do this?",
+        subcategory: "Business Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `Reducing a branch network by 37% while maintaining customer satisfaction is fundamentally a customer migration problem, not a real estate or cost problem. The cost savings are the outcome. The challenge is migrating 300 branch-dependent customer segments to alternative channels without losing them or damaging the relationship.
+
+I would structure this across three workstreams that need to run in parallel.
+
+The first workstream is branch segmentation and prioritization. Not all 300 branches to be closed are equal. I would segment the existing 800 branches across three dimensions: customer transaction volume and revenue contribution, geographic proximity to the nearest alternative branch, and the digital readiness of the customer base in that catchment. Branches with low transaction volume, a nearby alternative, and a digitally active customer base are the easiest and lowest-risk closures. Branches in rural areas or semi-urban markets with elderly or low-income customer bases who are branch-dependent require either longer timelines or a different alternative channel strategy.
+
+The second workstream is customer migration. For each branch being closed I would design a specific migration plan rather than a generic communication. This means identifying the top 20% of customers by revenue contribution at each closing branch and having relationship managers personally reach out to transition them. For the remaining 80% I would use a combination of digital onboarding campaigns, nearby branch transfer incentives, and Business Correspondent network expansion in markets where digital adoption is low. The customer satisfaction risk is highest in the 60 to 90 days before and after closure. Proactive communication and service availability during this window is critical.
+
+The third workstream is channel readiness. Migrating customers from branches to digital only works if the digital channels can actually handle the transactions those customers need. I would do a transaction type analysis for each closing branch to understand what customers are actually doing there. Cash withdrawals and deposits require ATM or BC network alternatives. Complex transactions like loan applications or grievance resolution require either digital capability or relationship manager coverage. Closing branches before the alternative channels are ready guarantees customer satisfaction damage.
+
+The financial model I would build for the client would show not just the gross savings from branch closure but also the investment required in digital channel improvement, BC network expansion, and customer retention to model the net savings realistically. Branch rationalization programs that ignore migration investment costs consistently underdeliver on their financial targets.`,
+        companies: ['IBM Consulting', 'Accenture', 'Deloitte', 'Cognizant Consulting', 'Infosys Consulting', 'Genpact', 'Capgemini Invent'],
+        roundType: "Case Interview with Implementation Focus",
+        whatInterviewerTests: "Customer migration thinking, change sequencing, financial modeling realism, implementation risk management",
+        commonMistakes: ["Treating this as a cost reduction exercise rather than a customer migration problem", "Not segmenting branches by closure risk and complexity before building a single plan", "Ignoring channel readiness as a prerequisite to closure", "Not modeling the investment required for migration in the net savings calculation"]
       }
     ]
   },
@@ -227,6 +269,29 @@ The single most important structural recommendation I would make to the CEO is g
         roundType: "Case Interview with Organizational Change Component",
         whatInterviewerTests: "Change management at scale, phased transformation thinking, stakeholder complexity, realistic implementation planning",
         commonMistakes: ["Treating this as primarily a technology implementation", "Proposing a big bang transformation instead of a phased approach with early wins", "Underestimating union dynamics and regulatory approval timelines", "Not addressing talent reskilling at scale"]
+      },
+      {
+        q: "A mid-size Indian manufacturing company with 12,000 employees has decided to implement an ERP system across all its plants and functions. Previous ERP implementations at similar companies have had a 60% failure rate. The CEO asks you what the most important factors are for success. What do you tell her?",
+        subcategory: "Transformation Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `ERP implementations fail at a 60% rate not because the technology does not work but because organizations underestimate the degree to which ERP is a business transformation program that happens to involve software, not a software program that happens to affect business processes.
+
+I would tell the CEO that success comes down to five factors, and that getting any one of them wrong significantly increases the failure probability.
+
+The first factor is CEO-level sponsorship that is active, not ceremonial. ERP implementations require hundreds of decisions where business owners must change how they work to fit the system rather than customizing the system to fit how they currently work. Every time a plant head or function head refuses to change their process and demands a system customization instead, the implementation gets more expensive, more delayed, and more fragile. The only person who can consistently resolve these conflicts in favor of the standard process is the CEO. Passive sponsorship, where the CEO endorses the project but does not personally intervene in process disputes, is one of the most reliable predictors of ERP failure.
+
+The second factor is dedicated full-time business resources on the implementation team. Companies consistently make the mistake of asking their best people to do the ERP implementation in addition to their day jobs. This guarantees both the implementation and the day job suffer. The business team members on an ERP implementation need to be fully released from their operational responsibilities for the duration of the project. This is expensive and disruptive, which is why it is consistently avoided, and consistently why implementations fail.
+
+The third factor is a disciplined approach to customization. Every customization adds cost, time, and fragility. I would establish a governance rule at the start: no customization unless the business case is documented, approved at the CFO level, and the process owner has confirmed that the standard functionality genuinely cannot support the business requirement. In my experience, 70% of customization requests dissolve when this standard is applied because they reflect preference rather than necessity.
+
+The fourth factor is a realistic timeline with genuine contingency. ERP implementations consistently run over time and budget because original plans are built on optimistic assumptions about data quality, process complexity, and user readiness. I would build the timeline from a bottoms-up assessment of each module and each plant, add 20% contingency to the most complex workstreams, and establish clear go or no-go criteria before each phase go-live.
+
+The fifth factor is change management starting on day one, not month ten. User adoption is not a training problem. It is a motivation and trust problem. Users who understand why the change is happening, were involved in designing the new processes, and trust that the system will make their work better are far more likely to adopt it fully. Change management that starts when the system is ready to go live is too late.`,
+        companies: ['Deloitte', 'EY', 'KPMG', 'PwC', 'Accenture', 'Capgemini Invent', 'IBM Consulting'],
+        roundType: "Case Interview with Organizational Change Component",
+        whatInterviewerTests: "Transformation risk factors, change management depth, executive communication, implementation realism",
+        commonMistakes: ["Focusing on technical factors rather than organizational and change management factors", "Not addressing CEO sponsorship as the single most critical success factor", "Underestimating the customization problem and its downstream consequences", "Treating change management as a phase rather than a continuous workstream from day one"]
       }
     ]
   },
@@ -314,6 +379,27 @@ The governance recommendation I would make is a joint steering committee co-chai
         roundType: "Technology-Business Case Interview",
         whatInterviewerTests: "Technology-business bridge, adoption risk thinking, data foundation assessment, phased implementation judgment",
         commonMistakes: ["Treating this as purely a technology implementation project", "Skipping the data quality assessment and assuming clean data exists", "Proposing a full 500-store rollout without a pilot", "Not addressing organizational resistance explicitly in the plan"]
+      },
+      {
+        q: "A leading Indian private bank wants to migrate its core banking system from a 25-year-old legacy platform to a modern cloud-based core. The CTO estimates the migration will take 3 years and cost 500 crore rupees. The board is nervous. How do you advise them?",
+        subcategory: "Technology Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `Core banking system migrations are among the highest-risk technology programs a bank can undertake. Several major global banks have had catastrophic failures during core banking migrations that resulted in days of customer service outages, regulatory intervention, and reputational damage worth far more than the migration cost. The board's nervousness is appropriate.
+
+My advice to the board would be structured around three questions they need to answer before approving this program.
+
+The first question is: is the migration genuinely necessary now, or is it a solution in search of a problem? A 25-year-old core banking system is old but not necessarily failing. I would want to understand what specific business capabilities the current system is preventing the bank from delivering. If the answer is specific and quantified, for example the bank cannot launch certain product types, cannot support real-time payments at scale, or is spending 200 crore rupees annually on maintenance and workarounds, the migration case is strong. If the answer is more general, for example the system feels old or is hard to change, the risk-reward calculation is much less clear.
+
+The second question is: is the 3-year timeline and 500 crore rupees estimate credible? In my experience, core banking migration estimates are almost always optimistic. The true complexity is typically discovered during data migration when years of accumulated data inconsistencies, exception handling rules, and undocumented product variants surface. I would recommend the board commission an independent technical due diligence on the estimate before approving the full program, and build in a minimum 30% contingency on both time and budget as a board-level expectation rather than a project-level risk.
+
+The third question is: what is the migration strategy and how does it manage customer risk? There are three broad approaches. A big bang cutover where the old system is switched off and the new system goes live simultaneously carries maximum risk. A parallel running approach where both systems run simultaneously for a period is expensive but significantly safer. A strangler fig approach where the new system gradually takes over product by product and customer segment by customer segment is the lowest risk but the longest timeline. For a bank of this size, I would strongly advise against a big bang approach regardless of the cost and time implications.
+
+My overall advice to the board would be: approve the program but with three conditions. An independent estimate validation before full budget release. A parallel running or strangler fig migration strategy as a non-negotiable architectural requirement. And a clear set of go or no-go criteria at each phase gate that the board reviews, not just the CTO.`,
+        companies: ['Accenture', 'Deloitte', 'IBM Consulting', 'Capgemini', 'Infosys Consulting', 'TCS Consulting', 'Wipro Consulting', 'Cognizant Consulting'],
+        roundType: "Technology-Business Case Interview",
+        whatInterviewerTests: "Technology risk assessment, board-level advisory, migration strategy, cost-benefit thinking",
+        commonMistakes: ["Not questioning whether the migration is necessary before evaluating how to do it", "Accepting the 3-year and 500 crore estimate without independent validation", "Not distinguishing between migration strategies and their risk profiles", "Underestimating the data migration complexity in a 25-year-old system"]
       }
     ]
   },
@@ -370,6 +456,29 @@ The critical enabler for all of this is data access. I need the NBFC loan book d
         roundType: "Risk and Controls Case Interview",
         whatInterviewerTests: "Risk identification, regulatory awareness, controls thinking, structured risk assessment under time pressure",
         commonMistakes: ["Starting with a broad risk framework rather than what the RBI specifically requires", "Underestimating credit quality differences between NBFC and bank loan books", "Not flagging data access as a critical dependency upfront", "Treating this as a documentation exercise rather than a genuine risk assessment with remediation commitments"]
+      },
+      {
+        q: "A large Indian public sector bank has been issued a show cause notice by RBI for persistent KYC compliance failures across 40% of its accounts. The MD has 30 days to respond. You are brought in on day 1. What do you do?",
+        subcategory: "Risk Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `A show cause notice from the RBI for KYC compliance failures is a serious regulatory event and the 30-day response window is extremely tight. The first priority is to understand exactly what the RBI has found before deciding how to respond, because a poorly constructed response that minimizes or misdirects can escalate the situation significantly.
+
+In the first 48 hours I would focus entirely on two things. Understanding the precise nature and scope of the RBI's findings from the notice and from any examination report that accompanied it, and assembling the right team. This engagement requires a combination of regulatory compliance expertise, data analytics capability, and senior legal counsel who specializes in banking regulation. Starting without the right team is the fastest way to produce an inadequate response.
+
+I would then structure the 30-day response workstream across three parallel tracks.
+
+The first track is fact-finding and root cause analysis. I need to independently verify the scope of the KYC failures. Are the 40% of accounts flagged by RBI an accurate reflection of the actual compliance position, or is there a definitional or data quality issue in how RBI has categorized the accounts? I would run the bank's own KYC data through a clean-room analysis to establish the ground truth before drafting any response. I would also conduct a root cause analysis to understand whether the failures are concentrated in specific branches, specific account opening channels, specific time periods, or specific customer segments. Root cause clarity is essential for both the response and the remediation plan.
+
+The second track is remediation planning. The RBI response will be judged not just on the explanation of how the failures occurred but on the credibility and completeness of the plan to fix them. I would develop a time-bound remediation plan with specific milestones, accountability owners, and measurable targets. The plan needs to be ambitious enough to demonstrate seriousness but realistic enough to be credible. Promising remediation that cannot be delivered in the stated timeline makes the regulatory relationship significantly worse.
+
+The third track is response drafting. The response to RBI needs to acknowledge the failures clearly without minimizing them, demonstrate genuine understanding of root causes, present a credible remediation plan, and show what systemic controls improvements will prevent recurrence. The tone needs to be one of complete accountability combined with demonstrable competence in addressing the issue. Defensive or legalistic responses consistently worsen the regulatory relationship.
+
+The MD needs to understand that the quality of this response will shape the RBI's posture toward the bank for the next several years. A strong response that demonstrates genuine remediation can prevent escalation to more severe regulatory action. A weak response that appears to minimize the issue will invite further scrutiny.`,
+        companies: ['EY', 'KPMG', 'Deloitte', 'PwC', 'Protiviti', 'Grant Thornton'],
+        roundType: "Risk and Controls Case Interview",
+        whatInterviewerTests: "Regulatory crisis management, root cause analysis, remediation planning, stakeholder communication under pressure",
+        commonMistakes: ["Jumping to drafting the response before understanding the full scope of the RBI findings", "Not conducting an independent verification of the compliance position before responding", "Producing a remediation plan that is aspirational rather than credible and time-bound", "Underestimating the importance of tone and accountability in the regulatory response"]
       }
     ]
   },
