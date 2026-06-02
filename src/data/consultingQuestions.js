@@ -44,6 +44,54 @@ The strategic question I would put to the CEO is: are we investing in future mar
         roundType: "Case Interview",
         whatInterviewerTests: "Profitability diagnosis, MECE structuring, hypothesis-driven thinking, mix shift analysis",
         commonMistakes: ["Treating the margin decline as purely a cost problem without examining revenue mix", "Not separating mature hospitals from new ramp-up hospitals", "Missing patient mix shift as a margin driver", "Jumping to headcount reduction without understanding the expansion investment thesis"]
+      },
+      {
+        q: "A leading Indian telecom company has seen its average revenue per user drop 40% over three years despite subscriber numbers growing 25%. The CEO wants to understand the economics and what to do about it.",
+        subcategory: "Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `This is a classic volume-versus-value tension that the Indian telecom sector has experienced acutely since the Jio disruption. Revenue per user falling 40% while subscribers grow 25% tells me the company is acquiring more customers but at dramatically lower monetization per customer. The aggregate revenue picture depends on the relative magnitude of these two forces, but the margin picture is almost certainly deteriorating because network and spectrum costs scale with subscribers while revenue per user has collapsed.
+
+I would structure the diagnosis across three dimensions.
+
+The first dimension is the revenue per user decomposition. ARPU is a blended number that hides important mix effects. I would decompose it into prepaid versus postpaid, voice versus data, and urban versus rural. My hypothesis is that subscriber growth is concentrated in prepaid, rural, and data-only segments where ARPU is structurally lower, while the high-ARPU postpaid urban base has been partially lost to competition. If this hypothesis is correct, the ARPU decline is partly a mix problem rather than pure pricing pressure, and the response is different.
+
+The second dimension is the competitive and pricing environment. Has the ARPU decline been driven by the company's own pricing decisions, by competitive price matching following Jio's entry, or by a regulatory intervention? Understanding this determines whether ARPU recovery is within the company's control or constrained by competitive and regulatory dynamics.
+
+The third dimension is the cost structure. A 40% ARPU decline is devastating to margins if costs have not adjusted proportionally. I would look at the cost per subscriber trend, the network utilization rate, and the debt service burden from spectrum and infrastructure investment to understand the financial sustainability of the current position.
+
+Before recommending anything I would want the ARPU decomposition by segment, the market share trend by customer segment, the contribution margin per subscriber by segment, and the debt maturity profile.
+
+My likely recommendations would have two parts. A revenue recovery strategy focused on accelerating postpaid migration for high-usage prepaid subscribers through bundled offerings, device financing, and loyalty programs. And a cost optimization strategy focused on network sharing arrangements with competitors, tower monetization, and opex reduction to bring the cost structure in line with the new ARPU reality.
+
+The strategic question I would leave with the CEO is whether this is a business that can be independently viable at current ARPU levels, or whether consolidation is the only path to a sustainable return on the spectrum and infrastructure investment.`,
+        companies: ['McKinsey & Company', 'Deloitte', 'PwC', 'EY', 'KPMG', 'Accenture', 'IBM Consulting', 'Capgemini Invent'],
+        roundType: "Case Interview",
+        whatInterviewerTests: "Revenue decomposition, mix shift analysis, competitive dynamics, strategic options under margin pressure",
+        commonMistakes: ["Treating ARPU as a single number without decomposing by segment", "Focusing only on revenue recovery without addressing the cost structure", "Not recognizing that consolidation may be the only viable strategic option", "Ignoring the debt burden from prior spectrum investment in the financial analysis"]
+      },
+      {
+        q: "A large Indian two-wheeler manufacturer has dominated the commuter segment for 20 years but has missed the electric vehicle transition. Competitors have launched EVs and are gaining share among younger urban buyers. The CEO asks you for a turnaround strategy.",
+        subcategory: "Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `Missing a technology transition is one of the most dangerous strategic positions a company can be in, and the response needs to be both urgent and carefully sequenced. The risk of moving too slowly is obvious. The less obvious risk is moving too fast and destroying the profitable ICE business that funds the EV transition before the EV business can stand on its own.
+
+I would structure the turnaround strategy across three parallel tracks.
+
+The first track is defending and milking the existing ICE commuter business. The commuter segment that this company has dominated for 20 years is not going away immediately. Rural and semi-urban buyers in India have slower EV adoption curves due to charging infrastructure gaps and total cost of ownership concerns. I would protect this base through aggressive pricing, distribution expansion in tier 3 and tier 4 markets where EV penetration is lowest, and product refreshes that extend the ICE portfolio's life. The cash flows from this business fund the EV investment.
+
+The second track is an accelerated EV entry strategy. The company is behind but not out. The question is whether to build, buy, or partner. Building from scratch is the slowest option. Acquiring a funded EV startup that has already solved battery management, motor control, and software integration would compress the timeline by two to three years. A joint venture with an established battery manufacturer would address the single largest cost and technology risk in EV manufacturing. I would recommend a combination: acquire a domestic EV startup for speed and talent, and partner with a Korean or Japanese battery manufacturer for supply security.
+
+The third track is the brand repositioning for younger urban buyers. The company's brand is associated with reliability and value for money, which are the right attributes for the commuter segment but not compelling for the aspirational urban EV buyer. The brand needs a sub-brand or a new brand entirely for the EV lineup, with a distinct visual identity, a digital-first go-to-market model, and a direct sales channel to complement the existing dealer network.
+
+The sequencing is critical. Month one to six should focus on finalizing the acquisition or partnership and committing to a specific EV launch timeline. Month six to eighteen should focus on product development and building the charging ecosystem partnership. Month eighteen to thirty-six should be the EV launch with the new brand, targeted at the top 20 cities where EV adoption is already happening.
+
+The financial model I would show the CEO needs to be explicit about the cross-subsidy: the ICE business will fund the EV investment for three to five years before the EV business reaches contribution margin break-even. The board needs to understand and commit to this before the strategy is launched.`,
+        companies: ['McKinsey & Company', 'Deloitte', 'PwC', 'EY', 'KPMG', 'Accenture', 'IBM Consulting'],
+        roundType: "Case Interview",
+        whatInterviewerTests: "Technology transition strategy, build-buy-partner analysis, portfolio management, brand strategy",
+        commonMistakes: ["Abandoning the ICE business too quickly and losing the cash flows that fund EV investment", "Recommending a full EV pivot without addressing the charging infrastructure constraint in rural markets", "Not distinguishing between the commuter and aspirational urban buyer segments", "Underestimating the timeline and investment required for EV product development and certification"]
       }
     ]
   },
@@ -146,6 +194,58 @@ The strategic insight for a client entering this space is that the opportunity i
         roundType: "Guesstimate and Market Sizing",
         whatInterviewerTests: "Structured quantitative thinking, assumption articulation, urban versus rural segmentation, business judgment",
         commonMistakes: ["Not separating urban and rural chai consumption patterns", "Confusing the total chai market with the organized segment", "Not articulating assumptions clearly before calculating", "Missing the strategic insight that connects market sizing to a business recommendation"]
+      },
+      {
+        q: "Estimate the total annual market size for corporate training and leadership development in India.",
+        subcategory: "Management Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `I would approach this as a demand-side estimation built from the corporate employee base rather than from top-down industry numbers.
+
+Let me start with the addressable corporate workforce.
+
+India has approximately 500 million working people. However, the relevant market for formal corporate training and leadership development is the organized sector. I would estimate the organized sector workforce at approximately 50 to 60 million people, of which roughly 20 to 25 million are in roles and organizations where formal training budgets exist. Small and micro enterprises rarely have structured training programs. Large enterprises, mid-size companies, and the public sector are the primary buyers.
+
+I would segment this further into three tiers with very different spending levels.
+
+The first tier is large enterprises, defined as companies with more than 5,000 employees. India has approximately 500 to 700 such companies. Average training spend per employee in this segment is approximately 8,000 to 15,000 rupees per year based on typical HR budgets I would estimate at 1 to 2% of salary costs. With an average of 10,000 employees per large enterprise and 600 companies, this gives approximately 50 to 90 crore rupees per company, or 30,000 to 54,000 crore rupees for the large enterprise segment.
+
+The second tier is mid-size enterprises with 500 to 5,000 employees. India has approximately 5,000 to 7,000 such companies. Average training spend per employee is lower at 3,000 to 6,000 rupees per year. With an average of 2,000 employees and 6,000 companies, this gives approximately 60 to 120 crore per company, or 3,600 to 7,200 crore rupees for this segment.
+
+The third tier is the public sector and government enterprises. This is a significant and often underestimated buyer of training services. Central and state government training institutes, PSU leadership programs, and defense training collectively represent a market of approximately 5,000 to 8,000 crore rupees annually.
+
+My total estimate for the corporate training and leadership development market in India is approximately 40,000 to 70,000 crore rupees annually, with large enterprises accounting for the majority of the spend.
+
+To sense check this number: the global corporate training market is estimated at approximately 400 billion US dollars. India with roughly 3% of global GDP but a larger proportion of the global workforce should represent 2 to 4% of global training spend, or 8 to 16 billion US dollars, which is broadly consistent with my estimate of 40,000 to 70,000 crore rupees.
+
+The strategic insight for a client entering this space is that the large enterprise segment has the largest absolute spend but the most entrenched incumbent relationships. The mid-size enterprise segment is underserved, more open to new entrants, and growing faster as Indian companies professionalize their HR functions.`,
+        companies: ['Accenture', 'Deloitte', 'EY', 'KPMG', 'PwC', 'IBM Consulting', 'Capgemini Invent'],
+        roundType: "Guesstimate and Market Sizing",
+        whatInterviewerTests: "Segmentation approach, structured estimation, sense checking with global benchmarks, strategic insight extraction",
+        commonMistakes: ["Starting with total workforce without narrowing to the organized sector where training budgets exist", "Not segmenting by company size since training spend per employee varies dramatically by tier", "Forgetting the public sector as a significant buyer", "Not providing a sense check against a global benchmark to validate the estimate"]
+      },
+      {
+        q: "A leading Indian private hospital chain wants to expand into tier 2 and tier 3 cities. The CFO is concerned about viability. How do you assess whether this expansion makes financial and strategic sense?",
+        subcategory: "Management Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `Tier 2 and tier 3 hospital expansion is a question that several large Indian hospital chains have grappled with, and the track record is mixed. The strategic logic is compelling but the financial viability varies enormously by city, by specialty mix, and by the operating model chosen.
+
+I would structure the assessment across four dimensions.
+
+The first dimension is market demand validation. Not all tier 2 and tier 3 cities have equivalent healthcare demand or the same propensity to use private hospital services. I would assess each target city on three parameters: the disease burden and catchment population within a 50 to 100 kilometer radius, the current availability of quality private healthcare and the degree to which patients are traveling to metros for treatment, and the income distribution and insurance penetration in the catchment area, since insurance-backed patients are significantly more valuable economically than out-of-pocket patients.
+
+The second dimension is the financial model for each city type. A 100-bed hospital in a tier 2 city has a fundamentally different economics than the same hospital in a metro. I would model the unit economics across three scenarios. The revenue model needs to account for average revenue per occupied bed day, which is typically 40 to 60% lower in tier 2 cities than metros due to lower pricing and insurance rates. The cost model needs to account for capital cost per bed, which can actually be lower than metros due to lower land and construction costs, and operating cost, which is also lower except for senior specialist doctors who command metro-equivalent salaries anywhere in India.
+
+The third dimension is the operating model choice. There are three options with very different risk profiles. A full ownership model has the highest capital commitment and the highest potential return. An asset-light franchise or management contract model has lower capital commitment but also lower control and margin. A hub-and-spoke model where the chain operates a smaller secondary facility in the tier 2 city that refers complex cases to a nearby metro hub has the lowest capital requirement and the best alignment with the clinical reality that certain specialties cannot be staffed locally.
+
+The fourth dimension is the specialty mix strategy. A general hospital in a tier 2 city will struggle to be financially viable. The chains that have succeeded in tier 2 and tier 3 expansion have done so with a focused specialty strategy, typically maternal and child health, orthopedics, and basic cardiac care, which have high volume, predictable demand, and do not require the depth of specialist talent that oncology or complex neurosurgery requires.
+
+My recommendation to the CFO would be: the expansion is viable but only with a carefully selected subset of target cities, an asset-light or hub-and-spoke operating model for the first wave, and a focused specialty strategy rather than a full-service hospital model. A blanket expansion across all tier 2 and tier 3 cities with a full-service model is the path to the mixed track record that has plagued previous attempts at this strategy.`,
+        companies: ['Accenture', 'Deloitte', 'EY', 'KPMG', 'PwC', 'IBM Consulting', 'Capgemini Invent'],
+        roundType: "Case Interview",
+        whatInterviewerTests: "Market entry evaluation, healthcare sector knowledge, financial modeling, operating model design",
+        commonMistakes: ["Treating all tier 2 and tier 3 cities as equivalent without city-level demand validation", "Not modeling the revenue per bed day difference between metro and non-metro markets", "Recommending a full-service hospital model when a focused specialty model is more viable", "Ignoring the specialist talent constraint that limits which specialties can be operated profitably outside metros"]
       }
     ]
   },
@@ -192,6 +292,50 @@ My core recommendation is fix the leaky bucket before filling it. A company with
         roundType: "Strategy Case Interview",
         whatInterviewerTests: "Competitive strategy, growth options framework, churn diagnosis, CEO-level thinking",
         commonMistakes: ["Jumping to new market recommendations without addressing churn", "Not segmenting churn to understand acquisition versus retention problems", "Treating edtech as a single category when K-12 and upskilling have very different economics", "Ignoring unit economics and customer lifetime value in the growth strategy"]
+      },
+      {
+        q: "A leading Indian quick commerce company delivering groceries in 10 minutes has achieved 2 million daily orders but has never been profitable. Investors are pressuring for a path to profitability. How do you approach building that path?",
+        subcategory: "Strategy Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `Quick commerce profitability is one of the most discussed and least solved problems in Indian startup strategy right now. The fundamental tension is that the 10-minute promise requires a dense dark store network with high fixed costs, while the average order value in grocery is low and the customer's willingness to pay a delivery premium is limited.
+
+I would structure the path to profitability analysis across four levers, each of which needs to be assessed for its realistic contribution given the competitive context.
+
+The first lever is order economics improvement. The unit economics of quick commerce break down into delivery cost per order, dark store operating cost allocated per order, customer acquisition cost amortized per order, and gross margin on the products sold. I would model the current unit economics for the top and bottom quartile of dark stores to understand the range of what is achievable. In quick commerce, dark store density and order frequency per store are the primary drivers of unit economics. A dark store doing 500 orders per day has fundamentally different economics than one doing 150 orders per day.
+
+The second lever is average order value increase. At the current average order value, many dark stores cannot be profitable regardless of operational efficiency. I would analyze the order value distribution and identify what percentage of orders are below the break-even threshold. Strategies to increase AOV include bundling, subscriptions that incentivize larger basket sizes, private label products with higher margins, and alcohol and fresh categories that command premium pricing.
+
+The third lever is selective geographic rationalization. Not all cities and not all dark stores within cities are equal. I would recommend a store-by-store profitability model and a clear policy for closing or consolidating stores that cannot reach break-even within a defined timeline. Maintaining unprofitable dark stores to defend market share in geographies where the company is not the density leader is a cash destruction strategy.
+
+The fourth lever is monetization beyond delivery fees. Advertising revenue from FMCG brands who want placement and prominence in the app is a high-margin revenue stream that scales with order volume. This is already material for Zomato and Swiggy and represents a genuinely differentiated path to profitability for quick commerce platforms.
+
+My overall recommendation for the investor conversation would be a three-year profitability roadmap with specific milestones: unit economics break-even at the dark store level in the top 20% of stores within 12 months, contribution margin positive at the city level in the top 5 cities within 18 months, and company-level EBITDA positive within 36 months. Each milestone would have specific operational and financial metrics that investors can track.`,
+        companies: ['Strategy&', 'EY-Parthenon', 'Kearney', 'Oliver Wyman', 'Roland Berger'],
+        roundType: "Strategy Case Interview",
+        whatInterviewerTests: "Unit economics thinking, path to profitability structuring, business model analysis, investor communication",
+        commonMistakes: ["Focusing only on cost cutting without addressing the revenue and AOV side", "Not building a store-level model and treating all dark stores as having the same economics", "Recommending geographic expansion as a path to profitability when density improvement in existing markets is the real lever", "Underestimating advertising revenue as a profitability lever"]
+      },
+      {
+        q: "A large Indian IT services company with 150,000 employees and revenues of 15,000 crore rupees is facing margin pressure as clients push for AI-driven productivity improvements that reduce the number of people needed on their contracts. The CEO needs a strategy to protect margins over the next three years.",
+        subcategory: "Strategy Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `This is an existential strategic challenge for the Indian IT services industry, not just a margin management problem. The core business model of billing by the hour or by the headcount is under threat from AI tools that can do in hours what previously took weeks of human effort. A company that defends its current model too aggressively will lose clients. A company that embraces AI productivity without a new commercial model will simply earn less revenue for the same work.
+
+I would structure the strategy across three interconnected choices that the CEO needs to make explicitly.
+
+The first choice is the commercial model transition. The company needs to move from time-and-materials and fixed-headcount contracts toward outcome-based and value-based pricing. An AI-augmented team of 50 engineers delivering 200 engineers worth of output should not be priced at 50 engineers. It should be priced based on the business outcome it delivers. This is a fundamental renegotiation of how value is captured, and it requires a new sales motion, new contract structures, and new capabilities in business case quantification. This is the most important and most difficult change, and it will not happen without deliberate leadership commitment.
+
+The second choice is the talent and capability mix. A company that deploys AI tools to replace junior engineers but retains the same senior-to-junior ratio is not capturing the full efficiency gain. The future talent model for IT services is fewer but higher-skilled people, augmented by AI tools, delivering more output. This means a deliberate shift in the talent pyramid: fewer entry-level roles, more AI engineers and architects, and a significant investment in reskilling the existing workforce. The people who cannot be reskilled need to be managed through attrition rather than mass layoffs, which would be reputationally damaging and operationally disruptive.
+
+The third choice is where to play in the AI value chain. There are three positions available: being an AI implementer helping clients deploy AI tools, being an AI integrator building proprietary AI solutions on top of foundation models, or being an AI IP creator developing and licensing proprietary models and accelerators. The first position has the lowest margin and the highest competitive intensity. The third position has the highest margin but requires significant R&D investment and a fundamentally different business model. Most IT services companies will occupy the second position, but the specific AI domains and industry verticals where they build proprietary solutions will determine their competitive differentiation.
+
+My recommendation for the three-year strategy would be: immediately begin the commercial model transition in new contracts and contract renewals, invest in building AI accelerators in the two or three industry verticals where the company has the deepest domain expertise, and manage the talent transition through a combination of reskilling investment and natural attrition rather than structural reorganization.`,
+        companies: ['Strategy&', 'EY-Parthenon', 'Kearney', 'Oliver Wyman', 'Roland Berger', 'L.E.K. Consulting'],
+        roundType: "Strategy Case Interview",
+        whatInterviewerTests: "Business model transformation, AI strategy, commercial model design, talent strategy",
+        commonMistakes: ["Treating this as a cost management problem rather than a business model transformation", "Not addressing the commercial model transition as the central strategic challenge", "Recommending mass layoffs rather than a managed talent transition", "Not distinguishing between the three positions in the AI value chain and their different margin and competitive implications"]
       }
     ]
   },
@@ -350,6 +494,52 @@ The financial case is clear. At 8 lakh rupees per delayed flight, improving on-t
         roundType: "Operations Case Interview",
         whatInterviewerTests: "Process efficiency, root cause diagnosis, cost quantification, 90-day planning",
         commonMistakes: ["Treating all delays as the same category rather than diagnosing by root cause", "Focusing only on ground operations without examining maintenance and crew factors", "Not quantifying the financial impact to build the business case", "Proposing a generic improvement program without specific timeline and measurable targets"]
+      },
+      {
+        q: "A large Indian e-commerce company is spending 180 crore rupees per month on last-mile delivery but its net promoter score for delivery experience is 34, well below the industry benchmark of 62. The COO wants to fix both the cost and the experience simultaneously. How do you approach this?",
+        subcategory: "Operations Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `A high cost and a low NPS for the same function is a counter-intuitive situation that usually indicates the spending is going to the wrong things rather than simply too little or too much overall. If the company were spending 180 crore on genuinely good delivery, the NPS would be higher. The fact that both metrics are simultaneously bad suggests a structural inefficiency rather than a trade-off.
+
+I would structure my diagnosis across three questions before touching either cost or experience.
+
+The first question is: what is causing the NPS of 34? I would decompose the NPS drivers by analyzing customer feedback categories. In e-commerce delivery, NPS failures typically cluster around four root causes: late deliveries against the promised time window, damaged products, failed delivery attempts requiring the customer to pick up from a facility, and poor communication when something goes wrong. Understanding which of these is dominant determines the fix. A late delivery problem has a different solution than a damaged goods problem or a communication problem.
+
+The second question is: where is the 180 crore being spent? I would break down the cost per order across the key cost components: first-mile pickup from seller to fulfillment center, fulfillment center operations, linehaul from fulfillment center to delivery hub, last-mile delivery from hub to customer, and failed delivery and returns processing. In Indian e-commerce, failed delivery attempts and returns are typically the highest cost-per-unit activities and also the highest drivers of poor NPS, which is where the connection between cost and experience usually lies.
+
+The third question is: what does the delivery partner network look like? Is the company using owned delivery staff, third-party logistics providers, or a hybrid? The answer determines what levers are available. Owned staff can be trained, incentivized, and managed directly. Third-party providers require contractual mechanisms and SLA enforcement.
+
+My hypothesis is that a significant portion of the 180 crore and the NPS damage is driven by failed first delivery attempts, which force redelivery attempts and customer pickups. Fixing the address quality problem at order placement, improving delivery time window communication, and giving delivery agents better real-time tools to locate addresses would simultaneously reduce cost by reducing failed attempts and improve NPS by reducing the primary frustration source.
+
+I would recommend a 90-day diagnostic and pilot program: 30 days to map the cost and NPS drivers at the SKU and route level, 30 days to pilot specific interventions on the highest-impact routes, and 30 days to measure results and prepare a scaled rollout plan.`,
+        companies: ['Kearney', 'Deloitte', 'Accenture', 'PwC', 'EY', 'Bain & Company', 'Boston Consulting Group'],
+        roundType: "Operations Case Interview",
+        whatInterviewerTests: "Cost and quality simultaneous optimization, root cause diagnosis, delivery operations knowledge, NPS decomposition",
+        commonMistakes: ["Treating cost and NPS as separate problems rather than looking for the common root cause", "Not decomposing NPS drivers before recommending solutions", "Focusing on linehaul cost which is harder to reduce rather than failed delivery cost which is both high cost and high NPS impact", "Recommending technology solutions before understanding the process failure points"]
+      },
+      {
+        q: "A large Indian textile manufacturer has three plants operating at different efficiency levels: Plant A at 91% OEE, Plant B at 74% OEE, and Plant C at 58% OEE. All three make similar products. The MD wants to understand why the gap exists and how to bring B and C to A's level.",
+        subcategory: "Operations Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `A 33-percentage-point OEE gap between the best and worst plant making similar products is a significant operational variance that almost certainly reflects differences in management practice, maintenance investment, and workforce skill rather than fundamental differences in equipment or product complexity.
+
+OEE is the product of three factors: availability, which measures what percentage of planned time the equipment is actually running; performance, which measures whether the equipment is running at its rated speed; and quality, which measures the proportion of output that meets specification. A 58% OEE could be driven by low availability, low performance, or low quality, and the intervention is very different depending on which factor is the primary driver.
+
+I would structure the diagnostic in two phases.
+
+The first phase is OEE decomposition for each plant. I would break Plant B and Plant C's OEE into their availability, performance, and quality components and compare them against Plant A. If Plant B has 90% availability but 78% performance, the problem is speed loss due to minor stoppages or running below rated speed, which is a different problem than 70% availability due to frequent breakdowns. This decomposition tells me where to look, not just how bad the gap is.
+
+The second phase is root cause analysis within each OEE component. For availability losses I would look at the breakdown frequency and duration log, planned maintenance compliance, and changeover time between product variants. For performance losses I would look at minor stoppage frequency, operator response time to machine alerts, and whether the equipment is being run below rated speed deliberately due to quality concerns. For quality losses I would look at the defect rate by product type and by time of day, which often reveals shift-specific quality management issues.
+
+Beyond the OEE data I would want to spend time on the plant floor at Plant C specifically to understand the management practices and culture. In my experience, the largest OEE gaps between plants making similar products are driven by three factors that do not show up in data alone: the quality and engagement of the frontline shift supervisor, the discipline of the planned maintenance program, and the speed and quality of the response when equipment stops unexpectedly. Plant A at 91% OEE almost certainly has better practices in all three areas, and the improvement plan for B and C needs to transfer those practices, not just install new equipment.
+
+My 12-month improvement plan for Plant C would focus on three things: implementing a structured total productive maintenance program starting with the highest-downtime equipment, training and coaching frontline supervisors on rapid response to stoppages, and establishing daily OEE review meetings that create accountability and visibility for every percentage point of loss.`,
+        companies: ['Kearney', 'Deloitte', 'Accenture', 'PwC', 'EY', 'Bain & Company', 'Boston Consulting Group'],
+        roundType: "Operations Case Interview",
+        whatInterviewerTests: "OEE framework knowledge, manufacturing operations depth, root cause analysis, improvement planning",
+        commonMistakes: ["Not decomposing OEE into availability, performance, and quality before diagnosing", "Jumping to equipment investment recommendations without understanding the management practice gaps", "Treating the three plants as having the same root cause for their OEE gap", "Underestimating the role of frontline supervision quality in OEE performance"]
       }
     ]
   },
@@ -756,6 +946,54 @@ My overall framework is: the price is justifiable only if the probability-adjust
         roundType: "Transaction Advisory and Financial Due Diligence Case",
         whatInterviewerTests: "Pipeline valuation, M&A thinking, synergy analysis, deal risk identification, scenario analysis",
         commonMistakes: ["Dismissing the deal because the target has negative EBITDA without recognizing pipeline value", "Not probability-adjusting clinical stage assets for approval likelihood", "Ignoring key person risk in science-driven acquisitions", "Accepting synergy numbers at face value without stress testing", "Not running a downside scenario to understand the floor value"]
+      },
+      {
+        q: "A large Indian conglomerate is considering spinning off its IT services subsidiary, which contributes 30% of group revenue but is valued at a discount because of the conglomerate structure. The CFO wants to understand whether a spinoff creates value and how to execute it. How do you advise?",
+        subcategory: "Financial Advisory Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `A spinoff of a subsidiary that is being held at a conglomerate discount is a classic value creation exercise, but the decision requires careful analysis of both the valuation gap and the execution complexity before recommending a specific path.
+
+I would structure my advice across four dimensions.
+
+The first dimension is quantifying the conglomerate discount. The premise of the spinoff is that the IT services subsidiary is worth more as a standalone entity than as part of the conglomerate. I would validate this by comparing the current implied valuation of the IT subsidiary within the group's market capitalization against the trading multiples of comparable standalone Indian IT services companies. If the comparable companies trade at 4 to 5x revenue and the subsidiary's implied value within the conglomerate is 2 to 3x revenue, the conglomerate discount is real and material. If the gap is small, the value creation rationale for the spinoff is weak.
+
+The second dimension is the strategic and operational interdependencies. Before recommending a spinoff I would map the operational interdependencies between the IT subsidiary and the rest of the conglomerate. Does the IT subsidiary do significant work for group companies at below-market rates? Does it share back-office functions, real estate, or leadership with the parent? Are there customer relationships or contracts that are contingent on group membership? Each of these interdependencies represents a cost or risk in the spinoff that needs to be modeled. A subsidiary that looks standalone on the surface but has deep operational entanglement with the parent is much more complex and expensive to separate than the P&L suggests.
+
+The third dimension is the execution path. There are three structural options. A pure spinoff distributes shares in the new standalone entity to existing shareholders at no cost. An IPO raises new capital by selling shares to public market investors. A strategic sale to a third party or to a PE firm provides immediate liquidity. Each option has different implications for control, capital raising, and timeline. A pure spinoff is the most tax-efficient and preserves shareholder choice but raises no new capital. An IPO raises capital but requires SEBI approval and market conditions. A strategic sale provides the fastest liquidity and the highest certainty of value but involves loss of control.
+
+The fourth dimension is the tax and regulatory considerations. Indian spinoffs have specific tax implications under the Income Tax Act and SEBI regulations that govern demergers and listing of subsidiaries. The structure needs to be optimized for tax efficiency and regulatory compliance simultaneously.
+
+My overall advice would be: if the conglomerate discount is validated at greater than 20 to 25%, the spinoff creates real value and is worth pursuing. The recommended execution path depends on whether the conglomerate needs capital, in which case an IPO is preferred, or whether the goal is simply to unlock value for existing shareholders, in which case a pure demerger is more efficient.`,
+        companies: ['Deloitte', 'PwC', 'EY', 'KPMG', 'Alvarez & Marsal', 'FTI Consulting'],
+        roundType: "Transaction Advisory and Financial Due Diligence Case",
+        whatInterviewerTests: "Corporate restructuring knowledge, valuation thinking, execution path analysis, tax and regulatory awareness",
+        commonMistakes: ["Not quantifying the conglomerate discount before recommending the spinoff", "Ignoring operational interdependencies that make separation more complex and costly than it appears", "Treating spinoff, IPO, and strategic sale as interchangeable without analyzing the different implications", "Not addressing the tax and regulatory execution complexity"]
+      },
+      {
+        q: "A global private equity firm is considering investing 2,000 crore rupees in a leading Indian microfinance institution. The MFI serves 8 million borrowers across rural India with an average loan size of 35,000 rupees. What are the key diligence areas and what risks would you flag?",
+        subcategory: "Financial Advisory Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `Microfinance due diligence requires a combination of standard financial analysis and a deep understanding of the sector-specific risks that have caused MFI failures in India historically. The 2010 Andhra Pradesh crisis and various subsequent regional credit events have demonstrated that MFI portfolios can deteriorate very rapidly when macroeconomic or regulatory stress occurs, and a standard financial diligence approach is insufficient.
+
+I would structure the diligence across five key areas.
+
+The first area is portfolio quality assessment. The reported non-performing asset ratio is the starting point but not the endpoint. I would want a vintage analysis of the loan book showing the default rate by loan cohort from origination, because early vintage data predicts future portfolio behavior better than current NPA numbers. I would also want geographic concentration analysis: if 40% of the loan book is in two or three states, the portfolio is vulnerable to state-level regulatory intervention of the kind that has historically been the primary cause of MFI distress. And I would want an over-indebtedness analysis: what percentage of borrowers have loans from three or more MFIs simultaneously, which is the leading indicator of a credit stress event.
+
+The second area is asset-liability management. MFIs borrow from banks and capital markets at relatively short tenors and lend at longer tenors to borrowers who repay weekly or monthly. The ALM profile needs to be stress tested for a scenario where bank credit lines are withdrawn or repriced, which is a realistic scenario during regulatory stress.
+
+The third area is regulatory and political risk. Microfinance in India operates in a regulatory environment that has historically been subject to sudden state-level interventions. I would assess the regulatory posture in the states where the MFI has significant concentration, review any history of loan waiver announcements or political statements about microfinance in those states, and evaluate the MFI's compliance with RBI's revised microfinance regulations on borrower income assessment and multiple lending limits.
+
+The fourth area is governance and management quality. MFI failures have frequently been associated with aggressive growth targets that compromised underwriting quality, commission-based field officer incentives that drove overlending, and board governance that did not provide adequate oversight of portfolio quality. I would review the board composition, the management incentive structure, and the internal audit function's independence and effectiveness.
+
+The fifth area is the social performance track record. ESG considerations are increasingly important to global PE investors and the RBI has been explicit about responsible lending standards. I would assess the MFI's client protection practices, its complaint resolution mechanism, and whether there is evidence of coercive collection practices in its field operations.
+
+The key risk I would flag to the PE firm as the most important single issue is geographic concentration combined with borrower over-indebtedness. A portfolio that appears high-quality in normal conditions can deteriorate within two to three quarters if a loan waiver announcement or regulatory tightening hits the primary states of operation. The investment thesis needs to explicitly account for this tail risk and the portfolio construction needs to reflect deliberate geographic diversification.`,
+        companies: ['Deloitte', 'PwC', 'EY', 'KPMG', 'Alvarez & Marsal', 'FTI Consulting'],
+        roundType: "Transaction Advisory and Financial Due Diligence Case",
+        whatInterviewerTests: "Sector-specific risk knowledge, portfolio quality analysis, regulatory risk assessment, PE investment diligence",
+        commonMistakes: ["Applying standard corporate finance diligence without understanding MFI-specific risks", "Not doing a vintage analysis and relying only on current NPA numbers", "Underestimating regulatory and political risk in microfinance lending", "Not flagging geographic concentration and over-indebtedness as the primary tail risks"]
       }
     ]
   }
