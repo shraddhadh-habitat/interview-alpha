@@ -57,10 +57,15 @@ function TotalSessionsCard() {
 
   useEffect(() => {
     const fetchSessions = async () => {
-      const { count } = await supabase
+      const { count, error } = await supabase
         .from('practice_attempts')
         .select('*', { count: 'exact', head: true });
-      setSessionCount(count);
+      if (error) {
+        console.error('practice_attempts count error:', error);
+        setSessionCount(0);
+      } else {
+        setSessionCount(count);
+      }
     };
     fetchSessions();
   }, []);
