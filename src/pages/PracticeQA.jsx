@@ -153,15 +153,15 @@ const CONSULTING_COMPANY_CHIPS = [
 ];
 
 const CONSULTING_DOMAIN_CHIPS = [
-  { id: 'strategy', label: 'Strategy' },
-  { id: 'operations', label: 'Operations' },
-  { id: 'technology', label: 'Technology' },
-  { id: 'risk', label: 'Risk & Controls' },
-  { id: 'transformation', label: 'Transformation' },
-  { id: 'human_capital', label: 'Human Capital' },
-  { id: 'financial_advisory', label: 'Financial Advisory' },
-  { id: 'digital', label: 'Digital' },
-  { id: 'supply_chain', label: 'Supply Chain' },
+  { id: 'strategy', label: 'Strategy', subcategories: ['Strategy Consultant', 'Corporate Strategy Consultant'] },
+  { id: 'operations', label: 'Operations', subcategories: ['Operations Consultant', 'Supply Chain Consultant'] },
+  { id: 'technology', label: 'Technology', subcategories: ['Technology Consultant', 'Digital Consultant'] },
+  { id: 'risk', label: 'Risk & Controls', subcategories: ['Risk Consultant', 'Advisory Consultant'] },
+  { id: 'transformation', label: 'Transformation', subcategories: ['Transformation Consultant'] },
+  { id: 'human_capital', label: 'Human Capital', subcategories: ['Human Capital Consultant'] },
+  { id: 'financial_advisory', label: 'Financial Advisory', subcategories: ['Financial Advisory Consultant'] },
+  { id: 'digital', label: 'Digital', subcategories: ['Digital Consultant', 'Technology Consultant'] },
+  { id: 'supply_chain', label: 'Supply Chain', subcategories: ['Supply Chain Consultant'] },
 ];
 
 const CONSULTING_CATEGORY_CHIPS = [
@@ -842,8 +842,15 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
             if (!q.company || q.company.toLowerCase() !== company.toLowerCase()) continue;
           }
         }
-        if (domain && selectedRole !== 'consulting') {
-          if (!q.domain || q.domain.toLowerCase() !== domain.toLowerCase()) continue;
+        if (domain) {
+          if (selectedRole === 'consulting') {
+            const chip = CONSULTING_DOMAIN_CHIPS.find(c => c.id === domain);
+            if (chip && chip.subcategories) {
+              if (!chip.subcategories.includes(q.subcategory)) continue;
+            }
+          } else {
+            if (!q.domain || q.domain.toLowerCase() !== domain.toLowerCase()) continue;
+          }
         }
         if (subcategoryFilter && q.subcategory && q.subcategory !== subcategoryFilter) continue;
         count++;
@@ -1188,8 +1195,15 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           }
 
           // Domain filter
-          if (filterDomain && selectedRole !== 'consulting') {
-            if (!q.domain || q.domain.toLowerCase() !== filterDomain.toLowerCase()) continue;
+          if (filterDomain) {
+            if (selectedRole === 'consulting') {
+              const chip = CONSULTING_DOMAIN_CHIPS.find(c => c.id === filterDomain);
+              if (chip && chip.subcategories) {
+                if (!chip.subcategories.includes(q.subcategory)) continue;
+              }
+            } else {
+              if (!q.domain || q.domain.toLowerCase() !== filterDomain.toLowerCase()) continue;
+            }
           }
 
           // Subcategory filter (for Product Design vs Product Strategy)
