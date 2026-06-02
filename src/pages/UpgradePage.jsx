@@ -35,10 +35,77 @@ const PRICING_TESTIMONIALS = [
   { name: 'Manreet Oberoi', role: 'MBA Student', text: 'Switched from a 15000 rupee coaching program to InterviewAlpha Pro. No regrets whatsoever.' },
 ];
 
-const PLANS = {
-  monthly:   { label: 'Monthly',   price: 799,   period: '/month',   saves: null,          badge: null },
-  quarterly: { label: 'Quarterly', price: 1999,  period: '/quarter', saves: null,          badge: 'Save 17%' },
-  yearly:    { label: 'Yearly',    price: 6999,  period: '/year',    saves: null,          badge: 'Most Popular' },
+const CURRENCY_CONFIG = {
+  INR: {
+    symbol: '₹',
+    locale: 'en-IN',
+    label: 'INR',
+    plans: {
+      monthly:   { label: 'Monthly',   price: 799,   period: '/month',   badge: null,        saves: null },
+      quarterly: { label: 'Quarterly', price: 1999,  period: '/quarter', badge: 'Save 17%',  saves: 'Billed as ₹1,999 every 3 months' },
+      yearly:    { label: 'Yearly',    price: 6999,  period: '/year',    badge: 'Most Popular', saves: 'Billed as ₹6,999 per year' },
+    },
+    paymentNote: 'Pay via UPI. Manual verification within 24 hours.',
+    contactNote: null,
+  },
+  USD: {
+    symbol: '$',
+    locale: 'en-US',
+    label: 'USD',
+    plans: {
+      monthly:   { label: 'Monthly',   price: 19,  period: '/month',   badge: null,        saves: null },
+      quarterly: { label: 'Quarterly', price: 49,  period: '/quarter', badge: 'Save 14%',  saves: 'Billed as $49 every 3 months' },
+      yearly:    { label: 'Yearly',    price: 149, period: '/year',    badge: 'Most Popular', saves: 'Billed as $149 per year' },
+    },
+    paymentNote: null,
+    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.ai',
+  },
+  GBP: {
+    symbol: '£',
+    locale: 'en-GB',
+    label: 'GBP',
+    plans: {
+      monthly:   { label: 'Monthly',   price: 15,  period: '/month',   badge: null,        saves: null },
+      quarterly: { label: 'Quarterly', price: 39,  period: '/quarter', badge: 'Save 13%',  saves: 'Billed as £39 every 3 months' },
+      yearly:    { label: 'Yearly',    price: 119, period: '/year',    badge: 'Most Popular', saves: 'Billed as £119 per year' },
+    },
+    paymentNote: null,
+    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.ai',
+  },
+  AED: {
+    symbol: 'AED ',
+    locale: 'en-AE',
+    label: 'AED',
+    plans: {
+      monthly:   { label: 'Monthly',   price: 70,  period: '/month',   badge: null,        saves: null },
+      quarterly: { label: 'Quarterly', price: 180, period: '/quarter', badge: 'Save 14%',  saves: 'Billed as AED 180 every 3 months' },
+      yearly:    { label: 'Yearly',    price: 549, period: '/year',    badge: 'Most Popular', saves: 'Billed as AED 549 per year' },
+    },
+    paymentNote: null,
+    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.ai',
+  },
+  SGD: {
+    symbol: 'SGD ',
+    locale: 'en-SG',
+    label: 'SGD',
+    plans: {
+      monthly:   { label: 'Monthly',   price: 26,  period: '/month',   badge: null,        saves: null },
+      quarterly: { label: 'Quarterly', price: 66,  period: '/quarter', badge: 'Save 15%',  saves: 'Billed as SGD 66 every 3 months' },
+      yearly:    { label: 'Yearly',    price: 199, period: '/year',    badge: 'Most Popular', saves: 'Billed as SGD 199 per year' },
+    },
+    paymentNote: null,
+    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.ai',
+  },
+};
+
+const detectCurrency = () => {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+  if (tz.startsWith('Asia/Calcutta') || tz.startsWith('Asia/Kolkata')) return 'INR';
+  if (tz.startsWith('America/')) return 'USD';
+  if (tz.startsWith('Europe/London')) return 'GBP';
+  if (tz.startsWith('Asia/Dubai')) return 'AED';
+  if (tz.startsWith('Asia/Singapore')) return 'SGD';
+  return 'USD';
 };
 
 const DISCOUNT_CODES = {
@@ -251,6 +318,9 @@ export default function UpgradePage({ user, profile, onBack }) {
   const [discountInput, setDiscountInput]     = useState('');
   const [discountStatus, setDiscountStatus]   = useState('idle'); // 'idle'|'valid'|'invalid'|'expired'
   const [appliedDiscount, setAppliedDiscount] = useState(null);  // { code, percent }
+  const [currency, setCurrency] = useState(detectCurrency());
+  const currencyConfig = CURRENCY_CONFIG[currency];
+  const PLANS = currencyConfig.plans;
 
   const isPending = profile?.subscription_status === 'pending';
   const isActive  = profile?.subscription_status === 'active';
@@ -463,14 +533,26 @@ export default function UpgradePage({ user, profile, onBack }) {
               }}>
                 Simple pricing. Cancel anytime.
               </h2>
-              <p style={{
-                textAlign: 'center',
-                fontSize: '0.82rem',
-                color: '#9a9a9a',
-                marginBottom: 28
-              }}>
-                Pay via UPI. Manual verification within 24 hours.
-              </p>
+              {currencyConfig.paymentNote && (
+                <p style={{
+                  textAlign: 'center',
+                  fontSize: '0.82rem',
+                  color: '#9a9a9a',
+                  marginBottom: 28
+                }}>
+                  {currencyConfig.paymentNote}
+                </p>
+              )}
+              {currencyConfig.contactNote && (
+                <p style={{
+                  textAlign: 'center',
+                  fontSize: '0.82rem',
+                  color: '#9a9a9a',
+                  marginBottom: 28
+                }}>
+                  {currencyConfig.contactNote}
+                </p>
+              )}
 
               <div className="up-plans" style={{
                 display: 'grid',
@@ -492,7 +574,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                     Try Pro risk-free
                   </p>
                   <p style={{ margin: '0 0 4px' }}>
-                    <strong style={{ fontSize: '2rem', fontWeight: 800, color: '#111' }}>799</strong>
+                    <strong style={{ fontSize: '2rem', fontWeight: 800, color: '#111' }}>{currencyConfig.symbol}{currencyConfig.plans.monthly.price}</strong>
                     <span style={{ fontSize: '0.8rem', color: '#9a9a9a' }}> /month</span>
                   </p>
                   <p style={{ fontSize: '0.75rem', color: '#9a9a9a', marginBottom: 20 }}>
@@ -589,7 +671,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                     Prep for the whole year
                   </p>
                   <div style={{ marginBottom: 12, fontSize: '0.75rem', color: '#9a9a9a' }}>
-                    <span style={{ textDecoration: 'line-through', color: '#c4bbb8' }}>799/month</span>
+                    <span style={{ textDecoration: 'line-through', color: '#c4bbb8' }}>{currencyConfig.symbol}{currencyConfig.plans.monthly.price}/month</span>
                     <span style={{ display: 'block', marginTop: 4, fontSize: '0.7rem', color: '#16a34a', fontWeight: 600 }}>Save 27% vs monthly</span>
                   </div>
                   <p style={{ margin: '0 0 4px' }}>
@@ -814,12 +896,12 @@ export default function UpgradePage({ user, profile, onBack }) {
                 {appliedDiscount ? (
                   <>
                     <span style={{ textDecoration: 'line-through', color: C.textMuted, marginRight: 4 }}>
-                      ₹{PLANS[plan].price.toLocaleString('en-IN')}
+                      {currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)}
                     </span>
-                    ₹{discountedPrice(PLANS[plan].price).toLocaleString('en-IN')}
+                    {currencyConfig.symbol}{discountedPrice(PLANS[plan].price).toLocaleString(currencyConfig.locale)}
                   </>
                 ) : (
-                  <>₹{PLANS[plan].price.toLocaleString('en-IN')}</>
+                  <>{currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)}</>
                 )}
                 {PLANS[plan].period}
               </span>
@@ -859,7 +941,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                       <span style={{ fontSize: 14 }}>✓</span>
                       {appliedDiscount.percent}% off applied
                       <span style={{ color: C.textMuted, marginLeft: 2 }}>
-                        · ₹{PLANS[plan].price.toLocaleString('en-IN')} ₹{discountedPrice(PLANS[plan].price).toLocaleString('en-IN')}
+                        · {currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)} {currencyConfig.symbol}{discountedPrice(PLANS[plan].price).toLocaleString(currencyConfig.locale)}
                       </span>
                     </div>
                   )}
@@ -901,12 +983,12 @@ export default function UpgradePage({ user, profile, onBack }) {
                   {appliedDiscount ? (
                     <>
                       <span style={{ textDecoration: 'line-through', color: '#6b6b6b', marginRight: 6, fontWeight: 400, fontSize: 11, WebkitTextFillColor: '#6b6b6b', background: 'unset' }}>
-                        ₹{PLANS[plan].price.toLocaleString('en-IN')}
+                        {currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)}
                       </span>
-                      ₹{discountedPrice(PLANS[plan].price).toLocaleString('en-IN')}
+                      {currencyConfig.symbol}{discountedPrice(PLANS[plan].price).toLocaleString(currencyConfig.locale)}
                     </>
                   ) : (
-                    <>₹{PLANS[plan].price.toLocaleString('en-IN')}</>
+                    <>{currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)}</>
                   )}
                 </div>
               </div>
