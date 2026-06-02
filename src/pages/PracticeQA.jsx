@@ -863,6 +863,8 @@ function FilterContent({
   if (selectedRole === 'ds') {
     const dsLevel = pmQuestions['Data Scientist'];
     categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
+  } else if (selectedRole === 'consulting') {
+    categoryChips = CONSULTING_CATEGORY_CHIPS;
   } else {
     categoryChips = PM_CATEGORY_CHIPS;
   }
@@ -1398,7 +1400,9 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           >
             <option value="pm">{ROLES.pm.label}</option>
             <option value="ds">{ROLES.ds.label}</option>
-            <option value="consulting">{ROLES.consulting.label}</option>
+            {user?.email === 'shraddhadh@gmail.com' && (
+              <option value="consulting">{ROLES.consulting.label}</option>
+            )}
             <optgroup label="Coming Soon">
               <option value="finance" disabled>{ROLES.finance.label}</option>
               <option value="sales" disabled>{ROLES.sales.label}</option>
