@@ -1,167 +1,245 @@
-export const consultingQuestions = [
-  {
-    q: "A leading quick service restaurant chain in India has seen profits drop 30% over two years despite flat revenue. The CEO has hired you. How do you approach this?",
-    subcategory: "Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "This is a profitability problem with flat revenue, which tells me the issue is on the cost side. But before jumping there, I would look at two dimensions. First, is revenue truly flat or is there a mix shift underneath? Revenue could be flat because high-margin dine-in is declining and low-margin delivery is growing. Second, on costs, I would split into fixed and variable. Fixed includes rent, salaries, and central overhead. Variable includes raw materials, packaging, and delivery commissions. My hypothesis is a combination of two things. One, aggregator commissions from Swiggy and Zomato have grown as delivery volume increased. Two, raw material inflation has not been passed on through pricing. Before going further I would want cost breakdown year on year, channel mix shift between dine-in takeaway and delivery, and unit economics at the store level. If aggregator dependency, push a direct ordering channel with a loyalty program. If raw material costs, look at supplier renegotiation and selective menu repricing on low-elasticity items.",
-    companies: ['McKinsey & Company', 'Deloitte', 'PwC', 'EY', 'KPMG', 'Accenture', 'IBM Consulting', 'Capgemini Invent', 'Cognizant Consulting', 'Infosys Consulting'],
-    roundType: "Case Interview",
-    whatInterviewerTests: "Problem structuring, hypothesis-driven thinking, business judgment, prioritization",
-    commonMistakes: ["Jumping to solutions without structuring first", "Treating revenue as truly flat without checking mix shifts", "Not separating fixed and variable costs", "Forgetting to ask for data before recommending"]
+export const consultingQuestions = {
+  "Consultant": {
+    case_interview: [
+      {
+        q: "A leading quick service restaurant chain in India has seen profits drop 30% over two years despite flat revenue. The CEO has hired you. How do you approach this?",
+        subcategory: "Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "This is a profitability problem with flat revenue, which tells me the issue is on the cost side. But before jumping there, I would look at two dimensions. First, is revenue truly flat or is there a mix shift underneath? Revenue could be flat because high-margin dine-in is declining and low-margin delivery is growing. Second, on costs, I would split into fixed and variable. Fixed includes rent, salaries, and central overhead. Variable includes raw materials, packaging, and delivery commissions. My hypothesis is a combination of two things. One, aggregator commissions from Swiggy and Zomato have grown as delivery volume increased. Two, raw material inflation has not been passed on through pricing. Before going further I would want cost breakdown year on year, channel mix shift between dine-in takeaway and delivery, and unit economics at the store level. If aggregator dependency, push a direct ordering channel with a loyalty program. If raw material costs, look at supplier renegotiation and selective menu repricing on low-elasticity items.",
+        companies: ['McKinsey & Company', 'Deloitte', 'PwC', 'EY', 'KPMG', 'Accenture', 'IBM Consulting', 'Capgemini Invent', 'Cognizant Consulting', 'Infosys Consulting'],
+        roundType: "Case Interview",
+        whatInterviewerTests: "Problem structuring, hypothesis-driven thinking, business judgment, prioritization",
+        commonMistakes: ["Jumping to solutions without structuring first", "Treating revenue as truly flat without checking mix shifts", "Not separating fixed and variable costs", "Forgetting to ask for data before recommending"]
+      }
+    ]
   },
-  {
-    q: "You are three weeks into a cost transformation project at a large Indian manufacturing company. The CFO loved the initial findings but the plant heads are resisting your recommendations. The engagement partner asks you to handle the next client meeting. How do you approach it?",
-    subcategory: "Senior Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "This is as much a change management problem as an analytical one. The resistance from plant heads tells me they either do not trust the data, feel threatened by the recommendations, or were not involved enough in the process. Before the meeting I would do three things. Have individual conversations with two or three plant heads to understand their specific objections. Check if our recommendations account for operational realities we may have missed. And reframe our output from findings to options, giving plant heads agency in choosing how to respond. In the meeting I would lead with acknowledgment. Say something like you are closer to these operations than anyone and we want to pressure test our thinking with you. That changes the dynamic from presenting at them to problem solving together. I would walk through the data transparently, show the burning platform, and present two or three options with tradeoffs rather than one recommendation. The goal of this meeting is not to win the argument. It is to get plant heads to co-own at least one recommendation so implementation has a chance.",
-    companies: ['Deloitte', 'EY', 'KPMG', 'PwC', 'Accenture', 'IBM Consulting', 'Capgemini Invent', 'Publicis Sapient'],
-    roundType: "Case Interview with Leadership Component",
-    whatInterviewerTests: "Stakeholder management, change management thinking, client handling, implementation mindset",
-    commonMistakes: ["Treating this as purely a presentation challenge", "Going in with the same deck hoping for a different reaction", "Escalating to the partner without attempting direct engagement first", "Not acknowledging the plant heads domain expertise"]
+  "Senior Consultant": {
+    case_interview: [
+      {
+        q: "You are three weeks into a cost transformation project at a large Indian manufacturing company. The CFO loved the initial findings but the plant heads are resisting your recommendations. The engagement partner asks you to handle the next client meeting. How do you approach it?",
+        subcategory: "Senior Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "This is as much a change management problem as an analytical one. The resistance from plant heads tells me they either do not trust the data, feel threatened by the recommendations, or were not involved enough in the process. Before the meeting I would do three things. Have individual conversations with two or three plant heads to understand their specific objections. Check if our recommendations account for operational realities we may have missed. And reframe our output from findings to options, giving plant heads agency in choosing how to respond. In the meeting I would lead with acknowledgment. Say something like you are closer to these operations than anyone and we want to pressure test our thinking with you. That changes the dynamic from presenting at them to problem solving together. I would walk through the data transparently, show the burning platform, and present two or three options with tradeoffs rather than one recommendation. The goal of this meeting is not to win the argument. It is to get plant heads to co-own at least one recommendation so implementation has a chance.",
+        companies: ['Deloitte', 'EY', 'KPMG', 'PwC', 'Accenture', 'IBM Consulting', 'Capgemini Invent', 'Publicis Sapient'],
+        roundType: "Case Interview with Leadership Component",
+        whatInterviewerTests: "Stakeholder management, change management thinking, client handling, implementation mindset",
+        commonMistakes: ["Treating this as purely a presentation challenge", "Going in with the same deck hoping for a different reaction", "Escalating to the partner without attempting direct engagement first", "Not acknowledging the plant heads domain expertise"]
+      }
+    ]
   },
-  {
-    q: "Estimate the market size for electric vehicle charging infrastructure in India over the next five years. Your client is considering entering this space.",
-    subcategory: "Management Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "I would size this from the demand side using an adoption curve approach rather than top-down reports since the market is nascent. India has roughly 300 million registered vehicles today with two-wheelers dominant at around 75 percent. In five years with current policy tailwinds and falling battery costs I would estimate EV penetration at 15 to 20 percent of new vehicle sales translating to roughly 20 to 25 million EVs on the road by 2028. Not every EV needs a public charger. Home charging handles most four-wheelers. But two-wheelers in dense urban areas and commercial fleets need public infrastructure. I would estimate one public charging point per 15 to 20 EVs for the addressable segment. That gives roughly 1 to 1.5 million public charging points needed. At an average installation cost of 50,000 to 2 lakh rupees per point the total capital market is somewhere between 5,000 crore and 30,000 crore over five years. Before recommending entry I would want to understand competitive intensity, the regulatory environment on pricing, and whether our client advantage is in hardware software or network operations.",
-    companies: ['Accenture', 'Deloitte', 'EY', 'KPMG', 'PwC', 'IBM Consulting', 'Capgemini Invent'],
-    roundType: "Case Interview",
-    whatInterviewerTests: "Market sizing, bottom-up estimation, structured quantitative thinking, connecting analysis to strategic recommendation",
-    commonMistakes: ["Starting from top-down numbers without building from first principles", "Ignoring the split between two-wheeler three-wheeler and four-wheeler charging needs", "Forgetting that home charging reduces public infrastructure need", "Not connecting market size to a strategic recommendation"]
+  "Management Consultant": {
+    case_interview: [
+      {
+        q: "Estimate the market size for electric vehicle charging infrastructure in India over the next five years. Your client is considering entering this space.",
+        subcategory: "Management Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "I would size this from the demand side using an adoption curve approach rather than top-down reports since the market is nascent. India has roughly 300 million registered vehicles today with two-wheelers dominant at around 75 percent. In five years with current policy tailwinds and falling battery costs I would estimate EV penetration at 15 to 20 percent of new vehicle sales translating to roughly 20 to 25 million EVs on the road by 2028. Not every EV needs a public charger. Home charging handles most four-wheelers. But two-wheelers in dense urban areas and commercial fleets need public infrastructure. I would estimate one public charging point per 15 to 20 EVs for the addressable segment. That gives roughly 1 to 1.5 million public charging points needed. At an average installation cost of 50,000 to 2 lakh rupees per point the total capital market is somewhere between 5,000 crore and 30,000 crore over five years. Before recommending entry I would want to understand competitive intensity, the regulatory environment on pricing, and whether our client advantage is in hardware software or network operations.",
+        companies: ['Accenture', 'Deloitte', 'EY', 'KPMG', 'PwC', 'IBM Consulting', 'Capgemini Invent'],
+        roundType: "Case Interview",
+        whatInterviewerTests: "Market sizing, bottom-up estimation, structured quantitative thinking, connecting analysis to strategic recommendation",
+        commonMistakes: ["Starting from top-down numbers without building from first principles", "Ignoring the split between two-wheeler three-wheeler and four-wheeler charging needs", "Forgetting that home charging reduces public infrastructure need", "Not connecting market size to a strategic recommendation"]
+      }
+    ]
   },
-  {
-    q: "A large Indian conglomerate with businesses in cement, real estate, and retail wants to enter financial services. Should they? If yes, how?",
-    subcategory: "Strategy Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "I would structure this across three lenses. Market opportunity, right to win, and entry approach. On market opportunity, financial services in India is large and underpenetrated particularly in lending insurance and wealth management for the mass affluent segment. On right to win I would ask what the conglomerate brings that a standalone financial services player does not. Three potential advantages stand out. Customer base with millions of retail customers giving distribution and trust advantage. Data from retail and real estate transactions giving credit underwriting insight. And brand trust which matters in financial services. However financial services is operationally different from cement or retail and regulatory compliance is demanding. On entry approach I would recommend not building from scratch. The fastest path is a strategic acquisition of or partnership with an existing NBFC or insurance distribution company combined with a captive lending product tied to their existing customer base. The short answer is yes they should enter but with a focused beachhead in lending to their existing customers rather than a broad play across all of financial services.",
-    companies: ['Strategy&', 'EY-Parthenon', 'Kearney', 'Oliver Wyman', 'Roland Berger', 'L.E.K. Consulting', 'Arthur D. Little'],
-    roundType: "Strategy Case Interview",
-    whatInterviewerTests: "Strategic clarity, right to win thinking, entry strategy, CEO-level judgment",
-    commonMistakes: ["Treating this as a simple yes or no without exploring right to win", "Ignoring regulatory requirements and their complexity", "Recommending a full-stack build when acquisition is more pragmatic", "Not connecting existing assets to the financial services opportunity"]
+  "Strategy Consultant": {
+    case_interview: [
+      {
+        q: "A large Indian conglomerate with businesses in cement, real estate, and retail wants to enter financial services. Should they? If yes, how?",
+        subcategory: "Strategy Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "I would structure this across three lenses. Market opportunity, right to win, and entry approach. On market opportunity, financial services in India is large and underpenetrated particularly in lending insurance and wealth management for the mass affluent segment. On right to win I would ask what the conglomerate brings that a standalone financial services player does not. Three potential advantages stand out. Customer base with millions of retail customers giving distribution and trust advantage. Data from retail and real estate transactions giving credit underwriting insight. And brand trust which matters in financial services. However financial services is operationally different from cement or retail and regulatory compliance is demanding. On entry approach I would recommend not building from scratch. The fastest path is a strategic acquisition of or partnership with an existing NBFC or insurance distribution company combined with a captive lending product tied to their existing customer base. The short answer is yes they should enter but with a focused beachhead in lending to their existing customers rather than a broad play across all of financial services.",
+        companies: ['Strategy&', 'EY-Parthenon', 'Kearney', 'Oliver Wyman', 'Roland Berger', 'L.E.K. Consulting', 'Arthur D. Little'],
+        roundType: "Strategy Case Interview",
+        whatInterviewerTests: "Strategic clarity, right to win thinking, entry strategy, CEO-level judgment",
+        commonMistakes: ["Treating this as a simple yes or no without exploring right to win", "Ignoring regulatory requirements and their complexity", "Recommending a full-stack build when acquisition is more pragmatic", "Not connecting existing assets to the financial services opportunity"]
+      }
+    ]
   },
-  {
-    q: "A mid-size Indian bank is struggling with a 45-day turnaround time for SME loan approvals. Competitors are doing it in 10 days. How do you help them fix this?",
-    subcategory: "Business Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "A 45-day turnaround versus a 10-day benchmark tells me this is a process and technology problem not just a capacity problem. I would start by mapping the end-to-end loan approval process and identify where time is being spent. Typically the bottlenecks are in three places. Document collection and verification which is manual and iterative. Credit underwriting which involves multiple levels of approval. And legal and technical appraisal which is outsourced and unmanaged. Before recommending anything I would want the process map with timestamps, rejection rate at each stage, and volume split between straightforward and complex cases. My hypothesis is that a large proportion of the 45 days is wasted in back-and-forth for documents and in sequential rather than parallel processing. The recommendations are three. First digitize document collection using account aggregator frameworks and GST data. Second introduce risk-based tiering where small clean applications go through a fast-track automated credit model. Third run legal and technical appraisals in parallel with credit underwriting. These changes together could bring turnaround to 12 to 15 days without adding headcount.",
-    companies: ['IBM Consulting', 'Accenture', 'Deloitte', 'Cognizant Consulting', 'Infosys Consulting', 'Genpact', 'Capgemini Invent'],
-    roundType: "Case Interview with Implementation Focus",
-    whatInterviewerTests: "Process thinking, root cause analysis, practical problem solving, implementation realism",
-    commonMistakes: ["Jumping to technology solutions without understanding where time is lost", "Ignoring the change management side of process redesign", "Not separating simple cases from complex ones", "Recommending a full system overhaul when targeted fixes deliver faster results"]
+  "Business Consultant": {
+    case_interview: [
+      {
+        q: "A mid-size Indian bank is struggling with a 45-day turnaround time for SME loan approvals. Competitors are doing it in 10 days. How do you help them fix this?",
+        subcategory: "Business Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "A 45-day turnaround versus a 10-day benchmark tells me this is a process and technology problem not just a capacity problem. I would start by mapping the end-to-end loan approval process and identify where time is being spent. Typically the bottlenecks are in three places. Document collection and verification which is manual and iterative. Credit underwriting which involves multiple levels of approval. And legal and technical appraisal which is outsourced and unmanaged. Before recommending anything I would want the process map with timestamps, rejection rate at each stage, and volume split between straightforward and complex cases. My hypothesis is that a large proportion of the 45 days is wasted in back-and-forth for documents and in sequential rather than parallel processing. The recommendations are three. First digitize document collection using account aggregator frameworks and GST data. Second introduce risk-based tiering where small clean applications go through a fast-track automated credit model. Third run legal and technical appraisals in parallel with credit underwriting. These changes together could bring turnaround to 12 to 15 days without adding headcount.",
+        companies: ['IBM Consulting', 'Accenture', 'Deloitte', 'Cognizant Consulting', 'Infosys Consulting', 'Genpact', 'Capgemini Invent'],
+        roundType: "Case Interview with Implementation Focus",
+        whatInterviewerTests: "Process thinking, root cause analysis, practical problem solving, implementation realism",
+        commonMistakes: ["Jumping to technology solutions without understanding where time is lost", "Ignoring the change management side of process redesign", "Not separating simple cases from complex ones", "Recommending a full system overhaul when targeted fixes deliver faster results"]
+      }
+    ]
   },
-  {
-    q: "A large Indian public sector bank with 80,000 employees wants to become digital-first in three years. The new CEO has asked you to design the transformation roadmap. Where do you start?",
-    subcategory: "Transformation Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "Three years to transform an 80,000-person public sector bank is ambitious. The biggest risk is not technology. It is change at scale inside an organization with strong legacy culture, union considerations, and regulatory constraints. I would structure the roadmap across three horizons. In the first six months the focus is on creating urgency and building the foundation. A baseline diagnostic of digital capability and customer experience gaps. And critically identifying 20 to 30 internal champions across business and IT who will drive change from within. External consultants cannot transform a public sector bank. Internal ownership is non-negotiable. In months 6 to 18 the focus shifts to proof points. Rather than transforming everything at once identify two or three customer journeys like home loan applications or account opening and redesign them end to end with a small agile team. Visible wins build political capital for harder changes. In months 18 to 36 scale what works, decommission legacy systems, and embed new ways of working. This is also where workforce reskilling becomes critical. With 80,000 employees the bank cannot hire its way to digital. The single most important success factor is governance. Every transformation I have seen fail in large public sector organizations failed because there was no empowered decision-making body that could cut through bureaucracy fast enough.",
-    companies: ['Deloitte', 'EY', 'KPMG', 'PwC', 'Accenture', 'Capgemini Invent', 'IBM Consulting'],
-    roundType: "Case Interview with Organizational Change Component",
-    whatInterviewerTests: "Change management at scale, phased transformation thinking, stakeholder complexity, realistic implementation planning",
-    commonMistakes: ["Treating this as primarily a technology implementation", "Proposing a big bang transformation instead of a phased approach with early wins", "Underestimating union dynamics and regulatory approval timelines", "Not addressing talent reskilling at scale"]
+  "Transformation Consultant": {
+    case_interview: [
+      {
+        q: "A large Indian public sector bank with 80,000 employees wants to become digital-first in three years. The new CEO has asked you to design the transformation roadmap. Where do you start?",
+        subcategory: "Transformation Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "Three years to transform an 80,000-person public sector bank is ambitious. The biggest risk is not technology. It is change at scale inside an organization with strong legacy culture, union considerations, and regulatory constraints. I would structure the roadmap across three horizons. In the first six months the focus is on creating urgency and building the foundation. A baseline diagnostic of digital capability and customer experience gaps. And critically identifying 20 to 30 internal champions across business and IT who will drive change from within. External consultants cannot transform a public sector bank. Internal ownership is non-negotiable. In months 6 to 18 the focus shifts to proof points. Rather than transforming everything at once identify two or three customer journeys like home loan applications or account opening and redesign them end to end with a small agile team. Visible wins build political capital for harder changes. In months 18 to 36 scale what works, decommission legacy systems, and embed new ways of working. This is also where workforce reskilling becomes critical. With 80,000 employees the bank cannot hire its way to digital. The single most important success factor is governance. Every transformation I have seen fail in large public sector organizations failed because there was no empowered decision-making body that could cut through bureaucracy fast enough.",
+        companies: ['Deloitte', 'EY', 'KPMG', 'PwC', 'Accenture', 'Capgemini Invent', 'IBM Consulting'],
+        roundType: "Case Interview with Organizational Change Component",
+        whatInterviewerTests: "Change management at scale, phased transformation thinking, stakeholder complexity, realistic implementation planning",
+        commonMistakes: ["Treating this as primarily a technology implementation", "Proposing a big bang transformation instead of a phased approach with early wins", "Underestimating union dynamics and regulatory approval timelines", "Not addressing talent reskilling at scale"]
+      }
+    ]
   },
-  {
-    q: "A large cement manufacturer in India is running its plants at 68% utilization while the industry average is 82%. The COO wants to understand why and what to do. How do you approach this?",
-    subcategory: "Operations Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "A 14-percentage-point gap versus industry is significant and could have multiple root causes. I would not assume it is purely a demand problem or purely an operations problem without data. I would structure my diagnosis across three areas. Demand side, supply side, and plant-level operations. On demand I would ask whether the 68% reflects a regional demand shortfall or a commercial problem like pricing or distribution gaps. On supply I would check for raw material constraints, power availability issues, or logistics bottlenecks forcing downtime. On plant operations I would look at planned versus unplanned downtime. In cement, unplanned maintenance shutdowns and kiln reliability are common culprits. I would also check if the product mix is creating inefficiencies like frequent grade changes requiring line reconfiguration. Before going further I would want plant-wise utilization breakdown, maintenance downtime logs for the last 12 months, and order fulfillment rates by region. My hypothesis is that the gap is a combination of geographic demand concentration that does not match plant locations and higher-than-industry unplanned downtime from deferred maintenance. Recommendations would likely include a predictive maintenance program, a distribution network review, and potentially capacity rationalization if certain plants are structurally uneconomic.",
-    companies: ['Kearney', 'Deloitte', 'Accenture', 'PwC', 'EY', 'Bain & Company', 'Boston Consulting Group'],
-    roundType: "Operations Case Interview",
-    whatInterviewerTests: "Operations diagnosis, cost and capacity analysis, root cause thinking, quantitative reasoning",
-    commonMistakes: ["Assuming low utilization is always a demand problem", "Not separating planned from unplanned downtime", "Ignoring plant-level granularity and treating all plants as having the same problem", "Recommending capacity additions when the issue is utilization of existing capacity"]
+  "Operations Consultant": {
+    case_interview: [
+      {
+        q: "A large cement manufacturer in India is running its plants at 68% utilization while the industry average is 82%. The COO wants to understand why and what to do. How do you approach this?",
+        subcategory: "Operations Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "A 14-percentage-point gap versus industry is significant and could have multiple root causes. I would not assume it is purely a demand problem or purely an operations problem without data. I would structure my diagnosis across three areas. Demand side, supply side, and plant-level operations. On demand I would ask whether the 68% reflects a regional demand shortfall or a commercial problem like pricing or distribution gaps. On supply I would check for raw material constraints, power availability issues, or logistics bottlenecks forcing downtime. On plant operations I would look at planned versus unplanned downtime. In cement, unplanned maintenance shutdowns and kiln reliability are common culprits. I would also check if the product mix is creating inefficiencies like frequent grade changes requiring line reconfiguration. Before going further I would want plant-wise utilization breakdown, maintenance downtime logs for the last 12 months, and order fulfillment rates by region. My hypothesis is that the gap is a combination of geographic demand concentration that does not match plant locations and higher-than-industry unplanned downtime from deferred maintenance. Recommendations would likely include a predictive maintenance program, a distribution network review, and potentially capacity rationalization if certain plants are structurally uneconomic.",
+        companies: ['Kearney', 'Deloitte', 'Accenture', 'PwC', 'EY', 'Bain & Company', 'Boston Consulting Group'],
+        roundType: "Operations Case Interview",
+        whatInterviewerTests: "Operations diagnosis, cost and capacity analysis, root cause thinking, quantitative reasoning",
+        commonMistakes: ["Assuming low utilization is always a demand problem", "Not separating planned from unplanned downtime", "Ignoring plant-level granularity and treating all plants as having the same problem", "Recommending capacity additions when the issue is utilization of existing capacity"]
+      }
+    ]
   },
-  {
-    q: "A large Indian retail chain with 500 stores wants to implement AI-driven demand forecasting to reduce inventory waste. The CTO is excited. The operations team is skeptical. How do you approach this engagement?",
-    subcategory: "Technology Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "This is a case where the technology solution is relatively straightforward but the organizational challenge is the real problem. The CTO excitement and operations skepticism tell me adoption risk is higher than technical risk. I would structure my approach in three phases. First before any technology decision I would spend two weeks with the operations team to understand why they are skeptical. Is it distrust of data quality, fear of job impact, or past experience with failed IT projects? In my experience skepticism at this stage usually means the operations team has legitimate concerns that have not been heard. Second I would do a rapid diagnostic of the data foundation. AI-driven forecasting is only as good as the data feeding it. I would assess quality of historical sales data, integration between POS systems and inventory management, and consistency across all 500 stores. In Indian retail data quality is almost always a bigger problem than the algorithm. Third I would recommend a pilot approach. Pick 20 to 30 stores across different formats and geographies, run the AI model in parallel with the existing process for 90 days, and measure accuracy improvement and inventory reduction. The governance recommendation I would make is to create a joint business-technology steering committee so operations leaders feel ownership of the outcome.",
-    companies: ['Accenture', 'Deloitte', 'IBM Consulting', 'Capgemini', 'Infosys Consulting', 'TCS Consulting', 'Wipro Consulting', 'Cognizant Consulting'],
-    roundType: "Technology-Business Case Interview",
-    whatInterviewerTests: "Technology-business bridge, adoption risk thinking, data foundation assessment, phased implementation judgment",
-    commonMistakes: ["Treating this as purely a technology implementation project", "Skipping the data quality assessment and assuming clean data exists", "Proposing a full 500-store rollout without a pilot", "Not addressing organizational resistance explicitly in the plan"]
+  "Technology Consultant": {
+    case_interview: [
+      {
+        q: "A large Indian retail chain with 500 stores wants to implement AI-driven demand forecasting to reduce inventory waste. The CTO is excited. The operations team is skeptical. How do you approach this engagement?",
+        subcategory: "Technology Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "This is a case where the technology solution is relatively straightforward but the organizational challenge is the real problem. The CTO excitement and operations skepticism tell me adoption risk is higher than technical risk. I would structure my approach in three phases. First before any technology decision I would spend two weeks with the operations team to understand why they are skeptical. Is it distrust of data quality, fear of job impact, or past experience with failed IT projects? In my experience skepticism at this stage usually means the operations team has legitimate concerns that have not been heard. Second I would do a rapid diagnostic of the data foundation. AI-driven forecasting is only as good as the data feeding it. I would assess quality of historical sales data, integration between POS systems and inventory management, and consistency across all 500 stores. In Indian retail data quality is almost always a bigger problem than the algorithm. Third I would recommend a pilot approach. Pick 20 to 30 stores across different formats and geographies, run the AI model in parallel with the existing process for 90 days, and measure accuracy improvement and inventory reduction. The governance recommendation I would make is to create a joint business-technology steering committee so operations leaders feel ownership of the outcome.",
+        companies: ['Accenture', 'Deloitte', 'IBM Consulting', 'Capgemini', 'Infosys Consulting', 'TCS Consulting', 'Wipro Consulting', 'Cognizant Consulting'],
+        roundType: "Technology-Business Case Interview",
+        whatInterviewerTests: "Technology-business bridge, adoption risk thinking, data foundation assessment, phased implementation judgment",
+        commonMistakes: ["Treating this as purely a technology implementation project", "Skipping the data quality assessment and assuming clean data exists", "Proposing a full 500-store rollout without a pilot", "Not addressing organizational resistance explicitly in the plan"]
+      }
+    ]
   },
-  {
-    q: "A family-owned Indian conglomerate is considering selling a minority stake to a global private equity firm. The promoter family is nervous. As their advisor, what would you tell them?",
-    subcategory: "Advisory Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "This is a situation where my job is to give the family honest advice not tell them what they want to hear. I would structure my advisory around three questions. What does the PE firm bring beyond capital? What are the real governance and control implications? And is this the right time given the valuation environment? On what PE brings I would push the family to be specific. If they need growth capital for expansion that is a legitimate reason. If they want operational expertise or global access that the firm genuinely provides that is also valid. But if the primary motivation is to monetize and the family is not aligned on using the capital productively the deal is likely to create friction rather than value. On governance I would be direct. A minority PE investor will require board representation, information rights, and likely veto powers on certain decisions. That is a meaningful change for a family that has run this business independently. I would walk them through exactly what they are giving up in terms of decision-making speed and confidentiality. On timing I would look at current valuation relative to historical multiples and the PE firm fund lifecycle. My honest advice is that this decision is as much about readiness for a different kind of partnership as it is about financial terms. I would recommend they spend two to three months getting clear on what they actually want before negotiating term sheets.",
-    companies: ['Deloitte', 'PwC', 'EY', 'KPMG', 'Protiviti', 'Alvarez & Marsal'],
-    roundType: "Advisory Case and Fit Interview",
-    whatInterviewerTests: "Client advisory judgment, intellectual honesty, ability to give clear directional advice, understanding of PE dynamics",
-    commonMistakes: ["Treating this as a pure transaction question without addressing family dynamics", "Not explaining governance implications clearly", "Giving a generic pros and cons list instead of a clear directional recommendation", "Ignoring the exit scenario for the PE firm and its implications for the family"]
+  "Advisory Consultant": {
+    case_interview: [
+      {
+        q: "A family-owned Indian conglomerate is considering selling a minority stake to a global private equity firm. The promoter family is nervous. As their advisor, what would you tell them?",
+        subcategory: "Advisory Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "This is a situation where my job is to give the family honest advice not tell them what they want to hear. I would structure my advisory around three questions. What does the PE firm bring beyond capital? What are the real governance and control implications? And is this the right time given the valuation environment? On what PE brings I would push the family to be specific. If they need growth capital for expansion that is a legitimate reason. If they want operational expertise or global access that the firm genuinely provides that is also valid. But if the primary motivation is to monetize and the family is not aligned on using the capital productively the deal is likely to create friction rather than value. On governance I would be direct. A minority PE investor will require board representation, information rights, and likely veto powers on certain decisions. That is a meaningful change for a family that has run this business independently. I would walk them through exactly what they are giving up in terms of decision-making speed and confidentiality. On timing I would look at current valuation relative to historical multiples and the PE firm fund lifecycle. My honest advice is that this decision is as much about readiness for a different kind of partnership as it is about financial terms. I would recommend they spend two to three months getting clear on what they actually want before negotiating term sheets.",
+        companies: ['Deloitte', 'PwC', 'EY', 'KPMG', 'Protiviti', 'Alvarez & Marsal'],
+        roundType: "Advisory Case and Fit Interview",
+        whatInterviewerTests: "Client advisory judgment, intellectual honesty, ability to give clear directional advice, understanding of PE dynamics",
+        commonMistakes: ["Treating this as a pure transaction question without addressing family dynamics", "Not explaining governance implications clearly", "Giving a generic pros and cons list instead of a clear directional recommendation", "Ignoring the exit scenario for the PE firm and its implications for the family"]
+      }
+    ]
   },
-  {
-    q: "A large Indian private bank has just acquired a mid-size NBFC. The RBI has asked the bank to submit a risk integration report within 90 days. You are leading the risk workstream. How do you approach this?",
-    subcategory: "Risk Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "A 90-day regulatory deadline with an acquisition integration in progress is high-stakes and time-constrained. I would not try to boil the ocean. I would prioritize ruthlessly. In the first two weeks I would focus entirely on understanding what the RBI specifically expects in this report. I would review the acquisition approval conditions, any prior RBI observations on either entity, and the regulatory framework for NBFC-bank mergers. The three risk areas I would focus on are credit risk given that NBFC loan books often have different underwriting standards. Liquidity risk since NBFCs fund themselves very differently and the combined entity ALM profile will have changed materially. And operational risk particularly around integration of systems processes and people. For each area I would quickly assess the NBFC existing risk governance framework, identify gaps relative to bank-grade standards, and propose a time-bound remediation plan. The RBI will want to see not just what the risks are but what we are doing about them and by when. The critical success factor is access. We need the NBFC loan book data, treasury data, and internal audit reports within the first two weeks or we cannot meet the 90-day deadline. I would escalate immediately if that access is not forthcoming.",
-    companies: ['EY', 'KPMG', 'Deloitte', 'PwC', 'Protiviti', 'Grant Thornton'],
-    roundType: "Risk and Controls Case Interview",
-    whatInterviewerTests: "Risk identification, regulatory awareness, controls thinking, structured risk assessment under time pressure",
-    commonMistakes: ["Starting with a broad risk framework rather than what the RBI specifically requires", "Underestimating credit quality differences between NBFC and bank loan books", "Not flagging data access as a critical dependency upfront", "Treating this as a documentation exercise rather than a genuine risk assessment with remediation commitments"]
+  "Risk Consultant": {
+    case_interview: [
+      {
+        q: "A large Indian private bank has just acquired a mid-size NBFC. The RBI has asked the bank to submit a risk integration report within 90 days. You are leading the risk workstream. How do you approach this?",
+        subcategory: "Risk Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "A 90-day regulatory deadline with an acquisition integration in progress is high-stakes and time-constrained. I would not try to boil the ocean. I would prioritize ruthlessly. In the first two weeks I would focus entirely on understanding what the RBI specifically expects in this report. I would review the acquisition approval conditions, any prior RBI observations on either entity, and the regulatory framework for NBFC-bank mergers. The three risk areas I would focus on are credit risk given that NBFC loan books often have different underwriting standards. Liquidity risk since NBFCs fund themselves very differently and the combined entity ALM profile will have changed materially. And operational risk particularly around integration of systems processes and people. For each area I would quickly assess the NBFC existing risk governance framework, identify gaps relative to bank-grade standards, and propose a time-bound remediation plan. The RBI will want to see not just what the risks are but what we are doing about them and by when. The critical success factor is access. We need the NBFC loan book data, treasury data, and internal audit reports within the first two weeks or we cannot meet the 90-day deadline. I would escalate immediately if that access is not forthcoming.",
+        companies: ['EY', 'KPMG', 'Deloitte', 'PwC', 'Protiviti', 'Grant Thornton'],
+        roundType: "Risk and Controls Case Interview",
+        whatInterviewerTests: "Risk identification, regulatory awareness, controls thinking, structured risk assessment under time pressure",
+        commonMistakes: ["Starting with a broad risk framework rather than what the RBI specifically requires", "Underestimating credit quality differences between NBFC and bank loan books", "Not flagging data access as a critical dependency upfront", "Treating this as a documentation exercise rather than a genuine risk assessment with remediation commitments"]
+      }
+    ]
   },
-  {
-    q: "A large Indian IT services company is losing its top 15% of performers to product companies and startups at a rate that has doubled over the last two years. The CHRO has asked you to diagnose why and propose solutions.",
-    subcategory: "Human Capital Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "Attrition of top performers is different from average attrition and needs to be treated differently. These are people with choices and they are choosing to leave. I would structure the diagnosis across three areas. Compensation and financial incentives, career and growth opportunities, and culture and work environment. On compensation I would start with a benchmarking exercise comparing total compensation, equity participation, and variable pay against product companies and funded startups. IT services firms have historically had a structural disadvantage particularly on stock and variable upside. On career growth I would look at how quickly top performers are advancing, whether there are meaningful technical leadership tracks or whether everyone is pushed into management, and whether the work itself is interesting enough. On culture I would run focused listening sessions with high performers who recently left, those who are staying and have had offers, and frontline managers. Exit data is often unreliable because people say safe things on the way out. My hypothesis is that this is primarily a career architecture and equity participation problem not just a salary problem. Services companies that have successfully retained top talent have done so by creating a parallel technical track with genuine recognition, giving top performers exposure to product-adjacent work, and introducing some form of long-term incentive plan. I would present the CHRO with a segmented view because the solution for a star architect is different from the solution for a high-potential project manager.",
-    companies: ['Mercer', 'Aon', 'Willis Towers Watson', 'Deloitte', 'PwC', 'EY', 'KPMG', 'Korn Ferry'],
-    roundType: "Organizational and People Strategy Case",
-    whatInterviewerTests: "Organization design thinking, talent and incentives understanding, change management, people dynamics sensitivity",
-    commonMistakes: ["Treating all attrition the same instead of segmenting by role type and performance tier", "Relying only on exit interview data which is notoriously unreliable", "Jumping straight to a salary increase recommendation", "Ignoring the role of direct managers who are often the proximate cause of top performer exits"]
+  "Human Capital Consultant": {
+    case_interview: [
+      {
+        q: "A large Indian IT services company is losing its top 15% of performers to product companies and startups at a rate that has doubled over the last two years. The CHRO has asked you to diagnose why and propose solutions.",
+        subcategory: "Human Capital Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "Attrition of top performers is different from average attrition and needs to be treated differently. These are people with choices and they are choosing to leave. I would structure the diagnosis across three areas. Compensation and financial incentives, career and growth opportunities, and culture and work environment. On compensation I would start with a benchmarking exercise comparing total compensation, equity participation, and variable pay against product companies and funded startups. IT services firms have historically had a structural disadvantage particularly on stock and variable upside. On career growth I would look at how quickly top performers are advancing, whether there are meaningful technical leadership tracks or whether everyone is pushed into management, and whether the work itself is interesting enough. On culture I would run focused listening sessions with high performers who recently left, those who are staying and have had offers, and frontline managers. Exit data is often unreliable because people say safe things on the way out. My hypothesis is that this is primarily a career architecture and equity participation problem not just a salary problem. Services companies that have successfully retained top talent have done so by creating a parallel technical track with genuine recognition, giving top performers exposure to product-adjacent work, and introducing some form of long-term incentive plan. I would present the CHRO with a segmented view because the solution for a star architect is different from the solution for a high-potential project manager.",
+        companies: ['Mercer', 'Aon', 'Willis Towers Watson', 'Deloitte', 'PwC', 'EY', 'KPMG', 'Korn Ferry'],
+        roundType: "Organizational and People Strategy Case",
+        whatInterviewerTests: "Organization design thinking, talent and incentives understanding, change management, people dynamics sensitivity",
+        commonMistakes: ["Treating all attrition the same instead of segmenting by role type and performance tier", "Relying only on exit interview data which is notoriously unreliable", "Jumping straight to a salary increase recommendation", "Ignoring the role of direct managers who are often the proximate cause of top performer exits"]
+      }
+    ]
   },
-  {
-    q: "A large Indian conglomerate operates across steel, power, and real estate. The board wants to know which businesses to double down on and which to exit over the next five years. How do you structure this analysis?",
-    subcategory: "Corporate Strategy Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "This is a portfolio strategy question and I would assess each business across three dimensions. First, structural attractiveness of the industry over the next five years. For steel I would look at demand drivers from infrastructure spending, EV supply chains, and export potential against the risk of overcapacity and Chinese imports. For power the renewable transition is a major tailwind but traditional thermal assets face long-term structural decline. For real estate the picture is fragmented with affordable housing and commercial quite different from luxury residential. Second, the conglomerate competitive position in each business. Are they a cost leader or differentiator? Do they have scale advantages or regulatory relationships that are hard to replicate? Third, capital intensity and returns. I would look at ROCE for each business over the last five years and compare it to cost of capital. Businesses generating returns below cost of capital consistently are destroying value regardless of their strategic narrative. Based on this framework my hypothesis for a typical conglomerate is that power generation in renewables warrants doubling down given the policy environment, legacy thermal and commoditized real estate are candidates for exit or monetization, and steel requires a decision on whether the conglomerate has the scale to compete long-term. I would structure the board presentation as a portfolio heat map with clear strategic options for each business not a single recommendation because the board needs to own this decision.",
-    companies: ['EY-Parthenon', 'Strategy&', 'Deloitte', 'Accenture Strategy'],
-    roundType: "Corporate Strategy Case and Fit Interview",
-    whatInterviewerTests: "Portfolio strategy thinking, capital allocation judgment, long-term strategic clarity, ability to advise a board",
-    commonMistakes: ["Applying a generic two-by-two matrix without making it specific to the context", "Ignoring family or promoter dynamics that often drive portfolio decisions in Indian conglomerates", "Not addressing capital allocation explicitly", "Treating exit as binary when partial monetization or partnerships may be more realistic"]
+  "Corporate Strategy Consultant": {
+    case_interview: [
+      {
+        q: "A large Indian conglomerate operates across steel, power, and real estate. The board wants to know which businesses to double down on and which to exit over the next five years. How do you structure this analysis?",
+        subcategory: "Corporate Strategy Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "This is a portfolio strategy question and I would assess each business across three dimensions. First, structural attractiveness of the industry over the next five years. For steel I would look at demand drivers from infrastructure spending, EV supply chains, and export potential against the risk of overcapacity and Chinese imports. For power the renewable transition is a major tailwind but traditional thermal assets face long-term structural decline. For real estate the picture is fragmented with affordable housing and commercial quite different from luxury residential. Second, the conglomerate competitive position in each business. Are they a cost leader or differentiator? Do they have scale advantages or regulatory relationships that are hard to replicate? Third, capital intensity and returns. I would look at ROCE for each business over the last five years and compare it to cost of capital. Businesses generating returns below cost of capital consistently are destroying value regardless of their strategic narrative. Based on this framework my hypothesis for a typical conglomerate is that power generation in renewables warrants doubling down given the policy environment, legacy thermal and commoditized real estate are candidates for exit or monetization, and steel requires a decision on whether the conglomerate has the scale to compete long-term. I would structure the board presentation as a portfolio heat map with clear strategic options for each business not a single recommendation because the board needs to own this decision.",
+        companies: ['EY-Parthenon', 'Strategy&', 'Deloitte', 'Accenture Strategy'],
+        roundType: "Corporate Strategy Case and Fit Interview",
+        whatInterviewerTests: "Portfolio strategy thinking, capital allocation judgment, long-term strategic clarity, ability to advise a board",
+        commonMistakes: ["Applying a generic two-by-two matrix without making it specific to the context", "Ignoring family or promoter dynamics that often drive portfolio decisions in Indian conglomerates", "Not addressing capital allocation explicitly", "Treating exit as binary when partial monetization or partnerships may be more realistic"]
+      }
+    ]
   },
-  {
-    q: "A leading Indian insurance company wants to move 60% of its policy servicing interactions from branches and call centers to digital channels within 18 months. How do you help them get there?",
-    subcategory: "Digital Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "A 60% channel shift in 18 months is aggressive and the success will depend on whether it is driven by genuine customer preference or cost cutting. That framing matters because the solution is different. I would start by understanding the current interaction mix. Which interactions are customers having and where are digital touchpoints already underused? In insurance premium payment is usually already largely digital. The harder interactions are claims, policy changes, and renewals which involve complexity and trust. My diagnostic would focus on three things. Which interactions are genuinely digitizable without degrading customer experience. Not everything should be digital. A critical illness claim is not the right moment to push someone to a chatbot. What is stopping customers from using existing digital channels when they exist. And what are agent and branch staff incentive structures and will they actively undermine digital migration if their volume metrics are threatened. The roadmap I would recommend is phased. In the first six months fix digital channels that already exist but have low adoption through UX improvements and proactive communication. In months 6 to 12 digitize the next tier of interactions with human fallback options built in. In months 12 to 18 use data to identify remaining resistors and design targeted interventions. I would also flag clearly that 60% in 18 months is achievable for transactional interactions but high-trust complex interactions will likely require a longer timeline.",
-    companies: ['Deloitte Digital', 'Accenture Song', 'Publicis Sapient', 'Capgemini Invent', 'IBM Consulting'],
-    roundType: "Digital Transformation Case with Customer Experience Component",
-    whatInterviewerTests: "Customer journey thinking, digital channel strategy, behavior change vs technology, implementation realism",
-    commonMistakes: ["Treating digital migration as a technology problem rather than a customer behavior change problem", "Not segmenting interactions by complexity and trust level before recommending digitization", "Ignoring frontline staff incentives which can make or break adoption", "Setting a uniform target without recognizing some interactions should not be fully digital"]
+  "Digital Consultant": {
+    case_interview: [
+      {
+        q: "A leading Indian insurance company wants to move 60% of its policy servicing interactions from branches and call centers to digital channels within 18 months. How do you help them get there?",
+        subcategory: "Digital Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "A 60% channel shift in 18 months is aggressive and the success will depend on whether it is driven by genuine customer preference or cost cutting. That framing matters because the solution is different. I would start by understanding the current interaction mix. Which interactions are customers having and where are digital touchpoints already underused? In insurance premium payment is usually already largely digital. The harder interactions are claims, policy changes, and renewals which involve complexity and trust. My diagnostic would focus on three things. Which interactions are genuinely digitizable without degrading customer experience. Not everything should be digital. A critical illness claim is not the right moment to push someone to a chatbot. What is stopping customers from using existing digital channels when they exist. And what are agent and branch staff incentive structures and will they actively undermine digital migration if their volume metrics are threatened. The roadmap I would recommend is phased. In the first six months fix digital channels that already exist but have low adoption through UX improvements and proactive communication. In months 6 to 12 digitize the next tier of interactions with human fallback options built in. In months 12 to 18 use data to identify remaining resistors and design targeted interventions. I would also flag clearly that 60% in 18 months is achievable for transactional interactions but high-trust complex interactions will likely require a longer timeline.",
+        companies: ['Deloitte Digital', 'Accenture Song', 'Publicis Sapient', 'Capgemini Invent', 'IBM Consulting'],
+        roundType: "Digital Transformation Case with Customer Experience Component",
+        whatInterviewerTests: "Customer journey thinking, digital channel strategy, behavior change vs technology, implementation realism",
+        commonMistakes: ["Treating digital migration as a technology problem rather than a customer behavior change problem", "Not segmenting interactions by complexity and trust level before recommending digitization", "Ignoring frontline staff incentives which can make or break adoption", "Setting a uniform target without recognizing some interactions should not be fully digital"]
+      }
+    ]
   },
-  {
-    q: "A leading Indian FMCG company is facing a situation where its fill rate to modern trade customers has dropped from 95% to 82% over the last two quarters while inventory levels have actually increased. How do you diagnose this?",
-    subcategory: "Supply Chain Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "A drop in fill rate alongside rising inventory is a classic supply chain mismatch problem. The company has inventory in the wrong places, wrong SKUs, or wrong quantities. This is not a shortage problem. It is a distribution and forecasting problem. I would structure my diagnosis around three questions. First where is the inventory sitting? Is it concentrated in depots upstream while the last mile to modern trade distribution centers is the bottleneck? Second how accurate is demand forecasting at the SKU-location level for modern trade? Modern trade customers have more predictable ordering patterns than general trade so if fill rates are dropping here it suggests forecasting is not tuned to modern trade ordering patterns. Third what has changed in the last two quarters? New product launches, a change in modern trade ordering frequency, a new warehouse management system, or a change in the distributor network are all common triggers. Before recommending solutions I would want SKU-level fill rate data broken down by depot and customer, inventory aging reports, and demand forecast accuracy metrics. My hypothesis is a combination of poor SKU-level forecasting for modern trade and a network design built for general trade that has not been adapted as modern trade grew. The fix is likely a dedicated replenishment model for modern trade accounts combined with a root cause review of why inventory is building up in the wrong nodes.",
-    companies: ['Accenture', 'Kearney', 'Deloitte', 'PwC', 'EY', 'Capgemini'],
-    roundType: "Operations and Supply Chain Case Interview",
-    whatInterviewerTests: "Supply chain network thinking, inventory and logistics reasoning, root cause analysis, quantitative structuring",
-    commonMistakes: ["Assuming this is a supply shortage problem without noticing the rising inventory signal", "Not separating the modern trade channel from general trade in the diagnosis", "Jumping to automation before understanding forecasting and network fundamentals", "Ignoring the possibility that a recent operational change triggered the problem"]
+  "Supply Chain Consultant": {
+    case_interview: [
+      {
+        q: "A leading Indian FMCG company is facing a situation where its fill rate to modern trade customers has dropped from 95% to 82% over the last two quarters while inventory levels have actually increased. How do you diagnose this?",
+        subcategory: "Supply Chain Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "A drop in fill rate alongside rising inventory is a classic supply chain mismatch problem. The company has inventory in the wrong places, wrong SKUs, or wrong quantities. This is not a shortage problem. It is a distribution and forecasting problem. I would structure my diagnosis around three questions. First where is the inventory sitting? Is it concentrated in depots upstream while the last mile to modern trade distribution centers is the bottleneck? Second how accurate is demand forecasting at the SKU-location level for modern trade? Modern trade customers have more predictable ordering patterns than general trade so if fill rates are dropping here it suggests forecasting is not tuned to modern trade ordering patterns. Third what has changed in the last two quarters? New product launches, a change in modern trade ordering frequency, a new warehouse management system, or a change in the distributor network are all common triggers. Before recommending solutions I would want SKU-level fill rate data broken down by depot and customer, inventory aging reports, and demand forecast accuracy metrics. My hypothesis is a combination of poor SKU-level forecasting for modern trade and a network design built for general trade that has not been adapted as modern trade grew. The fix is likely a dedicated replenishment model for modern trade accounts combined with a root cause review of why inventory is building up in the wrong nodes.",
+        companies: ['Accenture', 'Kearney', 'Deloitte', 'PwC', 'EY', 'Capgemini'],
+        roundType: "Operations and Supply Chain Case Interview",
+        whatInterviewerTests: "Supply chain network thinking, inventory and logistics reasoning, root cause analysis, quantitative structuring",
+        commonMistakes: ["Assuming this is a supply shortage problem without noticing the rising inventory signal", "Not separating the modern trade channel from general trade in the diagnosis", "Jumping to automation before understanding forecasting and network fundamentals", "Ignoring the possibility that a recent operational change triggered the problem"]
+      }
+    ]
   },
-  {
-    q: "Your client, a mid-size Indian private equity fund, is considering acquiring a controlling stake in a profitable but family-run retail chain with 120 stores across tier 2 and tier 3 cities. What are the key areas you would focus on in financial due diligence?",
-    subcategory: "Financial Advisory Consultant",
-    difficulty: "Hard",
-    domain: "consulting",
-    a: "Financial due diligence on a family-run business is quite different from diligencing a professionally managed company. The risks are different and data quality is often lower. I would focus on five areas. First quality of earnings. Family-run businesses often have personal expenses running through the P&L, related party transactions at non-arm length terms, and inconsistent revenue recognition. I would rebuild the P&L adjusting for these items to get a clean EBITDA picture. The reported profitability may look better than normalized profitability. Second working capital dynamics. In retail inventory management and creditor terms are critical. I would analyze inventory turnover by category and store, creditor days, and whether the business has been stretching payables to manage cash which is unsustainable post-acquisition. Third store-level unit economics. Aggregate profitability can hide a situation where a few high-performing stores mask underperforming ones. I would want P&L at the store level to understand which stores are genuinely profitable and whether expansion into tier 2 and tier 3 cities is accretive or dilutive. Fourth tax and compliance. Family businesses in India frequently have GST, TDS, or income tax exposures not fully provided for which can create material post-closing liabilities. Fifth management dependency. If the business runs on the promoter family relationships with landlords, suppliers, and local administrations the PE firm needs to understand what happens to those relationships post-acquisition. I would also flag that valuation methodology needs to reflect normalized earnings not peak or artificially inflated reported earnings.",
-    companies: ['Deloitte', 'PwC', 'EY', 'KPMG', 'Alvarez & Marsal', 'FTI Consulting'],
-    roundType: "Transaction Advisory and Financial Due Diligence Case",
-    whatInterviewerTests: "Financial analysis thinking, due diligence judgment, deal risk identification, structured financial reasoning",
-    commonMistakes: ["Accepting reported financials at face value without adjusting for family business-specific distortions", "Ignoring store-level economics in favor of aggregate analysis", "Not stress testing working capital assumptions", "Underestimating tax and compliance tail risks in family-owned businesses"]
+  "Financial Advisory Consultant": {
+    case_interview: [
+      {
+        q: "Your client, a mid-size Indian private equity fund, is considering acquiring a controlling stake in a profitable but family-run retail chain with 120 stores across tier 2 and tier 3 cities. What are the key areas you would focus on in financial due diligence?",
+        subcategory: "Financial Advisory Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: "Financial due diligence on a family-run business is quite different from diligencing a professionally managed company. The risks are different and data quality is often lower. I would focus on five areas. First quality of earnings. Family-run businesses often have personal expenses running through the P&L, related party transactions at non-arm length terms, and inconsistent revenue recognition. I would rebuild the P&L adjusting for these items to get a clean EBITDA picture. The reported profitability may look better than normalized profitability. Second working capital dynamics. In retail inventory management and creditor terms are critical. I would analyze inventory turnover by category and store, creditor days, and whether the business has been stretching payables to manage cash which is unsustainable post-acquisition. Third store-level unit economics. Aggregate profitability can hide a situation where a few high-performing stores mask underperforming ones. I would want P&L at the store level to understand which stores are genuinely profitable and whether expansion into tier 2 and tier 3 cities is accretive or dilutive. Fourth tax and compliance. Family businesses in India frequently have GST, TDS, or income tax exposures not fully provided for which can create material post-closing liabilities. Fifth management dependency. If the business runs on the promoter family relationships with landlords, suppliers, and local administrations the PE firm needs to understand what happens to those relationships post-acquisition. I would also flag that valuation methodology needs to reflect normalized earnings not peak or artificially inflated reported earnings.",
+        companies: ['Deloitte', 'PwC', 'EY', 'KPMG', 'Alvarez & Marsal', 'FTI Consulting'],
+        roundType: "Transaction Advisory and Financial Due Diligence Case",
+        whatInterviewerTests: "Financial analysis thinking, due diligence judgment, deal risk identification, structured financial reasoning",
+        commonMistakes: ["Accepting reported financials at face value without adjusting for family business-specific distortions", "Ignoring store-level economics in favor of aggregate analysis", "Not stress testing working capital assumptions", "Underestimating tax and compliance tail risks in family-owned businesses"]
+      }
+    ]
   }
+};
+
+export const CONSULTING_LEVELS = [
+  "Consultant",
+  "Senior Consultant",
+  "Management Consultant",
+  "Strategy Consultant",
+  "Business Consultant",
+  "Transformation Consultant",
+  "Operations Consultant",
+  "Technology Consultant",
+  "Advisory Consultant",
+  "Risk Consultant",
+  "Human Capital Consultant",
+  "Corporate Strategy Consultant",
+  "Digital Consultant",
+  "Supply Chain Consultant",
+  "Financial Advisory Consultant"
 ];
