@@ -637,11 +637,11 @@ export default function UpgradePage({ user, profile, onBack }) {
                     Best for placement season
                   </p>
                   <p style={{ margin: '0 0 4px' }}>
-                    <strong style={{ fontSize: '2rem', fontWeight: 800, color: '#111' }}>666</strong>
+                    <strong style={{ fontSize: '2rem', fontWeight: 800, color: '#111' }}>{Math.round(PLANS.quarterly.price / 3).toLocaleString(currencyConfig.locale)}</strong>
                     <span style={{ fontSize: '0.8rem', color: '#9a9a9a' }}> /month</span>
                   </p>
                   <p style={{ fontSize: '0.75rem', color: '#9a9a9a', marginBottom: 20 }}>
-                    Billed as 1,999 every 3 months. Save 17%.
+                    Billed as {currencyConfig.symbol}{PLANS.quarterly.price.toLocaleString(currencyConfig.locale)} every 3 months. Save {Math.round((1 - (PLANS.quarterly.price / 3) / PLANS.monthly.price) * 100)}%.
                   </p>
                   <button
                     onClick={() => handleSelectPlan('quarterly')}
@@ -678,14 +678,14 @@ export default function UpgradePage({ user, profile, onBack }) {
                   </p>
                   <div style={{ marginBottom: 12, fontSize: '0.75rem', color: '#9a9a9a' }}>
                     <span style={{ textDecoration: 'line-through', color: '#c4bbb8' }}>{currencyConfig.symbol}{currencyConfig.plans.monthly.price}/month</span>
-                    <span style={{ display: 'block', marginTop: 4, fontSize: '0.7rem', color: '#16a34a', fontWeight: 600 }}>Save 27% vs monthly</span>
+                    <span style={{ display: 'block', marginTop: 4, fontSize: '0.7rem', color: '#16a34a', fontWeight: 600 }}>Save {Math.round((1 - (PLANS.yearly.price / 12) / PLANS.monthly.price) * 100)}% vs monthly</span>
                   </div>
                   <p style={{ margin: '0 0 4px' }}>
-                    <strong style={{ fontSize: '2rem', fontWeight: 800, color: '#111' }}>583</strong>
+                    <strong style={{ fontSize: '2rem', fontWeight: 800, color: '#111' }}>{Math.round(PLANS.yearly.price / 12).toLocaleString(currencyConfig.locale)}</strong>
                     <span style={{ fontSize: '0.8rem', color: '#9a9a9a' }}> /month</span>
                   </p>
                   <p style={{ fontSize: '0.75rem', color: '#9a9a9a', marginBottom: 20 }}>
-                    Billed as 6,999 per year.
+                    Billed as {currencyConfig.symbol}{PLANS.yearly.price.toLocaleString(currencyConfig.locale)} per year.
                   </p>
                   <button
                     onClick={() => handleSelectPlan('yearly')}
@@ -965,87 +965,123 @@ export default function UpgradePage({ user, profile, onBack }) {
               )}
             </div>
 
-            <div className="up-payment" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'start' }}>
-              {/* QR code side */}
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, justifyContent: 'center' }}>
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff', flexShrink: 0 }}>1</div>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Scan & Pay</span>
+            {currency === 'INR' ? (
+              <div className="up-payment" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'start' }}>
+                {/* QR code side */}
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, justifyContent: 'center' }}>
+                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff', flexShrink: 0 }}>1</div>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Scan & Pay</span>
+                  </div>
+                  <div style={{ width: 220, height: 220, margin: '0 auto', background: C.bgMuted, border: `2px dashed ${C.border}`, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+                    <img
+                      src="/upi-qr.png"
+                      alt="UPI QR Code"
+                      style={{ width: 180, height: 180, objectFit: 'contain', borderRadius: 8 }}
+                      onError={e => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.parentElement.innerHTML = `<div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;color:#9C9C97;text-align:center;padding:16px">Add /public/upi-qr.png<br/>to show QR code</div>`;
+                      }}
+                    />
+                  </div>
+                  <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4 }}>UPI ID</div>
+                  <div style={{ fontSize: 13, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{upiId}</div>
+                  <div style={{ marginTop: 12, padding: '8px 12px', background: '#f0ede8', border: `1px solid #e4e1db`, borderRadius: 12, fontSize: 13, fontFamily: "'Instrument Serif', serif", fontWeight: 700, textAlign: 'center', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                    {appliedDiscount ? (
+                      <>
+                        <span style={{ textDecoration: 'line-through', color: '#6b6b6b', marginRight: 6, fontWeight: 400, fontSize: 11, WebkitTextFillColor: '#6b6b6b', background: 'unset' }}>
+                          {currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)}
+                        </span>
+                        {currencyConfig.symbol}{discountedPrice(PLANS[plan].price).toLocaleString(currencyConfig.locale)}
+                      </>
+                    ) : (
+                      <>{currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)}</>
+                    )}
+                  </div>
                 </div>
-                <div style={{ width: 220, height: 220, margin: '0 auto', background: C.bgMuted, border: `2px dashed ${C.border}`, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-                  <img
-                    src="/upi-qr.png"
-                    alt="UPI QR Code"
-                    style={{ width: 180, height: 180, objectFit: 'contain', borderRadius: 8 }}
-                    onError={e => {
-                      e.currentTarget.style.display = 'none';
-                      e.currentTarget.parentElement.innerHTML = `<div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;color:#9C9C97;text-align:center;padding:16px">Add /public/upi-qr.png<br/>to show QR code</div>`;
+
+                {/* Reference entry side */}
+                <div>
+                  <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 16, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Step 2  . Enter Reference</div>
+                  <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, marginBottom: 20 }}>
+                    After paying, enter the UPI transaction ID from your payment app (e.g. 12-digit reference number or UPI ref).
+                  </p>
+                  <input
+                    type="text"
+                    value={upiRef}
+                    onChange={e => setUpiRef(e.target.value)}
+                    placeholder="e.g. 407812345678"
+                    style={{
+                      width: '100%', padding: '12px 14px',
+                      border: `1px solid ${C.border}`, borderRadius: 12,
+                      fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      color: C.text, background: C.bg, marginBottom: 16,
+                      transition: 'border-color 0.2s',
                     }}
+                    onFocus={e => e.target.style.borderColor = C.green}
+                    onBlur={e => e.target.style.borderColor = C.border}
                   />
-                </div>
-                <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4 }}>UPI ID</div>
-                <div style={{ fontSize: 13, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{upiId}</div>
-                <div style={{ marginTop: 12, padding: '8px 12px', background: '#f0ede8', border: `1px solid #e4e1db`, borderRadius: 12, fontSize: 13, fontFamily: "'Instrument Serif', serif", fontWeight: 700, textAlign: 'center', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                  {appliedDiscount ? (
-                    <>
-                      <span style={{ textDecoration: 'line-through', color: '#6b6b6b', marginRight: 6, fontWeight: 400, fontSize: 11, WebkitTextFillColor: '#6b6b6b', background: 'unset' }}>
-                        {currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)}
-                      </span>
-                      {currencyConfig.symbol}{discountedPrice(PLANS[plan].price).toLocaleString(currencyConfig.locale)}
-                    </>
-                  ) : (
-                    <>{currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)}</>
+                  {error && (
+                    <div style={{ marginBottom: 12, padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 12, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      {error}
+                    </div>
                   )}
+                  <button
+                    onClick={handleSubmitPayment}
+                    disabled={submitting || !upiRef.trim()}
+                    style={{
+                      width: '100%', padding: '13px 0',
+                      background: submitting || !upiRef.trim() ? C.bgMuted : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                      border: 'none', borderRadius: 12,
+                      color: submitting || !upiRef.trim() ? C.textMuted : '#fff',
+                      fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                      cursor: submitting || !upiRef.trim() ? 'not-allowed' : 'pointer',
+                      fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
+                      transition: 'all 0.2s',
+                    }}
+                  >
+                    {submitting ? 'Submitting...' : 'Submit for Verification'}
+                  </button>
+                  <p style={{ fontSize: 11, color: C.textMuted, marginTop: 10, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>
+                    We verify manually within 24 hours. You'll be notified when your account is activated.
+                  </p>
                 </div>
               </div>
-
-              {/* Reference entry side */}
-              <div>
-                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, marginBottom: 16, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Step 2  . Enter Reference</div>
-                <p style={{ fontSize: 13, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.7, marginBottom: 20 }}>
-                  After paying, enter the UPI transaction ID from your payment app (e.g. 12-digit reference number or UPI ref).
+            ) : (
+              <div style={{
+                background: '#f9f8f6',
+                borderRadius: 14,
+                padding: '28px 24px',
+                textAlign: 'center',
+                marginTop: 16
+              }}>
+                <div style={{ fontSize: '2rem', marginBottom: 12 }}>🌍</div>
+                <p style={{ color: '#111', fontWeight: 700, fontSize: '0.95rem', margin: '0 0 8px' }}>
+                  International Payment
                 </p>
-                <input
-                  type="text"
-                  value={upiRef}
-                  onChange={e => setUpiRef(e.target.value)}
-                  placeholder="e.g. 407812345678"
+                <p style={{ color: '#6b6b6b', fontSize: '0.85rem', lineHeight: 1.7, margin: '0 0 20px' }}>
+                  We process international payments manually via bank transfer. Once you contact us we will send you payment details and activate your account within 24 hours.
+                </p>
+                <a
+                  href={`mailto:communications@interviewalpha.ai?subject=Pro upgrade - ${currencyConfig.symbol}${PLANS[plan].price} ${currencyConfig.label}&body=Hi, I would like to upgrade to InterviewAlpha Pro. Plan: ${plan}. Amount: ${currencyConfig.symbol}${PLANS[plan].price} ${currencyConfig.label}.`}
                   style={{
-                    width: '100%', padding: '12px 14px',
-                    border: `1px solid ${C.border}`, borderRadius: 12,
-                    fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    color: C.text, background: C.bg, marginBottom: 16,
-                    transition: 'border-color 0.2s',
-                  }}
-                  onFocus={e => e.target.style.borderColor = C.green}
-                  onBlur={e => e.target.style.borderColor = C.border}
-                />
-                {error && (
-                  <div style={{ marginBottom: 12, padding: '10px 14px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 12, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    {error}
-                  </div>
-                )}
-                <button
-                  onClick={handleSubmitPayment}
-                  disabled={submitting || !upiRef.trim()}
-                  style={{
-                    width: '100%', padding: '13px 0',
-                    background: submitting || !upiRef.trim() ? C.bgMuted : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                    border: 'none', borderRadius: 12,
-                    color: submitting || !upiRef.trim() ? C.textMuted : '#fff',
-                    fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                    cursor: submitting || !upiRef.trim() ? 'not-allowed' : 'pointer',
-                    fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
-                    transition: 'all 0.2s',
+                    display: 'inline-block',
+                    background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
+                    color: 'white',
+                    padding: '14px 28px',
+                    borderRadius: 12,
+                    textDecoration: 'none',
+                    fontWeight: 700,
+                    fontSize: '0.9rem'
                   }}
                 >
-                  {submitting ? 'Submitting...' : 'Submit for Verification'}
-                </button>
-                <p style={{ fontSize: 11, color: C.textMuted, marginTop: 10, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>
-                  We verify manually within 24 hours. You'll be notified when your account is activated.
+                  Contact us to pay
+                </a>
+                <p style={{ color: '#9a9a9a', fontSize: '0.75rem', margin: '12px 0 0' }}>
+                  communications@interviewalpha.ai
                 </p>
               </div>
-            </div>
+            )}
           </div>
         )}
 
