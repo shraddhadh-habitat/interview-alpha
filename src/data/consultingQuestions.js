@@ -21,6 +21,29 @@ The key diagnostic question I would leave the CEO with is: are we losing margin 
         roundType: "Case Interview",
         whatInterviewerTests: "Problem structuring, hypothesis-driven thinking, business judgment, prioritization",
         commonMistakes: ["Jumping to solutions without structuring first", "Treating revenue as truly flat without checking mix shifts", "Not separating fixed and variable costs", "Forgetting to ask for data before recommending"]
+      },
+      {
+        q: "A leading private hospital chain in India with 15 hospitals across tier 1 and tier 2 cities has seen its EBITDA margins fall from 18% to 11% over three years despite a 20% increase in revenue. The CEO has hired you. How do you approach this?",
+        subcategory: "Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `I would frame this as a margin compression problem and structure it across two MECE dimensions before jumping to solutions.
+
+First, I want to pressure test whether the revenue growth is masking a quality problem. Are the new revenues coming from lower-margin services, new hospitals that are still in ramp-up, or a patient mix shift toward lower-paying segments? Revenue growth with margin compression almost always has a mix story underneath it.
+
+Second, on the cost side, I would split into fixed and variable and identify which cost lines are growing disproportionately relative to revenue. Staff costs, consumables, and depreciation on new hospital capex are the usual suspects.
+
+My leading hypothesis is that the margin compression is driven by new hospital ramp-up costs being absorbed into the P&L before those facilities reach break-even occupancy, combined with a structural increase in staff costs as the company hired ahead of demand to support the expansion.
+
+Before going further I would want four things. A hospital-wise P&L to separate mature hospitals from new ones. A cost breakdown by line item showing growth rates versus revenue growth. Occupancy rates by hospital and by specialty. And the revenue mix split between insurance, government, and out-of-pocket patients, because these have very different margin profiles.
+
+My hypothesis is that if I strip out new hospitals still in ramp-up, the mature hospital portfolio is likely still generating margins close to the original 18%. The EBITDA dilution is coming from the expansion strategy itself, not from deterioration in the core business.
+
+The strategic question I would put to the CEO is: are we investing in future margin or destroying current margin permanently? The answer shapes whether the recommendation is to slow expansion, accelerate break-even at new hospitals, or change the revenue mix in the existing portfolio.`,
+        companies: ['McKinsey & Company', 'Deloitte', 'PwC', 'EY', 'KPMG', 'Accenture', 'IBM Consulting', 'Capgemini Invent'],
+        roundType: "Case Interview",
+        whatInterviewerTests: "Profitability diagnosis, MECE structuring, hypothesis-driven thinking, mix shift analysis",
+        commonMistakes: ["Treating the margin decline as purely a cost problem without examining revenue mix", "Not separating mature hospitals from new ramp-up hospitals", "Missing patient mix shift as a margin driver", "Jumping to headcount reduction without understanding the expansion investment thesis"]
       }
     ]
   },
@@ -75,6 +98,33 @@ Before recommending entry, I would want to understand three things. Whether our 
         roundType: "Case Interview",
         whatInterviewerTests: "Market sizing, bottom-up estimation, structured quantitative thinking, connecting analysis to strategic recommendation",
         commonMistakes: ["Starting from top-down numbers without building from first principles", "Ignoring the split between two-wheeler three-wheeler and four-wheeler charging needs", "Forgetting that home charging reduces public infrastructure need", "Not connecting market size to a strategic recommendation"]
+      },
+      {
+        q: "Estimate the number of chai tapris in India and the total annual revenue of the organized chai market.",
+        subcategory: "Management Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `This is a two-part question and I would approach them separately.
+
+For the number of chai tapris, I would build from the population up.
+
+India has approximately 1.4 billion people. Urban population is roughly 35%, giving about 500 million urban residents. Rural population is 900 million.
+
+In urban areas, chai consumption outside the home is a daily habit for working adults. I would estimate one chai tapri per 200 to 250 urban residents, accounting for clustering near offices, markets, and transport hubs. That gives approximately 2 to 2.5 million urban chai tapris.
+
+In rural areas, chai consumption is more home-based but tapris exist near markets, truck stops, and village centers. I would estimate one tapri per 500 to 600 rural residents, giving approximately 1.5 to 1.8 million rural tapris.
+
+Total estimate: approximately 3.5 to 4 million chai tapris across India. I would use 4 million as my working number.
+
+For the organized chai market revenue, organized players like Chaayos, Chai Point, and MBA Chai Wala have roughly 5,000 to 6,000 outlets today concentrated in metro and tier 1 cities. Average revenue per outlet is approximately 15,000 to 20,000 rupees per day based on 150 to 200 transactions at an average ticket of 80 to 100 rupees. That gives approximately 2,700 crore to 4,000 crore rupees annually for the organized segment.
+
+To put this in context, this is less than 1% of the total chai market which I would estimate at 50,000 crore to 75,000 crore rupees annually including unorganized tapris and home consumption. The organized segment has significant headroom for growth as urban consumers shift toward branded and consistent chai experiences.
+
+The strategic insight for a client entering this space is that the opportunity is large but the competitive moat needs to be built on convenience and consistency, not just brand, because the unorganized tapri will always win on price and authenticity.`,
+        companies: ['Accenture', 'Deloitte', 'EY', 'KPMG', 'PwC', 'IBM Consulting', 'Capgemini Invent'],
+        roundType: "Guesstimate and Market Sizing",
+        whatInterviewerTests: "Structured quantitative thinking, assumption articulation, urban versus rural segmentation, business judgment",
+        commonMistakes: ["Not separating urban and rural chai consumption patterns", "Confusing the total chai market with the organized segment", "Not articulating assumptions clearly before calculating", "Missing the strategic insight that connects market sizing to a business recommendation"]
       }
     ]
   },
@@ -100,6 +150,27 @@ My overall answer is yes, they should enter, but with a focused beachhead strate
         roundType: "Strategy Case Interview",
         whatInterviewerTests: "Strategic clarity, right to win thinking, entry strategy, CEO-level judgment",
         commonMistakes: ["Treating this as a simple yes or no without exploring right to win", "Ignoring regulatory requirements and their complexity", "Recommending a full-stack build when acquisition is more pragmatic", "Not connecting existing assets to the financial services opportunity"]
+      },
+      {
+        q: "A large Indian edtech company with 5 million paid subscribers grew 300% during the pandemic but has seen subscriber growth stall and churn increase over the last 18 months. The board wants a growth strategy for the next three years. What do you recommend?",
+        subcategory: "Strategy Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `This is a post-pandemic normalization problem but the strategic response depends entirely on why churn is increasing and whether the core value proposition is still relevant.
+
+I would structure the growth strategy analysis across three questions before making any recommendations.
+
+The first question is: what is the underlying value proposition and is it still resonating? Pandemic growth was driven by forced digital adoption and fear of falling behind. That tailwind is gone. The question now is whether students and parents choose this platform because it genuinely improves outcomes, or because it was the only option available. Completion rates, exam results, and Net Promoter Score are the metrics that answer this.
+
+The second question is: why is churn increasing? I would segment churn by cohort, by product type, and by geography. If churn is concentrated in recent cohorts it suggests an acquisition quality problem. If it is concentrated in older cohorts it suggests a product relevance problem. These require completely different interventions.
+
+The third question is: what are the genuine growth vectors and do we have the right to win in each? I would assess three options. First, deepen penetration in the existing K-12 and competitive exam segment by improving outcomes and reducing churn before acquiring more customers. Second, expand into adjacent segments like upskilling and professional certification where willingness to pay is higher and the pandemic reversal has not hit as hard. Third, expand internationally into markets where the India edtech model is exportable.
+
+My core recommendation is fix the leaky bucket before filling it. A company with rising churn that acquires more customers is running on a treadmill at increasing cost. The first 12 months should focus entirely on reducing churn in the existing base by improving outcomes, personalizing learning paths, and creating genuine switching costs through certifications and placement services. Only once churn is stabilized should growth investment shift to new acquisition and new segments.`,
+        companies: ['Strategy&', 'EY-Parthenon', 'Kearney', 'Oliver Wyman', 'Roland Berger'],
+        roundType: "Strategy Case Interview",
+        whatInterviewerTests: "Competitive strategy, growth options framework, churn diagnosis, CEO-level thinking",
+        commonMistakes: ["Jumping to new market recommendations without addressing churn", "Not segmenting churn to understand acquisition versus retention problems", "Treating edtech as a single category when K-12 and upskilling have very different economics", "Ignoring unit economics and customer lifetime value in the growth strategy"]
       }
     ]
   },
@@ -185,6 +256,35 @@ Recommendations would depend on the data but would likely include a predictive m
         roundType: "Operations Case Interview",
         whatInterviewerTests: "Operations diagnosis, cost and capacity analysis, root cause thinking, quantitative reasoning",
         commonMistakes: ["Assuming low utilization is always a demand problem", "Not separating planned from unplanned downtime", "Ignoring plant-level granularity and treating all plants as having the same problem", "Recommending capacity additions when the issue is utilization of existing capacity"]
+      },
+      {
+        q: "A large Indian airline is facing a 34% on-time performance rate against an industry benchmark of 72%. Every delayed flight costs the airline approximately 8 lakh rupees in penalties, crew costs, and passenger compensation. The COO has asked you to diagnose the problem and build a 90-day improvement plan.",
+        subcategory: "Operations Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `A 34% on-time performance against a 72% benchmark is not a marginal gap. It is a fundamental operational breakdown. Before building a 90-day plan I need to understand where delays are originating because the intervention is completely different depending on the root cause.
+
+I would structure the diagnosis across four MECE buckets.
+
+The first bucket is ground operations. Are delays originating on the ground from late pushback, slow turnaround, catering or fueling delays, or baggage loading? In Indian aviation, ground handling is frequently the primary source of delay particularly at congested airports like Delhi and Mumbai.
+
+The second bucket is technical and maintenance delays. What proportion of delays are attributable to aircraft technical issues? A high technical delay rate suggests either an aging fleet, deferred maintenance, or inadequate spare parts inventory at outstations.
+
+The third bucket is crew-related delays. Are delays driven by crew availability, rest requirement violations, or rostering failures? Airlines with tight schedules and minimal buffer are highly vulnerable to crew cascading delays.
+
+The fourth bucket is external factors. What proportion of delays are driven by ATC, weather, or airport slot constraints that are genuinely outside the airline's control? These require different responses than operational fixes.
+
+Before building the 90-day plan I would want delay data categorized by root cause across the last six months, on-time performance by route and aircraft type, and the cascading delay pattern to understand how a morning delay creates afternoon and evening failures.
+
+My hypothesis is that the 34% on-time rate reflects tight turnaround schedules that do not account for Indian ground handling realities combined with a maintenance reliability issue generating unplanned technical delays.
+
+The 90-day plan would have three parallel workstreams. First, extend minimum turnaround times on the worst-performing routes by 10 to 15 minutes to create buffer. Second, implement a daily operations control center review to intervene on at-risk flights before they become delays. Third, run a targeted maintenance reliability program on the aircraft types with the highest technical delay rates.
+
+The financial case is clear. At 8 lakh rupees per delayed flight, improving on-time performance from 34% to 60% on 100 daily flights saves approximately 200 lakh rupees per day. The 90-day investment pays back in weeks.`,
+        companies: ['Kearney', 'Deloitte', 'Accenture', 'PwC', 'EY', 'Bain & Company', 'Boston Consulting Group'],
+        roundType: "Operations Case Interview",
+        whatInterviewerTests: "Process efficiency, root cause diagnosis, cost quantification, 90-day planning",
+        commonMistakes: ["Treating all delays as the same category rather than diagnosing by root cause", "Focusing only on ground operations without examining maintenance and crew factors", "Not quantifying the financial impact to build the business case", "Proposing a generic improvement program without specific timeline and measurable targets"]
       }
     ]
   },
@@ -407,6 +507,29 @@ I would also flag to the deal team that the valuation methodology must reflect n
         roundType: "Transaction Advisory and Financial Due Diligence Case",
         whatInterviewerTests: "Financial analysis thinking, due diligence judgment, deal risk identification, structured financial reasoning",
         commonMistakes: ["Accepting reported financials at face value without adjusting for family business-specific distortions", "Ignoring store-level economics in favor of aggregate analysis", "Not stress testing working capital assumptions", "Underestimating tax and compliance tail risks in family-owned businesses"]
+      },
+      {
+        q: "A large Indian pharmaceutical company wants to acquire a smaller specialty drug company with a strong oncology pipeline but negative EBITDA. Your client is paying 3,000 crore rupees for a company that is currently losing money. How do you evaluate whether this is a good deal?",
+        subcategory: "Financial Advisory Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `Acquiring a loss-making company for 3,000 crore rupees requires a fundamentally different evaluation framework than a standard profitability-based valuation. The value here is entirely in the future cash flows from the pipeline, not in the current P&L. So the question is not whether the target is profitable today but whether the pipeline assets justify the price being paid.
+
+I would structure my evaluation across four dimensions.
+
+The first dimension is pipeline value assessment. What is in the oncology pipeline, at what stage of clinical development is each asset, and what is the probability-adjusted net present value of each program? A Phase 3 asset with strong efficacy data in a large oncology indication could be worth 2,000 to 5,000 crore rupees on its own. A Phase 1 asset is worth far less. I would want an independent scientific assessment of each asset including the probability of approval, the addressable patient population, the likely pricing, and the competitive landscape.
+
+The second dimension is strategic fit and synergy quantification. Does this acquisition strengthen our client's oncology position specifically, and are there genuine synergies that create value beyond what the target could achieve independently? Pharma synergies typically come from three sources: commercial synergies from leveraging the acquirer's sales force to launch drugs faster, manufacturing synergies from consolidating production, and R&D synergies from combining capabilities. I would want each synergy quantified with a timeline and confidence level rather than accepting a headline number.
+
+The third dimension is execution and integration risk. Pharma acquisitions of pipeline companies have a high failure rate not because the science was wrong but because integration disrupted the team running the research. Key person risk is extreme in specialty pharma. I would want to understand retention plans for the founding scientists and whether the earn-out structure keeps them motivated through critical late-stage development.
+
+The fourth dimension is downside scenario analysis. What happens if the lead oncology asset fails in Phase 3? At 3,000 crore rupees I need to understand the floor value of this acquisition. Are there revenue-generating products today, manufacturing assets, or secondary pipeline assets that provide downside protection?
+
+My overall framework is: the price is justifiable only if the probability-adjusted NPV of the pipeline exceeds the acquisition price plus integration costs plus the opportunity cost of deploying 3,000 crore rupees elsewhere. I would run three scenarios, base case, bear case with one pipeline failure, and bull case with full pipeline success, and recommend the deal only if the bear case NPV is within acceptable loss parameters.`,
+        companies: ['Deloitte', 'PwC', 'EY', 'KPMG', 'Alvarez & Marsal', 'FTI Consulting'],
+        roundType: "Transaction Advisory and Financial Due Diligence Case",
+        whatInterviewerTests: "Pipeline valuation, M&A thinking, synergy analysis, deal risk identification, scenario analysis",
+        commonMistakes: ["Dismissing the deal because the target has negative EBITDA without recognizing pipeline value", "Not probability-adjusting clinical stage assets for approval likelihood", "Ignoring key person risk in science-driven acquisitions", "Accepting synergy numbers at face value without stress testing", "Not running a downside scenario to understand the floor value"]
       }
     ]
   }
