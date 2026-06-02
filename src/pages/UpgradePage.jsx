@@ -99,6 +99,12 @@ const CURRENCY_CONFIG = {
 };
 
 const detectCurrency = () => {
+  // Testing override - remove before final production
+  const urlParams = new URLSearchParams(window.location.search);
+  const testCurrency = urlParams.get('currency');
+  if (testCurrency && ['INR', 'USD', 'GBP', 'AED', 'SGD'].includes(testCurrency)) {
+    return testCurrency;
+  }
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
   if (tz.startsWith('Asia/Calcutta') || tz.startsWith('Asia/Kolkata')) return 'INR';
   if (tz.startsWith('America/')) return 'USD';
