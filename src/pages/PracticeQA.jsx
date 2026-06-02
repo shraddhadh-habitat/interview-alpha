@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { pmQuestions, PM_LEVELS, DS_LEVELS } from '../data/pmQuestions';
+import { consultingQuestions, CONSULTING_LEVELS } from '../data/consultingQuestions';
 import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
 import { useAuth } from '../contexts/AuthContext';
@@ -171,7 +172,10 @@ const ROLES = {
   consulting: {
     id: 'consulting',
     label: 'Consulting',
-    comingSoon: true,
+    levels: CONSULTING_LEVELS,
+    expLevelChips: CONSULTING_LEVELS.map(level => ({ id: level.toLowerCase().replace(/\s+/g, '_'), label: level, levels: [level] })),
+    titleSuffix: 'Consulting Interview Questions',
+    comingSoon: false,
   },
   finance: {
     id: 'finance',
@@ -710,7 +714,7 @@ function FilterDropdown({ label, value, onChange, options }) {
 }
 
 // ─── Helper: Count matching questions for a filter state ───────────────────
-function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM_LEVELS, DS_LEVELS) {
+function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) {
   const { category, expLevel, company, difficulty, domain } = filterState;
 
   const role = ROLES[selectedRole] || ROLES.pm;
@@ -720,6 +724,8 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
   if (selectedRole === 'ds') {
     const dsLevel = pmQuestions['Data Scientist'];
     categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
+  } else if (selectedRole === 'consulting') {
+    categoryChips = [];
   } else {
     categoryChips = PM_CATEGORY_CHIPS;
   }
@@ -729,6 +735,8 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
   if (selectedRole === 'ds') {
     const dsLevel = pmQuestions['Data Scientist'];
     dataCats = dsLevel ? Object.keys(dsLevel).filter(k => Array.isArray(dsLevel[k])) : [];
+  } else if (selectedRole === 'consulting') {
+    dataCats = ['case_interview'];
   } else {
     dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
   }
@@ -768,7 +776,7 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
 
   let count = 0;
   for (const level of levelsToShow) {
-    const bank = pmQuestions[level];
+    const bank = selectedRole === 'consulting' ? consultingQuestions[level] : pmQuestions[level];
     if (!bank) continue;
     for (const cat of dataCats) {
       const questions = bank[cat] || [];
@@ -821,7 +829,7 @@ function FilterContent({
     ...categoryChips.map(c => ({ id: c.id, label: c.label })),
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: opt.id, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS) > 0
+    countQuestionsForFilterState(selectedRole, { category: opt.id, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
   );
 
   const expLevelOptions = !role.expLevelChips || role.expLevelChips.length === 0
@@ -831,7 +839,7 @@ function FilterContent({
         ...(role.expLevelChips || []),
       ].filter(opt =>
         opt.id === '' ||
-        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: opt.id, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS) > 0
+        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: opt.id, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
       );
 
   const companyChips = selectedRole === 'ds' ? DS_COMPANY_CHIPS : PM_COMPANY_CHIPS;
@@ -840,7 +848,7 @@ function FilterContent({
     ...companyChips,
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: opt.id, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: opt.id, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
   );
 
   const domainChips = selectedRole === 'ds' ? DS_DOMAIN_CHIPS : PM_DOMAIN_CHIPS;
@@ -849,7 +857,7 @@ function FilterContent({
     ...domainChips,
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: opt.id }, pmQuestions, PM_LEVELS, DS_LEVELS) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: opt.id }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
   );
 
   const difficultyOptions = [
@@ -859,7 +867,7 @@ function FilterContent({
     { id: 'Difficult', label: 'Difficult' },
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
   );
 
   const activeCount = (filterCategory ? 1 : 0) + (filterExpLevel ? 1 : 0) + (filterCompany ? 1 : 0) + (filterDomain ? 1 : 0) + (filterDifficulty ? 1 : 0);
@@ -1029,6 +1037,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     if (selectedRole === 'ds') {
       const dsLevel = pmQuestions['Data Scientist'];
       categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
+    } else if (selectedRole === 'consulting') {
+      categoryChips = [];
     } else {
       categoryChips = PM_CATEGORY_CHIPS;
     }
@@ -1038,6 +1048,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     if (selectedRole === 'ds') {
       const dsLevel = pmQuestions['Data Scientist'];
       dataCats = dsLevel ? Object.keys(dsLevel).filter(k => Array.isArray(dsLevel[k])) : [];
+    } else if (selectedRole === 'consulting') {
+      dataCats = ['case_interview'];
     } else {
       dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
     }
@@ -1084,7 +1096,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const searchLower = search.toLowerCase();
 
     for (const level of levelsToShow) {
-      const bank = pmQuestions[level];
+      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : pmQuestions[level];
       if (!bank) continue;
       for (const cat of dataCats) {
         const questions = bank[cat] || [];
@@ -1135,6 +1147,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     if (selectedRole === 'ds') {
       const dsLevel = pmQuestions['Data Scientist'];
       categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
+    } else if (selectedRole === 'consulting') {
+      categoryChips = [];
     } else {
       categoryChips = PM_CATEGORY_CHIPS;
     }
@@ -1329,8 +1343,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           >
             <option value="pm">{ROLES.pm.label}</option>
             <option value="ds">{ROLES.ds.label}</option>
+            <option value="consulting">{ROLES.consulting.label}</option>
             <optgroup label="Coming Soon">
-              <option value="consulting" disabled>{ROLES.consulting.label}</option>
               <option value="finance" disabled>{ROLES.finance.label}</option>
               <option value="sales" disabled>{ROLES.sales.label}</option>
               <option value="general" disabled>{ROLES.general.label}</option>
