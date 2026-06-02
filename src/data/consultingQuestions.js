@@ -427,6 +427,29 @@ My honest advice would be that this decision is as much about readiness for a di
         roundType: "Advisory Case and Fit Interview",
         whatInterviewerTests: "Client advisory judgment, intellectual honesty, ability to give clear directional advice, understanding of PE dynamics",
         commonMistakes: ["Treating this as a pure transaction question without addressing family dynamics", "Not explaining governance implications clearly", "Giving a generic pros and cons list instead of a clear directional recommendation", "Ignoring the exit scenario for the PE firm and its implications for the family"]
+      },
+      {
+        q: "A large Indian infrastructure conglomerate is facing a hostile takeover bid from a foreign private equity consortium. The promoter family owns 38% and needs your advice on how to defend the company. What do you recommend?",
+        subcategory: "Advisory Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `A hostile takeover defense is one of the most high-stakes advisory situations and requires immediate action on multiple fronts simultaneously. The 38% promoter holding is significant but not enough on its own to block a determined acquirer if the remaining 62% is fragmented or institutionally held.
+
+I would structure my advice across three immediate priorities and one medium-term structural recommendation.
+
+The first immediate priority is understanding the bid and the shareholder register. Before recommending any defense I need to know three things precisely. What price is the consortium offering relative to the current market price and the intrinsic value of the business? Who holds the remaining 62% and what are their likely motivations — are they long-term institutional holders, short-term arbitrageurs who will tender at any reasonable premium, or retail shareholders who can be influenced through communication? And what is the regulatory approval timeline for this transaction, because that window defines how much time we have to mount a defense.
+
+The second immediate priority is a white knight search. If the promoter family is committed to maintaining Indian ownership or operational independence, the fastest and most reliable defense is finding an alternative acquirer or strategic partner who would pay a fair price and preserve the company's independence. This needs to start within days, not weeks.
+
+The third immediate priority is shareholder communication. The promoter family needs to articulate clearly and compellingly why the bid undervalues the company and what the long-term value creation plan is. Institutional shareholders who receive a credible and quantified counter-narrative are much less likely to tender. This communication needs to be specific — not generic statements about long-term value but concrete milestones, capital allocation plans, and return targets.
+
+The medium-term structural recommendation is to increase the promoter stake above 51% before the next vulnerability window, either through a rights issue that dilutes other shareholders or through open market purchases. A 38% holding is structurally too low for a company of this profile in the current environment.
+
+I would be direct with the promoter family about one thing: if the bid is at a genuinely fair or premium price and the family's primary motivation is personal control rather than shareholder value, the defense becomes legally and reputationally complex. The board's fiduciary duty is to shareholders, not to the promoter family's control preference.`,
+        companies: ['Deloitte', 'PwC', 'EY', 'KPMG', 'Protiviti', 'Alvarez & Marsal'],
+        roundType: "Advisory Case and Fit Interview",
+        whatInterviewerTests: "M&A defense strategy, shareholder dynamics, fiduciary responsibility, crisis advisory under pressure",
+        commonMistakes: ["Focusing only on legal defenses without addressing shareholder communication", "Not quantifying the intrinsic value case against the bid price", "Ignoring the fiduciary duty of the board to all shareholders", "Recommending a defense strategy without first understanding who holds the 62% and their motivations"]
       }
     ]
   },
@@ -506,6 +529,29 @@ I would present the CHRO with a segmented retention strategy because the solutio
         roundType: "Organizational and People Strategy Case",
         whatInterviewerTests: "Organization design thinking, talent and incentives understanding, change management, people dynamics sensitivity",
         commonMistakes: ["Treating all attrition the same instead of segmenting by role type and performance tier", "Relying only on exit interview data which is notoriously unreliable", "Jumping straight to a salary increase recommendation", "Ignoring the role of direct managers who are often the proximate cause of top performer exits"]
+      },
+      {
+        q: "A large Indian bank is merging with a smaller private bank. The combined entity will have 45,000 employees and significant role overlap across branches, operations, and middle office functions. The CHRO needs a workforce integration plan. How do you approach this?",
+        subcategory: "Human Capital Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `A bank merger workforce integration is one of the most complex human capital challenges because it combines the analytical rigor of organizational design with the emotional and legal complexity of managing people's careers and livelihoods. Getting this wrong destroys the value the merger was supposed to create.
+
+I would structure the workforce integration plan across four sequential but overlapping phases.
+
+The first phase is the diagnostic, which should ideally run in parallel with merger due diligence before closing. I would map the combined organization role by role to understand where there is genuine overlap and where there is complementarity. In a bank merger, branch network overlap is usually the most visible but middle office and operations functions often have the highest absolute number of redundant roles. I would also assess the talent quality in each overlapping function because a merger is an opportunity to keep the best people from both organizations, not just the acquirer's people by default.
+
+The second phase is the organizational design decision. Before any individual is told their role is at risk the leadership team needs to make the macro organizational design choices: what does the combined operating model look like, how many layers of management are needed, what is the right span of control, and which functions will be centralized versus distributed. These decisions create the framework within which individual role decisions are made. Designing the organization from a blank sheet and then fitting people to it produces better outcomes than trying to merge two existing org charts.
+
+The third phase is the individual placement process. I would establish clear, transparent, and consistently applied criteria for role selection decisions. This is both a fairness imperative and a legal imperative, particularly in a regulated entity like a bank where the RBI and labor regulators will scrutinize the process. People who are not selected for roles need to understand why, and the criteria need to be defensible. I would also design a voluntary separation scheme for eligible employees before moving to any involuntary separations, because voluntary schemes are less disruptive, less legally risky, and often surface employees who were planning to leave anyway.
+
+The fourth phase is retention of critical talent. In every merger there is a group of people who are not at risk of redundancy but who will leave anyway because of uncertainty, cultural discomfort, or competitive poaching during the vulnerable integration period. Identifying these people early and putting specific retention measures in place, including stay bonuses, career path clarity, and direct senior leadership engagement, is as important as managing the redundancy process.
+
+The single most important success factor I would emphasize to the CHRO is communication speed and transparency. Prolonged uncertainty is more damaging to productivity and talent retention than a difficult message delivered clearly and quickly.`,
+        companies: ['Mercer', 'Aon', 'Willis Towers Watson', 'Deloitte', 'PwC', 'EY', 'KPMG', 'Korn Ferry'],
+        roundType: "Organizational and People Strategy Case",
+        whatInterviewerTests: "Workforce integration design, organizational design thinking, change management, legal and regulatory awareness",
+        commonMistakes: ["Starting with headcount reduction targets rather than organizational design", "Not running the diagnostic before the merger closes when possible", "Applying the acquirer's org structure to the combined entity rather than designing from scratch", "Underestimating the retention risk for critical talent who are not redundant but will leave anyway"]
       }
     ]
   },
@@ -533,6 +579,29 @@ I would structure the board presentation as a portfolio heat map showing each bu
         roundType: "Corporate Strategy Case and Fit Interview",
         whatInterviewerTests: "Portfolio strategy thinking, capital allocation judgment, long-term strategic clarity, ability to advise a board",
         commonMistakes: ["Applying a generic two-by-two matrix without making it specific to the context", "Ignoring family or promoter dynamics that often drive portfolio decisions in Indian conglomerates", "Not addressing capital allocation explicitly", "Treating exit as binary when partial monetization or partnerships may be more realistic"]
+      },
+      {
+        q: "A leading Indian consumer goods company with strong brands in foods and personal care is considering acquiring a direct-to-consumer health and wellness startup that is growing at 80% year on year but has never been profitable. The acquisition price is 8x revenue. Should they do it?",
+        subcategory: "Corporate Strategy Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `An 8x revenue multiple for a high-growth but unprofitable startup is a significant valuation and the decision requires a rigorous strategic and financial assessment rather than either reflexive enthusiasm for the growth rate or reflexive concern about the lack of profitability.
+
+I would structure my assessment across four dimensions.
+
+The first dimension is strategic fit and the right to win question. What specific capability or asset does this startup bring that the acquirer cannot build or buy more cheaply? In direct-to-consumer health and wellness, the valuable assets are typically the brand and community, the customer data and retention model, the formulation and product IP, and the digital acquisition capability. I would assess each of these against what the acquirer already has. If the acquirer already has strong brand building capability and digital marketing infrastructure, the incremental value of the acquisition is lower than if these are genuine gaps.
+
+The second dimension is the quality of the 80% growth. Not all growth is equal. I would want to understand the unit economics at the cohort level. Is the growth profitable at the customer level even if the company overall is not, meaning the losses are driven by growth investment rather than structural margin problems? What are the customer acquisition costs and how are they trending as the company scales? What is the retention and repeat purchase rate? A direct-to-consumer business with strong cohort economics but high losses due to aggressive customer acquisition is very different from one where the unit economics are fundamentally broken.
+
+The third dimension is the valuation justification. At 8x revenue I need to model what the company needs to achieve for this to be a value-creating acquisition. I would build a simple DCF with three scenarios. In the base case, what revenue growth and margin trajectory justifies the price? In the bear case, if growth slows to 30% due to category normalization or competitive pressure, what is the return? In the bull case, if the acquirer's distribution and brand support accelerates the company, what is the upside? The decision should be made with eyes open on the bear case return, not just the bull case narrative.
+
+The fourth dimension is integration risk. Direct-to-consumer startups with strong growth cultures are notoriously difficult to integrate into large consumer goods companies. The entrepreneurial team that built the business often leaves within 18 months of acquisition, the agile operating model that drove the growth gets replaced by corporate processes, and the brand authenticity that attracted the customer base gets diluted. I would recommend a hands-off integration model where the startup operates as a standalone entity with light financial reporting requirements and a specific earn-out structure that retains the founding team for at least three years.
+
+My overall recommendation would be conditional. If the unit economics are sound, if the bear case return is acceptable, and if the acquirer is genuinely committed to a hands-off integration model, this acquisition is strategically compelling. If any of those conditions cannot be met, the risk-reward at 8x revenue does not justify the price.`,
+        companies: ['EY-Parthenon', 'Strategy&', 'Deloitte', 'Accenture Strategy'],
+        roundType: "Corporate Strategy Case and Fit Interview",
+        whatInterviewerTests: "Acquisition evaluation, unit economics analysis, integration risk, valuation thinking",
+        commonMistakes: ["Being seduced by the 80% growth rate without examining the quality of growth", "Not building a bear case scenario to stress test the valuation", "Recommending a full integration when a standalone model is clearly more appropriate", "Ignoring the talent retention risk as a critical acquisition risk"]
       }
     ]
   },
@@ -560,6 +629,31 @@ I would also be transparent with the leadership team that 60% in 18 months is ac
         roundType: "Digital Transformation Case with Customer Experience Component",
         whatInterviewerTests: "Customer journey thinking, digital channel strategy, behavior change vs technology, implementation realism",
         commonMistakes: ["Treating digital migration as a technology problem rather than a customer behavior change problem", "Not segmenting interactions by complexity and trust level before recommending digitization", "Ignoring frontline staff incentives which can make or break adoption", "Setting a uniform target without recognizing some interactions should not be fully digital"]
+      },
+      {
+        q: "A large Indian retail bank has invested 200 crore rupees in a mobile banking app over the last two years. The app has 2 million downloads but only 180,000 monthly active users. The CEO wants to know why adoption is low and what to do. How do you approach this?",
+        subcategory: "Digital Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `A 9% monthly active user rate on 2 million downloads is a significant adoption failure and tells me users are downloading the app but not finding enough reason to use it regularly. This is a product-market fit and user experience problem, not a marketing or awareness problem. Spending more on promotion to drive more downloads will not solve this.
+
+I would structure my diagnosis across three questions before recommending any solutions.
+
+The first question is: why are users downloading but not activating? The gap between download and first meaningful use is the first conversion problem. I would analyze the onboarding flow specifically. How many steps does it take to complete KYC and link an account? What is the drop-off rate at each step? In Indian banking apps, the most common activation killers are a lengthy KYC process that requires physical documents, a mandatory branch visit to complete activation, or a video KYC flow that fails frequently on low-bandwidth connections. If the activation funnel is broken, no amount of feature investment will improve MAU.
+
+The second question is: why are activated users not returning? For users who do complete activation, what are they using the app for and how often? I would look at the transaction type distribution in the active user base. If 90% of active user sessions are for balance checks and mini-statements, it tells me users trust the app for read-only tasks but not for transactions. This is a trust and reliability problem. If users are using the app but then calling the call center to complete the same transaction, it tells me the app journey is incomplete or confusing.
+
+The third question is: what are users doing instead? Are they using competitors' apps, are they going to branches, or are they simply not doing the banking task at all? Competitive benchmarking of UX against HDFC, ICICI, and Kotak apps would tell me whether this is a relative quality problem or an absolute one.
+
+Before recommending solutions I would want the activation funnel data with drop-off rates at each step, the feature usage distribution among active users, and the customer complaint and call center data categorized by task type to understand where the app is failing users in their moments of need.
+
+My likely recommendations would focus on three things. First, radically simplify the onboarding flow to get users to their first successful transaction in under three minutes. Second, identify the three to five high-frequency use cases where the app experience is clearly inferior to competitors and fix those specifically rather than trying to improve everything simultaneously. Third, implement an in-app nudge and notification strategy to bring back lapsed users with specific, relevant reasons to return rather than generic promotional messages.
+
+The 200 crore investment is already spent. The question now is how to extract value from it, and that requires fixing the product experience, not spending more.`,
+        companies: ['Deloitte Digital', 'Accenture Song', 'Publicis Sapient', 'Capgemini Invent', 'IBM Consulting'],
+        roundType: "Digital Transformation Case with Customer Experience Component",
+        whatInterviewerTests: "Digital product thinking, funnel analysis, user behavior diagnosis, prioritization",
+        commonMistakes: ["Recommending more marketing spend to drive downloads when the problem is activation and retention", "Not separating the activation problem from the retention problem", "Treating all 2 million downloads as the addressable base rather than focusing on the activation funnel", "Proposing a full app rebuild when targeted fixes to specific user journeys would be faster and cheaper"]
       }
     ]
   },
@@ -587,6 +681,29 @@ My working hypothesis is that this is a combination of a network design that was
         roundType: "Operations and Supply Chain Case Interview",
         whatInterviewerTests: "Supply chain network thinking, inventory and logistics reasoning, root cause analysis, quantitative structuring",
         commonMistakes: ["Assuming this is a supply shortage problem without noticing the rising inventory signal", "Not separating the modern trade channel from general trade in the diagnosis", "Jumping to automation before understanding forecasting and network fundamentals", "Ignoring the possibility that a recent operational change triggered the problem"]
+      },
+      {
+        q: "A large Indian automobile manufacturer is facing a situation where a single supplier provides 70% of its critical electronic control units. That supplier has just announced it is exiting the Indian market in 12 months. How do you help the manufacturer respond?",
+        subcategory: "Supply Chain Consultant",
+        difficulty: "Hard",
+        domain: "consulting",
+        a: `A single supplier providing 70% of a critical component with a 12-month exit notice is a supply chain crisis that requires immediate triage followed by a structured medium-term response. The 12-month clock is both the constraint and the organizing principle for everything that follows.
+
+I would structure the response across three time horizons.
+
+In the immediate term, the first priority is securing supply continuity through the transition period. I would negotiate aggressively with the exiting supplier to extend the exit timeline if possible, even by three to six months, in exchange for a clean wind-down commitment and payment guarantees. Simultaneously I would work with the manufacturer's procurement and engineering teams to identify the exact ECU specifications and qualification requirements so that alternative supplier evaluation can begin immediately. The worst outcome would be to spend the first three months in internal discussions rather than in parallel qualification conversations with alternative suppliers.
+
+In the medium term, the core work is supplier qualification and dual sourcing. ECU qualification for automotive applications is not a quick process. It typically involves six to nine months of testing, validation, and regulatory approval depending on the vehicle type and the specific ECU functions. This means qualification conversations need to start in month one, not month six. I would identify a primary replacement supplier and a secondary supplier simultaneously, targeting a 50-40-10 split between primary, secondary, and retained existing supplier if a partial continuation is possible. The 10% retained share is a deliberate risk hedge.
+
+The qualification process itself needs to be structured across four criteria. Technical capability and specification match with the existing ECUs. Manufacturing capacity and scalability to meet the manufacturer's volume requirements. Financial stability and long-term commitment to the Indian market given that this is precisely the risk that triggered the current crisis. And geopolitical and logistics risk, because concentrating ECU supply in a single geography creates vulnerability to the kind of supply shock the semiconductor crisis of 2021 demonstrated.
+
+In the longer term, this crisis needs to become the trigger for a formal supply chain resilience policy that prevents single-source dependencies above a defined threshold for any critical component. I would recommend the manufacturer implement a supplier concentration policy that flags any component where a single supplier exceeds 40% of supply and triggers a mandatory dual-sourcing program within 24 months.
+
+The financial model I would build for the manufacturer would quantify the cost of supply disruption if transition fails, the cost of the qualification and dual-sourcing program, and the ongoing cost premium of maintaining dual sources, to demonstrate that the resilience investment is significantly cheaper than the disruption risk it mitigates.`,
+        companies: ['Accenture', 'Kearney', 'Deloitte', 'PwC', 'EY', 'Capgemini'],
+        roundType: "Operations and Supply Chain Case Interview",
+        whatInterviewerTests: "Supply chain crisis management, supplier qualification thinking, risk mitigation, time-constrained planning",
+        commonMistakes: ["Not immediately starting supplier qualification conversations while negotiating with the exiting supplier", "Underestimating the ECU qualification timeline and planning as if a replacement can be found in weeks", "Focusing only on the immediate crisis without recommending a structural policy to prevent recurrence", "Not quantifying the cost of disruption to build the business case for the resilience investment"]
       }
     ]
   },
