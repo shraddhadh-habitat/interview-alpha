@@ -300,96 +300,119 @@ export default function FeedbackPreview() {
             </div>
           </div>
 
-          {/* RIGHT - AI Score only */}
+          {/* RIGHT - What would you score? CTA */}
           <div style={{
-            background: '#ffffff',
-            borderRadius: '14px',
-            padding: '24px',
-            border: '1px solid #e4e1db',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+            background: '#f9f8f6',
+            borderRadius: '16px',
+            padding: '32px 24px',
+            textAlign: 'center',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '16px'
           }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '20px'
-              }}>
-                <p style={{ fontWeight: 700, fontSize: '0.88rem', color: '#111', margin: 0 }}>
-                  AI Score
-                </p>
-                <div style={{
-                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                  borderRadius: '999px',
-                  padding: '4px 16px',
-                  color: '#fff',
-                  fontWeight: 800,
-                  fontSize: '1rem'
-                }}>
-                  {ex.overallScore} / 10
-                </div>
-              </div>
-
-              {ex.competencies.map(({ label, score }) => (
-                <div key={label} style={{ marginBottom: '10px' }}>
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    marginBottom: '4px',
-                    gap: '8px'
-                  }}>
-                    <span style={{ fontSize: '0.74rem', color: '#6b6b6b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</span>
-                    <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111', whiteSpace: 'nowrap', flexShrink: 0 }}>{score}/10</span>
-                  </div>
-                  <div style={{
-                    height: '6px',
-                    background: '#f0ede8',
-                    borderRadius: '999px',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      height: '100%',
-                      width: `${score * 10}%`,
-                      background: 'linear-gradient(90deg, #a8e6cf, #a78bfa)',
-                      borderRadius: '999px'
-                    }} />
-                  </div>
-                </div>
-              ))}
+            <div style={{
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '2rem'
+            }}>
+              ?
+            </div>
+            <p style={{
+              color: '#111',
+              fontWeight: 800,
+              fontSize: '1.1rem',
+              margin: 0
+            }}>
+              What would you score?
+            </p>
+            <p style={{
+              color: '#6b6b6b',
+              fontSize: '0.85rem',
+              lineHeight: 1.6,
+              margin: 0
+            }}>
+              Answer this question to get scored across 8 competencies. Most candidates are surprised by what they find out.
+            </p>
+            <button
+              onClick={() => window.location.href = '/signup'}
+              style={{
+                background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '14px 28px',
+                fontSize: '0.88rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                fontFamily: 'inherit'
+              }}
+            >
+              Find out my score →
+            </button>
           </div>
         </div>
 
-        {/* Expert Rewrite - Full Width */}
+        {/* Expert Rewrite - Teaser */}
         <div style={{
-          background: '#ffffff',
-          borderRadius: '14px',
+          background: 'linear-gradient(135deg,rgba(168,230,207,0.1),rgba(167,139,250,0.1))',
+          border: '1.5px solid rgba(167,139,250,0.2)',
+          borderRadius: '16px',
           padding: '24px',
-          border: '1px solid #e4e1db',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+          marginTop: '20px',
+          textAlign: 'center',
           width: '100%',
-          boxSizing: 'border-box',
-          marginTop: '0'
+          boxSizing: 'border-box'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
-            <span>✨</span>
-            <p style={{
-              fontSize: '0.75rem',
-              fontWeight: 700,
+          <p style={{
+            fontSize: '0.82rem',
+            fontWeight: 700,
+            color: '#a78bfa',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            margin: '0 0 8px'
+          }}>
+            ✨ Expert Rewrite
+          </p>
+          <p style={{
+            color: '#111',
+            fontWeight: 700,
+            fontSize: '0.95rem',
+            margin: '0 0 8px'
+          }}>
+            See how a senior interviewer would answer this question
+          </p>
+          <p style={{
+            color: '#6b6b6b',
+            fontSize: '0.85rem',
+            lineHeight: 1.6,
+            margin: '0 0 16px'
+          }}>
+            Every practice session includes a full expert rewrite showing exactly what a top candidate would say instead of what you said.
+          </p>
+          <button
+            onClick={() => window.location.href = '/signup'}
+            style={{
+              background: 'white',
               color: '#a78bfa',
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-              margin: 0
-            }}>Expert Rewrite</p>
-          </div>
-          {ex.expertRewrite.split('\n\n').map((paragraph, i) => (
-            <p key={i} style={{
-              fontSize: '0.88rem',
-              color: '#444',
-              lineHeight: 1.7,
-              margin: i === 0 ? '0 0 12px' : '0'
-            }}>
-              {paragraph}
-            </p>
-          ))}
+              border: '1.5px solid #a78bfa',
+              borderRadius: '12px',
+              padding: '12px 24px',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              fontFamily: 'inherit'
+            }}
+          >
+            Answer to unlock expert rewrite →
+          </button>
         </div>
 
       </div>
@@ -403,7 +426,7 @@ export default function FeedbackPreview() {
         marginBottom: '0',
         fontWeight: 600
       }}>
-        Every answer you give gets feedback this detailed, in under 60 seconds.
+        Dhruv scored 4 out of 10 on his first try. Two weeks later he had an offer. What would your score be?
       </p>
     </section>
   );
