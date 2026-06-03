@@ -431,8 +431,13 @@ export default function FeedbackPreview({ onNavigate }) {
           </p>
           <button
             onClick={() => {
-              const event = new CustomEvent('openLoginModal', { detail: { destination: 'practice' } });
-              window.dispatchEvent(event);
+              localStorage.setItem('ia_sample_question', JSON.stringify({
+                q: ex.question,
+                a: ex.sampleAnswer,
+                questionId: `feedback-${track.id}`,
+                category: ex.category
+              }));
+              onNavigate && onNavigate('practice');
             }}
             style={{
               background: 'white',
