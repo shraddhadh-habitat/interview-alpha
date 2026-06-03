@@ -192,31 +192,6 @@ export default function LandingPage({ user, onNavigate, profile }) {
             {' '}questions and answers to practice from.
           </p>
 
-          {/* Outcome proof */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginTop: '16px'
-          }}>
-            <span style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: '#22c55e',
-              flexShrink: 0,
-              display: 'inline-block'
-            }} />
-            <p style={{
-              fontSize: '0.82rem',
-              color: '#6b6b6b',
-              fontWeight: 600,
-              margin: 0
-            }}>
-              Dhruv scored 4 out of 10 on his first try. Two weeks later he had an offer.
-            </p>
-          </div>
-
           {/* Community proof */}
           <p style={{
             fontSize: '0.78rem',
