@@ -78,7 +78,7 @@ I would compute accuracy per segment, identify the worst-performing slices, then
 // COMPONENT
 // Updated spacing: AI Score and Expert Rewrite cards in tight 8px gap
 // ============================================================
-export default function FeedbackPreview({ onNavigate, user, onFeaturedQuestionCTA }) {
+export default function FeedbackPreview({ onNavigate }) {
   const [activeTrack, setActiveTrack] = useState('pm');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -98,11 +98,7 @@ export default function FeedbackPreview({ onNavigate, user, onFeaturedQuestionCT
       questionId: `feedback-${track.id}`,
       category: ex.category
     }));
-    if (user) {
-      onNavigate('practice');
-    } else if (onFeaturedQuestionCTA) {
-      onFeaturedQuestionCTA();
-    }
+    onNavigate('practice');
   };
 
   return (

@@ -19,7 +19,7 @@ const SAMPLE_PM_QUESTION = "WhatsApp has 500M users in India but makes almost no
 
 const SAMPLE_DS_QUESTION = "Zomato notices that restaurants with 4.1 star ratings get 3x more orders than restaurants with 4.0 stars. But your analysis shows that the 4.0 rated restaurants actually have better food quality based on repeat order rates. What's happening, how would you prove it, and what would you recommend to fix the rating system?";
 
-export default function LandingPage({ user, onNavigate, profile, onFeaturedQuestionCTA }) {
+export default function LandingPage({ user, onNavigate, profile }) {
   // Hero section  . proper two-column layout with container
   const HeroSection = () => (
     <div style={{
@@ -1186,7 +1186,7 @@ export default function LandingPage({ user, onNavigate, profile, onFeaturedQuest
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
       <HeroSection />
       <QuestionCardsSection />
-      <FeedbackPreview onNavigate={onNavigate} user={user} onFeaturedQuestionCTA={onFeaturedQuestionCTA} />
+      <FeedbackPreview onNavigate={onNavigate} />
       <GuidedPathsSection />
       <ProductProofSection />
       <TrustSection />
