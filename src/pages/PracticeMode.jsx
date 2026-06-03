@@ -1017,6 +1017,75 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   ← Back to Q&A
                 </button>
               </div>
+
+              {/* Post-first-session encouragement hook */}
+              <div style={{
+                marginTop: 28,
+                padding: '24px',
+                background: C.greenLight,
+                border: `1px solid ${C.greenBorder}`,
+                borderRadius: 16,
+              }}>
+                <p style={{
+                  fontSize: 14,
+                  color: C.text,
+                  lineHeight: 1.6,
+                  marginBottom: 16,
+                  margin: 0,
+                  marginBottom: 16,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                }}>
+                  That's your baseline. Most users improve in their first week with one question a day. Want to try your next question now?
+                </p>
+                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                  {onNextQuestion && (
+                    <button
+                      onClick={onNextQuestion}
+                      style={{
+                        flex: 1,
+                        minWidth: 140,
+                        padding: '13px 0',
+                        background: C.green,
+                        border: 'none',
+                        borderRadius: 12,
+                        color: '#fff',
+                        fontSize: 11,
+                        letterSpacing: 1.5,
+                        textTransform: 'uppercase',
+                        cursor: 'pointer',
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
+                        fontWeight: 600,
+                        transition: 'background 0.2s',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
+                      onMouseLeave={e => e.currentTarget.style.background = C.green}
+                    >
+                      Try Next Question
+                    </button>
+                  )}
+                  <button
+                    style={{
+                      flex: 1,
+                      minWidth: 140,
+                      padding: '13px 0',
+                      background: 'transparent',
+                      border: `1px solid ${C.border}`,
+                      borderRadius: 12,
+                      color: C.textMuted,
+                      fontSize: 11,
+                      letterSpacing: 1.5,
+                      textTransform: 'uppercase',
+                      cursor: 'pointer',
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
+                  >
+                    Remind Me Tomorrow
+                  </button>
+                </div>
+              </div>
             </>
           ) : (
             <div style={{

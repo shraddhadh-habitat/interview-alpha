@@ -78,7 +78,7 @@ I would compute accuracy per segment, identify the worst-performing slices, then
 // COMPONENT
 // Updated spacing: AI Score and Expert Rewrite cards in tight 8px gap
 // ============================================================
-export default function FeedbackPreview({ onNavigate }) {
+export default function FeedbackPreview({ onNavigate, user, onFeaturedQuestionCTA }) {
   const [activeTrack, setActiveTrack] = useState('pm');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -90,6 +90,20 @@ export default function FeedbackPreview({ onNavigate }) {
 
   const track = TRACKS.find(t => t.id === activeTrack);
   const ex = track.example;
+
+  const handleFeaturedQuestionClick = () => {
+    localStorage.setItem('ia_sample_question', JSON.stringify({
+      q: ex.question,
+      a: ex.sampleAnswer,
+      questionId: `feedback-${track.id}`,
+      category: ex.category
+    }));
+    if (user) {
+      onNavigate('practice');
+    } else if (onFeaturedQuestionCTA) {
+      onFeaturedQuestionCTA();
+    }
+  };
 
   return (
     <section style={{
@@ -225,15 +239,7 @@ export default function FeedbackPreview({ onNavigate }) {
               </p>
 
               <div
-                onClick={() => {
-                  localStorage.setItem('ia_sample_question', JSON.stringify({
-                    q: ex.question,
-                    a: ex.sampleAnswer,
-                    questionId: `feedback-${track.id}`,
-                    category: ex.category
-                  }));
-                  onNavigate && onNavigate('practice');
-                }}
+                onClick={handleFeaturedQuestionClick}
                 style={{
                   width: '100%',
                   minHeight: '80px',
@@ -262,15 +268,7 @@ export default function FeedbackPreview({ onNavigate }) {
                 marginTop: '10px'
               }}>
                 <button
-                  onClick={() => {
-                  localStorage.setItem('ia_sample_question', JSON.stringify({
-                    q: ex.question,
-                    a: ex.sampleAnswer,
-                    questionId: `feedback-${track.id}`,
-                    category: ex.category
-                  }));
-                  onNavigate && onNavigate('practice');
-                }}
+                  onClick={handleFeaturedQuestionClick}
                   style={{
                     flex: 1,
                     background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
@@ -287,15 +285,7 @@ export default function FeedbackPreview({ onNavigate }) {
                   🎙️ Answer by Voice
                 </button>
                 <button
-                  onClick={() => {
-                  localStorage.setItem('ia_sample_question', JSON.stringify({
-                    q: ex.question,
-                    a: ex.sampleAnswer,
-                    questionId: `feedback-${track.id}`,
-                    category: ex.category
-                  }));
-                  onNavigate && onNavigate('practice');
-                }}
+                  onClick={handleFeaturedQuestionClick}
                   style={{
                     flex: 1,
                     background: 'white',
@@ -366,15 +356,7 @@ export default function FeedbackPreview({ onNavigate }) {
               Answer this question to get scored across 8 competencies. Most candidates are surprised by what they find out.
             </p>
             <button
-              onClick={() => {
-                localStorage.setItem('ia_sample_question', JSON.stringify({
-                  q: ex.question,
-                  a: ex.sampleAnswer,
-                  questionId: `feedback-${track.id}`,
-                  category: ex.category
-                }));
-                onNavigate && onNavigate('practice');
-              }}
+              onClick={handleFeaturedQuestionClick}
               style={{
                 background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
                 color: 'white',
@@ -430,15 +412,7 @@ export default function FeedbackPreview({ onNavigate }) {
             Every practice session includes a full expert rewrite showing exactly what a top candidate would say instead of what you said.
           </p>
           <button
-            onClick={() => {
-              localStorage.setItem('ia_sample_question', JSON.stringify({
-                q: ex.question,
-                a: ex.sampleAnswer,
-                questionId: `feedback-${track.id}`,
-                category: ex.category
-              }));
-              onNavigate && onNavigate('practice');
-            }}
+            onClick={handleFeaturedQuestionClick}
             style={{
               background: 'white',
               color: '#a78bfa',

@@ -728,6 +728,16 @@ export default function App() {
     }
   }, [user]);
 
+  const handleFeaturedQuestionCTA = useCallback(() => {
+    if (!user) {
+      setPostLoginDestination('practice');
+      setLoginMessage('Answer the featured question to get AI feedback');
+      setShowLoginModal(true);
+    } else {
+      setPage('practice');
+    }
+  }, [user]);
+
   const handleLandingBrowse = useCallback(() => {
     setPage('practice');
   }, []);
@@ -794,6 +804,7 @@ export default function App() {
               user={user}
               profile={profile}
               onNavigate={(destination) => setPage(destination)}
+              onFeaturedQuestionCTA={handleFeaturedQuestionCTA}
             />
           )}
           {page === 'practice'    && (
@@ -863,7 +874,6 @@ export default function App() {
               setShowLoginModal(false);
               setLoginMessage('');
               setPostLoginDestination(null);
-              setLandingPracticeQuestion(null);
             }}
             onSuccess={() => {
               setShowLoginModal(false);
