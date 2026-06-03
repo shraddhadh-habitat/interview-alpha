@@ -120,7 +120,7 @@ export default function FeedbackPreview() {
           marginBottom: '10px',
           lineHeight: 1.25
         }}>
-          This is what your feedback looks like
+          Answer this question. See your real score.
         </h2>
         <p style={{ color: '#111', fontSize: '0.95rem', fontWeight: 600 }}>
           AI precision. Human expertise. Guaranteed.
@@ -208,29 +208,90 @@ export default function FeedbackPreview() {
               </p>
             </div>
 
-            {/* Sample answer */}
+            {/* Interactive answer input */}
             <div style={{
-              background: '#fafafa',
+              background: '#f9f8f6',
               borderRadius: '14px',
               padding: '20px',
-              border: '1px solid #e4e1db'
+              marginTop: '12px'
             }}>
               <p style={{
-                fontSize: '0.72rem',
-                fontWeight: 600,
-                color: '#9a9a9a',
-                marginBottom: '10px'
+                color: '#111',
+                fontSize: '0.85rem',
+                fontWeight: 700,
+                margin: '0 0 12px'
               }}>
-                Sample answer
+                How would you answer this?
               </p>
-              <p style={{
-                fontSize: '0.84rem',
-                color: '#444',
-                lineHeight: 1.7,
-                margin: 0,
-                fontStyle: 'italic'
+
+              <textarea
+                placeholder="Type your answer here... (minimum 50 words)"
+                onClick={() => window.location.href = '/signup'}
+                readOnly
+                style={{
+                  width: '100%',
+                  minHeight: '100px',
+                  padding: '12px',
+                  borderRadius: '10px',
+                  border: '1.5px solid #e4e1db',
+                  fontSize: '0.85rem',
+                  color: '#9a9a9a',
+                  background: 'white',
+                  cursor: 'pointer',
+                  resize: 'none',
+                  fontFamily: 'inherit',
+                  boxSizing: 'border-box'
+                }}
+              />
+
+              <div style={{
+                display: 'flex',
+                gap: '8px',
+                marginTop: '10px'
               }}>
-                "{ex.sampleAnswer}"
+                <button
+                  onClick={() => window.location.href = '/signup'}
+                  style={{
+                    flex: 1,
+                    background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '10px',
+                    padding: '12px',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  🎙️ Answer by Voice
+                </button>
+                <button
+                  onClick={() => window.location.href = '/signup'}
+                  style={{
+                    flex: 1,
+                    background: 'white',
+                    color: '#a78bfa',
+                    border: '1.5px solid #a78bfa',
+                    borderRadius: '10px',
+                    padding: '12px',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  ✍️ Type Answer
+                </button>
+              </div>
+
+              <p style={{
+                color: '#9a9a9a',
+                fontSize: '0.72rem',
+                textAlign: 'center',
+                margin: '10px 0 0'
+              }}>
+                Sign in to get AI feedback scored on your own answer
               </p>
             </div>
           </div>
