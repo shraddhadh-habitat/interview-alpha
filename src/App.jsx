@@ -479,6 +479,17 @@ export default function App() {
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
   const [showVerifyEmailPrompt, setShowVerifyEmailPrompt] = useState(false);
 
+  // Handle signup query parameter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('signup') === 'true') {
+      setPostLoginDestination('practice');
+      setLoginMessage('Sign up to get AI feedback');
+      setShowLoginModal(true);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);

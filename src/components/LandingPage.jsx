@@ -1186,7 +1186,7 @@ export default function LandingPage({ user, onNavigate, onLogin, profile }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
       <HeroSection />
       <QuestionCardsSection />
-      <FeedbackPreview onSignup={onLogin} />
+      <FeedbackPreview />
       <GuidedPathsSection />
       <ProductProofSection />
       <TrustSection />

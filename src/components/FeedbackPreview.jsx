@@ -78,7 +78,7 @@ I would compute accuracy per segment, identify the worst-performing slices, then
 // COMPONENT
 // Updated spacing: AI Score and Expert Rewrite cards in tight 8px gap
 // ============================================================
-export default function FeedbackPreview({ onSignup }) {
+export default function FeedbackPreview() {
   const [activeTrack, setActiveTrack] = useState('pm');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -225,7 +225,7 @@ export default function FeedbackPreview({ onSignup }) {
               </p>
 
               <div
-                onClick={() => onSignup && onSignup()}
+                onClick={() => window.location.href = 'https://www.interviewalpha.ai/?signup=true'}
                 style={{
                   width: '100%',
                   minHeight: '80px',
@@ -254,7 +254,7 @@ export default function FeedbackPreview({ onSignup }) {
                 marginTop: '10px'
               }}>
                 <button
-                  onClick={() => { console.log('Button clicked, onSignup:', typeof onSignup); onSignup && onSignup(); }}
+                  onClick={() => window.location.href = 'https://www.interviewalpha.ai/?signup=true'}
                   style={{
                     flex: 1,
                     background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
@@ -271,7 +271,7 @@ export default function FeedbackPreview({ onSignup }) {
                   🎙️ Answer by Voice
                 </button>
                 <button
-                  onClick={() => onSignup && onSignup()}
+                  onClick={() => window.location.href = 'https://www.interviewalpha.ai/?signup=true'}
                   style={{
                     flex: 1,
                     background: 'white',
@@ -342,7 +342,7 @@ export default function FeedbackPreview({ onSignup }) {
               Answer this question to get scored across 8 competencies. Most candidates are surprised by what they find out.
             </p>
             <button
-              onClick={() => window.location.href = '/signup'}
+              onClick={() => window.location.href = 'https://www.interviewalpha.ai/?signup=true'}
               style={{
                 background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
                 color: 'white',
@@ -398,7 +398,7 @@ export default function FeedbackPreview({ onSignup }) {
             Every practice session includes a full expert rewrite showing exactly what a top candidate would say instead of what you said.
           </p>
           <button
-            onClick={() => window.location.href = '/signup'}
+            onClick={() => window.location.href = 'https://www.interviewalpha.ai/?signup=true'}
             style={{
               background: 'white',
               color: '#a78bfa',
