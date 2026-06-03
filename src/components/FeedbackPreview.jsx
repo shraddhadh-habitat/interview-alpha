@@ -225,7 +225,7 @@ export default function FeedbackPreview({ onNavigate }) {
               </p>
 
               <div
-                onClick={() => onNavigate && onNavigate('practice')}
+                onClick={() => { console.log('FeedbackPreview clicked, onNavigate:', typeof onNavigate); onNavigate && onNavigate('practice'); }}
                 style={{
                   width: '100%',
                   minHeight: '80px',
