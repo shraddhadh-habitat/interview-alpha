@@ -479,18 +479,6 @@ export default function App() {
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
   const [showVerifyEmailPrompt, setShowVerifyEmailPrompt] = useState(false);
 
-  // Handle signup query parameter
-  useEffect(() => {
-    if (authLoading) return;
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('signup') === 'true') {
-      setPostLoginDestination('practice');
-      setLoginMessage('Sign up to get AI feedback');
-      setShowLoginModal(true);
-      window.history.replaceState({}, '', window.location.pathname);
-    }
-  }, [authLoading]);
-
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -509,6 +497,16 @@ export default function App() {
     const handler = (e) => setPage(e.detail);
     window.addEventListener('ia:navigate', handler);
     return () => window.removeEventListener('ia:navigate', handler);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e) => {
+      setPostLoginDestination(e.detail.destination);
+      setLoginMessage('Sign up to get AI feedback');
+      setShowLoginModal(true);
+    };
+    window.addEventListener('openLoginModal', handler);
+    return () => window.removeEventListener('openLoginModal', handler);
   }, []);
 
   // Device tracking is handled by DeviceTracker component

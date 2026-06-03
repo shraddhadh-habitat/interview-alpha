@@ -225,7 +225,10 @@ export default function FeedbackPreview() {
               </p>
 
               <div
-                onClick={() => window.location.href = 'https://www.interviewalpha.ai/?signup=true'}
+                onClick={() => {
+                  const event = new CustomEvent('openLoginModal', { detail: { destination: 'practice' } });
+                  window.dispatchEvent(event);
+                }}
                 style={{
                   width: '100%',
                   minHeight: '80px',
@@ -254,7 +257,10 @@ export default function FeedbackPreview() {
                 marginTop: '10px'
               }}>
                 <button
-                  onClick={() => window.location.href = 'https://www.interviewalpha.ai/?signup=true'}
+                  onClick={() => {
+                    const event = new CustomEvent('openLoginModal', { detail: { destination: 'practice' } });
+                    window.dispatchEvent(event);
+                  }}
                   style={{
                     flex: 1,
                     background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
@@ -271,7 +277,10 @@ export default function FeedbackPreview() {
                   🎙️ Answer by Voice
                 </button>
                 <button
-                  onClick={() => window.location.href = 'https://www.interviewalpha.ai/?signup=true'}
+                  onClick={() => {
+                    const event = new CustomEvent('openLoginModal', { detail: { destination: 'practice' } });
+                    window.dispatchEvent(event);
+                  }}
                   style={{
                     flex: 1,
                     background: 'white',
@@ -342,7 +351,10 @@ export default function FeedbackPreview() {
               Answer this question to get scored across 8 competencies. Most candidates are surprised by what they find out.
             </p>
             <button
-              onClick={() => window.location.href = 'https://www.interviewalpha.ai/?signup=true'}
+              onClick={() => {
+                const event = new CustomEvent('openLoginModal', { detail: { destination: 'practice' } });
+                window.dispatchEvent(event);
+              }}
               style={{
                 background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
                 color: 'white',
@@ -398,7 +410,10 @@ export default function FeedbackPreview() {
             Every practice session includes a full expert rewrite showing exactly what a top candidate would say instead of what you said.
           </p>
           <button
-            onClick={() => window.location.href = 'https://www.interviewalpha.ai/?signup=true'}
+            onClick={() => {
+              const event = new CustomEvent('openLoginModal', { detail: { destination: 'practice' } });
+              window.dispatchEvent(event);
+            }}
             style={{
               background: 'white',
               color: '#a78bfa',
