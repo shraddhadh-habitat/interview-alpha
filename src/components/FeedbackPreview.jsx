@@ -78,7 +78,7 @@ I would compute accuracy per segment, identify the worst-performing slices, then
 // COMPONENT
 // Updated spacing: AI Score and Expert Rewrite cards in tight 8px gap
 // ============================================================
-export default function FeedbackPreview() {
+export default function FeedbackPreview({ onSignup }) {
   const [activeTrack, setActiveTrack] = useState('pm');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -225,7 +225,7 @@ export default function FeedbackPreview() {
               </p>
 
               <div
-                onClick={() => window.location.href = '/signup'}
+                onClick={() => onSignup && onSignup()}
                 style={{
                   width: '100%',
                   minHeight: '80px',
@@ -254,7 +254,7 @@ export default function FeedbackPreview() {
                 marginTop: '10px'
               }}>
                 <button
-                  onClick={() => window.location.href = '/signup'}
+                  onClick={() => onSignup && onSignup()}
                   style={{
                     flex: 1,
                     background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
@@ -271,7 +271,7 @@ export default function FeedbackPreview() {
                   🎙️ Answer by Voice
                 </button>
                 <button
-                  onClick={() => window.location.href = '/signup'}
+                  onClick={() => onSignup && onSignup()}
                   style={{
                     flex: 1,
                     background: 'white',
