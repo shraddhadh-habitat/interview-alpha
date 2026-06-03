@@ -254,10 +254,7 @@ export default function FeedbackPreview({ onNavigate }) {
                 marginTop: '10px'
               }}>
                 <button
-                  onClick={() => {
-                    const event = new CustomEvent('openLoginModal', { detail: { destination: 'practice' } });
-                    window.dispatchEvent(event);
-                  }}
+                  onClick={() => { console.log('FeedbackPreview clicked, onNavigate:', typeof onNavigate); onNavigate && onNavigate('practice'); }}
                   style={{
                     flex: 1,
                     background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
@@ -274,10 +271,7 @@ export default function FeedbackPreview({ onNavigate }) {
                   🎙️ Answer by Voice
                 </button>
                 <button
-                  onClick={() => {
-                    const event = new CustomEvent('openLoginModal', { detail: { destination: 'practice' } });
-                    window.dispatchEvent(event);
-                  }}
+                  onClick={() => { console.log('FeedbackPreview clicked, onNavigate:', typeof onNavigate); onNavigate && onNavigate('practice'); }}
                   style={{
                     flex: 1,
                     background: 'white',
