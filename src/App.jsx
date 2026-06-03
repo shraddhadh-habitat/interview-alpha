@@ -794,7 +794,7 @@ export default function App() {
               user={user}
               profile={profile}
               onNavigate={(destination) => setPage(destination)}
-              onLogin={() => { setPostLoginDestination('practice'); setLoginMessage('Sign up to get AI feedback'); setShowLoginModal(true); }}
+              onLogin={() => { console.log('onLogin called, setting modal true'); setPostLoginDestination('practice'); setLoginMessage('Sign up to get AI feedback'); setShowLoginModal(true); }}
             />
           )}
           {page === 'practice'    && (
