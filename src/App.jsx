@@ -741,6 +741,13 @@ export default function App() {
     }
   }, [user]);
 
+  const handleLandingLogin = useCallback(() => {
+    console.log('handleLandingLogin called');
+    setPostLoginDestination('practice');
+    setLoginMessage('Sign up to get AI feedback');
+    setShowLoginModal(true);
+  }, []);
+
   if (authLoading) return <LoadingScreen />;
   if (showResetPassword) return <ResetPasswordPage onDone={() => { setShowResetPassword(false); supabase.auth.signOut(); }} />;
 
@@ -794,7 +801,7 @@ export default function App() {
               user={user}
               profile={profile}
               onNavigate={(destination) => setPage(destination)}
-              onLogin={() => { console.log('onLogin called, setting modal true'); setPostLoginDestination('practice'); setLoginMessage('Sign up to get AI feedback'); setShowLoginModal(true); }}
+              onLogin={handleLandingLogin}
             />
           )}
           {page === 'practice'    && (
