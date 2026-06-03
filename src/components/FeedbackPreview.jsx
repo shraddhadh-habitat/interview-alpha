@@ -78,7 +78,7 @@ I would compute accuracy per segment, identify the worst-performing slices, then
 // COMPONENT
 // Updated spacing: AI Score and Expert Rewrite cards in tight 8px gap
 // ============================================================
-export default function FeedbackPreview() {
+export default function FeedbackPreview({ onNavigate }) {
   const [activeTrack, setActiveTrack] = useState('pm');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -225,10 +225,7 @@ export default function FeedbackPreview() {
               </p>
 
               <div
-                onClick={() => {
-                  const event = new CustomEvent('openLoginModal', { detail: { destination: 'practice' } });
-                  window.dispatchEvent(event);
-                }}
+                onClick={() => onNavigate && onNavigate('practice')}
                 style={{
                   width: '100%',
                   minHeight: '80px',

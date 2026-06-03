@@ -499,16 +499,6 @@ export default function App() {
     return () => window.removeEventListener('ia:navigate', handler);
   }, []);
 
-  useEffect(() => {
-    const handler = (e) => {
-      setPostLoginDestination(e.detail.destination);
-      setLoginMessage('Sign up to get AI feedback');
-      setShowLoginModal(true);
-    };
-    window.addEventListener('openLoginModal', handler);
-    return () => window.removeEventListener('openLoginModal', handler);
-  }, []);
-
   // Device tracking is handled by DeviceTracker component
   // which updates user profile with device info on every page load
 
@@ -751,13 +741,6 @@ export default function App() {
     }
   }, [user]);
 
-  const handleLandingLogin = useCallback(() => {
-    console.log('handleLandingLogin called');
-    setPostLoginDestination('practice');
-    setLoginMessage('Sign up to get AI feedback');
-    setShowLoginModal(true);
-  }, []);
-
   if (authLoading) return <LoadingScreen />;
   if (showResetPassword) return <ResetPasswordPage onDone={() => { setShowResetPassword(false); supabase.auth.signOut(); }} />;
 
@@ -811,7 +794,6 @@ export default function App() {
               user={user}
               profile={profile}
               onNavigate={(destination) => setPage(destination)}
-              onLogin={handleLandingLogin}
             />
           )}
           {page === 'practice'    && (
