@@ -798,9 +798,11 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   const disabled = loading || !ready;
                   return (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
-                      <span style={{ fontSize: 11, color: ready ? C.success : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        {wordCount} / 50 words min{!ready && wordCount > 0 ? `  -  ${50 - wordCount} more` : ''}
-                      </span>
+                      {wordCount > 0 && wordCount < 50 && (
+                        <span style={{ fontSize: 11, color: ready ? C.success : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                          {wordCount} / 50 words min{!ready && wordCount > 0 ? `  -  ${50 - wordCount} more` : ''}
+                        </span>
+                      )}
                       <button
                         onClick={() => handleSubmit(textAnswer, false)}
                         disabled={disabled}
