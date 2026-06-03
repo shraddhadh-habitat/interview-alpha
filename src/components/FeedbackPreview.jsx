@@ -254,7 +254,7 @@ export default function FeedbackPreview({ onSignup }) {
                 marginTop: '10px'
               }}>
                 <button
-                  onClick={() => onSignup && onSignup()}
+                  onClick={() => { console.log('Button clicked, onSignup:', typeof onSignup); onSignup && onSignup(); }}
                   style={{
                     flex: 1,
                     background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
