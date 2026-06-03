@@ -224,25 +224,29 @@ export default function FeedbackPreview() {
                 How would you answer this?
               </p>
 
-              <textarea
-                placeholder="Type your answer here... (minimum 50 words)"
+              <div
                 onClick={() => window.location.href = '/signup'}
-                readOnly
                 style={{
                   width: '100%',
-                  minHeight: '100px',
+                  minHeight: '80px',
                   padding: '12px',
                   borderRadius: '10px',
-                  border: '1.5px solid #e4e1db',
+                  border: '1.5px dashed #a78bfa',
                   fontSize: '0.85rem',
                   color: '#9a9a9a',
                   background: 'white',
                   cursor: 'pointer',
-                  resize: 'none',
                   fontFamily: 'inherit',
-                  boxSizing: 'border-box'
+                  boxSizing: 'border-box',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  lineHeight: 1.6
                 }}
-              />
+              >
+                Click here to type your answer and get scored...
+              </div>
 
               <div style={{
                 display: 'flex',
