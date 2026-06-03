@@ -225,7 +225,15 @@ export default function FeedbackPreview({ onNavigate }) {
               </p>
 
               <div
-                onClick={() => { console.log('FeedbackPreview clicked, onNavigate:', typeof onNavigate); onNavigate && onNavigate('practice'); }}
+                onClick={() => {
+                  localStorage.setItem('ia_sample_question', JSON.stringify({
+                    q: ex.question,
+                    a: ex.sampleAnswer,
+                    questionId: `feedback-${track.id}`,
+                    category: ex.category
+                  }));
+                  onNavigate && onNavigate('practice');
+                }}
                 style={{
                   width: '100%',
                   minHeight: '80px',
@@ -254,7 +262,15 @@ export default function FeedbackPreview({ onNavigate }) {
                 marginTop: '10px'
               }}>
                 <button
-                  onClick={() => { console.log('FeedbackPreview clicked, onNavigate:', typeof onNavigate); onNavigate && onNavigate('practice'); }}
+                  onClick={() => {
+                  localStorage.setItem('ia_sample_question', JSON.stringify({
+                    q: ex.question,
+                    a: ex.sampleAnswer,
+                    questionId: `feedback-${track.id}`,
+                    category: ex.category
+                  }));
+                  onNavigate && onNavigate('practice');
+                }}
                   style={{
                     flex: 1,
                     background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
@@ -271,7 +287,15 @@ export default function FeedbackPreview({ onNavigate }) {
                   🎙️ Answer by Voice
                 </button>
                 <button
-                  onClick={() => { console.log('FeedbackPreview clicked, onNavigate:', typeof onNavigate); onNavigate && onNavigate('practice'); }}
+                  onClick={() => {
+                  localStorage.setItem('ia_sample_question', JSON.stringify({
+                    q: ex.question,
+                    a: ex.sampleAnswer,
+                    questionId: `feedback-${track.id}`,
+                    category: ex.category
+                  }));
+                  onNavigate && onNavigate('practice');
+                }}
                   style={{
                     flex: 1,
                     background: 'white',
@@ -343,8 +367,13 @@ export default function FeedbackPreview({ onNavigate }) {
             </p>
             <button
               onClick={() => {
-                const event = new CustomEvent('openLoginModal', { detail: { destination: 'practice' } });
-                window.dispatchEvent(event);
+                localStorage.setItem('ia_sample_question', JSON.stringify({
+                  q: ex.question,
+                  a: ex.sampleAnswer,
+                  questionId: `feedback-${track.id}`,
+                  category: ex.category
+                }));
+                onNavigate && onNavigate('practice');
               }}
               style={{
                 background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
