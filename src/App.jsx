@@ -481,6 +481,7 @@ export default function App() {
 
   // Handle signup query parameter
   useEffect(() => {
+    if (authLoading) return;
     const params = new URLSearchParams(window.location.search);
     if (params.get('signup') === 'true') {
       setPostLoginDestination('practice');
@@ -488,7 +489,7 @@ export default function App() {
       setShowLoginModal(true);
       window.history.replaceState({}, '', window.location.pathname);
     }
-  }, []);
+  }, [authLoading]);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
