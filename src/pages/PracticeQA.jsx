@@ -1026,7 +1026,37 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [filterDomain, setFilterDomain] = useState(null);
   const [filterDifficulty, setFilterDifficulty] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
-  const [practiceQuestion, setPracticeQuestion] = useState(null);
+  const [practiceQuestion, setPracticeQuestion] = useState(() => {
+    // Synchronously load pending homepage featured question before first render.
+    // This prevents flash of generic Practice browser UI when user returns after auth.
+    const sampleQ = localStorage.getItem('ia_sample_question');
+    if (sampleQ) {
+      localStorage.removeItem('ia_sample_question');
+      try {
+        const parsed = JSON.parse(sampleQ);
+        return {
+          question: parsed,
+          questionId: parsed.questionId || 'landing-sample',
+          designation: 'sample',
+          category: parsed.category || 'sample',
+        };
+      } catch(e) {
+        return {
+          question: { q: sampleQ, a: '' },
+          questionId: 'landing-sample',
+          designation: 'sample',
+          category: 'sample',
+        };
+      }
+    }
+    // Also check sessionStorage for quick question passed via sessionStorage
+    const raw = sessionStorage.getItem('ia:quickQuestion');
+    if (raw) {
+      sessionStorage.removeItem('ia:quickQuestion');
+      try { return JSON.parse(raw); } catch {}
+    }
+    return null;
+  });
   const [practiceStats, setPracticeStats] = useState({});
   const [reportTarget, setReportTarget] = useState(null);
   const [showWelcome, setShowWelcome] = useState(() => {
@@ -1041,39 +1071,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const handler = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handler);
     return () => window.removeEventListener('resize', handler);
-  }, []);
-
-  // Pre-load a featured/quick question passed via sessionStorage
-  useEffect(() => {
-    const raw = sessionStorage.getItem('ia:quickQuestion');
-    if (raw) {
-      sessionStorage.removeItem('ia:quickQuestion');
-      try { setPracticeQuestion(JSON.parse(raw)); } catch {}
-    }
-  }, []);
-
-  // Pre-load sample question from landing page via localStorage
-  useEffect(() => {
-    const sampleQ = localStorage.getItem('ia_sample_question');
-    if (sampleQ) {
-      localStorage.removeItem('ia_sample_question');
-      try {
-        const parsed = JSON.parse(sampleQ);
-        setPracticeQuestion({
-          question: parsed,
-          questionId: parsed.questionId || 'landing-sample',
-          designation: 'sample',
-          category: parsed.category || 'sample',
-        });
-      } catch(e) {
-        setPracticeQuestion({
-          question: { q: sampleQ, a: '' },
-          questionId: 'landing-sample',
-          designation: 'sample',
-          category: 'sample',
-        });
-      }
-    }
   }, []);
 
   // Load practice stats for current user
