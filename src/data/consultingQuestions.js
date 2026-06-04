@@ -228,8 +228,7 @@ The fix would address the root cause: shift from push to pull-based replenishmen
         roundType: "Case Interview",
         whatInterviewerTests: "Distribution network diagnosis, loss categorization, root cause analysis, incentive design",
         commonMistakes: ["Treating all distribution losses as the same type requiring the same solution", "Not decomposing by loss category and chain point before diagnosing", "Recommending technology solutions before understanding the root cause", "Not identifying push-based selling as a structural driver of expiry losses in Indian FMCG"]
-      }
-,
+      },
       {
   q: "A large Indian hotel chain has seen its revenue per available room decline 22% over 18 months while occupancy has remained stable at 78%. The CEO wants to understand the cause and the recovery strategy. How do you approach this?",
   subcategory: "Consultant",
@@ -261,7 +260,6 @@ The 22% ADR decline with stable occupancy is almost certainly a channel mix or p
   whatInterviewerTests: "RevPAR decomposition, MECE revenue driver analysis, hotel industry knowledge, recovery strategy",
   commonMistakes: ["Not immediately recognizing that stable occupancy means the problem is entirely in ADR", "Not segmenting ADR decline into pricing, mix, and channel causes", "Missing OTA channel mix as a primary driver", "Recommending occupancy improvement strategies when occupancy is already at 78%"]
 },
-,
       {
   q: "A large Indian private bank's fee income has declined 30% year on year while its interest income has grown 15%. The CFO asks you to diagnose the fee income decline. How do you approach this?",
   subcategory: "Consultant",
@@ -294,7 +292,6 @@ Structured around the MECE revenue rebuild levers: advisory fee growth through w
   whatInterviewerTests: "MECE fee income decomposition, banking sector knowledge, regulatory environment awareness, recovery strategy",
   commonMistakes: ["Not decomposing fee income into MECE categories before diagnosing", "Missing regulatory fee compression as a primary driver", "Treating fee income as a single metric rather than a portfolio of revenue types", "Not distinguishing between regulatory and operational causes since they require different responses"]
 },
-,
       {
   q: "A large Indian paint company has seen its gross margins decline from 42% to 34% over two years despite volume growth of 18%. What is causing this and how do you fix it?",
   subcategory: "Consultant",
@@ -326,7 +323,6 @@ My hypothesis is that 60 to 70% of the margin decline is attributable to raw mat
   whatInterviewerTests: "MECE margin decomposition, manufacturing industry knowledge, raw material cost dynamics, recovery strategy",
   commonMistakes: ["Not decomposing gross margin into its MECE drivers", "Missing raw material cost inflation as the primary hypothesis for a manufacturing company", "Not analyzing product mix as a separate driver", "Recommending cost cutting without first diagnosing whether the problem is cost or price"]
 },
-,
       {
   q: "A large Indian airline's EBITDA margin has dropped from 12% to 4% in 12 months. Passenger load factor has remained at 85%. What is happening and what should the CEO do?",
   subcategory: "Consultant",
@@ -353,7 +349,6 @@ Fuel hedging program to reduce fuel cost volatility. Network optimization to red
   whatInterviewerTests: "MECE airline economics, CASK and RASK framework, fuel cost dynamics, aviation industry knowledge",
   commonMistakes: ["Not decomposing into revenue and cost sides using CASK/RASK framework", "Missing fuel cost as the primary airline profitability driver", "Recommending load factor improvement when load factor is already at 85%", "Not recognizing that stable load factor isolates the problem to yield or cost"]
 },
-,
       {
   q: "A large Indian FMCG company's operating profit has declined despite revenue growing 12%. What MECE framework would you use and what are your hypotheses?",
   subcategory: "Consultant",
@@ -558,8 +553,7 @@ The underlying principle is that informal advisory conversations with senior cli
         roundType: "Ethics and Professional Standards Interview",
         whatInterviewerTests: "Informal advisory judgment, confidential information handling, engagement scope boundaries, senior client relationship",
         commonMistakes: ["Giving an immediate opinion without seeking context", "Not informing the engagement partner about the conversation", "Treating this purely as a social conversation rather than an advisory moment with professional implications", "Being so cautious about scope boundaries that no genuine value is offered"]
-      }
-,
+      },
       {
   q: "You are leading a cost reduction engagement and your analysis shows that closing a factory will save 40 crore rupees annually but will result in 800 job losses in a small town where the factory is the primary employer. Your client wants to proceed. How do you handle this?",
   subcategory: "Senior Consultant",
@@ -586,7 +580,6 @@ If after my complete analysis and presentation of alternatives the client decide
   whatInterviewerTests: "MECE ethical framework, complete financial analysis, advisor role boundaries, human consequences awareness",
   commonMistakes: ["Refusing the engagement rather than ensuring informed decision-making", "Not presenting alternatives that achieve partial savings with lower human cost", "Not including transition costs and reputational costs in the analysis", "Treating this purely as a financial optimization problem without acknowledging the ethical dimension"]
 },
-,
       {
   q: "A senior partner at your firm asks you to include favorable but unsupported findings in a client report to help the firm win a follow-on project. How do you respond?",
   subcategory: "Senior Consultant",
@@ -615,7 +608,6 @@ The underlying principle is that consulting integrity is the foundation on which
   whatInterviewerTests: "Professional integrity, escalation courage, client protection, firm risk awareness",
   commonMistakes: ["Agreeing to include the findings to avoid conflict with a senior partner", "Not documenting the conversation as a self-protective measure", "Treating this as a grey area when it is a clear professional misconduct request", "Not identifying the alternative of a legitimate follow-on proposal"]
 },
-,
       {
   q: "Halfway through a 6-month engagement you realize the client's problem is different from what was originally scoped and your current approach will not deliver the expected value. What do you do?",
   subcategory: "Senior Consultant",
@@ -642,7 +634,6 @@ Transparency in this moment, even though it is uncomfortable, builds more trust 
   whatInterviewerTests: "MECE response framework, mid-engagement scope management, client communication honesty, relationship management",
   commonMistakes: ["Continuing the original approach to avoid a difficult conversation and hoping it works out", "Going to the client without first validating the diagnosis internally", "Not presenting multiple options for how to proceed", "Framing the discovery as a failure rather than as insight that protects the client's investment"]
 },
-,
       {
   q: "You discover that a junior analyst on your team has copied sections of a competitor's consulting report and included them in your client deliverable without attribution. How do you handle this?",
   subcategory: "Senior Consultant",
@@ -1080,8 +1071,7 @@ For a financial services client considering gold-backed lending or investment pr
         roundType: "Guesstimate and Market Sizing",
         whatInterviewerTests: "Household wealth estimation, cultural and regional segmentation, gold market understanding",
         commonMistakes: ["Using total households without segmenting by gold ownership likelihood", "Underestimating average gold holdings in affluent and middle-income segments", "Not accounting for regional and cultural variation in gold ownership"]
-      }
-,
+      },
       {
   q: "Estimate the number of electric vehicles on Indian roads in 2026.",
   subcategory: "Management Consultant",
@@ -1113,7 +1103,6 @@ STRATEGIC INSIGHT: Two-wheelers dominate the EV fleet and will continue to do so
   whatInterviewerTests: "MECE vehicle category segmentation, EV sector knowledge, sense checking, strategic insight",
   commonMistakes: ["Treating EVs as a single category without segmenting by vehicle type", "Not recognizing that two-wheelers dominate the Indian EV fleet", "Missing three-wheeler EVs which are a significant segment", "Not providing a sense check against total vehicle population"]
 },
-,
       {
   q: "Estimate the annual market size for cybersecurity services in India.",
   subcategory: "Management Consultant",
@@ -1145,7 +1134,6 @@ STRATEGIC INSIGHT: The mid-size enterprise segment is the highest growth opportu
   whatInterviewerTests: "MECE buyer segmentation, IT sector knowledge, global benchmark sense check, growth opportunity identification",
   commonMistakes: ["Not segmenting by buyer type and size", "Missing government as a significant cybersecurity spender", "Not comparing to global benchmarks", "Ignoring SME segment even though it is collectively significant"]
 },
-,
       {
   q: "Estimate the total number of commercial flights departing from India every day.",
   subcategory: "Management Consultant",
@@ -1171,7 +1159,6 @@ STRATEGIC INSIGHT: Domestic aviation dominates Indian commercial flights at appr
   whatInterviewerTests: "MECE route type segmentation, aviation sector knowledge, top-down and bottom-up reconciliation",
   commonMistakes: ["Not separating domestic from international", "Not anchoring on major airport volumes first", "Missing the DGCA data sense check", "Not identifying the strategic insight about tier 2 airport growth"]
 },
-,
       {
   q: "Estimate the market size of the Indian cloud computing market in 2026.",
   subcategory: "Management Consultant",
@@ -1200,7 +1187,6 @@ STRATEGIC INSIGHT: The large gap between my initial estimate and the revised fig
   whatInterviewerTests: "MECE service type segmentation, technology sector knowledge, self-correction of estimates, growth insight",
   commonMistakes: ["Not segmenting by IaaS, PaaS, SaaS", "Not comparing to global cloud market data", "Not self-correcting when initial estimate diverges from industry data", "Missing the growth rate as a key insight"]
 },
-,
       {
   q: "Estimate the number of startups founded in India in 2025.",
   subcategory: "Management Consultant",
@@ -1233,7 +1219,6 @@ STRATEGIC INSIGHT: The rapid growth of tier 2 city startups represents the emerg
   whatInterviewerTests: "MECE geographic segmentation, startup ecosystem knowledge, DPIIT data awareness, strategic insight",
   commonMistakes: ["Not distinguishing between formal DPIIT-registered startups and informal businesses", "Not anchoring on government startup recognition data", "Missing tier 2 city growth as a key trend", "Not providing the strategic insight about geographic diversification of startup activity"]
 },
-,
       {
   q: "Estimate the total value of UPI transactions in India in 2025.",
   subcategory: "Management Consultant",
@@ -1265,7 +1250,6 @@ STRATEGIC INSIGHT: UPI has become the backbone of Indian digital payments with t
   whatInterviewerTests: "MECE transaction type segmentation, payments sector knowledge, NPCI data awareness, fintech strategic insight",
   commonMistakes: ["Not segmenting by transaction type", "Underestimating average transaction values", "Not comparing to NPCI published data", "Missing the insight that UPI payment processing margins are zero and value is in adjacent products"]
 },
-,
       {
   q: "Estimate the number of chartered accountants practicing in India.",
   subcategory: "Management Consultant",
@@ -1300,7 +1284,6 @@ STRATEGIC INSIGHT: India has approximately 1 CA per 3,500 citizens versus 1 per 
   whatInterviewerTests: "MECE employment type segmentation, professional services knowledge, ICAI data awareness, professional services opportunity insight",
   commonMistakes: ["Not distinguishing between registered and actively practicing CAs", "Not segmenting by employment type", "Missing the India versus developed country penetration comparison", "Not using ICAI as the validation benchmark"]
 },
-,
       {
   q: "Estimate the market size for EdTech in India in 2026.",
   subcategory: "Management Consultant",
@@ -1335,7 +1318,6 @@ STRATEGIC INSIGHT: The highest growth segment is professional upskilling because
   whatInterviewerTests: "MECE learner type segmentation, EdTech sector knowledge, global benchmark comparison, growth segment identification",
   commonMistakes: ["Treating EdTech as a single category without segmenting by learner type", "Not comparing to global EdTech market size", "Missing the corporate training segment", "Not identifying professional upskilling as the highest willingness-to-pay segment"]
 },
-,
       {
   q: "Estimate the annual revenue of the Indian quick service restaurant industry.",
   subcategory: "Management Consultant",
@@ -1364,7 +1346,6 @@ STRATEGIC INSIGHT: Indian chain QSR is growing faster than international chains 
   whatInterviewerTests: "MECE brand type segmentation, food service sector knowledge, market share sense check, Indian versus international chain insight",
   commonMistakes: ["Not distinguishing between international and Indian QSR chains", "Forgetting organized regional QSR which is the largest segment by outlet count", "Not benchmarking against total food service market", "Missing the insight about Indian QSR outgrowing international chains"]
 },
-,
       {
   q: "Estimate the number of personal loan accounts in India.",
   subcategory: "Management Consultant",
@@ -1566,8 +1547,7 @@ My recommendation would be against a full insurance company entry given the capa
         roundType: "Strategy Case Interview",
         whatInterviewerTests: "Vertical integration assessment, right to win analysis, alternative structure thinking, healthcare sector knowledge",
         commonMistakes: ["Endorsing the insurance entry without honestly assessing the capability gap", "Not considering alternative structures that achieve the strategic goal with lower risk", "Ignoring the conflict of interest created by an insurer that also owns hospitals", "Not addressing the capital requirements and regulatory barriers to insurance licensing"]
-      }
-,
+      },
       {
   q: "A large Indian conglomerate wants to enter the data center business. They have no existing technology infrastructure business. How do you evaluate whether they should enter and what entry strategy you would recommend?",
   subcategory: "Strategy Consultant",
@@ -1594,7 +1574,6 @@ Enter through a joint venture with an existing data center operator. The conglom
   whatInterviewerTests: "MECE market entry framework, data center industry knowledge, right to win analysis, entry mode selection",
   commonMistakes: ["Not using a MECE framework separating market attractiveness from right to win", "Missing land and construction as genuine conglomerate advantages", "Not identifying technology operations capability as the primary gap", "Recommending a single entry mode without evaluating the MECE set of options"]
 },
-,
       {
   q: "A global FMCG company wants to enter the Indian premium personal care market. Their products are priced at 3 to 5x Indian competitors. How do you advise them on entry strategy?",
   subcategory: "Strategy Consultant",
@@ -1620,7 +1599,6 @@ Year 1: Launch in top 4 metros through digital and Nykaa with 3 to 4 hero produc
   whatInterviewerTests: "MECE market entry framework, premium consumer goods strategy, channel strategy, India market knowledge",
   commonMistakes: ["Not structuring the entry strategy into MECE dimensions of where and how to compete", "Underestimating premium willingness to pay in India based on average income statistics", "Missing Nykaa as the primary channel for premium beauty launches", "Not addressing trial mechanism as a critical entry challenge for premium products"]
 },
-,
       {
   q: "An Indian IT services company with 80,000 employees wants to enter the AI consulting market. How do you build the strategy?",
   subcategory: "Strategy Consultant",
@@ -1647,7 +1625,6 @@ Project-based for implementations, retainer for advisory, outcome-based for AI s
   whatInterviewerTests: "MECE strategy framework, AI services market knowledge, capability building planning, commercial model design",
   commonMistakes: ["Not using a MECE framework for the strategy dimensions", "Missing existing client base as the primary and fastest entry channel", "Not addressing the reskilling versus hiring trade-off explicitly", "Recommending a generic AI strategy without specifying which service types to prioritize"]
 },
-,
       {
   q: "A large Indian pharmaceutical company wants to enter the US generics market. What is your strategic assessment?",
   subcategory: "Strategy Consultant",
@@ -1676,7 +1653,6 @@ RECOMMENDATION: Enter through specialty generics and niche molecules using an ac
   whatInterviewerTests: "MECE market entry framework, pharma regulatory knowledge, FDA compliance awareness, acquisition versus organic entry",
   commonMistakes: ["Not structuring the assessment into MECE dimensions", "Missing FDA compliance as a potential blocking factor", "Recommending commodity generics entry without recognizing margin compression", "Not identifying acquisition as faster than organic entry for gaining US market relationships"]
 },
-,
       {
   q: "A large Indian telecom company wants to enter the fintech space. They have 450 million subscribers. How do you advise them on the strategy?",
   subcategory: "Strategy Consultant",
@@ -2200,8 +2176,7 @@ The 35 crore annual carrying cost saving from reducing from 45 to 30 days invent
         roundType: "Operations Case Interview",
         whatInterviewerTests: "Operations diagnosis, triggering event identification, fill rate decomposition, rapid improvement program design",
         commonMistakes: ["Not looking for the triggering event that caused the sudden decline", "Not separating availability failure from fulfillment failure", "Treating the problem as system-wide without testing for concentration", "Not designing the 90-day plan with specific 30-day milestones"]
-      }
-,
+      },
       {
   q: "A large Indian steel company has a blast furnace availability of 78% against an industry benchmark of 91%. Each percentage point of availability is worth 15 crore rupees annually. How do you improve it?",
   subcategory: "Operations Consultant",
@@ -2228,7 +2203,6 @@ In the first 3 months: Pareto analysis of unplanned breakdowns and implementatio
   whatInterviewerTests: "MECE downtime categorization, OEE framework, steel industry knowledge, Pareto-based prioritization",
   commonMistakes: ["Not using MECE to categorize downtime types", "Not immediately quantifying the value of the availability gap", "Missing operational adjustment downtime as a distinct category from maintenance downtime", "Recommending technology solutions without first doing a Pareto analysis of breakdown causes"]
 },
-,
       {
   q: "A large Indian logistics company has vehicle utilization at 58% against a benchmark of 76%. What is causing this and how do you improve it?",
   subcategory: "Operations Consultant",
@@ -2258,7 +2232,6 @@ Phase 1 (0 to 3 months): Backhaul optimization through freight marketplace partn
   whatInterviewerTests: "MECE utilization loss categorization, logistics industry knowledge, empty running as primary lever, improvement sequencing",
   commonMistakes: ["Not using MECE to categorize utilization loss types", "Missing empty running as typically the largest utilization loss in Indian logistics", "Not quantifying the financial value of the utilization gap", "Recommending fleet replacement before diagnosing whether the issue is operational or asset-related"]
 },
-,
       {
   q: "A large Indian bank's customer onboarding process takes 7 days on average while digital-first competitors complete it in 4 hours. How do you redesign the process?",
   subcategory: "Operations Consultant",
@@ -2290,7 +2263,6 @@ TARGET STATE: Video KYC plus API verification plus automated decisioning plus re
   whatInterviewerTests: "MECE process stage decomposition, banking process knowledge, digital KYC awareness, process redesign thinking",
   commonMistakes: ["Not decomposing the 7-day process into MECE stages", "Not identifying video KYC and DigiLocker as the primary time reduction levers", "Treating the onboarding redesign as an incremental improvement rather than a process redesign", "Missing batch processing as the primary cause of artificial delays in legacy bank onboarding"]
 },
-,
       {
   q: "A large Indian retail company has 35% of its store inventory as slow-moving or dead stock. How do you fix this?",
   subcategory: "Operations Consultant",
@@ -2322,7 +2294,6 @@ Demand-driven replenishment replacing forecast-driven buying for fast-moving cat
   whatInterviewerTests: "MECE dead stock cause analysis, retail operations knowledge, demand forecasting, buying process reform",
   commonMistakes: ["Not using MECE to separate demand-side from supply-side causes of dead stock", "Missing buyer incentive structure as a systemic dead stock generator", "Recommending only clearance pricing without addressing the root cause", "Not distinguishing between immediate remediation and structural prevention"]
 },
-,
       {
   q: "A large Indian hospital group has operating theater utilization at 55% while international benchmarks are at 80 to 85%. How do you improve it?",
   subcategory: "Operations Consultant",
@@ -2669,8 +2640,7 @@ My advisory to the whistleblower would be: (1) you are doing the right thing by 
         roundType: "Advisory Case and Fit Interview",
         whatInterviewerTests: "Fraud and financial crime advisory, regulatory compliance knowledge, whistleblower protection, organizational crisis management, ethical reasoning",
         commonMistakes: ["Treating this as primarily an HR problem rather than a legal and regulatory crisis", "Not advising the whistleblower to seek independent legal counsel before reporting", "Underestimating the scope of the investigation and remediation that will follow", "Not preparing the whistleblower for the personal and career implications of whistleblowing"]
-      }
-,
+      },
       {
   q: "A large Indian conglomerate's board is concerned about the group's exposure to a single commodity: 60% of group EBITDA comes from one commodity-linked business. How do you advise the board on managing this concentration risk?",
   subcategory: "Advisory Consultant",
@@ -2697,7 +2667,6 @@ A commodity risk committee at the board level with quarterly review of concentra
   whatInterviewerTests: "MECE risk management framework, commodity business knowledge, board-level advisory, diversification strategy",
   commonMistakes: ["Not quantifying the risk before recommending solutions", "Missing hedging as the most immediate near-term risk mitigation", "Not distinguishing between near-term mitigation and medium-term strategic diversification", "Not designing a governance framework for ongoing monitoring"]
 },
-,
       {
   q: "A large Indian infrastructure company has won major contracts in 3 new countries in the last 2 years but is struggling with cost overruns and project delays internationally. How do you advise the CEO?",
   subcategory: "Advisory Consultant",
@@ -2724,7 +2693,6 @@ Monthly international project review at CEO level until the portfolio is stabili
   whatInterviewerTests: "MECE root cause framework, international project management, organizational capability diagnosis, turnaround advisory",
   commonMistakes: ["Not using MECE to separate pre-execution from execution from organizational root causes", "Not addressing the bid process as a primary root cause", "Recommending organizational changes without first stabilizing the existing overrunning projects", "Missing local partner quality as a key international project risk"]
 },
-,
       {
   q: "A large Indian family business group with 3 generations of family members wants to set up a family constitution and governance framework. How do you approach this engagement?",
   subcategory: "Advisory Consultant",
@@ -2751,7 +2719,6 @@ Employment policy: Can any family member join the business? What qualifications 
   whatInterviewerTests: "MECE family governance framework, family business dynamics, facilitation approach, multi-generational complexity",
   commonMistakes: ["Not using MECE to structure the four governance dimensions", "Jumping to governance documents without facilitated family value alignment first", "Missing the dividend policy as typically the most contentious governance issue", "Not designing an employment policy for family members as a distinct governance dimension"]
 },
-,
       {
   q: "A large Indian listed company's CEO has just resigned abruptly amid rumors of a financial irregularity investigation. The board calls you in as an independent advisor. What are your immediate recommendations?",
   subcategory: "Advisory Consultant",
@@ -2945,8 +2912,7 @@ My recommendation would be: assume data recovery from backups will be the primar
         roundType: "Risk and Controls Case Interview",
         whatInterviewerTests: "Real estate portfolio risk assessment, developer lending analysis, portfolio triage, regulatory provision awareness",
         commonMistakes: ["Assessing developer risk at the company level rather than the project level", "Not identifying fund diversion risk as the primary early warning indicator in construction finance", "Not assessing portfolio concentration and correlation as a separate risk dimension", "Not connecting the assessment to a practical triage framework that guides management action"]
-      }
-,
+      },
       {
   q: "A large Indian bank is planning to acquire a digital lending fintech. The risk head wants a comprehensive risk due diligence framework. How do you design it?",
   subcategory: "Risk Consultant",
@@ -2973,7 +2939,6 @@ Social media monitoring for customer complaints about predatory lending or colle
   whatInterviewerTests: "MECE risk DD framework, fintech credit risk, vintage analysis, regulatory compliance in digital lending",
   commonMistakes: ["Not using MECE to structure the four risk dimensions", "Missing vintage analysis as the most critical credit risk tool", "Not identifying FLDG regulatory compliance as a specific fintech risk", "Not validating the AI credit model independently rather than accepting the fintech's claims"]
 },
-,
       {
   q: "A large Indian manufacturing company's ERP system was successfully hacked and production data was encrypted. The attacker is demanding 50 crore rupees. The CEO calls you. What do you advise?",
   subcategory: "Risk Consultant",
@@ -3000,7 +2965,6 @@ Do not pay is the strong default position: payment does not guarantee decryption
   whatInterviewerTests: "MECE cyber incident response, ransomware response protocol, backup recovery, regulatory notification",
   commonMistakes: ["Not using MECE to structure the four response dimensions", "Discussing ransom payment before checking backup availability", "Missing CERT-In 6-hour notification requirement", "Not separating encryption-only attacks from data exfiltration attacks which have different notification implications"]
 },
-,
       {
   q: "A large Indian insurance company has discovered that its claims fraud rate is 8% of total claims paid versus an industry benchmark of 2.5%. How do you design the fraud risk management program?",
   subcategory: "Risk Consultant",
@@ -3029,7 +2993,6 @@ TARGET: Reduce fraud rate from 8% to 4% within 18 months, recovering approximate
   whatInterviewerTests: "MECE fraud type classification, analytics-based detection, insurance sector knowledge, prevention controls",
   commonMistakes: ["Not using MECE to classify fraud types before designing the detection system", "Missing internal fraud as a distinct category requiring different detection methods", "Not using network analysis for organized fraud detection", "Not quantifying the financial opportunity of fraud reduction to build the business case"]
 },
-,
       {
   q: "A large Indian NBFC has seen its cost of funds increase 180 basis points over 12 months while its lending rates have only increased 80 basis points. How do you help them manage this margin compression?",
   subcategory: "Risk Consultant",
@@ -3527,8 +3490,7 @@ My recommendation would be a phased approach: Phase 1 (months 1-6) is building t
         roundType: "Digital Transformation Case with Customer Experience Component",
         whatInterviewerTests: "Neo-bank product strategy, activation failure diagnosis, competitive product analysis, investment decision framework",
         commonMistakes: ["Recommending more marketing to drive registrations when the problem is activation not awareness", "Not conducting qualitative research with the engaged user segment to understand genuine value", "Not comparing the neo-bank's feature set against the leading independent neo-banks to assess competitive positioning", "Not questioning whether continued investment is justified before recommending a specific improvement path"]
-      }
-,
+      },
       {
   q: "A large Indian bank wants to use AI to reduce its credit underwriting time from 5 days to 4 hours for retail loans while maintaining or improving credit quality. How do you design the AI implementation?",
   subcategory: "Digital Consultant",
@@ -3555,7 +3517,6 @@ Model validation: Independent model validation team separate from the model deve
   whatInterviewerTests: "MECE AI implementation framework, credit underwriting knowledge, account aggregator data, RBI regulatory awareness",
   commonMistakes: ["Not using MECE to structure the four AI implementation dimensions", "Missing account aggregator framework as a key alternative data source", "Not distinguishing between auto-approval, assisted decisioning, and human review tiers", "Not addressing model explainability as a regulatory requirement for retail credit AI"]
 },
-,
       {
   q: "A large Indian insurance company wants to use AI to detect fraudulent claims in real time. Currently fraud detection happens post-payment and recovery is less than 20%. How do you design the system?",
   subcategory: "Digital Consultant",
@@ -3582,7 +3543,6 @@ Investigation outcome tracking: Every claim that was flagged and investigated mu
   whatInterviewerTests: "MECE AI fraud detection design, real-time system architecture, network analysis for organized fraud, false positive management",
   commonMistakes: ["Not using MECE to structure the four system design dimensions", "Missing network analysis as essential for detecting organized fraud rings", "Designing a single-stage model when a two-stage architecture is required for real-time speed and accuracy", "Not designing the false positive management system which is as important as fraud detection rate"]
 },
-,
       {
   q: "A large Indian retail company with 800 stores wants to use AI for demand forecasting to reduce both stockouts and overstock simultaneously. How do you approach this?",
   subcategory: "Digital Consultant",
@@ -3609,7 +3569,6 @@ Buyers and store managers who currently rely on intuition need to trust and act 
   whatInterviewerTests: "MECE AI forecasting design, retail demand forecasting knowledge, data foundation requirements, change management",
   commonMistakes: ["Not using MECE to structure the four design dimensions", "Missing lost sales imputation as a data quality requirement", "Not addressing the causal variable tagging requirement for promotions and events", "Designing the forecasting model without designing the replenishment integration that makes it actionable"]
 },
-,
       {
   q: "A large Indian hospital group wants to implement an AI-powered clinical decision support system to reduce medication errors. How do you design the implementation?",
   subcategory: "Digital Consultant",
@@ -3775,8 +3734,7 @@ The fourth workstream is the working capital management plan. 200 new stores req
         roundType: "Operations and Supply Chain Case Interview",
         whatInterviewerTests: "Capacity gap management, pharmaceutical manufacturing constraints, CMO strategy, customer negotiation judgment",
         commonMistakes: ["Committing to full delivery before assessing whether it is achievable within regulatory and quality standards", "Not considering partial delivery negotiation as a viable option", "Underestimating the qualification timeline for a new CMO in pharmaceutical manufacturing", "Not assessing all four options simultaneously given the time pressure"]
-      }
-,
+      },
       {
   q: "A large Indian FMCG company wants to reduce its carbon footprint in the supply chain by 40% over 5 years while maintaining cost competitiveness. How do you design the program?",
   subcategory: "Supply Chain Consultant",
@@ -3803,7 +3761,6 @@ The 40% reduction target must be achieved without unacceptable cost increase. I 
   whatInterviewerTests: "MECE emission scope framework, supply chain decarbonization knowledge, carbon abatement curve, cost-competitiveness balance",
   commonMistakes: ["Not using the Scope 1, 2, 3 MECE framework", "Missing Scope 3 supplier emissions as the largest category for FMCG", "Not building a carbon abatement cost curve to prioritize interventions by cost effectiveness", "Recommending high-cost interventions before exhausting zero-cost efficiency improvements"]
 },
-,
       {
   q: "A large Indian retailer is losing 12% of fresh produce before it reaches the customer due to spoilage. How do you redesign the cold chain to reduce this loss?",
   subcategory: "Supply Chain Consultant",
@@ -3835,7 +3792,6 @@ TARGET: Reduce spoilage from 12% to 5% within 18 months, recovering significant 
   whatInterviewerTests: "MECE cold chain spoilage diagnosis, fresh produce supply chain knowledge, temperature management, IoT enablement",
   commonMistakes: ["Not using MECE to separate spoilage by chain stage and by spoilage type", "Missing precooling at farm gate as a critical gap in Indian fresh produce supply chains", "Not conducting a temperature mapping study before recommending solutions", "Missing demand forecasting as a driver of time-in-chain spoilage at store level"]
 },
-,
       {
   q: "A large Indian e-commerce company processes 500,000 returns per month at a cost of 180 rupees per return. How do you reduce the return rate and the cost per return?",
   subcategory: "Supply Chain Consultant",
@@ -3858,7 +3814,6 @@ TARGET: Reduce return rate from current baseline by 25% and cost per return from
   whatInterviewerTests: "MECE returns optimization framework, e-commerce operations knowledge, return reason diagnosis, cost reduction levers",
   commonMistakes: ["Not using MECE to separate return rate reduction from cost per return reduction", "Not categorizing returns by reason before recommending solutions", "Missing COD as a significant driver of e-commerce returns in India", "Not addressing the resale value recovery as part of cost per return optimization"]
 },
-,
       {
   q: "A large Indian pharmaceutical company's API (Active Pharmaceutical Ingredient) supply chain has 80% dependency on a single country. A geopolitical event has just disrupted supply. How do you respond?",
   subcategory: "Supply Chain Consultant",
@@ -4049,8 +4004,7 @@ The most important thing I would recommend is to not default to IPO as the best 
         roundType: "Transaction Advisory and Financial Due Diligence Case",
         whatInterviewerTests: "Debt refinancing options, liability management, asset monetization, bondholder negotiation, financial stress advisory",
         commonMistakes: ["Evaluating options sequentially rather than pursuing all simultaneously given the time pressure", "Not assessing asset monetization as a primary option given the free cash flow shortfall", "Not engaging bondholders early for a potential extension negotiation", "Underestimating the time required for each option and failing to account for the risk that the primary option is delayed"]
-      }
-,
+      },
       {
   q: "A large Indian renewable energy company wants to raise 3,000 crore rupees to fund solar capacity expansion. What financing options would you recommend and how do you structure the transaction?",
   subcategory: "Financial Advisory Consultant",
@@ -4077,7 +4031,6 @@ For a 3,000 crore rupees capital raise: 2,000 crore through project finance debt
   whatInterviewerTests: "MECE financing options framework, renewable energy sector knowledge, project finance understanding, capital structure optimization",
   commonMistakes: ["Not using MECE to structure the financing options", "Missing project finance as the primary instrument for renewable energy projects", "Not identifying InvIT as a strategic capital recycling option", "Recommending equity dilution without first exhausting debt and hybrid options"]
 },
-,
       {
   q: "A large Indian family-owned retail chain is planning an IPO. The promoter family owns 75% and wants to raise 2,000 crore rupees. How do you advise them on the IPO process and structure?",
   subcategory: "Financial Advisory Consultant",
@@ -4104,7 +4057,6 @@ Mandatory independent directors, audit committee, related party transaction disc
   whatInterviewerTests: "MECE IPO advisory framework, SEBI regulatory knowledge, offer structure design, post-IPO governance",
   commonMistakes: ["Not using MECE to structure the IPO advisory dimensions", "Not distinguishing between fresh issue and OFS and their different implications", "Missing the promoter lock-up requirement as a key post-IPO constraint", "Not addressing investor concerns about a family selling majority of the raise through OFS"]
 },
-,
       {
   q: "A large Indian conglomerate has received an unsolicited acquisition offer at a 25% premium to market price for one of its listed subsidiaries. The board asks you how to respond. How do you advise?",
   subcategory: "Financial Advisory Consultant",
@@ -4133,7 +4085,6 @@ RECOMMENDATION: Retain independent advisors immediately, conduct valuation analy
   whatInterviewerTests: "MECE M&A response framework, SEBI takeover code awareness, valuation adequacy assessment, fiduciary duty understanding",
   commonMistakes: ["Not using MECE to structure the response framework", "Evaluating the premium only against market price rather than intrinsic value", "Missing the fiduciary duty to minority shareholders as a governance obligation", "Recommending immediate acceptance or rejection without a proper valuation and process"]
 },
-,
       {
   q: "A large Indian real estate developer is facing a liquidity crisis with 800 crore rupees of debt maturing in 6 months and projects that are 70% complete but unsold. How do you advise?",
   subcategory: "Financial Advisory Consultant",
@@ -4162,7 +4113,6 @@ PRIORITY: Start lender conversations today while simultaneously launching accele
   whatInterviewerTests: "MECE crisis response framework, real estate sector knowledge, liquidity management, IBC awareness",
   commonMistakes: ["Not using MECE to structure the crisis response dimensions", "Pursuing only one solution sequentially when time pressure requires parallel action", "Not identifying accelerated sales as the most controllable immediate liquidity source", "Missing IBC as a structured resolution option if bilateral solutions fail"]
 },
-,
       {
   q: "A global PE fund wants to acquire a 60% stake in a leading Indian hospital chain at 15x EBITDA. What due diligence would you conduct and what risks would you flag?",
   subcategory: "Financial Advisory Consultant",
