@@ -842,7 +842,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                           color: disabled ? C.textMuted : '#fff',
                           fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                           cursor: disabled ? 'not-allowed' : 'pointer',
-                          fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+                          fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: loading ? 700 : 600,
                           transition: 'all 0.2s',
                         }}
                       >
@@ -940,7 +940,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                           style={{
                             padding: '11px 24px', background: C.green, border: 'none', borderRadius: 12,
                             color: '#fff', fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif",
-                            fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase',
+                            fontWeight: loading ? 700 : 600, letterSpacing: 1.5, textTransform: 'uppercase',
                             cursor: loading ? 'wait' : 'pointer', opacity: loading ? 0.6 : 1,
                           }}
                         >
@@ -988,10 +988,10 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           <div style={{ padding: '32px 0', animation: 'fadeUp 0.3s ease' }}>
             {/* Loading message */}
             <div style={{ marginBottom: 28, textAlign: 'center' }}>
-              <div style={{ fontSize: 11, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>
+              <div style={{ fontSize: 14, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10, fontWeight: 700 }}>
                 Analyzing your answer...
               </div>
-              <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, lineHeight: 1.6 }}>
+              <p style={{ fontSize: 15, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
                 We're scoring your structure, clarity, and problem-solving approach.
               </p>
             </div>
