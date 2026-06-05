@@ -224,17 +224,17 @@ function MicIcon({ active, size = 18 }) {
 // ─── Score bar ───
 function ScoreBar({ label, value, max = 10 }) {
   const pct = Math.round((value / max) * 100);
-  const color = pct >= 70 ? C.success : pct >= 40 ? C.yellow : C.red;
+  const color = pct >= 70 ? '#22C55E' : pct >= 40 ? '#F59E0B' : '#EF4444';
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-        <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 2, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ padding: '16px', background: '#F9FAFB', border: `1px solid #E5E7EB`, borderRadius: 12 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+        <span style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: 2, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>
           {label.replace(/_/g, ' ')}
         </span>
-        <span style={{ fontSize: 13, color, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{value}/{max}</span>
+        <span style={{ fontSize: 13, color, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{value}/{max}</span>
       </div>
-      <div style={{ height: 7, background: C.bgMuted, borderRadius: 3, overflow: 'hidden' }}>
-        <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 3, transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)' }} />
+      <div style={{ height: 12, background: '#E5E7EB', borderRadius: 8, overflow: 'hidden' }}>
+        <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 8, transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)' }} />
       </div>
     </div>
   );
@@ -283,25 +283,27 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
     <div style={{ animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
       {/* Score block card - hero section */}
       <div style={{
-        background: C.bgSoft,
-        border: `1px solid ${C.border}`,
-        borderRadius: 16,
-        padding: '28px 32px',
-        marginBottom: 32,
+        background: '#FFFFFF',
+        border: `1px solid #E5E7EB`,
+        borderTop: `6px solid #22C55E`,
+        borderRadius: 18,
+        padding: '48px 56px',
+        marginBottom: 56,
+        boxShadow: '0 10px 30px rgba(17, 17, 17, 0.08)',
       }}>
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <div>
-            <div style={{ fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 12 }}>
+            <div style={{ fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 18 }}>
               Attempt #{attemptNumber} · Feedback
             </div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-              <span style={{ fontSize: 56, fontWeight: 700, color: scoreColor, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{score}</span>
-              <span style={{ fontSize: 14, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>/100</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>
+              <span style={{ fontSize: 84, fontWeight: 700, color: scoreColor, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{score}</span>
+              <span style={{ fontSize: 18, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>/100</span>
             </div>
             {score_delta_hint && (
-              <div style={{ marginTop: 10, fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>
+              <div style={{ marginTop: 16, fontSize: 13, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5, fontWeight: 500 }}>
                 {score_delta_hint}
               </div>
             )}
@@ -311,7 +313,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
 
       {/* Competencies */}
       {competency_breakdown && (
-        <div style={{ display: 'grid', gap: 14, marginBottom: 32 }}>
+        <div style={{ display: 'grid', gap: 14, marginBottom: 40 }}>
           {Object.entries(competency_breakdown).map(([k, v]) => (
             <ScoreBar key={k} label={k} value={v} />
           ))}
@@ -320,9 +322,9 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
 
       {/* Narrative feedback */}
       {feedback_text && (
-        <div style={{ marginBottom: 32 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-            <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Overall Feedback</div>
+        <div style={{ marginBottom: 48 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+            <div style={{ fontSize: 14, letterSpacing: 2, textTransform: 'uppercase', color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>Overall Feedback</div>
             {tts.isSupported && (
               <button
                 onClick={handleSpeakFeedback}
@@ -359,8 +361,8 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
               </button>
             )}
           </div>
-          <div style={{ padding: '16px 20px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16, maxWidth: 720 }}>
-            <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          <div style={{ padding: '20px 24px', background: '#FFFDF7', border: `1px solid #E5E7EB`, borderRadius: 16, maxWidth: 720 }}>
+            <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, lineHeight: 1.7, color: '#111111', fontWeight: 500 }}>
               <FormattedAnswer text={feedback_text} />
             </div>
           </div>
@@ -368,58 +370,26 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
       )}
 
       {/* Strengths / Weaknesses */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 32 }}>
-        <div style={{ padding: '14px 16px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Strengths</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 48 }}>
+        <div style={{ padding: '20px 20px', background: '#FFFDF7', border: `1px solid #E5E7EB`, borderLeft: '4px solid #22C55E', borderRadius: 16 }}>
+          <div style={{ fontSize: 14, letterSpacing: 2, textTransform: 'uppercase', color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 14, fontWeight: 700 }}>Strengths</div>
           {(strengths || []).length > 0
-            ? strengths.map((s, i) => <div key={i} style={{ fontSize: 12, color: C.textSoft, lineHeight: 1.6, marginBottom: 4, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>· {s}</div>)
-            : <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
+            ? strengths.map((s, i) => <div key={i} style={{ fontSize: 14, color: '#111111', lineHeight: 1.7, marginBottom: 6, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>· {s}</div>)
+            : <div style={{ fontSize: 14, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
         </div>
-        <div style={{ padding: '14px 16px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Weaknesses</div>
+        <div style={{ padding: '20px 20px', background: '#F9FAFB', border: `1px solid #E5E7EB`, borderLeft: '4px solid #F59E0B', borderRadius: 16 }}>
+          <div style={{ fontSize: 14, letterSpacing: 2, textTransform: 'uppercase', color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 14, fontWeight: 700 }}>Weaknesses</div>
           {(weaknesses || []).length > 0
-            ? weaknesses.map((w, i) => <div key={i} style={{ fontSize: 12, color: C.textSoft, lineHeight: 1.6, marginBottom: 4, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>· {w}</div>)
-            : <div style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
-        </div>
-      </div>
-
-      {/* Missing concepts */}
-      {(missing_concepts || []).length > 0 && (
-        <div style={{ padding: '14px 16px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 16, marginBottom: 20 }}>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Missing Concepts</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {missing_concepts.map((m, i) => (
-              <span key={i} style={{ padding: '3px 10px', background: 'rgba(198,127,0,0.1)', border: `1px solid ${C.yellowBorder}`, borderRadius: 20, fontSize: 11, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{m}</span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Filler words / Keywords - secondary diagnostic details */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20, opacity: 0.8 }}>
-        <div>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Filler Words</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {(filler_words || []).length > 0
-              ? filler_words.map((w, i) => <span key={i} style={{ padding: '3px 10px', background: 'rgba(27, 27, 24, 0.05)', border: `1px solid ${C.borderLight}`, borderRadius: 6, fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)
-              : <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None  -  clean</span>}
-          </div>
-        </div>
-        <div>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>High-Signal Keywords</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {(high_signal_keywords || []).length > 0
-              ? high_signal_keywords.map((w, i) => <span key={i} style={{ padding: '3px 10px', background: 'rgba(27, 27, 24, 0.05)', border: `1px solid ${C.borderLight}`, borderRadius: 6, fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)
-              : <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None detected</span>}
-          </div>
+            ? weaknesses.map((w, i) => <div key={i} style={{ fontSize: 14, color: '#111111', lineHeight: 1.7, marginBottom: 6, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>· {w}</div>)
+            : <div style={{ fontSize: 14, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
         </div>
       </div>
 
       {/* Expert rewrite */}
       {expert_rewrite && (
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Expert Rewrite</div>
-          <div style={{ padding: '16px 20px', background: C.greenLight, border: `1px solid ${C.greenBorder}`, borderRadius: 16, fontSize: 13, lineHeight: 1.8, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap' }}>
+        <div style={{ marginBottom: 48 }}>
+          <div style={{ fontSize: 14, letterSpacing: 2, textTransform: 'uppercase', color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 14, fontWeight: 700 }}>Expert Rewrite</div>
+          <div style={{ padding: '20px 24px', background: '#FFFDF7', border: `1px solid #E5E7EB`, borderRadius: 16, fontSize: 14, lineHeight: 1.8, color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap', fontWeight: 500 }}>
             {formatLabeledText(expert_rewrite)}
           </div>
         </div>
@@ -427,18 +397,52 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
 
       {/* Improvement tips */}
       {(improvement_tips || []).length > 0 && (
-        <div>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Improvement Tips</div>
+        <div style={{ marginBottom: 56 }}>
+          <div style={{ fontSize: 14, letterSpacing: 2, textTransform: 'uppercase', color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 14, fontWeight: 700 }}>Improvement Tips</div>
           <div style={{ display: 'grid', gap: 8 }}>
             {improvement_tips.map((tip, i) => (
               <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                <span style={{ color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, marginTop: 2, flexShrink: 0 }}>{i + 1}.</span>
-                <span style={{ fontSize: 13, lineHeight: 1.7, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{tip}</span>
+                <span style={{ color: '#22C55E', fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, marginTop: 2, flexShrink: 0, fontWeight: 600 }}>{i + 1}.</span>
+                <span style={{ fontSize: 14, lineHeight: 1.7, color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>{tip}</span>
               </div>
             ))}
           </div>
         </div>
       )}
+
+      {/* ─── DIAGNOSTIC DETAILS (Visual Weight: 30%) ─── */}
+
+      {/* Missing concepts */}
+      {(missing_concepts || []).length > 0 && (
+        <div style={{ padding: '12px 14px', background: '#FCFCFC', border: `1px solid #E5E7EB`, borderRadius: 12, marginBottom: 12, opacity: 0.65 }}>
+          <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6, fontWeight: 600 }}>Missing Concepts</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {missing_concepts.map((m, i) => (
+              <span key={i} style={{ padding: '3px 7px', background: 'transparent', border: `1px solid #E5E7EB`, borderRadius: 12, fontSize: 10, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>{m}</span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Filler words / Keywords - minimal diagnostic details */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, opacity: 0.55 }}>
+        <div>
+          <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 500 }}>Filler Words</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+            {(filler_words || []).length > 0
+              ? filler_words.map((w, i) => <span key={i} style={{ padding: '2px 6px', background: 'transparent', border: `1px solid #E5E7EB`, borderRadius: 3, fontSize: 10, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>{w}</span>)
+              : <span style={{ fontSize: 9, color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>—</span>}
+          </div>
+        </div>
+        <div>
+          <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 500 }}>High-Signal Keywords</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+            {(high_signal_keywords || []).length > 0
+              ? high_signal_keywords.map((w, i) => <span key={i} style={{ padding: '2px 6px', background: 'transparent', border: `1px solid #E5E7EB`, borderRadius: 3, fontSize: 10, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>{w}</span>)
+              : <span style={{ fontSize: 9, color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>—</span>}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -454,9 +458,13 @@ export default function PracticeMode({ question, questionId, designation, catego
   const [prevBestScore, setPrevBestScore] = useState(null);
   const [error, setError] = useState('');
   const [showExpert, setShowExpert] = useState(false);
+  const [resolvedUser, setResolvedUser] = useState(null);
 
   const voice = useVoiceToText();
   const { requireAuth } = useAuth();
+
+  // Use resolved user if prop user is undefined (handles async hydration delay)
+  const authenticatedUser = user || resolvedUser;
 
   // Fetch existing attempt count and best score on mount
   useEffect(() => {
@@ -610,17 +618,31 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
       setAnalysisText('');
       setResult(parsed);
 
+      // Resolve authenticated user from session if prop user is undefined
+      let authUser = user;
+      if (!authUser) {
+        try {
+          const { data: { user: sessionUser } } = await supabase.auth.getUser();
+          if (sessionUser) {
+            authUser = sessionUser;
+            setResolvedUser(sessionUser);
+          }
+        } catch (err) {
+          console.error('[Submit] Failed to resolve user from session:', err);
+        }
+      }
+
       // Fire analytics event for first answer submitted
       fireEvent('first_answer_submitted', {
         from_voice: fromVoice,
         question_id: questionId,
         answer_length: answerText?.length || 0,
-      }, user?.id);
+      }, authUser?.id);
 
       // Save to Supabase
-      if (user) {
+      if (authUser) {
         await supabase.from('practice_attempts').insert({
-          user_id: user.id,
+          user_id: authUser.id,
           question_id: questionId,
           designation,
           category,
@@ -643,7 +665,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         const { data: freshProfile } = await supabase
           .from('profiles')
           .select('free_sessions_used, monthly_sessions_used, subscription_status')
-          .eq('id', user.id)
+          .eq('id', authUser.id)
           .single();
 
         if (!freshProfile?.subscription_status || freshProfile?.subscription_status === 'free') {
@@ -651,7 +673,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           const { error } = await supabase
             .from('profiles')
             .update({ free_sessions_used: newCount })
-            .eq('id', user.id);
+            .eq('id', authUser.id);
           if (error) console.error('Session count update failed:', error);
         }
 
@@ -661,7 +683,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           const { error: monthlyError } = await supabase
             .from('profiles')
             .update({ monthly_sessions_used: newMonthlyCount })
-            .eq('id', user.id);
+            .eq('id', authUser.id);
           if (monthlyError) console.error('Monthly session count update failed:', monthlyError);
         }
 
@@ -1025,22 +1047,32 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
         {/* Feedback result */}
         {result && !loading && (
-          user ? (
+          authenticatedUser ? (
             <>
-              <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} questionId={questionId} user={user} />
-              <div style={{ display: 'flex', gap: 12, marginTop: 32, flexWrap: 'wrap' }}>
+              <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} questionId={questionId} user={authenticatedUser} />
+              <div style={{ display: 'flex', gap: 16, marginTop: 48, flexWrap: 'wrap' }}>
                 {onNextQuestion && (
                   <button
                     onClick={onNextQuestion}
                     style={{
-                      flex: 1, minWidth: 140, padding: '13px 0',
-                      background: C.green, border: 'none', borderRadius: 12,
-                      color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                      cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
-                      transition: 'background 0.2s',
+                      flex: 1, minWidth: 200, padding: '16px 48px', height: 60,
+                      background: '#111111', border: 'none', borderRadius: 12,
+                      color: '#FFFFFF', fontSize: 15, letterSpacing: 1.2, textTransform: 'uppercase',
+                      cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
+                      transition: 'all 0.2s',
+                      boxShadow: '0 6px 16px rgba(17, 17, 17, 0.12)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}
-                    onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
-                    onMouseLeave={e => e.currentTarget.style.background = C.green}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.background = '#000000';
+                      e.currentTarget.style.boxShadow = '0 10px 24px rgba(17, 17, 17, 0.18)';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.background = '#111111';
+                      e.currentTarget.style.boxShadow = '0 6px 16px rgba(17, 17, 17, 0.12)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
                   >
                     Next Question
                   </button>
@@ -1048,32 +1080,39 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 <button
                   onClick={handleTryAgain}
                   style={{
-                    flex: 1, minWidth: 140, padding: '13px 0',
-                    background: 'transparent', border: `1px solid ${C.green}`, borderRadius: 12,
-                    color: C.green, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    flex: 1, minWidth: 140, padding: '14px 32px', height: 60,
+                    background: '#FFFFFF', border: `2px solid #111111`, borderRadius: 12,
+                    color: '#111111', fontSize: 14, letterSpacing: 1, textTransform: 'uppercase',
+                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
                     transition: 'all 0.2s',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-                >
-                  Try Again (#{attemptNumber})
-                </button>
-                <button
-                  onClick={onBack}
-                  style={{
-                    flex: 1, minWidth: 140, padding: '13px 0',
-                    background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 12,
-                    color: C.textMuted, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    transition: 'all 0.2s',
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = '#F3F4F6';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = '#FFFFFF';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
                 >
-                  ← Back to Q&A
+                  Try Again
                 </button>
               </div>
+              <button
+                onClick={onBack}
+                style={{
+                  width: '100%', marginTop: 16, padding: '12px 0',
+                  background: 'transparent', border: 'none',
+                  color: '#6B7280', fontSize: 13, letterSpacing: 1, textTransform: 'uppercase',
+                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = '#111111'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = '#6B7280'; }}
+              >
+                ← Back to Q&A
+              </button>
 
               {/* Post-first-session encouragement hook */}
               <div style={{
