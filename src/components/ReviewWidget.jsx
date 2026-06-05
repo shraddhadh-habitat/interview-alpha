@@ -146,7 +146,7 @@ export default function ReviewWidget({ user, profile }) {
           cursor: alreadySubmitted ? 'default' : 'pointer',
         }}
       >
-        {alreadySubmitted ? '✓' : '⭐'}
+        {alreadySubmitted ? '✓' : '⭐⭐⭐⭐⭐'}
         <span className="rw-fab-text">
           {alreadySubmitted ? 'Review Submitted' : 'Leave a Review'}
         </span>
