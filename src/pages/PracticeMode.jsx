@@ -536,12 +536,45 @@ export default function PracticeMode({ question, questionId, designation, catego
   const [error, setError] = useState('');
   const [showExpert, setShowExpert] = useState(false);
   const [resolvedUser, setResolvedUser] = useState(null);
+  const [loadingStartTime, setLoadingStartTime] = useState(null);
+  const [showRetryPrompt, setShowRetryPrompt] = useState(false);
 
   const voice = useVoiceToText();
   const { requireAuth } = useAuth();
 
   // Use resolved user if prop user is undefined (handles async hydration delay)
   const authenticatedUser = user || resolvedUser;
+
+  // Track if loading state exceeds 30 seconds and show recovery UI
+  useEffect(() => {
+    if (!loading) {
+      setLoadingStartTime(null);
+      setShowRetryPrompt(false);
+      return;
+    }
+
+    if (!loadingStartTime) {
+      setLoadingStartTime(Date.now());
+      return;
+    }
+
+    const elapsed = Date.now() - loadingStartTime;
+    if (elapsed > 30000) {
+      setShowRetryPrompt(true);
+    }
+
+    const timeout = setTimeout(() => {
+      if (loading) {
+        console.warn('[Submit] Loading state stuck for 60+ seconds, forcing reset');
+        setLoading(false);
+        setError('Request took too long. Please try again.');
+        setLoadingStartTime(null);
+        setShowRetryPrompt(false);
+      }
+    }, 60000);
+
+    return () => clearTimeout(timeout);
+  }, [loading, loadingStartTime]);
 
   // Fetch existing attempt count and best score on mount
   useEffect(() => {
@@ -603,21 +636,47 @@ Scoring guide:
 Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no preamble.`;
 
   const handleSubmit = async (answerText, fromVoice = false) => {
-    if (!answerText.trim()) return;
+    // ─── Input validation ───
+    if (!answerText.trim()) {
+      setError('Please enter an answer');
+      return;
+    }
 
-    // ─── Session gate ───
+    // ─── Session gate (check BEFORE setting loading) ───
     const sessionCheckResult = checkSession ? checkSession() : null;
     console.log('[Submit] checkSession result:', sessionCheckResult);
     console.log('[Submit] user:', user?.id);
     console.log('[Submit] answerText length:', answerText?.length);
 
-    if (checkSession && !sessionCheckResult) return;
+    if (checkSession && !sessionCheckResult) {
+      console.log('[Submit] Session check failed, aborting');
+      return;
+    }
+
+    // ─── Session validation from Supabase ───
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        console.log('[Submit] No active session found');
+        setError('Session expired. Please sign in again.');
+        return;
+      }
+      console.log('[Submit] Session validated');
+    } catch (err) {
+      console.error('[Submit] Failed to validate session:', err);
+      setError('Could not verify your session. Please refresh and try again.');
+      return;
+    }
+
     if (onSessionUsed) await onSessionUsed();
 
     setLoading(true);
+    setLoadingStartTime(Date.now());
     setError('');
     setResult(null);
     setAnalysisText('');
+    setShowRetryPrompt(false);
+    console.log('[Submit] Starting submission, wordCount:', answerText.trim().split(/\s+/).filter(Boolean).length);
 
     const parseSSEChunks = async (res, onChunk) => {
       const reader = res.body.getReader();
@@ -686,9 +745,11 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         // Strip any accidental markdown fences
         const clean = raw.replace(/```json|```/g, '').trim();
         parsed = JSON.parse(clean);
-      } catch {
+      } catch (parseErr) {
+        console.error('[Submit] JSON parse error:', parseErr);
         setError('Could not parse feedback. Please try again.');
         setLoading(false);
+        setLoadingStartTime(null);
         return;
       }
 
@@ -718,60 +779,91 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
       // Save to Supabase
       if (authUser) {
-        await supabase.from('practice_attempts').insert({
-          user_id: authUser.id,
-          question_id: questionId,
-          designation,
-          category,
-          attempt_number: attemptNumber,
-          user_answer: answerText,
-          score: parsed.score,
-          competency_breakdown: parsed.competency_breakdown,
-          strengths: parsed.strengths,
-          weaknesses: parsed.weaknesses,
-          filler_words: parsed.filler_words,
-          high_signal_keywords: parsed.high_signal_keywords,
-          missing_concepts: parsed.missing_concepts,
-          expert_rewrite: parsed.expert_rewrite,
-          improvement_tips: parsed.improvement_tips,
-          feedback_text: parsed.feedback_text,
-          from_voice: fromVoice,
-        });
+        try {
+          const { error: insertError } = await supabase.from('practice_attempts').insert({
+            user_id: authUser.id,
+            question_id: questionId,
+            designation,
+            category,
+            attempt_number: attemptNumber,
+            user_answer: answerText,
+            score: parsed.score,
+            competency_breakdown: parsed.competency_breakdown,
+            strengths: parsed.strengths,
+            weaknesses: parsed.weaknesses,
+            filler_words: parsed.filler_words,
+            high_signal_keywords: parsed.high_signal_keywords,
+            missing_concepts: parsed.missing_concepts,
+            expert_rewrite: parsed.expert_rewrite,
+            improvement_tips: parsed.improvement_tips,
+            feedback_text: parsed.feedback_text,
+            from_voice: fromVoice,
+          });
+          if (insertError) {
+            console.error('[Submit] Failed to save attempt:', insertError);
+            throw insertError;
+          }
+          console.log('[Submit] Attempt saved successfully');
 
-        // Increment free_sessions_used in profiles
-        const { data: freshProfile } = await supabase
-          .from('profiles')
-          .select('free_sessions_used, monthly_sessions_used, subscription_status')
-          .eq('id', authUser.id)
-          .single();
+          // Increment session counters
+          try {
+            const { data: freshProfile, error: profileError } = await supabase
+              .from('profiles')
+              .select('free_sessions_used, monthly_sessions_used, subscription_status')
+              .eq('id', authUser.id)
+              .single();
 
-        if (!freshProfile?.subscription_status || freshProfile?.subscription_status === 'free') {
-          const newCount = (freshProfile?.free_sessions_used || 0) + 1;
-          const { error } = await supabase
-            .from('profiles')
-            .update({ free_sessions_used: newCount })
-            .eq('id', authUser.id);
-          if (error) console.error('Session count update failed:', error);
-        }
+            if (profileError) throw profileError;
 
-        // Increment monthly_sessions_used for active/paid subscribers
-        if (freshProfile?.subscription_status === 'active') {
-          const newMonthlyCount = (freshProfile?.monthly_sessions_used || 0) + 1;
-          const { error: monthlyError } = await supabase
-            .from('profiles')
-            .update({ monthly_sessions_used: newMonthlyCount })
-            .eq('id', authUser.id);
-          if (monthlyError) console.error('Monthly session count update failed:', monthlyError);
-        }
+            if (!freshProfile?.subscription_status || freshProfile?.subscription_status === 'free') {
+              const newCount = (freshProfile?.free_sessions_used || 0) + 1;
+              const { error: updateError } = await supabase
+                .from('profiles')
+                .update({ free_sessions_used: newCount })
+                .eq('id', authUser.id);
+              if (updateError) {
+                console.error('[Submit] Failed to update free sessions:', updateError);
+              } else {
+                console.log('[Submit] Free sessions incremented');
+              }
+            }
 
-        if (prevBestScore === null || parsed.score > prevBestScore) {
-          setPrevBestScore(parsed.score);
+            // Increment monthly_sessions_used for active/paid subscribers
+            if (freshProfile?.subscription_status === 'active') {
+              const newMonthlyCount = (freshProfile?.monthly_sessions_used || 0) + 1;
+              const { error: monthlyError } = await supabase
+                .from('profiles')
+                .update({ monthly_sessions_used: newMonthlyCount })
+                .eq('id', authUser.id);
+              if (monthlyError) {
+                console.error('[Submit] Failed to update monthly sessions:', monthlyError);
+              } else {
+                console.log('[Submit] Monthly sessions incremented');
+              }
+            }
+
+            if (prevBestScore === null || parsed.score > prevBestScore) {
+              setPrevBestScore(parsed.score);
+              console.log('[Submit] New best score:', parsed.score);
+            }
+          } catch (sessionErr) {
+            console.error('[Submit] Session counter update failed:', sessionErr);
+            // Don't fail the whole flow - feedback is already visible
+          }
+        } catch (dbErr) {
+          console.error('[Submit] Database operation failed:', dbErr);
+          // Still show the feedback, but log the error
+          console.warn('[Submit] Feedback displayed but DB save failed - user should still see result');
         }
       }
     } catch (err) {
-      setError('Something went wrong. Please try again.');
+      console.error('[Submit] Unexpected error:', err);
+      setError(err?.message || 'Something went wrong. Please try again.');
     } finally {
       setLoading(false);
+      setLoadingStartTime(null);
+      setShowRetryPrompt(false);
+      console.log('[Submit] Submission complete, loading reset to false');
     }
   };
 
@@ -925,29 +1017,69 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   const ready = wordCount >= 50;
                   const disabled = loading || !ready;
                   return (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
-                      {wordCount > 0 && wordCount < 50 && (
-                        <span style={{ fontSize: 11, color: ready ? C.success : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                          {wordCount} / 50 words min{!ready && wordCount > 0 ? `  -  ${50 - wordCount} more` : ''}
-                        </span>
+                    <>
+                      {showRetryPrompt && (
+                        <div style={{
+                          background: '#FEF3C7',
+                          border: '1px solid #FCD34D',
+                          borderRadius: 8,
+                          padding: '12px 16px',
+                          marginBottom: 12,
+                          fontSize: 12,
+                          color: '#92400E',
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                          <span>Taking longer than expected...</span>
+                          <button
+                            onClick={() => {
+                              console.log('[Submit] Manual retry triggered');
+                              setLoading(false);
+                              setLoadingStartTime(null);
+                              setShowRetryPrompt(false);
+                              setError('');
+                            }}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: '#D97706',
+                              fontSize: 12,
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              textDecoration: 'underline',
+                              fontFamily: "'Plus Jakarta Sans', sans-serif",
+                            }}
+                          >
+                            Retry
+                          </button>
+                        </div>
                       )}
-                      <button
-                        onClick={() => handleSubmit(textAnswer, false)}
-                        disabled={disabled}
-                        style={{
-                          padding: '12px 32px',
-                          background: disabled ? C.bgMuted : C.green,
-                          border: 'none', borderRadius: 12,
-                          color: disabled ? C.textMuted : '#fff',
-                          fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                          cursor: disabled ? 'not-allowed' : 'pointer',
-                          fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: loading ? 700 : 600,
-                          transition: 'all 0.2s',
-                        }}
-                      >
-                        {loading ? 'Submitting...' : 'Submit Answer'}
-                      </button>
-                    </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+                        {wordCount > 0 && wordCount < 50 && (
+                          <span style={{ fontSize: 11, color: ready ? C.success : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            {wordCount} / 50 words min{!ready && wordCount > 0 ? `  -  ${50 - wordCount} more` : ''}
+                          </span>
+                        )}
+                        <button
+                          onClick={() => handleSubmit(textAnswer, false)}
+                          disabled={disabled}
+                          style={{
+                            padding: '12px 32px',
+                            background: disabled ? C.bgMuted : C.green,
+                            border: 'none', borderRadius: 12,
+                            color: disabled ? C.textMuted : '#fff',
+                            fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                            cursor: disabled ? 'not-allowed' : 'pointer',
+                            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: loading ? 700 : 600,
+                            transition: 'all 0.2s',
+                          }}
+                        >
+                          {loading ? 'Submitting...' : 'Submit Answer'}
+                        </button>
+                      </div>
+                    </>
                   );
                 })()}
               </>
@@ -1017,6 +1149,44 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                     </button>
                   ) : (
                     <>
+                      {showRetryPrompt && (
+                        <div style={{
+                          background: '#FEF3C7',
+                          border: '1px solid #FCD34D',
+                          borderRadius: 8,
+                          padding: '12px 16px',
+                          marginBottom: 12,
+                          fontSize: 12,
+                          color: '#92400E',
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                          <span>Taking longer than expected...</span>
+                          <button
+                            onClick={() => {
+                              console.log('[Submit] Manual retry triggered (voice)');
+                              setLoading(false);
+                              setLoadingStartTime(null);
+                              setShowRetryPrompt(false);
+                              setError('');
+                            }}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: '#D97706',
+                              fontSize: 12,
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              textDecoration: 'underline',
+                              fontFamily: "'Plus Jakarta Sans', sans-serif",
+                            }}
+                          >
+                            Retry
+                          </button>
+                        </div>
+                      )}
                       {/* Start / Continue */}
                       <button
                         onClick={() => voice.startChunk(() => setMode('text'))}
