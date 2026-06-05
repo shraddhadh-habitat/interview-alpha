@@ -224,18 +224,21 @@ function MicIcon({ active, size = 18 }) {
 // ─── Score bar ───
 function ScoreBar({ label, value, max = 10 }) {
   const pct = Math.round((value / max) * 100);
-  const color = pct >= 70 ? '#22C55E' : pct >= 40 ? '#F59E0B' : '#EF4444';
   return (
-    <div style={{ padding: '16px', background: '#F9FAFB', border: `1px solid #E5E7EB`, borderRadius: 12 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-        <span style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: 2, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>
-          {label.replace(/_/g, ' ')}
-        </span>
-        <span style={{ fontSize: 13, color, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{value}/{max}</span>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+      <span style={{ fontSize: 14, fontWeight: 600, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", minWidth: 140 }}>
+        {label.replace(/_/g, ' ')}
+      </span>
+      <div style={{ flex: 1, height: 8, background: '#F5F3EF', borderRadius: 4, overflow: 'hidden' }}>
+        <div style={{
+          width: `${pct}%`,
+          height: '100%',
+          background: 'linear-gradient(90deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
+          borderRadius: 4,
+          transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)'
+        }} />
       </div>
-      <div style={{ height: 12, background: '#E5E7EB', borderRadius: 8, overflow: 'hidden' }}>
-        <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 8, transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)' }} />
-      </div>
+      <span style={{ fontSize: 14, fontWeight: 700, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", minWidth: 40, textAlign: 'right' }}>{value}/{max}</span>
     </div>
   );
 }
@@ -245,7 +248,6 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
   const { score, score_delta_hint, competency_breakdown, strengths, weaknesses, filler_words,
     high_signal_keywords, missing_concepts, expert_rewrite, improvement_tips, feedback_text } = result;
 
-  const scoreColor = score >= 70 ? C.success : score >= 40 ? C.yellow : C.red;
   const tts = useTextToSpeech();
   const [isSpeakingFeedback, setIsSpeakingFeedback] = useState(false);
 
@@ -279,31 +281,51 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
     }
   }, [tts.isSpeaking]);
 
+  // Normalize score to 0-10 scale for display
+  const displayScore = (score / 10).toFixed(1);
+
   return (
     <div style={{ animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
       {/* Score block card - hero section */}
       <div style={{
         background: '#FFFFFF',
-        border: `1px solid #E5E7EB`,
-        borderTop: `6px solid #22C55E`,
-        borderRadius: 18,
-        padding: '48px 56px',
-        marginBottom: 56,
-        boxShadow: '0 10px 30px rgba(17, 17, 17, 0.08)',
+        border: `1px solid #E8E6E1`,
+        borderRadius: 16,
+        padding: '32px',
+        marginBottom: 40,
+        boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+        position: 'relative',
       }}>
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <div>
-            <div style={{ fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 18 }}>
+            <div style={{ fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: 'rgba(27,27,24,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 24 }}>
               Attempt #{attemptNumber} · Feedback
             </div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>
-              <span style={{ fontSize: 84, fontWeight: 700, color: scoreColor, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{score}</span>
-              <span style={{ fontSize: 18, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>/100</span>
+            <div style={{ position: 'relative', display: 'inline-block', marginBottom: 24 }}>
+              {/* SVG Gradient Ring */}
+              <svg width="140" height="140" style={{ position: 'absolute', top: -20, left: -20 }}>
+                <defs>
+                  <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#F472B6" />
+                    <stop offset="25%" stopColor="#A78BFA" />
+                    <stop offset="50%" stopColor="#60A5FA" />
+                    <stop offset="75%" stopColor="#34D399" />
+                    <stop offset="100%" stopColor="#FDCD34" />
+                  </linearGradient>
+                </defs>
+                <circle cx="70" cy="70" r="65" fill="none" stroke="url(#scoreGradient)" strokeWidth="3" />
+              </svg>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                <span style={{ fontSize: 48, fontWeight: 700, color: '#1B1B18', fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>
+                  {displayScore}
+                </span>
+                <span style={{ fontSize: 20, color: 'rgba(27,27,24,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>/10</span>
+              </div>
             </div>
             {score_delta_hint && (
-              <div style={{ marginTop: 16, fontSize: 13, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5, fontWeight: 500 }}>
+              <div style={{ fontSize: 13, color: 'rgba(27,27,24,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5, fontWeight: 500 }}>
                 {score_delta_hint}
               </div>
             )}
@@ -313,18 +335,30 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
 
       {/* Competencies */}
       {competency_breakdown && (
-        <div style={{ display: 'grid', gap: 14, marginBottom: 40 }}>
-          {Object.entries(competency_breakdown).map(([k, v]) => (
-            <ScoreBar key={k} label={k} value={v} />
-          ))}
+        <div style={{
+          background: '#FFFFFF',
+          border: `1px solid #E8E6E1`,
+          borderRadius: 16,
+          padding: '32px',
+          marginBottom: 40,
+          boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+        }}>
+          <div style={{ display: 'grid', gap: 20 }}>
+            {Object.entries(competency_breakdown).map(([k, v]) => (
+              <ScoreBar key={k} label={k} value={v} />
+            ))}
+          </div>
         </div>
       )}
 
       {/* Narrative feedback */}
       {feedback_text && (
         <div style={{ marginBottom: 48 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-            <div style={{ fontSize: 14, letterSpacing: 2, textTransform: 'uppercase', color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>Overall Feedback</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <div style={{ fontSize: 16, letterSpacing: 0, fontWeight: 700, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <span style={{ color: '#22C55E', marginRight: 8 }}>●</span>
+              What Worked
+            </div>
             {tts.isSupported && (
               <button
                 onClick={handleSpeakFeedback}
@@ -335,25 +369,24 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: 6,
-                  padding: '5px 12px',
-                  background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
+                  padding: '8px 16px',
+                  background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
                   border: 'none',
-                  borderRadius: 20,
+                  borderRadius: 8,
                   cursor: 'pointer',
-                  fontSize: 13,
+                  fontSize: 12,
                   fontWeight: 600,
                   color: '#fff',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   transition: 'all 0.2s',
-                  minHeight: 44,
-                  opacity: isSpeakingFeedback ? 1 : 0.9,
+                  height: 40,
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.opacity = '0.88';
                   e.currentTarget.style.transform = 'translateY(-1px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.opacity = isSpeakingFeedback ? '1' : '0.9';
+                  e.currentTarget.style.opacity = '1';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
@@ -361,8 +394,14 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
               </button>
             )}
           </div>
-          <div style={{ padding: '20px 24px', background: '#FFFDF7', border: `1px solid #E5E7EB`, borderRadius: 16, maxWidth: 720 }}>
-            <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, lineHeight: 1.7, color: '#111111', fontWeight: 500 }}>
+          <div style={{
+            padding: '24px',
+            background: '#FFFFFF',
+            border: `1px solid #E8E6E1`,
+            borderRadius: 16,
+            boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+          }}>
+            <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15, lineHeight: 1.75, color: '#1B1B18', fontWeight: 400 }}>
               <FormattedAnswer text={feedback_text} />
             </div>
           </div>
@@ -370,26 +409,61 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
       )}
 
       {/* Strengths / Weaknesses */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 48 }}>
-        <div style={{ padding: '20px 20px', background: '#FFFDF7', border: `1px solid #E5E7EB`, borderLeft: '4px solid #22C55E', borderRadius: 16 }}>
-          <div style={{ fontSize: 14, letterSpacing: 2, textTransform: 'uppercase', color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 14, fontWeight: 700 }}>Strengths</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 48 }}>
+        <div style={{
+          background: '#FFFFFF',
+          border: `1px solid #E8E6E1`,
+          borderRadius: 16,
+          padding: '24px',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+        }}>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>
+            <span style={{ color: '#22C55E', marginRight: 8 }}>●</span>
+            Strengths
+          </div>
           {(strengths || []).length > 0
-            ? strengths.map((s, i) => <div key={i} style={{ fontSize: 14, color: '#111111', lineHeight: 1.7, marginBottom: 6, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>· {s}</div>)
-            : <div style={{ fontSize: 14, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
+            ? strengths.map((s, i) => <div key={i} style={{ fontSize: 15, color: '#1B1B18', lineHeight: 1.75, marginBottom: 8, marginLeft: 16, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400 }}>✓ {s}</div>)
+            : <div style={{ fontSize: 15, color: 'rgba(27,27,24,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
         </div>
-        <div style={{ padding: '20px 20px', background: '#F9FAFB', border: `1px solid #E5E7EB`, borderLeft: '4px solid #F59E0B', borderRadius: 16 }}>
-          <div style={{ fontSize: 14, letterSpacing: 2, textTransform: 'uppercase', color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 14, fontWeight: 700 }}>Weaknesses</div>
+        <div style={{
+          background: '#FFFFFF',
+          border: `1px solid #E8E6E1`,
+          borderRadius: 16,
+          padding: '24px',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+        }}>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>
+            <span style={{ color: '#F59E0B', marginRight: 8 }}>●</span>
+            What to Improve
+          </div>
           {(weaknesses || []).length > 0
-            ? weaknesses.map((w, i) => <div key={i} style={{ fontSize: 14, color: '#111111', lineHeight: 1.7, marginBottom: 6, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>· {w}</div>)
-            : <div style={{ fontSize: 14, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
+            ? weaknesses.map((w, i) => <div key={i} style={{ fontSize: 15, color: '#1B1B18', lineHeight: 1.75, marginBottom: 8, marginLeft: 16, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400 }}>→ {w}</div>)
+            : <div style={{ fontSize: 15, color: 'rgba(27,27,24,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
         </div>
       </div>
 
       {/* Expert rewrite */}
       {expert_rewrite && (
         <div style={{ marginBottom: 48 }}>
-          <div style={{ fontSize: 14, letterSpacing: 2, textTransform: 'uppercase', color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 14, fontWeight: 700 }}>Expert Rewrite</div>
-          <div style={{ padding: '20px 24px', background: '#FFFDF7', border: `1px solid #E5E7EB`, borderRadius: 16, fontSize: 14, lineHeight: 1.8, color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap', fontWeight: 500 }}>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 12 }}>
+            <span style={{ color: '#60A5FA', marginRight: 8 }}>●</span>
+            Expert Rewrite
+          </div>
+          <div style={{ fontSize: 12, color: 'rgba(27,27,24,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 12 }}>
+            How a senior professional would answer this
+          </div>
+          <div style={{
+            background: '#F5F3EF',
+            border: `1px solid #E8E6E1`,
+            borderRadius: 12,
+            padding: '20px',
+            fontSize: 15,
+            lineHeight: 1.75,
+            color: '#1B1B18',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontStyle: 'italic',
+            whiteSpace: 'pre-wrap',
+          }}>
             {formatLabeledText(expert_rewrite)}
           </div>
         </div>
@@ -398,12 +472,15 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
       {/* Improvement tips */}
       {(improvement_tips || []).length > 0 && (
         <div style={{ marginBottom: 56 }}>
-          <div style={{ fontSize: 14, letterSpacing: 2, textTransform: 'uppercase', color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 14, fontWeight: 700 }}>Improvement Tips</div>
-          <div style={{ display: 'grid', gap: 8 }}>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>
+            <span style={{ color: '#22C55E', marginRight: 8 }}>●</span>
+            Quick Wins
+          </div>
+          <div style={{ display: 'grid', gap: 12 }}>
             {improvement_tips.map((tip, i) => (
               <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                <span style={{ color: '#22C55E', fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, marginTop: 2, flexShrink: 0, fontWeight: 600 }}>{i + 1}.</span>
-                <span style={{ fontSize: 14, lineHeight: 1.7, color: '#111111', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>{tip}</span>
+                <span style={{ color: '#22C55E', fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, marginTop: 1, flexShrink: 0, fontWeight: 600 }}>→</span>
+                <span style={{ fontSize: 15, lineHeight: 1.75, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400 }}>{tip}</span>
               </div>
             ))}
           </div>
@@ -1056,25 +1133,24 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                     onClick={onNextQuestion}
                     style={{
                       flex: 1, minWidth: 200, padding: '16px 48px', height: 60,
-                      background: '#111111', border: 'none', borderRadius: 12,
+                      background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
+                      border: 'none', borderRadius: 12,
                       color: '#FFFFFF', fontSize: 15, letterSpacing: 1.2, textTransform: 'uppercase',
                       cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
                       transition: 'all 0.2s',
-                      boxShadow: '0 6px 16px rgba(17, 17, 17, 0.12)',
+                      boxShadow: '0 6px 16px rgba(0, 0, 0, 0.12)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}
                     onMouseEnter={e => {
-                      e.currentTarget.style.background = '#000000';
-                      e.currentTarget.style.boxShadow = '0 10px 24px rgba(17, 17, 17, 0.18)';
+                      e.currentTarget.style.boxShadow = '0 10px 24px rgba(0, 0, 0, 0.18)';
                       e.currentTarget.style.transform = 'translateY(-2px)';
                     }}
                     onMouseLeave={e => {
-                      e.currentTarget.style.background = '#111111';
-                      e.currentTarget.style.boxShadow = '0 6px 16px rgba(17, 17, 17, 0.12)';
+                      e.currentTarget.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.12)';
                       e.currentTarget.style.transform = 'translateY(0)';
                     }}
                   >
-                    Next Question
+                    Practice Another
                   </button>
                 )}
                 <button
