@@ -17,7 +17,7 @@ const ACTIVITIES = [
   'Saira scored 7/10 on her first try · 3 mins ago',
   'Aryan got 9/10 on a Stats question · just now',
   'Ira finished a SQL question · 1 min ago',
-  'Rohan practiced ML concepts before bed · 4 mins ago',
+  'Rohan just practiced Machine Learning Concepts · 4 mins ago',
   'Divya answered a Probability question · 2 mins ago',
   'Karthik scored 8/10 on a DS Case Study · 6 mins ago',
   'Meera just completed a Python question · just now',
