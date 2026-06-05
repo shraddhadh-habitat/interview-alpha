@@ -976,17 +976,43 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           </div>
         )}
 
-        {/* Loading state */}
+        {/* Loading state with skeleton placeholders */}
         {loading && (
           <div style={{ padding: '32px 0', animation: 'fadeUp 0.3s ease' }}>
-            <div style={{ fontSize: 11, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: analysisText ? 16 : 0, textAlign: 'center' }}>
-              Analyzing your answer...
-            </div>
-            {analysisText && (
-              <div style={{ padding: '16px 20px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16, fontSize: 13, lineHeight: 1.7, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: 'pre-wrap', maxHeight: 200, overflow: 'auto' }}>
-                {analysisText}
+            {/* Loading message */}
+            <div style={{ marginBottom: 28, textAlign: 'center' }}>
+              <div style={{ fontSize: 11, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>
+                Analyzing your answer...
               </div>
-            )}
+              <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, lineHeight: 1.6 }}>
+                We're scoring your structure, clarity, and problem-solving approach.
+              </p>
+            </div>
+
+            {/* Score skeleton */}
+            <div style={{ marginBottom: 24, padding: '20px 24px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12 }}>
+              <div style={{ height: 10, width: 60, background: C.bgMuted, borderRadius: 4, marginBottom: 12, animation: 'pulse 2s infinite' }} />
+              <div style={{ height: 44, width: 100, background: C.bgMuted, borderRadius: 8, animation: 'pulse 2s infinite' }} />
+            </div>
+
+            {/* Competency bars skeleton (5 competencies) */}
+            <div style={{ display: 'grid', gap: 14, marginBottom: 24 }}>
+              {[1, 2, 3, 4, 5].map(i => (
+                <div key={i}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <div style={{ height: 11, width: 100, background: C.bgMuted, borderRadius: 4, animation: 'pulse 2s infinite' }} />
+                    <div style={{ height: 11, width: 35, background: C.bgMuted, borderRadius: 4, animation: 'pulse 2s infinite' }} />
+                  </div>
+                  <div style={{ height: 5, background: C.bgMuted, borderRadius: 3, animation: 'pulse 2s infinite' }} />
+                </div>
+              ))}
+            </div>
+
+            {/* Feedback section skeleton */}
+            <div style={{ padding: '16px 20px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16 }}>
+              <div style={{ height: 10, width: 80, background: C.bgMuted, borderRadius: 4, marginBottom: 12, animation: 'pulse 2s infinite' }} />
+              <div style={{ height: 60, background: C.bgMuted, borderRadius: 4, animation: 'pulse 2s infinite' }} />
+            </div>
           </div>
         )}
 
