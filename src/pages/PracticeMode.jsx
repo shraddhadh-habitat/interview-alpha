@@ -877,7 +877,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 }}>
                   {voice.transcript || (!voice.interimTranscript && (
                     <span style={{ color: C.textMuted, fontStyle: 'italic' }}>
-                      {voice.isListening ? 'Start speaking...' : 'Tap the microphone to begin.'}
+                      {voice.isListening ? 'Start speaking...' : 'Click Start Recording to begin.'}
                     </span>
                   ))}
                   {/* Desktop: live interim preview replaces on each event */}
