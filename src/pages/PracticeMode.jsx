@@ -227,13 +227,13 @@ function ScoreBar({ label, value, max = 10 }) {
   const color = pct >= 70 ? C.success : pct >= 40 ? C.yellow : C.red;
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
         <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 2, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           {label.replace(/_/g, ' ')}
         </span>
         <span style={{ fontSize: 13, color, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{value}/{max}</span>
       </div>
-      <div style={{ height: 5, background: C.bgMuted, borderRadius: 3, overflow: 'hidden' }}>
+      <div style={{ height: 7, background: C.bgMuted, borderRadius: 3, overflow: 'hidden' }}>
         <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 3, transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)' }} />
       </div>
     </div>
@@ -281,30 +281,37 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
 
   return (
     <div style={{ animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
-      {/* Header */}
+      {/* Score block card - hero section */}
       <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        marginBottom: 24,
+        background: C.bgSoft,
+        border: `1px solid ${C.border}`,
+        borderRadius: 16,
+        padding: '28px 32px',
+        marginBottom: 32,
       }}>
-        <div>
-          <div style={{ fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6 }}>
-            Attempt #{attemptNumber} · Feedback
-          </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-            <span style={{ fontSize: 56, fontWeight: 700, color: scoreColor, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{score}</span>
-            <span style={{ fontSize: 14, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>/100</span>
-          </div>
-          {score_delta_hint && (
-            <div style={{ marginTop: 6, fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>
-              {score_delta_hint}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        }}>
+          <div>
+            <div style={{ fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 12 }}>
+              Attempt #{attemptNumber} · Feedback
             </div>
-          )}
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+              <span style={{ fontSize: 56, fontWeight: 700, color: scoreColor, fontFamily: "'Instrument Serif', serif", lineHeight: 1 }}>{score}</span>
+              <span style={{ fontSize: 14, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>/100</span>
+            </div>
+            {score_delta_hint && (
+              <div style={{ marginTop: 10, fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5 }}>
+                {score_delta_hint}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Competencies */}
       {competency_breakdown && (
-        <div style={{ display: 'grid', gap: 12, marginBottom: 24 }}>
+        <div style={{ display: 'grid', gap: 14, marginBottom: 32 }}>
           {Object.entries(competency_breakdown).map(([k, v]) => (
             <ScoreBar key={k} label={k} value={v} />
           ))}
@@ -313,7 +320,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
 
       {/* Narrative feedback */}
       {feedback_text && (
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 32 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Overall Feedback</div>
             {tts.isSupported && (
@@ -361,7 +368,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
       )}
 
       {/* Strengths / Weaknesses */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 32 }}>
         <div style={{ padding: '14px 16px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 16 }}>
           <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Strengths</div>
           {(strengths || []).length > 0
@@ -388,21 +395,21 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
         </div>
       )}
 
-      {/* Filler words / Keywords */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+      {/* Filler words / Keywords - secondary diagnostic details */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20, opacity: 0.8 }}>
         <div>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Filler Words</div>
+          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>Filler Words</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {(filler_words || []).length > 0
-              ? filler_words.map((w, i) => <span key={i} style={{ padding: '3px 10px', background: C.redLight, border: `1px solid ${C.redBorder}`, borderRadius: 6, fontSize: 12, color: C.red, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)
+              ? filler_words.map((w, i) => <span key={i} style={{ padding: '3px 10px', background: 'rgba(27, 27, 24, 0.05)', border: `1px solid ${C.borderLight}`, borderRadius: 6, fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)
               : <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None  -  clean</span>}
           </div>
         </div>
         <div>
-          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>High-Signal Keywords</div>
+          <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>High-Signal Keywords</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {(high_signal_keywords || []).length > 0
-              ? high_signal_keywords.map((w, i) => <span key={i} style={{ padding: '3px 10px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 6, fontSize: 12, color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)
+              ? high_signal_keywords.map((w, i) => <span key={i} style={{ padding: '3px 10px', background: 'rgba(27, 27, 24, 0.05)', border: `1px solid ${C.borderLight}`, borderRadius: 6, fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{w}</span>)
               : <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None detected</span>}
           </div>
         </div>
@@ -1021,37 +1028,37 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           user ? (
             <>
               <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} questionId={questionId} user={user} />
-              <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
-                <button
-                  onClick={handleTryAgain}
-                  style={{
-                    flex: 1, minWidth: 140, padding: '13px 0',
-                    background: C.green, border: 'none', borderRadius: 12,
-                    color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
-                    transition: 'background 0.2s',
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
-                  onMouseLeave={e => e.currentTarget.style.background = C.green}
-                >
-                  Try Again (#{attemptNumber})
-                </button>
+              <div style={{ display: 'flex', gap: 12, marginTop: 32, flexWrap: 'wrap' }}>
                 {onNextQuestion && (
                   <button
                     onClick={onNextQuestion}
                     style={{
                       flex: 1, minWidth: 140, padding: '13px 0',
-                      background: 'transparent', border: `1px solid ${C.green}`, borderRadius: 12,
-                      color: C.green, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                      cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      transition: 'all 0.2s',
+                      background: C.green, border: 'none', borderRadius: 12,
+                      color: '#fff', fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                      cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+                      transition: 'background 0.2s',
                     }}
-                    onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                    onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
+                    onMouseLeave={e => e.currentTarget.style.background = C.green}
                   >
                     Next Question
                   </button>
                 )}
+                <button
+                  onClick={handleTryAgain}
+                  style={{
+                    flex: 1, minWidth: 140, padding: '13px 0',
+                    background: 'transparent', border: `1px solid ${C.green}`, borderRadius: 12,
+                    color: C.green, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = C.greenLight; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                >
+                  Try Again (#{attemptNumber})
+                </button>
                 <button
                   onClick={onBack}
                   style={{
