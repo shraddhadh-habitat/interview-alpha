@@ -839,7 +839,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                           transition: 'all 0.2s',
                         }}
                       >
-                        {loading ? 'Evaluating...' : 'Submit Answer'}
+                        {loading ? 'Submitting...' : 'Submit Answer'}
                       </button>
                     </div>
                   );
@@ -937,7 +937,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                             cursor: loading ? 'wait' : 'pointer', opacity: loading ? 0.6 : 1,
                           }}
                         >
-                          {loading ? 'Evaluating...' : 'Submit Answer'}
+                          {loading ? 'Submitting...' : 'Submit Answer'}
                         </button>
                       )}
 
