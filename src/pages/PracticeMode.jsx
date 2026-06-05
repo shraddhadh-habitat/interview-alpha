@@ -4,6 +4,7 @@ import useTextToSpeech from '../hooks/useTextToSpeech';
 import { useAuth } from '../contexts/AuthContext';
 import FormattedAnswer from '../components/FormattedAnswer';
 import { formatLabeledText } from '../lib/formatText';
+import { fireEvent } from '../lib/analytics';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -240,13 +241,27 @@ function ScoreBar({ label, value, max = 10 }) {
 }
 
 // ─── Feedback panel ───
-function FeedbackPanel({ result, attemptNumber }) {
+function FeedbackPanel({ result, attemptNumber, questionId, user }) {
   const { score, score_delta_hint, competency_breakdown, strengths, weaknesses, filler_words,
     high_signal_keywords, missing_concepts, expert_rewrite, improvement_tips, feedback_text } = result;
 
   const scoreColor = score >= 70 ? C.success : score >= 40 ? C.yellow : C.red;
   const tts = useTextToSpeech();
   const [isSpeakingFeedback, setIsSpeakingFeedback] = useState(false);
+
+  // Fire first_score_viewed analytics event once per attempt
+  const firedAttemptsRef = useRef(new Set());
+  useEffect(() => {
+    if (!firedAttemptsRef.current.has(attemptNumber)) {
+      firedAttemptsRef.current.add(attemptNumber);
+      fireEvent('first_score_viewed', {
+        score,
+        from_voice: result.from_voice,
+        attempt_number: attemptNumber,
+        question_id: questionId,
+      }, user?.id);
+    }
+  }, [attemptNumber, score, result, questionId, user?.id]);
 
   const handleSpeakFeedback = () => {
     if (tts.isSpeaking) {
@@ -587,6 +602,13 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
       setAnalysisText('');
       setResult(parsed);
+
+      // Fire analytics event for first answer submitted
+      fireEvent('first_answer_submitted', {
+        from_voice: fromVoice,
+        question_id: questionId,
+        answer_length: answerText?.length || 0,
+      }, user?.id);
 
       // Save to Supabase
       if (user) {
@@ -972,7 +994,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         {result && !loading && (
           user ? (
             <>
-              <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} />
+              <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} questionId={questionId} user={user} />
               <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
                 <button
                   onClick={handleTryAgain}
