@@ -495,7 +495,12 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const handler = (e) => setPage(e.detail);
+    const handler = (e) => {
+      if (e.detail === 'interview' || e.detail === 'home') {
+        console.log('[App] setPage to', e.detail, 'called from event, stack:', new Error().stack.split('\n')[1]);
+      }
+      setPage(e.detail);
+    };
     window.addEventListener('ia:navigate', handler);
     return () => window.removeEventListener('ia:navigate', handler);
   }, []);
@@ -815,7 +820,10 @@ export default function App() {
             <UpgradePage
               user={user}
               profile={profile}
-              onBack={() => setPage('interview')}
+              onBack={() => {
+                console.log('[App] setPage("interview") called from UpgradePage onBack, stack:', new Error().stack.split('\n')[1]);
+                setPage('interview');
+              }}
             />
           )}
           {page === 'admin' && isAdmin && <AdminPanel user={user} />}
