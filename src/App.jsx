@@ -486,13 +486,19 @@ export default function App() {
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (localStorage.getItem('ia_practice_origin')) {
+      const isPracticeOrigin = localStorage.getItem('ia_practice_origin');
+      if (isPracticeOrigin) {
         localStorage.removeItem('ia_practice_origin');
-        return;
       }
+
+      // Always set user state
+      setUser(session?.user ?? null);
+
+      // Skip post-signup navigation for practice-origin users
+      if (isPracticeOrigin) return;
+
       console.log('[Auth] onAuthStateChange - event:', event, '| page before:', page, '| user:', user?.id);
       if (event === 'SIGNED_IN' && page === 'practice') return; // Don't interrupt practice session
-      setUser(session?.user ?? null);
       if (event === 'PASSWORD_RECOVERY') setShowResetPassword(true);
     });
 
