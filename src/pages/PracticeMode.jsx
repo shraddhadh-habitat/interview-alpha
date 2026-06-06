@@ -97,6 +97,7 @@ function useVoiceToText() {
     };
 
     r.onerror = (e) => {
+      console.error('[Voice] onerror code:', e.error, '| shouldRestart before:', shouldRestartRef.current);
       console.error('[Voice] onerror:', e.error);
 
       const fatalErrors = ['not-allowed', 'service-not-allowed', 'aborted'];
