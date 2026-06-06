@@ -635,7 +635,7 @@ export default function App() {
     quickStartCheckedRef.current = true;
     if (profile.free_sessions_used === 0 && profile.monthly_sessions_used === 0) {
       const key = 'ia:qs_' + user.id;
-      if (!localStorage.getItem(key)) {
+      if (!localStorage.getItem(key) && !sessionStorage.getItem('ia_practice_origin')) {
         setShowQuickStart(true);
       }
     }
