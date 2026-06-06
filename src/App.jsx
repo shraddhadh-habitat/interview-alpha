@@ -486,6 +486,10 @@ export default function App() {
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (localStorage.getItem('ia_practice_origin')) {
+        localStorage.removeItem('ia_practice_origin');
+        return;
+      }
       console.log('[Auth] onAuthStateChange - event:', event, '| page before:', page, '| user:', user?.id);
       if (event === 'SIGNED_IN' && page === 'practice') return; // Don't interrupt practice session
       setUser(session?.user ?? null);
