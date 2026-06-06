@@ -487,6 +487,7 @@ export default function App() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('[Auth] onAuthStateChange - event:', event, '| page before:', page, '| user:', user?.id);
+      if (event === 'SIGNED_IN' && page === 'practice') return; // Don't interrupt practice session
       setUser(session?.user ?? null);
       if (event === 'PASSWORD_RECOVERY') setShowResetPassword(true);
     });
@@ -496,14 +497,14 @@ export default function App() {
 
   useEffect(() => {
     const handler = (e) => {
-      if (e.detail === 'interview' || e.detail === 'home') {
-        console.log('[App] setPage to', e.detail, 'called from event, stack:', new Error().stack.split('\n')[1]);
+      if (e.detail === 'interview' && page === 'practice') {
+        return; // Don't navigate away from practice mid-session
       }
       setPage(e.detail);
     };
     window.addEventListener('ia:navigate', handler);
     return () => window.removeEventListener('ia:navigate', handler);
-  }, []);
+  }, [page]);
 
   // Device tracking is handled by DeviceTracker component
   // which updates user profile with device info on every page load
