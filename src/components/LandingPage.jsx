@@ -584,7 +584,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
                 questionId: "landing-pm-sample",
                 category: "Product Management"
               }));
-              sessionStorage.setItem('ia_practice_origin', 'true');
+              localStorage.setItem('ia_practice_origin', 'true');
               onNavigate('practice');
             }} style={{
               fontSize: '11px',
@@ -651,7 +651,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
                 questionId: "landing-ds-sample",
                 category: "Data Science"
               }));
-              sessionStorage.setItem('ia_practice_origin', 'true');
+              localStorage.setItem('ia_practice_origin', 'true');
               onNavigate('practice');
             }} style={{
               fontSize: '11px',
