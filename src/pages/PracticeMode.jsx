@@ -605,12 +605,26 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
   const handleSubmit = async (answerText, fromVoice = false) => {
     if (!answerText.trim()) return;
 
+    // ─── Resolve authenticated user upfront ───
+    let authUser = user;
+    if (!authUser) {
+      try {
+        const { data: { user: sessionUser } } = await supabase.auth.getUser();
+        authUser = sessionUser;
+        if (sessionUser) {
+          setResolvedUser(sessionUser);
+        }
+      } catch (err) {
+        console.error('[Submit] Failed to resolve user from session:', err);
+      }
+    }
+    if (!authUser) {
+      console.error('[Submit] No authenticated user found');
+      return;
+    }
+
     // ─── Session gate ───
     const sessionCheckResult = checkSession ? checkSession() : null;
-    console.log('[Submit] checkSession result:', sessionCheckResult);
-    console.log('[Submit] user:', user?.id);
-    console.log('[Submit] answerText length:', answerText?.length);
-
     if (checkSession && !sessionCheckResult) return;
     if (onSessionUsed) await onSessionUsed();
 
@@ -694,20 +708,6 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
       setAnalysisText('');
       setResult(parsed);
-
-      // Resolve authenticated user from session if prop user is undefined
-      let authUser = user;
-      if (!authUser) {
-        try {
-          const { data: { user: sessionUser } } = await supabase.auth.getUser();
-          if (sessionUser) {
-            authUser = sessionUser;
-            setResolvedUser(sessionUser);
-          }
-        } catch (err) {
-          console.error('[Submit] Failed to resolve user from session:', err);
-        }
-      }
 
       // Fire analytics event for first answer submitted
       fireEvent('first_answer_submitted', {
@@ -923,7 +923,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 {(() => {
                   const wordCount = textAnswer.trim().split(/\s+/).filter(Boolean).length;
                   const ready = wordCount >= 50;
-                  const disabled = loading || !ready;
+                  const disabled = loading || !ready || !authenticatedUser;
                   return (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
                       {wordCount > 0 && wordCount < 50 && (
@@ -1035,7 +1035,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                       {voiceText && (
                         <button
                           onClick={() => handleSubmit(dedupeTranscript(voiceText), true)}
-                          disabled={loading}
+                          disabled={loading || !authenticatedUser}
                           style={{
                             padding: '11px 24px', background: C.green, border: 'none', borderRadius: 12,
                             color: '#fff', fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif",
