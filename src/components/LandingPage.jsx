@@ -178,7 +178,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
 
           {/* Secondary link */}
           <p style={{ fontSize: '0.95rem', marginTop: '12px', color: '#111', lineHeight: 1.5, fontWeight: 600 }}>
-            <a href="#" style={{ color: '#6b6b6b', textDecoration: 'underline', fontWeight: 500 }}>
+            <a onClick={() => onNavigate('practice')} style={{ color: '#6b6b6b', textDecoration: 'underline', fontWeight: 500, cursor: 'pointer' }}>
               Or browse questions free.
             </a>
             {' '}Thousands of{' '}
