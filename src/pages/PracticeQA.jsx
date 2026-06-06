@@ -1027,6 +1027,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [filterDifficulty, setFilterDifficulty] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [practiceQuestion, setPracticeQuestion] = useState(() => {
+    console.log('[PracticeQA] initializer running - localStorage has ia_sample_question:', !!localStorage.getItem('ia_sample_question'));
     // Synchronously load pending homepage featured question before first render.
     // This prevents flash of generic Practice browser UI when user returns after auth.
     const sampleQ = localStorage.getItem('ia_sample_question');
@@ -1066,6 +1067,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  console.log('[PracticeQA] render - practiceQuestion:', practiceQuestion?.questionId, '| question exists:', !!practiceQuestion);
+
   // Resize listener for isMobile
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 768);
@@ -1075,6 +1078,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   // Load practice stats for current user
   useEffect(() => {
+    console.log('[PracticeQA] user useEffect fired - user:', user?.id);
     if (!user) return;
     supabase
       .from('practice_attempts')
