@@ -645,10 +645,10 @@ export default function App() {
     quickStartCheckedRef.current = true;
     if (profile.free_sessions_used === 0 && profile.monthly_sessions_used === 0) {
       const key = 'ia:qs_' + user.id;
-      if (!localStorage.getItem(key) && !localStorage.getItem('ia_practice_origin')) {
-        setShowQuickStart(true);
+      if (!localStorage.getItem(key)) {
+        localStorage.setItem(key, 'true');
+        setShowQuickStart(false);
       }
-      localStorage.removeItem('ia_practice_origin');
     }
   }, [user, profileLoaded, profile.free_sessions_used, profile.monthly_sessions_used]);
 
