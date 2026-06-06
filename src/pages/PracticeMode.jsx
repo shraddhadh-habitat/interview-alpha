@@ -98,17 +98,20 @@ function useVoiceToText() {
 
     r.onerror = (e) => {
       console.error('[Voice] onerror:', e.error);
-      shouldRestartRef.current = false;
-      clearInterval(timerRef.current);
-      setIsListening(false);
-      setInterimTranscript('');
-      if (e.error === 'not-allowed') {
-        setVoiceError('Microphone access denied. Please allow microphone in browser settings.');
-        if (onFailure) onFailure();
-      } else if (e.error !== 'no-speech') {
-        setVoiceError('Voice input failed. Please type your answer instead.');
-        if (onFailure) onFailure();
+
+      const fatalErrors = ['not-allowed', 'service-not-allowed', 'aborted'];
+      if (fatalErrors.includes(e.error)) {
+        shouldRestartRef.current = false;
+        clearInterval(timerRef.current);
+        setIsListening(false);
+        setInterimTranscript('');
+        if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+          setVoiceError('Microphone access denied. Please allow microphone in browser settings.');
+          if (onFailure) onFailure();
+        }
       }
+      // For non-fatal errors (no-speech, audio-capture, network), do nothing
+      // onend will fire next and auto-restart will handle it
     };
 
     r.onend = () => {
