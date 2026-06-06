@@ -486,6 +486,7 @@ export default function App() {
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[Auth] onAuthStateChange - event:', event, '| page before:', page, '| user:', user?.id);
       setUser(session?.user ?? null);
       if (event === 'PASSWORD_RECOVERY') setShowResetPassword(true);
     });
@@ -865,6 +866,7 @@ export default function App() {
               setPostLoginDestination(null);
             }}
             onSuccess={() => {
+              console.log('[Auth] onSuccess fired - page:', page, '| postLoginDestination:', postLoginDestination, '| user:', user?.id);
               setShowLoginModal(false);
               setLoginMessage('');
               if (postLoginDestination) {
