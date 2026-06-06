@@ -222,7 +222,8 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 20px', zIndex: 99,
-        fontFamily: "'Plus Jakarta Sans', sans-serif"
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        gap: 16
       }}>
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
@@ -248,7 +249,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         </div>
 
         {/* Center tabs */}
-        <div className="nav-tabs" style={{ flex: 1, justifyContent: 'center', margin: '0 24px', overflow: 'hidden', minWidth: 0 }}>
+        <div className="nav-tabs" style={{ flex: '1 1 auto', justifyContent: 'flex-start', margin: '0 24px', minWidth: 0 }}>
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -261,21 +262,9 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         </div>
 
         {/* Right side */}
-        <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, overflow: 'visible', whiteSpace: 'nowrap' }}>
+        <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, minWidth: 0, whiteSpace: 'nowrap' }}>
           {user ? (
             <>
-              <span style={{
-                fontSize: 13,
-                fontWeight: 600,
-                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                whiteSpace: 'nowrap',
-              }}>
-                Welcome back, {displayName || user?.email?.split('@')[0]}!
-              </span>
               <SubscriptionBadge profile={profile} onUpgradeClick={onUpgradeClick} />
 
               {/* Avatar with dropdown */}
