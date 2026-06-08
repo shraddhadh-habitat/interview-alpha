@@ -551,28 +551,42 @@ export default function PracticeMode({ question, questionId, designation, catego
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const scoreToken = params.get('score_token');
+    console.log('[PracticeMode] Mount - score_token from URL:', scoreToken);
 
     if (scoreToken) {
       (async () => {
         try {
+          console.log('[PracticeMode] Fetching pending_scores for token:', scoreToken);
           const { data, error } = await supabase
             .from('pending_scores')
             .select('*')
             .eq('session_token', scoreToken)
             .single();
 
-          if (data && !error) {
-            console.log('[PracticeMode] Restored score from pending_scores:', scoreToken);
+          if (error) {
+            console.error('[PracticeMode] Failed to fetch from pending_scores:', error);
+            return;
+          }
+
+          if (data) {
+            console.log('[PracticeMode] Successfully restored score from pending_scores:', scoreToken);
             setResult(data.score_data);
 
             // Delete the row from pending_scores
-            await supabase
+            const { error: deleteError } = await supabase
               .from('pending_scores')
               .delete()
               .eq('session_token', scoreToken);
 
+            if (deleteError) {
+              console.error('[PracticeMode] Failed to delete pending_scores:', deleteError);
+            } else {
+              console.log('[PracticeMode] Deleted pending_scores row');
+            }
+
             // Clear localStorage
             localStorage.removeItem('ia:score_token');
+            console.log('[PracticeMode] Cleared localStorage ia:score_token');
 
             // Clean up URL
             window.history.replaceState({}, document.title, window.location.pathname);
@@ -740,9 +754,11 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
       if (!user) {
         try {
           const scoreToken = crypto.randomUUID();
+          console.log('[Score] Generated token:', scoreToken);
           localStorage.setItem('ia:score_token', scoreToken);
+          console.log('[Score] Saved token to localStorage');
 
-          await supabase.from('pending_scores').insert({
+          const { error } = await supabase.from('pending_scores').insert({
             session_token: scoreToken,
             question_id: questionId,
             question_text: question.q,
@@ -750,7 +766,11 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
             score_data: parsed
           });
 
-          console.log('[Score] Saved to pending_scores with token:', scoreToken);
+          if (error) {
+            console.error('[Score] Supabase insert error:', error);
+          } else {
+            console.log('[Score] Successfully saved to pending_scores with token:', scoreToken);
+          }
         } catch (err) {
           console.error('[Score] Failed to save to pending_scores:', err);
         }

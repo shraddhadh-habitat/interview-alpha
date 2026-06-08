@@ -34,6 +34,10 @@ function AuthForm({ tab, mobile, onSuccess }) {
     setLoading(true);
     try {
       if (tab === 'signup') {
+        // Check if user has a pending score from practice attempt
+        const scoreToken = localStorage.getItem('ia:score_token');
+        console.log('[LoginModal] score token at signup:', scoreToken);
+
         if (name.trim().length < 2) { setError('Please enter your full name (at least 2 characters).'); return; }
 
         // Validate email format
@@ -47,11 +51,17 @@ function AuthForm({ tab, mobile, onSuccess }) {
         if (password.length < 8) { setError('Password must be at least 8 characters.'); return; }
         if (password !== confirmPassword) { setError('Passwords do not match.'); return; }
 
+        // Build redirect URL with score token if present
+        const emailRedirectTo = scoreToken
+          ? `https://interviewalpha.ai/auth/callback?next=practice&score_token=${scoreToken}`
+          : 'https://interviewalpha.ai/auth/callback?next=practice';
+        console.log('[LoginModal] emailRedirectTo:', emailRedirectTo);
+
         const { data, error: err } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: 'https://interviewalpha.ai/auth/callback?next=practice'
+            emailRedirectTo
           }
         });
         if (err) throw err;

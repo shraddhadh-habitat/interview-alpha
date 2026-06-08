@@ -17,8 +17,11 @@ export default function AuthCallback() {
         }
 
         if (data?.user) {
-          // Check if user has a pending score from unauthenticated practice attempt
-          const scoreToken = localStorage.getItem('ia:score_token');
+          // Check for score token in URL (sent via emailRedirectTo)
+          const params = new URLSearchParams(window.location.search);
+          const scoreToken = params.get('score_token');
+          console.log('[AuthCallback] score_token from URL:', scoreToken);
+
           if (scoreToken) {
             console.log('[AuthCallback] Found score token, redirecting to practice with token');
             window.location.href = `/?page=practice&score_token=${scoreToken}`;
