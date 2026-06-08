@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from './lib/supabase';
+import { handleSignOut } from './lib/signOut';
 import InterviewAlpha from './InterviewAlpha';
 import LandingPage from './components/LandingPage';
 import PastSessions from './pages/PastSessions';
@@ -781,7 +782,7 @@ export default function App() {
   }, [user]);
 
   if (authLoading) return <LoadingScreen />;
-  if (showResetPassword) return <ResetPasswordPage onDone={() => { setShowResetPassword(false); supabase.auth.signOut(); }} />;
+  if (showResetPassword) return <ResetPasswordPage onDone={() => { setShowResetPassword(false); handleSignOut(); }} />;
 
   const isAdmin = user && ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email?.toLowerCase());
 

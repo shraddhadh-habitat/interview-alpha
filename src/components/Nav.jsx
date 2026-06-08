@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
+import { handleSignOut } from '../lib/signOut';
 
 const C = {
   bg: '#FFFFFF',
@@ -301,7 +302,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                       {isAdmin && <button onClick={() => handleNav('admin')} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.red, cursor: 'pointer' }}>Admin</button>}
                       {onReplayDemo && <button onClick={() => { setAvatarDropOpen(false); onReplayDemo(); }} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 13, color: C.textMuted, cursor: 'pointer' }}>Tour</button>}
                       <div style={{ margin: '4px 8px', height: 1, background: C.border }} />
-                      <button onClick={() => supabase.auth.signOut()} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.red, cursor: 'pointer' }}>Logout</button>
+                      <button onClick={handleSignOut} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.red, cursor: 'pointer' }}>Logout</button>
                     </div>
                   </div>
                 )}
@@ -420,7 +421,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         {user && (
           <div style={{ padding: '0 12px' }}>
             <button
-              onClick={() => { setDrawerOpen(false); supabase.auth.signOut(); }}
+              onClick={() => { setDrawerOpen(false); handleSignOut(); }}
               style={{
                 width: '100%', padding: '16px', background: C.redLight,
                 border: `1px solid ${C.redBorder}`, borderRadius: 12,

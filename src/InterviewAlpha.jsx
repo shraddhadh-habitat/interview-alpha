@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "./lib/supabase";
 import { useAuth } from "./contexts/AuthContext";
+import { handleSignOut } from "./lib/signOut";
 import ReviewsDisplay from "./components/ReviewsDisplay";
 import ReviewPrompt from "./components/ReviewPrompt";
 import { pmQuestions as PM_QUESTIONS } from "./data/pmQuestions";
@@ -1918,7 +1919,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
             </button>
           )}
           <button
-            onClick={() => supabase.auth.signOut()}
+            onClick={handleSignOut}
             style={{
               padding: "8px 16px", background: "transparent",
               border: `1px solid ${C.border}`, color: C.textMuted,
