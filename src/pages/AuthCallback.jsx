@@ -17,14 +17,22 @@ export default function AuthCallback() {
         }
 
         if (data?.user) {
-          // Check if user came from practice attempt
-          const practiceOrigin = localStorage.getItem('ia_practice_origin');
-          if (practiceOrigin) {
-            localStorage.removeItem('ia_practice_origin');
+          // Check if user has a pending score from signup attempt
+          const pendingScore = localStorage.getItem('ia:pending_score');
+          if (pendingScore) {
+            localStorage.removeItem('ia:pending_score');
+            // Redirect to scorecard with score data - it will be picked up by PracticeQA
             window.location.href = '/?page=practice';
           } else {
-            // Redirect to scorecard for normal signup
-            window.location.href = '/?page=scorecard';
+            // Check if user came from practice attempt
+            const practiceOrigin = localStorage.getItem('ia_practice_origin');
+            if (practiceOrigin) {
+              localStorage.removeItem('ia_practice_origin');
+              window.location.href = '/?page=practice';
+            } else {
+              // Redirect to scorecard for normal signup
+              window.location.href = '/?page=scorecard';
+            }
           }
         } else {
           window.location.href = '/';

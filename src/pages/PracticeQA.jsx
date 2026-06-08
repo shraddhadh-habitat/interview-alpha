@@ -1028,6 +1028,24 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [practiceQuestion, setPracticeQuestion] = useState(() => {
     console.log('[PracticeQA] initializer running - localStorage has ia_sample_question:', !!localStorage.getItem('ia_sample_question'));
+    // Check for pending score from post-signup attempt
+    const pendingScore = localStorage.getItem('ia:pending_score');
+    if (pendingScore) {
+      try {
+        const parsed = JSON.parse(pendingScore);
+        if (parsed.question && parsed.questionId) {
+          localStorage.removeItem('ia:pending_score');
+          return {
+            question: parsed.question,
+            questionId: parsed.questionId,
+            designation: parsed.question.designation || 'practice',
+            category: parsed.question.category || 'practice',
+          };
+        }
+      } catch(e) {
+        localStorage.removeItem('ia:pending_score');
+      }
+    }
     // Synchronously load pending homepage featured question before first render.
     // This prevents flash of generic Practice browser UI when user returns after auth.
     const sampleQ = localStorage.getItem('ia_sample_question');

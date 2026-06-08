@@ -1279,7 +1279,15 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 Get detailed feedback on your response and learn from the expert answer.
               </div>
               <button
-                onClick={() => requireAuth('Sign in to see your score and the expert rewrite')}
+                onClick={() => {
+                  localStorage.setItem('ia:pending_score', JSON.stringify({
+                    questionId,
+                    answer: textAnswer || transcript,
+                    score: result?.score,
+                    question
+                  }));
+                  requireAuth('Sign in to see your score and the expert rewrite');
+                }}
                 style={{
                   padding: '10px 24px',
                   background: C.green,
