@@ -653,38 +653,46 @@ export default function App() {
   }, [user, profileLoaded, profile.free_sessions_used, profile.monthly_sessions_used]);
 
   // Show name prompt for existing users who haven't set a display_name yet.
-  // Skip if user just signed up (flag set by LoginModal signup flow).
+  // Always fetch fresh from Supabase to verify display_name exists.
   // Skip if user is an admin.
   useEffect(() => {
     if (!user || !profileLoaded) return;
     const isAdmin = ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email?.toLowerCase());
     if (isAdmin) return;
-    if (!profile.display_name) {
-      const justSignedUp = localStorage.getItem('ia:just_signed_up');
-      if (justSignedUp) {
-        localStorage.removeItem('ia:just_signed_up');
-        return;
+
+    (async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('id', user.id)
+        .single();
+
+      if (!data?.display_name) {
+        setShowNamePrompt(true);
       }
-      setShowNamePrompt(true);
-    }
-  }, [user, profileLoaded, profile.display_name]);
+    })();
+  }, [user, profileLoaded]);
 
   // Show phone prompt for existing users who haven't set a phone_number yet.
-  // Skip if user just signed up (flag set by LoginModal signup flow).
+  // Always fetch fresh from Supabase to verify phone_number exists.
   // Skip if user is an admin.
   useEffect(() => {
     if (!user || !profileLoaded) return;
     const isAdmin = ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email?.toLowerCase());
     if (isAdmin) return;
-    if (!profile.phone_number) {
-      const justSignedUp = localStorage.getItem('ia:just_signed_up');
-      if (justSignedUp) {
-        localStorage.removeItem('ia:just_signed_up');
-        return;
+
+    (async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('phone_number')
+        .eq('id', user.id)
+        .single();
+
+      if (!data?.phone_number) {
+        setShowPhonePrompt(true);
       }
-      setShowPhonePrompt(true);
-    }
-  }, [user, profileLoaded, profile.phone_number]);
+    })();
+  }, [user, profileLoaded]);
 
   const handleQuickStartDismiss = useCallback(() => {
     if (user) localStorage.setItem('ia:qs_' + user.id, '1');
