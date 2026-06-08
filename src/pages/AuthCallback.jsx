@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
 export default function AuthCallback() {
+  console.log('[AuthCallback] URL on load:', window.location.href);
+  console.log('[AuthCallback] search params:', window.location.search);
+
   useEffect(() => {
     const handleCallback = async () => {
       try {
