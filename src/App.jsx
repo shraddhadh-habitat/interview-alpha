@@ -532,7 +532,8 @@ export default function App() {
   }, []);
 
   const loadProfile = useCallback(async (uid) => {
-    const { data } = await supabase
+    let data = null;
+    const { data: profileData, error } = await supabase
       .from('profiles')
       .select(`
         subscription_status,
@@ -546,6 +547,18 @@ export default function App() {
       `)
       .eq('id', uid)
       .single();
+
+    // Defensive: if profile doesn't exist, create it
+    if (error || !profileData) {
+      const { data: userData } = await supabase.auth.getUser();
+      const { data: newProfile } = await supabase.from('profiles').insert({
+        id: uid,
+        email: userData?.user?.email ?? ''
+      }).select().single();
+      data = newProfile;
+    } else {
+      data = profileData;
+    }
 
     let status = data?.subscription_status ?? 'free';
     if (status === 'active' && data?.subscription_expires_at) {
