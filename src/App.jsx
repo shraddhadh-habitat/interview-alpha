@@ -667,46 +667,34 @@ export default function App() {
   }, [user, profileLoaded, profile.free_sessions_used, profile.monthly_sessions_used]);
 
   // Show name prompt for existing users who haven't set a display_name yet.
-  // Always fetch fresh from Supabase to verify display_name exists.
+  // Only show if profile is loaded and display_name is actually missing.
   // Skip if user is an admin.
   useEffect(() => {
     if (!user || !profileLoaded) return;
     const isAdmin = ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email?.toLowerCase());
     if (isAdmin) return;
 
-    (async () => {
-      const { data } = await supabase
-        .from('profiles')
-        .select('display_name')
-        .eq('id', user.id)
-        .single();
-
-      if (!data?.display_name) {
-        setShowNamePrompt(true);
-      }
-    })();
-  }, [user, profileLoaded]);
+    if (!profile.display_name) {
+      setShowNamePrompt(true);
+    } else {
+      setShowNamePrompt(false);
+    }
+  }, [user, profileLoaded, profile.display_name]);
 
   // Show phone prompt for existing users who haven't set a phone_number yet.
-  // Always fetch fresh from Supabase to verify phone_number exists.
+  // Only show if profile is loaded and phone_number is actually missing.
   // Skip if user is an admin.
   useEffect(() => {
     if (!user || !profileLoaded) return;
     const isAdmin = ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email?.toLowerCase());
     if (isAdmin) return;
 
-    (async () => {
-      const { data } = await supabase
-        .from('profiles')
-        .select('phone_number')
-        .eq('id', user.id)
-        .single();
-
-      if (!data?.phone_number) {
-        setShowPhonePrompt(true);
-      }
-    })();
-  }, [user, profileLoaded]);
+    if (!profile.phone_number) {
+      setShowPhonePrompt(true);
+    } else {
+      setShowPhonePrompt(false);
+    }
+  }, [user, profileLoaded, profile.phone_number]);
 
   const handleQuickStartDismiss = useCallback(() => {
     if (user) localStorage.setItem('ia:qs_' + user.id, '1');
