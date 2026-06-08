@@ -5,8 +5,6 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        console.log('AuthCallback mounted, pending_score:', localStorage.getItem('ia:pending_score'));
-
         // Exchange the code for a session
         const { data, error } = await supabase.auth.exchangeCodeForSession(
           new URLSearchParams(window.location.search).get('code')
@@ -19,46 +17,14 @@ export default function AuthCallback() {
         }
 
         if (data?.user) {
-          // Check if user has a pending score from signup attempt (same tab scenario)
-          let pendingScore = localStorage.getItem('ia:pending_score');
-
-          // If not in localStorage, check Supabase pending_redirect (new tab scenario)
-          if (!pendingScore) {
-            const { data: profile } = await supabase
-              .from('profiles')
-              .select('pending_redirect')
-              .eq('id', data.user.id)
-              .single();
-
-            if (profile?.pending_redirect) {
-              pendingScore = profile.pending_redirect;
-              console.log('Restored pending_score from Supabase');
-
-              // Clear pending_redirect from database
-              await supabase
-                .from('profiles')
-                .update({ pending_redirect: null })
-                .eq('id', data.user.id);
-            }
+          // Check if user has a pending score from unauthenticated practice attempt
+          const scoreToken = localStorage.getItem('ia:score_token');
+          if (scoreToken) {
+            console.log('[AuthCallback] Found score token, redirecting to practice with token');
+            window.location.href = `/?page=practice&score_token=${scoreToken}`;
           } else {
-            console.log('Found pending_score in localStorage');
-          }
-
-          if (pendingScore) {
-            // Restore to localStorage for PracticeQA initializer
-            localStorage.setItem('ia:pending_score', pendingScore);
-            localStorage.removeItem('ia_practice_origin');
-            window.location.href = '/?page=practice';
-          } else {
-            // Check if user came from practice attempt
-            const practiceOrigin = localStorage.getItem('ia_practice_origin');
-            if (practiceOrigin) {
-              localStorage.removeItem('ia_practice_origin');
-              window.location.href = '/?page=practice';
-            } else {
-              // Redirect to scorecard for normal signup
-              window.location.href = '/?page=scorecard';
-            }
+            console.log('[AuthCallback] No score token, redirecting to homepage');
+            window.location.href = '/';
           }
         } else {
           window.location.href = '/';

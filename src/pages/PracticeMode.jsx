@@ -547,6 +547,43 @@ export default function PracticeMode({ question, questionId, designation, catego
   // Use resolved user if prop user is undefined (handles async hydration delay)
   const authenticatedUser = user || resolvedUser;
 
+  // Restore score from pending_scores if redirected after email verification
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const scoreToken = params.get('score_token');
+
+    if (scoreToken) {
+      (async () => {
+        try {
+          const { data, error } = await supabase
+            .from('pending_scores')
+            .select('*')
+            .eq('session_token', scoreToken)
+            .single();
+
+          if (data && !error) {
+            console.log('[PracticeMode] Restored score from pending_scores:', scoreToken);
+            setResult(data.score_data);
+
+            // Delete the row from pending_scores
+            await supabase
+              .from('pending_scores')
+              .delete()
+              .eq('session_token', scoreToken);
+
+            // Clear localStorage
+            localStorage.removeItem('ia:score_token');
+
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+        } catch (err) {
+          console.error('[PracticeMode] Failed to restore score:', err);
+        }
+      })();
+    }
+  }, []);
+
   // Fetch existing attempt count and best score on mount
   useEffect(() => {
     if (!user) return;
@@ -698,6 +735,26 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
       setAnalysisText('');
       setResult(parsed);
+
+      // Save score to pending_scores table for unauthenticated users
+      if (!user) {
+        try {
+          const scoreToken = crypto.randomUUID();
+          localStorage.setItem('ia:score_token', scoreToken);
+
+          await supabase.from('pending_scores').insert({
+            session_token: scoreToken,
+            question_id: questionId,
+            question_text: question.q,
+            user_answer: textAnswer || transcript,
+            score_data: parsed
+          });
+
+          console.log('[Score] Saved to pending_scores with token:', scoreToken);
+        } catch (err) {
+          console.error('[Score] Failed to save to pending_scores:', err);
+        }
+      }
 
       // Resolve authenticated user from session if prop user is undefined
       let authUser = user;
@@ -1280,12 +1337,6 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               </div>
               <button
                 onClick={() => {
-                  localStorage.setItem('ia:pending_score', JSON.stringify({
-                    questionId,
-                    answer: textAnswer || transcript,
-                    score: result?.score,
-                    question
-                  }));
                   requireAuth('Sign in to see your score and the expert rewrite', null, { defaultTab: 'signup' });
                 }}
                 style={{
