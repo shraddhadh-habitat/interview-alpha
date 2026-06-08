@@ -5,6 +5,8 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
+        console.log('AuthCallback mounted, pending_score:', localStorage.getItem('ia:pending_score'));
+
         // Exchange the code for a session
         const { data, error } = await supabase.auth.exchangeCodeForSession(
           new URLSearchParams(window.location.search).get('code')
@@ -17,11 +19,35 @@ export default function AuthCallback() {
         }
 
         if (data?.user) {
-          // Check if user has a pending score from signup attempt
-          const pendingScore = localStorage.getItem('ia:pending_score');
+          // Check if user has a pending score from signup attempt (same tab scenario)
+          let pendingScore = localStorage.getItem('ia:pending_score');
+
+          // If not in localStorage, check Supabase pending_redirect (new tab scenario)
+          if (!pendingScore) {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('pending_redirect')
+              .eq('id', data.user.id)
+              .single();
+
+            if (profile?.pending_redirect) {
+              pendingScore = profile.pending_redirect;
+              console.log('Restored pending_score from Supabase');
+
+              // Clear pending_redirect from database
+              await supabase
+                .from('profiles')
+                .update({ pending_redirect: null })
+                .eq('id', data.user.id);
+            }
+          } else {
+            console.log('Found pending_score in localStorage');
+          }
+
           if (pendingScore) {
-            localStorage.removeItem('ia:pending_score');
-            // Redirect to scorecard with score data - it will be picked up by PracticeQA
+            // Restore to localStorage for PracticeQA initializer
+            localStorage.setItem('ia:pending_score', pendingScore);
+            localStorage.removeItem('ia_practice_origin');
             window.location.href = '/?page=practice';
           } else {
             // Check if user came from practice attempt

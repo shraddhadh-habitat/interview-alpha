@@ -72,14 +72,18 @@ function AuthForm({ tab, mobile, onSuccess }) {
           const deviceType = isAndroid ? 'android' : isIOS ? 'ios' : 'desktop';
           const deviceOS = isAndroid ? 'Android' : isIOS ? 'iOS' : /windows/i.test(ua) ? 'Windows' : /mac/i.test(ua) ? 'MacOS' : 'Other';
 
-          // Save device info immediately, profile will be completed after email verification
+          // Check if user came from practice attempt with pending score
+          const pendingScore = localStorage.getItem('ia:pending_score');
+
+          // Save device info and pending_redirect immediately, profile will be completed after email verification
           await supabase.from('profiles').upsert({
             id: data.user.id,
             email,
             display_name: name.trim(),
             phone_number: phoneDigits,
             device_type: deviceType,
-            device_os: deviceOS
+            device_os: deviceOS,
+            pending_redirect: pendingScore || null
           });
 
           setStep('verify-email');
