@@ -6,17 +6,19 @@ const AuthContext = createContext(null);
 export function AuthProvider({ user, children }) {
   const [modalOpen, setModalOpen]         = useState(false);
   const [modalMessage, setModalMessage]   = useState('Sign in to continue');
+  const [defaultTab, setDefaultTab]       = useState('signin');
   const [pendingCallback, setPendingCallback] = useState(null);
 
-  // requireAuth(message, callback)
+  // requireAuth(message, callback, options)
   // If user is logged in: runs callback immediately.
   // If not: opens LoginModal; callback runs after successful auth.
-  const requireAuth = useCallback((message, callback) => {
+  const requireAuth = useCallback((message, callback, options) => {
     if (user) {
       if (callback) callback();
       return;
     }
     setModalMessage(message || 'Sign in to continue');
+    setDefaultTab(options?.defaultTab || 'signin');
     setPendingCallback(() => callback || null);
     setModalOpen(true);
   }, [user]);
@@ -43,6 +45,7 @@ export function AuthProvider({ user, children }) {
         onClose={handleClose}
         onSuccess={handleSuccess}
         message={modalMessage}
+        defaultTab={defaultTab}
       />
     </AuthContext.Provider>
   );

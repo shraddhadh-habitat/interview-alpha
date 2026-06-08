@@ -332,7 +332,7 @@ function TabBar({ tab, setTab, mobile }) {
   );
 }
 
-export default function LoginModal({ isOpen, onClose, onSuccess, message }) {
+export default function LoginModal({ isOpen, onClose, onSuccess, message, defaultTab }) {
   const [tab, setTab] = useState('signin');
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
 
@@ -350,10 +350,10 @@ export default function LoginModal({ isOpen, onClose, onSuccess, message }) {
     return () => document.removeEventListener('keydown', handler);
   }, [isOpen, onClose]);
 
-  // Reset tab on open
+  // Set tab on open, respecting defaultTab prop
   useEffect(() => {
-    if (isOpen) setTab('signin');
-  }, [isOpen]);
+    if (isOpen) setTab(defaultTab || 'signin');
+  }, [isOpen, defaultTab]);
 
   if (!isOpen) return null;
 

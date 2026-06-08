@@ -1286,7 +1286,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                     score: result?.score,
                     question
                   }));
-                  requireAuth('Sign in to see your score and the expert rewrite');
+                  requireAuth('Sign in to see your score and the expert rewrite', null, { defaultTab: 'signup' });
                 }}
                 style={{
                   padding: '10px 24px',
