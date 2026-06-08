@@ -51,7 +51,7 @@ function AuthForm({ tab, mobile, onSuccess }) {
           email,
           password,
           options: {
-            emailRedirectTo: 'https://interviewalpha.ai'
+            emailRedirectTo: 'https://interviewalpha.ai/auth/callback'
           }
         });
         if (err) throw err;

@@ -16,6 +16,7 @@ import CompanyQuestions from './pages/CompanyQuestions';
 import UpgradePage from './pages/UpgradePage';
 import AdminPanel from './pages/AdminPanel';
 import Scorecard from './pages/Scorecard';
+import AuthCallback from './pages/AuthCallback';
 import About from './pages/About';
 import Careers from './pages/Careers';
 import Blog from './pages/Blog';
@@ -771,6 +772,7 @@ export default function App() {
 
   if (authLoading) return <LoadingScreen />;
   if (showResetPassword) return <ResetPasswordPage onDone={() => { setShowResetPassword(false); handleSignOut(); }} />;
+  if (window.location.pathname === '/auth/callback') return <AuthCallback />;
 
   const isAdmin = user && ADMIN_EMAILS.length > 0 && ADMIN_EMAILS.includes(user.email?.toLowerCase());
 
