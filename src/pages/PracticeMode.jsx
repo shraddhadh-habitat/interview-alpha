@@ -574,6 +574,7 @@ export default function PracticeMode({ question, questionId, designation, catego
           if (data) {
             console.log('[PracticeMode] Successfully restored score from pending_scores:', scoreToken);
             setResult(data.score_data);
+            setLoading(false);
 
             // Delete the row from pending_scores
             const { error: deleteError } = await supabase
@@ -599,7 +600,7 @@ export default function PracticeMode({ question, questionId, designation, catego
         }
       })();
     }
-  }, []);
+  }, [authenticatedUser]);
 
   // Fetch existing attempt count and best score on mount
   useEffect(() => {
