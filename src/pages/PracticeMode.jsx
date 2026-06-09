@@ -530,6 +530,8 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
 
 // ─── Main PracticeMode component ───
 export default function PracticeMode({ question, questionId, designation, category, user, onBack, onNextQuestion, profile, checkSession, onSessionUsed }) {
+  console.log('[PracticeMode] Component render - URL:', window.location.href);
+
   const [mode, setMode] = useState('text'); // 'text' | 'voice'
   const [textAnswer, setTextAnswer] = useState('');
   const [loading, setLoading] = useState(false);
