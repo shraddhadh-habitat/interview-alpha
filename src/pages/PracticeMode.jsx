@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import FormattedAnswer from '../components/FormattedAnswer';
 import { formatLabeledText } from '../lib/formatText';
 import { fireEvent } from '../lib/analytics';
+import PaywallModal from '../components/PaywallModal';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -543,6 +544,7 @@ export default function PracticeMode({ question, questionId, designation, catego
   const [showExpert, setShowExpert] = useState(false);
   const [resolvedUser, setResolvedUser] = useState(null);
   const [restoredQuestion, setRestoredQuestion] = useState(null);
+  const [showPaywall, setShowPaywall] = useState(false);
 
   const voice = useVoiceToText();
   const { requireAuth } = useAuth();
@@ -674,6 +676,20 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
     if (checkSession && !sessionCheckResult) return;
     if (onSessionUsed) await onSessionUsed();
+
+    // ─── Paywall gate ───
+    // Check if user is free and has used all free sessions
+    if (user) {
+      const isAdmin = user.email === 'shraddhadh@gmail.com' || user.email === 'vaishnavi.kulkarni2012@gmail.com';
+      const isPaid = profile?.subscription_status === 'active';
+      const freeSessionsUsed = profile?.free_sessions_used || 0;
+
+      if (!isAdmin && !isPaid && freeSessionsUsed >= 3) {
+        console.log('[Paywall] User hit free session limit:', freeSessionsUsed);
+        setShowPaywall(true);
+        return;
+      }
+    }
 
     setLoading(true);
     setError('');
@@ -1011,29 +1027,41 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   const wordCount = textAnswer.trim().split(/\s+/).filter(Boolean).length;
                   const ready = wordCount >= 50;
                   const disabled = loading || !ready;
+                  const freeSessionsUsed = user ? (profile?.free_sessions_used || 0) : 0;
+                  const isAdmin = user && (user.email === 'shraddhadh@gmail.com' || user.email === 'vaishnavi.kulkarni2012@gmail.com');
+                  const isPaid = user && profile?.subscription_status === 'active';
+                  const showSessionCounter = user && !isAdmin && !isPaid;
+
                   return (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
-                      {wordCount > 0 && wordCount < 50 && (
-                        <span style={{ fontSize: 11, color: ready ? C.success : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                          {wordCount} / 50 words min{!ready && wordCount > 0 ? `  -  ${50 - wordCount} more` : ''}
-                        </span>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+                        {wordCount > 0 && wordCount < 50 && (
+                          <span style={{ fontSize: 11, color: ready ? C.success : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            {wordCount} / 50 words min{!ready && wordCount > 0 ? `  -  ${50 - wordCount} more` : ''}
+                          </span>
+                        )}
+                        <button
+                          onClick={() => handleSubmit(textAnswer, false)}
+                          disabled={disabled}
+                          style={{
+                            padding: '12px 32px',
+                            background: disabled ? C.bgMuted : C.green,
+                            border: 'none', borderRadius: 12,
+                            color: disabled ? C.textMuted : '#fff',
+                            fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                            cursor: disabled ? 'not-allowed' : 'pointer',
+                            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: loading ? 700 : 600,
+                            transition: 'all 0.2s',
+                          }}
+                        >
+                          {loading ? 'Submitting...' : 'Submit Answer'}
+                        </button>
+                      </div>
+                      {showSessionCounter && (
+                        <div style={{ marginTop: 8, fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                          {freeSessionsUsed} of 3 free sessions used
+                        </div>
                       )}
-                      <button
-                        onClick={() => handleSubmit(textAnswer, false)}
-                        disabled={disabled}
-                        style={{
-                          padding: '12px 32px',
-                          background: disabled ? C.bgMuted : C.green,
-                          border: 'none', borderRadius: 12,
-                          color: disabled ? C.textMuted : '#fff',
-                          fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                          cursor: disabled ? 'not-allowed' : 'pointer',
-                          fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: loading ? 700 : 600,
-                          transition: 'all 0.2s',
-                        }}
-                      >
-                        {loading ? 'Submitting...' : 'Submit Answer'}
-                      </button>
                     </div>
                   );
                 })()}
@@ -1434,6 +1462,13 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
         <div style={{ height: 60 }} />
       </div>
+
+      {showPaywall && (
+        <PaywallModal
+          onClose={() => setShowPaywall(false)}
+          onUpgrade={() => window.location.href = '/?page=pricing'}
+        />
+      )}
     </div>
   );
 }
