@@ -1366,27 +1366,6 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                       Try Next Question
                     </button>
                   )}
-                  <button
-                    style={{
-                      flex: 1,
-                      minWidth: 140,
-                      padding: '13px 0',
-                      background: 'transparent',
-                      border: `1px solid ${C.border}`,
-                      borderRadius: 12,
-                      color: C.textMuted,
-                      fontSize: 11,
-                      letterSpacing: 1.5,
-                      textTransform: 'uppercase',
-                      cursor: 'pointer',
-                      fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      transition: 'all 0.2s',
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
-                  >
-                    Remind Me Tomorrow
-                  </button>
                 </div>
               </div>
             </>
