@@ -20,17 +20,20 @@ function AuthForm({ tab, mobile, onSuccess }) {
   const [error, setError]                 = useState('');
   const [forgotSent, setForgotSent]       = useState(false);
   const [step, setStep]                   = useState('form'); // 'form' or 'verify-email'
+  const [fieldErrors, setFieldErrors]     = useState({});
 
   // Reset on tab change
   useEffect(() => {
     setError('');
     setForgotSent(false);
     setStep('form');
+    setFieldErrors({});
   }, [tab]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setFieldErrors({});
     setLoading(true);
     try {
       if (tab === 'signup') {
@@ -38,18 +41,43 @@ function AuthForm({ tab, mobile, onSuccess }) {
         const scoreToken = localStorage.getItem('ia:score_token');
         console.log('[LoginModal] score token at signup:', scoreToken);
 
-        if (name.trim().length < 2) { setError('Please enter your full name (at least 2 characters).'); return; }
+        const newFieldErrors = {};
+
+        // Validate full name
+        if (name.trim().length < 2) {
+          newFieldErrors.name = 'Please enter your full name (at least 2 characters).';
+        }
 
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email.trim())) { setError('Please enter a valid email address.'); return; }
+        if (!emailRegex.test(email.trim())) {
+          newFieldErrors.email = 'Please enter a valid email address.';
+        }
 
+        // Validate mobile number
         const phoneDigits = phone.replace(/\D/g, '');
-        if (phoneDigits.length < 10) { setError('Please enter a valid 10-digit mobile number.'); return; }
-        if (phoneDigits.length > 15) { setError('Please enter a valid mobile number.'); return; }
+        if (phoneDigits.length < 10) {
+          newFieldErrors.phone = 'Please enter a valid 10-digit mobile number.';
+        } else if (phoneDigits.length > 15) {
+          newFieldErrors.phone = 'Please enter a valid mobile number.';
+        }
 
-        if (password.length < 8) { setError('Password must be at least 8 characters.'); return; }
-        if (password !== confirmPassword) { setError('Passwords do not match.'); return; }
+        // Validate password
+        if (password.length < 8) {
+          newFieldErrors.password = 'Password must be at least 8 characters.';
+        }
+
+        // Validate confirm password
+        if (password !== confirmPassword) {
+          newFieldErrors.confirmPassword = 'Passwords do not match.';
+        }
+
+        // If there are field errors, show them and return
+        if (Object.keys(newFieldErrors).length > 0) {
+          setFieldErrors(newFieldErrors);
+          setLoading(false);
+          return;
+        }
 
         // Build redirect URL with score token if present
         const emailRedirectTo = scoreToken
@@ -213,10 +241,18 @@ function AuthForm({ tab, mobile, onSuccess }) {
             onChange={e => setName(e.target.value)}
             placeholder="Enter your full name"
             minLength={2}
-            style={inputStyle}
-            onFocus={e => e.target.style.borderColor = C.green}
-            onBlur={e => e.target.style.borderColor = C.border}
+            style={{
+              ...inputStyle,
+              borderColor: fieldErrors.name ? '#ef4444' : inputStyle.borderColor
+            }}
+            onFocus={e => e.target.style.borderColor = fieldErrors.name ? '#ef4444' : C.green}
+            onBlur={e => e.target.style.borderColor = fieldErrors.name ? '#ef4444' : C.border}
           />
+          {fieldErrors.name && (
+            <div style={{ fontSize: 12, color: '#ef4444', marginTop: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              {fieldErrors.name}
+            </div>
+          )}
         </div>
       )}
 
@@ -228,10 +264,18 @@ function AuthForm({ tab, mobile, onSuccess }) {
             onChange={e => setPhone(e.target.value)}
             placeholder="+91 9876543210"
             inputMode="tel"
-            style={inputStyle}
-            onFocus={e => e.target.style.borderColor = C.green}
-            onBlur={e => e.target.style.borderColor = C.border}
+            style={{
+              ...inputStyle,
+              borderColor: fieldErrors.phone ? '#ef4444' : inputStyle.borderColor
+            }}
+            onFocus={e => e.target.style.borderColor = fieldErrors.phone ? '#ef4444' : C.green}
+            onBlur={e => e.target.style.borderColor = fieldErrors.phone ? '#ef4444' : C.border}
           />
+          {fieldErrors.phone && (
+            <div style={{ fontSize: 12, color: '#ef4444', marginTop: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              {fieldErrors.phone}
+            </div>
+          )}
         </div>
       )}
 
@@ -241,10 +285,18 @@ function AuthForm({ tab, mobile, onSuccess }) {
           type="email" required value={email}
           onChange={e => setEmail(e.target.value)}
           placeholder="you@example.com"
-          style={inputStyle}
-          onFocus={e => e.target.style.borderColor = C.green}
-          onBlur={e => e.target.style.borderColor = C.border}
+          style={{
+            ...inputStyle,
+            borderColor: fieldErrors.email ? '#ef4444' : inputStyle.borderColor
+          }}
+          onFocus={e => e.target.style.borderColor = fieldErrors.email ? '#ef4444' : C.green}
+          onBlur={e => e.target.style.borderColor = fieldErrors.email ? '#ef4444' : C.border}
         />
+        {fieldErrors.email && (
+          <div style={{ fontSize: 12, color: '#ef4444', marginTop: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            {fieldErrors.email}
+          </div>
+        )}
       </div>
 
       <div style={{ marginBottom: tab === 'signup' ? 14 : 0 }}>
@@ -253,10 +305,18 @@ function AuthForm({ tab, mobile, onSuccess }) {
           type="password" required value={password}
           onChange={e => setPassword(e.target.value)}
           placeholder={tab === 'signup' ? 'Min. 8 characters' : 'Your password'}
-          style={inputStyle}
-          onFocus={e => e.target.style.borderColor = C.green}
-          onBlur={e => e.target.style.borderColor = C.border}
+          style={{
+            ...inputStyle,
+            borderColor: fieldErrors.password ? '#ef4444' : inputStyle.borderColor
+          }}
+          onFocus={e => e.target.style.borderColor = fieldErrors.password ? '#ef4444' : C.green}
+          onBlur={e => e.target.style.borderColor = fieldErrors.password ? '#ef4444' : C.border}
         />
+        {fieldErrors.password && (
+          <div style={{ fontSize: 12, color: '#ef4444', marginTop: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            {fieldErrors.password}
+          </div>
+        )}
       </div>
 
       {tab === 'signup' && (
@@ -266,10 +326,18 @@ function AuthForm({ tab, mobile, onSuccess }) {
             type="password" required value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
             placeholder="Repeat password"
-            style={inputStyle}
-            onFocus={e => e.target.style.borderColor = C.green}
-            onBlur={e => e.target.style.borderColor = C.border}
+            style={{
+              ...inputStyle,
+              borderColor: fieldErrors.confirmPassword ? '#ef4444' : inputStyle.borderColor
+            }}
+            onFocus={e => e.target.style.borderColor = fieldErrors.confirmPassword ? '#ef4444' : C.green}
+            onBlur={e => e.target.style.borderColor = fieldErrors.confirmPassword ? '#ef4444' : C.border}
           />
+          {fieldErrors.confirmPassword && (
+            <div style={{ fontSize: 12, color: '#ef4444', marginTop: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              {fieldErrors.confirmPassword}
+            </div>
+          )}
         </div>
       )}
 

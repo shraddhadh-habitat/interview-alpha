@@ -1169,20 +1169,45 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         {/* Loading state with skeleton placeholders */}
         {loading && (
           <div style={{ padding: '32px 0', animation: 'fadeUp 0.3s ease' }}>
-            {/* Loading message */}
-            <div style={{ marginBottom: 28, textAlign: 'center' }}>
+            {/* Loading message with animated gradient background */}
+            <div style={{
+              marginBottom: 28,
+              textAlign: 'center',
+              padding: '24px 20px',
+              background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.08) 0%, rgba(59, 130, 246, 0.08) 50%, rgba(34, 197, 94, 0.08) 100%)',
+              borderRadius: 16,
+              border: '1px solid rgba(147, 51, 234, 0.1)',
+              animation: 'gradientShift 3s ease infinite'
+            }}>
               <div style={{ fontSize: 14, letterSpacing: 4, color: C.textMuted, textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10, fontWeight: 700 }}>
                 Analyzing your answer...
               </div>
               <p style={{ fontSize: 15, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
                 We're scoring your structure, clarity, and problem-solving approach.
               </p>
+              {/* Pulsing dots animation */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
+                {[0, 1, 2].map(i => (
+                  <div
+                    key={i}
+                    style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #9333ea, #3b82f6, #22c55e)',
+                      animation: `pulse 1.5s ease-in-out infinite`,
+                      animationDelay: `${i * 0.2}s`,
+                      opacity: 0.7
+                    }}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Score skeleton */}
             <div style={{ marginBottom: 24, padding: '20px 24px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12 }}>
-              <div style={{ height: 10, width: 60, background: C.bgMuted, borderRadius: 4, marginBottom: 12, animation: 'pulse 2s infinite' }} />
-              <div style={{ height: 44, width: 100, background: C.bgMuted, borderRadius: 8, animation: 'pulse 2s infinite' }} />
+              <div style={{ height: 10, width: 60, background: 'linear-gradient(90deg, #9333ea, #3b82f6, #22c55e)', borderRadius: 4, marginBottom: 12, animation: 'shimmer 2s infinite' }} />
+              <div style={{ height: 44, width: 100, background: 'linear-gradient(90deg, #9333ea, #3b82f6, #22c55e)', borderRadius: 8, animation: 'shimmer 2s infinite' }} />
             </div>
 
             {/* Competency bars skeleton (5 competencies) */}
@@ -1190,19 +1215,31 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               {[1, 2, 3, 4, 5].map(i => (
                 <div key={i}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                    <div style={{ height: 11, width: 100, background: C.bgMuted, borderRadius: 4, animation: 'pulse 2s infinite' }} />
-                    <div style={{ height: 11, width: 35, background: C.bgMuted, borderRadius: 4, animation: 'pulse 2s infinite' }} />
+                    <div style={{ height: 11, width: 100, background: 'linear-gradient(90deg, #9333ea, #3b82f6)', borderRadius: 4, animation: 'shimmer 2s infinite', animationDelay: `${i * 0.1}s` }} />
+                    <div style={{ height: 11, width: 35, background: 'linear-gradient(90deg, #3b82f6, #22c55e)', borderRadius: 4, animation: 'shimmer 2s infinite', animationDelay: `${i * 0.1}s` }} />
                   </div>
-                  <div style={{ height: 5, background: C.bgMuted, borderRadius: 3, animation: 'pulse 2s infinite' }} />
+                  <div style={{ height: 5, background: 'linear-gradient(90deg, #9333ea, #3b82f6, #22c55e)', borderRadius: 3, animation: 'shimmer 2s infinite', animationDelay: `${i * 0.1}s` }} />
                 </div>
               ))}
             </div>
 
             {/* Feedback section skeleton */}
             <div style={{ padding: '16px 20px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16 }}>
-              <div style={{ height: 10, width: 80, background: C.bgMuted, borderRadius: 4, marginBottom: 12, animation: 'pulse 2s infinite' }} />
-              <div style={{ height: 60, background: C.bgMuted, borderRadius: 4, animation: 'pulse 2s infinite' }} />
+              <div style={{ height: 10, width: 80, background: 'linear-gradient(90deg, #9333ea, #3b82f6)', borderRadius: 4, marginBottom: 12, animation: 'shimmer 2s infinite' }} />
+              <div style={{ height: 60, background: 'linear-gradient(90deg, #3b82f6, #22c55e)', borderRadius: 4, animation: 'shimmer 2s infinite' }} />
             </div>
+
+            <style>{`
+              @keyframes shimmer {
+                0% { background-position: -1000px 0; }
+                100% { background-position: 1000px 0; }
+              }
+              @keyframes gradientShift {
+                0% { background: linear-gradient(135deg, rgba(147, 51, 234, 0.08) 0%, rgba(59, 130, 246, 0.08) 50%, rgba(34, 197, 94, 0.08) 100%); }
+                50% { background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(34, 197, 94, 0.08) 50%, rgba(147, 51, 234, 0.08) 100%); }
+                100% { background: linear-gradient(135deg, rgba(147, 51, 234, 0.08) 0%, rgba(59, 130, 246, 0.08) 50%, rgba(34, 197, 94, 0.08) 100%); }
+              }
+            `}</style>
           </div>
         )}
 
@@ -1379,7 +1416,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
                 onMouseLeave={e => e.currentTarget.style.background = C.green}
               >
-                Sign In
+                Sign Up
               </button>
               <button
                 onClick={onBack}
