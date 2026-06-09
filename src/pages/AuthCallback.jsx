@@ -8,23 +8,32 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        // Exchange the code for a session
-        const { data, error } = await supabase.auth.exchangeCodeForSession(
-          new URLSearchParams(window.location.search).get('code')
-        );
+        const params = new URLSearchParams(window.location.search);
+        const error = params.get('error');
+        const errorCode = params.get('error_code');
+        const scoreToken = params.get('score_token');
 
-        if (error) {
-          console.error('Auth callback error:', error);
-          window.location.href = '/';
+        console.log('[AuthCallback] Error:', error, 'Error code:', errorCode);
+        console.log('[AuthCallback] Score token from URL:', scoreToken);
+
+        // Handle verification errors
+        if (error || errorCode) {
+          console.log('[AuthCallback] Verification error detected');
+          if (scoreToken) {
+            console.log('[AuthCallback] Saving score token to localStorage');
+            localStorage.setItem('ia:score_token', scoreToken);
+          }
+          window.location.href = '/?signup_error=true';
           return;
         }
 
-        if (data?.user) {
-          // Check for score token in URL (sent via emailRedirectTo)
-          const params = new URLSearchParams(window.location.search);
-          const scoreToken = params.get('score_token');
-          console.log('[AuthCallback] score_token from URL:', scoreToken);
+        // Check if user is already signed in (auto sign-in after link click)
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        console.log('[AuthCallback] getSession result - has user:', !!sessionData?.session?.user, 'error:', sessionError);
 
+        if (sessionData?.session?.user) {
+          // User is already signed in - no need for exchangeCodeForSession
+          console.log('[AuthCallback] User already signed in from verification link');
           if (scoreToken) {
             console.log('[AuthCallback] Found score token, redirecting to practice with token');
             window.location.href = `/?page=practice&score_token=${scoreToken}`;
@@ -32,9 +41,39 @@ export default function AuthCallback() {
             console.log('[AuthCallback] No score token, redirecting to homepage');
             window.location.href = '/';
           }
-        } else {
-          window.location.href = '/';
+          return;
         }
+
+        // If not auto-signed-in, try exchangeCodeForSession
+        const code = params.get('code');
+        if (code) {
+          console.log('[AuthCallback] Attempting exchangeCodeForSession');
+          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+
+          if (exchangeError) {
+            console.error('Auth callback exchangeCodeForSession error:', exchangeError);
+            if (scoreToken) {
+              localStorage.setItem('ia:score_token', scoreToken);
+            }
+            window.location.href = '/?signup_error=true';
+            return;
+          }
+
+          if (data?.user) {
+            console.log('[AuthCallback] Successfully exchanged code for session');
+            if (scoreToken) {
+              console.log('[AuthCallback] Found score token, redirecting to practice with token');
+              window.location.href = `/?page=practice&score_token=${scoreToken}`;
+            } else {
+              console.log('[AuthCallback] No score token, redirecting to homepage');
+              window.location.href = '/';
+            }
+            return;
+          }
+        }
+
+        console.log('[AuthCallback] No code or user found, redirecting to homepage');
+        window.location.href = '/';
       } catch (err) {
         console.error('Auth callback exception:', err);
         window.location.href = '/';
