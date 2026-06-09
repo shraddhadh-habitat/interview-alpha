@@ -1028,6 +1028,21 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [practiceQuestion, setPracticeQuestion] = useState(() => {
     console.log('[PracticeQA] initializer running - localStorage has ia_sample_question:', !!localStorage.getItem('ia_sample_question'));
+
+    // Check for score_token in URL first (from email verification redirect)
+    const params = new URLSearchParams(window.location.search);
+    const scoreToken = params.get('score_token');
+    if (scoreToken) {
+      console.log('[PracticeQA] Found score_token in URL, showing placeholder for score restoration');
+      return {
+        question: { q: 'Loading your score...' },
+        questionId: 'pending',
+        designation: 'pending',
+        category: 'pending',
+        pending: true
+      };
+    }
+
     // Check for pending score from post-signup attempt
     const pendingScore = localStorage.getItem('ia:pending_score');
     if (pendingScore) {
