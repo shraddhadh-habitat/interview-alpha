@@ -19,6 +19,16 @@ export default function AuthCallback() {
         // Handle verification errors
         if (error || errorCode) {
           console.log('[AuthCallback] Verification error detected');
+
+          // Special case: OTP expired but user is already confirmed
+          // They can sign in manually and still see their score
+          if (errorCode === 'otp_expired' && scoreToken) {
+            console.log('[AuthCallback] OTP expired but user confirmed, redirecting to practice with score');
+            window.location.href = `/?page=practice&score_token=${scoreToken}`;
+            return;
+          }
+
+          // General error: save score token and show error
           if (scoreToken) {
             console.log('[AuthCallback] Saving score token to localStorage');
             localStorage.setItem('ia:score_token', scoreToken);
