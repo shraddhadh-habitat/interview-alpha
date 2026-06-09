@@ -1302,14 +1302,21 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               <button
                 onClick={onBack}
                 style={{
-                  width: '100%', marginTop: 16, padding: '12px 0',
-                  background: 'transparent', border: 'none',
-                  color: '#6B7280', fontSize: 13, letterSpacing: 1, textTransform: 'uppercase',
-                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
-                  transition: 'color 0.2s',
+                  width: '100%', marginTop: 16, padding: '14px 32px', height: 60,
+                  background: '#FFFFFF', border: `2px solid #111111`, borderRadius: 12,
+                  color: '#111111', fontSize: 14, letterSpacing: 1, textTransform: 'uppercase',
+                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+                  transition: 'all 0.2s',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.color = '#111111'; }}
-                onMouseLeave={e => { e.currentTarget.style.color = '#6B7280'; }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = '#F3F4F6';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = '#FFFFFF';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
               >
                 ← Back to Q&A
               </button>
