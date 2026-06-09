@@ -518,6 +518,17 @@ export default function App() {
     return () => window.removeEventListener('ia:navigate', handler);
   }, [page]);
 
+  // Check URL for page parameter on initial load
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pageParam = params.get('page');
+
+    if (pageParam === 'practice') {
+      console.log('[App] Found ?page=practice in URL, setting page to practice');
+      setPage('practice');
+    }
+  }, []);
+
   // Device tracking is handled by DeviceTracker component
   // which updates user profile with device info on every page load
 
