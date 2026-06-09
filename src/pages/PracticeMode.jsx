@@ -551,6 +551,7 @@ export default function PracticeMode({ question, questionId, designation, catego
 
   // Restore score from pending_scores if redirected after email verification
   useEffect(() => {
+    console.log('[Restore] useEffect fired, URL:', window.location.href);
     const params = new URLSearchParams(window.location.search);
     const scoreToken = params.get('score_token');
     console.log('[PracticeMode] Mount - score_token from URL:', scoreToken);
