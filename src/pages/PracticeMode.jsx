@@ -499,7 +499,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6, fontWeight: 600 }}>Missing Concepts</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {missing_concepts.map((m, i) => (
-              <span key={i} style={{ padding: '3px 7px', background: 'transparent', border: `1px solid #E5E7EB`, borderRadius: 12, fontSize: 10, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>{m}</span>
+              <span key={i} style={{ padding: '4px 10px', background: '#f59e0b', border: 'none', borderRadius: 12, fontSize: 11, color: '#fff', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>{m}</span>
             ))}
           </div>
         </div>
@@ -511,7 +511,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
           <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 500 }}>Filler Words</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {(filler_words || []).length > 0
-              ? filler_words.map((w, i) => <span key={i} style={{ padding: '2px 6px', background: 'transparent', border: `1px solid #E5E7EB`, borderRadius: 3, fontSize: 10, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>{w}</span>)
+              ? filler_words.map((w, i) => <span key={i} style={{ padding: '3px 8px', background: '#fee2e2', border: 'none', borderRadius: 4, fontSize: 10, color: '#dc2626', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{w}</span>)
               : <span style={{ fontSize: 9, color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>—</span>}
           </div>
         </div>
@@ -519,7 +519,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
           <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 500 }}>High-Signal Keywords</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {(high_signal_keywords || []).length > 0
-              ? high_signal_keywords.map((w, i) => <span key={i} style={{ padding: '2px 6px', background: 'transparent', border: `1px solid #E5E7EB`, borderRadius: 3, fontSize: 10, color: '#6B7280', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>{w}</span>)
+              ? high_signal_keywords.map((w, i) => <span key={i} style={{ padding: '3px 8px', background: '#dcfce7', border: 'none', borderRadius: 4, fontSize: 10, color: '#16a34a', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{w}</span>)
               : <span style={{ fontSize: 9, color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>—</span>}
           </div>
         </div>
@@ -542,6 +542,7 @@ export default function PracticeMode({ question, questionId, designation, catego
   const [error, setError] = useState('');
   const [showExpert, setShowExpert] = useState(false);
   const [resolvedUser, setResolvedUser] = useState(null);
+  const [restoredQuestion, setRestoredQuestion] = useState(null);
 
   const voice = useVoiceToText();
   const { requireAuth } = useAuth();
@@ -574,6 +575,7 @@ export default function PracticeMode({ question, questionId, designation, catego
           if (data) {
             console.log('[PracticeMode] Successfully restored score from pending_scores:', scoreToken);
             setResult(data.score_data);
+            setRestoredQuestion(data.question_text);
             setLoading(false);
 
             // Delete the row from pending_scores
@@ -914,7 +916,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           <div style={{ padding: '20px 24px' }}>
             <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Question</div>
             <p style={{ fontSize: 15, lineHeight: 1.7, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, fontWeight: 500 }}>
-              {question.q}
+              {restoredQuestion || question.q}
             </p>
             {attemptNumber > 1 && (
               <div style={{ marginTop: 10, fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
