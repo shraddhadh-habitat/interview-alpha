@@ -1313,9 +1313,13 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 onNextQuestion={() => {
                   setResult(null);
                   setQuestion(null);
+                  setQuestionId(null);
                   setTextAnswer('');
-                  voice.resetVoice();
+                  voice.setTranscript('');
+                  setAnalysisText('');
+                  setLoading(false);
                   window.scrollTo(0, 0);
+                  window.history.replaceState({}, document.title, '/');
                 }}
               />
 
