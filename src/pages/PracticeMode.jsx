@@ -684,7 +684,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
       const isPaid = profile?.subscription_status === 'active';
       const freeSessionsUsed = profile?.free_sessions_used || 0;
 
-      if (!isAdmin && !isPaid && freeSessionsUsed > 3) {
+      if (!isAdmin && !isPaid && freeSessionsUsed >= 3) {
         console.log('[Paywall] User hit free session limit:', freeSessionsUsed);
         setShowPaywall(true);
         return;
