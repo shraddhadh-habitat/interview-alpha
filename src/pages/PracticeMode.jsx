@@ -1281,7 +1281,11 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} questionId={questionId} user={authenticatedUser} />
               {onNextQuestion && (
                 <button
-                  onClick={onNextQuestion}
+                  onClick={() => {
+                    setResult(null);
+                    onNextQuestion();
+                    window.scrollTo(0, 0);
+                  }}
                   style={{
                     width: '100%', marginTop: 48, padding: '16px 48px', height: 60,
                     background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
