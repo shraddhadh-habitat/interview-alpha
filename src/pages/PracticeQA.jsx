@@ -1346,7 +1346,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         profile={profile}
         checkSession={checkSession}
         onSessionUsed={onSessionUsed}
-        onNextQuestion={handleNextQuestion}
+        onNextQuestion={() => { setPracticeQuestion(null); refreshStats(); }}
         onBack={() => { setPracticeQuestion(null); refreshStats(); }}
       />
     );
