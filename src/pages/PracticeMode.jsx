@@ -526,32 +526,6 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
         </div>
       </div>
 
-      {/* Try Next Question button */}
-      {onNextQuestion && (
-        <button
-          onClick={onNextQuestion}
-          style={{
-            width: '100%', marginTop: 48, padding: '16px 48px', height: 60,
-            background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
-            border: 'none', borderRadius: 12,
-            color: '#FFFFFF', fontSize: 15, letterSpacing: 1.2, textTransform: 'uppercase',
-            cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
-            transition: 'all 0.2s',
-            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.12)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.boxShadow = '0 10px 24px rgba(0, 0, 0, 0.18)';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.12)';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}
-        >
-          Try Next Question
-        </button>
-      )}
     </div>
   );
 }
