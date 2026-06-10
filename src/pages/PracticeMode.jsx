@@ -249,7 +249,7 @@ function ScoreBar({ label, value, max = 10 }) {
 }
 
 // ─── Feedback panel ───
-function FeedbackPanel({ result, attemptNumber, questionId, user }) {
+function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion }) {
   const { score, score_delta_hint, competency_breakdown, strengths, weaknesses, filler_words,
     high_signal_keywords, missing_concepts, expert_rewrite, improvement_tips, feedback_text } = result;
 
@@ -525,6 +525,33 @@ function FeedbackPanel({ result, attemptNumber, questionId, user }) {
           </div>
         </div>
       </div>
+
+      {/* Try Next Question button */}
+      {onNextQuestion && (
+        <button
+          onClick={onNextQuestion}
+          style={{
+            width: '100%', marginTop: 48, padding: '16px 48px', height: 60,
+            background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
+            border: 'none', borderRadius: 12,
+            color: '#FFFFFF', fontSize: 15, letterSpacing: 1.2, textTransform: 'uppercase',
+            cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
+            transition: 'all 0.2s',
+            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.12)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.boxShadow = '0 10px 24px rgba(0, 0, 0, 0.18)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.12)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+        >
+          Try Next Question
+        </button>
+      )}
     </div>
   );
 }
@@ -1278,36 +1305,19 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         {result && !loading && (
           authenticatedUser ? (
             <>
-              <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} questionId={questionId} user={authenticatedUser} />
-              {onNextQuestion && (
-                <button
-                  onClick={() => {
-                    setResult(null);
-                    onNextQuestion();
-                    window.scrollTo(0, 0);
-                  }}
-                  style={{
-                    width: '100%', marginTop: 48, padding: '16px 48px', height: 60,
-                    background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
-                    border: 'none', borderRadius: 12,
-                    color: '#FFFFFF', fontSize: 15, letterSpacing: 1.2, textTransform: 'uppercase',
-                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
-                    transition: 'all 0.2s',
-                    boxShadow: '0 6px 16px rgba(0, 0, 0, 0.12)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.boxShadow = '0 10px 24px rgba(0, 0, 0, 0.18)';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.12)';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
-                >
-                  Try Next Question
-                </button>
-              )}
+              <FeedbackPanel
+                result={result}
+                attemptNumber={attemptNumber - 1 || 1}
+                questionId={questionId}
+                user={authenticatedUser}
+                onNextQuestion={() => {
+                  setResult(null);
+                  setQuestion(null);
+                  setTextAnswer('');
+                  voice.resetVoice();
+                  window.scrollTo(0, 0);
+                }}
+              />
 
               {/* Post-first-session encouragement hook */}
               <div style={{
