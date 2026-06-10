@@ -1279,75 +1279,31 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           authenticatedUser ? (
             <>
               <FeedbackPanel result={result} attemptNumber={attemptNumber - 1 || 1} questionId={questionId} user={authenticatedUser} />
-              <div style={{ display: 'flex', gap: 16, marginTop: 48, flexWrap: 'wrap' }}>
-                {onNextQuestion && (
-                  <button
-                    onClick={onNextQuestion}
-                    style={{
-                      flex: 1, minWidth: 200, padding: '16px 48px', height: 60,
-                      background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
-                      border: 'none', borderRadius: 12,
-                      color: '#FFFFFF', fontSize: 15, letterSpacing: 1.2, textTransform: 'uppercase',
-                      cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
-                      transition: 'all 0.2s',
-                      boxShadow: '0 6px 16px rgba(0, 0, 0, 0.12)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.boxShadow = '0 10px 24px rgba(0, 0, 0, 0.18)';
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.12)';
-                      e.currentTarget.style.transform = 'translateY(0)';
-                    }}
-                  >
-                    Practice Another
-                  </button>
-                )}
+              {onNextQuestion && (
                 <button
-                  onClick={handleTryAgain}
+                  onClick={onNextQuestion}
                   style={{
-                    flex: 1, minWidth: 140, padding: '14px 32px', height: 60,
-                    background: '#FFFFFF', border: `2px solid #111111`, borderRadius: 12,
-                    color: '#111111', fontSize: 14, letterSpacing: 1, textTransform: 'uppercase',
-                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+                    width: '100%', marginTop: 48, padding: '16px 48px', height: 60,
+                    background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
+                    border: 'none', borderRadius: 12,
+                    color: '#FFFFFF', fontSize: 15, letterSpacing: 1.2, textTransform: 'uppercase',
+                    cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
                     transition: 'all 0.2s',
+                    boxShadow: '0 6px 16px rgba(0, 0, 0, 0.12)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.background = '#F3F4F6';
-                    e.currentTarget.style.transform = 'translateY(-1px)';
+                    e.currentTarget.style.boxShadow = '0 10px 24px rgba(0, 0, 0, 0.18)';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.style.background = '#FFFFFF';
+                    e.currentTarget.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.12)';
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  Try Again
+                  Try Next Question
                 </button>
-              </div>
-              <button
-                onClick={onBack}
-                style={{
-                  width: '100%', marginTop: 16, padding: '14px 32px', height: 60,
-                  background: '#FFFFFF', border: `2px solid #111111`, borderRadius: 12,
-                  color: '#111111', fontSize: 14, letterSpacing: 1, textTransform: 'uppercase',
-                  cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
-                  transition: 'all 0.2s',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = '#F3F4F6';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = '#FFFFFF';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                ← Back to Q&A
-              </button>
+              )}
 
               {/* Post-first-session encouragement hook */}
               <div style={{
