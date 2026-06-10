@@ -16,9 +16,6 @@ const C = {
   redWarmLight: 'rgba(27, 27, 24, 0.08)',
 };
 
-const SAMPLE_PM_QUESTION = "WhatsApp has 500M users in India but makes almost no money from them. You're the PM tasked with building WhatsApp's first revenue product for India without hurting user trust or daily engagement. What do you build, how do you price it, and what's your biggest risk?";
-
-const SAMPLE_DS_QUESTION = "Zomato notices that restaurants with 4.1 star ratings get 3x more orders than restaurants with 4.0 stars. But your analysis shows that the 4.0 rated restaurants actually have better food quality based on repeat order rates. What's happening, how would you prove it, and what would you recommend to fix the rating system?";
 
 export default function LandingPage({ user, onNavigate, profile }) {
   // Hero section  . proper two-column layout with container
@@ -502,179 +499,6 @@ export default function LandingPage({ user, onNavigate, profile }) {
 
   // Trust strip section
   const TrustSection = () => <RotatingReviews />;
-
-  // Question cards section (moved from hero right column)
-  const QuestionCardsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '40px' }}>
-      <style>{`
-        @media (max-width: 768px) {
-          .question-cards-container { padding: 0 20px !important; }
-          .question-cards-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
-        }
-      `}</style>
-
-      <div className="question-cards-container" style={{
-        maxWidth: '1080px',
-        width: '100%',
-        margin: '0 auto',
-        padding: '0 40px',
-      }}>
-        {/* Card label */}
-        <div className="hero-card-label" style={{
-          fontSize: '11px',
-          letterSpacing: '2px',
-          color: '#1B1B18',
-          fontWeight: 900,
-          marginBottom: '24px',
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          textShadow: '0 0 0 #1B1B18',
-          textAlign: 'center',
-        }}>
-          Sample Questions
-        </div>
-
-        <div className="question-cards-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '24px',
-        }}>
-          {/* Card 1 - Product Management */}
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
-            borderRadius: '16px',
-            padding: '24px',
-          }}>
-            {/* Role label */}
-            <div style={{
-              fontSize: '10px',
-              letterSpacing: '1px',
-              textTransform: 'uppercase',
-              color: '#FFFFFF',
-              fontWeight: 700,
-              marginBottom: '8px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              padding: '4px 12px',
-              borderRadius: '4px',
-              display: 'inline-block',
-            }}>
-              Product Management
-            </div>
-            {/* Question */}
-            <p style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              color: C.text,
-              marginBottom: '12px',
-              lineHeight: 1.6,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 12px 0',
-            }}>
-              WhatsApp has 500M users in India but makes almost no money from them. You're the PM tasked with building WhatsApp's first revenue product for India without hurting user trust or daily engagement. What do you build, how do you price it, and what's your biggest risk?
-            </p>
-            <button onClick={() => {
-              fireEvent('homepage_answer_cta_clicked', {
-                question_id: 'landing-pm-sample',
-                source: 'homepage_featured_question'
-              });
-              localStorage.setItem('ia_sample_question', JSON.stringify({
-                q: SAMPLE_PM_QUESTION,
-                a: "Before diving in, I'd want to clarify a few things: Are we optimizing for revenue or user growth? What's the acceptable engagement drop threshold? Is this B2B or B2C revenue?\n\nAssuming we need B2B revenue without touching consumer experience, I'd focus on WhatsApp Business API monetization.\n\nThe core insight is that small businesses in India already use WhatsApp as their primary customer channel. 15M+ businesses use WhatsApp Business. The opportunity is charging businesses for verified accounts, automated messaging, and catalog features that drive sales.\n\nFor V1, I'd build three things: verified business profiles with a blue tick (trust signal for consumers, worth paying for by businesses), broadcast messaging for order updates and promotions (charged per message beyond a free tier), and integrated payments for in-chat purchases (take a small transaction fee).\n\nPricing: freemium model. Free for small businesses under 100 messages per day. Rs 500 per month for premium features. Transaction fee of 1% on in-chat payments.\n\nThe biggest risk is perception. If users feel WhatsApp is becoming spammy or commercial, daily engagement drops. The guardrail: users must opt-in to business messages, businesses get a spam score, and any business with high block rates gets suspended.\n\nSuccess metrics: monthly revenue per business user, business adoption rate, consumer block rate (must stay under 2%), and daily active user retention (must not drop more than 0.5%).",
-                questionId: "landing-pm-sample",
-                category: "Product Management"
-              }));
-              localStorage.setItem('ia_practice_origin', 'true');
-              onNavigate('practice');
-            }} style={{
-              fontSize: '11px',
-              color: '#fff',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: 'var(--gradient-brand)',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '8px 16px',
-              fontWeight: 700,
-              transition: 'opacity 0.2s',
-              borderRadius: '6px',
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-            >
-              Answer this question
-            </button>
-          </div>
-
-          {/* Card 2 - Data Science */}
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
-            borderRadius: '16px',
-            padding: '24px',
-          }}>
-            {/* Role label */}
-            <div style={{
-              fontSize: '10px',
-              letterSpacing: '1px',
-              textTransform: 'uppercase',
-              color: '#FFFFFF',
-              fontWeight: 700,
-              marginBottom: '8px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              padding: '4px 12px',
-              borderRadius: '4px',
-              display: 'inline-block',
-            }}>
-              Data Science
-            </div>
-            {/* Question */}
-            <p style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              color: C.text,
-              marginBottom: '12px',
-              lineHeight: 1.6,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 12px 0',
-            }}>
-              Flipkart's recommendation model shows higher CTR after an update but revenue per session drops by 8%. How do you explain this and what do you do next?
-            </p>
-            <button onClick={() => {
-              fireEvent('homepage_answer_cta_clicked', {
-                question_id: 'landing-ds-sample',
-                source: 'homepage_featured_question'
-              });
-              localStorage.setItem('ia_sample_question', JSON.stringify({
-                q: SAMPLE_DS_QUESTION,
-                a: "Before diving in, I'd clarify: How are ratings calculated (simple average vs weighted)? What's the sample size difference between 4.0 and 4.1 restaurants? Is this effect consistent across cities and cuisines?\n\nThis is a classic threshold effect combined with selection bias. Here's what's likely happening: users see 4.0 as 'below 4' psychologically, creating a cliff in ordering behavior. Restaurants at 4.1 get more orders, which means more ratings, which stabilizes their score. Restaurants at 4.0 get fewer orders, fewer ratings, and their score is more volatile, one bad review can drop them to 3.9 which is catastrophic.\n\nTo prove this, I'd run three analyses. First, plot order volume against rating as a continuous variable. If there's a cliff at 4.0, that confirms the threshold effect. Second, compare repeat order rate (loyalty proxy) against rating. If 4.0 restaurants have higher repeat rates, their food is genuinely better. Third, check rating volatility. If 4.0 restaurants have fewer total ratings, their score is less reliable.\n\nMy recommendation: move from simple star ratings to a composite score that weights repeat orders, recency, and food quality signals alongside ratings. Show users 'frequently reordered' badges alongside stars. This surfaces the hidden quality signal without removing the familiar star system.\n\nKey tradeoff: changing the rating system could confuse users and upset high-rated restaurants. I'd A/B test the composite badge alongside existing stars first, not replace stars entirely.\n\nSuccess metrics: order distribution equity across rating bands, repeat order rate correlation with displayed score, and overall platform order volume.",
-                questionId: "landing-ds-sample",
-                category: "Data Science"
-              }));
-              localStorage.setItem('ia_practice_origin', 'true');
-              onNavigate('practice');
-            }} style={{
-              fontSize: '11px',
-              color: '#fff',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: 'var(--gradient-brand)',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '8px 16px',
-              fontWeight: 700,
-              transition: 'opacity 0.2s',
-              borderRadius: '6px',
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-            >
-              Answer this question
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 
   // Guided paths section
   const GuidedPathsSection = () => (
@@ -1171,7 +995,6 @@ export default function LandingPage({ user, onNavigate, profile }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
       <HeroSection />
-      <QuestionCardsSection />
       <FeedbackPreview onNavigate={onNavigate} />
       <GuidedPathsSection />
       <ProductProofSection />
