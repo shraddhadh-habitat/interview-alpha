@@ -1323,7 +1323,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                         flex: 1,
                         minWidth: 140,
                         padding: '13px 0',
-                        background: C.green,
+                        background: 'linear-gradient(135deg, #a78bfa, #5eead4)',
                         border: 'none',
                         borderRadius: 12,
                         color: '#fff',
@@ -1333,10 +1333,8 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                         cursor: 'pointer',
                         fontFamily: "'Plus Jakarta Sans', sans-serif",
                         fontWeight: 600,
-                        transition: 'background 0.2s',
+                        transition: 'all 0.2s',
                       }}
-                      onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
-                      onMouseLeave={e => e.currentTarget.style.background = C.green}
                     >
                       Try Next Question
                     </button>
