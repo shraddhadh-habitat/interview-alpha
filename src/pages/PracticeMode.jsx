@@ -817,25 +817,32 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
       // Save to Supabase
       if (authUser) {
-        await supabase.from('practice_attempts').insert({
-          user_id: authUser.id,
-          question_id: questionId,
-          designation,
-          category,
-          attempt_number: attemptNumber,
-          user_answer: answerText,
-          score: parsed.score,
-          competency_breakdown: parsed.competency_breakdown,
-          strengths: parsed.strengths,
-          weaknesses: parsed.weaknesses,
-          filler_words: parsed.filler_words,
-          high_signal_keywords: parsed.high_signal_keywords,
-          missing_concepts: parsed.missing_concepts,
-          expert_rewrite: parsed.expert_rewrite,
-          improvement_tips: parsed.improvement_tips,
-          feedback_text: parsed.feedback_text,
-          from_voice: fromVoice,
-        });
+        try {
+          const { error: insertError } = await supabase.from('practice_attempts').insert({
+            user_id: authUser.id,
+            question_id: questionId,
+            designation,
+            category,
+            attempt_number: attemptNumber,
+            user_answer: answerText,
+            score: parsed.score,
+            competency_breakdown: parsed.competency_breakdown,
+            strengths: parsed.strengths,
+            weaknesses: parsed.weaknesses,
+            filler_words: parsed.filler_words,
+            high_signal_keywords: parsed.high_signal_keywords,
+            missing_concepts: parsed.missing_concepts,
+            expert_rewrite: parsed.expert_rewrite,
+            improvement_tips: parsed.improvement_tips,
+            feedback_text: parsed.feedback_text,
+            from_voice: fromVoice,
+            created_at: new Date().toISOString(),
+          });
+          if (insertError) console.error('[PracticeMode] practice_attempts insert error:', insertError);
+          else console.log('[PracticeMode] practice_attempts saved successfully');
+        } catch (e) {
+          console.error('[PracticeMode] practice_attempts exception:', e);
+        }
 
         // Increment free_sessions_used in profiles
         const { data: freshProfile } = await supabase
