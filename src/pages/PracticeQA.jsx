@@ -1464,9 +1464,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           >
             <option value="pm">{ROLES.pm.label}</option>
             <option value="ds">{ROLES.ds.label}</option>
-            {user?.email === 'shraddhadh@gmail.com' && (
-              <option value="consulting">{ROLES.consulting.label}</option>
-            )}
+            <option value="consulting">{ROLES.consulting.label}</option>
             <optgroup label="Coming Soon">
               <option value="finance" disabled>{ROLES.finance.label}</option>
               <option value="sales" disabled>{ROLES.sales.label}</option>
