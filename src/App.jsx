@@ -547,7 +547,7 @@ export default function App() {
 
   const loadProfile = useCallback(async (uid) => {
     let data = null;
-    const { data: profileData, error } = await supabase
+    const { data: fetchedProfile, error } = await supabase
       .from('profiles')
       .select(`
         subscription_status,
@@ -563,7 +563,7 @@ export default function App() {
       .single();
 
     // Defensive: if profile doesn't exist, create it
-    if (error || !profileData) {
+    if (error || !fetchedProfile) {
       const { data: userData } = await supabase.auth.getUser();
       const { data: newProfile } = await supabase.from('profiles').insert({
         id: uid,
@@ -571,7 +571,7 @@ export default function App() {
       }).select().single();
       data = newProfile;
     } else {
-      data = profileData;
+      data = fetchedProfile;
     }
 
     let status = data?.subscription_status ?? 'free';
@@ -582,7 +582,7 @@ export default function App() {
       }
     }
 
-    const newProfile = {
+    const profileData = {
       subscription_status:       status,
       subscription_plan:         data?.subscription_plan         ?? null,
       subscription_expires_at:   data?.subscription_expires_at   ?? null,
@@ -592,7 +592,7 @@ export default function App() {
       display_name:              data?.display_name              ?? null,
       phone_number:              data?.phone_number              ?? null,
     };
-    setProfile(newProfile);
+    setProfile(profileData);
 
     // Identify user in PostHog
     const { data: { user: authUser } } = await supabase.auth.getUser();
@@ -600,7 +600,7 @@ export default function App() {
       posthog.identify(authUser.id, {
         email: authUser.email,
         subscription_status: status,
-        free_sessions_used: newProfile.free_sessions_used,
+        free_sessions_used: profileData.free_sessions_used,
       });
     }
 
