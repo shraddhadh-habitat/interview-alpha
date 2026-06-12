@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import posthog from '../lib/analytics';
 
 export default function AuthCallback() {
   console.log('[AuthCallback] URL on load:', window.location.href);
@@ -44,6 +45,7 @@ export default function AuthCallback() {
         if (sessionData?.session?.user) {
           // User is already signed in - no need for exchangeCodeForSession
           console.log('[AuthCallback] User already signed in from verification link');
+          posthog.capture('email_verified');
           if (scoreToken) {
             console.log('[AuthCallback] Found score token, redirecting to practice with token');
             window.location.href = `/?page=practice&score_token=${scoreToken}`;
@@ -71,6 +73,7 @@ export default function AuthCallback() {
 
           if (data?.user) {
             console.log('[AuthCallback] Successfully exchanged code for session');
+            posthog.capture('email_verified');
             if (scoreToken) {
               console.log('[AuthCallback] Found score token, redirecting to practice with token');
               window.location.href = `/?page=practice&score_token=${scoreToken}`;

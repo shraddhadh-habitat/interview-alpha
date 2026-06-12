@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import posthog from '../lib/analytics';
 
 const RAINBOW = 'var(--gradient-brand)';
 
@@ -37,6 +38,7 @@ function AuthForm({ tab, mobile, onSuccess }) {
     setLoading(true);
     try {
       if (tab === 'signup') {
+        posthog.capture('signup_attempted');
         // Check if user has a pending score from practice attempt
         const scoreToken = localStorage.getItem('ia:score_token');
         console.log('[LoginModal] score token at signup:', scoreToken);
@@ -95,6 +97,7 @@ function AuthForm({ tab, mobile, onSuccess }) {
         if (err) throw err;
 
         if (data?.user) {
+          posthog.capture('signup_completed');
           // Store signup data in localStorage to be used after email verification
           localStorage.setItem('ia:pending_signup', JSON.stringify({
             userId: data.user.id,

@@ -1,17 +1,8 @@
-import { supabase } from './supabase';
+import posthog from 'posthog-js'
 
-export async function fireEvent(eventName, properties = {}, userId = null) {
-  try {
-    const { error } = await supabase.from('analytics_events').insert({
-      event_name: eventName,
-      user_id: userId || null,
-      properties: properties
-    });
-    if (import.meta.env.DEV) {
-      if (error) console.error('[Analytics] Insert error:', error);
-      else console.log('[Analytics]', eventName, properties);
-    }
-  } catch (err) {
-    if (import.meta.env.DEV) console.error('[Analytics] Unexpected error in fireEvent:', err);
-  }
-}
+posthog.init('phc_sPzk76xdNvEVHDVpQ9MEeu8GtFhfLKQFNy9Jj9zzUwL9', {
+  api_host: 'https://us.i.posthog.com',
+  defaults: '2025-05-24'
+})
+
+export default posthog

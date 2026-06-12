@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from './lib/supabase';
 import { handleSignOut } from './lib/signOut';
+import posthog from './lib/analytics';
 import InterviewAlpha from './InterviewAlpha';
 import LandingPage from './components/LandingPage';
 import PastSessions from './pages/PastSessions';
@@ -581,7 +582,7 @@ export default function App() {
       }
     }
 
-    setProfile({
+    const profileData = {
       subscription_status:       status,
       subscription_plan:         data?.subscription_plan         ?? null,
       subscription_expires_at:   data?.subscription_expires_at   ?? null,
@@ -590,7 +591,19 @@ export default function App() {
       monthly_sessions_reset_at: data?.monthly_sessions_reset_at ?? null,
       display_name:              data?.display_name              ?? null,
       phone_number:              data?.phone_number              ?? null,
-    });
+    };
+    setProfile(profileData);
+
+    // Identify user in PostHog
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+    if (authUser) {
+      posthog.identify(authUser.id, {
+        email: authUser.email,
+        subscription_status: status,
+        free_sessions_used: profileData.free_sessions_used,
+      });
+    }
+
     setProfileLoaded(true);
   }, []);
 

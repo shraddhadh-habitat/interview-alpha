@@ -4,7 +4,7 @@ import useTextToSpeech from '../hooks/useTextToSpeech';
 import { useAuth } from '../contexts/AuthContext';
 import FormattedAnswer from '../components/FormattedAnswer';
 import { formatLabeledText } from '../lib/formatText';
-import { fireEvent } from '../lib/analytics';
+import posthog from '../lib/analytics';
 import PaywallModal from '../components/PaywallModal';
 
 const C = {
@@ -256,19 +256,17 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
   const tts = useTextToSpeech();
   const [isSpeakingFeedback, setIsSpeakingFeedback] = useState(false);
 
-  // Fire first_score_viewed analytics event once per attempt
+  // Fire score_shown analytics event once per attempt
   const firedAttemptsRef = useRef(new Set());
   useEffect(() => {
     if (!firedAttemptsRef.current.has(attemptNumber)) {
       firedAttemptsRef.current.add(attemptNumber);
-      fireEvent('first_score_viewed', {
+      posthog.capture('score_shown', {
         score,
-        from_voice: result.from_voice,
-        attempt_number: attemptNumber,
-        question_id: questionId,
-      }, user?.id);
+        is_authenticated: !!user,
+      });
     }
-  }, [attemptNumber, score, result, questionId, user?.id]);
+  }, [attemptNumber, score, result, user]);
 
   const handleSpeakFeedback = () => {
     if (tts.isSpeaking) {
@@ -687,6 +685,9 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
       if (!isAdmin && !isPaid && freeSessionsUsed >= 3) {
         console.log('[Paywall] User hit free session limit:', freeSessionsUsed);
+        posthog.capture('paywall_shown', {
+          free_sessions_used: freeSessionsUsed,
+        });
         setShowPaywall(true);
         return;
       }
@@ -813,12 +814,6 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         }
       }
 
-      // Fire analytics event for first answer submitted
-      fireEvent('first_answer_submitted', {
-        from_voice: fromVoice,
-        question_id: questionId,
-        answer_length: answerText?.length || 0,
-      }, authUser?.id);
 
       // Save to Supabase
       if (authUser) {
