@@ -582,7 +582,7 @@ export default function App() {
       }
     }
 
-    const profileData = {
+    const newProfile = {
       subscription_status:       status,
       subscription_plan:         data?.subscription_plan         ?? null,
       subscription_expires_at:   data?.subscription_expires_at   ?? null,
@@ -592,7 +592,7 @@ export default function App() {
       display_name:              data?.display_name              ?? null,
       phone_number:              data?.phone_number              ?? null,
     };
-    setProfile(profileData);
+    setProfile(newProfile);
 
     // Identify user in PostHog
     const { data: { user: authUser } } = await supabase.auth.getUser();
@@ -600,7 +600,7 @@ export default function App() {
       posthog.identify(authUser.id, {
         email: authUser.email,
         subscription_status: status,
-        free_sessions_used: profileData.free_sessions_used,
+        free_sessions_used: newProfile.free_sessions_used,
       });
     }
 

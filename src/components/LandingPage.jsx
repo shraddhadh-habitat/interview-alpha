@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import FreeSessionCountdown from './FreeSessionCountdown';
 import WeeklyActiveBar from './WeeklyActiveBar';
 import FeedbackPreview from './FeedbackPreview';
-import { fireEvent } from '../lib/analytics';
 
 const C = {
   bg: '#FFFFFF',
