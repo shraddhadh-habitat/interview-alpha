@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import useTextToSpeech from '../hooks/useTextToSpeech';
 import { useAuth } from '../contexts/AuthContext';
 import FormattedAnswer from '../components/FormattedAnswer';
-import { formatLabeledText } from '../lib/formatText';
+import { formatLabeledText, parseMarkdown } from '../lib/formatText';
 import posthog from '../lib/analytics';
 import PaywallModal from '../components/PaywallModal';
 
@@ -466,9 +466,9 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontStyle: 'italic',
             whiteSpace: 'pre-wrap',
-          }}>
-            {formatLabeledText(expert_rewrite)}
-          </div>
+          }}
+          dangerouslySetInnerHTML={{ __html: parseMarkdown(expert_rewrite) }}
+          />
         </div>
       )}
 

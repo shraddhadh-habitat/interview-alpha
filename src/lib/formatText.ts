@@ -75,3 +75,12 @@ export function splitIntoLabeledLines(text: string): string[] {
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
 }
+
+/**
+ * Parses simple markdown and returns a string with HTML entities.
+ * Replaces **text** with HTML strong tags.
+ */
+export function parseMarkdown(text: string): string {
+  if (!text) return text;
+  return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+}
