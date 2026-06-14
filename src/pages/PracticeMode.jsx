@@ -24,51 +24,11 @@ const globalStyles = `
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
   * { box-sizing: border-box; }
   textarea:focus { outline: none; }
-  strong { font-weight: 700 !important; }
-  h2, h3 { font-weight: 700; margin: 12px 0; }
-  ul { padding-left: 20px; margin: 12px 0; }
-  li { margin-bottom: 4px; }
-  p { margin-bottom: 12px; }
   @media (max-width: 480px) {
     .pm-container { padding: 20px 16px 40px !important; }
     .pm-answer-textarea { font-size: 16px !important; }
   }
 `;
-
-// ─── Convert markdown to HTML ───
-function renderMarkdown(text) {
-  if (!text) return '';
-  let html = text;
-
-  // Convert **bold** to <strong> with inline styles
-  html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 700;">$1</strong>');
-
-  // Convert headers
-  html = html.replace(/^# (.*?)$/gm, '<h1 style="font-weight: 700; font-size: 18px; margin: 12px 0;">$1</h1>');
-  html = html.replace(/^## (.*?)$/gm, '<h2 style="font-weight: 700; font-size: 16px; margin: 12px 0;">$1</h2>');
-  html = html.replace(/^### (.*?)$/gm, '<h3 style="font-weight: 700; font-size: 14px; margin: 12px 0;">$1</h3>');
-
-  // Convert bullet lists
-  html = html.replace(/^- (.*?)$/gm, '<li style="margin-left: 20px;">$1</li>');
-  html = html.replace(/(<li[^>]*>.*?<\/li>)/s, (match) => `<ul style="padding-left: 0; list-style-position: inside;">${match}</ul>`);
-
-  // Convert inline code
-  html = html.replace(/`([^`]+)`/g, '<code style="background: #f0f0f0; padding: 2px 4px; border-radius: 3px;">$1</code>');
-
-  // Convert paragraph breaks
-  html = html.replace(/\n\n+/g, '</p><p>');
-  html = html.replace(/\n/g, '<br />');
-
-  // Wrap in paragraph tags
-  if (!html.startsWith('<p>') && !html.startsWith('<h') && !html.startsWith('<ul>')) {
-    html = '<p>' + html;
-  }
-  if (!html.endsWith('</p>') && !html.endsWith('</h1>') && !html.endsWith('</h2>') && !html.endsWith('</h3>') && !html.endsWith('</ul>')) {
-    html = html + '</p>';
-  }
-
-  return html;
-}
 
 // ─── Deduplicate repeated phrases in transcript (run before submit) ───
 function dedupeTranscript(text) {
@@ -500,17 +460,13 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
             border: `1px solid #E8E6E1`,
             borderRadius: 12,
             padding: '20px',
+            whiteSpace: 'pre-wrap',
             fontSize: 15,
             lineHeight: 1.75,
             color: '#1B1B18',
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontFamily: "'Plus Jakarta Sans', sans-serif"
           }}>
-            <div
-              style={{
-                fontStyle: 'italic',
-              }}
-              dangerouslySetInnerHTML={{ __html: renderMarkdown(expert_rewrite) }}
-            />
+            {expert_rewrite}
           </div>
         </div>
       )}
