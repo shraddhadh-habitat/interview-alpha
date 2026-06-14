@@ -465,9 +465,17 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
             lineHeight: 1.75,
             color: '#1B1B18',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontStyle: 'italic',
           }}>
-            <ReactMarkdown>{expert_rewrite}</ReactMarkdown>
+            <ReactMarkdown
+              components={{
+                strong: ({children}) => <strong style={{fontWeight: 700, fontStyle: 'normal'}}>{children}</strong>,
+                p: ({children}) => <p style={{marginBottom: 12, fontStyle: 'italic'}}>{children}</p>,
+                li: ({children}) => <li style={{marginBottom: 4, fontStyle: 'italic'}}>{children}</li>,
+                ul: ({children}) => <ul style={{paddingLeft: 20, marginBottom: 12}}>{children}</ul>,
+              }}
+            >
+              {expert_rewrite}
+            </ReactMarkdown>
           </div>
         </div>
       )}
