@@ -821,7 +821,7 @@ export default function App() {
           }}
         />
       )}
-      {showVerifyEmailPrompt && user && (
+      {showVerifyEmailPrompt && user && !user.email_confirmed_at && profileLoaded && (
         <VerifyEmailModal
           user={user}
           onDismiss={() => setShowVerifyEmailPrompt(false)}
@@ -915,6 +915,7 @@ export default function App() {
         )}
         {showLoginModal && (
           <LoginModal
+            isOpen={showLoginModal}
             message={loginMessage}
             onClose={() => {
               setShowLoginModal(false);
