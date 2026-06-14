@@ -4,7 +4,6 @@ import useTextToSpeech from '../hooks/useTextToSpeech';
 import { useAuth } from '../contexts/AuthContext';
 import FormattedAnswer from '../components/FormattedAnswer';
 import { formatLabeledText } from '../lib/formatText';
-import ReactMarkdown from 'react-markdown';
 import posthog from '../lib/analytics';
 import PaywallModal from '../components/PaywallModal';
 
@@ -25,11 +24,32 @@ const globalStyles = `
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
   * { box-sizing: border-box; }
   textarea:focus { outline: none; }
+  strong { font-weight: 700 !important; }
+  h2, h3 { font-weight: 700; margin: 12px 0; }
+  ul { padding-left: 20px; margin: 12px 0; }
+  li { margin-bottom: 4px; }
+  p { margin-bottom: 12px; }
   @media (max-width: 480px) {
     .pm-container { padding: 20px 16px 40px !important; }
     .pm-answer-textarea { font-size: 16px !important; }
   }
 `;
+
+// ─── Convert markdown to HTML ───
+function renderMarkdown(text) {
+  if (!text) return '';
+  let html = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
+    .replace(/^- (.*?)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*?<\/li>)/s, (match) => `<ul>${match}</ul>`)
+    .replace(/\n\n+/g, '</p><p>')
+    .replace(/\n/g, '<br />');
+  if (!html.startsWith('<p>')) html = '<p>' + html;
+  if (!html.endsWith('</p>')) html = html + '</p>';
+  return html;
+}
 
 // ─── Deduplicate repeated phrases in transcript (run before submit) ───
 function dedupeTranscript(text) {
@@ -466,16 +486,12 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
             color: '#1B1B18',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>
-            <ReactMarkdown
-              components={{
-                strong: ({children}) => <strong style={{fontWeight: 700, fontStyle: 'normal'}}>{children}</strong>,
-                p: ({children}) => <p style={{marginBottom: 12, fontStyle: 'italic'}}>{children}</p>,
-                li: ({children}) => <li style={{marginBottom: 4, fontStyle: 'italic'}}>{children}</li>,
-                ul: ({children}) => <ul style={{paddingLeft: 20, marginBottom: 12}}>{children}</ul>,
+            <div
+              style={{
+                fontStyle: 'italic',
               }}
-            >
-              {expert_rewrite}
-            </ReactMarkdown>
+              dangerouslySetInnerHTML={{ __html: renderMarkdown(expert_rewrite) }}
+            />
           </div>
         </div>
       )}
