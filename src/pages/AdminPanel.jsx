@@ -132,8 +132,8 @@ export default function AdminPanel({ user }) {
       // Calculate summary stats from profiles
       const profiles = data || [];
       const totalUsers = profiles.length;
-      const proUsers = profiles.filter(p => p.subscription_status === 'pro').length;
-      const freeUsers = profiles.filter(p => p.subscription_status !== 'pro').length;
+      const proUsers = profiles.filter(p => p.subscription_status === 'active').length;
+      const freeUsers = profiles.filter(p => p.subscription_status !== 'active').length;
       const practicedUsers = profiles.filter(p => (p.free_sessions_used ?? 0) > 0 || (p.monthly_sessions_used ?? 0) > 0).length;
       const withPhoneUsers = profiles.filter(p => p.phone_number && p.phone_number !== '' && p.phone_number !== '-').length;
       const mobileUsers = profiles.filter(p => p.device_type === 'android' || p.device_type === 'ios' || p.device_type === 'mobile').length;
