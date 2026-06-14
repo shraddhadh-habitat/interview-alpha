@@ -38,16 +38,35 @@ const globalStyles = `
 // ─── Convert markdown to HTML ───
 function renderMarkdown(text) {
   if (!text) return '';
-  let html = text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
-    .replace(/^- (.*?)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*?<\/li>)/s, (match) => `<ul>${match}</ul>`)
-    .replace(/\n\n+/g, '</p><p>')
-    .replace(/\n/g, '<br />');
-  if (!html.startsWith('<p>')) html = '<p>' + html;
-  if (!html.endsWith('</p>')) html = html + '</p>';
+  let html = text;
+
+  // Convert **bold** to <strong> with inline styles
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 700;">$1</strong>');
+
+  // Convert headers
+  html = html.replace(/^# (.*?)$/gm, '<h1 style="font-weight: 700; font-size: 18px; margin: 12px 0;">$1</h1>');
+  html = html.replace(/^## (.*?)$/gm, '<h2 style="font-weight: 700; font-size: 16px; margin: 12px 0;">$1</h2>');
+  html = html.replace(/^### (.*?)$/gm, '<h3 style="font-weight: 700; font-size: 14px; margin: 12px 0;">$1</h3>');
+
+  // Convert bullet lists
+  html = html.replace(/^- (.*?)$/gm, '<li style="margin-left: 20px;">$1</li>');
+  html = html.replace(/(<li[^>]*>.*?<\/li>)/s, (match) => `<ul style="padding-left: 0; list-style-position: inside;">${match}</ul>`);
+
+  // Convert inline code
+  html = html.replace(/`([^`]+)`/g, '<code style="background: #f0f0f0; padding: 2px 4px; border-radius: 3px;">$1</code>');
+
+  // Convert paragraph breaks
+  html = html.replace(/\n\n+/g, '</p><p>');
+  html = html.replace(/\n/g, '<br />');
+
+  // Wrap in paragraph tags
+  if (!html.startsWith('<p>') && !html.startsWith('<h') && !html.startsWith('<ul>')) {
+    html = '<p>' + html;
+  }
+  if (!html.endsWith('</p>') && !html.endsWith('</h1>') && !html.endsWith('</h2>') && !html.endsWith('</h3>') && !html.endsWith('</ul>')) {
+    html = html + '</p>';
+  }
+
   return html;
 }
 
