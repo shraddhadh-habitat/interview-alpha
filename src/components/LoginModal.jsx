@@ -107,6 +107,10 @@ function AuthForm({ tab, mobile, onSuccess }) {
           const deviceOS = isAndroid ? 'Android' : isIOS ? 'iOS' : /windows/i.test(ua) ? 'Windows' : /mac/i.test(ua) ? 'MacOS' : 'Other';
 
           // Save profile data immediately with display_name and phone_number
+          console.log('[LoginModal] Saving profile:', {
+            name: name.trim(),
+            phoneDigits
+          });
           await supabase.from('profiles').upsert({
             id: data.user.id,
             email,
