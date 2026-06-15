@@ -700,7 +700,7 @@ export default function App() {
     if (isAdmin) return;
 
     if (!profile.display_name) {
-      setShowNamePrompt(true);
+      // Prompt disabled - profile data now saved immediately on signup
     } else {
       setShowNamePrompt(false);
     }
@@ -715,7 +715,7 @@ export default function App() {
     if (isAdmin) return;
 
     if (!profile.phone_number) {
-      setShowPhonePrompt(true);
+      // Prompt disabled - profile data now saved immediately on signup
     } else {
       setShowPhonePrompt(false);
     }
