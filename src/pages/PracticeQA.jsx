@@ -1502,41 +1502,43 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           </select>
         </div>
 
-        {/* 1. Search bar */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 10,
-          background: C.bg, border: `1.5px solid ${C.border}`,
-          borderRadius: 12, padding: '0 16px',
-          height: isMobile ? 48 : 44,
-          marginBottom: 12,
-        }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.textMuted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-          <input
-            value={search}
-            onChange={e => { setSearch(e.target.value); setExpandedKeys(new Set()); }}
-            placeholder="Search by company, product, or question..."
-            style={{ flex: 1, border: 'none', background: 'transparent', color: C.text, fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          />
-          {search && (
-            <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 20, lineHeight: 1, padding: 0 }}>×</button>
-          )}
-        </div>
+        {/* 1. Search bar + Filters button */}
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
+          {/* Search bar */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 10,
+            background: C.bg, border: `1.5px solid ${C.border}`,
+            borderRadius: 12, padding: '0 16px',
+            height: isMobile ? 48 : 44,
+            flex: 1,
+          }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.textMuted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              value={search}
+              onChange={e => { setSearch(e.target.value); setExpandedKeys(new Set()); }}
+              placeholder="Search by company, product, or question..."
+              style={{ flex: 1, border: 'none', background: 'transparent', color: C.text, fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            />
+            {search && (
+              <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 20, lineHeight: 1, padding: 0 }}>×</button>
+            )}
+          </div>
 
-        {/* Filters button */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
+          {/* Filters button */}
           <button
             onClick={() => setShowFilters(true)}
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
-              padding: '12px 20px', minHeight: 44,
+              padding: '12px 20px', height: isMobile ? 48 : 44,
               background: appliedFilterTags.length > 0 ? C.greenLight : C.bg,
               border: `1px solid ${appliedFilterTags.length > 0 ? C.greenBorder : C.border}`,
               borderRadius: 8, cursor: 'pointer',
               fontSize: 16, fontFamily: "'Plus Jakarta Sans', sans-serif",
               color: appliedFilterTags.length > 0 ? C.success : C.text,
               fontWeight: 700,
+              flexShrink: 0,
             }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
