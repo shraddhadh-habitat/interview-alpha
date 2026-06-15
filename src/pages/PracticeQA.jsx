@@ -1043,6 +1043,35 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       };
     }
 
+    // Check for new_user=true (Flow 2 - direct signup after email verification)
+    const newUser = params.get('new_user');
+    if (newUser === 'true') {
+      console.log('[PracticeQA] Found new_user=true, auto-loading random question for first-time user');
+
+      // Clear new_user param from URL
+      const cleanParams = new URLSearchParams(window.location.search);
+      cleanParams.delete('new_user');
+      const newUrl = cleanParams.toString() ? `${window.location.pathname}?${cleanParams.toString()}` : window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+
+      // Pick a random beginner question from Associate PM / product
+      const associatePMQuestions = pmQuestions['Associate PM'];
+      if (associatePMQuestions && associatePMQuestions.product) {
+        const allQuestions = associatePMQuestions.product;
+        if (allQuestions.length > 0) {
+          const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+          return {
+            question: randomQuestion,
+            questionId: `associate-pm-product-${Math.random().toString(36).substr(2, 9)}`,
+            designation: 'Associate PM',
+            category: 'product',
+          };
+        }
+      }
+      // Fallback if Associate PM doesn't exist
+      return null;
+    }
+
     // Check for pending score from post-signup attempt
     const pendingScore = localStorage.getItem('ia:pending_score');
     if (pendingScore) {
