@@ -50,7 +50,7 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
 const PUBLIC_TABS = [
   { id: 'interview',  label: 'Home' },
   { id: 'practice',   label: 'Practice' },
-  { id: 'scorecard',  label: 'Scorecard' },
+  { id: 'scorecard',  label: 'My Progress' },
   { id: 'resume-tools', label: 'Resume Tools' },
   { id: 'salary',     label: 'Salary Guide' },
 ];
@@ -198,13 +198,12 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
   const authDrawerTabs = [
     { id: 'interview', label: 'Interview' },
     { id: 'practice', label: 'Practice Q&A' },
-    { id: 'scorecard', label: 'Scorecard' },
+    { id: 'scorecard', label: 'My Progress' },
     { id: 'resume-tools', label: 'Resume Tools' },
     { id: 'salary', label: 'Salary Guide' },
     ...(isAdmin ? [{ id: 'resources', label: 'Learning Resources' }] : []),
     ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
     ...(isAdmin ? [{ id: 'admin', label: 'Admin' }] : []),
-    { id: 'sessions', label: 'Past Sessions' },
     { id: 'progress', label: 'My Progress' },
     ...(onReplayDemo ? [{ id: '__tour', label: 'Take Tour' }] : []),
   ];
@@ -298,7 +297,6 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                       <div style={{ fontSize: 12, color: C.textMuted, wordBreak: 'break-all', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{user?.email}</div>
                     </div>
                     <div style={{ padding: '4px 0' }}>
-                      <button onClick={() => handleNav('sessions')} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.text, cursor: 'pointer' }}>Past Sessions</button>
                       {isAdmin && <button onClick={() => handleNav('admin')} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 14, color: C.red, cursor: 'pointer' }}>Admin</button>}
                       {onReplayDemo && <button onClick={() => { setAvatarDropOpen(false); onReplayDemo(); }} style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', fontSize: 13, color: C.textMuted, cursor: 'pointer' }}>Tour</button>}
                       <div style={{ margin: '4px 8px', height: 1, background: C.border }} />
