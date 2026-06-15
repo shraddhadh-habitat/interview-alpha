@@ -1472,8 +1472,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               setExpandedKeys(new Set());
             }}
             style={{
-              width: isMobile ? '100%' : '100%',
-              maxWidth: isMobile ? '100%' : '400px',
+              width: isMobile ? '100%' : 'auto',
+              maxWidth: isMobile ? '100%' : '220px',
               height: 48,
               fontSize: 16,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
