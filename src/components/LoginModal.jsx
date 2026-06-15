@@ -98,13 +98,6 @@ function AuthForm({ tab, mobile, onSuccess }) {
 
         if (data?.user) {
           posthog.capture('signup_completed');
-          // Store signup data in localStorage to be used after email verification
-          localStorage.setItem('ia:pending_signup', JSON.stringify({
-            userId: data.user.id,
-            email,
-            display_name: name.trim(),
-            phone_number: phoneDigits
-          }));
 
           // Get device info for new signup
           const ua = navigator.userAgent;
@@ -113,7 +106,7 @@ function AuthForm({ tab, mobile, onSuccess }) {
           const deviceType = isAndroid ? 'android' : isIOS ? 'ios' : 'desktop';
           const deviceOS = isAndroid ? 'Android' : isIOS ? 'iOS' : /windows/i.test(ua) ? 'Windows' : /mac/i.test(ua) ? 'MacOS' : 'Other';
 
-          // Save device info immediately, profile will be completed after email verification
+          // Save profile data immediately with display_name and phone_number
           await supabase.from('profiles').upsert({
             id: data.user.id,
             email,

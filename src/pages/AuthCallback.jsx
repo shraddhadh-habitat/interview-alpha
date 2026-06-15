@@ -47,23 +47,6 @@ export default function AuthCallback() {
           console.log('[AuthCallback] User already signed in from verification link');
           posthog.capture('email_verified');
 
-          // Save pending signup data if exists
-          const pendingSignup = localStorage.getItem('ia:pending_signup');
-          if (pendingSignup) {
-            try {
-              const { userId, email, display_name, phone_number } = JSON.parse(pendingSignup);
-              await supabase.from('profiles').upsert({
-                id: sessionData.session.user.id,
-                email: sessionData.session.user.email,
-                display_name,
-                phone_number
-              });
-              localStorage.removeItem('ia:pending_signup');
-            } catch (e) {
-              console.error('Failed to save pending signup:', e);
-            }
-          }
-
           if (scoreToken) {
             console.log('[AuthCallback] Found score token, redirecting to practice with token');
             window.location.href = `/?page=practice&score_token=${scoreToken}`;
@@ -92,23 +75,6 @@ export default function AuthCallback() {
           if (data?.user) {
             console.log('[AuthCallback] Successfully exchanged code for session');
             posthog.capture('email_verified');
-
-            // Save pending signup data if exists
-            const pendingSignup = localStorage.getItem('ia:pending_signup');
-            if (pendingSignup) {
-              try {
-                const { userId, email, display_name, phone_number } = JSON.parse(pendingSignup);
-                await supabase.from('profiles').upsert({
-                  id: data.user.id,
-                  email: data.user.email,
-                  display_name,
-                  phone_number
-                });
-                localStorage.removeItem('ia:pending_signup');
-              } catch (e) {
-                console.error('Failed to save pending signup:', e);
-              }
-            }
 
             if (scoreToken) {
               console.log('[AuthCallback] Found score token, redirecting to practice with token');
