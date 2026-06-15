@@ -59,6 +59,59 @@ const COMPANY_COMP = [
   { company: 'Zepto', levels: 'PM–GPM', tc_in: '₹22–75 LPA', tc_us: ' - ', notes: 'Hyper-growth; high equity value' },
 ];
 
+const CONSULTING_SALARIES = [
+  { company: 'McKinsey', level: 'Fresher/Consultant', salary: '₹30–40 LPA' },
+  { company: 'McKinsey', level: 'Senior Consultant (1–3 yrs)', salary: '₹45–65 LPA' },
+  { company: 'McKinsey', level: 'Engagement Manager (3–6 yrs)', salary: '₹70–90 LPA' },
+  { company: 'McKinsey', level: 'Principal (6–10 yrs)', salary: '₹1–1.5 Cr' },
+  { company: 'McKinsey', level: 'Partner (10+ yrs)', salary: '₹1.5–2.5 Cr+' },
+  { company: 'BCG', level: 'Fresher/Consultant', salary: '₹28–38 LPA' },
+  { company: 'BCG', level: 'Senior Consultant (1–3 yrs)', salary: '₹42–60 LPA' },
+  { company: 'BCG', level: 'Engagement Manager (3–6 yrs)', salary: '₹65–85 LPA' },
+  { company: 'BCG', level: 'Principal (6–10 yrs)', salary: '₹95L–1.4 Cr' },
+  { company: 'BCG', level: 'Partner (10+ yrs)', salary: '₹1.5–2.5 Cr+' },
+  { company: 'Bain', level: 'Fresher/Consultant', salary: '₹28–38 LPA' },
+  { company: 'Bain', level: 'Senior Consultant (1–3 yrs)', salary: '₹42–60 LPA' },
+  { company: 'Bain', level: 'Engagement Manager (3–6 yrs)', salary: '₹65–85 LPA' },
+  { company: 'Bain', level: 'Principal (6–10 yrs)', salary: '₹95L–1.4 Cr' },
+  { company: 'Bain', level: 'Partner (10+ yrs)', salary: '₹1.5–2.5 Cr+' },
+  { company: 'Deloitte', level: 'Fresher/Consultant', salary: '₹16–22 LPA' },
+  { company: 'Deloitte', level: 'Senior Consultant (1–3 yrs)', salary: '₹25–35 LPA' },
+  { company: 'Deloitte', level: 'Engagement Manager (3–6 yrs)', salary: '₹38–55 LPA' },
+  { company: 'Deloitte', level: 'Principal (6–10 yrs)', salary: '₹60–90 LPA' },
+  { company: 'Deloitte', level: 'Partner (10+ yrs)', salary: '₹1–1.8 Cr' },
+  { company: 'EY', level: 'Fresher/Consultant', salary: '₹14–20 LPA' },
+  { company: 'EY', level: 'Senior Consultant (1–3 yrs)', salary: '₹22–32 LPA' },
+  { company: 'EY', level: 'Engagement Manager (3–6 yrs)', salary: '₹35–50 LPA' },
+  { company: 'EY', level: 'Principal (6–10 yrs)', salary: '₹55–80 LPA' },
+  { company: 'EY', level: 'Partner (10+ yrs)', salary: '₹90L–1.5 Cr' },
+  { company: 'PwC', level: 'Fresher/Consultant', salary: '₹14–20 LPA' },
+  { company: 'PwC', level: 'Senior Consultant (1–3 yrs)', salary: '₹22–32 LPA' },
+  { company: 'PwC', level: 'Engagement Manager (3–6 yrs)', salary: '₹35–50 LPA' },
+  { company: 'PwC', level: 'Principal (6–10 yrs)', salary: '₹55–80 LPA' },
+  { company: 'PwC', level: 'Partner (10+ yrs)', salary: '₹90L–1.5 Cr' },
+  { company: 'KPMG', level: 'Fresher/Consultant', salary: '₹15–22 LPA' },
+  { company: 'KPMG', level: 'Senior Consultant (1–3 yrs)', salary: '₹24–34 LPA' },
+  { company: 'KPMG', level: 'Engagement Manager (3–6 yrs)', salary: '₹36–52 LPA' },
+  { company: 'KPMG', level: 'Principal (6–10 yrs)', salary: '₹58–82 LPA' },
+  { company: 'KPMG', level: 'Partner (10+ yrs)', salary: '₹90L–1.5 Cr' },
+  { company: 'Accenture Strategy', level: 'Fresher/Consultant', salary: '₹18–24 LPA' },
+  { company: 'Accenture Strategy', level: 'Senior Consultant (1–3 yrs)', salary: '₹26–36 LPA' },
+  { company: 'Accenture Strategy', level: 'Engagement Manager (3–6 yrs)', salary: '₹40–58 LPA' },
+  { company: 'Accenture Strategy', level: 'Principal (6–10 yrs)', salary: '₹65–90 LPA' },
+  { company: 'Accenture Strategy', level: 'Partner (10+ yrs)', salary: '₹1–1.6 Cr' },
+  { company: 'Kearney', level: 'Fresher/Consultant', salary: '₹25–35 LPA' },
+  { company: 'Kearney', level: 'Senior Consultant (1–3 yrs)', salary: '₹38–52 LPA' },
+  { company: 'Kearney', level: 'Engagement Manager (3–6 yrs)', salary: '₹58–78 LPA' },
+  { company: 'Kearney', level: 'Principal (6–10 yrs)', salary: '₹85L–1.2 Cr' },
+  { company: 'Kearney', level: 'Partner (10+ yrs)', salary: '₹1.2–2 Cr' },
+  { company: 'Oliver Wyman', level: 'Fresher/Consultant', salary: '₹25–35 LPA' },
+  { company: 'Oliver Wyman', level: 'Senior Consultant (1–3 yrs)', salary: '₹38–52 LPA' },
+  { company: 'Oliver Wyman', level: 'Engagement Manager (3–6 yrs)', salary: '₹55–75 LPA' },
+  { company: 'Oliver Wyman', level: 'Principal (6–10 yrs)', salary: '₹80L–1.2 Cr' },
+  { company: 'Oliver Wyman', level: 'Partner (10+ yrs)', salary: '₹1.2–2 Cr' },
+];
+
 const NEG_STEPS = [
   {
     step: 1, title: 'Anchor high  . always',
@@ -282,7 +335,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
   const [selectedRole, setSelectedRole] = useState('PM');
 
   useEffect(() => {
-    const roleText = selectedRole === 'PM' ? 'Product Manager' : 'Data Science';
+    const roleText = selectedRole === 'PM' ? 'Product Manager' : selectedRole === 'Data Science' ? 'Data Science' : 'Consulting';
     document.title = `${roleText} Salary Guide 2026 | InterviewAlpha.ai`;
     return () => { document.title = 'Interview Preparation Questions & Answers | AI Mock Interview Practice | InterviewAlpha.ai™'; };
   }, [selectedRole]);
@@ -297,7 +350,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         <div style={{ marginBottom: 32, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>I'm looking at salaries for:</span>
           <div style={{ display: 'flex', gap: 8 }}>
-            {['PM', 'Data Science'].map(role => (
+            {['PM', 'Data Science', 'Consulting'].map(role => (
               <button
                 key={role}
                 onClick={() => setSelectedRole(role)}
@@ -336,17 +389,21 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         <div style={{ marginBottom: 36 }}>
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>CAREER RESOURCES</div>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12, lineHeight: 1.15 }}>
-            {selectedRole === 'PM' ? 'PM Salary & Negotiation Guide' : 'Data Science Salary & Negotiation Guide'}
+            {selectedRole === 'PM' ? 'PM Salary & Negotiation Guide' : selectedRole === 'Data Science' ? 'Data Science Salary & Negotiation Guide' : 'Consulting Salary Guide'}
           </h1>
           <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, maxWidth: 620 }}>
             {selectedRole === 'PM'
               ? 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Product Manager  . at every level.'
-              : 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Data Scientist  . at every level.'}
+              : selectedRole === 'Data Science'
+              ? 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Data Scientist  . at every level.'
+              : 'Salary ranges for consulting roles across top firms in India. Understand your worth at every level.'}
           </p>
           <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
             {(selectedRole === 'PM'
               ? ['India & US Ranges', '5-Step Framework', '7 Counter-Offer Scripts', '5 Common Mistakes', '10 Companies']
-              : ['India & US Ranges', '5 Negotiation Tips', 'Global Salaries', '6 Cities Breakdown', 'Premium Skills']
+              : selectedRole === 'Data Science'
+              ? ['India & US Ranges', '5 Negotiation Tips', 'Global Salaries', '6 Cities Breakdown', 'Premium Skills']
+              : ['India Ranges', '10 Top Firms', 'All Career Stages']
             ).map(t => (
               <span key={t} style={{
                 padding: '4px 12px',
@@ -366,7 +423,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
 
         {selectedRole === 'PM' ? (
           <>
-        {/* ── PM CONTENT ── */}
+            {/* ── PM CONTENT ── */}
 
         {/* ── SECTION 1: Know Your Worth ── */}
         <Section title="Know Your Worth" subtitle="Salary ranges by level  . India & United States" defaultOpen={true}>
@@ -534,9 +591,9 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
           onClick={onPracticeCTA}
         />
           </>
-        ) : (
+        ) : selectedRole === 'Data Science' ? (
           <>
-        {/* ── DATA SCIENCE CONTENT ── */}
+            {/* ── DATA SCIENCE CONTENT ── */}
 
         {/* ── SECTION 1: Know Your Worth ── */}
         <Section title="Know Your Worth" subtitle="Salary ranges by level  . India & United States" defaultOpen={true}>
@@ -722,11 +779,59 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
           </div>
         </Section>
 
-        {/* ── BOTTOM CTA BANNER ── */}
-        <CTABanner
-          text="Ready to negotiate? Practice your interview answers first."
-          onClick={onPracticeCTA}
-        />
+            {/* ── BOTTOM CTA BANNER ── */}
+            <CTABanner
+              text="Ready to negotiate? Practice your interview answers first."
+              onClick={onPracticeCTA}
+            />
+          </>
+        ) : (
+          <>
+            {/* ── CONSULTING CONTENT ── */}
+
+            {/* ── SECTION 1: Consulting Salary by Firm ── */}
+            <Section title="Consulting Salary by Firm" subtitle="10 top firms  . all career levels" defaultOpen={true}>
+              <div style={{ paddingTop: 24 }}>
+                {['McKinsey', 'BCG', 'Bain', 'Deloitte', 'EY', 'PwC', 'KPMG', 'Accenture Strategy', 'Kearney', 'Oliver Wyman'].map(company => {
+                  const companyData = CONSULTING_SALARIES.filter(d => d.company === company);
+                  return (
+                    <div key={company} style={{ marginBottom: 32 }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: C.text, fontFamily: "'Instrument Serif', serif", marginBottom: 16 }}>{company}</div>
+                      <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                          <thead>
+                            <tr>
+                              {['Level', 'Salary Range'].map(h => (
+                                <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {companyData.map((row, i) => (
+                              <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                                <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                                <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.salary}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  );
+                })}
+                <div style={{ marginTop: 24, padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 12 }}>
+                  <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, margin: 0 }}>
+                    Salary ranges are based on 2025–2026 IIM placement data and industry reports. Actual compensation varies based on performance, location, and specialization.
+                  </p>
+                </div>
+              </div>
+            </Section>
+
+            {/* ── BOTTOM CTA BANNER ── */}
+            <CTABanner
+              text="Ready to enter consulting? Practice your interview answers first."
+              onClick={onPracticeCTA}
+            />
           </>
         )}
 
