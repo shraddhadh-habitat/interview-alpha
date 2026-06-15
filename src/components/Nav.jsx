@@ -48,7 +48,7 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
 
 // Tabs shown to everyone (logged in or not)
 const PUBLIC_TABS = [
-  { id: 'interview',  label: 'Interview' },
+  { id: 'interview',  label: 'Home' },
   { id: 'practice',   label: 'Practice' },
   { id: 'scorecard',  label: 'Scorecard' },
   { id: 'resume-tools', label: 'Resume Tools' },
