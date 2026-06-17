@@ -91,22 +91,22 @@ export default function Footer() {
           {/* Col 1  . Product */}
           <div>
             <FooterHeading>Product</FooterHeading>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'interview' }))}>
+            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'interview' })); }}>
               Live AI Interview
             </FooterLink>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}>
+            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' })); }}>
               Practice Q&A
             </FooterLink>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'scorecard' }))}>
-              Scorecard
+            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'scorecard' })); }}>
+              My Progress
             </FooterLink>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'resume-tools' }))}>
+            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'resume-tools' })); }}>
               Resume Tools
             </FooterLink>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'salary' }))}>
+            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'salary' })); }}>
               Salary Guide
             </FooterLink>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'upgrade' }))}>
+            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'upgrade' })); }}>
               Upgrade to Pro
             </FooterLink>
           </div>
