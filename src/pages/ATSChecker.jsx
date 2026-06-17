@@ -165,13 +165,21 @@ export default function ATSChecker({ user }) {
       }
 
       // Extract JSON from response (strip markdown fences if present)
-      const jsonMatch = fullText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error('Could not parse API response.');
-      }
+      try {
+        const jsonMatch = fullText.match(/\{[\s\S]*\}/);
+        console.log('Raw API response:', fullText);
 
-      const parsedResult = JSON.parse(jsonMatch[0]);
-      setResult(parsedResult);
+        if (!jsonMatch) {
+          throw new Error('No JSON found in response');
+        }
+
+        console.log('Extracted JSON:', jsonMatch[0]);
+        const parsedResult = JSON.parse(jsonMatch[0]);
+        setResult(parsedResult);
+      } catch (parseErr) {
+        console.error('JSON parsing failed:', parseErr, 'Raw response:', fullText);
+        throw new Error('We had trouble analyzing your resume. Please try again.');
+      }
     } catch (err) {
       setError(err.message || 'Could not analyze resume. Please try again.');
     } finally {
