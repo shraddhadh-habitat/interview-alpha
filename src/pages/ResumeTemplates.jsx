@@ -175,36 +175,47 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
                 </p>
               </div>
 
-              <a
-                className="template-button"
-                href={`mailto:communications@interviewalpha.ai?subject=Request Template: ${template.name}`}
-                style={{
-                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: '10px',
-                  fontWeight: 700,
-                  width: '100%',
-                  padding: '12px',
-                  cursor: 'pointer',
-                  fontSize: '0.88rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  textDecoration: 'none',
-                  transition: 'all 0.2s',
-                  boxSizing: 'border-box',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.opacity = '0.9';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.opacity = '1';
-                }}
-              >
-                Download Template
-              </a>
+              <div style={{ width: '100%' }}>
+                <a
+                  className="template-button"
+                  href={`mailto:communications@interviewalpha.ai?subject=Request Template: ${template.name}`}
+                  style={{
+                    background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '10px',
+                    fontWeight: 700,
+                    width: '100%',
+                    padding: '12px',
+                    cursor: 'pointer',
+                    fontSize: '0.88rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    textDecoration: 'none',
+                    transition: 'all 0.2s',
+                    boxSizing: 'border-box',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.opacity = '0.9';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.opacity = '1';
+                  }}
+                >
+                  Request Template
+                </a>
+                <p style={{
+                  fontSize: 12,
+                  color: C.textMuted,
+                  marginTop: 8,
+                  marginBottom: 0,
+                  textAlign: 'center',
+                }}>
+                  We'll email it to you within 24 hours
+                </p>
+              </div>
             </div>
           ))}
         </div>
