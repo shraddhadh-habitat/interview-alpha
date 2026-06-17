@@ -124,6 +124,20 @@ const PM_DOMAIN_CHIPS = [
   { id: 'general',       label: 'General' },
 ];
 
+const CAREER_TRACK_CHIPS = [
+  { id: 'b2c_consumer',      label: 'B2C / Consumer PM' },
+  { id: 'b2b_enterprise',    label: 'B2B / Enterprise PM' },
+  { id: 'growth',            label: 'Growth PM' },
+  { id: 'technical',         label: 'Technical PM' },
+  { id: 'data_ai',           label: 'Data / AI PM' },
+  { id: 'hardware',          label: 'Hardware PM' },
+  { id: 'web3_crypto',       label: 'Web3 / Crypto PM' },
+  { id: 'internal_tools',    label: 'Internal Tools PM' },
+  { id: 'localization',      label: 'Localization PM' },
+  { id: 'product_ops',       label: 'Product Operations' },
+  { id: 'product_marketing', label: 'Product Marketing Manager' },
+];
+
 const DS_DOMAIN_CHIPS = [
   { id: 'fintech',    label: 'Fintech' },
   { id: 'healthcare', label: 'Healthcare' },
@@ -758,7 +772,7 @@ function FilterDropdown({ label, value, onChange, options }) {
 
 // ─── Helper: Count matching questions for a filter state ───────────────────
 function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) {
-  const { category, expLevel, company, difficulty, domain } = filterState;
+  const { category, expLevel, company, difficulty, domain, track } = filterState;
 
   const role = ROLES[selectedRole] || ROLES.pm;
 
@@ -853,6 +867,10 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
           }
         }
         if (subcategoryFilter && q.subcategory && q.subcategory !== subcategoryFilter) continue;
+        if (selectedRole === 'pm' && track) {
+          const trackLabel = CAREER_TRACK_CHIPS.find(c => c.id === track)?.label;
+          if (trackLabel && (!q.tracks || !q.tracks.includes(trackLabel))) continue;
+        }
         count++;
       }
     }
@@ -871,6 +889,8 @@ function FilterContent({
   onClearAll,
   selectedRole,
   pmQuestions,
+  selectedTrack,
+  setSelectedTrack,
 }) {
 
   const role = ROLES[selectedRole] || ROLES.pm;
@@ -891,7 +911,7 @@ function FilterContent({
     ...categoryChips.map(c => ({ id: c.id, label: c.label })),
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: opt.id, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+    countQuestionsForFilterState(selectedRole, { category: opt.id, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
   );
 
   const expLevelOptions = !role.expLevelChips || role.expLevelChips.length === 0
@@ -901,7 +921,7 @@ function FilterContent({
         ...(role.expLevelChips || []),
       ].filter(opt =>
         opt.id === '' ||
-        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: opt.id, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: opt.id, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
       );
 
   const companyChips = selectedRole === 'ds'
@@ -914,7 +934,7 @@ function FilterContent({
     ...companyChips,
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: opt.id, difficulty: filterDifficulty, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: opt.id, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
   );
 
   const domainChips = selectedRole === 'ds'
@@ -927,7 +947,7 @@ function FilterContent({
     ...domainChips,
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: opt.id }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: opt.id, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
   );
 
   const difficultyOptions = [
@@ -937,10 +957,20 @@ function FilterContent({
     { id: 'Difficult', label: 'Difficult' },
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
   );
 
-  const activeCount = (filterCategory ? 1 : 0) + (filterExpLevel ? 1 : 0) + (filterCompany ? 1 : 0) + (filterDomain ? 1 : 0) + (filterDifficulty ? 1 : 0);
+  const trackOptions = selectedRole === 'pm'
+    ? [
+        { id: '', label: 'All' },
+        ...CAREER_TRACK_CHIPS,
+      ].filter(opt =>
+        opt.id === '' ||
+        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: opt.id }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+      )
+    : [];
+
+  const activeCount = (filterCategory ? 1 : 0) + (filterExpLevel ? 1 : 0) + (filterCompany ? 1 : 0) + (filterDomain ? 1 : 0) + (filterDifficulty ? 1 : 0) + (selectedTrack ? 1 : 0);
 
   return (
     <>
@@ -967,6 +997,9 @@ function FilterContent({
         <FilterDropdown label="Company" value={filterCompany} onChange={setFilterCompany} options={companyOptions} />
         <FilterDropdown label="Domain" value={filterDomain} onChange={setFilterDomain} options={domainOptions} />
         <FilterDropdown label="Difficulty" value={filterDifficulty} onChange={setFilterDifficulty} options={difficultyOptions} />
+        {trackOptions.length > 1 && (
+          <FilterDropdown label="Career Track" value={selectedTrack} onChange={setSelectedTrack} options={trackOptions} />
+        )}
         <div style={{ height: 20 }} />
       </div>
 
@@ -1025,6 +1058,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [filterCompany, setFilterCompany] = useState(null);
   const [filterDomain, setFilterDomain] = useState(null);
   const [filterDifficulty, setFilterDifficulty] = useState(null);
+  const [selectedTrack, setSelectedTrack] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [practiceQuestion, setPracticeQuestion] = useState(() => {
     console.log('[PracticeQA] initializer running - localStorage has ia_sample_question:', !!localStorage.getItem('ia_sample_question'));
@@ -1275,13 +1309,19 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             // questions with no subcategory pass through (show in both)
           }
 
+          // Career track filter (only for PM)
+          if (selectedRole === 'pm' && selectedTrack) {
+            const trackLabel = CAREER_TRACK_CHIPS.find(c => c.id === selectedTrack)?.label;
+            if (trackLabel && (!q.tracks || !q.tracks.includes(trackLabel))) continue;
+          }
+
           results.push({ key: `${level}-${cat}-${i}`, level, dataCategory: cat, question: q });
         }
       }
     }
 
     return results;
-  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, practiceStats, selectedRole]);
+  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, practiceStats, selectedRole, selectedTrack]);
 
   // ── Applied filter tags ────────────────────────────────────────────────────
 
@@ -1311,6 +1351,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     if (filterCompany) tags.push({ key: `cmp-${filterCompany}`, label: filterCompany, prefix: 'cmp', val: filterCompany });
     if (filterDomain) tags.push({ key: `dom-${filterDomain}`, label: domainChips.find(d => d.id === filterDomain)?.label || filterDomain, prefix: 'dom', val: filterDomain });
     if (filterDifficulty) tags.push({ key: `dif-${filterDifficulty}`, label: filterDifficulty, prefix: 'dif', val: filterDifficulty });
+    if (selectedTrack && selectedRole === 'pm') tags.push({ key: `trk-${selectedTrack}`, label: CAREER_TRACK_CHIPS.find(c => c.id === selectedTrack)?.label || selectedTrack, prefix: 'trk', val: selectedTrack });
     return tags;
   }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, selectedRole]);
 
@@ -1321,6 +1362,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     if (prefix === 'cmp') setFilterCompany(null);
     if (prefix === 'dom') setFilterDomain(null);
     if (prefix === 'dif') setFilterDifficulty(null);
+    if (prefix === 'trk') setSelectedTrack(null);
   };
 
   const clearAllFilters = () => {
@@ -1329,6 +1371,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     setFilterCompany(null);
     setFilterDomain(null);
     setFilterDifficulty(null);
+    setSelectedTrack(null);
   };
 
   const toggleCard = (key) => {
@@ -1389,6 +1432,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     filterCompany, setFilterCompany,
     filterDomain, setFilterDomain,
     filterDifficulty, setFilterDifficulty,
+    selectedTrack, setSelectedTrack,
     resultCount: filtered.length,
     onApply: () => setShowFilters(false),
     onClearAll: clearAllFilters,
