@@ -428,6 +428,9 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         {/* ── SECTION 1: Know Your Worth ── */}
         <Section title="Know Your Worth" subtitle="Salary ranges by level  . India & United States" defaultOpen={true}>
           <div style={{ paddingTop: 24 }}>
+            <p style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, marginBottom: 24, fontStyle: 'italic' }}>
+              Salary ranges reflect compensation at top-tier companies. Actual packages vary based on company size, location, and individual performance.
+            </p>
             <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
             <div style={{ overflowX: 'auto', marginBottom: 32 }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
@@ -598,6 +601,9 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         {/* ── SECTION 1: Know Your Worth ── */}
         <Section title="Know Your Worth" subtitle="Salary ranges by level  . India & United States" defaultOpen={true}>
           <div style={{ paddingTop: 24 }}>
+            <p style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, marginBottom: 24, fontStyle: 'italic' }}>
+              Salary ranges reflect compensation at top-tier companies. Actual packages vary based on company size, location, and individual performance.
+            </p>
             <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
             <div style={{ overflowX: 'auto', marginBottom: 32 }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
@@ -792,6 +798,9 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
             {/* ── SECTION 1: Consulting Salary by Firm ── */}
             <Section title="Consulting Salary by Firm" subtitle="10 top firms  . all career levels" defaultOpen={true}>
               <div style={{ paddingTop: 24 }}>
+                <p style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, marginBottom: 24, fontStyle: 'italic' }}>
+                  Salary ranges reflect compensation at top-tier companies. Actual packages vary based on company size, location, and individual performance.
+                </p>
                 {['McKinsey', 'BCG', 'Bain', 'Deloitte', 'EY', 'PwC', 'KPMG', 'Accenture Strategy', 'Kearney', 'Oliver Wyman'].map(company => {
                   const companyData = CONSULTING_SALARIES.filter(d => d.company === company);
                   return (
