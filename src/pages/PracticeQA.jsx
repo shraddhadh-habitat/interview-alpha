@@ -64,8 +64,6 @@ const EXP_LEVEL_CHIPS = [
   { id: 'dir',       label: 'Director',            levels: ['Director of PM', 'Senior Director of PM'] },
   { id: 'vp',        label: 'VP/Head of Product',  levels: ['VP of Product'] },
   { id: 'cpo',       label: 'CPO',                 levels: ['Chief Product Officer (CPO)'] },
-  { id: 'tpm',       label: 'Technical PM',        levels: ['Technical PM'] },
-  { id: 'aipm',      label: 'AI PM',               levels: ['AI PM'] },
 ];
 
 const DIFFICULTY_CHIPS = ['Easy', 'Medium', 'Difficult'];
@@ -207,8 +205,6 @@ const ROLES = {
       { id: 'dir',       label: 'Director',            levels: ['Director of PM', 'Senior Director of PM'] },
       { id: 'vp',        label: 'VP/Head of Product',  levels: ['VP of Product'] },
       { id: 'cpo',       label: 'CPO',                 levels: ['Chief Product Officer (CPO)'] },
-      { id: 'tpm',       label: 'Technical PM',        levels: ['Technical PM'] },
-      { id: 'aipm',      label: 'AI PM',               levels: ['AI PM'] },
     ],
     titleSuffix: 'Product Management Interview Questions',
   },
