@@ -19,6 +19,7 @@ import AdminPanel from './pages/AdminPanel';
 import Scorecard from './pages/Scorecard';
 import AuthCallback from './pages/AuthCallback';
 import About from './pages/About';
+import Leadership from './pages/Leadership';
 import Careers from './pages/Careers';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
@@ -875,6 +876,7 @@ export default function App() {
           )}
           {page === 'admin' && isAdmin && <AdminPanel user={user} />}
           {page === 'about'     && <About />}
+          {page === 'leadership' && <Leadership />}
           {page === 'careers'   && <Careers />}
           {page === 'blog'      && <Blog />}
           {page === 'blog-feedback-black-hole' && <BlogPost />}

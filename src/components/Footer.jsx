@@ -123,8 +123,11 @@ export default function Footer() {
           {/* Col 2  . Company */}
           <div>
             <FooterHeading>Company</FooterHeading>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'about' }))}>
+            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'about' })); }}>
               About
+            </FooterLink>
+            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'leadership' })); }}>
+              Leadership
             </FooterLink>
             <FooterLink onClick={() => {
               const el = document.getElementById('how-it-works');
@@ -140,10 +143,10 @@ export default function Footer() {
             }}>
               How it Works
             </FooterLink>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'blog' }))}>
+            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'blog' })); }}>
               Blog
             </FooterLink>
-            <FooterLink onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'careers' }))}>
+            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'careers' })); }}>
               Careers
             </FooterLink>
           </div>
