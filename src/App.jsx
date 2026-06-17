@@ -828,10 +828,10 @@ export default function App() {
       )}
       <style>{`
         @media (max-width: 768px) {
-          .app-container { margin: 8px auto !important; }
+          .app-container { margin: 0 auto !important; }
         }
       `}</style>
-      <div className="app-container" style={{ maxWidth: '1200px', margin: '20px auto', background: '#FFFFFF', borderRadius: '12px', boxShadow: '0 2px 20px rgba(0,0,0,0.08)', minHeight: 'calc(100vh - 40px)', overflow: 'auto', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div className="app-container" style={{ maxWidth: '1200px', margin: '0 auto', background: '#FFFFFF', borderRadius: '12px', boxShadow: '0 2px 20px rgba(0,0,0,0.08)', minHeight: 'calc(100vh - 40px)', overflow: 'auto', flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Nav
           user={user}
           page={page}
