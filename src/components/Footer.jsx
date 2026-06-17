@@ -1,3 +1,5 @@
+import { useAuth } from '../contexts/AuthContext';
+
 const C = {
   bg: '#f0ede8',
   link: '#6b6b6b',
@@ -75,6 +77,8 @@ function ComingSoon() {
 }
 
 export default function Footer() {
+  const { requireAuth } = useAuth();
+
   return (
     <footer style={{ background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.link }}>
       <style>{`
@@ -106,7 +110,12 @@ export default function Footer() {
             <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'salary' })); }}>
               Salary Guide
             </FooterLink>
-            <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'upgrade' })); }}>
+            <FooterLink onClick={() => {
+              window.scrollTo(0, 0);
+              requireAuth('Sign up to upgrade your plan', () => {
+                window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'upgrade' }));
+              });
+            }}>
               Upgrade to Pro
             </FooterLink>
           </div>
