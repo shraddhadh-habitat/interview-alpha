@@ -51,7 +51,7 @@ export default function ActivityTickerPortal() {
         setIndex(i => (i + 1) % ACTIVITIES.length);
         setVisible(true);
       }, 600);
-    }, 7000);
+    }, 20000);
     return () => { clearTimeout(show); clearInterval(rotate); };
   }, []);
 
