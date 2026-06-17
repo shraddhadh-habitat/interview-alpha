@@ -393,7 +393,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
           </h1>
           <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, maxWidth: 620 }}>
             {selectedRole === 'PM'
-              ? 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Product Manager  . at every level.'
+              ? 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Product Manager at every level.'
               : selectedRole === 'Data Science'
               ? 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Data Scientist  . at every level.'
               : 'Salary ranges for consulting roles across top firms in India. Understand your worth at every level.'}
