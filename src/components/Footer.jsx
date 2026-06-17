@@ -162,6 +162,7 @@ export default function Footer() {
                   color: C.link,
                   textDecoration: 'none',
                   display: 'block',
+                  marginBottom: 12,
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   transition: 'all 0.2s',
                   cursor: 'pointer',
@@ -182,6 +183,36 @@ export default function Footer() {
                 }}
               >
                 communications@interviewalpha.ai
+              </a>
+              <a
+                href="https://www.linkedin.com/in/shraddha-d-9399ba26"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontSize: 14,
+                  color: C.link,
+                  textDecoration: 'none',
+                  display: 'block',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'all 0.2s',
+                  cursor: 'pointer',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = 'var(--gradient-brand)';
+                  e.currentTarget.style.backgroundClip = 'text';
+                  e.currentTarget.style.WebkitBackgroundClip = 'text';
+                  e.currentTarget.style.WebkitTextFillColor = 'transparent';
+                  e.currentTarget.style.color = 'transparent';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = C.link;
+                  e.currentTarget.style.background = 'none';
+                  e.currentTarget.style.backgroundClip = 'unset';
+                  e.currentTarget.style.WebkitBackgroundClip = 'unset';
+                  e.currentTarget.style.WebkitTextFillColor = 'unset';
+                }}
+              >
+                LinkedIn
               </a>
             </div>
           </div>
