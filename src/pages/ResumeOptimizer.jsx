@@ -206,6 +206,7 @@ export default function ResumeOptimizer({ user }) {
       }
 
       const cleaned = fullText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      console.log('[ResumeOptimizer] Raw response:', fullText);
       const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
         throw new Error('Could not parse API response.');
