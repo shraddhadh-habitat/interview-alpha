@@ -482,45 +482,48 @@ export default function ResumeOptimizer({ user }) {
                 </div>
               </>
             )}
-            <button
-              onClick={handleOptimize}
-              disabled={loading}
-              style={{
-                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: '12px',
-                fontWeight: 700,
-                width: '100%',
-                padding: '16px',
-                fontSize: '1rem',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-              }}
-            >
-              {loading ? (
-                <>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2"
-                    style={{ animation: 'spin 1s linear infinite' }}
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 2a10 10 0 0 1 10 10" strokeDasharray="15.7" />
-                  </svg>
-                  Processing...
-                </>
-              ) : (
-                'Optimize My Resume'
-              )}
-            </button>
+            <div style={{ display: 'flex', justifyContent: loading ? 'center' : 'stretch', width: '100%' }}>
+              <button
+                onClick={handleOptimize}
+                disabled={loading}
+                style={{
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontWeight: 700,
+                  width: loading ? 'auto' : '100%',
+                  minWidth: loading ? 'auto' : undefined,
+                  padding: loading ? '16px 24px' : '16px',
+                  fontSize: '1rem',
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                }}
+              >
+                {loading ? (
+                  <>
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="2"
+                      style={{ animation: 'spin 1s linear infinite' }}
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 2a10 10 0 0 1 10 10" strokeDasharray="15.7" />
+                    </svg>
+                    Processing...
+                  </>
+                ) : (
+                  'Optimize My Resume'
+                )}
+              </button>
+            </div>
           </div>
         </>
       ) : (
