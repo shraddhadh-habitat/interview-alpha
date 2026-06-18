@@ -171,7 +171,8 @@ export default function ATSChecker({ user }) {
 
       // Extract JSON from response (strip markdown fences if present)
       try {
-        const jsonMatch = fullText.match(/\{[\s\S]*\}/);
+        const cleaned = fullText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
         console.log('Raw API response:', fullText);
 
         if (!jsonMatch) {
