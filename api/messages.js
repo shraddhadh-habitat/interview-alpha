@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   const { stream, ...body } = req.body;
 
   try {
+    console.log('API Key present:', !!process.env.ANTHROPIC_API_KEY);
     const upstream = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
@@ -16,13 +17,22 @@ export default async function handler(req, res) {
       body: JSON.stringify(stream ? { ...body, stream: true } : body),
     });
 
+    console.log('Upstream status:', upstream.status);
+
     if (stream) {
       res.setHeader("Content-Type", "text/event-stream");
       res.setHeader("Cache-Control", "no-cache");
       res.setHeader("Connection", "keep-alive");
 
       if (!upstream.ok) {
-        const errData = await upstream.json().catch(() => ({}));
+        const errorText = await upstream.text();
+        console.log('Upstream error:', errorText);
+        let errData;
+        try {
+          errData = JSON.parse(errorText);
+        } catch {
+          errData = { message: errorText };
+        }
         res.write(`data: ${JSON.stringify({ type: "error", error: errData })}\n\n`);
         res.end();
         return;
