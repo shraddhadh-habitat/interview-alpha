@@ -74,7 +74,9 @@ Rules:
 - Only rewrite existing bullet points to better match JD language
 - Highlight transferable skills
 - Be specific about which JD requirements each rewrite addresses
-- Keep the candidate's authentic experience, just frame it better`;
+- Keep the candidate's authentic experience, just frame it better
+
+Be concise. Keep bullet_rewrites to maximum 5 items. Keep keywords lists to maximum 10 items each.`;
 
 // Helper component to highlight keywords in text
 function HighlightedText({ text, keywords }) {
@@ -163,7 +165,7 @@ export default function ResumeOptimizer({ user }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-sonnet-4-6',
-          max_tokens: 4096,
+          max_tokens: 2048,
           system: OPTIMIZE_SYSTEM_PROMPT,
           messages: [{ role: 'user', content: userMessage }],
           stream: true,
