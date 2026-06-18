@@ -1353,10 +1353,10 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)',
             }}>
               <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 8, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Sign in to see your score and the expert rewrite
+                Your score is ready. See how you did.
               </div>
               <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 20, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Get detailed feedback on your response and learn from the expert answer.
+                Create an account to unlock your score, competency breakdown, and the expert answer. Takes 30 seconds.
               </div>
               <button
                 onClick={() => {
