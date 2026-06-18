@@ -420,13 +420,13 @@ export default function ATSChecker({ user }) {
           )}
 
           {/* Submit Button */}
-          <div style={{ marginBottom: '32px' }}>
+          <div style={{ marginBottom: '32px', margin: '0 auto', maxWidth: '300px', display: 'block' }}>
             <style>{`
               @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
             `}</style>
             {loading && (
               <>
-                <div style={{ marginBottom: '12px' }}>
+                <div style={{ marginBottom: '12px', width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}>
                   <div style={{ fontSize: '14px', color: '#1B1B18', fontWeight: 600, marginBottom: '8px' }}>
                     {STATUS_MESSAGES[messageIndex]}
                   </div>
@@ -443,51 +443,47 @@ export default function ATSChecker({ user }) {
                 </div>
               </>
             )}
-            <div style={{ display: 'flex', justifyContent: loading ? 'center' : 'stretch', width: '100%' }}>
-              <button
-                onClick={handleCheckResume}
-                disabled={loading}
-                style={{
-                  width: loading ? 'auto' : '100%',
-                  minWidth: loading ? 'auto' : undefined,
-                  height: '48px',
-                  background: loading ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  opacity: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  paddingLeft: loading ? '24px' : undefined,
-                  paddingRight: loading ? '24px' : undefined,
-                }}
-              >
-                {loading ? (
-                  <>
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="2"
-                      style={{ animation: 'spin 1s linear infinite' }}
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M12 2a10 10 0 0 1 10 10" strokeDasharray="15.7" />
-                    </svg>
-                    Processing...
-                  </>
-                ) : (
-                  'Check My Resume'
-                )}
-              </button>
-            </div>
+            <button
+              onClick={handleCheckResume}
+              disabled={loading}
+              style={{
+                width: '100%',
+                height: '48px',
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '16px',
+                fontWeight: 600,
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxSizing: 'border-box',
+              }}
+            >
+              {loading ? (
+                <>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2"
+                    style={{ animation: 'spin 1s linear infinite' }}
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 2a10 10 0 0 1 10 10" strokeDasharray="15.7" />
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                'Check My Resume'
+              )}
+            </button>
           </div>
         </>
       ) : (

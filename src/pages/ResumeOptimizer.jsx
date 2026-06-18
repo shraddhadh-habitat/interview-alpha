@@ -459,13 +459,13 @@ export default function ResumeOptimizer({ user }) {
           )}
 
           {/* Submit Button */}
-          <div style={{ marginBottom: '32px' }}>
+          <div style={{ marginBottom: '32px', margin: '0 auto', maxWidth: '300px', display: 'block' }}>
             <style>{`
               @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
             `}</style>
             {loading && (
               <>
-                <div style={{ marginBottom: '12px' }}>
+                <div style={{ marginBottom: '12px', width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}>
                   <div style={{ fontSize: '14px', color: '#1B1B18', fontWeight: 600, marginBottom: '8px' }}>
                     {STATUS_MESSAGES[messageIndex]}
                   </div>
@@ -482,48 +482,46 @@ export default function ResumeOptimizer({ user }) {
                 </div>
               </>
             )}
-            <div style={{ display: 'flex', justifyContent: loading ? 'center' : 'stretch', width: '100%' }}>
-              <button
-                onClick={handleOptimize}
-                disabled={loading}
-                style={{
-                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontWeight: 700,
-                  width: loading ? 'auto' : '100%',
-                  minWidth: loading ? 'auto' : undefined,
-                  padding: loading ? '16px 24px' : '16px',
-                  fontSize: '1rem',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                }}
-              >
-                {loading ? (
-                  <>
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="2"
-                      style={{ animation: 'spin 1s linear infinite' }}
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M12 2a10 10 0 0 1 10 10" strokeDasharray="15.7" />
-                    </svg>
-                    Processing...
-                  </>
-                ) : (
-                  'Optimize My Resume'
-                )}
-              </button>
-            </div>
+            <button
+              onClick={handleOptimize}
+              disabled={loading}
+              style={{
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '12px',
+                fontWeight: 700,
+                width: '100%',
+                padding: '16px',
+                fontSize: '1rem',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxSizing: 'border-box',
+              }}
+            >
+              {loading ? (
+                <>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2"
+                    style={{ animation: 'spin 1s linear infinite' }}
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 2a10 10 0 0 1 10 10" strokeDasharray="15.7" />
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                'Optimize My Resume'
+              )}
+            </button>
           </div>
         </>
       ) : (
