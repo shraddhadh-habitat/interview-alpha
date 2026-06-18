@@ -77,6 +77,14 @@ Respond in this exact JSON format:
   "suggestions": ["suggestion 1", "suggestion 2", "suggestion 3"]
 }`;
 
+const STATUS_MESSAGES = [
+  'Reading your resume...',
+  'Analyzing keywords...',
+  'Checking ATS compatibility...',
+  'Generating recommendations...',
+  'Almost done...',
+];
+
 export default function ATSChecker({ user }) {
   const { requireAuth } = useAuth();
   const [resumeText, setResumeText] = useState('');
@@ -85,7 +93,36 @@ export default function ATSChecker({ user }) {
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
   const [fileUploading, setFileUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [messageIndex, setMessageIndex] = useState(0);
   const resumeFileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (!loading) {
+      setProgress(0);
+      setMessageIndex(0);
+      return;
+    }
+
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 90) return 90;
+        return prev + (90 / 40);
+      });
+    }, 1000);
+
+    return () => clearInterval(progressInterval);
+  }, [loading]);
+
+  useEffect(() => {
+    if (!loading) return;
+
+    const messageInterval = setInterval(() => {
+      setMessageIndex(prev => (prev + 1) % STATUS_MESSAGES.length);
+    }, 8000);
+
+    return () => clearInterval(messageInterval);
+  }, [loading]);
 
   const handleResumeFileSelect = async (e) => {
     const file = e.target.files?.[0];
@@ -384,23 +421,67 @@ export default function ATSChecker({ user }) {
 
           {/* Submit Button */}
           <div style={{ marginBottom: '32px' }}>
+            <style>{`
+              @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+            `}</style>
+            {loading && (
+              <>
+                <div style={{ marginBottom: '12px' }}>
+                  <div style={{ fontSize: '14px', color: '#1B1B18', fontWeight: 600, marginBottom: '8px' }}>
+                    {STATUS_MESSAGES[messageIndex]}
+                  </div>
+                  <div style={{ width: '100%', height: '4px', background: '#E8E6E1', borderRadius: '2px', overflow: 'hidden' }}>
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${Math.min(progress, 90)}%`,
+                        background: 'linear-gradient(90deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                        transition: 'width 0.3s ease',
+                      }}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
             <button
               onClick={handleCheckResume}
               disabled={loading}
               style={{
                 width: '100%',
                 height: '48px',
-                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                background: loading ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                 color: 'white',
                 border: 'none',
                 borderRadius: '12px',
                 fontSize: '16px',
                 fontWeight: 600,
                 cursor: loading ? 'not-allowed' : 'pointer',
-                opacity: loading ? 0.7 : 1,
+                opacity: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
               }}
             >
-              {loading ? 'Analyzing your resume...' : 'Check My Resume'}
+              {loading ? (
+                <>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2"
+                    style={{ animation: 'spin 1s linear infinite' }}
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 2a10 10 0 0 1 10 10" strokeDasharray="15.7" />
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                'Check My Resume'
+              )}
             </button>
           </div>
         </>

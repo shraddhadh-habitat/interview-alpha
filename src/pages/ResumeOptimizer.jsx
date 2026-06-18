@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
@@ -110,6 +110,14 @@ function HighlightedText({ text, keywords }) {
   );
 }
 
+const STATUS_MESSAGES = [
+  'Reading your resume...',
+  'Analyzing keywords...',
+  'Checking ATS compatibility...',
+  'Generating recommendations...',
+  'Almost done...',
+];
+
 export default function ResumeOptimizer({ user }) {
   const { requireAuth } = useAuth();
   const [resumeText, setResumeText] = useState('');
@@ -120,7 +128,36 @@ export default function ResumeOptimizer({ user }) {
   const [fileUploading, setFileUploading] = useState(false);
   const [copiedIdx, setCopiedIdx] = useState(null);
   const [summaryCopied, setSummaryCopied] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [messageIndex, setMessageIndex] = useState(0);
   const resumeFileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (!loading) {
+      setProgress(0);
+      setMessageIndex(0);
+      return;
+    }
+
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 90) return 90;
+        return prev + (90 / 40);
+      });
+    }, 1000);
+
+    return () => clearInterval(progressInterval);
+  }, [loading]);
+
+  useEffect(() => {
+    if (!loading) return;
+
+    const messageInterval = setInterval(() => {
+      setMessageIndex(prev => (prev + 1) % STATUS_MESSAGES.length);
+    }, 8000);
+
+    return () => clearInterval(messageInterval);
+  }, [loading]);
 
   const handleResumeFileSelect = async (e) => {
     const file = e.target.files?.[0];
@@ -423,11 +460,33 @@ export default function ResumeOptimizer({ user }) {
 
           {/* Submit Button */}
           <div style={{ marginBottom: '32px' }}>
+            <style>{`
+              @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+            `}</style>
+            {loading && (
+              <>
+                <div style={{ marginBottom: '12px' }}>
+                  <div style={{ fontSize: '14px', color: '#1B1B18', fontWeight: 600, marginBottom: '8px' }}>
+                    {STATUS_MESSAGES[messageIndex]}
+                  </div>
+                  <div style={{ width: '100%', height: '4px', background: '#E8E6E1', borderRadius: '2px', overflow: 'hidden' }}>
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${Math.min(progress, 90)}%`,
+                        background: 'linear-gradient(90deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                        transition: 'width 0.3s ease',
+                      }}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
             <button
               onClick={handleOptimize}
               disabled={loading}
               style={{
-                background: loading ? '#999' : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '12px',
@@ -436,9 +495,31 @@ export default function ResumeOptimizer({ user }) {
                 padding: '16px',
                 fontSize: '1rem',
                 cursor: loading ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
               }}
             >
-              {loading ? 'Optimizing your resume...' : 'Optimize My Resume'}
+              {loading ? (
+                <>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2"
+                    style={{ animation: 'spin 1s linear infinite' }}
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 2a10 10 0 0 1 10 10" strokeDasharray="15.7" />
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                'Optimize My Resume'
+              )}
             </button>
           </div>
         </>
