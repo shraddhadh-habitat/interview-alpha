@@ -533,9 +533,9 @@ export default function App() {
   // Device tracking is handled by DeviceTracker component
   // which updates user profile with device info on every page load
 
-  // Set body background to warm grey frame
+  // Set body background to white
   useEffect(() => {
-    document.body.style.background = '#E8E6E1';
+    document.body.style.background = '#FFFFFF';
     document.body.style.margin = '0';
     document.body.style.padding = '0';
     return () => {
