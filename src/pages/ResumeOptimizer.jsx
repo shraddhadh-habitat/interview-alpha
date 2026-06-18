@@ -181,16 +181,20 @@ export default function ResumeOptimizer({ user }) {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-
-        const chunk = decoder.decode(value);
+        const chunk = decoder.decode(value, { stream: true });
         const lines = chunk.split('\n');
-
         for (const line of lines) {
           if (line.startsWith('data: ')) {
+            const data = line.slice(6).trim();
+            if (data === '[DONE]') continue;
             try {
-              const json = JSON.parse(line.slice(6));
-              if (json.content?.[0]?.text) {
+              const json = JSON.parse(data);
+              if (json.type === 'content_block_delta' && json.delta?.text) {
+                fullText += json.delta.text;
+              } else if (json.content?.[0]?.text) {
                 fullText += json.content[0].text;
+              } else if (json.delta?.text) {
+                fullText += json.delta.text;
               }
             } catch (e) {
               // ignore parse errors in individual chunks
