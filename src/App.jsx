@@ -832,7 +832,7 @@ export default function App() {
           .app-container { margin: 0 !important; }
         }
       `}</style>
-      <div className="app-container" style={{ maxWidth: '1200px', margin: '0 auto', background: '#FFFFFF', borderRadius: '0', boxShadow: 'none', minHeight: '100vh', overflow: 'auto', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div className="app-container" style={{ maxWidth: '100%', margin: '0', background: '#FFFFFF', minHeight: 'calc(100vh - 40px)', overflow: 'auto', flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Nav
           user={user}
           page={page}
