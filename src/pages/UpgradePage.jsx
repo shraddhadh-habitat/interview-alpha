@@ -118,6 +118,7 @@ const DISCOUNT_CODES = {
   'ALPHA2026':  { percent: 10, description: '10% Early Adopter Discount',  active: true, maxUses: 100, currentUses: 0 },
   'PMREADY10':  { percent: 10, description: '10% Launch Discount',         active: true, maxUses: 50,  currentUses: 0 },
   'FOUNDER20':  { percent: 20, description: '20% Founder Discount',          active: true, maxUses: 20,  currentUses: 0 },
+  'WEEKEND299': { discount_amount_inr: 500, description: 'Weekend Special - Save ₹500', valid_until: '2026-06-22T23:59:59', max_uses: 50, current_uses: 0, applies_to: 'monthly' },
 };
 
 const FREE_FEATURES  = ['Free to start', 'Browse thousands of questions', 'Read expert answers', 'Salary Guide'];
@@ -331,8 +332,16 @@ export default function UpgradePage({ user, profile, onBack }) {
   const isPending = profile?.subscription_status === 'pending';
   const isActive  = profile?.subscription_status === 'active';
 
-  const discountedPrice = (basePrice) =>
-    appliedDiscount ? Math.round(basePrice * (1 - appliedDiscount.percent / 100)) : basePrice;
+  const discountedPrice = (basePrice) => {
+    if (!appliedDiscount) return basePrice;
+    if (appliedDiscount.percent) {
+      return Math.round(basePrice * (1 - appliedDiscount.percent / 100));
+    }
+    if (appliedDiscount.discount_amount_inr) {
+      return Math.max(0, basePrice - appliedDiscount.discount_amount_inr);
+    }
+    return basePrice;
+  };
 
   const handleSelectPlan = (p) => {
     setPlan(p);
@@ -343,9 +352,36 @@ export default function UpgradePage({ user, profile, onBack }) {
     const code = discountInput.trim().toUpperCase();
     const d = DISCOUNT_CODES[code];
     if (!d) { setDiscountStatus('invalid'); setAppliedDiscount(null); return; }
-    if (!d.active || d.currentUses >= d.maxUses) { setDiscountStatus('expired'); setAppliedDiscount(null); return; }
+
+    // Check if code is expired (for percentage-based codes, check 'active' flag)
+    if (d.active === false) { setDiscountStatus('expired'); setAppliedDiscount(null); return; }
+
+    // Check max uses for old-style codes (currentUses) or new-style codes (current_uses)
+    const maxUses = d.maxUses || d.max_uses;
+    const currentUses = d.currentUses || d.current_uses || 0;
+    if (currentUses >= maxUses) { setDiscountStatus('expired'); setAppliedDiscount(null); return; }
+
+    // Check if code has expired (for new-style codes with valid_until)
+    if (d.valid_until) {
+      const now = new Date();
+      const expiryDate = new Date(d.valid_until);
+      if (now > expiryDate) { setDiscountStatus('expired'); setAppliedDiscount(null); return; }
+    }
+
+    // Check if code applies to current plan
+    if (d.applies_to && d.applies_to !== plan) {
+      setDiscountStatus('invalid');
+      setAppliedDiscount(null);
+      return;
+    }
+
     setDiscountStatus('valid');
-    setAppliedDiscount({ code, percent: d.percent });
+    setAppliedDiscount({
+      code,
+      percent: d.percent,
+      discount_amount_inr: d.discount_amount_inr,
+      description: d.description
+    });
   };
 
   const handleSubmitPayment = async () => {
@@ -945,9 +981,9 @@ export default function UpgradePage({ user, profile, onBack }) {
                   {discountStatus === 'valid' && appliedDiscount && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 14px', background: C.successLight, border: `1px solid ${C.successBorder}`, borderRadius: 10, fontSize: 12, color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       <span style={{ fontSize: 14 }}>✓</span>
-                      {appliedDiscount.percent}% off applied
+                      {appliedDiscount.percent ? `${appliedDiscount.percent}% off applied` : `Weekend Special applied! ₹${appliedDiscount.discount_amount_inr} off monthly plan`}
                       <span style={{ color: C.textMuted, marginLeft: 2 }}>
-                        · {currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)} {currencyConfig.symbol}{discountedPrice(PLANS[plan].price).toLocaleString(currencyConfig.locale)}
+                        · {currencyConfig.symbol}{PLANS[plan].price.toLocaleString(currencyConfig.locale)} → {currencyConfig.symbol}{discountedPrice(PLANS[plan].price).toLocaleString(currencyConfig.locale)}
                       </span>
                     </div>
                   )}
