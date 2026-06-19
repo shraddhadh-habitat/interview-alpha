@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import FreeSessionCountdown from './FreeSessionCountdown';
 import WeeklyActiveBar from './WeeklyActiveBar';
 import FeedbackPreview from './FeedbackPreview';
+import ReviewsDisplay from './ReviewsDisplay';
 
 const C = {
   bg: '#FFFFFF',
@@ -497,7 +498,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
   };
 
   // Trust strip section
-  const TrustSection = () => <RotatingReviews />;
+  const TrustSection = () => <ReviewsDisplay />;
 
   // Guided paths section
   const GuidedPathsSection = () => (
