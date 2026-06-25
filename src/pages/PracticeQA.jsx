@@ -1513,8 +1513,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             }}
             style={{
               width: isMobile ? '100%' : 'auto',
-              maxWidth: isMobile ? '100%' : '220px',
-              minWidth: isMobile ? '100%' : '220px',
+              maxWidth: isMobile ? '100%' : '240px',
+              minWidth: isMobile ? '100%' : '240px',
               height: 48,
               fontSize: 16,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -1559,17 +1559,12 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             <input
               value={search}
               onChange={e => { setSearch(e.target.value); setExpandedKeys(new Set()); }}
-              placeholder="Search by topic, skill, or company..."
+              placeholder="Search questions..."
               style={{ flex: 1, border: 'none', background: 'transparent', color: C.text, fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             />
             {search && (
               <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 20, lineHeight: 1, padding: 0 }}>×</button>
             )}
-          </div>
-
-          {/* Search helper text */}
-          <div style={{ fontSize: 12, color: '#999999', marginLeft: 6, marginTop: 4, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Popular: AI Product · Stakeholder Management · Agile · Growth Metrics · Product Strategy · Leadership · Data Analysis · System Design
           </div>
 
           {/* Filters button */}
@@ -1594,6 +1589,39 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             </svg>
             Filters
           </button>
+        </div>
+
+        {/* Popular keywords chips - separate row */}
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20, alignItems: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          <span style={{ fontSize: 12, color: '#999999', fontWeight: 500 }}>Popular:</span>
+          {['AI Product', 'Stakeholder', 'Agile', 'Growth', 'Product Strategy', 'Leadership', 'Data', 'System Design'].map(keyword => (
+            <button
+              key={keyword}
+              onClick={() => { setSearch(keyword); setExpandedKeys(new Set()); }}
+              style={{
+                padding: '6px 12px',
+                background: '#F0F0F0',
+                border: '1px solid #E0E0E0',
+                borderRadius: 20,
+                fontSize: 12,
+                color: '#333333',
+                cursor: 'pointer',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 500,
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = '#E8E8E8';
+                e.currentTarget.style.borderColor = '#D0D0D0';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = '#F0F0F0';
+                e.currentTarget.style.borderColor = '#E0E0E0';
+              }}
+            >
+              {keyword}
+            </button>
+          ))}
         </div>
 
         {/* 4. Applied filter tags */}
