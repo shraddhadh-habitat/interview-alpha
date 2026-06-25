@@ -195,6 +195,42 @@ const POPULAR_KEYWORDS = {
   consulting: ['Case Interview', 'Market Entry', 'Profitability', 'Market Sizing', 'Growth Strategy', 'Operations', 'M&A', 'Digital Transformation'],
 };
 
+// Sorting priority functions for each track
+const getQuestionPriority = (question, track) => {
+  const questionText = `${question.q} ${question.a}`.toLowerCase();
+
+  if (track === 'pm') {
+    // Priority 1: AI, artificial intelligence, LLM, GenAI, machine learning
+    if (/\b(ai|artificial\s+intelligence|llm|genai|machine\s+learning)\b/i.test(questionText)) return 0;
+    // Priority 2: agile, scrum, sprint, roadmap
+    if (/\b(agile|scrum|sprint|roadmap)\b/i.test(questionText)) return 1;
+    // Priority 3: stakeholder, leadership, strategy
+    if (/\b(stakeholder|leadership|strategy)\b/i.test(questionText)) return 2;
+    // Priority 4: all other questions
+    return 3;
+  } else if (track === 'ds') {
+    // Priority 1: LLM, AI, GenAI, real-time, streaming
+    if (/\b(llm|ai|genai|real-time|streaming)\b/i.test(questionText)) return 0;
+    // Priority 2: causal, A/B test, experiment, inference
+    if (/\b(causal|a\/b\s+test|experiment|inference)\b/i.test(questionText)) return 1;
+    // Priority 3: SQL, Python, feature, pipeline
+    if (/\b(sql|python|feature|pipeline)\b/i.test(questionText)) return 2;
+    // Priority 4: all other questions
+    return 3;
+  } else if (track === 'consulting') {
+    // Priority 1: AI strategy, digital transformation, GenAI
+    if (/\b(ai\s+strategy|digital\s+transformation|genai)\b/i.test(questionText)) return 0;
+    // Priority 2: sustainability, ESG, supply chain
+    if (/\b(sustainability|esg|supply\s+chain)\b/i.test(questionText)) return 1;
+    // Priority 3: market entry, profitability, M&A
+    if (/\b(market\s+entry|profitability|m&a|mergers?\s+and\s+acquisitions)\b/i.test(questionText)) return 2;
+    // Priority 4: all other questions
+    return 3;
+  }
+
+  return 3;
+};
+
 const ROLES = {
   pm: {
     id: 'pm',
@@ -1321,6 +1357,13 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         }
       }
     }
+
+    // Sort results by priority based on selected role
+    results.sort((a, b) => {
+      const priorityA = getQuestionPriority(a.question, selectedRole);
+      const priorityB = getQuestionPriority(b.question, selectedRole);
+      return priorityA - priorityB;
+    });
 
     return results;
   }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, practiceStats, selectedRole, selectedTrack]);
