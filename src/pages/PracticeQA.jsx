@@ -1514,6 +1514,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             style={{
               width: isMobile ? '100%' : 'auto',
               maxWidth: isMobile ? '100%' : '220px',
+              minWidth: isMobile ? '100%' : '220px',
               height: 48,
               fontSize: 16,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -1558,7 +1559,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             <input
               value={search}
               onChange={e => { setSearch(e.target.value); setExpandedKeys(new Set()); }}
-              placeholder="Search by keyword, e.g. stakeholder, AI, agile, metrics..."
+              placeholder="Search by topic, skill, or company..."
               style={{ flex: 1, border: 'none', background: 'transparent', color: C.text, fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             />
             {search && (
@@ -1568,7 +1569,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
           {/* Search helper text */}
           <div style={{ fontSize: 12, color: '#999999', marginLeft: 6, marginTop: 4, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Try: stakeholder · AI · agile · metrics · product strategy · growth · data · leadership
+            Popular: AI Product · Stakeholder Management · Agile · Growth Metrics · Product Strategy · Leadership · Data Analysis · System Design
           </div>
 
           {/* Filters button */}
