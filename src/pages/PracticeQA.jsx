@@ -189,6 +189,12 @@ const CONSULTING_CATEGORY_CHIPS = [
   { id: 'supply_chain', label: 'Supply Chain', dataKeys: ['case_interview'], subcategory: 'Supply Chain Consultant' },
 ];
 
+const POPULAR_KEYWORDS = {
+  pm: ['AI Product', 'Stakeholder', 'Agile', 'Growth', 'Product Strategy', 'Leadership', 'Data', 'System Design'],
+  ds: ['Machine Learning', 'SQL', 'Statistics', 'Python', 'A/B Testing', 'Feature Engineering', 'Model Evaluation', 'Data Pipeline'],
+  consulting: ['Case Interview', 'Market Entry', 'Profitability', 'Market Sizing', 'Growth Strategy', 'Operations', 'M&A', 'Digital Transformation'],
+};
+
 const ROLES = {
   pm: {
     id: 'pm',
@@ -1592,37 +1598,39 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         </div>
 
         {/* Popular keywords chips - separate row */}
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20, alignItems: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          <span style={{ fontSize: 12, color: '#999999', fontWeight: 500 }}>Popular:</span>
-          {['AI Product', 'Stakeholder', 'Agile', 'Growth', 'Product Strategy', 'Leadership', 'Data', 'System Design'].map(keyword => (
-            <button
-              key={keyword}
-              onClick={() => { setSearch(keyword); setExpandedKeys(new Set()); }}
-              style={{
-                padding: '6px 12px',
-                background: '#F0F0F0',
-                border: '1px solid #E0E0E0',
-                borderRadius: 20,
-                fontSize: 12,
-                color: '#333333',
-                cursor: 'pointer',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 500,
-                transition: 'all 0.2s',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = '#E8E8E8';
-                e.currentTarget.style.borderColor = '#D0D0D0';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = '#F0F0F0';
-                e.currentTarget.style.borderColor = '#E0E0E0';
-              }}
-            >
-              {keyword}
-            </button>
-          ))}
-        </div>
+        {POPULAR_KEYWORDS[selectedRole] && (
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20, alignItems: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <span style={{ fontSize: 12, color: '#999999', fontWeight: 500 }}>Popular:</span>
+            {POPULAR_KEYWORDS[selectedRole].map(keyword => (
+              <button
+                key={keyword}
+                onClick={() => { setSearch(keyword); setExpandedKeys(new Set()); }}
+                style={{
+                  padding: '6px 12px',
+                  background: '#F0F0F0',
+                  border: '1px solid #E0E0E0',
+                  borderRadius: 20,
+                  fontSize: 12,
+                  color: '#333333',
+                  cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 500,
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = '#E8E8E8';
+                  e.currentTarget.style.borderColor = '#D0D0D0';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = '#F0F0F0';
+                  e.currentTarget.style.borderColor = '#E0E0E0';
+                }}
+              >
+                {keyword}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* 4. Applied filter tags */}
         {appliedFilterTags.length > 0 && (
