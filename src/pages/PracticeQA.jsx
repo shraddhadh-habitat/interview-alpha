@@ -1558,12 +1558,17 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             <input
               value={search}
               onChange={e => { setSearch(e.target.value); setExpandedKeys(new Set()); }}
-              placeholder="Search by company, product, or question..."
+              placeholder="Search by keyword, e.g. stakeholder, AI, agile, metrics..."
               style={{ flex: 1, border: 'none', background: 'transparent', color: C.text, fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             />
             {search && (
               <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 20, lineHeight: 1, padding: 0 }}>×</button>
             )}
+          </div>
+
+          {/* Search helper text */}
+          <div style={{ fontSize: 12, color: '#999999', marginLeft: 6, marginTop: 4, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Try: stakeholder · AI · agile · metrics · product strategy · growth · data · leadership
           </div>
 
           {/* Filters button */}
