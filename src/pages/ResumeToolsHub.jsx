@@ -211,7 +211,7 @@ export default function ResumeToolsHub({ user }) {
           padding: '8px 16px',
           width: '100%',
           boxSizing: 'border-box',
-          maxWidth: '100%',
+          maxWidth: '1200px',
         }}>
           {tabs.map(tab => (
             <button
