@@ -1668,7 +1668,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55 }}>
+    <div style={{ minHeight: '100vh', background: C.bgSoft, paddingTop: 55, overflow: showTrackSelector ? 'hidden' : 'visible' }}>
       <style>{globalStyles}</style>
 
       {reportTarget && (
@@ -1697,7 +1697,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         </FilterSidebar>
       )}
 
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: isMobile ? '20px 16px 60px' : '40px 28px 60px' }}>
+      <div style={{ maxWidth: 860, margin: '0 auto', padding: isMobile ? '20px 16px 60px' : '40px 28px 60px', visibility: showTrackSelector ? 'hidden' : 'visible' }}>
 
         {/* Welcome banner */}
         {showWelcome && (
