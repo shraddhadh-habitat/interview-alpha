@@ -1198,9 +1198,18 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   // Handle new_user=true by showing track selector modal
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const newUser = params.get('new_user');
-    if (newUser === 'true' && !showTrackSelector && !practiceQuestion) {
+    if (localStorage.getItem('ia_show_track_selector') === 'true') {
+      console.log('[PracticeQA] useEffect: Found ia_show_track_selector flag, showing track selector modal');
+      localStorage.removeItem('ia_show_track_selector');
+
+      // Clear new_user param from URL
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('new_user') === 'true') {
+        params.delete('new_user');
+        const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
+      }
+
       setShowTrackSelector(true);
     }
   }, []);
@@ -1237,11 +1246,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const newUser = params.get('new_user');
     if (newUser === 'true') {
       console.log('[PracticeQA] Found new_user=true, will show track selector modal');
-      // Clear new_user param from URL
-      const cleanParams = new URLSearchParams(window.location.search);
-      cleanParams.delete('new_user');
-      const newUrl = cleanParams.toString() ? `${window.location.pathname}?${cleanParams.toString()}` : window.location.pathname;
-      window.history.replaceState({}, '', newUrl);
+      // Set flag for useEffect to show track selector (can't rely on URL param due to timing)
+      localStorage.setItem('ia_show_track_selector', 'true');
       // Return null - track selector will handle loading the question
       return null;
     }
