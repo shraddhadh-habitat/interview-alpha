@@ -137,7 +137,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
           {/* Primary CTA  . inline-block, not full width */}
           <button
             className="hero-cta"
-            onClick={() => onNavigate('practice')}
+            onClick={() => window.location.href = '/?page=practice&new_user=true'}
             style={{
               display: 'inline-block',
               height: '44px',
