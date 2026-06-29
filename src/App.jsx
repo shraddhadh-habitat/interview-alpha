@@ -829,10 +829,10 @@ export default function App() {
       )}
       <style>{`
         @media (max-width: 768px) {
-          .app-container { margin: 8px auto !important; }
+          .app-container { margin: 0 !important; }
         }
       `}</style>
-      <div className="app-container" style={{ maxWidth: '1200px', margin: '20px auto', background: '#FFFFFF', borderRadius: '0', boxShadow: 'none', minHeight: 'calc(100vh - 40px)', overflow: 'auto', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#FFFFFF' }}>
         <Nav
           user={user}
           page={page}
@@ -842,7 +842,8 @@ export default function App() {
           onUpgradeClick={() => setPage('upgrade')}
           isAdmin={isAdmin}
         />
-        <div style={{ flex: 1 }}>
+        <div className="app-container" style={{ flex: 1, width: '100%', background: '#FFFFFF', boxShadow: 'none', borderRadius: '0', overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1 }}>
           {page === 'interview'   && (
             <LandingPage
               user={user}
@@ -996,7 +997,8 @@ export default function App() {
         )}
         <EnvBanner />
       </div>
-      <ActivityTicker />
+    </div>
+    <ActivityTicker />
     </AuthProvider>
   );
 }
