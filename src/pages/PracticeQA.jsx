@@ -424,6 +424,113 @@ function ReportIssueModal({ questionId, user, onClose }) {
   );
 }
 
+// ─── Track Selector Modal ────────────────────────────────────────────────────
+
+function TrackSelectorModal({ onSelectTrack }) {
+  return (
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 2000,
+        background: 'rgba(0,0,0,0.55)', display: 'flex',
+        alignItems: 'center', justifyContent: 'center', padding: '0 16px',
+      }}
+    >
+      <div
+        style={{
+          background: '#fff', borderRadius: 16, padding: '40px 32px',
+          width: '100%', maxWidth: 480,
+          boxShadow: '0 12px 60px rgba(0,0,0,0.24)',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          textAlign: 'center',
+        }}
+      >
+        <h2 style={{
+          fontSize: 24, fontWeight: 700, color: C.text,
+          marginBottom: 12, margin: '0 0 12px 0',
+        }}>
+          What are you preparing for?
+        </h2>
+        <p style={{
+          fontSize: 14, color: C.textMuted, marginBottom: 32,
+          lineHeight: 1.6, margin: '0 0 32px 0',
+        }}>
+          Choose your path and we'll start with a beginner question.
+        </p>
+
+        <div style={{
+          display: 'flex', flexDirection: 'column', gap: 12,
+        }}>
+          <button
+            onClick={() => onSelectTrack('pm')}
+            style={{
+              padding: '14px 24px', height: 48,
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              border: 'none', borderRadius: 12,
+              color: '#fff', fontSize: 15, fontWeight: 700,
+              cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.opacity = '0.9';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            Product Management
+          </button>
+
+          <button
+            onClick={() => onSelectTrack('ds')}
+            style={{
+              padding: '14px 24px', height: 48,
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              border: 'none', borderRadius: 12,
+              color: '#fff', fontSize: 15, fontWeight: 700,
+              cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.opacity = '0.9';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            Data Science
+          </button>
+
+          <button
+            onClick={() => onSelectTrack('consulting')}
+            style={{
+              padding: '14px 24px', height: 48,
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              border: 'none', borderRadius: 12,
+              color: '#fff', fontSize: 15, fontWeight: 700,
+              cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.opacity = '0.9';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            Consulting
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const TEASER_LEN = 120;
 
 function BlurredAnswer({ text, bgColor = 'rgb(236,247,241)' }) {
@@ -1089,6 +1196,15 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     return () => { document.title = 'Interview Questions & Answers 2026 | AI Mock Interview Practice | InterviewAlpha.ai™'; };
   }, [selectedRole]);
 
+  // Handle new_user=true by showing track selector modal
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const newUser = params.get('new_user');
+    if (newUser === 'true' && !showTrackSelector && !practiceQuestion) {
+      setShowTrackSelector(true);
+    }
+  }, []);
+
   const [search, setSearch] = useState('');
   const [filterCategory, setFilterCategory] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -1098,6 +1214,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [filterDifficulty, setFilterDifficulty] = useState(null);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
+  const [showTrackSelector, setShowTrackSelector] = useState(false);
   const [practiceQuestion, setPracticeQuestion] = useState(() => {
     console.log('[PracticeQA] initializer running - localStorage has ia_sample_question:', !!localStorage.getItem('ia_sample_question'));
 
@@ -1116,31 +1233,16 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     }
 
     // Check for new_user=true (Flow 2 - direct signup after email verification)
+    // Don't auto-load question here, let useEffect handle it and show track selector instead
     const newUser = params.get('new_user');
     if (newUser === 'true') {
-      console.log('[PracticeQA] Found new_user=true, auto-loading random question for first-time user');
-
+      console.log('[PracticeQA] Found new_user=true, will show track selector modal');
       // Clear new_user param from URL
       const cleanParams = new URLSearchParams(window.location.search);
       cleanParams.delete('new_user');
       const newUrl = cleanParams.toString() ? `${window.location.pathname}?${cleanParams.toString()}` : window.location.pathname;
       window.history.replaceState({}, '', newUrl);
-
-      // Pick a random beginner question from Associate PM / product
-      const associatePMQuestions = pmQuestions['Associate PM'];
-      if (associatePMQuestions && associatePMQuestions.product) {
-        const allQuestions = associatePMQuestions.product;
-        if (allQuestions.length > 0) {
-          const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-          return {
-            question: randomQuestion,
-            questionId: `associate-pm-product-${Math.random().toString(36).substr(2, 9)}`,
-            designation: 'Associate PM',
-            category: 'product',
-          };
-        }
-      }
-      // Fallback if Associate PM doesn't exist
+      // Return null - track selector will handle loading the question
       return null;
     }
 
@@ -1231,6 +1333,78 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         setPracticeStats(stats);
       });
   }, [user]);
+
+  // Handle track selection from modal - load appropriate beginner question
+  const handleTrackSelection = (track) => {
+    let role = 'pm';
+    let level = 'Associate PM';
+    let category = 'product';
+    let questionsSource = pmQuestions;
+
+    if (track === 'pm') {
+      role = 'pm';
+      level = 'Associate PM';
+      category = 'product';
+      const pmQuestionBank = pmQuestions['Associate PM'];
+      if (pmQuestionBank && pmQuestionBank.product) {
+        const allQuestions = pmQuestionBank.product;
+        if (allQuestions.length > 0) {
+          const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+          setPracticeQuestion({
+            question: randomQuestion,
+            questionId: `associate-pm-product-${Math.random().toString(36).substr(2, 9)}`,
+            designation: level,
+            category: category,
+          });
+          setShowTrackSelector(false);
+          return;
+        }
+      }
+    } else if (track === 'ds') {
+      role = 'ds';
+      level = 'Data Scientist';
+      // Get first available category from Data Scientist
+      const dsLevel = pmQuestions['Data Scientist'];
+      if (dsLevel) {
+        // Find first non-empty category
+        const availableCategories = Object.keys(dsLevel).filter(k => Array.isArray(dsLevel[k]) && dsLevel[k].length > 0);
+        if (availableCategories.length > 0) {
+          const selectedCategory = availableCategories[0];
+          const allQuestions = dsLevel[selectedCategory];
+          if (allQuestions.length > 0) {
+            const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+            setPracticeQuestion({
+              question: randomQuestion,
+              questionId: `data-scientist-${selectedCategory}-${Math.random().toString(36).substr(2, 9)}`,
+              designation: level,
+              category: selectedCategory,
+            });
+            setShowTrackSelector(false);
+            return;
+          }
+        }
+      }
+    } else if (track === 'consulting') {
+      role = 'consulting';
+      level = consultingQuestions && consultingQuestions['Analyst'] ? 'Analyst' : (Object.keys(consultingQuestions || {})[0] || 'Analyst');
+      // Get first available consulting question
+      const consultingLevel = consultingQuestions[level];
+      if (consultingLevel && consultingLevel.case_interview) {
+        const allQuestions = consultingLevel.case_interview;
+        if (allQuestions.length > 0) {
+          const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+          setPracticeQuestion({
+            question: randomQuestion,
+            questionId: `consulting-analyst-${Math.random().toString(36).substr(2, 9)}`,
+            designation: level,
+            category: 'case_interview',
+          });
+          setShowTrackSelector(false);
+          return;
+        }
+      }
+    }
+  };
 
   // ── Filtering ──────────────────────────────────────────────────────────────
 
@@ -1496,6 +1670,12 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           questionId={reportTarget}
           user={user}
           onClose={() => setReportTarget(null)}
+        />
+      )}
+
+      {showTrackSelector && (
+        <TrackSelectorModal
+          onSelectTrack={handleTrackSelection}
         />
       )}
 
