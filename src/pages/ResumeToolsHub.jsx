@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ATSChecker from './ATSChecker';
 import ResumeOptimizer from './ResumeOptimizer';
 import ResumeTemplates from './ResumeTemplates';
@@ -146,6 +146,10 @@ function ResumeScore() {
 
 export default function ResumeToolsHub({ user }) {
   const [activeTab, setActiveTab] = useState('ats-checker');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  const dropdownButtonRef = useRef(null);
+  const dropdownMenuRef = useRef(null);
 
   const tabs = [
     { id: 'ats-checker', label: 'ATS Checker' },
@@ -153,6 +157,35 @@ export default function ResumeToolsHub({ user }) {
     { id: 'templates', label: 'Templates' },
     { id: 'resume-score', label: 'Resume Score' },
   ];
+
+  const isMobile = windowWidth < 1024;
+  const activeTabLabel = tabs.find(t => t.id === activeTab)?.label || 'Select Tab';
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        dropdownButtonRef.current && !dropdownButtonRef.current.contains(e.target) &&
+        dropdownMenuRef.current && !dropdownMenuRef.current.contains(e.target)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+    if (dropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [dropdownOpen]);
+
+  const handleTabSelect = (tabId) => {
+    setActiveTab(tabId);
+    setDropdownOpen(false);
+  };
 
   return (
     <div style={{
@@ -169,8 +202,6 @@ export default function ResumeToolsHub({ user }) {
         background: '#FFFFFF',
         borderBottom: '1px solid #E8E6E1',
         zIndex: 10,
-        overflowX: 'auto',
-        WebkitOverflowScrolling: 'touch',
       }}>
         <style>{`
           .resume-tabs::-webkit-scrollbar { display: none; }
@@ -195,10 +226,100 @@ export default function ResumeToolsHub({ user }) {
             color: #1B1B18;
             -webkit-text-fill-color: unset;
           }
+          .resume-dropdown-trigger {
+            display: none;
+          }
+          @media (max-width: 1023px) {
+            .resume-tabs { display: none !important; }
+            .resume-dropdown-trigger { display: flex !important; }
+          }
           @media (max-width: 768px) {
             .resume-tab-btn { padding: 12px 14px !important; font-size: 13px !important; min-height: 44px !important; }
           }
         `}</style>
+        {/* Mobile dropdown trigger */}
+        <button
+          className="resume-dropdown-trigger"
+          ref={dropdownButtonRef}
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+          style={{
+            position: 'relative',
+            padding: '12px 16px',
+            minHeight: 60,
+            background: '#FFFFFF',
+            border: 'none',
+            borderBottom: '2px solid transparent',
+            fontSize: 13,
+            fontWeight: 600,
+            color: '#1B1B18',
+            cursor: 'pointer',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {activeTabLabel}
+          <span style={{ fontSize: 16 }}>▼</span>
+        </button>
+
+        {/* Mobile dropdown menu */}
+        {isMobile && dropdownOpen && (
+          <div
+            ref={dropdownMenuRef}
+            style={{
+              position: 'fixed',
+              top: `${NAV_H + 60}px`,
+              left: 0,
+              right: 0,
+              background: '#FFFFFF',
+              border: `1px solid #E8E6E1`,
+              borderTop: 'none',
+              borderRadius: '0 0 12px 12px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              zIndex: 20,
+              overflow: 'hidden',
+              maxWidth: '100vw',
+            }}
+          >
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => handleTabSelect(tab.id)}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: activeTab === tab.id ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : '#FFFFFF',
+                  border: 'none',
+                  borderBottom: tab.id !== tabs[tabs.length - 1].id ? `1px solid ${C.border}` : 'none',
+                  textAlign: 'left',
+                  fontSize: 13,
+                  fontWeight: activeTab === tab.id ? 700 : 500,
+                  color: activeTab === tab.id ? '#FFFFFF' : '#1B1B18',
+                  cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => {
+                  if (activeTab !== tab.id) {
+                    e.currentTarget.style.background = 'rgba(168, 230, 207, 0.1)';
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (activeTab !== tab.id) {
+                    e.currentTarget.style.background = '#FFFFFF';
+                  }
+                }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Desktop inline tabs */}
         <div className="resume-tabs" style={{
           display: 'flex',
           overflowX: 'auto',
