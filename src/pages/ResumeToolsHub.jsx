@@ -199,7 +199,7 @@ export default function ResumeToolsHub({ user }) {
       <div style={{
         position: 'sticky',
         top: NAV_H,
-        background: 'red',
+        background: '#FFFFFF !important',
         borderBottom: '1px solid #E8E6E1',
         zIndex: 10,
       }}>
