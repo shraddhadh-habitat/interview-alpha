@@ -832,7 +832,7 @@ export default function App() {
           .app-container { margin: 0 !important; }
         }
       `}</style>
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#FFFFFF' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#FFFFFF', paddingTop: 60 }}>
         <Nav
           user={user}
           page={page}
