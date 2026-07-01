@@ -194,7 +194,6 @@ export default function FeedbackPreview({ onNavigate }) {
               fontFamily: 'inherit'
             }}
           >
-            <span>{t.emoji}</span>
             {t.label}
           </button>
         ))}
