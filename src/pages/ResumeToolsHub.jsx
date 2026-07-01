@@ -202,6 +202,9 @@ export default function ResumeToolsHub({ user }) {
         background: '#FFFFFF',
         borderBottom: '2px solid #F0F0F0',
         zIndex: 10,
+        maxWidth: '1390px',
+        margin: '0 auto',
+        width: '100%',
       }}>
         <style>{`
           .resume-tabs::-webkit-scrollbar { display: none; }
