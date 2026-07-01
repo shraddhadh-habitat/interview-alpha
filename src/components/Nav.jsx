@@ -59,17 +59,8 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
   const { requireAuth } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [avatarDropOpen, setAvatarDropOpen] = useState(false);
-  const [resumeToolsDropOpen, setResumeToolsDropOpen] = useState(false);
   const avatarRef = useRef(null);
-  const resumeToolsRef = useRef(null);
   const isFree = profile?.subscription_status === 'free' || !profile?.subscription_status;
-
-  const resumeToolsItems = [
-    { id: 'ats-checker', label: 'ATS Checker' },
-    { id: 'resume-optimizer', label: 'Resume Optimizer' },
-    { id: 'templates', label: 'Templates' },
-    { id: 'resume-score', label: 'Resume Score' },
-  ];
 
   // Authenticated tabs include Upgrade (for free users) and admin
   const authedTabs = [
@@ -94,9 +85,6 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     const handleClick = (e) => {
       if (avatarRef.current && !avatarRef.current.contains(e.target)) {
         setAvatarDropOpen(false);
-      }
-      if (resumeToolsRef.current && !resumeToolsRef.current.contains(e.target)) {
-        setResumeToolsDropOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClick);
@@ -261,74 +249,16 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         </div>
 
         {/* Center tabs */}
-        <div className="nav-tabs" style={{ flex: '1 1 auto', justifyContent: 'flex-start', margin: '0 24px', minWidth: 0, position: 'relative' }}>
-          {tabs.map(tab => {
-            if (tab.id === 'resume-tools') {
-              return (
-                <div key={tab.id} ref={resumeToolsRef} style={{ position: 'relative' }}>
-                  <button
-                    className={`nav-tab${page === 'resume-tools' ? ' active' : ''}`}
-                    onClick={() => setResumeToolsDropOpen(!resumeToolsDropOpen)}
-                  >
-                    {tab.label}
-                  </button>
-                  {resumeToolsDropOpen && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '100%',
-                      left: 0,
-                      background: '#FFFFFF',
-                      border: '1px solid rgba(27, 27, 24, 0.12)',
-                      borderRadius: '8px',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                      zIndex: 100,
-                      minWidth: '180px',
-                      overflow: 'hidden',
-                      marginTop: '4px'
-                    }}>
-                      {resumeToolsItems.map((item, idx) => (
-                        <button
-                          key={item.id}
-                          onClick={() => {
-                            handleNav('resume-tools');
-                            setResumeToolsDropOpen(false);
-                          }}
-                          style={{
-                            display: 'block',
-                            width: '100%',
-                            padding: '12px 16px',
-                            background: '#FFFFFF',
-                            border: 'none',
-                            borderBottom: idx < resumeToolsItems.length - 1 ? '1px solid rgba(27, 27, 24, 0.12)' : 'none',
-                            textAlign: 'left',
-                            fontSize: 14,
-                            fontWeight: 500,
-                            color: '#1B1B18',
-                            cursor: 'pointer',
-                            fontFamily: 'inherit',
-                            transition: 'all 0.2s'
-                          }}
-                          onMouseEnter={e => e.currentTarget.style.background = '#FAFAF8'}
-                          onMouseLeave={e => e.currentTarget.style.background = '#FFFFFF'}
-                        >
-                          {item.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            }
-            return (
-              <button
-                key={tab.id}
-                className={`nav-tab${page === tab.id ? ' active' : ''}`}
-                onClick={() => handleNav(tab.id)}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
+        <div className="nav-tabs" style={{ flex: '1 1 auto', justifyContent: 'flex-start', margin: '0 24px', minWidth: 0 }}>
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              className={`nav-tab${page === tab.id ? ' active' : ''}`}
+              onClick={() => handleNav(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {/* Right side */}
