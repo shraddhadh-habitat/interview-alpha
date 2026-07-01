@@ -329,7 +329,8 @@ export default function ResumeToolsHub({ user }) {
           msOverflowStyle: 'none',
           gap: '8px',
           padding: '8px 16px',
-          width: 'auto',
+          width: '100%',
+          justifyContent: 'center',
         }}>
           {tabs.map(tab => (
             <button
