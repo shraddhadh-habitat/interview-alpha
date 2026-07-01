@@ -195,14 +195,13 @@ export default function ResumeToolsHub({ user }) {
       fontFamily: "'Plus Jakarta Sans', sans-serif",
       boxSizing: 'border-box',
     }}>
-      {/* Tabs Bar - Hidden (now in main Nav dropdown) */}
+      {/* Tabs Bar */}
       <div style={{
         position: 'sticky',
         top: NAV_H,
         background: '#FFFFFF',
         borderBottom: '1px solid #E8E6E1',
         zIndex: 10,
-        display: 'none',
       }}>
         <style>{`
           .resume-tabs::-webkit-scrollbar { display: none; }
