@@ -167,7 +167,7 @@ export default function ResumeToolsHub({ user }) {
         position: 'sticky',
         top: NAV_H,
         background: C.bgCard,
-        borderBottom: `2px solid ${C.yellow}`,
+        borderBottom: `1px solid ${C.border}`,
         zIndex: 10,
         overflowX: 'auto',
         WebkitOverflowScrolling: 'touch',
@@ -181,22 +181,22 @@ export default function ResumeToolsHub({ user }) {
             transition: all 0.2s;
           }
           .resume-tab-btn.inactive {
-            background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            background: #FFFFFF;
+            color: #1B1B18;
+            border-bottom: 2px solid transparent;
           }
           .resume-tab-btn.inactive:hover {
-            opacity: 0.85;
+            opacity: 0.7;
+            color: #1B1B18;
           }
           .resume-tab-btn.active {
-            background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%);
-            border-radius: 8px;
-            color: #ffffff;
+            background: #FFFFFF;
+            border-bottom: 2px solid #16a34a;
+            color: #1B1B18;
             -webkit-text-fill-color: unset;
           }
           @media (max-width: 768px) {
-            .resume-tab-btn { padding: 12px 14px !important; font-size: 12px !important; min-height: 44px !important; }
+            .resume-tab-btn { padding: 12px 14px !important; font-size: 13px !important; min-height: 44px !important; }
           }
         `}</style>
         <div className="resume-tabs" style={{
@@ -219,17 +219,17 @@ export default function ResumeToolsHub({ user }) {
               className={`resume-tab-btn ${activeTab === tab.id ? 'active' : 'inactive'}`}
               onClick={() => setActiveTab(tab.id)}
               style={{
-                padding: activeTab === tab.id ? '6px 14px' : '16px 24px',
-                minHeight: activeTab === tab.id ? 'auto' : 60,
-                fontSize: 14,
+                padding: '12px 16px',
+                minHeight: 60,
+                fontSize: 13,
                 fontWeight: 600,
-                color: activeTab === tab.id ? '#ffffff' : undefined,
-                WebkitTextFillColor: activeTab === tab.id ? '#ffffff' : undefined,
-                background: activeTab === tab.id ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : 'transparent',
+                color: '#1B1B18',
+                background: '#FFFFFF',
+                borderBottom: activeTab === tab.id ? '2px solid #16a34a' : '2px solid transparent',
                 cursor: 'pointer',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 border: 'none',
-                borderRadius: activeTab === tab.id ? '8px' : '0',
+                borderRadius: '0',
                 whiteSpace: 'nowrap',
                 flexShrink: 0,
               }}
