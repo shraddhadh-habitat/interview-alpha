@@ -330,6 +330,8 @@ export default function ResumeToolsHub({ user }) {
           gap: '8px',
           padding: '8px 16px',
           width: '100%',
+          maxWidth: '1390px',
+          margin: '0 auto',
           justifyContent: 'center',
         }}>
           {tabs.map(tab => (
