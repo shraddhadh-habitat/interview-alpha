@@ -55,6 +55,33 @@ I would differentiate on reliability with a Zepto Promise. Guaranteed 10 mins or
 I would compute accuracy per segment, identify the worst-performing slices, then retrain with stratified sampling or build separate models per segment. I would also talk to 5 restaurant partners to understand which specific predictions feel wrong. Qualitative signal often points directly at the data problem.`,
     }
   },
+  {
+    id: 'consulting',
+    label: 'Consulting',
+    emoji: '🎯',
+    color: '#d97706',
+    example: {
+      category: 'CASE INTERVIEW',
+      question: "Your client is a leading coffee chain seeing a 15% drop in same-store sales over the past two quarters. How would you approach diagnosing the problem?",
+      sampleAnswer: "I'd start by understanding the scope. Is this drop across all stores or concentrated in specific regions? Are all product categories down or just certain items? First, I'd segment the data by location, store type, and product mix to pinpoint where the problem is worse. Then I'd investigate demand-side factors: Are customers coming in less frequently? Are they buying less per visit? Is this due to new competitors, economic shifts, or our own execution? Finally, I'd check supply-side: pricing changes, promotions from competitors, staffing issues affecting service quality, or product changes that reduced appeal.",
+      overallScore: 7,
+      competencies: [
+        { label: 'Problem Framing',        score: 8 },
+        { label: 'Structural Thinking',    score: 8 },
+        { label: 'Business Acumen',        score: 7 },
+        { label: 'Data Interpretation',    score: 7 },
+        { label: 'Hypothesis Development', score: 8 },
+        { label: 'Analytical Rigor',       score: 7 },
+        { label: 'Communication',          score: 6 },
+        { label: 'Recommendation Quality', score: 7 },
+      ],
+      expertRewrite: `I would take a systematic approach using the sales drop as an entry point to multiple hypotheses. First: isolate the problem. Are Q1 and Q2 equally affected or accelerating? Is it same-store sales (existing stores only) or also including new openings? This tells us if it's a chainwide issue or new store underperformance.
+
+Second: break down the waterfall. Sales = Transactions × Ticket Size. I'd measure which is driving the 15% decline. If transactions down 20% but ticket size up 8%, the issue is customer frequency, not pricing. If both down 8-9%, it's a broader brand/value perception issue.
+
+Third: layer in context. What's the market doing? If the category is growing 5% but we're down 15%, we're losing share. If the market is also down 15%, it's external (recession, consumer shift to home brewing). Fourth: test competitor activity. Did a new chain open? Are they running aggressive promotions? Did our own pricing move hurt us? Finally: store operations. Check NPS, wait times, and product freshness scores. The 15% drop is often a lagging indicator of execution problems that started 2-3 quarters ago.`,
+    }
+  },
   // ============================================================
   // ADD NEW TRACKS HERE IN FUTURE: example:
   // {
