@@ -59,8 +59,19 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
   const { requireAuth } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [avatarDropOpen, setAvatarDropOpen] = useState(false);
+  const [resumeToolsDropOpen, setResumeToolsDropOpen] = useState(false);
   const avatarRef = useRef(null);
+  const resumeToolsRef = useRef(null);
   const isFree = profile?.subscription_status === 'free' || !profile?.subscription_status;
+
+  const resumeToolsItems = [
+    { id: 'ats-checker', label: 'ATS Checker' },
+    { id: 'resume-optimizer', label: 'Resume Optimizer' },
+    { id: 'templates', label: 'Templates' },
+    { id: 'resume-score', label: 'Resume Score' },
+  ];
+
+  const isResumeToolPage = ['ats-checker', 'resume-optimizer', 'templates', 'resume-score'].includes(page);
 
   // Authenticated tabs include Upgrade (for free users) and admin
   const authedTabs = [
@@ -85,6 +96,9 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     const handleClick = (e) => {
       if (avatarRef.current && !avatarRef.current.contains(e.target)) {
         setAvatarDropOpen(false);
+      }
+      if (resumeToolsRef.current && !resumeToolsRef.current.contains(e.target)) {
+        setResumeToolsDropOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClick);
@@ -249,16 +263,85 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         </div>
 
         {/* Center tabs */}
-        <div className="nav-tabs" style={{ flex: '1 1 auto', justifyContent: 'flex-start', margin: '0 24px', minWidth: 0 }}>
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              className={`nav-tab${page === tab.id ? ' active' : ''}`}
-              onClick={() => handleNav(tab.id)}
-            >
-              {tab.label}
-            </button>
-          ))}
+        <div className="nav-tabs" style={{ flex: '1 1 auto', justifyContent: 'flex-start', margin: '0 24px', minWidth: 0, position: 'relative' }}>
+          {tabs.map(tab => {
+            // Resume Tools dropdown
+            if (tab.id === 'resume-tools') {
+              return (
+                <div key={tab.id} ref={resumeToolsRef} style={{ position: 'relative' }}>
+                  <button
+                    className={`nav-tab${isResumeToolPage ? ' active' : ''}`}
+                    onClick={() => setResumeToolsDropOpen(!resumeToolsDropOpen)}
+                    style={{ position: 'relative' }}
+                  >
+                    {tab.label}
+                  </button>
+                  {resumeToolsDropOpen && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: 0,
+                      background: '#FFFFFF',
+                      border: `1px solid ${C.border}`,
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      zIndex: 100,
+                      minWidth: '200px',
+                      overflow: 'hidden',
+                      marginTop: '4px'
+                    }}>
+                      {resumeToolsItems.map((item, idx) => (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            setPage(item.id);
+                            setResumeToolsDropOpen(false);
+                          }}
+                          style={{
+                            display: 'block',
+                            width: '100%',
+                            padding: '12px 20px',
+                            background: page === item.id ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : '#FFFFFF',
+                            border: 'none',
+                            borderBottom: idx < resumeToolsItems.length - 1 ? `1px solid ${C.border}` : 'none',
+                            textAlign: 'left',
+                            fontSize: 14,
+                            fontWeight: page === item.id ? 700 : 500,
+                            color: page === item.id ? '#FFFFFF' : C.text,
+                            cursor: 'pointer',
+                            fontFamily: 'inherit',
+                            transition: 'all 0.2s'
+                          }}
+                          onMouseEnter={e => {
+                            if (page !== item.id) {
+                              e.currentTarget.style.background = C.bgMuted;
+                            }
+                          }}
+                          onMouseLeave={e => {
+                            if (page !== item.id) {
+                              e.currentTarget.style.background = '#FFFFFF';
+                            }
+                          }}
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+            // Regular tabs
+            return (
+              <button
+                key={tab.id}
+                className={`nav-tab${page === tab.id ? ' active' : ''}`}
+                onClick={() => handleNav(tab.id)}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Right side */}
