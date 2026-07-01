@@ -199,12 +199,12 @@ export default function ResumeToolsHub({ user }) {
       <div style={{
         position: 'sticky',
         top: NAV_H,
-        background: '#FFFFFF',
-        borderBottom: '2px solid #F0F0F0',
+        background: '#FAFAF8',
         zIndex: 10,
         maxWidth: '1390px',
         margin: '0 auto',
         width: '100%',
+        padding: '16px 0',
       }}>
         <style>{`
           .resume-tabs::-webkit-scrollbar { display: none; }
@@ -216,7 +216,7 @@ export default function ResumeToolsHub({ user }) {
           }
           .resume-tab-btn.inactive {
             background: transparent;
-            color: #666666;
+            color: #8A8A85;
             border-bottom: 2px solid transparent;
             font-weight: 500;
           }
@@ -343,11 +343,11 @@ export default function ResumeToolsHub({ user }) {
               className={`resume-tab-btn ${activeTab === tab.id ? 'active' : 'inactive'}`}
               onClick={() => setActiveTab(tab.id)}
               style={{
-                padding: '12px 24px',
-                minHeight: 60,
+                padding: '8px 24px',
+                minHeight: 'auto',
                 fontSize: 13,
                 fontWeight: 500,
-                color: activeTab === tab.id ? '#1B1B18' : '#666666',
+                color: activeTab === tab.id ? '#1B1B18' : '#8A8A85',
                 background: 'transparent',
                 borderBottom: activeTab === tab.id ? '2px solid #16a34a' : '2px solid transparent',
                 cursor: 'pointer',
@@ -363,7 +363,7 @@ export default function ResumeToolsHub({ user }) {
               }}
               onMouseLeave={e => {
                 if (activeTab !== tab.id) {
-                  e.currentTarget.style.color = '#666666';
+                  e.currentTarget.style.color = '#8A8A85';
                 }
               }}
             >
