@@ -670,7 +670,6 @@ export default function Scorecard({ user }) {
   if (hasNoData) return (
     <div style={{ background: C.bg, minHeight: '100vh', paddingTop: NAV_H, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <div style={{ textAlign: 'center', maxWidth: 440, padding: '0 24px' }}>
-        <div style={{ fontSize: 56, marginBottom: 20 }}>📊</div>
         <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: C.text, marginBottom: 14, lineHeight: 1.2 }}>
           Your scorecard is waiting
         </div>
