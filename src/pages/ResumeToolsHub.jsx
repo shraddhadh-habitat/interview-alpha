@@ -200,7 +200,7 @@ export default function ResumeToolsHub({ user }) {
         position: 'sticky',
         top: NAV_H,
         background: '#FFFFFF',
-        borderBottom: '1px solid #E8E6E1',
+        borderBottom: '2px solid #F0F0F0',
         zIndex: 10,
       }}>
         <style>{`
@@ -212,19 +212,19 @@ export default function ResumeToolsHub({ user }) {
             transition: all 0.2s;
           }
           .resume-tab-btn.inactive {
-            background: #FFFFFF;
-            color: #1B1B18;
+            background: transparent;
+            color: #666666;
             border-bottom: 2px solid transparent;
+            font-weight: 500;
           }
           .resume-tab-btn.inactive:hover {
-            opacity: 0.7;
             color: #1B1B18;
           }
           .resume-tab-btn.active {
-            background: #FFFFFF;
+            background: transparent;
             border-bottom: 2px solid #16a34a;
             color: #1B1B18;
-            -webkit-text-fill-color: unset;
+            font-weight: 500;
           }
           .resume-dropdown-trigger {
             display: none;
@@ -338,28 +338,27 @@ export default function ResumeToolsHub({ user }) {
               className={`resume-tab-btn ${activeTab === tab.id ? 'active' : 'inactive'}`}
               onClick={() => setActiveTab(tab.id)}
               style={{
-                padding: '12px 16px',
+                padding: '12px 24px',
                 minHeight: 60,
                 fontSize: 13,
-                fontWeight: 600,
-                color: '#1B1B18',
-                background: '#FFFFFF',
+                fontWeight: 500,
+                color: activeTab === tab.id ? '#1B1B18' : '#666666',
+                background: 'transparent',
                 borderBottom: activeTab === tab.id ? '2px solid #16a34a' : '2px solid transparent',
                 cursor: 'pointer',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 border: 'none',
-                borderRadius: '0',
                 whiteSpace: 'nowrap',
                 flexShrink: 0,
               }}
               onMouseEnter={e => {
                 if (activeTab !== tab.id) {
-                  e.currentTarget.style.opacity = '0.85';
+                  e.currentTarget.style.color = '#1B1B18';
                 }
               }}
               onMouseLeave={e => {
                 if (activeTab !== tab.id) {
-                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.color = '#666666';
                 }
               }}
             >
