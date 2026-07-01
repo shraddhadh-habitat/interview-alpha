@@ -166,8 +166,8 @@ export default function ResumeToolsHub({ user }) {
       <div style={{
         position: 'sticky',
         top: NAV_H,
-        background: C.bgCard,
-        borderBottom: `1px solid ${C.border}`,
+        background: '#FFFFFF',
+        borderBottom: '1px solid #E8E6E1',
         zIndex: 10,
         overflowX: 'auto',
         WebkitOverflowScrolling: 'touch',
