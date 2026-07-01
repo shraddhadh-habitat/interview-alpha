@@ -254,7 +254,7 @@ export default function ResumeToolsHub({ user }) {
             color: '#1B1B18',
             cursor: 'pointer',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            display: 'flex',
+            display: isMobile ? 'flex' : 'none',
             alignItems: 'center',
             gap: '8px',
             whiteSpace: 'nowrap',
@@ -321,7 +321,7 @@ export default function ResumeToolsHub({ user }) {
 
         {/* Desktop inline tabs */}
         <div className="resume-tabs" style={{
-          display: 'flex',
+          display: isMobile ? 'none' : 'flex',
           overflowX: 'auto',
           overflowY: 'visible',
           WebkitOverflowScrolling: 'touch',
