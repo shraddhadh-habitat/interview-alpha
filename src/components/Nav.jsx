@@ -249,7 +249,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         </div>
 
         {/* Center tabs */}
-        <div className="nav-tabs" style={{ flex: '1 1 auto', justifyContent: 'flex-start', margin: '0 24px', minWidth: 0 }}>
+        <div className="nav-tabs" style={{ flex: '1 1 auto', justifyContent: 'center', display: 'flex', margin: '0 24px', minWidth: 0 }}>
           {tabs.map(tab => (
             <button
               key={tab.id}
