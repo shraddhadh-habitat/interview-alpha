@@ -129,12 +129,36 @@ export default function LandingPage({ user, onNavigate, profile }) {
             fontSize: '16px',
             color: C.textSoft,
             lineHeight: 1.6,
+            marginBottom: '12px',
+            maxWidth: '480px',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontWeight: 500,
+          }}>
+            Most candidates think they are. Most candidates are wrong.
+          </p>
+
+          <p className="hero-subheadline" style={{
+            fontSize: '16px',
+            color: C.textSoft,
+            lineHeight: 1.6,
+            marginBottom: '12px',
+            maxWidth: '480px',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontWeight: 500,
+          }}>
+            They studied the answers. Interviews test how you think under pressure, not what you memorized.
+          </p>
+
+          <p className="hero-subheadline" style={{
+            fontSize: '16px',
+            color: C.textSoft,
+            lineHeight: 1.6,
             marginBottom: '28px',
             maxWidth: '480px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontWeight: 500,
           }}>
-            Most candidates think they are prepared. They studied the questions, read the frameworks, watched the videos. Then they sit across from an interviewer and go blank. The problem is not effort; it's that they practiced theory, not thinking. InterviewAlpha fixes that. Answer one real question right now and find out exactly where you stand.
+            Answer one real question right now. Free. No signup.
           </p>
 
           {/* Free Session Countdown */}
