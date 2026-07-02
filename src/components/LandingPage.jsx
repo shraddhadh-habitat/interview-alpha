@@ -77,7 +77,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
             letterSpacing: '0.12em',
             fontSize: '0.95rem',
             color: '#111',
-            fontWeight: 600,
+            fontWeight: 700,
             marginBottom: '16px'
           }}>
             AI interview coaching for{' '}
