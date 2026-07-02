@@ -132,7 +132,7 @@ button[type="submit"],
 [class*="submit"],
 a[class*="btn-primary"],
 .btn-primary:not(.btn-ghost):not(.btn-link):not(.btn-danger),
-button:not([class*="ghost"]):not([class*="link"]):not([class*="danger"]):not([class*="secondary"]):not([class*="outline"]) {
+button:not([class*="ghost"]):not([class*="link"]):not([class*="danger"]):not([class*="secondary"]):not([class*="outline"]):not([class*="nav-tab"]):not([class*="resume-tab-btn"]) {
   background: var(--gradient-brand);
   background-size: 200% auto;
   color: #ffffff;
@@ -661,28 +661,9 @@ header nav a {
   font-weight: 600 !important;
 }
 
-/* --- SUB TABS (ATS Checker, Resume Optimizer, Templates, Resume Score) --- */
-[class*="sub-tab"],
-[class*="subtab"],
-[class*="inner-tab"],
-[class*="tool-tab"],
-[class*="resume-tab"],
-[class*="tab-bar"] a,
-[class*="tab-bar"] button {
-  background: var(--gradient-brand) !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  border-radius: 8px !important;
-  font-weight: 600 !important;
-}
-
-/* Ensure text inside tabs is ALWAYS visible white */
-nav a *, nav button *,
-[class*="tab"] a *,
-[class*="tab"] button *,
 [class*="tab"] span {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
+  color: inherit;
+  -webkit-text-fill-color: inherit;
 }
 
 /* --- CATEGORY BADGES (PRODUCT MANAGEMENT, DATA SCIENCE etc.) --- */

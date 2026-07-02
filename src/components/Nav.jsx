@@ -115,7 +115,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 800;
       letter-spacing: 0.2px;
-      color: rgba(27, 27, 24, 0.5);
+      color: #4a4a6a;
       white-space: nowrap;
       cursor: pointer;
       transition: color 0.15s, transform 0.15s;
@@ -133,7 +133,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       position: absolute;
       bottom: 0; left: 12px; right: 12px;
       height: 3px;
-      background: #16a34a;
+      background: #a259f7;
       border-radius: 2px 2px 0 0;
     }
     .nav-tab.admin { color: #1B1B18; -webkit-text-fill-color: #1B1B18; }
@@ -218,7 +218,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, height: 60,
         background: '#FFFFFF',
-        borderBottom: `1px solid ${C.border}`,
+        borderBottom: '1px solid #e4e4f0',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 20px', zIndex: 99,
@@ -233,7 +233,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
             fontWeight: 800,
             letterSpacing: -0.5,
             cursor: 'pointer',
-            background: 'linear-gradient(135deg, #14b8a6 0%, #0284c7 25%, #6d28d9 65%, #9333ea 100%)',
+            background: 'linear-gradient(135deg, #3ecfb2 0%, #a259f7 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
