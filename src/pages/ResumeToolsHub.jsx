@@ -204,7 +204,7 @@ export default function ResumeToolsHub({ user }) {
         borderBottom: '1px solid #e4e4f0',
       }}>
         {/* Hero section */}
-        <div className="resume-tools-hero" style={{ padding: '32px 0' }}>
+        <div className="resume-tools-hero" style={{ padding: '16px 0' }}>
           <div style={{ width: '100%', maxWidth: 1390, margin: '0 auto', padding: '0 28px', boxSizing: 'border-box' }}>
             <div style={{ marginBottom: 24 }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: '#4a4a6a', margin: '0 0 8px 0', letterSpacing: 0.5, textTransform: 'uppercase' }}>Tools</p>
