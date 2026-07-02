@@ -121,6 +121,9 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       transition: color 0.15s, transform 0.15s;
       display: flex;
       align-items: center;
+      flex: 1;
+      text-align: center;
+      justify-content: center;
     }
     .nav-tab:hover { color: #1B1B18; transform: translateY(-1px); }
     .nav-tab.active {
