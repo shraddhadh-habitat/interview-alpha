@@ -186,6 +186,10 @@ const PROJECTMANAGEMENT_DOMAIN_CHIPS = [
 
 const PROJECTMANAGEMENT_CATEGORY_CHIPS = [
   { id: 'behavioral', label: 'Behavioral', dataKeys: ['behavioral'] },
+  { id: 'case_study', label: 'Case Study', dataKeys: ['case_study'] },
+  { id: 'situational', label: 'Situational', dataKeys: ['situational'] },
+  { id: 'leadership', label: 'Leadership', dataKeys: ['leadership'] },
+  { id: 'technical', label: 'Technical', dataKeys: ['technical'] },
 ];
 
 const CONSULTING_CATEGORY_CHIPS = [
