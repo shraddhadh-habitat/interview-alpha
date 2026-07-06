@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { pmQuestions, PM_LEVELS, DS_LEVELS } from '../data/pmQuestions';
 import { consultingQuestions, CONSULTING_LEVELS } from '../data/consultingQuestions';
+import { projectManagementQuestions, PROJECTMANAGEMENT_LEVELS } from '../data/projectManagementQuestions';
 import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
 import { useAuth } from '../contexts/AuthContext';
@@ -272,6 +273,20 @@ const ROLES = {
     titleSuffix: 'Consulting Interview Questions',
     comingSoon: false,
   },
+  projectmanagement: {
+    id: 'projectmanagement',
+    label: 'Project Management',
+    levels: PROJECTMANAGEMENT_LEVELS,
+    expLevelChips: [
+      { id: 'junior_pm', label: 'Junior PM', levels: ['Junior Project Manager'] },
+      { id: 'pm', label: 'Project Manager', levels: ['Project Manager'] },
+      { id: 'senior_pm', label: 'Senior PM', levels: ['Senior Project Manager'] },
+      { id: 'program_pm', label: 'Program Manager', levels: ['Program Manager'] },
+      { id: 'head_pmo', label: 'Head of PMO', levels: ['Head of PMO'] },
+    ],
+    titleSuffix: 'Project Management Interview Questions',
+    comingSoon: false,
+  },
   finance: {
     id: 'finance',
     label: 'Finance',
@@ -524,6 +539,28 @@ function TrackSelectorModal({ onSelectTrack }) {
             }}
           >
             Consulting
+          </button>
+
+          <button
+            onClick={() => onSelectTrack('projectmanagement')}
+            style={{
+              padding: '14px 24px', height: 48,
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              border: 'none', borderRadius: 12,
+              color: '#fff', fontSize: 15, fontWeight: 700,
+              cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.opacity = '0.9';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            Project Management
           </button>
         </div>
       </div>
@@ -1215,6 +1252,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   }, []);
 
   const [search, setSearch] = useState('');
+  const [isPopularSearch, setIsPopularSearch] = useState(false);
   const [filterCategory, setFilterCategory] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
   const [filterExpLevel, setFilterExpLevel] = useState(null);
@@ -1481,13 +1519,13 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const searchLower = search.toLowerCase();
 
     for (const level of levelsToShow) {
-      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : pmQuestions[level];
+      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : pmQuestions[level];
       if (!bank) continue;
       for (const cat of dataCats) {
         const questions = bank[cat] || [];
         for (let i = 0; i < questions.length; i++) {
           const q = questions[i];
-          if (search && !q.q.toLowerCase().includes(searchLower) && !q.a.toLowerCase().includes(searchLower)) continue;
+          if (search && (isPopularSearch ? !q.q.toLowerCase().includes(searchLower) : (!q.q.toLowerCase().includes(searchLower) && !q.a.toLowerCase().includes(searchLower)))) continue;
 
           // For DS, filter by question.level if expLevel filter is set
           if (selectedRole === 'ds' && dsLevelsToShow && !dsLevelsToShow.has(q.level)) {
@@ -1538,15 +1576,17 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       }
     }
 
-    // Sort results by priority based on selected role
-    results.sort((a, b) => {
-      const priorityA = getQuestionPriority(a.question, selectedRole);
-      const priorityB = getQuestionPriority(b.question, selectedRole);
-      return priorityA - priorityB;
-    });
+    // Sort results by priority only when no search is active
+    if (!search || search.trim() === '') {
+      results.sort((a, b) => {
+        const priorityA = getQuestionPriority(a.question, selectedRole);
+        const priorityB = getQuestionPriority(b.question, selectedRole);
+        return priorityA - priorityB;
+      });
+    }
 
     return results;
-  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, practiceStats, selectedRole, selectedTrack]);
+  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, isPopularSearch, practiceStats, selectedRole, selectedTrack]);
 
   // ── Applied filter tags ────────────────────────────────────────────────────
 
@@ -1744,6 +1784,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               setFilterExpLevel(null);
               setFilterCategory(null);
               setSearch('');
+              setIsPopularSearch(false);
               setExpandedKeys(new Set());
             }}
             style={{
@@ -1770,6 +1811,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             <option value="pm">{ROLES.pm.label}</option>
             <option value="ds">{ROLES.ds.label}</option>
             <option value="consulting">{ROLES.consulting.label}</option>
+            <option value="projectmanagement">{ROLES.projectmanagement.label}</option>
             <optgroup label="Coming Soon">
               <option value="finance" disabled>{ROLES.finance.label}</option>
               <option value="sales" disabled>{ROLES.sales.label}</option>
@@ -1793,12 +1835,12 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             </svg>
             <input
               value={search}
-              onChange={e => { setSearch(e.target.value); setExpandedKeys(new Set()); }}
+              onChange={e => { setSearch(e.target.value); setIsPopularSearch(false); setExpandedKeys(new Set()); }}
               placeholder="Search questions..."
               style={{ flex: 1, border: 'none', background: 'transparent', color: C.text, fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             />
             {search && (
-              <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 20, lineHeight: 1, padding: 0 }}>×</button>
+              <button onClick={() => { setSearch(''); setIsPopularSearch(false); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 20, lineHeight: 1, padding: 0 }}>×</button>
             )}
           </div>
 
@@ -1833,7 +1875,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             {POPULAR_KEYWORDS[selectedRole].map(keyword => (
               <button
                 key={keyword}
-                onClick={() => { setSearch(keyword); setExpandedKeys(new Set()); }}
+                onClick={() => { setSearch(keyword); setIsPopularSearch(true); setExpandedKeys(new Set()); }}
                 style={{
                   padding: '6px 12px',
                   background: '#F0F0F0',
@@ -1897,7 +1939,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               Try adjusting your filters or search something else.
             </div>
             <button
-              onClick={() => { setSearch(''); clearAllFilters(); }}
+              onClick={() => { setSearch(''); setIsPopularSearch(false); clearAllFilters(); }}
               style={{
                 padding: '12px 28px', background: C.green, border: 'none',
                 borderRadius: 12, color: '#fff', fontSize: 14, fontWeight: 600,
