@@ -953,7 +953,7 @@ function FilterDropdown({ label, value, onChange, options }) {
 }
 
 // ─── Helper: Count matching questions for a filter state ───────────────────
-function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) {
+function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) {
   const { category, expLevel, company, difficulty, domain, track } = filterState;
 
   const role = ROLES[selectedRole] || ROLES.pm;
@@ -1015,7 +1015,7 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
 
   let count = 0;
   for (const level of levelsToShow) {
-    const bank = selectedRole === 'consulting' ? consultingQuestions[level] : pmQuestions[level];
+    const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : pmQuestions[level];
     if (!bank) continue;
     for (const cat of dataCats) {
       const questions = bank[cat] || [];
@@ -1093,7 +1093,7 @@ function FilterContent({
     ...categoryChips.map(c => ({ id: c.id, label: c.label })),
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: opt.id, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+    countQuestionsForFilterState(selectedRole, { category: opt.id, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
   );
 
   const expLevelOptions = !role.expLevelChips || role.expLevelChips.length === 0
@@ -1103,7 +1103,7 @@ function FilterContent({
         ...(role.expLevelChips || []),
       ].filter(opt =>
         opt.id === '' ||
-        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: opt.id, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: opt.id, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
       );
 
   const companyChips = selectedRole === 'ds'
@@ -1116,7 +1116,7 @@ function FilterContent({
     ...companyChips,
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: opt.id, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: opt.id, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
   );
 
   const domainChips = selectedRole === 'ds'
@@ -1129,7 +1129,7 @@ function FilterContent({
     ...domainChips,
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: opt.id, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: opt.id, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
   );
 
   const difficultyOptions = [
@@ -1139,7 +1139,7 @@ function FilterContent({
     { id: 'Difficult', label: 'Difficult' },
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
   );
 
   const trackOptions = selectedRole === 'pm'
@@ -1148,7 +1148,7 @@ function FilterContent({
         ...CAREER_TRACK_CHIPS,
       ].filter(opt =>
         opt.id === '' ||
-        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: opt.id }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions) > 0
+        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: opt.id }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
       )
     : [];
 
