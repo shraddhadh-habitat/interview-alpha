@@ -184,6 +184,10 @@ const PROJECTMANAGEMENT_DOMAIN_CHIPS = [
   { id: 'telecom', label: 'Telecom' },
 ];
 
+const PROJECTMANAGEMENT_CATEGORY_CHIPS = [
+  { id: 'behavioral', label: 'Behavioral', dataKeys: ['behavioral'] },
+];
+
 const CONSULTING_CATEGORY_CHIPS = [
   { id: 'profitability', label: 'Profitability Case', dataKeys: ['case_interview'], subcategory: 'Consultant' },
   { id: 'market_entry', label: 'Market Entry', dataKeys: ['case_interview'], subcategory: 'Strategy Consultant' },
@@ -972,6 +976,8 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
     categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
   } else if (selectedRole === 'consulting') {
     categoryChips = CONSULTING_CATEGORY_CHIPS;
+  } else if (selectedRole === 'projectmanagement') {
+    categoryChips = PROJECTMANAGEMENT_CATEGORY_CHIPS;
   } else {
     categoryChips = PM_CATEGORY_CHIPS;
   }
@@ -1091,6 +1097,8 @@ function FilterContent({
     categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
   } else if (selectedRole === 'consulting') {
     categoryChips = CONSULTING_CATEGORY_CHIPS;
+  } else if (selectedRole === 'projectmanagement') {
+    categoryChips = PROJECTMANAGEMENT_CATEGORY_CHIPS;
   } else {
     categoryChips = PM_CATEGORY_CHIPS;
   }
@@ -1141,15 +1149,24 @@ function FilterContent({
     countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: opt.id, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
   );
 
-  const difficultyOptions = [
-    { id: '', label: 'All' },
-    { id: 'Easy', label: 'Easy' },
-    { id: 'Medium', label: 'Medium' },
-    { id: 'Difficult', label: 'Difficult' },
-  ].filter(opt =>
-    opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
-  );
+  const difficultyOptions = selectedRole === 'projectmanagement'
+    ? [
+        { id: '', label: 'All' },
+        { id: 'Medium', label: 'Medium' },
+        { id: 'Hard', label: 'Hard' },
+      ].filter(opt =>
+        opt.id === '' ||
+        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
+      )
+    : [
+      { id: '', label: 'All' },
+      { id: 'Easy', label: 'Easy' },
+      { id: 'Medium', label: 'Medium' },
+      { id: 'Difficult', label: 'Difficult' },
+    ].filter(opt =>
+      opt.id === '' ||
+      countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain, track: selectedTrack }, pmQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
+    );
 
   const trackOptions = selectedRole === 'pm'
     ? [
@@ -1471,6 +1488,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
     } else if (selectedRole === 'consulting') {
       categoryChips = CONSULTING_CATEGORY_CHIPS;
+    } else if (selectedRole === 'projectmanagement') {
+      categoryChips = PROJECTMANAGEMENT_CATEGORY_CHIPS;
     } else {
       categoryChips = PM_CATEGORY_CHIPS;
     }
@@ -1609,6 +1628,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       categoryChips = dsLevel ? buildDSCategoryChips(dsLevel) : [];
     } else if (selectedRole === 'consulting') {
       categoryChips = CONSULTING_CATEGORY_CHIPS;
+    } else if (selectedRole === 'projectmanagement') {
+      categoryChips = PROJECTMANAGEMENT_CATEGORY_CHIPS;
     } else {
       categoryChips = PM_CATEGORY_CHIPS;
     }
