@@ -177,6 +177,13 @@ const CONSULTING_DOMAIN_CHIPS = [
   { id: 'supply_chain', label: 'Supply Chain', subcategories: ['Supply Chain Consultant'] },
 ];
 
+const PROJECTMANAGEMENT_DOMAIN_CHIPS = [
+  { id: 'fintech', label: 'Fintech' },
+  { id: 'banking', label: 'Banking' },
+  { id: 'insurance', label: 'Insurance' },
+  { id: 'telecom', label: 'Telecom' },
+];
+
 const CONSULTING_CATEGORY_CHIPS = [
   { id: 'profitability', label: 'Profitability Case', dataKeys: ['case_interview'], subcategory: 'Consultant' },
   { id: 'market_entry', label: 'Market Entry', dataKeys: ['case_interview'], subcategory: 'Strategy Consultant' },
@@ -1123,6 +1130,8 @@ function FilterContent({
     ? DS_DOMAIN_CHIPS
     : selectedRole === 'consulting'
     ? CONSULTING_DOMAIN_CHIPS
+    : selectedRole === 'projectmanagement'
+    ? PROJECTMANAGEMENT_DOMAIN_CHIPS
     : PM_DOMAIN_CHIPS;
   const domainOptions = [
     { id: '', label: 'All' },
@@ -1607,6 +1616,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       ? DS_DOMAIN_CHIPS
       : selectedRole === 'consulting'
       ? CONSULTING_DOMAIN_CHIPS
+      : selectedRole === 'projectmanagement'
+      ? PROJECTMANAGEMENT_DOMAIN_CHIPS
       : PM_DOMAIN_CHIPS;
 
     const tags = [];
