@@ -1158,6 +1158,7 @@ function FilterContent({
   const difficultyOptions = selectedRole === 'projectmanagement'
     ? [
         { id: '', label: 'All' },
+        { id: 'Easy', label: 'Easy' },
         { id: 'Medium', label: 'Medium' },
         { id: 'Hard', label: 'Hard' },
       ].filter(opt =>
