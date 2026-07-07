@@ -993,6 +993,8 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
     dataCats = dsLevel ? Object.keys(dsLevel).filter(k => Array.isArray(dsLevel[k])) : [];
   } else if (selectedRole === 'consulting') {
     dataCats = ['case_interview'];
+  } else if (selectedRole === 'projectmanagement') {
+    dataCats = ['behavioral', 'case_study', 'situational', 'leadership', 'technical'];
   } else {
     dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
   }
