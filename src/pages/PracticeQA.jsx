@@ -1480,6 +1480,29 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           return;
         }
       }
+    } else if (track === 'projectmanagement') {
+      role = 'projectmanagement';
+      level = 'Project Manager';
+      const pmLevel = projectManagementQuestions['Project Manager'];
+      if (pmLevel) {
+        // Get first available category (behavioral, case_study, situational, technical)
+        const availableCategories = Object.keys(pmLevel).filter(k => Array.isArray(pmLevel[k]) && pmLevel[k].length > 0);
+        if (availableCategories.length > 0) {
+          const selectedCategory = availableCategories[0];
+          const allQuestions = pmLevel[selectedCategory];
+          if (allQuestions.length > 0) {
+            const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+            setPracticeQuestion({
+              question: randomQuestion,
+              questionId: `project-manager-${selectedCategory}-${Math.random().toString(36).substr(2, 9)}`,
+              designation: level,
+              category: selectedCategory,
+            });
+            setShowTrackSelector(false);
+            return;
+          }
+        }
+      }
     }
   };
 
