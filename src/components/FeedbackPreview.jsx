@@ -31,6 +31,31 @@ I would differentiate on reliability with a Zepto Promise. Guaranteed 10 mins or
     }
   },
   {
+    id: 'pm_track',
+    label: 'Project Management',
+    emoji: '📋',
+    color: '#f59e0b',
+    example: {
+      category: 'PROJECT MANAGEMENT',
+      question: "You are a project manager and a critical dependency will slip by three weeks, two weeks into your six-week project. How do you respond?",
+      sampleAnswer: "A three-week slip on a critical dependency early is urgent. I'd first diagnose: is the slip firm or a planning estimate? What are upstream and downstream dependencies? Can I resequence work or run tasks in parallel? I'd spend two hours understanding before escalating. Then I'd work with the dependency owner to see if we can get a partial version that unblocks us. For my plan, I'd build two scenarios for the sponsor: scenario one with the revised timeline (slight delay to project), scenario two with descoped features (hit original date with technical debt noted). I'd present this transparently rather than hiding the problem.",
+      overallScore: 7,
+      competencies: [
+        { label: 'Problem Diagnosis',     score: 8 },
+        { label: 'Stakeholder Management', score: 7 },
+        { label: 'Risk Management',       score: 8 },
+        { label: 'Decision Making',       score: 7 },
+        { label: 'Communication',         score: 8 },
+        { label: 'Planning',              score: 7 },
+        { label: 'Mitigation Strategy',   score: 8 },
+        { label: 'Transparency',          score: 7 },
+      ],
+      expertRewrite: `When a critical dependency slips, the instinct is to panic. Instead, I separate diagnosis from response. The three-week slip could be real or a planning buffer. I spend 90 minutes with the dependency owner to understand which. Is it data issues, resource constraints, or technical complexity? Each has a different mitigation.
+
+If the slip is real, I assess parallelization: can we start downstream work with partial deliverables? Can we resequence the critical path to absorb the delay in less critical work? I build two scenarios for the sponsor: realistic case (project completes day 39, two days late) and contingency (descope and hit day 37 with known tech debt). Transparency beats surprises. A sponsor who knows a risk early and helps mitigate it stays confident. A sponsor who finds out day 35 loses trust entirely.`,
+    }
+  },
+  {
     id: 'ds',
     label: 'Data Science',
     emoji: '📊',
