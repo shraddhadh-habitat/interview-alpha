@@ -585,6 +585,28 @@ function TrackSelectorModal({ onSelectTrack }) {
           >
             Project Management
           </button>
+
+          <button
+            onClick={() => onSelectTrack('technicalwriting')}
+            style={{
+              padding: '14px 24px', height: 48,
+              background: 'linear-gradient(135deg, #ffd89b 0%, #19547b 100%)',
+              border: 'none', borderRadius: 12,
+              color: '#fff', fontSize: 15, fontWeight: 700,
+              cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.opacity = '0.9';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            Technical Writing
+          </button>
         </div>
       </div>
     </div>
@@ -1493,6 +1515,29 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             setPracticeQuestion({
               question: randomQuestion,
               questionId: `project-manager-${selectedCategory}-${Math.random().toString(36).substr(2, 9)}`,
+              designation: level,
+              category: selectedCategory,
+            });
+            setShowTrackSelector(false);
+            return;
+          }
+        }
+      }
+    } else if (track === 'technicalwriting') {
+      role = 'technicalwriting';
+      level = 'Technical Writer';
+      const twLevel = technicalWritingQuestions['Technical Writer'];
+      if (twLevel) {
+        // Get first available category (ux_writing, technical_docs, ai_content, content_strategy)
+        const availableCategories = Object.keys(twLevel).filter(k => Array.isArray(twLevel[k]) && twLevel[k].length > 0);
+        if (availableCategories.length > 0) {
+          const selectedCategory = availableCategories[0];
+          const allQuestions = twLevel[selectedCategory];
+          if (allQuestions.length > 0) {
+            const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+            setPracticeQuestion({
+              question: randomQuestion,
+              questionId: `technical-writer-${selectedCategory}-${Math.random().toString(36).substr(2, 9)}`,
               designation: level,
               category: selectedCategory,
             });
