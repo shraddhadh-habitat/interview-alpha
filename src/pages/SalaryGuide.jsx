@@ -243,6 +243,39 @@ const DS_NEG_TIPS = [
   { step: 5, title: 'Counter with offers, not expectations', body: 'A competing offer is your strongest card. You don\'t need to reveal the company. Just say: "I have another offer at ₹X LPA all-in. I\'d prefer your company. Can we move closer?"' },
 ];
 
+// ─── Project Management Salary Data ───
+const PM_TRACK_IN_SALARIES = [
+  { level: 'Junior Project Manager', tc: '₹8–15 LPA', base: '₹7–13 LPA', bonus: '8–12%', equity: 'ESOP at startups' },
+  { level: 'Project Manager (2–5 yrs)', tc: '₹15–28 LPA', base: '₹12–22 LPA', bonus: '10–15%', equity: '₹2–8 L vesting 4yr' },
+  { level: 'Senior Project Manager', tc: '₹28–45 LPA', base: '₹22–35 LPA', bonus: '12–18%', equity: '₹5–15 L vesting 4yr' },
+  { level: 'Program Manager', tc: '₹40–65 LPA', base: '₹32–50 LPA', bonus: '15–20%', equity: '₹10–25 L vesting 4yr' },
+  { level: 'Head of PMO', tc: '₹60–100 LPA', base: '₹48–80 LPA', bonus: '18–25%', equity: '₹20–50 L vesting 4yr' },
+];
+
+const PM_TRACK_US_SALARIES = [
+  { level: 'Junior Project Manager', tc: '$80–110K', base: '$70–95K', bonus: '8–12%', equity: '$10–20K RSU/yr' },
+  { level: 'Project Manager (2–5 yrs)', tc: '$110–150K', base: '$90–125K', bonus: '10–15%', equity: '$20–40K RSU/yr' },
+  { level: 'Senior Project Manager', tc: '$140–190K', base: '$115–155K', bonus: '12–18%', equity: '$35–65K RSU/yr' },
+  { level: 'Program Manager', tc: '$170–240K', base: '$135–190K', bonus: '15–20%', equity: '$50–90K RSU/yr' },
+  { level: 'Head of PMO', tc: '$210–300K', base: '$165–240K', bonus: '18–25%', equity: '$70–130K RSU/yr' },
+];
+
+const PM_TRACK_COMPANY_COMP = [
+  { company: 'TCS / Infosys / Wipro', levels: 'PM–Senior PM', tc_in: '₹12–35 LPA', tc_us: '$90–140K', notes: 'Stable, process-heavy, certification valued' },
+  { company: 'Accenture / Capgemini', levels: 'PM–Program Manager', tc_in: '₹18–55 LPA', tc_us: '$110–180K', notes: 'Client-facing delivery, strong PMP premium' },
+  { company: 'Amazon / Flipkart', levels: 'PM–Senior PM', tc_in: '₹25–70 LPA', tc_us: '$130–220K', notes: 'Agile-first, high ownership, strong RSU' },
+  { company: 'Banks (HDFC/ICICI/Axis)', levels: 'PM–Program Manager', tc_in: '₹20–60 LPA', tc_us: 'N/A', notes: 'Regulatory delivery focus, stable comp' },
+  { company: 'Telecom (Jio/Airtel)', levels: 'PM–Program Director', tc_in: '₹18–70 LPA', tc_us: 'N/A', notes: 'Infrastructure delivery, large programs' },
+];
+
+const PM_TRACK_CERTIFICATIONS = [
+  { cert: 'PMP (PMI)', premium: '+15–25%', note: 'Most recognized globally, strong in BFSI and telecom' },
+  { cert: 'PRINCE2', premium: '+10–20%', note: 'Valued in banking and government projects' },
+  { cert: 'SAFe / Agile PM', premium: '+12–18%', note: 'High demand in fintech and product companies' },
+  { cert: 'CSPO / PSM', premium: '+10–15%', note: 'For PMs transitioning to agile delivery' },
+  { cert: 'PgMP (Program Manager)', premium: '+20–30%', note: 'Senior roles only, significant compensation jump' },
+];
+
 // ─── Collapsible section ───
 function Section({ title, subtitle, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -335,7 +368,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
   const [selectedRole, setSelectedRole] = useState('PM');
 
   useEffect(() => {
-    const roleText = selectedRole === 'PM' ? 'Product Manager' : selectedRole === 'Data Science' ? 'Data Science' : 'Consulting';
+    const roleText = selectedRole === 'PM' ? 'Product Manager' : selectedRole === 'Project Management' ? 'Project Management' : selectedRole === 'Data Science' ? 'Data Science' : 'Consulting';
     document.title = `${roleText} Salary Guide 2026 | InterviewAlpha.ai`;
     return () => { document.title = 'Interview Preparation Questions & Answers | AI Mock Interview Practice | InterviewAlpha.ai™'; };
   }, [selectedRole]);
@@ -350,7 +383,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         <div style={{ marginBottom: 32, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>I'm looking at salaries for:</span>
           <div style={{ display: 'flex', gap: 8 }}>
-            {['PM', 'Data Science', 'Consulting'].map(role => (
+            {['PM', 'Project Management', 'Data Science', 'Consulting'].map(role => (
               <button
                 key={role}
                 onClick={() => setSelectedRole(role)}
@@ -389,11 +422,13 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         <div style={{ marginBottom: 36 }}>
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>CAREER RESOURCES</div>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12, lineHeight: 1.15 }}>
-            {selectedRole === 'PM' ? 'PM Salary & Negotiation Guide' : selectedRole === 'Data Science' ? 'Data Science Salary & Negotiation Guide' : 'Consulting Salary Guide'}
+            {selectedRole === 'PM' ? 'PM Salary & Negotiation Guide' : selectedRole === 'Project Management' ? 'Project Management Salary Guide' : selectedRole === 'Data Science' ? 'Data Science Salary & Negotiation Guide' : 'Consulting Salary Guide'}
           </h1>
           <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, maxWidth: 620 }}>
             {selectedRole === 'PM'
               ? 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Product Manager at every level.'
+              : selectedRole === 'Project Management'
+              ? 'Salary ranges across companies and career levels. Understand your worth as a Project Manager  . from junior to Head of PMO.'
               : selectedRole === 'Data Science'
               ? 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Data Scientist  . at every level.'
               : 'Salary ranges for consulting roles across top firms in India. Understand your worth at every level.'}
@@ -401,6 +436,8 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
           <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
             {(selectedRole === 'PM'
               ? ['India & US Ranges', '5-Step Framework', '7 Counter-Offer Scripts', '5 Common Mistakes', '10 Companies']
+              : selectedRole === 'Project Management'
+              ? ['India & US Ranges', '5 Top Companies', 'Certification Premium', 'Career Progression']
               : selectedRole === 'Data Science'
               ? ['India & US Ranges', '5 Negotiation Tips', 'Global Salaries', '6 Cities Breakdown', 'Premium Skills']
               : ['India Ranges', '10 Top Firms', 'All Career Stages']
@@ -788,6 +825,132 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
             {/* ── BOTTOM CTA BANNER ── */}
             <CTABanner
               text="Ready to negotiate? Practice your interview answers first."
+              onClick={onPracticeCTA}
+            />
+          </>
+        ) : selectedRole === 'Project Management' ? (
+          <>
+            {/* ── PROJECT MANAGEMENT CONTENT ── */}
+
+            {/* ── SECTION 1: Know Your Worth ── */}
+            <Section title="Know Your Worth" subtitle="Salary ranges by level  . India & United States" defaultOpen={true}>
+              <div style={{ paddingTop: 24 }}>
+                <p style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, marginBottom: 24, fontStyle: 'italic' }}>
+                  Salary ranges reflect compensation at top-tier companies. Actual packages vary based on company size, location, and individual performance.
+                </p>
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
+                <div style={{ overflowX: 'auto', marginBottom: 32 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Level', 'Total Comp', 'Base', 'Bonus', 'Equity'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {PM_TRACK_IN_SALARIES.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc}</td>
+                          <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>United States (USD)</div>
+                <div style={{ overflowX: 'auto', marginBottom: 20 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Level', 'Total Comp', 'Base', 'Bonus', 'Equity'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {PM_TRACK_US_SALARIES.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc}</td>
+                          <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div style={{ padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 12 }}>
+                  <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, margin: 0 }}>
+                    Ranges reflect 2025–2026 market data. Total comp (TC) includes base + annual bonus + annualized equity. Verify with levels.fyi, Glassdoor, and LinkedIn Salary.
+                  </p>
+                </div>
+              </div>
+            </Section>
+
+            {/* ── SECTION 2: Company Compensation ── */}
+            <Section title="Compensation by Company" subtitle="Top tech, consulting, and product companies">
+              <div style={{ paddingTop: 24 }}>
+                <div style={{ overflowX: 'auto', marginBottom: 20 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Company', 'Levels', 'India TC', 'US TC', 'Notes'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {PM_TRACK_COMPANY_COMP.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.company}</td>
+                          <td style={{ padding: '12px 14px', color: C.textSoft, fontSize: 12 }}>{row.levels}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc_in}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc_us}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.notes}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </Section>
+
+            {/* ── SECTION 3: Certifications & Premium ── */}
+            <Section title="Certification Premium" subtitle="PMP, PRINCE2, SAFe boost compensation">
+              <div style={{ paddingTop: 24 }}>
+                <div style={{ overflowX: 'auto', marginBottom: 20 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Certification', 'Salary Premium', 'Notes'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {PM_TRACK_CERTIFICATIONS.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.cert}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.premium}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.note}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </Section>
+
+            {/* ── BOTTOM CTA BANNER ── */}
+            <CTABanner
+              text="Ready to land a PM role? Practice your interview answers first."
               onClick={onPracticeCTA}
             />
           </>
