@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { pmQuestions, PM_LEVELS, DS_LEVELS } from '../data/pmQuestions';
 import { consultingQuestions, CONSULTING_LEVELS } from '../data/consultingQuestions';
 import { projectManagementQuestions, PROJECTMANAGEMENT_LEVELS } from '../data/projectManagementQuestions';
+import { technicalWritingQuestions, TECHNICALWRITING_LEVELS } from '../data/technicalWritingQuestions';
 import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
 import { useAuth } from '../contexts/AuthContext';
@@ -190,6 +191,13 @@ const PROJECTMANAGEMENT_CATEGORY_CHIPS = [
   { id: 'situational', label: 'Situational', dataKeys: ['situational'] },
   { id: 'leadership', label: 'Leadership', dataKeys: ['leadership'] },
   { id: 'technical', label: 'Technical', dataKeys: ['technical'] },
+];
+
+const TECHNICALWRITING_CATEGORY_CHIPS = [
+  { id: 'ux_writing', label: 'UX Writing', dataKeys: ['ux_writing'] },
+  { id: 'technical_docs', label: 'Technical Docs', dataKeys: ['technical_docs'] },
+  { id: 'ai_content', label: 'AI Content', dataKeys: ['ai_content'] },
+  { id: 'content_strategy', label: 'Content Strategy', dataKeys: ['content_strategy'] },
 ];
 
 const CONSULTING_CATEGORY_CHIPS = [
@@ -983,6 +991,8 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
     dataCats = ['case_interview'];
   } else if (selectedRole === 'projectmanagement') {
     dataCats = ['behavioral', 'case_study', 'situational', 'leadership', 'technical'];
+  } else if (selectedRole === 'technicalwriting') {
+    dataCats = ['ux_writing', 'technical_docs', 'ai_content', 'content_strategy'];
   } else {
     dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
   }
@@ -1022,7 +1032,7 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
 
   let count = 0;
   for (const level of levelsToShow) {
-    const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : pmQuestions[level];
+    const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : pmQuestions[level];
     if (!bank) continue;
     for (const cat of dataCats) {
       const questions = bank[cat] || [];
@@ -1508,6 +1518,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       categoryChips = CONSULTING_CATEGORY_CHIPS;
     } else if (selectedRole === 'projectmanagement') {
       categoryChips = PROJECTMANAGEMENT_CATEGORY_CHIPS;
+    } else if (selectedRole === 'technicalwriting') {
+      categoryChips = TECHNICALWRITING_CATEGORY_CHIPS;
     } else {
       categoryChips = PM_CATEGORY_CHIPS;
     }
@@ -1521,6 +1533,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       dataCats = ['case_interview'];
     } else if (selectedRole === 'projectmanagement') {
       dataCats = ['behavioral', 'case_study', 'situational', 'leadership', 'technical'];
+    } else if (selectedRole === 'technicalwriting') {
+      dataCats = ['ux_writing', 'technical_docs', 'ai_content', 'content_strategy'];
     } else {
       dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
     }
@@ -1567,7 +1581,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const searchLower = search.toLowerCase();
 
     for (const level of levelsToShow) {
-      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : pmQuestions[level];
+      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : pmQuestions[level];
       if (!bank) continue;
       for (const cat of dataCats) {
         const questions = bank[cat] || [];
