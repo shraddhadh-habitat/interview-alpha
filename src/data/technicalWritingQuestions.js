@@ -471,7 +471,6 @@ export const technicalWritingQuestions = {
       },
     ],
   },
-};
   'Senior Technical Writer': {
     ux_writing: [],
     technical_docs: [],
