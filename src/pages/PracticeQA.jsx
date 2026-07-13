@@ -728,18 +728,6 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           cursor: 'pointer', textAlign: 'left',
         }}
       >
-        {/* Number badge */}
-        <div style={{
-          width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
-          background: isOpen ? C.green : C.bgMuted,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 12, fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif",
-          color: isOpen ? '#fff' : C.text,
-          transition: 'background 0.2s, color 0.2s', marginTop: 1,
-        }}>
-          {index + 1}
-        </div>
-
         {/* Question text + Listen button */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', gap: 8 }}>
           <span style={{
