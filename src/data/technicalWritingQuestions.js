@@ -681,6 +681,20 @@ export const technicalWritingQuestions = {
         "roundType": "technical_docs",
         "whatInterviewerTests": "",
         "commonMistakes": []
+      },
+      {
+        "q": "You are a technical writer at a SaaS company. Explain the difference between synchronous and asynchronous API calls and how you would document each for developers.",
+        "a": "Synchronous and asynchronous API calls represent fundamentally different patterns for how applications request and receive data, and documenting each requires explaining not just the mechanics but the implications for how developers design their applications.\n\nSynchronous API calls follow a request-response pattern where the calling application sends a request and waits — blocking further execution — until the response is received. The application cannot proceed with other work while waiting. This is appropriate for operations where the result is needed immediately before any further processing can occur, and where the response time is fast enough that blocking is acceptable.\n\nAsynchronous API calls allow the calling application to send a request and continue executing other code without waiting for the response. The response is delivered later, either through a callback function, a promise or future object, a webhook notification, or polling a status endpoint.\n\nDocumenting synchronous calls:\n\nSynchronous API documentation focuses on the request-response cycle. The key information is the request format, the response format, the possible HTTP status codes, the error responses, and the response time characteristics. Code examples show a simple request followed by immediate use of the response.\n\nDocumenting asynchronous calls:\n\nAsynchronous API documentation is more complex because there are multiple interaction patterns to document. For a long-running operation, I document: the initial request that returns a job ID, the status polling endpoint that shows progress, the completion notification (webhook or final status), and the result retrieval endpoint. Each of these is a separate interaction with its own request and response format.\n\nThe documentation must also explain the delivery guarantee: is the webhook guaranteed to be delivered at least once (requiring idempotent handling), exactly once, or best effort? This affects how developers implement their receiving systems.\n\nCode examples for async documentation show the complete lifecycle, not just the initial request: submit the job, poll until complete or receive webhook, retrieve the result.",
+        "subcategory": null,
+        "difficulty": "Medium",
+        "domain": "fintech",
+        "tracks": [
+          "Technical Docs"
+        ],
+        "companies": [],
+        "roundType": "technical_docs",
+        "whatInterviewerTests": "",
+        "commonMistakes": []
       }
     ],
     "ai_content": [
@@ -963,6 +977,20 @@ export const technicalWritingQuestions = {
         "subcategory": null,
         "difficulty": "Hard",
         "domain": "fintech",
+        "tracks": [
+          "AI Content"
+        ],
+        "companies": [],
+        "roundType": "ai_content",
+        "whatInterviewerTests": "",
+        "commonMistakes": []
+      },
+      {
+        "q": "You are an AI content engineer at a bank. What is the difference between fine-tuning a language model and using RAG, and when would you choose each approach for a banking AI assistant?",
+        "a": "Fine-tuning and RAG (Retrieval-Augmented Generation) are two different approaches to customizing a language model's behavior for a specific domain, and they solve different problems. Understanding the distinction is essential for content engineers who advise on AI implementation decisions.\n\nFine-tuning involves taking a pre-trained language model and continuing to train it on domain-specific data — in this case, banking knowledge, customer service conversations, or financial content. The result is a model whose parameters have been adjusted to produce outputs that are more aligned with the specific domain. Fine-tuning changes the model itself.\n\nRAG keeps the base language model unchanged but connects it to a knowledge base at inference time. When a user asks a question, the RAG system retrieves relevant documents from the knowledge base and passes them to the model along with the question. The model uses the retrieved content to generate its response. RAG does not change the model — it changes what information the model has access to when generating responses.\n\nWhen to choose fine-tuning for a banking AI:\n\nFine-tuning is appropriate when you want to change the model's style, tone, or general behavior consistently across all interactions, regardless of what specific information is being discussed. If the bank wants its AI to always use a specific communication style, always follow a specific response structure, or consistently apply specific reasoning patterns, fine-tuning achieves this more reliably than system prompting alone.\n\nWhen to choose RAG for a banking AI:\n\nRAG is appropriate for the knowledge problem — when the AI needs access to specific, current, verifiable information: this customer's account details, this product's current terms, this regulation's specific requirements. RAG is also appropriate when the information changes frequently, because updating a knowledge base is fast and cheap compared to retraining a model.\n\nFor most banking AI applications, RAG is the primary approach because the core problem is giving the model access to accurate, current banking information. Fine-tuning may be layered on top to achieve consistent communication style, but it does not solve the knowledge accuracy problem that RAG addresses.",
+        "subcategory": null,
+        "difficulty": "Hard",
+        "domain": "banking",
         "tracks": [
           "AI Content"
         ],
