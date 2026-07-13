@@ -575,7 +575,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         </Section>
 
         {/* ── SECTION 4: Common Mistakes ── */}
-        <Section title="5 Negotiation Mistakes PMs Make" subtitle="Avoid these  . they cost 5–20% of your offer">
+        <Section title="5 Negotiation Mistakes Product Managers Make" subtitle="Avoid these  . they cost 5–20% of your offer">
           <div style={{ display: 'grid', gap: 16, paddingTop: 24 }}>
             {MISTAKES.map((m, i) => (
               <div key={i} style={{
@@ -600,7 +600,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
               <thead>
                 <tr>
-                  {['Company', 'PM Levels', 'India TC', 'US TC', 'Notes'].map(h => (
+                  {['Company', 'Product Management Levels', 'India TC', 'US TC', 'Notes'].map(h => (
                     <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
                   ))}
                 </tr>
@@ -950,7 +950,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
 
             {/* ── BOTTOM CTA BANNER ── */}
             <CTABanner
-              text="Ready to land a PM role? Practice your interview answers first."
+              text="Ready to land a Product Manager role? Practice your interview answers first."
               onClick={onPracticeCTA}
             />
           </>

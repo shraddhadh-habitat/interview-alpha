@@ -302,7 +302,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 wordWrap: 'break-word',
               }}>
-                Thousands of real questions across PM and Data Science by company, role, or topic.
+                Thousands of real questions across Product Management and Data Science by company, role, or topic.
               </p>
             </div>
           </div>
@@ -853,7 +853,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              PM: Product sense, strategy, metrics, behavioral<br />DS: Statistics, ML, SQL, probability, case studies
+              Product Management: Product sense, strategy, metrics, behavioral<br />DS: Statistics, ML, SQL, probability, case studies
             </p>
           </div>
 
@@ -952,7 +952,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
               lineHeight: 1.5,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
             }}>
-              See how a senior PM or Data Scientist would answer the same question
+              See how a senior Product Manager or Data Scientist would answer the same question
             </p>
           </div>
 
