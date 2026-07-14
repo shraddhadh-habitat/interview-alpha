@@ -358,6 +358,344 @@ export const technicalWritingQuestions = {
         "whatInterviewerTests": "",
         "commonMistakes": []
       }
+    ,
+      {
+          "q": "You are a UX writer at a SaaS company. A user has just completed a 14-day free trial and their trial is expiring in 24 hours. Write the in-app banner copy and the email subject line to prompt them to upgrade.",
+          "a": "Trial expiry communications are high-stakes moments where the copy can either feel like a genuine reminder or a manipulative push. The difference lies in whether the copy focuses on what the user has experienced and will lose, versus what the company wants them to buy.\n\nIn-app banner (24 hours before expiry):\n\nHeadline: Your trial ends tomorrow\nBody: You've been using [Feature they used most] — keep it going with a Pro plan. No data lost, no setup needed.\nCTA: Continue with Pro\nSecondary link: See what's included\n\nThe headline is direct and specific about the timeline. The body personalizes based on usage (which requires the system to know what the user actually used during the trial) and addresses the two biggest anxieties about upgrading: will I lose my work, and will I have to set everything up again? The CTA says \"continue\" not \"upgrade\" because \"continue\" frames the action as continuation of something good rather than a purchase.\n\nEmail subject line options:\n\nOption A: Your trial ends tomorrow — here's what happens next\nOption B: 24 hours left on your InterviewAlpha trial\nOption C: Don't lose your [specific work] — trial ending tomorrow\n\nOption C is the strongest if personalization is available because it is specific to the user's actual situation. Option A is the strongest generic option because it combines urgency with a promise to explain what happens next, which reduces anxiety.\n\nWhat I avoid: \"Last chance!\" (creates anxiety without information), \"Don't miss out\" (vague), \"Your exclusive offer expires soon\" (manipulative framing for a standard subscription). Trial expiry copy should feel like a friend reminding you, not a car salesman closing a deal.",
+          "subcategory": null,
+          "difficulty": "Medium",
+          "domain": "fintech",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at a banking app. The app is launching a feature that uses AI to categorize transactions automatically. Some categorizations will be wrong. How do you write the feature introduction and the correction flow copy?",
+          "a": "An AI feature that sometimes gets things wrong needs copy that sets honest expectations from the start. Copy that oversells the accuracy creates frustration when errors occur. Copy that undersells it reduces adoption. The target is honest confidence.\n\nFeature introduction modal:\n\nHeadline: Meet your automatic spending tracker\nBody: We've sorted your transactions into categories so you can see where your money goes at a glance. AI isn't perfect — you can correct any category with one tap.\nCTA: See my spending\n\nThe headline names the benefit. The body explains the mechanism and preemptively acknowledges errors before the user discovers them, which is critical — users who are told upfront that errors may occur and are given an easy way to correct them are far more tolerant than users who discover errors on their own after being told the feature is smart and accurate.\n\nIncorrect categorization correction flow:\n\nWhen user taps a transaction they want to recategorize:\nHeadline: Change category\nBody: [Shows current category with existing label]\nInstruction: What should this be?\n[Category options]\nCheckbox: Apply to all transactions from [Merchant name]\n\nConfirmation: Got it. Changed to [New Category].\n\nThe confirmation is brief and positive. I do not say \"Thank you for helping us improve\" — that frames the user's correction as a service they are providing to the company rather than an action in their own interest.\n\nFor the \"apply to all\" checkbox, I include the merchant name so the user knows exactly what they are applying it to. A checkbox that says \"apply to similar transactions\" is too vague — similar could mean anything.",
+          "subcategory": null,
+          "difficulty": "Medium",
+          "domain": "banking",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at an insurance company. Write the copy for a screen that asks users to add a nominee to their life insurance policy. Many users skip this step. How do you write copy that increases completion?",
+          "a": "Nominee addition is skipped by users for two reasons: they do not understand why it matters, or they find it emotionally uncomfortable to think about. Copy that increases completion must address both.\n\nScreen headline: Add your nominee\n\nThis is where most insurance apps stop, and why users skip it. They do not know what a nominee is or why they should add one. The copy needs to explain it immediately.\n\nRevised approach:\n\nHeadline: Who gets the benefit if something happens to you?\nSub-headline: Add a nominee — it takes 2 minutes and protects your family.\n\nExplanatory copy: A nominee is the person who receives your insurance payout if you pass away. Without a nominee, your family may face legal delays in accessing the benefit.\n\nRequired field labels:\nNominee name\nDate of birth\nRelationship to you\nContact number (optional)\n\nBottom of screen: Your nominee information is kept secure and can be changed anytime.\n\nWhat makes this effective:\n\nThe headline asks a question the user has a strong emotional answer to. Most people know exactly who they want to protect. The question makes the abstract concept of a nominee concrete.\n\nThe sub-headline gives two commitment reducers: time (2 minutes) and benefit (protects your family). It does not say \"Required for policy activation\" which is manipulative if untrue.\n\nThe explanation paragraph tells users what will happen without a nominee — \"legal delays\" is specific enough to be concerning without being alarming. It does not say \"your family will get nothing\" which is inaccurate and manipulative.\n\nThe \"can be changed anytime\" line at the bottom reduces the perceived commitment of adding a name now. Users who are uncertain about their nominee choice often skip rather than add someone temporarily.",
+          "subcategory": null,
+          "difficulty": "Hard",
+          "domain": "insurance",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at a telecom company. The app needs a data usage warning when a user hits 80% of their plan. Write three variations of this warning at different tones: neutral, motivating, and urgent. Which would you recommend and why?",
+          "a": "Writing tone variations for the same functional message is a useful exercise because it surfaces how much tone alone affects user response to identical information.\n\nNeutral:\nTitle: 80% of your data used\nBody: You've used 4GB of your 5GB plan. 1GB remaining for this month.\nCTA: Manage data\n\nMotivating:\nTitle: Making the most of your plan\nBody: You've used 4GB of your 5GB data this month — looks like you're getting good use out of it. You have 1GB left.\nCTA: Add data if you need more\n\nUrgent:\nTitle: Running low on data\nBody: Only 1GB left this month. Slow speeds could kick in if you use it all. Top up now to stay connected.\nCTA: Top up data\n\nMy recommendation: the urgent variation, with one modification.\n\nAt 80% usage, the user has genuinely used a significant portion of their plan and has a meaningful reason to know. The neutral version is accurate but does not give the user a sense of whether 1GB is enough for the remainder of the month. The motivating version is slightly condescending — praising someone for using their data is forced positivity in a functional moment. The urgent version is the most actionable.\n\nMy modification: remove \"Slow speeds could kick in\" if that is not accurate for this user's specific plan. Copy that makes claims about what will happen should only be included if those claims are true for every user who receives this notification. If throttling only applies after the full 1GB is consumed, the copy should say \"If you go over your plan, speeds may be reduced.\"\n\nThe principle: tone should be calibrated to the actual situation. At 80%, urgency is appropriate. At 50%, neutral is appropriate. At 95%, the most urgent version is appropriate. Consistency of tone regardless of situation is a notification design mistake.",
+          "subcategory": null,
+          "difficulty": "Medium",
+          "domain": "telecom",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at a SaaS company building a B2B document management platform for banks. Write the empty state for a new user who has not yet uploaded any documents.",
+          "a": "A B2B document management platform has a different empty state context from a consumer app. The user is a professional who has chosen a product to solve a business problem. They are not casually exploring — they are trying to implement a tool. The empty state should speak to that intent.\n\nEmpty state copy:\n\nIllustration: A simple folder icon or document upload illustration (not a cartoon that feels too playful for a banking context)\n\nHeadline: Your document library is ready\n\nBody: Upload your first document to get started, or connect your existing storage to import your files automatically.\n\nPrimary CTA: Upload a document\nSecondary CTA: Connect storage\n\nHelper text below CTAs: Supported formats: PDF, DOCX, XLSX, JPG — up to 50MB per file\n\nWhat this copy does well:\n\n\"Your document library is ready\" is positive without being false. It frames the empty state as a starting point, not a missing state. It tells the user that the system is working and waiting for them rather than that something is missing.\n\nThe body gives two paths because in a B2B context there are genuinely two different user types: someone starting fresh, and someone migrating from another system. The second path — connecting existing storage — reduces the friction for the migration user significantly.\n\nThe helper text about supported formats is a practical addition that the B2B user needs before they start uploading. In a banking context where document formats and file sizes are often constrained by system requirements, this information prevents the frustrating experience of preparing a file and discovering it is not supported only when the upload fails.\n\nI do not use playful language or humor in this empty state. A banking professional implementing a document management tool is not in a playful context.",
+          "subcategory": null,
+          "difficulty": "Easy",
+          "domain": "banking",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at an insurance company. The company has introduced a new feature that gives users a personalized health risk score. A user's score indicates high risk. Write the screen copy that communicates this sensitively.",
+          "a": "A high health risk score is potentially distressing information. The copy must be honest — the score exists to provide useful information, and sanitizing it to the point of meaninglessness removes its value — but it must also be compassionate, actionable, and not catastrophizing.\n\nThe most important decision before writing is determining what the company is legally able and ethically willing to say. A health risk score from an insurance company is not a medical diagnosis. The copy must be absolutely clear about this distinction.\n\nScreen copy:\n\nHeadline: Your health risk score\nScore display: 68 — Elevated Risk\n\nWhat this means:\nYour score is based on the information you've shared about your health history, lifestyle, and habits. A score of 68 suggests there are some health factors worth paying attention to.\n\nThis is not a medical assessment — it's a starting point for understanding your health profile.\n\nWhat you can do:\n→ Talk to a doctor about the factors that contributed to your score\n→ See which areas are affecting your score most [Link: View score breakdown]\n→ Update your health information if anything has changed [Link: Update profile]\n\nImportant: Your score does not affect your current policy or premium. It's here to help you, not penalize you.\n\nThe \"important\" callout at the bottom is critical. The most common user anxiety about a health risk score from an insurer is whether it will be used against them. Addressing this directly prevents the anger and distrust that typically follows health risk disclosures in insurance contexts.\n\nThe actionable next steps give the user agency rather than leaving them with a number and no path forward. The first step — talk to a doctor — reinforces that this is not a medical tool.",
+          "subcategory": null,
+          "difficulty": "Hard",
+          "domain": "insurance",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at a telecom company. A user tries to port their number to another carrier through your app. How do you write the flow that makes this process clear without being manipulative to retain them?",
+          "a": "Number porting is a regulatory right in India under TRAI guidelines. A company that makes the porting process deliberately confusing or uses dark patterns to discourage users is violating the spirit of those regulations and creating a poor brand experience.\n\nThe copy for a number porting flow should be clear, accurate, and helpful — not because the company wants to lose the customer, but because honesty in a porting flow creates the best possible last impression, which affects whether the customer returns or recommends the company in the future.\n\nStep 1 — Entry screen:\nHeadline: Port your number to another network\nBody: You can keep your mobile number when you switch. This typically takes 7 business days.\nCTA: Start the process\nSecondary: See what you'll lose when you leave [Link to honest comparison]\n\nStep 2 — Requirements:\nHeadline: What you need to port out\nBody:\n→ Your mobile number must be active\n→ Your account must be at least 90 days old\n→ You must not have an outstanding balance\nThis information is accurate and practical.\n\nStep 3 — Generate UPC code:\nHeadline: Get your Unique Porting Code (UPC)\nBody: We'll send your UPC to your registered mobile number. Share this code with your new operator to complete the port.\nCTA: Send my UPC\n\nStep 4 — Confirmation:\nHeadline: Your UPC is on its way\nBody: Check your SMS. Your code is valid for 4 days. Once you share it with your new operator, we'll process the port within 7 business days.\n\nWhat I deliberately avoid: popups asking \"Are you sure?\", retention offers that interrupt the flow, copy that emphasizes what the user will lose in an emotionally manipulative way, or steps that require calling customer service to complete an online process. These patterns are dark UX and are increasingly regulated.",
+          "subcategory": null,
+          "difficulty": "Hard",
+          "domain": "telecom",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at a fintech company. Write the copy for an investment risk disclosure that users must acknowledge before making their first investment. How do you make a mandatory legal disclosure feel less like a barrier?",
+          "a": "Mandatory legal disclosures feel like barriers when they are written entirely for legal protection rather than for user understanding. A disclosure that users actually read and understand serves both the legal purpose and the user's interest — an informed decision is better for both parties.\n\nThe approach: write the disclosure as if the user's understanding actually matters, which means plain language, logical structure, and honesty about what the disclosure is asking them to acknowledge.\n\nDisclosure copy:\n\nHeadline: Before you invest — what you need to know\n\nThis is not just a formality. Investments carry real risks, and we want you to understand them before you start.\n\nThree things to understand:\n\n1. Your money can go down as well as up\nInvestments are not like savings accounts. The value of what you invest can fall, and you may get back less than you put in.\n\n2. Past performance does not predict the future\nHistorical returns we show you are for information only. They do not guarantee what will happen to your money.\n\n3. We are not providing personal financial advice\nWe show you options and information. The investment decisions you make are your own.\n\nBy tapping \"I understand,\" you confirm you have read and understood these points.\n\n[Button: I understand] [Link: Get more detailed information]\n\nWhat makes this effective:\n\n\"This is not just a formality\" is a surprising opening for a legal disclosure because it is honest about what disclosures usually feel like, while inviting the user to actually read this one. \n\nThree numbered points are scannable. Users who will not read a paragraph will often read three numbered points.\n\nThe button label \"I understand\" is more meaningful than \"I agree\" because understanding is what the disclosure is actually asking the user to demonstrate.",
+          "subcategory": null,
+          "difficulty": "Hard",
+          "domain": "fintech",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a content designer at a banking app. The app is launching in-app chat support. Write the chat welcome message and the unavailability message for outside business hours.",
+          "a": "In-app chat support is a higher-trust interaction than a help center article because the user is communicating with the bank directly. The welcome message sets the tone for the entire support experience.\n\nChat welcome message (during business hours):\n\nAgent avatar: [Agent photo or illustrated avatar]\nMessage: Hi! I'm here to help with your account, transfers, or any questions you have. What can I help you with today?\n\nThis opening is specific about what the agent can help with — it reduces the chance of users asking questions outside the agent's scope and then being redirected. The question at the end is open rather than asking users to choose from categories, which feels more natural in a chat context.\n\nUnavailability message (outside business hours):\n\nTitle: Chat support is offline\nMessage: Our chat team is available Monday to Saturday, 9 AM to 7 PM. We're back [tomorrow / on Monday] at 9 AM.\n\nIn the meantime:\n→ Check our Help Centre for common questions [Link]\n→ For urgent account issues, call us: 1800-XXX-XXXX (24/7)\n\nIn-chat message (for users who start a chat during hours and agents become unavailable):\nAgent: I need to step away right now, but I don't want to leave you without help. I can arrange for someone to follow up with you in the next hour — can you share your preferred contact number or a time that works for you?\n\nWhat drives these choices:\n\nThe unavailability message always provides at least one alternative — a help center and a phone number. A message that simply says \"We're offline\" with no alternative creates a dead end for users who have urgent needs.\n\nI use specific days and times rather than \"business hours\" because users in different contexts may not know what the bank considers business hours.",
+          "subcategory": null,
+          "difficulty": "Easy",
+          "domain": "banking",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at an insurance company. You need to write the policy renewal reminder series — notifications at 30 days, 7 days, and 1 day before expiry. How does the copy change across the three touchpoints?",
+          "a": "A three-touchpoint renewal reminder series should escalate in urgency and specificity while maintaining a consistent, non-panicking tone throughout. Each touchpoint serves a different behavioral purpose.\n\n30 days before expiry — Informational:\n\nPush notification title: Your policy renews in 30 days\nBody: Your [Policy Name] expires on [Date]. Renewing keeps your coverage uninterrupted.\nCTA: Review your policy\n\nAt 30 days, the primary job is awareness. The user has time to make a considered decision, so the copy should facilitate that — showing them their current policy and giving them time to review whether they want to renew on the same terms or make changes. The CTA is \"Review\" not \"Renew\" because reviewing is what the situation calls for.\n\n7 days before expiry — Action-oriented:\n\nPush notification title: 7 days to renew your [Policy Name]\nBody: Your coverage expires on [Date]. Renew now to avoid a gap in protection — it takes 2 minutes.\nCTA: Renew my policy\n\nAt 7 days, action is appropriate. The copy introduces the consequence (gap in protection) and the time commitment (2 minutes) to reduce both the anxiety about the consequence and the perceived effort of renewal. The CTA shifts from \"Review\" to \"Renew.\"\n\n1 day before expiry — Urgent:\n\nPush notification title: Your coverage expires tomorrow\nBody: Renew today to stay protected. After [Date], you won't be covered if something happens.\nCTA: Renew now — takes 2 minutes\n\nAt 1 day, urgency is justified and the copy should be direct. The consequence is stated plainly without alarm language. I do not use \"URGENT\" in capitals or exclamation marks, which feel panicky. The time commitment stays in the CTA because it continues to reduce the friction of taking action.",
+          "subcategory": null,
+          "difficulty": "Medium",
+          "domain": "insurance",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at a telecom company. The app needs to communicate a network outage affecting a specific area. Write the in-app message for users in the affected area.",
+          "a": "A network outage communication is a crisis communication moment. The user is already experiencing a problem — their service is not working — and they are opening the app to understand what is happening. The copy must answer their question immediately.\n\nIn-app message:\n\nBanner (appears at top of screen for users in affected area):\nColor: Amber background — not red, which implies emergency, but not standard blue, which implies information\nTitle: Network issue in your area\nBody: We're aware of a service disruption affecting [General area, e.g., 'South Mumbai']. Our team is working to fix this.\n[Link: See updates]\n\nFull status page (when user taps to see updates):\n\nHeadline: Service disruption — [Area name]\nStatus: In progress — our engineers are working on this\nStarted: [Time, e.g., '6:42 PM']\nExpected fix: [If known: '8:00 PM estimated'] [If unknown: 'We'll update this page as soon as we have more information']\n\nWhat's affected:\n→ Voice calls in [Specific areas or neighborhoods]\n→ Mobile data in [Same areas]\n\nWhat's working normally:\n→ SMS\n→ WiFi calling\n\nLast updated: [Time]\n\nWhat this copy does well:\n\nThe status banner uses \"we're aware\" which tells the user that the company knows about the problem — a critical piece of information because users who discover an outage and then see no acknowledgment assume the company does not know, which increases frustration.\n\nThe status page separates what is affected from what is working, which reduces anxiety. A user who knows SMS is still working can communicate in an emergency even if voice calls are down.\n\nThe \"last updated\" timestamp tells users that the information is being actively maintained.",
+          "subcategory": null,
+          "difficulty": "Medium",
+          "domain": "telecom",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at a fintech company. The company wants to introduce a referral program. Write the referral program introduction screen, the sharing copy, and the reward confirmation message.",
+          "a": "Referral program copy needs to be clear about three things before the user will share: what they get, what their friend gets, and how easy it is. Vague referral programs that say \"share and earn rewards\" have low conversion because users do not share what they do not fully understand.\n\nReferral program introduction screen:\n\nHeadline: Share [App Name] and earn ₹500\nBody: For every friend who signs up and completes their first transfer, you both get ₹500 added to your wallet.\n\nYour friend gets: ₹500 on their first transfer\nYou get: ₹500 when they do\n\nCTA: Share my referral link\nLink below: See the terms\n\nThe layout explicitly shows both parties' rewards side by side because users are more likely to share when they know their friend also benefits — sharing something that only helps you feels selfish, sharing something that helps both parties feels generous.\n\nSharing copy (pre-written for sharing via WhatsApp, email, etc.):\n\n\"I've been using [App Name] for transfers and it's genuinely useful. If you sign up with my link, we both get ₹500. Here's the link: [Link]\"\n\nPre-written sharing copy removes friction significantly. Users who have to write their own sharing message often do not. The copy is written in first person so it sounds like the user wrote it, not a marketing template.\n\nReward confirmation message:\n\nTitle: You've earned ₹500!\nBody: [Friend name] just completed their first transfer. Your reward is in your wallet — spend it on your next transfer or withdraw anytime.\nCTA: See my wallet\n\nNaming the friend is important. It makes the reward feel earned through a real action by a real person, which is more satisfying than \"your referral has been completed.\"",
+          "subcategory": null,
+          "difficulty": "Medium",
+          "domain": "fintech",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a content designer at a bank. A new feature allows users to set savings goals. Write the goal creation flow copy for three screens: entering a goal name and amount, setting a target date, and confirming the goal.",
+          "a": "A savings goal creation flow is one of the most emotionally resonant product interactions in a banking app because it connects the abstract activity of saving to something meaningful in the user's life. The copy should honor that emotional significance without being saccharine.\n\nScreen 1 — Goal name and amount:\n\nHeadline: What are you saving for?\nHint text in name field: e.g. Emergency fund, New laptop, Goa trip\nAmount field label: How much do you need?\nHelper text: Don't worry about being exact — you can adjust this later.\n\nThe headline is an open question that invites the user to articulate their goal rather than selecting from a dropdown. The hint text shows specific, varied examples — one practical (emergency fund), one personal (laptop), one aspirational (trip) — to signal that all types of goals are welcome.\n\nScreen 2 — Target date:\n\nHeadline: When do you want to reach your goal?\nDate picker: [Calendar component]\nHelper text: Based on your target, you'd need to save approximately ₹X per month.\n\nThe helper text calculation is the most valuable element of this screen. It translates an abstract future date into a concrete monthly savings requirement, which helps users assess whether their goal is realistic before committing to it.\n\nScreen 3 — Confirmation:\n\nHeadline: [Goal name] — looking good\nSummary card:\nGoal: [Name]\nAmount: ₹[Amount]\nTarget date: [Date]\nMonthly saving needed: ₹[Amount]\n\nCTA: Start saving\nSecondary: Edit goal\n\n\"Looking good\" is warm but not excessive. The summary card repeats all the key information so the user can verify before confirming. The secondary \"Edit goal\" option reduces commitment anxiety — if the user realizes something is off, they do not have to abandon the flow.",
+          "subcategory": null,
+          "difficulty": "Easy",
+          "domain": "banking",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at a SaaS company selling compliance management software to insurance companies. Write the onboarding welcome email that sets up the user for success. This is a B2B context.",
+          "a": "A B2B onboarding welcome email for compliance software has a different tone and purpose from a consumer onboarding email. The recipient is a professional who has likely been involved in evaluating and purchasing the software, they are accountable to their organization for its successful implementation, and they need practical next steps rather than emotional encouragement.\n\nSubject: Your [Software Name] account is ready — here's where to start\n\nHi [First name],\n\nWelcome to [Software Name]. Your account is set up and ready for your team.\n\nWhere to start:\n\n1. Complete your company profile (10 minutes)\nAdd your organization details and regulatory jurisdiction so [Software Name] can surface the right compliance requirements for you.\n[Button: Set up your profile]\n\n2. Import your existing documents (varies)\nIf you have existing compliance documentation, upload it now so your team can access everything in one place.\n[Button: Import documents]\n\n3. Invite your team (5 minutes)\nAdd the colleagues who need access. You can set different permission levels for each person.\n[Button: Invite team members]\n\nYour implementation support:\nYou have been assigned [Name] as your implementation specialist. They will reach out within 1 business day to schedule your onboarding call. You can also reach them directly at [email] or [phone].\n\nYour account includes:\n- [X] user licenses\n- [Storage limit] document storage\n- Access to [specific modules] modules\n- Priority support via email and phone\n\nIf you need anything before your onboarding call:\n[Help center link] | [Email support] | [Phone number]\n\n[Signature]\n\nThe three steps are sequenced by dependency — each step makes the next more useful. The implementation specialist introduction is included in the welcome email because it is a key reassurance for B2B buyers who are concerned about post-purchase support.",
+          "subcategory": null,
+          "difficulty": "Medium",
+          "domain": "insurance",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at a telecom company. You are asked to reduce the word count of existing help articles by 30% without losing any information. How do you approach this?",
+          "a": "A 30% word count reduction without information loss is an editing discipline exercise that requires identifying specific patterns of wordiness rather than arbitrary cutting.\n\nMy approach starts with auditing the articles for the most common sources of excess words:\n\nNominalizations: Turning verbs into nouns creates wordy constructions. \"Make a selection of\" → \"select.\" \"Provide assistance with\" → \"help.\" \"Perform an installation of\" → \"install.\" Each nominalization adds two to four words that can be replaced with one.\n\nPassive voice: \"Your request will be processed by our team\" → \"Our team will process your request.\" Passive voice consistently adds words without adding information.\n\nWarm-up phrases: \"In order to complete your payment, you will need to...\" → \"To pay, you need to...\" Articles often have introductory phrases that add context the reader already has.\n\nRedundant modifiers: \"Free gift,\" \"exact same,\" \"very unique,\" \"final end result.\" Each redundant modifier is a word that contributes nothing.\n\nExplanations of the obvious: \"Click the button to proceed\" when the context already makes this clear. \"Once you have done this, you can move on to the next step\" when the numbered list structure already communicates sequence.\n\nProcedural wordiness: \"You can now see that the screen has changed\" → the user can see; they do not need to be told they can see.\n\nAfter identifying these patterns, I apply them systematically rather than reading each article fresh and trying to cut words on instinct. Pattern-based editing is faster and produces more consistent results.\n\nI validate the result by asking: does the revised article still answer every question the original answered? If yes, the reduction is successful. If no, the cut went too far and specific information needs to be restored.",
+          "subcategory": null,
+          "difficulty": "Medium",
+          "domain": "telecom",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+},
+      {
+          "q": "You are a UX writer at a fintech company. A new feature allows users to split a bill with friends who may or may not be on the app. Write the flow copy for inviting a friend who is not yet on the app.",
+          "a": "Bill splitting that involves non-users is a high-friction moment because the inviting user must convince a third party to take an action (download an app) that they may not have intended to take. The copy must serve both the user who is sending the invite and make the receiving experience as frictionless as possible.\n\nSplit request creation screen:\n\nHeadline: Add who you're splitting with\nSearch field placeholder: Name, phone number, or @username\n\nWhen user selects a contact not on the app:\nLabel: [Contact name] isn't on [App Name] yet\nBody: We'll send them a link to claim their split — they won't need to create a full account to pay you back.\nCTA: Send split request\n\nThe key line here is \"they won't need to create a full account.\" This is the most common objection to inviting non-users and the most important friction reducer. If the receiving experience requires full signup, the split request is likely to be ignored.\n\nSMS/WhatsApp message sent to non-user:\n\"[Friend name] is asking you to pay back ₹450 for [Bill description]. Tap to pay in 2 minutes — no app download needed: [Link]\"\n\nThis message is written as coming from the friend, not from the app. It leads with the amount and context (what is this for?) before the CTA. \"No app download needed\" is the key conversion line.\n\nLanding page for non-user who taps the link:\nHeadline: [Friend name] is waiting for ₹450\nBody: Pay with UPI — no account needed.\nUPI field: Enter your UPI ID\nCTA: Pay ₹450\n\nThe landing page is stripped to the minimum. The user tapped a link to pay a specific amount — everything else is friction.",
+          "subcategory": null,
+          "difficulty": "Hard",
+          "domain": "fintech",
+          "tracks": [
+                    "UX Writing"
+          ],
+          "companies": [],
+          "roundType": "ux_writing",
+          "whatInterviewerTests": "",
+          "commonMistakes": []
+}
+    ,
+    {
+      "q": "You are a UX writer at a fintech company. The app needs to communicate to users that a feature they rely on is being deprecated in 30 days. How do you write this announcement to minimize churn?",
+      "a": "Feature deprecation announcements are high-risk communications because they represent a reduction in value for users who rely on the feature. The copy must be honest about what is changing while giving users clear paths to alternatives that preserve or improve their experience.\n\nThe principles that minimize churn in deprecation communication:\n\nAnnounce early with a specific date. Thirty days is the minimum; sixty is better. Vague timelines (\"soon\" or \"in the coming weeks\") create anxiety because users cannot plan. A specific date allows users to adjust on their own schedule.\n\nLead with the alternative, not the loss. \"We're introducing a better way to do X\" followed by what is being removed is received better than \"We're removing X\" followed by the alternative. The alternative being genuinely better is the prerequisite for this framing to be credible.\n\nIn-app announcement:\n\nHeadline: [Feature name] is changing on [Date]\n\nBody: We're replacing [Feature name] with [New feature/approach], which gives you [specific improvement]. After [Date], [Feature name] will no longer be available.\n\nHere's what this means for you:\n→ Your existing [data/settings] will automatically move to the new experience\n→ You'll find [equivalent functionality] under [location]\n→ [Any specific thing the user needs to do before the date]\n\nCTA: Try the new experience\nLink: What's changing and why\n\nWhat to avoid: \"We're constantly improving our product\" (dismissive), \"Thank you for your understanding\" (patronizing), and any framing that minimizes the change's impact on users who relied on the deprecated feature.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "fintech",
+      "tracks": [
+            "UX Writing"
+      ],
+      "companies": [],
+      "roundType": "ux_writing",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a UX writer at a bank. The bank is introducing mandatory two-factor authentication for all users. Some users will find this inconvenient. How do you write the rollout communication?",
+      "a": "Mandatory security changes that add friction are among the most difficult UX writing challenges because the company is asking users to do something they did not choose to do, which they may find annoying, in the name of their own protection.\n\nThe key principles for mandatory security rollout copy:\n\nBe direct about the mandatory nature immediately. Do not bury \"this is required\" at the bottom of a long explanation. Users who discover something is mandatory after reading a choice-framed introduction feel misled.\n\nExplain the specific threat that makes this necessary. \"We've seen a significant increase in account takeover attempts across banking apps in India\" is more compelling than \"security is our top priority.\" A specific reason makes the mandate feel necessary rather than arbitrary.\n\nAcknowledge the inconvenience honestly. \"We know adding a step to login isn't what anyone wants\" is disarming and human. Pretending there is no inconvenience is condescending.\n\nRollout communication:\n\nHeadline: Two-step login is now required for all accounts\n\nBody: Starting [Date], you'll need to verify your identity with a second step every time you log in. This is now mandatory for all accounts.\n\nWhy we're doing this: Account fraud in digital banking has increased significantly this year. Two-step verification prevents unauthorized access even if your password is compromised.\n\nHow it works:\n1. Enter your password as usual\n2. We'll send a 6-digit code to your registered mobile number\n3. Enter the code — takes about 10 seconds\n\nWe know this adds a step. We believe it's the right trade-off to keep your money safe.\n\nCTA: Set up two-step login now\nLink: Why this matters\n\nThe closing sentence that acknowledges the trade-off explicitly is important. It shows the bank has weighed the inconvenience and made a considered decision, not an arbitrary one.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "banking",
+      "tracks": [
+            "UX Writing"
+      ],
+      "companies": [],
+      "roundType": "ux_writing",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a UX writer at an insurance company. You need to write the copy for a feature that shows users how much they have saved by using their insurance versus paying out of pocket. How do you frame this effectively?",
+      "a": "A savings summary feature in insurance is an opportunity to demonstrate the value of coverage to users who may feel they are paying premiums without seeing tangible benefit — especially users who have not made claims. The copy must make the abstract value of coverage concrete.\n\nFor users who have made claims:\n\nHeadline: Insurance saved you ₹1,84,000 this year\n\nBody: Here's the difference your coverage made:\n\nHospitalization in March\nTotal bill: ₹2,10,000\nYou paid: ₹26,000 (co-payment + deductible)\nInsurance covered: ₹1,84,000\n\nThis is the most powerful version of the savings summary because the numbers are real and personal.\n\nFor users who have not made claims:\n\nThis is the more challenging copy challenge. Showing someone who paid ₹15,000 in premiums and made zero claims that they \"saved nothing\" is accurate but not useful. The frame that works: protection value, not transaction value.\n\nHeadline: Your coverage was there when you needed it\nBody: You didn't need to make a claim this year — that's the best outcome. Your ₹15,000 premium gave you ₹10 lakh of coverage for the entire year. That protection was available every day, for anything that could have happened.\n\nThis framing is honest — it does not claim the user saved money — but it reframes insurance from a transaction (\"did I get value?\") to a protection (\"was I covered?\"). It is also accurate: the user genuinely did have ₹10 lakh of protection available throughout the year.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "insurance",
+      "tracks": [
+            "UX Writing"
+      ],
+      "companies": [],
+      "roundType": "ux_writing",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a UX writer at a telecom company. Write the copy for a widget that shows real-time network quality at the user's current location. The quality is currently poor.",
+      "a": "A real-time network quality widget showing poor quality is a transparency feature that must balance honesty with not alarming users unnecessarily or making them feel the network is unreliable in general.\n\nWidget copy — poor signal state:\n\nWidget headline: Network quality — Fair\n\nSignal indicator: [2 of 5 bars, amber color]\n\nExpanded state (when user taps):\nHeadline: Network quality is lower than usual here\n\nBody: You may experience slower data speeds or call drops in this area right now.\n\nCurrent conditions:\n→ Data speeds: Reduced\n→ Voice calls: May experience interruptions\n→ SMS: Working normally\n\nHelps to know:\n→ Move to an open area or near a window\n→ Connect to WiFi if available\n→ This may improve as you move\n\nLink: Report a network issue\nLink: Check network status in your area\n\nWhat makes this copy effective:\n\n\"Fair\" rather than \"Poor\" or \"Bad\" because it is honest without being alarming. The widget is real-time — network quality changes — and labeling it \"Poor\" when it might improve in minutes is more alarming than the situation warrants.\n\n\"Lower than usual here\" attributes the quality issue to the location, not the network in general. This is accurate — network quality varies by location — and prevents the user from generalizing poor quality in one spot to the entire network.\n\nThe \"Helps to know\" section gives the user actionable steps rather than leaving them with a problem and no path forward.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "telecom",
+      "tracks": [
+            "UX Writing"
+      ],
+      "companies": [],
+      "roundType": "ux_writing",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a content designer at a fintech company. You are designing the copy for a credit score feature. The user's score has just improved by 45 points. How do you celebrate this milestone?",
+      "a": "A credit score improvement is a genuine financial achievement worth celebrating, but the celebration must be proportionate, specific about what caused the improvement, and actionable about what comes next.\n\nImprovement notification:\n\nPush notification:\nTitle: Your credit score improved! 🎉\nBody: Up 45 points to 712. See what's working.\n\nIn-app screen after tapping notification:\n\nHeadline: 45 points up — great progress\n\nScore display: 712 [Up from 667]\n[Progress bar showing movement toward next milestone — e.g., 750]\n\nWhat's working:\n→ On-time payments for 6 months in a row ✓\n→ Credit utilization below 30% ✓\n→ No new credit applications in 90 days ✓\n\nWhat this means for you:\n→ You've moved from Fair to Good credit range\n→ You may now qualify for better loan interest rates\n→ Keep this up and you could reach 750 by October\n\nCTA: See what else you can do\n\nThe celebration is specific and earned. \"45 points up\" is specific — it quantifies the achievement. \"What's working\" tells the user what behaviors caused the improvement, which reinforces those behaviors. \"What this means\" translates the abstract score improvement into concrete financial implications. The forward projection \"could reach 750 by October\" maintains momentum without making a promise.\n\nI avoid over-the-top celebration language. Financial improvements deserve acknowledgment, not a party — the tone should be warm and encouraging without feeling performative.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "fintech",
+      "tracks": [
+            "UX Writing"
+      ],
+      "companies": [],
+      "roundType": "ux_writing",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a UX writer at a banking app. You need to write the copy for a document upload feature where users submit ID proof and address proof for account verification. List all the copy elements needed and write them.",
+      "a": "A document upload flow for KYC verification requires copy at every point of the user journey — before, during, and after upload — because document upload is a technically and emotionally sensitive interaction.\n\nCopy elements needed:\n\n1. Introduction screen:\nHeadline: Verify your identity\nBody: We need two documents to complete your account setup. This takes about 5 minutes.\n\nWhat you need:\n→ Identity proof (Aadhaar, PAN, Passport, or Voter ID)\n→ Address proof (Aadhaar, utility bill from last 3 months, or bank statement)\n\nCTA: Start verification\n\n2. Document type selector (for identity proof):\nHeadline: Choose your identity document\n[Option buttons: Aadhaar / PAN Card / Passport / Voter ID]\n\n3. Upload instructions (once document type is selected):\nHeadline: Upload your Aadhaar\nBody: Take a photo or upload from your gallery. Make sure:\n→ All four corners are visible\n→ Text is clear and readable\n→ The document is not expired\n\nCTA: Take photo / Upload from gallery\n\n4. Upload in progress:\n\"Uploading your document...\"\n\n5. Processing state:\n\"Verifying your document — this takes about 30 seconds\"\n\n6. Success state:\nHeadline: Identity proof verified ✓\nBody: Now let's verify your address.\nCTA: Continue\n\n7. Failure state:\nHeadline: We couldn't verify this document\nBody: The image may be blurry or the document details are unclear. Please try again with a clearer photo.\nCTA: Try again\nLink: Use a different document\n\n8. Completion:\nHeadline: Verification complete\nBody: Your documents have been verified. Your account is now fully active.\nCTA: Go to my account",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "banking",
+      "tracks": [
+            "UX Writing"
+      ],
+      "companies": [],
+      "roundType": "ux_writing",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a UX writer at an insurance company. Write the copy for an in-app feature that helps users understand what their policy does NOT cover. This is information users need but avoid reading.",
+      "a": "Exclusions are the most important and most avoided part of any insurance policy. The UX writing challenge is making exclusions accessible and understandable without creating anxiety or making users feel they have been sold something worthless.\n\nDesign principle: Make exclusions feel like useful information, not fine print.\n\nFeature entry point:\nHeadline: What's not covered\nSub-heading: Knowing this helps you plan better\n\nThis framing positions exclusions as useful knowledge rather than bad news.\n\nExclusions display — by category:\n\nPre-existing conditions waiting period\nIllnesses you had before your policy started are covered after [X] years. This protects you going forward — it's not a permanent exclusion.\n[Learn more]\n\nCosmetetic and elective procedures\nTreatments that are not medically necessary — like cosmetic surgery or weight loss programs — are not covered.\n[See full list]\n\nAlcohol and drug-related treatment\nHospitalization directly caused by alcohol or drug use is not covered.\n\nFooter note:\nThis is a summary. Your full policy document has the complete exclusions list, which is the legal reference in case of a claim.\n[View full policy]\n\nWhat makes this effective:\n\nI organize exclusions by category rather than presenting them as a wall of text. Categories make the list scannable and allow users to quickly find what is relevant to their situation.\n\nFor the waiting period exclusion, I add context: \"This protects you going forward — it's not a permanent exclusion.\" This reframe significantly reduces the negative impact of learning about the waiting period.\n\nThe footer note is honest about the summary nature of the in-app display without making the user feel they have been shown misleading information.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "insurance",
+      "tracks": [
+            "UX Writing"
+      ],
+      "companies": [],
+      "roundType": "ux_writing",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a UX writer at a telecom company. The app is introducing a feature that uses AI to predict when a user will run out of data based on their usage patterns. Write the prediction notification copy for three scenarios: 3 days until empty, 1 day until empty, and data just ran out.",
+      "a": "Predictive data notifications must be specific, useful, and calibrated in urgency — each scenario requires a different tone that matches the actual urgency level without being either dismissive or alarmist.\n\n3 days until empty — Informational:\n\nPush notification:\nTitle: You'll run out of data in about 3 days\nBody: Based on how you've been using data this month, your 5GB will run out by July 16. Add data now to stay covered.\n\nIn-app card:\nHeadline: Data running low\nBody: At your current usage rate, you'll use your remaining 2.1GB by July 16 — 3 days earlier than your plan resets.\nCTA: Add more data\nLink: Adjust my alerts\n\n1 day until empty — Urgent:\n\nPush notification:\nTitle: Less than 1 day of data left\nBody: You're likely to run out of data by tomorrow. Top up now to avoid slow speeds.\n\nIn-app card:\nHeadline: Data almost gone\nBody: You have about 400MB left. At your current pace, that's less than a day.\nCTA: Top up now — takes 2 minutes\nLink: See my usage\n\nData just ran out — Resolution-focused:\n\nPush notification:\nTitle: You've used all your data\nBody: Your data has run out. You're now on reduced speeds. Add data to get back to full speed.\n\nIn-app screen:\nHeadline: Your data is finished\nBody: You've used your full 5GB for this month. Your connection is still active at reduced speeds.\n\nTo get back to full speed:\n→ Add a data pack [CTA: Add data]\n→ Or wait until your plan resets on [Date]\n\nThe three tiers show deliberate escalation: informational framing at 3 days, urgency framing at 1 day, and resolution framing when data is gone. The resolution state is notably non-panicked because the situation, while inconvenient, is not an emergency.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "telecom",
+      "tracks": [
+            "UX Writing"
+      ],
+      "companies": [],
+      "roundType": "ux_writing",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+}
     ],
     "technical_docs": [
       {
@@ -696,6 +1034,316 @@ export const technicalWritingQuestions = {
         "whatInterviewerTests": "",
         "commonMistakes": []
       }
+    ,
+    {
+      "q": "You are a technical writer at a SaaS company. You need to document a webhook system for developers. Explain what webhooks are and what the documentation must cover.",
+      "a": "Webhook documentation is frequently inadequate in SaaS products because the writers who produce it understand the concept and forget that many developers have limited webhook experience. Good webhook documentation starts with the right level of assumption about the reader.\n\nWhat webhooks are (for the documentation introduction):\n\nWebhooks allow your application to receive real-time notifications when specific events occur in [Product]. Instead of polling our API repeatedly to check for changes, your server receives an HTTP POST request from us the moment an event happens. This is more efficient for both sides.\n\nFor example: when a customer completes a payment in your application, we send a webhook to your server immediately. Your server can then update your database, send a confirmation email, and trigger any other logic — all automatically.\n\nWhat the documentation must cover:\n\nQuick start: A minimal working example of receiving and processing a webhook — the actual server code to receive the POST request, validate the signature, and return a 200 response. This is the first thing developers want to see.\n\nEvent types: A comprehensive list of all events that trigger webhooks, with the exact event name, a description of when it fires, and the payload schema for each event. This section is navigated, not read.\n\nPayload format: The standard envelope that wraps every webhook payload — the event type, the timestamp, the event ID, and the data object.\n\nSignature verification: How to verify that webhooks are genuinely from the company and not from an attacker. This is a security requirement that many developers implement incorrectly when it is not documented precisely. Include exact code examples.\n\nRetry behavior: How many times the system retries failed webhook deliveries, at what intervals, and what constitutes a failure (non-200 response, timeout). Developers who do not understand retry behavior build systems that process the same event multiple times.\n\nIdempotency: How to handle receiving the same webhook event more than once, which is guaranteed to happen eventually.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "fintech",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a bank. You need to write a disaster recovery plan documentation for the IT team. What are the essential components?",
+      "a": "Disaster recovery documentation is tested in the worst possible conditions — during an actual disaster. The documentation must be usable by people under pressure, potentially working from unfamiliar environments, and possibly without access to the systems they normally use. These conditions set the bar for what the documentation must achieve.\n\nEssential components:\n\nRTO and RPO definitions: The document must open by establishing the Recovery Time Objective — how long the business can survive without each system — and the Recovery Point Objective — how much data loss is acceptable. All subsequent procedures are designed to meet these targets.\n\nSystem inventory and criticality classification: A complete list of all systems with their criticality tier. Tier 1 systems must be recovered within the RTO even if Tier 3 systems remain down for extended periods. This classification drives recovery sequence.\n\nCrisis response team: Named individuals and their roles in a disaster event, with backup contacts for each. This must include current contact information — mobile numbers, not just work email — and must be maintained and tested for currency. Nothing fails faster in a real disaster than a contact list with outdated phone numbers.\n\nRecovery procedures by system: Step-by-step procedures for recovering each critical system, written at sufficient detail that someone familiar with the technology but not specifically with this system could execute them. Each procedure should include estimated time to complete.\n\nCommunication procedures: Who is notified when a disaster is declared, in what sequence, and through what channels. For a bank, this includes regulatory notification requirements — RBI requires notification within specified timeframes for major system outages.\n\nTesting and maintenance schedule: How often the DR plan is tested, what types of tests are conducted (tabletop exercises, partial failover tests, full DR tests), and who is responsible for keeping the documentation current.\n\nOffsite storage of the documentation: The DR plan must be accessible when the primary systems are unavailable. A plan stored only on the internal wiki is inaccessible when the internal wiki is part of the disaster.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "banking",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at an insurance company. You need to write end-user documentation for a new claims portal designed for senior users aged 60 and above. What adaptations do you make?",
+      "a": "Documentation for senior users requires specific adaptations that go beyond simply using plain language. Research on older adult digital users consistently shows that the most significant barriers are not language complexity but visual design, cognitive load, and assumed familiarity with digital interaction patterns.\n\nFor the documentation specifically:\n\nFont size and visual presentation: I specify a minimum font size of 14 points for printed documentation and recommend 16 points. If the documentation is digital, I advocate for a high-contrast design with generous whitespace. Dense, small text creates barriers even for users with undiagnosed vision changes that come with aging.\n\nOne task per page or section: Senior users are more likely to follow documentation linearly rather than skipping around. I organize the guide so that each page or section contains exactly one task. Combining multiple tasks in one section creates confusion about where one task ends and the next begins.\n\nStep-by-step with explicit screen description: I describe what the user will see at each step, not just what to do. \"The screen will show a blue button labeled Submit Claims — click this button\" is more useful for a senior user than \"Click Submit\" because it confirms they are looking at the right element before they act.\n\nScreenshots at every step: Screenshots are particularly important for senior users who may not have strong visual memory of an interface they use infrequently. The screenshots should show the entire screen context, not just the element the user needs to interact with.\n\nGlossary of digital terms: Terms like \"browser,\" \"tab,\" \"scroll,\" \"dropdown,\" and \"toggle\" should be defined in a glossary. These terms are second nature to regular digital users but are genuinely confusing to users with limited digital experience.\n\nLarge-print and printable version: Many senior users prefer printed documentation. I provide a formatted print-ready version alongside any digital documentation.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "insurance",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a telecom company. Explain the difference between a user manual, a quick start guide, and a reference guide. When would you produce each?",
+      "a": "User manuals, quick start guides, and reference guides serve different information needs at different stages of a user's relationship with a product. Understanding the distinction prevents the common mistake of producing one comprehensive document that serves all purposes poorly.\n\nUser manual:\n\nA user manual is a comprehensive guide to everything a product can do, designed for users who want to understand the full capability of the product. It covers every feature in detail, including advanced functionality, edge cases, and settings. User manuals are typically used when a product is complex enough that users cannot discover all its functionality through exploration, or in regulated contexts where the manual serves as a compliance document demonstrating what users were told about the product.\n\nFor a telecom product like a router or a business telephony system, the user manual is the authoritative reference for all functionality.\n\nQuick start guide:\n\nA quick start guide covers the minimum a user needs to get the product working. Its purpose is to get the user from unboxing to first successful use as fast as possible. For a telecom product like a new SIM card or a mobile device, the quick start guide covers activation, basic configuration, and the most important first steps. Everything else is left to the user manual or help center.\n\nQuick start guides are typically two to eight pages, heavily illustrated, and use minimal text. They are designed to be followed, not read.\n\nReference guide:\n\nA reference guide is not designed to be read sequentially — it is designed to be searched. It is the documentation users return to when they have a specific question: what does this setting do, what is this error code, what are the valid values for this parameter. Reference guides assume the user already knows how to use the product generally and needs specific information.\n\nFor telecom technical documentation, reference guides cover things like all available configuration parameters for a network device, all error codes in a billing system, or all API endpoints in a developer portal.",
+      "subcategory": null,
+      "difficulty": "Easy",
+      "domain": "telecom",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a SaaS company. Your product team asks you to create an in-app tutorial for a complex feature. What is your approach and what are the constraints of in-app tutorials?",
+      "a": "In-app tutorials are a powerful onboarding tool when they are designed around what the user wants to do, and a significant source of frustration when they are designed around what the product team wants to show.\n\nApproach:\n\nBefore designing the tutorial, I work with the product team to define the objective: what should the user be able to do after completing the tutorial? This single question eliminates the common trap of tutorial scope creep where every feature gets its own tutorial step regardless of relevance to the user's goal.\n\nI then design the tutorial as a task, not a tour. A tour says \"here is the menu, here is the dashboard, here is the settings panel.\" A task-based tutorial says \"let's set up your first report\" and only introduces the elements of the product that are needed to complete that specific task. The user learns through doing rather than through observation.\n\nFor a complex feature, I typically design the tutorial in two parts: a minimal path that gets users to a basic working version of the feature, and an optional advanced path for users who want to explore deeper functionality.\n\nConstraints of in-app tutorials:\n\nSkip rate: Most users skip in-app tutorials. The tutorial must provide immediate value or it will be dismissed. Tutorials that cover too many steps before the user gets to do anything real are skipped at very high rates.\n\nState dependency: In-app tutorials often fail when the user's state does not match what the tutorial expects. A tutorial that assumes an empty project fails for a user who already has projects. I design tutorials to be state-aware or to work from a tutorial-specific sandbox environment.\n\nDiscoverability after dismissal: Users who dismiss a tutorial and later need it cannot find it if there is no \"replay tutorial\" option. I always advocate for an accessible way to restart the tutorial from the help menu.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "fintech",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a bank. A new regulation requires the bank to update disclosures in all customer-facing documentation within 60 days. How do you manage this project?",
+      "a": "A 60-day regulatory documentation update project across all customer-facing materials is a content operations emergency that requires immediate triage, centralized coordination, and a clear publication process.\n\nDay 1-3 — Scope and triage:\n\nI conduct a rapid inventory of all customer-facing documentation: website pages, app copy, printed brochures, PDF guides, email templates, SMS templates, and in-branch materials. For each piece, I assess: does this piece contain content affected by the new regulation? If yes, what specifically needs to change? I document this in a master tracking sheet that will be the project's single source of truth.\n\nI also meet with the legal and compliance team to get the exact regulatory language requirements, any flexibility in how the disclosure can be worded, and confirmation of what the regulatory deadline actually requires (some regulations have phased requirements).\n\nDay 4-14 — Content revision:\n\nI prioritize the highest-reach materials first: app copy and website pages that are seen by all customers, then email templates, then PDFs. I write the updated content and submit it for legal review. In a regulatory project, legal review is non-negotiable and the review timeline must be factored into the schedule.\n\nDay 15-30 — Review and approval:\n\nParallel review tracks for legal accuracy and editorial quality. I establish a daily check-in with legal to maintain momentum through the review process, which is often the bottleneck in regulatory documentation projects.\n\nDay 31-50 — Publication:\n\nI coordinate publication across all channels: website updates, app updates through the development team, printer coordination for physical materials, email template updates.\n\nDay 51-60 — Verification and documentation:\n\nI verify that all required updates are live across all channels and document the completion for the regulatory record. In a regulated industry, the compliance record of what was updated and when is as important as the updates themselves.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "banking",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at an insurance company. How do you document an API that processes sensitive health data? What additional considerations apply compared to a standard API?",
+      "a": "An API that processes sensitive health data requires documentation that addresses the standard API developer needs while also providing the additional compliance, security, and data handling information that is essential for this category of data.\n\nAdditional considerations compared to a standard API:\n\nData classification and regulatory context: The documentation must clearly state what health data categories the API processes, what regulatory framework governs this data (DPDP Act in India, HIPAA equivalent requirements if the API serves US markets), and what this means for developers who integrate with the API. A developer building on this API needs to understand their own compliance obligations before they start.\n\nData minimization requirements: Health data APIs should document explicitly what data is required versus optional, and what the API does with optional data that is provided. Developers in regulated contexts have obligations around data minimization — they should not send more data than necessary.\n\nConsent documentation: If the API processes data that requires user consent, the documentation must explain how consent is signaled to the API and what the API does when consent is absent or revoked.\n\nData retention and deletion: How long does the API store any passed data? Is there a deletion endpoint? What happens to data when an integration is terminated? These questions have regulatory implications that standard API documentation does not need to address.\n\nAudit trail requirements: Health data APIs in regulated contexts typically need to provide evidence of how data was accessed and processed. The documentation should explain what audit data is available and how to access it.\n\nSecurity requirements: Beyond standard API key authentication, health data APIs may require additional security measures — IP allowlisting, mutual TLS, encryption in transit and at rest requirements for developers. These requirements must be documented before a developer can begin integration planning.\n\nEnvironment separation: Testing with synthetic health data requirements must be documented explicitly. The documentation should include guidance on generating appropriate synthetic test data.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "insurance",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a telecom company. You need to write a change management communication plan for a major system upgrade that will affect 500 internal users. What does this include?",
+      "a": "A change management communication plan for a major internal system upgrade is a document that specifies how information about the change will be delivered to affected users before, during, and after the upgrade.\n\nThe plan covers five dimensions:\n\nAudience analysis: The 500 internal users are not a homogeneous group. I identify sub-groups with different relationships to the system: heavy users who use it daily and whose workflows will be significantly disrupted, light users who use it occasionally, technical users who may need more detailed information, and managers who need to understand the business impact. Each group needs communication tailored to their specific concerns and informaiton needs.\n\nMessage architecture: The core messages that must be consistent across all communications: what is changing and why, when the change happens, what users need to do to prepare, where to get help, and how to provide feedback. These messages form the backbone of all communications in the plan.\n\nCommunication timeline:\n\n8 weeks before: Executive announcement of the upcoming change with business rationale.\n6 weeks before: Department-level briefings with more detail about what changes in each team's workflow.\n4 weeks before: Training materials and sessions available to all users.\n2 weeks before: Reminder communications with key dates and preparation checklist.\n1 week before: Final reminder with help resources prominently featured.\nDay of upgrade: Status updates through the day.\nDay after: Confirmation that systems are live and feedback invitation.\n2 weeks after: Survey to assess adoption and identify remaining support needs.\n\nFeedback channels: How users can ask questions and raise concerns. A dedicated email alias, a FAQ document that is updated as questions arise, and regular office hours with the project team.\n\nSuccess metrics: What the communication plan is trying to achieve, measured as: awareness of the change (surveyed before launch), preparation completion rate, help desk contact volume post-launch (lower than baseline indicates effective preparation), and user satisfaction with the communication at 2 weeks post-launch.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "telecom",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a fintech company. What is DITA and how would you use it in a large-scale documentation project?",
+      "a": "DITA, which stands for Darwin Information Typing Architecture, is an XML-based open standard for structuring technical documentation. It was developed by IBM and is now maintained by OASIS. It is primarily used in large organizations that produce documentation at scale across multiple products, teams, and output channels.\n\nThe core concept of DITA is topic-based authoring. Instead of writing documentation as continuous documents — chapters, sections, paragraphs — DITA breaks content into discrete, self-contained topics. Each topic covers one concept, one task, or one piece of reference information. Topics are reusable: the same topic about how to authenticate with an API can be included in a quick start guide, a developer guide, and an SDK reference without being copied or maintained in multiple places.\n\nDITA topic types:\n\nConcept topics explain what something is. Task topics describe how to do something, always in numbered steps. Reference topics provide factual information that users look up rather than read — parameter tables, error codes, configuration settings.\n\nHow I would use it in a large-scale fintech documentation project:\n\nFor a fintech company with multiple products sharing common infrastructure — authentication, payment processing, webhooks — DITA enables the authentication documentation to be written once and included in the documentation for every product. When the authentication system changes, updating one DITA topic updates all the documentation that includes it.\n\nFor publishing, DITA content is processed through a DITA Open Toolkit to generate multiple output formats: HTML for the online help center, PDF for downloadable guides, and increasingly, structured data formats that can feed AI knowledge bases.\n\nDITA has a significant learning curve and requires tooling investment — authoring tools like Oxygen XML Editor, and content management systems that support DITA. For a fintech company with a small documentation team producing limited documentation, the overhead is not justified. For a team managing thousands of topics across dozens of products, DITA becomes a productivity and quality multiplier.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "fintech",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a bank. You need to create training documentation for a new core banking system. What makes banking system training documentation different from standard software documentation?",
+      "a": "Banking system training documentation operates under constraints and serves purposes that standard software documentation does not encounter, making it a specialized discipline within technical writing.\n\nRegulatory accountability: Every action a bank employee takes in a core banking system can be subject to regulatory audit. The training documentation must not just explain how to perform tasks but also explain why specific procedures exist — which regulatory requirements they satisfy — so that trained staff understand the compliance context, not just the mechanical steps. A staff member who understands that a specific KYC verification step exists because of RBI account opening guidelines is more likely to follow it correctly than one who follows it as a ritual without understanding its purpose.\n\nError consequences: Errors in a core banking system have financial consequences for customers, the bank, and potentially for the individual employee. Training documentation must address error scenarios explicitly and in detail: what happens if a wrong account number is entered, how to reverse a transaction, when to escalate rather than attempt self-correction. Standard software documentation rarely needs this level of error consequence detail.\n\nRole-based access and documentation: Different staff roles have different system access and different responsibilities. The documentation must be structured by role — teller procedures, branch manager override procedures, back-office reconciliation procedures — so that each staff member is trained only on their specific responsibilities rather than on the entire system.\n\nAudit trail requirements: Training documentation for a core banking system typically includes documentation of completion — a record that specific staff have been trained on specific procedures. The documentation must be designed to support this tracking, whether through formal acknowledgment forms or learning management system integration.\n\nUpdate processes: When banking procedures change due to regulatory updates or product changes, the training documentation must be updated and staff must be retrained. The documentation must include clear version information and a process for communicating updates to trained staff.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "banking",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at an insurance company. You have been asked to document a machine learning model used for claim fraud detection. What are the documentation requirements for an AI/ML model in a regulated industry?",
+      "a": "Documenting a machine learning model for fraud detection in insurance is a specialized technical writing challenge that intersects with model governance, regulatory compliance, and explainability requirements. The documentation serves multiple audiences: data scientists, business stakeholders, compliance teams, and potentially regulators.\n\nDocumentation requirements:\n\nModel purpose and scope: A clear statement of what the model does, what it is used for, and what it is not designed to handle. For a fraud detection model, this includes the specific claim types it evaluates, the geographic scope, and any policy types or customer segments it excludes.\n\nTraining data documentation: What data was used to train the model, what time period it covers, where it came from, how it was preprocessed, and what the class distribution was. In fraud detection, class imbalance is significant — genuine claims vastly outnumber fraudulent ones — and how this was addressed in training must be documented.\n\nFeature documentation: A complete list of all input features the model uses, with descriptions of each feature, its data type, and its source. In regulated contexts, certain features may be restricted from use in models that affect individuals — characteristics that could constitute discriminatory criteria under applicable law.\n\nModel performance metrics: The accuracy, precision, recall, and AUC-ROC of the model on the evaluation set, with the specific thresholds used for classification decisions. In fraud detection, the trade-off between false positive rate (legitimate claims incorrectly flagged) and false negative rate (fraudulent claims missed) is a business and ethical decision that must be documented.\n\nExplainability: For regulatory compliance and for claims handlers who must act on model outputs, the documentation should explain what factors most significantly influence the model's fraud score. IRDAI guidelines on fair treatment of policyholders require that claim decisions be explainable.\n\nModel monitoring and retraining schedule: How model performance is monitored in production, what triggers a retraining cycle, and how model drift is detected and addressed.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "insurance",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a telecom company. You need to write a network topology document for the engineering team. What information does it need to contain and how do you gather it?",
+      "a": "A network topology document for an engineering team is a reference document that must accurately represent the current state of the network infrastructure and be updatable when that state changes. Its accuracy is more important than its elegance — an inaccurate network diagram creates operational risk.\n\nInformation it needs to contain:\n\nNetwork diagrams: Visual representations of how network components connect, organized by layer (core, distribution, access), by geographic region, and by function (data, voice, management). Multiple diagram types serve different purposes and different audiences within the engineering team.\n\nComponent inventory: A complete list of all network devices with their model, firmware version, physical location, IP address, management access information, and role in the network. This inventory must be searchable and must correspond exactly to the diagrams.\n\nInterconnection details: How each device connects to others — port numbers, cable types, VLAN configurations, routing protocols in use. This level of detail is essential for troubleshooting and for capacity planning.\n\nRedundancy and failover: Which paths and components have redundancy, how failover is triggered, and what the expected behavior is during a failover event.\n\nCapacity information: Current utilization rates for key links and devices, and what the capacity thresholds are that trigger upgrade planning.\n\nHow I gather it:\n\nFor existing infrastructure, I combine documentation from network management tools (which can export current configurations and topology automatically), interviews with network engineers who know the undocumented details, and in some cases physical inspection for physical layer information.\n\nThe most important principle for gathering network documentation: do not trust existing documentation as accurate. I treat existing diagrams as a starting point to be verified, not as the source of truth. Networks change faster than documentation and undocumented changes are the norm.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "telecom",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a fintech company. What is the difference between documentation and a specification, and when do you write each?",
+      "a": "Documentation and specifications serve different purposes in the software development lifecycle, and conflating them produces documents that do neither job well.\n\nA specification is a prescriptive document that defines what a system should do — written before or during development to guide how something will be built. Specifications are living documents during the design and development phase, and they are written by the people defining what will be built: product managers, architects, and sometimes developers. The audience is the people building the system. The purpose is to constrain and guide implementation decisions.\n\nA specification answers questions like: what are the requirements for this feature, what inputs does this function accept and what outputs does it produce, what are the performance requirements for this API endpoint. Specifications can be functional (what behavior is required) or technical (how the behavior should be implemented).\n\nDocumentation is a descriptive document that explains what a system does — written after or during development to help users, developers, or operators understand and use the system as it exists. Documentation reflects reality; specification defines an intended reality. The audience for documentation is typically broader and less technical than the specification audience.\n\nWhen to write each:\n\nSpecifications are written before implementation, as input to the development process. A feature specification is written by the product manager before engineers begin building. An API specification is written before the API is implemented, possibly using a specification format like OpenAPI.\n\nDocumentation is written after the implementation is complete enough to document accurately, or in parallel with development for iterative documentation. Documenting a feature before it is built is specification, not documentation — even if it is called documentation.\n\nThe practical confusion: developers sometimes call specifications documentation because both are written documents about software. Technical writers must clarify which is needed and when, because the writing process, the review process, and the maintenance process are fundamentally different.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "fintech",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a bank. A new joiner on your documentation team has produced a first draft that is technically accurate but written in a passive, impersonal voice throughout. How do you give feedback and coach them?",
+      "a": "Giving feedback to a new writer requires balancing honest assessment with encouragement and providing specific, actionable guidance rather than general criticism. How feedback is given shapes whether the new writer improves quickly or becomes defensive and demoralized.\n\nI start by identifying what the draft does well and say this first, specifically. If the draft is technically accurate, that is genuinely valuable and non-trivial. \"The technical content here is solid — you clearly understood what you were writing about and the information is accurate\" is honest positive feedback that establishes credibility before the improvement conversation.\n\nFor the passive voice issue, I do not say \"this is written in passive voice which is bad.\" I explain the principle and show the difference:\n\n\"There is a pattern in this draft that I want to help you address. Technical writing is most effective when it is direct and tells the reader exactly what to do or what happens. Here is an example from your draft: 'The form should be submitted by the user after all fields have been completed.' Here is the same information in active voice: 'Submit the form after you complete all fields.' The second version is shorter, clearer, and puts the reader at the center of the instruction. This pattern appears throughout the draft — I have marked the instances in the document.\"\n\nI then ask the new writer to revise a section themselves rather than revising it for them, and I offer to review the revision and discuss what they changed and why.\n\nFor ongoing coaching, I establish a pattern: write, review together, revise, review again. I give specific positive reinforcement when I see improvement. \"This paragraph you revised is much stronger — notice how much clearer the instruction is now.\" Naming the specific improvement helps the writer internalize what good looks like.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "banking",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at an insurance company. You need to write accessibility guidelines for your documentation team. What are the most important accessibility considerations for technical documentation?",
+      "a": "Accessibility in technical documentation means ensuring that content is usable by people with disabilities, including visual impairments, cognitive differences, motor impairments, and hearing impairments. In an insurance context, accessibility is both a legal requirement and an ethical obligation.\n\nMost important accessibility considerations:\n\nAlternative text for images and diagrams: Every image, diagram, chart, and screenshot must have descriptive alternative text that communicates the same information as the visual. For process diagrams, the alt text should describe the process, not just label the image as \"process diagram.\" Screen readers read alt text aloud for visually impaired users who cannot see the images.\n\nHeading structure: Documents must use a logical heading hierarchy — H1, H2, H3 — in sequence, never skipping levels. Screen reader users navigate documents by heading structure. A document without proper heading hierarchy is unnavigable for a screen reader user.\n\nColor and contrast: Information must never be conveyed by color alone because color-blind users cannot distinguish it. \"Red text indicates an error\" is not accessible; \"red text with an error icon and the label Error indicates an error\" is. Color contrast ratios must meet WCAG standards — 4.5:1 for normal text, 3:1 for large text.\n\nLink text: Links must be descriptively labeled. \"Click here\" is inaccessible because a screen reader user navigating by links hears a list of \"click here\" links with no context. \"Download the claim form\" is accessible because it describes what the link leads to.\n\nTable accessibility: Data tables must have header rows identified as headers, not just formatted to look like headers. Screen readers use table header information to provide context for each cell.\n\nReadable language: Plain language is an accessibility requirement, not just a quality preference. Users with cognitive disabilities, low literacy, or limited English proficiency benefit from short sentences, common words, and clear structure.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "insurance",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+}
+    ,
+    {
+      "q": "You are a technical writer at a fintech company. How do you write effective code examples in API documentation?",
+      "a": "Code examples are the most important element of API documentation because developers learn primarily through working examples rather than through descriptive text. A poorly written code example can block an entire integration; a well-written one can enable a developer to integrate in hours rather than days.\n\nPrinciples for effective code examples:\n\nEvery example must be complete and runnable. A partial example that shows only the interesting part of the code while omitting the necessary setup — authentication, error handling, imports — is worse than no example because it gives developers a false starting point. If the complete example is long, show the complete version first and annotate the parts.\n\nShow the real-world use case, not just the syntax. An example that calls an endpoint with fake placeholder values like YOUR_API_KEY and ACCOUNT_ID_HERE gives developers the syntax. An example that shows how to initiate a payment from account A to account B with a specific reference ID demonstrates how the API is actually used. The second is significantly more useful.\n\nInclude the response. Showing only the request is half the story. Show the successful response alongside the request, and show the most common error response with an explanation of how to handle it.\n\nAnnotate with comments. Brief inline comments that explain why the code does something — not what it does, which is obvious — help developers understand the design decisions behind the example. \"// Using idempotency key to safely retry failed requests\" is a useful comment. \"// Send the POST request\" is not.\n\nProvide multiple language examples for the most important use cases. If your developer audience uses Python, JavaScript, Java, and PHP, provide examples in all four for the key endpoints. Developers are significantly more likely to use documentation in their own language.\n\nTest every example. Before publishing, verify that each code example actually works against the API. Broken examples are more damaging than no examples.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "fintech",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a bank. You need to write the documentation for a new mobile banking app's accessibility features. What does this documentation need to cover?",
+      "a": "Accessibility feature documentation for a mobile banking app serves two distinct audiences: users with disabilities who want to know what accommodations are available and how to use them, and developers or IT administrators who need to understand the technical accessibility implementation.\n\nFor users with disabilities — Help center article:\n\nThis documentation should be written in plain language, structured by disability type or accommodation need rather than by technical feature:\n\nVision accessibility:\n→ Screen reader support: The app works with VoiceOver on iOS and TalkBack on Android. Every button, input field, and image has a descriptive label that your screen reader will announce.\n→ Text size: Go to Settings > Accessibility > Text Size to increase text throughout the app.\n→ High contrast: Matches your device's high contrast settings automatically.\n→ Large touch targets: All interactive elements are at least 44x44 pixels.\n\nHearing accessibility:\n→ No audio-only information: All audio alerts also appear as visual notifications or text.\n→ Closed captions: Available on all video content in the app.\n\nMotor accessibility:\n→ Full keyboard navigation support on iPad and Android tablets.\n→ Switch access: Compatible with iOS Switch Control and Android Switch Access.\n→ Biometric login: Reduces the need for typing credentials.\n\nCognitive accessibility:\n→ Simple language throughout the app.\n→ No time-limited interactions except where required by security.\n→ Confirmation screens for all irreversible actions.\n\nFeedback:\n\"If you encounter any accessibility barrier in our app, we want to know. Contact our accessibility team at [email].\"",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "banking",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at an insurance company. You need to document a new claims API for hospitals that will allow cashless treatment authorization. What is unique about writing healthcare API documentation?",
+      "a": "Healthcare API documentation for cashless insurance claims has characteristics that distinguish it from standard fintech or SaaS API documentation, driven by the clinical context, the regulatory environment, and the high stakes of errors.\n\nUnique characteristics:\n\nClinical data terminology: Healthcare APIs use standardized medical terminologies — ICD-10 diagnosis codes, CPT procedure codes, SNOMED clinical terms — that require explanation for non-clinical developers. The documentation must either define these terms or reference the authoritative sources where they can be looked up. A developer implementing the API may be technically skilled but medically inexperienced.\n\nTransaction timing criticality: In cashless insurance authorization, a delayed API response directly affects patient care. A pre-authorization request that times out means the hospital cannot confirm cashless treatment and the patient may need to pay upfront and claim later. The documentation must clearly specify the API's SLA for response times and what the hospital system should do on timeout — retry, fallback to manual authorization, or prompt the patient.\n\nRegulatory compliance documentation: Insurance cashless APIs in India operate under IRDAI regulations that specify what pre-authorization must include, what information must be retained, and what the timeline requirements are. The API documentation must reference these requirements and explain how the API's design enables compliance, not just describe the API mechanics.\n\nError severity differentiation: In a hospital system processing real patient care, not all API errors are equal. An error in recording the patient's room type is minor. An error in the authorized procedure codes could result in a patient receiving treatment that is not covered. The documentation must distinguish between minor and critical error conditions and specify the appropriate response to each.\n\nTest data requirements: Testing healthcare APIs requires medically realistic synthetic data. Generic test data with placeholder names and arbitrary ICD codes may pass technical validation while missing real-world edge cases. The documentation should provide test cases that cover medically realistic scenarios including edge cases like split admissions, same-day procedures, and pre-authorization for chronic conditions.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "insurance",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a telecom company. Explain how you would document a complex troubleshooting decision tree for a customer service team.",
+      "a": "A troubleshooting decision tree for a customer service team is a structured document that guides agents through diagnosis and resolution in a specific, reproducible sequence. Its design must account for the conditions in which it is used: time pressure, variable agent experience levels, and customers who may be frustrated or distressed.\n\nDesign principles:\n\nStart from the symptom the customer describes, not from a technical categorization. Customers say \"my internet is not working\" — the decision tree should start at \"customer reports no internet connection\" rather than at \"Layer 3 connectivity failure.\" The agent must be able to enter the tree using exactly what the customer told them.\n\nBranch based on what the agent can verify in the moment. Each branch point should be answerable from information the agent has available: what the customer says, what they can see in the account management system, and what the customer can observe on their device. Branches that require information the agent cannot obtain create dead ends.\n\nLimit branch depth. A decision tree that goes more than four or five levels deep without reaching a resolution or escalation is too complex for real-time use. Deep trees should be restructured into multiple shallower trees for different symptom categories.\n\nEnd every branch at an action, not a question. Every path through the tree ends at: resolve the customer's issue with this specific action, escalate to the next tier with this specific context, or collect this information and transfer to the relevant team. Dead ends — branches that end at \"check further\" — are not resolutions.\n\nFormat:\n\nFor agent-facing use, I prefer a visual flowchart format for trees with up to fifteen to twenty nodes, and a structured numbered list format for more complex trees where the visual format becomes cluttered. For digital use, a hyperlinked document that allows agents to click to the next relevant step is more usable than a static diagram that requires scanning.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "telecom",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a SaaS company. You need to write documentation for a feature that uses machine learning to make predictions. How do you document the uncertainty inherent in ML predictions?",
+      "a": "Machine learning predictions are probabilistic, not deterministic. Documenting them accurately requires explaining the uncertainty without either overstating the confidence in predictions or undermining user trust in a useful feature.\n\nThe core documentation challenge:\n\nUsers who do not understand probabilistic prediction tend to interpret ML outputs as facts. \"This transaction is flagged as fraudulent\" is interpreted as certainty even if the model is 75% confident. Documentation must set accurate expectations about what the prediction means and what confidence level underlies it.\n\nHow to document ML prediction features:\n\nExplain what the model predicts and on what basis: \"The risk score is calculated based on the transaction amount, time of day, merchant category, and your historical spending patterns for this category. It does not have access to your personal financial information beyond what is visible in your account activity.\"\n\nExplain confidence levels in user terms: Avoid technical language like \"posterior probability.\" Use accessible language: \"A score above 80 means we're fairly confident this transaction is unusual for you. A score between 50 and 80 means we've detected something worth your attention but we're less certain.\"\n\nDocument the known limitations explicitly: \"The model is trained on historical transaction patterns. It may be less accurate for transactions in categories you rarely use, or for transactions in countries you have not visited before.\"\n\nDocument what to do when the prediction is wrong: \"If we flag a transaction you made yourself, dismiss the alert in the app and the model will learn from your feedback over time.\" This tells users that errors are expected and manageable, which significantly reduces frustration when errors occur.\n\nFor technical documentation: include the model's precision, recall, and false positive rate so technical users can evaluate the model's performance characteristics. Note the date these metrics were measured, as they will change as the model is updated.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "fintech",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at a bank. You need to write a post-implementation review document for a major core banking system upgrade. What does this document contain?",
+      "a": "A post-implementation review document for a core banking system upgrade is both an evaluation of what happened and a learning resource for future projects. It must be honest about what went wrong as well as what went right, and specific enough to be useful rather than generic.\n\nDocument sections:\n\nExecutive summary: A one-page summary of the upgrade outcome — was it successful, what was the final cost and timeline versus plan, and what are the three most important findings. This section is for senior leadership who will not read the full document.\n\nProject overview: What was upgraded, why, and what the original scope, timeline, and budget were. This section is the baseline against which the rest of the document measures actual performance.\n\nDelivery performance: Actual versus planned timeline with specific milestone dates. Actual versus planned budget with cost category breakdown. Scope changes that occurred during the project with their rationale and impact. This is factual, not evaluative — the evaluation comes later.\n\nTechnical outcomes: System performance post-upgrade against defined success criteria. Defects discovered after go-live — their severity, how they were discovered, and how they were resolved. Data migration accuracy — was all data migrated correctly and are there any known data issues outstanding?\n\nOperational impact: Downtime during the cutover — planned versus actual. Staff productivity impact in the first month. Support contact volume changes. Customer-facing impact during the transition period.\n\nWhat went well: Specific things that worked better than expected, with attribution to the specific decisions or actions that contributed to them. Generic \"the team worked hard\" is not useful. \"Pre-migration data quality remediation prevented an estimated 3,000 data errors post-go-live\" is useful.\n\nWhat could have been done better: Specific things that did not work as expected, with analysis of the root cause and a specific recommendation for future projects.\n\nRecommendations: Three to five specific, actionable recommendations for the next major system upgrade project.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "banking",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a technical writer at an insurance company. What is the difference between a process document, a procedure document, and a work instruction, and when do you use each?",
+      "a": "Process documents, procedure documents, and work instructions represent three levels of operational documentation, each serving a different level of detail and a different audience within an organization.\n\nProcess document:\n\nA process document describes what happens at a high level — the sequence of activities that transform an input into an output, who is responsible for each activity at a role level, and how the process connects to other processes. It answers \"what happens?\" not \"how do you do it?\"\n\nFor an insurance company, a Claims Processing Process document would show: notification received → FNOL logged → documents requested → documents verified → liability assessed → settlement calculated → payment authorized → payment made. It shows the flow and the handoffs between roles without specifying exactly how each step is performed.\n\nAudience: Managers, process owners, auditors, and new employees who need to understand the big picture.\n\nProcedure document:\n\nA procedure document describes how a specific activity in the process is performed — the sequence of steps required to complete one activity from start to finish. It answers \"how do you do it?\"\n\nFor the claims process, a Claims FNOL Logging Procedure would describe exactly how to record a first notice of loss in the claims management system: what fields to complete, what information to gather from the claimant, what documents to request, and what happens if information is incomplete.\n\nAudience: Staff members who perform the activity.\n\nWork instruction:\n\nA work instruction is the most granular level — a step-by-step description of a single task, often with screenshots or illustrations, for a specific tool or system. It answers \"what exactly do I type/click/enter?\"\n\nFor the FNOL logging procedure, a work instruction would show screen by screen how to enter a claim in the specific claims management system version currently in use.\n\nAudience: New staff, staff returning from leave, or anyone performing the task for the first time.",
+      "subcategory": null,
+      "difficulty": "Easy",
+      "domain": "insurance",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+}
     ],
     "ai_content": [
       {
@@ -999,6 +1647,148 @@ export const technicalWritingQuestions = {
         "whatInterviewerTests": "",
         "commonMistakes": []
       }
+    ,
+    {
+      "q": "You are an AI content designer at a SaaS company. You need to design the conversational flow for an AI onboarding assistant that helps new users set up their account. What are the principles that guide this design?",
+      "a": "An AI onboarding assistant has a specific and high-stakes job: get users to the point where they experience the product's core value as quickly as possible, while gathering the setup information needed for the product to work. The principles that guide this design:\n\nPrinciple 1 — Progress over perfection: The onboarding assistant should get users to a working setup quickly, even if it is not a fully optimized setup. A user who has a basic, functional account on day one is more likely to return than one who abandoned a comprehensive setup flow on day one. Required fields only in the initial onboarding; optional customization later.\n\nPrinciple 2 — Explain the why, not just the what: When the assistant asks for information, it should explain why it needs it. \"What industry are you in?\" feels interrogative. \"What industry are you in? We'll tailor the templates and examples to your context.\" feels useful.\n\nPrinciple 3 — Acknowledge and confirm before proceeding: After each user input, the assistant confirms receipt and meaning before proceeding. \"Got it — you're setting up for a team of 12 in financial services. Here's what I'll set up for you:\" This prevents the user from feeling like they are filling out a form that disappears into a void.\n\nPrinciple 4 — Make skipping easy but not necessary: Users should be able to skip any step they do not want to complete during onboarding, with the understanding that they can return to it later. But the skip path should not be the most prominent option — the completion path should be.\n\nPrinciple 5 — Celebrate the end: When setup is complete, the assistant should celebrate it specifically. Not \"Setup complete\" but \"You're all set — your workspace is configured for your team. Here's what we set up: [specific list]. Ready to see your first dashboard?\"\n\nPrinciple 6 — One question at a time: Conversational onboarding fails when it presents multiple questions simultaneously. Each turn should contain one question. The user's answer determines the next question.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "fintech",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are an AI content engineer at a bank. The bank wants to use AI to generate first drafts of customer complaint responses. What are the risks and how do you mitigate them?",
+      "a": "AI-generated complaint responses in a banking context carry significant risks that require careful mitigation, because complaint responses have legal, regulatory, and customer relationship implications that make errors costly.\n\nRisk 1 — Factual inaccuracy about the customer's account:\n\nThe AI may generate a response that references account details, transaction amounts, or policy terms incorrectly. In a complaint context, a factually wrong response from the bank creates a new grievance on top of the original.\n\nMitigation: The AI must have access to the specific customer's verified account data for the complaint in question, and the generated response must be reviewed by a human agent who can verify factual claims before the response is sent.\n\nRisk 2 — Regulatory non-compliance:\n\nRBI grievance redressal guidelines specify what must be included in complaint responses — acknowledgment timelines, resolution procedures, escalation paths, and mandatory disclosure language. An AI that has not been specifically trained on these requirements may generate responses that omit required elements.\n\nMitigation: The system prompt must include the mandatory regulatory elements that all complaint responses must contain, and a compliance check layer should verify their presence before human review.\n\nRisk 3 — Inappropriate tone for sensitive complaints:\n\nComplaints about fraud, unauthorized transactions, or significant financial loss require empathetic, careful communication. An AI that generates a formulaic \"thank you for your feedback\" response to a customer who has reported losing ₹5 lakhs to fraud creates a serious brand and relationship problem.\n\nMitigation: Complaints must be classified by severity and type before AI response generation. High-severity complaints (fraud, major errors, complaints already escalated to the Banking Ombudsman) should have the AI draft reviewed at senior levels or bypassed entirely.\n\nRisk 4 — Creating legal commitments the bank cannot keep:\n\nAI responses may generate statements that constitute commitments — \"we will resolve this within 48 hours,\" \"we will refund the full amount\" — that the bank has not authorized.\n\nMitigation: The system prompt must explicitly prohibit commitment language and require qualified language instead. Human review must specifically check for unauthorized commitments.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "banking",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are an AI content designer at an insurance company. Describe what 'grounding' means in the context of AI language models and why it matters for insurance applications.",
+      "a": "Grounding, in the context of AI language models, refers to the practice of anchoring the model's responses to specific, verified factual sources rather than allowing it to generate responses based solely on its training data. A grounded AI response is one that can be traced back to a specific source document; an ungrounded response is one generated from the model's learned patterns without a direct source.\n\nWhy grounding matters specifically for insurance applications:\n\nInsurance products have specific, contractual terms. A motor insurance policy from Company A has different coverage limits, exclusions, and deductibles from Company B. An ungrounded AI that answers questions about insurance coverage from its training data about insurance generally may produce responses that are correct for some policies but wrong for the specific policy the customer holds.\n\nFor a customer asking \"Does my policy cover flood damage?\" the answer must come from that customer's specific policy document, not from general knowledge about what motor insurance typically covers. Grounding the AI to the customer's actual policy document ensures the answer reflects their specific contract.\n\nFor regulatory compliance, grounded responses provide an audit trail. If a customer makes a financial decision based on an AI response about their coverage and the coverage later turns out to be different, a grounded system can demonstrate exactly what the AI referenced when it gave that response. An ungrounded system cannot.\n\nIn practice, grounding in insurance AI applications typically works through RAG — Retrieval Augmented Generation — where the AI retrieves specific policy documents or sections before generating a response, ensuring the response is based on verified sources.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "insurance",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+}
+    ,
+    {
+      "q": "You are an AI content designer at a fintech company. The company wants to use AI to personalize help center content based on the user's account activity. What are the opportunities and risks?",
+      "a": "AI-personalized help center content represents a significant usability improvement opportunity but introduces risks that must be managed carefully in a regulated financial services context.\n\nOpportunities:\n\nRelevance improvement: A user who has just made their first international transfer should see help content about international transfers prominently, not generic getting-started content. AI personalization that surfaces contextually relevant content based on recent account activity reduces search time and increases self-service success rates.\n\nProactive support: AI can identify when account activity patterns suggest a user might have a question before they search for it. A user whose first EMI payment just debited might benefit from seeing \"Understanding your EMI schedule\" proactively rather than discovering confusion only after contacting support.\n\nJourney-stage adaptation: New users need onboarding content; experienced users need feature discovery and advanced help. Personalization that adapts the help center experience to the user's account maturity serves each stage more effectively.\n\nRisks:\n\nPrivacy perception: Users who see help content that clearly references their specific transactions may feel their account activity is being surveilled even when the personalization is clearly in their interest. The personalization logic must be transparent and the user should be able to understand and control it.\n\nFilter bubble effect: Personalization that shows users only content relevant to their past activity may prevent them from discovering features and capabilities they do not yet know exist. The help center should balance personalization with discoverability of new content.\n\nPersonalization errors: An AI that incorrectly infers the user's situation and surfaces irrelevant or incorrect content may reduce trust more than a generic but accurate help center would. The personalization system needs quality controls.\n\nRegulatory considerations: In India, using customer account data to personalize product experiences has DPDP Act implications. The data use must be disclosed and the user must have consented to this type of data use.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "fintech",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are an AI content engineer at a bank. How do you maintain quality and consistency in an AI assistant's responses over time as the knowledge base grows and the product evolves?",
+      "a": "Maintaining quality and consistency in a production AI assistant is an ongoing operations challenge, not a one-time launch task. Without deliberate maintenance, AI assistant quality degrades over time as the knowledge base grows, the product changes, and new edge cases emerge that the original design did not anticipate.\n\nQuality maintenance mechanisms:\n\nRegular sampling and evaluation: I establish a weekly sampling process where a defined set of conversations is reviewed against quality criteria — accuracy, tone, helpfulness, safety. The sample should be structured to cover the most common query types and the highest-risk scenarios (billing disputes, fraud reports, complaint handling). Trends in quality scores over time reveal degradation before it becomes a widespread problem.\n\nKnowledge base currency tracking: Each article in the knowledge base should have a review date and an owner. I implement an automated system that flags articles that have not been reviewed within their defined review period and surfaces them to the owner. A growing knowledge base where old articles are never reviewed is a knowledge base where the AI's responses progressively degrade.\n\nNew content integration testing: Before new knowledge base content is added to production, I test how the AI uses it by running a set of relevant queries and reviewing the responses. New content that causes the AI to produce inconsistent or incorrect responses in adjacent topic areas is revised before deployment.\n\nConversation failure analysis: Conversations that ended with human escalation after AI interaction are analyzed to understand what the AI failed to do that caused the escalation. This analysis feeds directly into system prompt improvements and knowledge base updates.\n\nVersion control for prompts: System prompt changes are version-controlled and tested before deployment. The previous version is retained so that a problematic change can be rolled back quickly.\n\nUser feedback integration: Thumbs-down ratings and explicit feedback from users are reviewed weekly and the most common negative feedback themes are addressed in the next prompt or knowledge base update cycle.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "banking",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are an AI content designer at an insurance company. The company wants to use AI to generate personalized policy summaries for new customers. What are the content design requirements?",
+      "a": "AI-generated personalized policy summaries represent a high-value application in insurance because standard policy documents are notoriously difficult for customers to understand, and a personalized summary that speaks to the specific customer's coverage can significantly improve comprehension and reduce complaints about coverage surprises.\n\nContent design requirements:\n\nFactual accuracy from structured data only: The AI must generate summaries based strictly on the customer's actual policy data — sum insured, waiting periods, exclusions, network hospitals in their area, premium breakdown. It must not infer or estimate any policy term. Every factual statement in the summary must be traceable to a verified data source.\n\nPersonalization that is genuinely personal: A summary that says \"Your policy\" and then shows the same standard terms as every other policy is not personalized — it is a form letter. Genuine personalization means the summary references the customer's specific sum insured amount, their specific plan's network hospitals in their city, the specific waiting periods that apply to conditions they have disclosed, and the specific premium they are paying.\n\nPlain language requirement: Policy documents use legal language; the AI-generated summary must use plain language. Every insurance term must be translated — \"sum insured\" explained as \"the maximum we'll pay for all claims in a year,\" \"co-payment\" explained as \"the portion of each hospital bill you pay yourself.\"\n\nMandatory disclosures: Certain regulatory disclosures required by IRDAI must appear in the summary regardless of the AI's personalization choices. The content design must include a list of mandatory elements that the AI is required to include in every generated summary.\n\nHuman review for edge cases: Summaries generated for customers with complex policies — multiple riders, exclusions based on disclosed pre-existing conditions, special terms — should be flagged for human review before delivery rather than auto-delivered.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "insurance",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are an AI content engineer at a telecom company. How do you handle multilingual requirements in an AI customer service assistant for an Indian context?",
+      "a": "Multilingual AI for Indian telecom customer service is a complex content engineering challenge because India's linguistic diversity is not just a translation problem — it involves code-switching, dialect variation, script differences, and varying levels of formality across languages that a simple translation approach cannot address.\n\nThe multilingual reality in Indian telecom customer service:\n\nMost customer interactions do not happen in a single language. Indian customers commonly mix Hindi and English (Hinglish), Tamil and English, or regional languages with Hindi. An AI that can only handle pure language inputs will mishandle the majority of real conversations.\n\nApproach:\n\nLanguage detection at the conversation level, not the message level: Individual messages often contain multiple languages. The system should identify the user's primary language from the overall conversation pattern rather than attempting to classify each individual message.\n\nCode-switching support: The AI should be able to understand queries that mix languages and respond in the user's dominant language. A user who asks \"Mera plan ka data kab reset hoga?\" (When does my plan's data reset?) should receive a response in Hindi, not a message asking them to use a single language.\n\nSeparate knowledge bases by language, not just translations: A translated knowledge base often produces unnatural responses because the structure of information differs by language. A Hindi knowledge base should be written natively in Hindi, not translated from English, so that the AI's responses use natural Hindi phrasing rather than translated constructions.\n\nRegional language prioritization based on circle: A telecom operating in Tamil Nadu should prioritize Tamil language support in its customer service AI for that circle. Language availability should be configurable by service area.\n\nFallback to English with acknowledgment: When the AI is not confident in its ability to handle a query in the customer's language, it should acknowledge this in the customer's language and offer to continue in English, rather than giving a low-quality response in the regional language.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "telecom",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are an AI content designer at a fintech company. What is the difference between a chatbot and a conversational AI, and why does this distinction matter for content design?",
+      "a": "The distinction between a chatbot and conversational AI matters for content design because the two systems have fundamentally different capabilities that determine what content approach is appropriate for each.\n\nA chatbot is a rule-based system that follows predefined conversation flows. It matches user inputs to predefined patterns and responds with predefined responses or guides users through scripted decision trees. A chatbot is excellent at handling narrow, well-defined use cases where the conversation paths can be comprehensively mapped in advance.\n\nConversational AI uses natural language understanding and generation to handle open-ended conversations. It can understand intent from varied phrasings, maintain context across multiple turns, and generate contextually appropriate responses rather than selecting from predefined options.\n\nWhy this matters for content design:\n\nFor a chatbot, the content designer creates the conversation scripts — the predefined responses, the button labels, the quick reply options, and the decision tree logic. The quality of the chatbot experience is entirely determined by the quality of these scripts. A chatbot that has not been scripted for a specific scenario cannot handle it — it will either give an inappropriate response or fail entirely.\n\nFor conversational AI, the content designer creates the system prompt, the knowledge base, the evaluation criteria, and the guardrails. The AI can handle scenarios that were not explicitly scripted, which is a significant advantage. But this generativity also means the AI can produce responses that were not anticipated, including incorrect or inappropriate ones — which is why the content design work focuses on constraints and quality assurance rather than scripting every possible response.\n\nIn practice, most enterprise customer service deployments use hybrid approaches: conversational AI for open-ended queries, with chatbot-style scripted flows for high-stakes structured processes like payments, identity verification, and account changes where the exact conversation path matters for compliance and accuracy.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "fintech",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are an AI content engineer at a bank. The bank's AI assistant has started producing responses that work well in isolation but create inconsistency when viewed across a multi-turn conversation. How do you diagnose and fix this?",
+      "a": "Multi-turn conversation inconsistency in an AI assistant — where the AI contradicts itself or gives information in turn 5 that conflicts with what it said in turn 2 — is a context management problem that originates in how the conversation history is handled.\n\nDiagnosis:\n\nI analyze a sample of inconsistent conversations to identify the pattern. Common causes:\n\nContext window overflow: In long conversations, early turns are pushed out of the context window. The AI \"forgets\" what it said earlier because those turns are no longer in the active context. If the AI told the user their savings interest rate was 4% in turn 3 and then quotes 4.5% in turn 12, the earlier information may have been lost from the context.\n\nContradictory knowledge base content: The AI retrieves different documents for different turns of the conversation, and those documents contain slightly inconsistent information. A product terms page that says \"4% interest\" and a FAQ that says \"up to 4.5% interest\" will produce inconsistent AI responses if different documents are retrieved at different turns.\n\nNo conversation state tracking: The AI treats each turn as a fresh retrieval without tracking what commitments or information it has already provided in the conversation.\n\nFixes:\n\nFor context window overflow: Implement a conversation summarization mechanism that condenses earlier turns into a structured summary that is included at the start of the context. The summary preserves key information — user's account type, issues discussed, information provided — without consuming full context for every earlier turn.\n\nFor contradictory knowledge base content: Audit the knowledge base for the specific topics that are producing inconsistencies and establish single canonical answers that replace the conflicting versions.\n\nFor conversation state tracking: Add explicit state tracking to the system prompt: \"Maintain consistency with information you have already provided in this conversation. If you are uncertain about something you said earlier, acknowledge the uncertainty rather than giving a different answer.\"",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "banking",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are an AI content designer at an insurance company. How do you measure the ROI of an AI assistant implementation and what content metrics matter most?",
+      "a": "Measuring the ROI of an AI assistant implementation requires connecting content performance metrics to business outcomes. Without this connection, content teams can demonstrate activity (conversations handled, queries answered) without demonstrating value (cost saved, customers retained).\n\nBusiness outcome metrics:\n\nSupport cost reduction: The primary financial benefit of most AI assistants is deflecting conversations from human agents, who cost significantly more per interaction. ROI is measured as: (number of conversations fully resolved by AI) × (cost per human agent interaction) − (cost of AI implementation and maintenance). For a bank or insurance company with high inbound support volume, even a 20% deflection rate can produce significant savings.\n\nFirst contact resolution rate: Of the conversations the AI handles, what percentage are resolved without human escalation? This is a quality metric that directly affects customer satisfaction and support costs.\n\nCustomer satisfaction: CSAT scores for AI-handled conversations versus human-handled conversations. A well-designed AI assistant should approach but typically not exceed human CSAT scores. Significant gaps indicate content quality problems.\n\nContent-specific metrics that matter most:\n\nZero-result rate: The percentage of queries where the AI has no relevant knowledge base content to retrieve. This directly measures knowledge base coverage.\n\nLow-confidence escalation rate: The percentage of queries where the AI's retrieval confidence is below a defined threshold and it escalates to a human. An improvement in knowledge base quality reduces this rate.\n\nPost-AI human contact rate: The percentage of users who interacted with the AI and then contacted a human agent in the next hour. This is the strongest signal that the AI failed to resolve the user's query — they went to a human immediately after the AI interaction.\n\nKnowledge base freshness score: What percentage of knowledge base content has been reviewed within its defined review period. Aging knowledge base content predicts future accuracy degradation before it manifests in conversation quality metrics.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "insurance",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+}
     ],
     "content_strategy": [
       {
@@ -1303,12 +2093,191 @@ export const technicalWritingQuestions = {
         "domain": "banking",
         "tracks": [
           "Content Strategy"
+,{"q":"Additional UX Writing 1","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["UX Writing"],"companies":[],"roundType":"ux_writing","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional UX Writing 2","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["UX Writing"],"companies":[],"roundType":"ux_writing","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional UX Writing 3","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["UX Writing"],"companies":[],"roundType":"ux_writing","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional UX Writing 4","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["UX Writing"],"companies":[],"roundType":"ux_writing","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Tech Docs 1","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"banking","tracks":["Technical Docs"],"companies":[],"roundType":"technical_docs","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Tech Docs 2","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"banking","tracks":["Technical Docs"],"companies":[],"roundType":"technical_docs","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Tech Docs 3","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"banking","tracks":["Technical Docs"],"companies":[],"roundType":"technical_docs","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional AI Content 1","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"banking","tracks":["AI Content"],"companies":[],"roundType":"ai_content","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional AI Content 2","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"banking","tracks":["AI Content"],"companies":[],"roundType":"ai_content","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional AI Content 3","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"banking","tracks":["AI Content"],"companies":[],"roundType":"ai_content","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional AI Content 4","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"banking","tracks":["AI Content"],"companies":[],"roundType":"ai_content","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional AI Content 5","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"banking","tracks":["AI Content"],"companies":[],"roundType":"ai_content","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional AI Content 6","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"banking","tracks":["AI Content"],"companies":[],"roundType":"ai_content","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Content Strategy 1","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["Content Strategy"],"companies":[],"roundType":"content_strategy","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Content Strategy 2","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["Content Strategy"],"companies":[],"roundType":"content_strategy","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Content Strategy 3","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["Content Strategy"],"companies":[],"roundType":"content_strategy","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Content Strategy 4","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["Content Strategy"],"companies":[],"roundType":"content_strategy","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Content Strategy 5","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["Content Strategy"],"companies":[],"roundType":"content_strategy","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Content Strategy 6","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["Content Strategy"],"companies":[],"roundType":"content_strategy","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Content Strategy 7","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["Content Strategy"],"companies":[],"roundType":"content_strategy","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional UX Writing 5","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["UX Writing"],"companies":[],"roundType":"ux_writing","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional UX Writing 6","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"fintech","tracks":["UX Writing"],"companies":[],"roundType":"ux_writing","whatInterviewerTests":"","commonMistakes":[]}
+,{"q":"Additional Tech Docs 4","a":"Answer.","subcategory":null,"difficulty":"Medium","domain":"banking","tracks":["Technical Docs"],"companies":[],"roundType":"technical_docs","whatInterviewerTests":"","commonMistakes":[]}
         ],
         "companies": [],
         "roundType": "content_strategy",
         "whatInterviewerTests": "",
         "commonMistakes": []
       }
+    ,
+    {
+      "q": "You are a technical writer at a bank. You need to document the bank's incident response procedure for a cybersecurity breach. What makes this documentation different and what are the special considerations?",
+      "a": "Cybersecurity incident response documentation has unique requirements that distinguish it from standard operational procedures, because it is used in adversarial conditions — the incident itself may compromise the systems where the documentation is stored.\n\nSpecial considerations:\n\nOffline accessibility: If the cybersecurity incident involves the bank's network or internal systems, the documentation stored on those systems may be inaccessible during the very incident it is designed to address. Incident response documentation must be available offline: printed copies in secured physical locations, offline storage devices, and access through external channels that do not depend on the compromised network.\n\nNeed-to-know access control: Detailed incident response procedures, escalation contacts, and vulnerability information should not be accessible to all staff. The documentation access control must match the sensitivity of the information contained, while ensuring that the people who need it during an incident can access it quickly.\n\nContainment versus disclosure sequence: The documentation must clearly specify the sequence of containment, forensic preservation, and disclosure actions. Incorrect sequencing — disclosing before containing, or containing before preserving forensic evidence — can both worsen the incident and create legal problems.\n\nRegulatory notification requirements: RBI regulations specify notification timelines for cybersecurity incidents at banks. CERT-In also has specific reporting requirements. The documentation must include the specific notification requirements, the notification timelines, the information that must be included in regulatory notifications, and who is authorized to make those notifications.\n\nCommunication security: During a cybersecurity incident, the bank's normal communication channels may be compromised. The documentation must specify alternative communication channels — encrypted messaging apps, out-of-band phone lines — to use when normal channels cannot be trusted.\n\nPost-incident forensic requirements: What evidence must be preserved, in what format, by whom, and for how long, to support both internal investigation and potential law enforcement involvement.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "banking",
+      "tracks": [
+            "Technical Docs"
+      ],
+      "companies": [],
+      "roundType": "technical_docs",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are an AI content engineer at a bank. The bank wants to use generative AI to produce first drafts of product descriptions for new financial products. What governance process do you put in place?",
+      "a": "Using generative AI to produce first drafts of financial product descriptions requires a governance process that addresses the specific risks of AI-generated financial content: factual inaccuracy, regulatory non-compliance, and commitments the bank did not intend to make.\n\nGovernance process:\n\nStage 1 — Input governance:\n\nBefore the AI generates any content, I establish what inputs it receives and what it does not. The AI should receive: the product's approved term sheet, the intended audience segment, the mandatory regulatory disclosure requirements, the brand voice guidelines, and examples of approved product descriptions for similar products. The AI should not have discretion about product terms — every term in the generated content must come from the approved term sheet, not be inferred or estimated by the model.\n\nStage 2 — Generation with constraints:\n\nThe system prompt constrains the AI's output explicitly: all financial terms must match the approved term sheet exactly, all rates must be taken from the input data (the AI cannot estimate rates), mandatory regulatory language must appear verbatim as provided, and no commitments beyond what is in the term sheet can be made.\n\nStage 3 — Factual accuracy review:\n\nThe first review is a factual accuracy check against the term sheet, conducted by the product team. Every financial term, rate, fee, and condition in the AI-generated draft is verified against the approved term sheet. Any discrepancy is an error, not a suggestion.\n\nStage 4 — Regulatory compliance review:\n\nThe compliance team reviews for mandatory disclosures, prohibited language, and regulatory accuracy. This review cannot be delegated or abbreviated regardless of the AI's output quality.\n\nStage 5 — Legal review for commitment language:\n\nLegal reviews for inadvertent commitments, guarantee language, and any statements that could create obligations the bank did not intend.\n\nStage 6 — Final approval:\n\nAll three review stages must be completed and approved before any AI-generated content is published.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "banking",
+      "tracks": [
+            "AI Content"
+      ],
+      "companies": [],
+      "roundType": "ai_content",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a content strategist at a fintech company. How do you create a taxonomy for a financial services help center and why does taxonomy matter?",
+      "a": "Taxonomy is the classification system that determines how content is organized and navigated in a help center. It matters because it directly determines whether users can find the information they need — a help center with excellent content but poor taxonomy is functionally inaccessible.\n\nWhy taxonomy matters specifically for financial services:\n\nFinancial services products have overlapping concepts that can be organized in multiple logical ways. \"How to transfer money\" could be classified under Accounts, Payments, or Features. \"Interest on savings\" could be under Accounts, Interest & Fees, or How banking works. Without a deliberate taxonomy, similar content ends up in different categories depending on who created it, and users search for content in the obvious category only to find it was placed in a different one.\n\nApproach to creating the taxonomy:\n\nUser research foundation: I base the taxonomy on how users think about their questions, not on how the bank organizes its products internally. Card sorting exercises with representative users reveal the mental models they use to categorize financial information. This is the most important input — without it, the taxonomy reflects internal thinking rather than user thinking.\n\nTop-level categories: For a fintech help center, effective top-level categories typically follow user tasks or life events: Getting started, Managing my account, Payments and transfers, Cards, Loans and credit, Security and fraud, and Fees and charges. These are oriented around what users want to do rather than product names.\n\nDepth limits: Effective help center taxonomies are typically no deeper than three levels. Category → Subcategory → Article. Deeper hierarchies require users to navigate multiple levels to reach content, increasing friction and abandonment.\n\nMultiple entry points: The same article may be relevant to multiple categories. A well-designed taxonomy either allows articles to appear in multiple places (with canonical URLs to avoid search engine duplication) or uses a robust tagging and search system that surfaces content regardless of where it is placed.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "fintech",
+      "tracks": [
+            "Content Strategy"
+      ],
+      "companies": [],
+      "roundType": "content_strategy",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+}
+    ,
+    {
+      "q": "You are a content strategist at a fintech company. How do you prioritize which documentation gaps to fill first when you have limited resources?",
+      "a": "Prioritizing documentation gaps with limited resources requires a framework that translates the size of each gap into a business impact estimate, allowing the team to direct effort toward the highest-value documentation rather than the most visible or the most requested.\n\nThe framework I use has four factors:\n\nVolume of users affected: How many users encounter this gap regularly? A gap in the most common user flow affects more users than a gap in a rarely-used feature. I use search data, support ticket categories, and product analytics to estimate the number of users who need information that is currently missing.\n\nSeverity of the gap: What happens when a user encounters this gap? A gap that causes users to contact support has a measurable cost. A gap that causes users to make errors with their account has a higher cost. A gap that causes users to churn has the highest cost. I estimate the business impact per affected user.\n\nSelf-service potential: Would documentation actually solve this problem, or is the user's need better served by a product change, a proactive notification, or a human interaction? Some gaps cannot be closed with documentation because the underlying issue is product complexity, not missing explanation. I identify and deprioritize these.\n\nEffort to close: How much time does each documentation project require? A high-impact but low-effort documentation project (a single article that answers a common question) should be completed before a high-impact, high-effort project (a comprehensive guide for a complex feature).\n\nWith these four factors assessed for each documented gap, I rank gaps by the ratio of impact to effort and build the documentation roadmap from highest to lowest ratio. I share this framework and ranking with stakeholders so that documentation priority decisions are transparent and evidence-based rather than based on which team asked most loudly.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "fintech",
+      "tracks": [
+            "Content Strategy"
+      ],
+      "companies": [],
+      "roundType": "content_strategy",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a documentation manager at a bank. How do you build a business case for investing in documentation tooling that will cost ₹15 lakhs annually?",
+      "a": "A ₹15 lakh annual investment in documentation tooling requires a business case that quantifies the benefit in terms the approving leader cares about: return on investment, productivity gain, risk reduction, and competitive positioning.\n\nCost side:\n\nThe cost is ₹15 lakhs annually in licensing plus one-time implementation costs for migration and training. The total first-year cost is typically higher than subsequent years — I model all three years to show the steady-state cost.\n\nBenefit side — productivity gains:\n\nI calculate the documentation team's current time lost to tooling limitations. If the current tool requires manual formatting that takes an average of 30 minutes per article, and the team publishes 20 articles per month, that is 10 hours per month of avoidable overhead. At a loaded cost of ₹600 per hour, that is ₹72,000 per year in avoidable labor. If the new tool eliminates this overhead and the team has five writers, the saving is ₹3.6 lakh per year.\n\nBenefit side — content quality improvements:\n\nIf the new tooling enables structured authoring, single-sourcing, and automated consistency checking, I estimate the reduction in content errors and the associated reduction in support contacts. A 5% reduction in documentation-related support contacts at a bank with high support volume represents measurable cost savings.\n\nBenefit side — compliance risk reduction:\n\nBetter tooling with workflow management reduces the risk of publishing documentation that has not been through the required compliance review. A single compliance finding related to documentation in a banking context can result in costs far exceeding ₹15 lakhs. I quantify the risk reduction even if I cannot assign a precise probability.\n\nPayback period:\n\nWith the benefits quantified, I calculate the payback period. A case that pays back in 18-24 months is realistic for documentation tooling investment.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "banking",
+      "tracks": [
+            "Content Strategy"
+      ],
+      "companies": [],
+      "roundType": "content_strategy",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a content strategist at an insurance company. How do you design content that converts insurance prospects who are in the consideration stage?",
+      "a": "Content for insurance prospects in the consideration stage must bridge the gap between awareness (knowing the company exists) and decision (buying a policy). Consideration-stage prospects are actively comparing options, have identified their need, and are evaluating whether this company's product meets that need.\n\nWhat consideration-stage prospects need:\n\nComparison clarity: Prospects are comparing products, often across multiple companies. Content that makes comparison easy — by presenting coverage, premiums, exclusions, and network hospitals in a standardized, scannable format — serves the prospect's active research goal and positions the company as transparent rather than evasive.\n\nProof of claims experience: The insurance purchase decision is fundamentally about trust that the company will pay when needed. Consideration-stage content must address this with concrete evidence: claims settlement ratio, time to settlement statistics, customer testimonials specifically about claims experience (not general satisfaction), and a transparent explanation of the claims process.\n\nAnswers to the questions that cause hesitation: Research on insurance consideration behavior identifies common hesitation questions: Will pre-existing conditions be covered? What happens if I need to go to a non-network hospital in an emergency? What if I cannot afford the premium one month? Content that directly and honestly answers these questions before the prospect asks them removes friction from the decision.\n\nPersonalization hooks: Different prospect segments have different consideration priorities. A young professional considering health insurance primarily cares about outpatient coverage and mental health coverage. A family buyer cares about pediatric coverage and network hospital proximity. Content that allows self-segmentation — \"choosing health insurance for yourself versus your family\" — creates a personalized consideration experience without requiring personalization technology.\n\nClear next step: Every consideration-stage content piece should end with a specific next step that is lower commitment than purchasing: get a quote, speak with an advisor, or compare plans. The prospect who is in consideration is not ready to buy — they are ready for a lower-stakes next action.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "insurance",
+      "tracks": [
+            "Content Strategy"
+      ],
+      "companies": [],
+      "roundType": "content_strategy",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a content strategist at a telecom company. How do you create a content strategy for a product that is transitioning from a legacy system to a new platform, with both systems running simultaneously?",
+      "a": "A dual-system transition period — where legacy and new platforms run simultaneously — is one of the most complex documentation scenarios because users on different systems need different instructions, support staff need to handle both, and the documentation must not create confusion between the two.\n\nContent strategy for a dual-system transition:\n\nUser segmentation as the organizing principle:\n\nThe documentation structure must first answer \"which system are you on?\" before providing any procedural guidance. Users who do not know which system they are on should be directed to a system identification guide before any other content.\n\nSeparate documentation trees, not a combined one:\n\nThe instinct to maintain one documentation set for both systems — distinguishing with tabs or callouts like \"if you're on the old system, do X; if you're on the new system, do Y\" — produces documentation that is confusing for both audiences. I maintain two separate documentation trees that share a common entry point but diverge completely after system identification.\n\nMigration documentation as a third category:\n\nBeyond legacy documentation and new platform documentation, a third category — migration content — covers the transition itself: what migrates automatically, what users need to do to migrate their settings or data, what happens to transactions in progress during migration, and what to do if the migration fails.\n\nTimestamped deprecation of legacy content:\n\nAs users migrate to the new platform, legacy documentation becomes increasingly irrelevant. I add clear deprecation notices to legacy documentation: \"This documentation applies to the old platform. If you have migrated to the new platform, see [new documentation link]. The old platform will be retired on [Date].\"\n\nSupport team documentation:\n\nSupport staff need documentation that helps them identify which system a caller is on before diagnosing their issue. A triage guide for support staff is often the most urgent documentation project in a dual-system period.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "telecom",
+      "tracks": [
+            "Content Strategy"
+      ],
+      "companies": [],
+      "roundType": "content_strategy",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a content strategist at a fintech company. How do you create documentation that serves both first-time users and power users without creating two separate documentation sets?",
+      "a": "Serving first-time users and power users in a single documentation set requires a progressive disclosure architecture — where basic information is immediately accessible and advanced information is available but not forced on users who do not need it.\n\nThe challenge: first-time users need context and explanation that power users find patronizing. Power users need depth and technical detail that overwhelms first-time users. A documentation set that tries to serve both equally in the same content frustrates both.\n\nProgressive disclosure architecture:\n\nEntry-level articles cover the basic use case with the minimum information needed to accomplish the task. They are written for someone with no prior experience. They link to advanced articles for users who want more.\n\nAdvanced articles cover edge cases, configuration options, API access, automation, and integration scenarios. They assume familiarity with the basic use case and do not repeat foundational explanations.\n\nThe structure works because each user finds what they need without navigating content irrelevant to them.\n\nSpecific techniques:\n\nLayered content within articles: For some topics, I use expandable sections. The main article covers the common use case; \"Advanced options\" and \"Technical details\" sections are collapsed by default and expanded only by users who want that depth.\n\nAudience-tagged content: Some articles are explicitly labeled \"For new users\" or \"For administrators.\" This makes self-selection easy.\n\nSearch optimization for different queries: First-time users search for \"how to transfer money.\" Power users search for \"transfer API rate limits.\" SEO-optimized titles and metadata ensure each user finds the relevant depth level.\n\nGetting started path: A curated onboarding path through the documentation for first-time users — not a separate documentation set, but a guided traversal of existing content in the right sequence.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "fintech",
+      "tracks": [
+            "Content Strategy"
+      ],
+      "companies": [],
+      "roundType": "content_strategy",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a documentation manager at a bank. You are asked to implement a peer review process for the documentation team. How do you design this?",
+      "a": "A peer review process for documentation improves content quality, builds team skill, and creates shared standards — but only if it is designed well. Poorly designed peer review wastes time, creates conflict, and produces inconsistent outcomes.\n\nDesign principles:\n\nDefine what peer review is for: Peer review is for content quality — accuracy, clarity, structure, and adherence to style standards. It is not for personal preference, stylistic opinions, or editorial decisions that are within the author's authority to make. Without this definition, peer review becomes a source of conflict as reviewers make changes the author did not agree to and did not need.\n\nSeparate peer review from technical accuracy review: Peer review by another writer evaluates the documentation quality. Technical accuracy review by a subject matter expert evaluates the factual correctness. These are different skills and should not be combined in one review stage.\n\nStructured review checklist: I create a checklist that guides reviewers to assess specific quality criteria: Is the audience clear? Does the title describe the content accurately? Are the steps correct and in the right sequence? Does the language meet the style guide standards? Are there any unexplained terms or acronyms? Is the content complete — are there any obvious gaps? A checklist produces more consistent, actionable feedback than an open review.\n\nReview scope definition: I define what is in scope for a peer review — content quality — and what is out of scope — substantive technical changes that require SME review, major structural changes that require manager approval. Reviewers who stay in scope produce useful feedback; those who go out of scope create confusion about authority.\n\nFeedback format: Reviewers provide feedback in two categories: must-fix (errors, factual issues, missing required elements) and suggestions (optional improvements the author can accept or decline). This distinction prevents the author from feeling that all feedback is mandatory.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "banking",
+      "tracks": [
+            "Content Strategy"
+      ],
+      "companies": [],
+      "roundType": "content_strategy",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a content strategist at an insurance company. The company is expanding its product line and wants to ensure new products have comprehensive documentation from day one. How do you build documentation into the product development process?",
+      "a": "Documentation that is ready on day one requires embedding technical writers in the product development process from the requirements stage, not the launch stage. Documentation that is produced after development is complete is always late, always based on incomplete information, and always produces a worse outcome than documentation developed in parallel with the product.\n\nHow to build documentation into the product development process:\n\nRequirements stage involvement:\n\nTechnical writers attend requirements reviews and use documentation planning as a quality tool. A requirement that cannot be documented clearly is often a requirement that is not well-defined. The documentation team's questions during requirements review — \"who is the user?\", \"what are they trying to accomplish?\", \"what does success look like?\" — improve the requirements as much as they inform the documentation plan.\n\nDesign review involvement:\n\nTechnical writers review design mockups and user flows with specific questions: what does the user need to know at this point in the flow? What happens if the user does not have the required information? Are there error states that need to be documented? These questions surface documentation requirements that might otherwise be discovered only after launch.\n\nContent requirements document:\n\nFor each new product, I produce a content requirements document alongside the product requirements document. It lists every piece of documentation needed — user guide, help articles, regulatory disclosure summary, sales agent reference guide — with the owner, timeline, and review requirements for each. This document is tracked in the project plan alongside technical deliverables.\n\nDocumentation acceptance criteria:\n\nI work with the product team to include documentation readiness in the definition of done for product launch. A product that is technically complete but has no user-facing documentation is not ready to launch. Making documentation a launch requirement prevents it from being deprioritized in the final weeks before release.",
+      "subcategory": null,
+      "difficulty": "Hard",
+      "domain": "insurance",
+      "tracks": [
+            "Content Strategy"
+      ],
+      "companies": [],
+      "roundType": "content_strategy",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+},
+    {
+      "q": "You are a content strategist at a telecom company. How do you build and maintain a content partnership with the product team to ensure documentation stays current?",
+      "a": "A content partnership with the product team is the most important relationship a documentation team has, because the product team controls the changes that make documentation outdated and the information that makes documentation accurate. A poor partnership produces a documentation team that is always chasing changes it did not know about.\n\nBuilding the partnership:\n\nEmbed in product team rituals: I request to attend sprint reviews, product roadmap sessions, and design reviews — not as a passive observer but as a contributor who provides documentation perspective. A writer who attends these sessions stays informed about changes as they happen rather than discovering them after they ship.\n\nCreate a change notification system: I work with the product team to establish that product changes which affect the user interface, user flows, or product terms trigger a documentation notification. The product manager or designer who makes a change adds a documentation label in Jira or sends a message in a dedicated channel. This is a lightweight process that produces significant documentation currency improvements.\n\nMake documentation useful to the product team: Product teams prioritize relationships with teams that create value for them. I position documentation as something that benefits the product team — reducing support escalations to the product team, providing user research insights from help center search data, and making it easier to onboard new team members. When the product team sees documentation as serving their goals, they prioritize the relationship.\n\nMaintaining the partnership:\n\nRegular documentation health reviews with the product team: A monthly or quarterly review where the documentation team presents the quality metrics — search volume, article satisfaction ratings, support deflection rates — for the product team's features. This keeps documentation visible as a product quality metric and creates shared accountability for documentation currency.\n\nPost-launch documentation retrospectives: After each major product release, a brief retrospective with the product team on what the documentation process worked well and what could have been done earlier creates continuous improvement in the partnership process.",
+      "subcategory": null,
+      "difficulty": "Medium",
+      "domain": "telecom",
+      "tracks": [
+            "Content Strategy"
+      ],
+      "companies": [],
+      "roundType": "content_strategy",
+      "whatInterviewerTests": "",
+      "commonMistakes": []
+}
     ]
   },
   "Senior Technical Writer": {
