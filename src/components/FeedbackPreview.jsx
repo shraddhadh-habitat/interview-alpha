@@ -107,6 +107,33 @@ Second: break down the waterfall. Sales = Transactions × Ticket Size. I'd measu
 Third: layer in context. What's the market doing? If the category is growing 5% but we're down 15%, we're losing share. If the market is also down 15%, it's external (recession, consumer shift to home brewing). Fourth: test competitor activity. Did a new chain open? Are they running aggressive promotions? Did our own pricing move hurt us? Finally: store operations. Check NPS, wait times, and product freshness scores. The 15% drop is often a lagging indicator of execution problems that started 2-3 quarters ago.`,
     }
   },
+  {
+    id: 'technical_writing',
+    label: 'Technical Writing',
+    emoji: '✍️',
+    color: '#0891b2',
+    example: {
+      category: 'TECHNICAL WRITING',
+      question: "You're writing API documentation for a payment gateway that supports 15 different payment methods. How do you structure the documentation so developers can quickly find what they need?",
+      sampleAnswer: "I'd organize by developer journey, not by feature list. Start with a quick-start guide showing a basic payment flow in 5 minutes. Then separate sections: common use cases (one-time payment, subscription, refunds), authentication methods, error handling, and code samples in their languages. I'd create a decision tree: 'Need recurring payments?' → leads to subscriptions section. This is better than linear docs because developers have different entry points.",
+      overallScore: 7,
+      competencies: [
+        { label: 'Documentation Clarity',  score: 8 },
+        { label: 'Technical Accuracy',     score: 8 },
+        { label: 'Audience Adaptation',    score: 7 },
+        { label: 'Information Architecture', score: 7 },
+        { label: 'Communication',          score: 8 },
+        { label: 'Code Example Quality',   score: 7 },
+        { label: 'User Empathy',           score: 7 },
+        { label: 'Completeness',           score: 6 },
+      ],
+      expertRewrite: `API documentation fails when it mirrors the product architecture instead of the developer workflow. I would design this around actual developer tasks, not payment method count.
+
+Start with a five-minute quick-start showing the minimum code to process a payment. Make it copy-paste ready. Then organize by business use case: subscription billing, marketplace payouts, checkout on mobile. Each section includes working code samples, common errors, and how-tos.
+
+For the 15 payment methods, I'd use a decision tree format: "Need to accept local payment methods? Choose your region. Then select payment type." This reduces cognitive load and lets developers find what matters to them, not what's most complex. Include a troubleshooting section keyed to actual error codes, not API design philosophy. Documentation is done when a developer can solve their problem without asking support.`,
+    }
+  },
   // ============================================================
   // ADD NEW TRACKS HERE IN FUTURE: example:
   // {

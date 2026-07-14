@@ -239,7 +239,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
             }}>
-              Product Managers, Project Managers, Data Science, and Consulting
+              Product Managers, Project Managers, Data Science, Consulting, and Technical Writing
             </strong>
             {' '}questions and answers to practice from.
           </p>
@@ -251,7 +251,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
             marginTop: '8px',
             fontWeight: 500
           }}>
-            Thousands of Product Managers, Project Managers, Data Science, and Consulting aspirants practicing right now. Your interview could be next week.
+            Thousands of Product Managers, Project Managers, Data Science, Consulting, and Technical Writing aspirants practicing right now. Your interview could be next week.
           </p>
         </div>
 
