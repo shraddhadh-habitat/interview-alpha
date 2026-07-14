@@ -20,11 +20,12 @@ const C = {
 };
 
 const PM_CATEGORY_CHIPS = [
-  { id: 'behavioral',       label: 'Behavioral',           dataKeys: ['behavioral'], subcategory: null },
-  { id: 'product_design',   label: 'Product Design',       dataKeys: ['product'],    subcategory: 'product_design' },
-  { id: 'product_strategy', label: 'Product Strategy',     dataKeys: ['product'],    subcategory: 'product_strategy' },
-  { id: 'analytical',       label: 'Analytical/Metrics',   dataKeys: ['ai'],         subcategory: null },
-  { id: 'technical',        label: 'Technical/Estimation', dataKeys: ['ai_technical'], subcategory: null },
+  { id: 'behavioral',        label: 'Behavioral',           dataKeys: ['behavioral'], subcategory: null },
+  { id: 'product_design',    label: 'Product Design',       dataKeys: ['product'],    subcategory: 'product_design' },
+  { id: 'product_strategy',  label: 'Product Strategy',     dataKeys: ['product'],    subcategory: 'product_strategy' },
+  { id: 'analytical',        label: 'Analytical/Metrics',   dataKeys: ['ai'],         subcategory: null },
+  { id: 'technical',         label: 'Technical/Estimation', dataKeys: ['ai_technical'], subcategory: null },
+  { id: 'forward_deployed',  label: 'Forward Deployed PM',  dataKeys: ['behavioral'], subcategory: 'forward_deployed' },
 ];
 
 // DS_CATEGORY_CHIPS will be built dynamically from the Data Scientist data
