@@ -276,6 +276,39 @@ const PM_TRACK_CERTIFICATIONS = [
   { cert: 'PgMP (Program Manager)', premium: '+20–30%', note: 'Senior roles only, significant compensation jump' },
 ];
 
+// ─── Technical Writing Salary Data ───
+const TW_IN_SALARIES = [
+  { level: 'Junior Technical Writer', tc: '₹4–8 LPA', base: '₹4–7 LPA', bonus: '5–8%', equity: 'ESOP at startups' },
+  { level: 'Technical Writer (2–4 yrs)', tc: '₹8–15 LPA', base: '₹7–12 LPA', bonus: '8–12%', equity: 'Stock options at Series B+' },
+  { level: 'Senior Technical Writer', tc: '₹15–28 LPA', base: '₹12–22 LPA', bonus: '10–15%', equity: '₹2–8 L vesting 4yr' },
+  { level: 'Lead Technical Writer / Manager', tc: '₹28–45 LPA', base: '₹22–35 LPA', bonus: '12–18%', equity: '₹5–15 L vesting 4yr' },
+  { level: 'Head of Technical Writing', tc: '₹40–70 LPA', base: '₹32–55 LPA', bonus: '15–20%', equity: '₹10–25 L vesting 4yr' },
+];
+
+const TW_US_SALARIES = [
+  { level: 'Junior Technical Writer', tc: '$55–75K', base: '$50–68K', bonus: '5–8%', equity: '$5–15K RSU/yr' },
+  { level: 'Technical Writer (2–4 yrs)', tc: '$75–110K', base: '$65–95K', bonus: '8–12%', equity: '$10–25K RSU/yr' },
+  { level: 'Senior Technical Writer', tc: '$110–155K', base: '$90–130K', bonus: '10–15%', equity: '$20–45K RSU/yr' },
+  { level: 'Lead Technical Writer / Manager', tc: '$145–195K', base: '$120–160K', bonus: '12–18%', equity: '$35–65K RSU/yr' },
+  { level: 'Head of Technical Writing', tc: '$180–250K', base: '$145–200K', bonus: '15–20%', equity: '$50–90K RSU/yr' },
+];
+
+const TW_COMPANY_COMP = [
+  { company: 'TCS / Infosys / Wipro', levels: 'Junior TW–Senior TW', tc_in: '₹4–20 LPA', tc_us: '$55–110K', notes: 'Large volume of TW roles, process-heavy environment' },
+  { company: 'Google / Microsoft / Meta', levels: 'TW–Senior TW', tc_in: '₹25–80 LPA', tc_us: '$120–220K', notes: 'High bar, strong RSU, Docs-as-Code culture' },
+  { company: 'Fintech startups (Razorpay, Zepto)', levels: 'TW–Lead TW', tc_in: '₹12–45 LPA', tc_us: 'N/A', notes: 'Fast growth, API doc focus, equity upside' },
+  { company: 'Banks (HDFC/ICICI/Axis)', levels: 'TW–Senior TW', tc_in: '₹8–25 LPA', tc_us: 'N/A', notes: 'Regulatory doc focus, stable comp, lower equity' },
+  { company: 'Insurance (LIC/HDFC Life)', levels: 'TW–Lead TW', tc_in: '₹6–22 LPA', tc_us: 'N/A', notes: 'Policy and compliance doc, IRDAI expertise valued' },
+];
+
+const TW_SKILLS_PREMIUM = [
+  { skill: 'API Documentation / Docs-as-Code', premium: '+20–35%', note: 'Highest demand — developer-facing TW commands top salaries' },
+  { skill: 'AI Content Engineering', premium: '+25–40%', note: 'Emerging, very scarce — prompt design, RAG, knowledge architecture' },
+  { skill: 'UX Writing / Content Design', premium: '+15–25%', note: 'Strong demand in product companies and fintech' },
+  { skill: 'DITA / Structured Authoring', premium: '+10–20%', note: 'Valued in large enterprises with complex doc suites' },
+  { skill: 'Regulatory / Compliance Writing', premium: '+12–18%', note: 'Critical in BFSI — IRDAI, RBI, SEBI documentation expertise' },
+];
+
 // ─── Collapsible section ───
 function Section({ title, subtitle, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -368,7 +401,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
   const [selectedRole, setSelectedRole] = useState('PM');
 
   useEffect(() => {
-    const roleText = selectedRole === 'Product Management' ? 'Product Manager' : selectedRole === 'Project Management' ? 'Project Management' : selectedRole === 'Data Science' ? 'Data Science' : 'Consulting';
+    const roleText = selectedRole === 'Product Management' ? 'Product Manager' : selectedRole === 'Project Management' ? 'Project Management' : selectedRole === 'Data Science' ? 'Data Science' : selectedRole === 'Technical Writing' ? 'Technical Writing' : 'Consulting';
     document.title = `${roleText} Salary Guide 2026 | InterviewAlpha.ai`;
     return () => { document.title = 'Interview Preparation Questions & Answers | AI Mock Interview Practice | InterviewAlpha.ai™'; };
   }, [selectedRole]);
@@ -383,7 +416,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         <div style={{ marginBottom: 32, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>I'm looking at salaries for:</span>
           <div style={{ display: 'flex', gap: 8 }}>
-            {['Product Management', 'Project Management', 'Data Science', 'Consulting'].map(role => (
+            {['Product Management', 'Project Management', 'Data Science', 'Consulting', 'Technical Writing'].map(role => (
               <button
                 key={role}
                 onClick={() => setSelectedRole(role)}
@@ -422,7 +455,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         <div style={{ marginBottom: 36 }}>
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>CAREER RESOURCES</div>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12, lineHeight: 1.15 }}>
-            {selectedRole === 'Product Management' ? 'Product Management Salary & Negotiation Guide' : selectedRole === 'Project Management' ? 'Project Management Salary Guide' : selectedRole === 'Data Science' ? 'Data Science Salary & Negotiation Guide' : 'Consulting Salary Guide'}
+            {selectedRole === 'Product Management' ? 'Product Management Salary & Negotiation Guide' : selectedRole === 'Project Management' ? 'Project Management Salary Guide' : selectedRole === 'Data Science' ? 'Data Science Salary & Negotiation Guide' : selectedRole === 'Technical Writing' ? 'Technical Writing Salary Guide' : 'Consulting Salary Guide'}
           </h1>
           <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, maxWidth: 620 }}>
             {selectedRole === 'Product Management'
@@ -431,6 +464,8 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
               ? 'Salary ranges across companies and career levels. Understand your worth as a Project Manager  . from junior to Head of PMO.'
               : selectedRole === 'Data Science'
               ? 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Data Scientist  . at every level.'
+              : selectedRole === 'Technical Writing'
+              ? 'Salary ranges, skills premium, and career progression for Technical Writers across companies and career levels in India and the US.'
               : 'Salary ranges for consulting roles across top firms in India. Understand your worth at every level.'}
           </p>
           <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
@@ -440,6 +475,8 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
               ? ['India & US Ranges', '5 Top Companies', 'Certification Premium', 'Career Progression']
               : selectedRole === 'Data Science'
               ? ['India & US Ranges', '5 Negotiation Tips', 'Global Salaries', '6 Cities Breakdown', 'Premium Skills']
+              : selectedRole === 'Technical Writing'
+              ? ['India & US Ranges', '5 Top Companies', 'Skills Premium', 'Career Progression']
               : ['India Ranges', '10 Top Firms', 'All Career Stages']
             ).map(t => (
               <span key={t} style={{
@@ -951,6 +988,132 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
             {/* ── BOTTOM CTA BANNER ── */}
             <CTABanner
               text="Ready to land a Product Manager role? Practice your interview answers first."
+              onClick={onPracticeCTA}
+            />
+          </>
+        ) : selectedRole === 'Technical Writing' ? (
+          <>
+            {/* ── TECHNICAL WRITING CONTENT ── */}
+
+            {/* ── SECTION 1: Know Your Worth ── */}
+            <Section title="Know Your Worth" subtitle="Salary ranges by level  . India & United States" defaultOpen={true}>
+              <div style={{ paddingTop: 24 }}>
+                <p style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, marginBottom: 24, fontStyle: 'italic' }}>
+                  Salary ranges reflect compensation at top-tier companies. Actual packages vary based on company size, location, and individual performance.
+                </p>
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
+                <div style={{ overflowX: 'auto', marginBottom: 32 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Level', 'Total Comp', 'Base', 'Bonus', 'Equity'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {TW_IN_SALARIES.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc}</td>
+                          <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>United States (USD)</div>
+                <div style={{ overflowX: 'auto', marginBottom: 20 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Level', 'Total Comp', 'Base', 'Bonus', 'Equity'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {TW_US_SALARIES.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc}</td>
+                          <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div style={{ padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 12 }}>
+                  <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, margin: 0 }}>
+                    Ranges reflect 2025–2026 market data. Total comp (TC) includes base + annual bonus + annualized equity. Verify with levels.fyi, Glassdoor, and LinkedIn Salary.
+                  </p>
+                </div>
+              </div>
+            </Section>
+
+            {/* ── SECTION 2: Company Compensation ── */}
+            <Section title="Compensation by Company" subtitle="Top tech, consulting, and product companies">
+              <div style={{ paddingTop: 24 }}>
+                <div style={{ overflowX: 'auto', marginBottom: 20 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Company', 'Levels', 'India TC', 'US TC', 'Notes'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {TW_COMPANY_COMP.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.company}</td>
+                          <td style={{ padding: '12px 14px', color: C.textSoft, fontSize: 12 }}>{row.levels}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc_in}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc_us}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.notes}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </Section>
+
+            {/* ── SECTION 3: Skills Premium ── */}
+            <Section title="Skills That Command Premium" subtitle="Add these to boost your market value">
+              <div style={{ display: 'grid', gap: 16, paddingTop: 24 }}>
+                {TW_SKILLS_PREMIUM.map((s, i) => (
+                  <div key={i} style={{
+                    padding: '18px 20px', background: C.successLight,
+                    border: `1px solid ${C.successBorder}`, borderRadius: 16,
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                      <span style={{ color: C.success, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>+</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4, flexWrap: 'wrap' }}>
+                          <div style={{ fontSize: 13, fontWeight: 700, color: C.success, fontFamily: "'Instrument Serif', serif" }}>{s.skill}</div>
+                          <span style={{
+                            padding: '2px 10px', background: C.success, color: '#fff',
+                            borderRadius: 12, fontSize: 10, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          }}>{s.premium}</span>
+                        </div>
+                        <p style={{ fontSize: 12, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.5, margin: 0 }}>{s.note}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Section>
+
+            {/* ── BOTTOM CTA BANNER ── */}
+            <CTABanner
+              text="Ready to ace your Technical Writing interview? Practice now."
               onClick={onPracticeCTA}
             />
           </>
