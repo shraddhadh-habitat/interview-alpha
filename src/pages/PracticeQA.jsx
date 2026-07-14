@@ -310,6 +310,20 @@ const ROLES = {
     titleSuffix: 'Project Management Interview Questions',
     comingSoon: false,
   },
+  technicalwriting: {
+    id: 'technicalwriting',
+    label: 'Technical Writing',
+    levels: TECHNICALWRITING_LEVELS,
+    expLevelChips: [
+      { id: 'junior_tw', label: 'Junior TW', levels: ['Junior Technical Writer'] },
+      { id: 'tw', label: 'Technical Writer', levels: ['Technical Writer'] },
+      { id: 'senior_tw', label: 'Senior TW', levels: ['Senior Technical Writer'] },
+      { id: 'lead_tw', label: 'Lead TW', levels: ['Lead Technical Writer'] },
+      { id: 'head_tw', label: 'Head of TW', levels: ['Head of Technical Writing'] },
+    ],
+    titleSuffix: 'Technical Writing Interview Questions',
+    comingSoon: false,
+  },
   finance: {
     id: 'finance',
     label: 'Finance',
