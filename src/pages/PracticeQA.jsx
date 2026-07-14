@@ -1938,11 +1938,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             <option value="consulting">{ROLES.consulting.label}</option>
             <option value="projectmanagement">{ROLES.projectmanagement.label}</option>
             <option value="technicalwriting">{ROLES.technicalwriting.label}</option>
-            <optgroup label="Coming Soon">
-              <option value="finance" disabled>{ROLES.finance.label}</option>
-              <option value="sales" disabled>{ROLES.sales.label}</option>
-              <option value="general" disabled>{ROLES.general.label}</option>
-            </optgroup>
           </select>
         </div>
 
