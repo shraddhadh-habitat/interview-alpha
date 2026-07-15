@@ -1242,16 +1242,16 @@ function FilterContent({
 
       {/* Scrollable sections */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px 20px' }}>
-        {trackOptions.length > 1 && (
-          <FilterDropdown label="Career Track" value={selectedTrack} onChange={setSelectedTrack} options={trackOptions} />
-        )}
         {expLevelOptions.length > 1 && (
           <FilterDropdown label="Experience Level" value={filterExpLevel} onChange={setFilterExpLevel} options={expLevelOptions} />
         )}
         <FilterDropdown label="Category" value={filterCategory} onChange={setFilterCategory} options={categoryOptions} />
-        <FilterDropdown label="Difficulty" value={filterDifficulty} onChange={setFilterDifficulty} options={difficultyOptions} />
-        <FilterDropdown label="Company" value={filterCompany} onChange={setFilterCompany} options={companyOptions} />
         <FilterDropdown label="Domain" value={filterDomain} onChange={setFilterDomain} options={domainOptions} />
+        {trackOptions.length > 1 && (
+          <FilterDropdown label="Career Track" value={selectedTrack} onChange={setSelectedTrack} options={trackOptions} />
+        )}
+        <FilterDropdown label="Company" value={filterCompany} onChange={setFilterCompany} options={companyOptions} />
+        <FilterDropdown label="Difficulty" value={filterDifficulty} onChange={setFilterDifficulty} options={difficultyOptions} />
         <div style={{ height: 20 }} />
       </div>
 
