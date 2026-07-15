@@ -127,18 +127,18 @@ const PM_DOMAIN_CHIPS = [
 ];
 
 const CAREER_TRACK_CHIPS = [
-  { id: 'b2c_consumer',      label: 'B2C / Consumer PM' },
   { id: 'b2b_enterprise',    label: 'B2B / Enterprise PM' },
-  { id: 'growth',            label: 'Growth PM' },
-  { id: 'technical',         label: 'Technical PM' },
+  { id: 'b2c_consumer',      label: 'B2C / Consumer PM' },
   { id: 'data_ai',           label: 'Data / AI PM' },
+  { id: 'forward_deployed',  label: 'Forward Deployed PM' },
+  { id: 'growth',            label: 'Growth PM' },
   { id: 'hardware',          label: 'Hardware PM' },
-  { id: 'web3_crypto',       label: 'Web3 / Crypto PM' },
   { id: 'internal_tools',    label: 'Internal Tools PM' },
   { id: 'localization',      label: 'Localization PM' },
-  { id: 'product_ops',       label: 'Product Operations' },
   { id: 'product_marketing', label: 'Product Marketing Manager' },
-  { id: 'forward_deployed',  label: 'Forward Deployed PM' },
+  { id: 'product_ops',       label: 'Product Operations' },
+  { id: 'technical',         label: 'Technical PM' },
+  { id: 'web3_crypto',       label: 'Web3 / Crypto PM' },
 ];
 
 const DS_DOMAIN_CHIPS = [
