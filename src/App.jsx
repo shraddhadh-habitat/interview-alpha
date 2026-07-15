@@ -18,6 +18,7 @@ import UpgradePage from './pages/UpgradePage';
 import AdminPanel from './pages/AdminPanel';
 import Scorecard from './pages/Scorecard';
 import AuthCallback from './pages/AuthCallback';
+import JDPractice from './pages/JDPractice';
 import About from './pages/About';
 import Leadership from './pages/Leadership';
 import Careers from './pages/Careers';
@@ -864,6 +865,7 @@ export default function App() {
           {page === 'scorecard'   && <Scorecard user={user} />}
           {page === 'salary'      && <SalaryGuide user={user} onPracticeCTA={handleLandingPrimaryCTA} />}
           {page === 'resume-tools' && <ResumeToolsHub user={user} />}
+          {page === 'jd-practice' && <JDPractice user={user} />}
           {page === 'resources'   && <LearningResources />}
           {page === 'upgrade'     && (
             <UpgradePage
