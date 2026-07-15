@@ -123,6 +123,7 @@ const PM_DOMAIN_CHIPS = [
   { id: 'marketplace',   label: 'Marketplace' },
   { id: 'aiml',          label: 'AI/ML' },
   { id: 'general',       label: 'General' },
+  { id: 'payroll',       label: 'Payroll' },
 ];
 
 const CAREER_TRACK_CHIPS = [
@@ -137,6 +138,7 @@ const CAREER_TRACK_CHIPS = [
   { id: 'localization',      label: 'Localization PM' },
   { id: 'product_ops',       label: 'Product Operations' },
   { id: 'product_marketing', label: 'Product Marketing Manager' },
+  { id: 'forward_deployed',  label: 'Forward Deployed PM' },
 ];
 
 const DS_DOMAIN_CHIPS = [
