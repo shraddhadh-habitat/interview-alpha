@@ -6,26 +6,16 @@ export default function useTextToSpeech() {
   const [voices, setVoices] = useState([]);
   const resumeTimerRef = useRef(null);
 
-  // Load voices when component mounts
   useEffect(() => {
     if (!window.speechSynthesis) return;
-
     const loadVoices = () => {
       const availableVoices = window.speechSynthesis.getVoices();
-      if (availableVoices.length > 0) {
-        setVoices(availableVoices);
-      }
+      if (availableVoices.length > 0) setVoices(availableVoices);
     };
-
-    // Load immediately in case voices are already cached
     loadVoices();
-
-    // Listen for voices to load (on first use or after browser loads them)
     window.speechSynthesis.onvoiceschanged = loadVoices;
-
     return () => {
       window.speechSynthesis.onvoiceschanged = null;
-      // Cleanup: stop any ongoing speech and clear timers
       if (resumeTimerRef.current) {
         clearInterval(resumeTimerRef.current);
         resumeTimerRef.current = null;
@@ -40,6 +30,7 @@ export default function useTextToSpeech() {
       .replace(/<thinking>[\s\S]*?<\/thinking>/gi, '')
       .replace(/<[^>]*>/g, '')
       .replace(/\*\*/g, '')
+      .replace(/\*/g, '')
       .replace(/#{1,6}\s/g, '')
       .replace(/```[\s\S]*?```/g, '')
       .trim();
@@ -47,20 +38,14 @@ export default function useTextToSpeech() {
 
   const speak = useCallback((text) => {
     if (!window.speechSynthesis) return;
-
     window.speechSynthesis.cancel();
     const cleanedText = cleanText(text);
     if (!cleanedText) return;
 
-    // Detect mobile
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    const chunkLimit = isMobile ? 30 : 150;
 
-    // Split into sentences first
     const sentences = cleanedText.match(/[^.!?]+[.!?]+/g) || [cleanedText];
-
-    // Mobile: 20 words per chunk. Desktop: 150 words per chunk
-    const chunkLimit = isMobile ? 20 : 150;
-
     let chunks = [];
     let currentChunk = '';
     sentences.forEach((sentence) => {
@@ -75,10 +60,9 @@ export default function useTextToSpeech() {
     if (currentChunk) chunks.push(currentChunk.trim());
 
     let chunkIndex = 0;
-    let cancelled = false;
 
     const speakChunk = () => {
-      if (cancelled || chunkIndex >= chunks.length) {
+      if (chunkIndex >= chunks.length) {
         if (resumeTimerRef.current) {
           clearInterval(resumeTimerRef.current);
           resumeTimerRef.current = null;
@@ -89,7 +73,7 @@ export default function useTextToSpeech() {
       }
 
       const utterance = new SpeechSynthesisUtterance(chunks[chunkIndex]);
-      utterance.rate = isMobile ? 0.9 : 0.92;
+      utterance.rate = 0.92;
       utterance.pitch = 1.05;
       utterance.lang = 'en-US';
 
@@ -111,15 +95,13 @@ export default function useTextToSpeech() {
 
       utterance.onstart = () => {
         setIsSpeaking(true);
-        if (!isMobile) {
-          // Desktop Chrome bug fix: pause/resume every 10s
-          resumeTimerRef.current = setInterval(() => {
-            if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-              window.speechSynthesis.pause();
-              window.speechSynthesis.resume();
-            }
-          }, 10000);
-        }
+        const interval = isMobile ? 4000 : 10000;
+        resumeTimerRef.current = setInterval(() => {
+          if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+            window.speechSynthesis.pause();
+            window.speechSynthesis.resume();
+          }
+        }, interval);
       };
 
       utterance.onend = () => {
@@ -127,10 +109,8 @@ export default function useTextToSpeech() {
           clearInterval(resumeTimerRef.current);
           resumeTimerRef.current = null;
         }
-        if (!cancelled) {
-          chunkIndex++;
-          setTimeout(speakChunk, isMobile ? 50 : 300);
-        }
+        chunkIndex++;
+        setTimeout(speakChunk, isMobile ? 100 : 300);
       };
 
       utterance.onerror = (error) => {
@@ -139,8 +119,7 @@ export default function useTextToSpeech() {
           clearInterval(resumeTimerRef.current);
           resumeTimerRef.current = null;
         }
-        // On mobile, try next chunk on error instead of stopping
-        if (isMobile && !cancelled) {
+        if (isMobile) {
           chunkIndex++;
           setTimeout(speakChunk, 100);
         } else {
@@ -151,23 +130,7 @@ export default function useTextToSpeech() {
 
       setCurrentUtterance(utterance);
       window.speechSynthesis.speak(utterance);
-
-      // Mobile safety net: if onend doesn't fire within expected time,
-      // force move to next chunk
-      if (isMobile) {
-        const wordCount = chunks[chunkIndex].split(' ').length;
-        const expectedDuration = (wordCount / 0.9) * 1000 + 500; // ms
-        setTimeout(() => {
-          if (!cancelled && window.speechSynthesis.speaking === false && chunkIndex < chunks.length) {
-            chunkIndex++;
-            speakChunk();
-          }
-        }, expectedDuration);
-      }
     };
-
-    // Store cancel function
-    const originalCancel = window.speechSynthesis.cancel.bind(window.speechSynthesis);
 
     if (voices.length === 0) {
       window.speechSynthesis.onvoiceschanged = () => {
