@@ -53,14 +53,14 @@ export default function useTextToSpeech() {
 
     if (!cleanedText) return;
 
-    // Split into chunks of ~50 words to prevent browser cutoff
+    // Split into chunks of ~150 words to prevent browser cutoff
     const sentences = cleanedText.match(/[^.!?]+[.!?]+/g) || [cleanedText];
     let chunks = [];
     let currentChunk = '';
 
     sentences.forEach((sentence) => {
       const words = currentChunk.split(' ').length + sentence.split(' ').length;
-      if (words > 50) {
+      if (words > 150) {
         if (currentChunk) chunks.push(currentChunk);
         currentChunk = sentence;
       } else {
@@ -106,13 +106,13 @@ export default function useTextToSpeech() {
 
       utterance.onstart = () => {
         setIsSpeaking(true);
-        // Chrome bug fix: call resume() every 8s
-        // to prevent Chrome silently pausing long utterances
+        // Chrome bug fix: resume every 10 seconds to prevent auto-pause
         resumeTimerRef.current = setInterval(() => {
-          if (window.speechSynthesis.paused) {
+          if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+            window.speechSynthesis.pause();
             window.speechSynthesis.resume();
           }
-        }, 8000);
+        }, 10000);
       };
 
       utterance.onend = () => {
