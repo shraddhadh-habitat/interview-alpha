@@ -276,14 +276,143 @@ export default function JDPractice({ user }) {
 
   const canGenerate = resumeText.trim().length > 100 && jdText.trim().length > 100;
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!canGenerate) return;
     setStep('processing');
-    setTimeout(() => {
-      const result = matchQuestions(jdText, resumeText);
-      setResults(result);
+    setError('');
+
+    try {
+      // Step 1 — Match from local bank first
+      const bankResult = matchQuestions(jdText, resumeText);
+      const bankQuestions = bankResult.questions;
+      const parsed = bankResult.parsed;
+
+      // Step 2 — Search internet for additional questions
+      const roleDescription = parsed.detectedLevels[0] || 'Product Manager';
+      const domainDescription = parsed.detectedDomains[0] || 'technology';
+      const searchPrompt = `Search for the most recent and commonly asked interview questions for a ${roleDescription} role in the ${domainDescription} industry in India in 2025.
+
+Search these sources: Glassdoor interview reviews, Reddit r/ProductManagement, Blind app interview experiences, AmbitionBox interview questions, IIMjobs interview experiences.
+
+Return exactly 50 interview questions that are:
+1. Specific to ${roleDescription} roles
+2. Relevant to ${domainDescription} domain
+3. Recently asked in 2024-2025
+4. Different from generic questions like "tell me about yourself"
+
+Format your response as a JSON array with this exact structure:
+[
+  {
+    "q": "question text here",
+    "source": "Glassdoor/Reddit/Blind/etc",
+    "domain": "${domainDescription}",
+    "difficulty": "Medium or Hard"
+  }
+]
+
+Return ONLY the JSON array, no other text.`;
+
+      const searchResponse = await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 4000,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          messages: [{ role: 'user', content: searchPrompt }],
+        }),
+      });
+
+      const searchData = await searchResponse.json();
+
+      // Extract text content from response
+      let internetQuestions = [];
+      if (searchData.content) {
+        const textBlock = searchData.content.find(b => b.type === 'text');
+        if (textBlock) {
+          try {
+            const clean = textBlock.text.replace(/```json|```/g, '').trim();
+            internetQuestions = JSON.parse(clean);
+          } catch (e) {
+            console.log('Could not parse internet questions:', e);
+          }
+        }
+      }
+
+      // Step 3 — Generate answers for internet questions
+      let internetWithAnswers = [];
+      if (internetQuestions.length > 0) {
+        const answerPrompt = `You are an expert interview coach. Generate professional model answers for these interview questions.
+
+Each answer must follow this EXACT format:
+- Start with 1-2 clarifying questions the candidate would ask
+- State assumptions explicitly
+- Give a structured numbered approach (3-5 steps)
+- Include specific metrics and examples
+- Acknowledge trade-offs
+- End with TWO real examples written in first person past tense starting with "In a past project where I tackled similar challenges..."
+
+Write in first person as the candidate. Each answer must be 300-400 words. Level: ${roleDescription}. Domain: ${domainDescription}.
+
+Questions to answer:
+${internetQuestions.slice(0, 40).map((q, i) => `${i + 1}. ${q.q}`).join('\n')}
+
+Return as JSON array:
+[{"q": "question", "a": "full answer", "domain": "${domainDescription}", "difficulty": "Hard", "_source": "internet"}]
+
+Return ONLY the JSON array.`;
+
+        const answerResponse = await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-6',
+            max_tokens: 8000,
+            messages: [{ role: 'user', content: answerPrompt }],
+          }),
+        });
+
+        const answerData = await answerResponse.json();
+        if (answerData.content) {
+          const textBlock = answerData.content.find(b => b.type === 'text');
+          if (textBlock) {
+            try {
+              const clean = textBlock.text.replace(/```json|```/g, '').trim();
+              internetWithAnswers = JSON.parse(clean);
+            } catch (e) {
+              console.log('Could not parse answers:', e);
+            }
+          }
+        }
+      }
+
+      // Step 4 — Combine bank + internet questions
+      // Deduplicate: remove internet questions similar to bank questions
+      const bankQTexts = new Set(bankQuestions.map(q => q.q?.slice(0, 60).toLowerCase()));
+      const uniqueInternet = internetWithAnswers.filter(q =>
+        !bankQTexts.has(q.q?.slice(0, 60).toLowerCase())
+      );
+
+      // Take top 60 from bank + up to 40 from internet = 100 total
+      const combined = [
+        ...bankQuestions.slice(0, 60),
+        ...uniqueInternet.slice(0, 40),
+      ];
+
+      setResults({
+        questions: combined.slice(0, 100),
+        parsed,
+        totalMatched: combined.length,
+        internetCount: uniqueInternet.length,
+        bankCount: Math.min(bankQuestions.length, 60),
+      });
       setStep('results');
-    }, 1500);
+
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+      setStep('input');
+      console.error(err);
+    }
   };
 
   const currentQ = results?.questions[currentIndex];
@@ -396,7 +525,9 @@ export default function JDPractice({ user }) {
                     Your personalised question set
                   </h2>
                   <p style={{ fontSize: 13, color: '#6b7280', fontFamily: F }}>
-                    {results.questions.length} questions matched from our bank
+                    {results.internetCount > 0
+                      ? `${results.bankCount} from our expert bank · ${results.internetCount} sourced from Glassdoor, Reddit & Blind`
+                      : 'Questions matched from our expert bank — tailored to your JD'}
                     {results.parsed.detectedDomains.length > 0 && ` · ${results.parsed.detectedDomains.join(', ')}`}
                     {results.parsed.detectedLevels.length > 0 && ` · ${results.parsed.detectedLevels[0]}`}
                   </p>
