@@ -678,7 +678,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
     // ─── Paywall gate ───
     // Check if user is free and has used all free sessions
     if (user) {
-      const isAdmin = user.email === 'shraddhadh@gmail.com';
+      const isAdmin = user.email === 'shraddhadh@gmail.com' || user.email === 'vaishnavi.kulkarni2012@gmail.com';
       const isPaid = profile?.subscription_status === 'active';
       const freeSessionsUsed = profile?.free_sessions_used || 0;
 
@@ -1030,7 +1030,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   const ready = wordCount >= 50;
                   const disabled = loading || !ready;
                   const freeSessionsUsed = user ? (profile?.free_sessions_used || 0) : 0;
-                  const isAdmin = user && (user.email === 'shraddhadh@gmail.com');
+                  const isAdmin = user && (user.email === 'shraddhadh@gmail.com' || user.email === 'vaishnavi.kulkarni2012@gmail.com');
                   const isPaid = user && profile?.subscription_status === 'active';
                   const showSessionCounter = user && !isAdmin && !isPaid;
 
