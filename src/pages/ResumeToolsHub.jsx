@@ -365,18 +365,20 @@ export default function ResumeToolsHub({ user }) {
                 className={`resume-tab-btn ${activeTab === tab.id ? 'active' : 'inactive'}`}
                 onClick={() => setActiveTab(tab.id)}
                 style={{
-                  padding: '16px 24px',
+                  padding: '8px 20px',
                   minHeight: 'auto',
                   fontSize: 13,
-                  fontWeight: 500,
-                  color: activeTab === tab.id ? '#1B1B18' : '#4a4a6a',
-                  background: 'transparent',
-                  borderBottom: activeTab === tab.id ? '2px solid #a259f7' : '2px solid transparent',
+                  fontWeight: activeTab === tab.id ? 600 : 500,
+                  color: activeTab === tab.id ? '#ffffff' : '#4a4a6a',
+                  background: activeTab === tab.id ? 'linear-gradient(135deg, #a78bfa, #c084fc)' : 'transparent',
+                  border: activeTab === tab.id ? 'none' : '1px solid #e5e7eb',
+                  borderRadius: 50,
                   cursor: 'pointer',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  border: 'none',
                   whiteSpace: 'nowrap',
                   flexShrink: 0,
+                  transition: 'all 0.2s',
+                  marginBottom: 8,
                 }}
                 onMouseEnter={e => {
                   if (activeTab !== tab.id) {
