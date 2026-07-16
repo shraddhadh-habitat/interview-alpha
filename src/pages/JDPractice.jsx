@@ -268,7 +268,7 @@ function ProcessingScreen() {
       transform: 'translate(-50%, -50%)',
       textAlign: 'center',
       padding: '48px 60px',
-      background: '#ffffff',
+      background: '#FAFAF8',
       borderRadius: 24,
       boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
       display: 'flex',
