@@ -157,7 +157,7 @@ export default function ResumeToolsHub({ user }) {
     { id: 'resume-optimizer', label: 'Resume Optimizer' },
     { id: 'templates', label: 'Templates' },
     { id: 'resume-score', label: 'Resume Score' },
-    { id: 'jd-practice', label: '🎯 Your Unfair Advantage' },
+    { id: 'jd-practice', label: 'Exclusive Prep' },
   ];
 
   const isMobile = windowWidth < 1024;
