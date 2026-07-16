@@ -646,7 +646,7 @@ export default function JDPractice({ user }) {
                   marginTop: 10,
                 }}
               >
-                {tts.isSpeaking ? '⏹ Stop' : '🔊 Listen to question'}
+                {tts.isSpeaking ? '⏹ Stop' : '▶ Listen'}
               </button>
             </div>
 
@@ -731,7 +731,7 @@ Return only the answer text, no JSON.`;
                         marginTop: 10,
                       }}
                     >
-                      {tts.isSpeaking ? '⏹ Stop' : '🔊 Listen to answer'}
+                      {tts.isSpeaking ? '⏹ Stop' : '▶ Listen'}
                     </button>
                     <div style={{ marginTop: 12, fontSize: 13, color: '#4b5563', fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
                       {currentQ.a}
