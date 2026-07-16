@@ -522,7 +522,7 @@ Return ONLY the JSON array.`;
                 disabled={!canGenerate}
                 style={{ width: '100%', padding: '16px', background: canGenerate ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : '#e5e7eb', border: 'none', borderRadius: 12, fontSize: 16, fontWeight: 700, fontFamily: F, color: canGenerate ? '#fff' : '#9ca3af', cursor: canGenerate ? 'pointer' : 'not-allowed' }}
               >
-                Generate My 100 Questions →
+                Build My Interview Kit →
               </button>
             </div>
           </>
