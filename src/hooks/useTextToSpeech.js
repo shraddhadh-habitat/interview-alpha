@@ -75,7 +75,7 @@ export default function useTextToSpeech() {
       }
 
       const utterance = new SpeechSynthesisUtterance(chunks[chunkIndex]);
-      utterance.rate = 1.1;
+      utterance.rate = 1.0;
       utterance.pitch = 1.1;
       utterance.lang = 'en-US';
 
