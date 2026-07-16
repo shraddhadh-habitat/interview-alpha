@@ -5,6 +5,7 @@ import { pmQuestions } from '../data/pmQuestions';
 import { projectManagementQuestions } from '../data/projectManagementQuestions';
 import { consultingQuestions } from '../data/consultingQuestions';
 import { technicalWritingQuestions } from '../data/technicalWritingQuestions';
+import useTextToSpeech from '../hooks/useTextToSpeech';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
@@ -82,6 +83,19 @@ const parseJD = (jdText, resumeText) => {
     'payments': 'fintech',
     'banking': 'banking',
     'bank': 'banking',
+    'jpmorgan': 'banking',
+    'chase': 'banking',
+    'regulatory': 'banking',
+    'aml': 'banking',
+    'treasury': 'banking',
+    'reconciliation': 'banking',
+    'data platform': 'banking',
+    'data pipeline': 'banking',
+    'downstream': 'banking',
+    'compliance': 'banking',
+    'risk': 'banking',
+    'accounting': 'banking',
+    'icb': 'banking',
     'insurance': 'insurance',
     'insurtech': 'insurance',
     'telecom': 'telecom',
@@ -254,6 +268,7 @@ export default function JDPractice({ user }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answer, setAnswer] = useState('');
   const resumeFileInputRef = useRef(null);
+  const tts = useTextToSpeech();
 
   const handleResumeFileSelect = async (e) => {
     const file = e.target.files?.[0];
@@ -324,15 +339,25 @@ Return ONLY the JSON array, no other text.`;
       });
 
       const searchData = await searchResponse.json();
+      console.log('Web search response:', JSON.stringify(searchData).slice(0, 500));
 
-      // Extract text content from response
+      // Extract text content from response - handle multi-block web search response
       let internetQuestions = [];
-      if (searchData.content) {
-        const textBlock = searchData.content.find(b => b.type === 'text');
-        if (textBlock) {
+      if (searchData.content && Array.isArray(searchData.content)) {
+        // Get all text blocks and concatenate
+        const allText = searchData.content
+          .filter(b => b.type === 'text')
+          .map(b => b.text)
+          .join('');
+
+        if (allText) {
           try {
-            const clean = textBlock.text.replace(/```json|```/g, '').trim();
-            internetQuestions = JSON.parse(clean);
+            // Try to find JSON array in the text
+            const jsonMatch = allText.match(/\[[\s\S]*\]/);
+            if (jsonMatch) {
+              internetQuestions = JSON.parse(jsonMatch[0]);
+              console.log('Parsed internet questions:', internetQuestions.length);
+            }
           } catch (e) {
             console.log('Could not parse internet questions:', e);
           }
@@ -587,6 +612,25 @@ Return ONLY the JSON array.`;
                 {currentQ.difficulty && <span style={{ fontSize: 11, padding: '3px 10px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{currentQ.difficulty}</span>}
               </div>
               <p style={{ fontSize: 16, color: '#1a1a1a', fontFamily: F, lineHeight: 1.7, margin: 0 }}>{currentQ.q}</p>
+              <button
+                onClick={() => tts.isSpeaking ? tts.stop() : tts.speak(currentQ.q)}
+                style={{
+                  marginTop: 12,
+                  padding: '6px 14px',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: 8,
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  fontSize: 12,
+                  color: '#6b7280',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                {tts.isSpeaking ? '⏹ Stop' : '🔊 Listen to question'}
+              </button>
             </div>
 
             {/* Answer box */}
@@ -606,6 +650,25 @@ Return ONLY the JSON array.`;
                 <div style={{ marginTop: 12, fontSize: 13, color: '#4b5563', fontFamily: F, lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
                   {currentQ.a}
                 </div>
+                <button
+                  onClick={() => tts.isSpeaking ? tts.stop() : tts.speak(currentQ.a)}
+                  style={{
+                    marginTop: 8,
+                    padding: '6px 14px',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: 8,
+                    background: 'transparent',
+                    cursor: 'pointer',
+                    fontSize: 12,
+                    color: '#6b7280',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                  }}
+                >
+                  {tts.isSpeaking ? '⏹ Stop' : '🔊 Listen to answer'}
+                </button>
               </details>
             )}
 
