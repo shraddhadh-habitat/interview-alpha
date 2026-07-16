@@ -97,13 +97,15 @@ export default function useTextToSpeech() {
 
       utterance.onstart = () => {
         setIsSpeaking(true);
-        const interval = isMobile ? 4000 : 10000;
-        resumeTimerRef.current = setInterval(() => {
-          if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-            window.speechSynthesis.pause();
-            window.speechSynthesis.resume();
-          }
-        }, interval);
+        if (!isMobile) {
+          // Desktop Chrome bug fix only - mobile doesn't need this
+          resumeTimerRef.current = setInterval(() => {
+            if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+              window.speechSynthesis.pause();
+              window.speechSynthesis.resume();
+            }
+          }, 10000);
+        }
       };
 
       utterance.onend = () => {
