@@ -380,7 +380,7 @@ Each answer must follow this EXACT format:
 Write in first person as the candidate. Each answer must be 300-400 words. Level: ${roleDescription}. Domain: ${domainDescription}.
 
 Questions to answer:
-${internetQuestions.slice(0, 40).map((q, i) => `${i + 1}. ${q.q}`).join('\n')}
+${internetQuestions.slice(0, 20).map((q, i) => `${i + 1}. ${q.q}`).join('\n')}
 
 Return as JSON array:
 [{"q": "question", "a": "full answer", "domain": "${domainDescription}", "difficulty": "Hard", "_source": "internet"}]
@@ -535,7 +535,7 @@ Return ONLY the JSON array.`;
               Building your question set...
             </h2>
             <p style={{ fontSize: 14, color: '#6b7280', fontFamily: F }}>
-              Analysing your JD and matching questions from our bank.
+              Searching Glassdoor, Reddit & Blind for latest questions... this takes 30-60 seconds.
             </p>
           </div>
         )}
