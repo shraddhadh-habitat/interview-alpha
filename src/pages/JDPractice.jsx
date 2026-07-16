@@ -7,7 +7,7 @@ import { consultingQuestions } from '../data/consultingQuestions';
 import { technicalWritingQuestions } from '../data/technicalWritingQuestions';
 import useTextToSpeech from '../hooks/useTextToSpeech';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const VALID_MIMES = [
@@ -364,52 +364,13 @@ Return ONLY the JSON array, no other text.`;
         }
       }
 
-      // Step 3 — Generate answers for internet questions
-      let internetWithAnswers = [];
-      if (internetQuestions.length > 0) {
-        const answerPrompt = `You are an expert interview coach. Generate professional model answers for these interview questions.
-
-Each answer must follow this EXACT format:
-- Start with 1-2 clarifying questions the candidate would ask
-- State assumptions explicitly
-- Give a structured numbered approach (3-5 steps)
-- Include specific metrics and examples
-- Acknowledge trade-offs
-- End with TWO real examples written in first person past tense starting with "In a past project where I tackled similar challenges..."
-
-Write in first person as the candidate. Each answer must be 300-400 words. Level: ${roleDescription}. Domain: ${domainDescription}.
-
-Questions to answer:
-${internetQuestions.slice(0, 20).map((q, i) => `${i + 1}. ${q.q}`).join('\n')}
-
-Return as JSON array:
-[{"q": "question", "a": "full answer", "domain": "${domainDescription}", "difficulty": "Hard", "_source": "internet"}]
-
-Return ONLY the JSON array.`;
-
-        const answerResponse = await fetch('/api/messages', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-6',
-            max_tokens: 8000,
-            messages: [{ role: 'user', content: answerPrompt }],
-          }),
-        });
-
-        const answerData = await answerResponse.json();
-        if (answerData.content) {
-          const textBlock = answerData.content.find(b => b.type === 'text');
-          if (textBlock) {
-            try {
-              const clean = textBlock.text.replace(/```json|```/g, '').trim();
-              internetWithAnswers = JSON.parse(clean);
-            } catch (e) {
-              console.log('Could not parse answers:', e);
-            }
-          }
-        }
-      }
+      // Step 3 — Store internet questions without answers (generate on demand)
+      let internetWithAnswers = internetQuestions.slice(0, 20).map(q => ({
+        ...q,
+        a: null, // answer will be generated on demand
+        _source: 'internet',
+        _needsAnswer: true,
+      }));
 
       // Step 4 — Combine bank + internet questions
       // Deduplicate: remove internet questions similar to bank questions
@@ -535,7 +496,7 @@ Return ONLY the JSON array.`;
               Building your question set...
             </h2>
             <p style={{ fontSize: 14, color: '#6b7280', fontFamily: F }}>
-              Searching Glassdoor, Reddit & Blind for latest questions... this takes 30-60 seconds.
+              This takes 30-60 seconds.
             </p>
           </div>
         )}
@@ -574,7 +535,6 @@ Return ONLY the JSON array.`;
                   onClick={() => { setStep('practice'); setCurrentIndex(i); setAnswer(''); }}
                   style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: '14px 18px', cursor: 'pointer', display: 'flex', gap: 14, alignItems: 'flex-start' }}
                 >
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#9ca3af', fontFamily: F, minWidth: 24, marginTop: 2 }}>{i + 1}</span>
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: 13, color: '#1a1a1a', fontFamily: F, margin: 0, lineHeight: 1.5 }}>{q.q?.slice(0, 120)}...</p>
                     <div style={{ display: 'flex', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
@@ -587,7 +547,7 @@ Return ONLY the JSON array.`;
               ))}
               {results.questions.length > 20 && (
                 <div style={{ textAlign: 'center', padding: '16px', fontSize: 13, color: '#6b7280', fontFamily: F }}>
-                  + {results.questions.length - 20} more questions · Start practising to see all
+                  + {results.questions.length - 20} more questions available when you start practising
                 </div>
               )}
             </div>
@@ -642,34 +602,76 @@ Return ONLY the JSON array.`;
             />
 
             {/* Expert answer */}
-            {currentQ.a && (
-              <details style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, padding: '16px 20px', marginBottom: 20 }}>
-                <summary style={{ fontSize: 14, fontWeight: 600, color: '#374151', fontFamily: F, cursor: 'pointer' }}>
-                  View expert answer
-                </summary>
-                <div style={{ marginTop: 12, fontSize: 13, color: '#4b5563', fontFamily: F, lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
-                  {currentQ.a}
-                </div>
-                <button
-                  onClick={() => tts.isSpeaking ? tts.stop() : tts.speak(currentQ.a)}
-                  style={{
-                    marginTop: 8,
-                    padding: '6px 14px',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: 8,
-                    background: 'transparent',
-                    cursor: 'pointer',
-                    fontSize: 12,
-                    color: '#6b7280',
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                  }}
-                >
-                  {tts.isSpeaking ? '⏹ Stop' : '🔊 Listen to answer'}
-                </button>
-              </details>
+            {currentQ && (
+              <div style={{ marginBottom: 20 }}>
+                {currentQ._needsAnswer && !currentQ.a ? (
+                  <button
+                    onClick={async () => {
+                      // Generate answer on demand
+                      const prompt = `Generate a professional model answer for this interview question for a ${results.parsed.detectedLevels[0] || 'Senior PM'} role in ${results.parsed.detectedDomains[0] || 'technology'}.
+
+Follow this EXACT format:
+- Start with 2 clarifying questions the candidate would ask
+- State assumptions explicitly
+- Give a structured numbered approach (3-5 steps)
+- Include specific metrics and examples
+- Acknowledge trade-offs
+- End with TWO real examples in first person past tense starting with "In a past project where I tackled similar challenges..."
+
+Write in first person as the candidate. Answer must be 300-400 words.
+
+Question: ${currentQ.q}
+
+Return only the answer text, no JSON.`;
+
+                      const updatedQuestions = [...results.questions];
+                      updatedQuestions[currentIndex] = { ...currentQ, a: 'Generating expert answer...' };
+                      setResults({ ...results, questions: updatedQuestions });
+
+                      try {
+                        const res = await fetch('/api/messages', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            model: 'claude-sonnet-4-6',
+                            max_tokens: 1500,
+                            messages: [{ role: 'user', content: prompt }],
+                          }),
+                        });
+                        const data = await res.json();
+                        const answerText = data.content?.find(b => b.type === 'text')?.text || 'Could not generate answer.';
+                        updatedQuestions[currentIndex] = { ...currentQ, a: answerText, _needsAnswer: false };
+                        setResults({ ...results, questions: updatedQuestions });
+                      } catch (e) {
+                        updatedQuestions[currentIndex] = { ...currentQ, a: 'Could not generate answer. Please try again.', _needsAnswer: false };
+                        setResults({ ...results, questions: updatedQuestions });
+                      }
+                    }}
+                    style={{ width: '100%', padding: '12px 16px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, cursor: 'pointer', fontSize: 14, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  >
+                    ✨ Generate Expert Answer for This Question
+                  </button>
+                ) : currentQ.a && currentQ.a !== 'Generating expert answer...' ? (
+                  <details style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, padding: '16px 20px' }}>
+                    <summary style={{ fontSize: 14, fontWeight: 600, color: '#374151', fontFamily: "'Plus Jakarta Sans', sans-serif", cursor: 'pointer' }}>
+                      View expert answer
+                    </summary>
+                    <div style={{ marginTop: 12, fontSize: 13, color: '#4b5563', fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
+                      {currentQ.a}
+                    </div>
+                    <button
+                      onClick={() => tts.isSpeaking ? tts.stop() : tts.speak(currentQ.a)}
+                      style={{ marginTop: 8, padding: '6px 14px', border: '1px solid #e5e7eb', borderRadius: 8, background: 'transparent', cursor: 'pointer', fontSize: 12, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif", display: 'flex', alignItems: 'center', gap: 6 }}
+                    >
+                      {tts.isSpeaking ? '⏹ Stop' : '🔊 Listen to answer'}
+                    </button>
+                  </details>
+                ) : currentQ.a === 'Generating expert answer...' ? (
+                  <div style={{ padding: '16px 20px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, fontSize: 14, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    ✨ Generating expert answer...
+                  </div>
+                ) : null}
+              </div>
             )}
 
             {/* Navigation */}
