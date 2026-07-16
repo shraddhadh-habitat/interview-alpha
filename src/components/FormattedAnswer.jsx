@@ -7,6 +7,11 @@ export default function FormattedAnswer({ text, style = {} }) {
   const formatText = (rawText) => {
     let formatted = rawText;
 
+    // Strip markdown bold/italic syntax
+    formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '$1');
+    formatted = formatted.replace(/\*([^*]+)\*/g, '$1');
+    formatted = formatted.replace(/#{1,6}\s/g, '');
+
     // First, apply inline label formatting (Pro: Con: Use: etc. onto new lines)
     formatted = formatLabeledText(formatted);
 
