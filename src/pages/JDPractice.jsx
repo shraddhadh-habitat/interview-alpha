@@ -263,10 +263,10 @@ function ProcessingScreen() {
   return (
     <div style={{
       textAlign: 'center',
-      padding: '60px 20px',
-      background: '#0a0a0a',
+      padding: '40px 20px',
+      background: '#FAFAF8',
       borderRadius: 20,
-      minHeight: 300,
+      minHeight: 220,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -300,7 +300,7 @@ function ProcessingScreen() {
         fontSize: 20,
         fontWeight: 700,
         fontFamily: "'Plus Jakarta Sans', sans-serif",
-        color: '#ffffff',
+        color: '#1a1a1a',
         marginBottom: 8,
         letterSpacing: 4,
         textTransform: 'uppercase',
@@ -309,7 +309,7 @@ function ProcessingScreen() {
       </h2>
       <p style={{
         fontSize: 13,
-        color: '#9ca3af',
+        color: '#6b7280',
         fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}>
         Processing... Please wait
@@ -709,8 +709,19 @@ Return only the answer text, no JSON.`;
                     </div>
                   </details>
                 ) : currentQ.a === 'Generating expert answer...' ? (
-                  <div style={{ padding: '16px 20px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, fontSize: 14, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    ✨ Generating expert answer...
+                  <div style={{ padding: '24px 20px', background: '#FAFAF8', border: '1px solid #e5e7eb', borderRadius: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      {[0,1,2,3,4].map(i => (
+                        <span
+                          key={i}
+                          className={`star-bounce-${i}`}
+                          style={{ fontSize: 20, display: 'inline-block', filter: 'drop-shadow(0 0 6px #fbbf24)' }}
+                        >⭐</span>
+                      ))}
+                    </div>
+                    <p style={{ fontSize: 13, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0 }}>
+                      Generating expert answer...
+                    </p>
                   </div>
                 ) : null}
               </div>
