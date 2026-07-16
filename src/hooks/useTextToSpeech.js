@@ -50,29 +50,35 @@ export default function useTextToSpeech() {
 
     window.speechSynthesis.cancel();
     const cleanedText = cleanText(text);
-
     if (!cleanedText) return;
 
-    // Split into chunks of ~150 words to prevent browser cutoff
+    // Detect mobile
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+    // Split into sentences first
     const sentences = cleanedText.match(/[^.!?]+[.!?]+/g) || [cleanedText];
+
+    // Mobile: 20 words per chunk. Desktop: 150 words per chunk
+    const chunkLimit = isMobile ? 20 : 150;
+
     let chunks = [];
     let currentChunk = '';
-
     sentences.forEach((sentence) => {
       const words = currentChunk.split(' ').length + sentence.split(' ').length;
-      if (words > 150) {
-        if (currentChunk) chunks.push(currentChunk);
+      if (words > chunkLimit) {
+        if (currentChunk) chunks.push(currentChunk.trim());
         currentChunk = sentence;
       } else {
         currentChunk += sentence;
       }
     });
-    if (currentChunk) chunks.push(currentChunk);
+    if (currentChunk) chunks.push(currentChunk.trim());
 
     let chunkIndex = 0;
+    let cancelled = false;
 
     const speakChunk = () => {
-      if (chunkIndex >= chunks.length) {
+      if (cancelled || chunkIndex >= chunks.length) {
         if (resumeTimerRef.current) {
           clearInterval(resumeTimerRef.current);
           resumeTimerRef.current = null;
@@ -83,11 +89,10 @@ export default function useTextToSpeech() {
       }
 
       const utterance = new SpeechSynthesisUtterance(chunks[chunkIndex]);
-      utterance.rate = 0.92;
+      utterance.rate = isMobile ? 0.9 : 0.92;
       utterance.pitch = 1.05;
       utterance.lang = 'en-US';
 
-      // Select best available voice from cached voices
       const preferredNames = [
         'Google UK English Female',
         'Google US English',
@@ -106,13 +111,15 @@ export default function useTextToSpeech() {
 
       utterance.onstart = () => {
         setIsSpeaking(true);
-        // Chrome bug fix: resume every 10 seconds to prevent auto-pause
-        resumeTimerRef.current = setInterval(() => {
-          if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-            window.speechSynthesis.pause();
-            window.speechSynthesis.resume();
-          }
-        }, 10000);
+        if (!isMobile) {
+          // Desktop Chrome bug fix: pause/resume every 10s
+          resumeTimerRef.current = setInterval(() => {
+            if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+              window.speechSynthesis.pause();
+              window.speechSynthesis.resume();
+            }
+          }, 10000);
+        }
       };
 
       utterance.onend = () => {
@@ -120,8 +127,10 @@ export default function useTextToSpeech() {
           clearInterval(resumeTimerRef.current);
           resumeTimerRef.current = null;
         }
-        chunkIndex++;
-        setTimeout(speakChunk, 300); // 300ms pause between chunks
+        if (!cancelled) {
+          chunkIndex++;
+          setTimeout(speakChunk, isMobile ? 50 : 300);
+        }
       };
 
       utterance.onerror = (error) => {
@@ -130,27 +139,45 @@ export default function useTextToSpeech() {
           clearInterval(resumeTimerRef.current);
           resumeTimerRef.current = null;
         }
-        setIsSpeaking(false);
-        setCurrentUtterance(null);
+        // On mobile, try next chunk on error instead of stopping
+        if (isMobile && !cancelled) {
+          chunkIndex++;
+          setTimeout(speakChunk, 100);
+        } else {
+          setIsSpeaking(false);
+          setCurrentUtterance(null);
+        }
       };
 
       setCurrentUtterance(utterance);
       window.speechSynthesis.speak(utterance);
+
+      // Mobile safety net: if onend doesn't fire within expected time,
+      // force move to next chunk
+      if (isMobile) {
+        const wordCount = chunks[chunkIndex].split(' ').length;
+        const expectedDuration = (wordCount / 0.9) * 1000 + 500; // ms
+        setTimeout(() => {
+          if (!cancelled && window.speechSynthesis.speaking === false && chunkIndex < chunks.length) {
+            chunkIndex++;
+            speakChunk();
+          }
+        }, expectedDuration);
+      }
     };
 
-    // If voices aren't loaded yet, wait for onvoiceschanged event
+    // Store cancel function
+    const originalCancel = window.speechSynthesis.cancel.bind(window.speechSynthesis);
+
     if (voices.length === 0) {
-      const waitForVoices = () => {
-        window.speechSynthesis.onvoiceschanged = () => {
-          const freshVoices = window.speechSynthesis.getVoices();
-          if (freshVoices.length > 0) {
-            setVoices(freshVoices);
-            speakChunk();
-            window.speechSynthesis.onvoiceschanged = null;
-          }
-        };
+      window.speechSynthesis.onvoiceschanged = () => {
+        const freshVoices = window.speechSynthesis.getVoices();
+        if (freshVoices.length > 0) {
+          setVoices(freshVoices);
+          speakChunk();
+          window.speechSynthesis.onvoiceschanged = null;
+        }
       };
-      waitForVoices();
     } else {
       speakChunk();
     }
