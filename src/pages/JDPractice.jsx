@@ -297,107 +297,73 @@ export default function JDPractice({ user }) {
     setError('');
 
     try {
-      // Step 1 — Match from local bank first
+      // Step 1 — Match from local bank
       const bankResult = matchQuestions(jdText, resumeText);
-      const bankQuestions = bankResult.questions;
       const parsed = bankResult.parsed;
+      const bankQuestions = bankResult.questions.slice(0, 60);
 
-      // Step 2 — Search internet for additional questions
-      const roleDescription = parsed.detectedLevels[0] || 'Product Manager';
-      const domainDescription = parsed.detectedDomains[0] || 'technology';
-      const searchPrompt = `Search for the most recent and commonly asked interview questions for a ${roleDescription} role in the ${domainDescription} industry in India in 2025.
+      // Step 2 — Web search for internet questions
+      const role = parsed.detectedLevels[0] || 'Product Manager';
+      const domain = parsed.detectedDomains[0] || 'technology';
 
-Search these sources: Glassdoor interview reviews, Reddit r/ProductManagement, Blind app interview experiences, AmbitionBox interview questions, IIMjobs interview experiences.
-
-Return exactly 50 interview questions that are:
-1. Specific to ${roleDescription} roles
-2. Relevant to ${domainDescription} domain
-3. Recently asked in 2024-2025
-4. Different from generic questions like "tell me about yourself"
-
-Format your response as a JSON array with this exact structure:
-[
-  {
-    "q": "question text here",
-    "source": "Glassdoor/Reddit/Blind/etc",
-    "domain": "${domainDescription}",
-    "difficulty": "Medium or Hard"
-  }
-]
-
-Return ONLY the JSON array, no other text.`;
-
-      const searchResponse = await fetch('/api/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 4000,
-          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-          messages: [{ role: 'user', content: searchPrompt }],
-        }),
-      });
-
-      const searchData = await searchResponse.json();
-      console.log('Web search response:', JSON.stringify(searchData).slice(0, 500));
-
-      // Extract text content from response - handle multi-block web search response
       let internetQuestions = [];
-      if (searchData.content && Array.isArray(searchData.content)) {
-        // Get all text blocks and concatenate
-        const allText = searchData.content
-          .filter(b => b.type === 'text')
-          .map(b => b.text)
-          .join('');
-
-        if (allText) {
-          try {
-            // Try to find JSON array in the text
-            const jsonMatch = allText.match(/\[[\s\S]*\]/);
-            if (jsonMatch) {
-              internetQuestions = JSON.parse(jsonMatch[0]);
-              console.log('Parsed internet questions:', internetQuestions.length);
-            }
-          } catch (e) {
-            console.log('Could not parse internet questions:', e);
+      try {
+        const searchResponse = await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-6',
+            max_tokens: 4000,
+            tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+            messages: [{ role: 'user', content: `Search Glassdoor, Reddit, Blind, AmbitionBox for recent ${role} interview questions in ${domain} industry India 2025. Return a JSON array of 30 questions: [{"q": "question text", "domain": "${domain}", "difficulty": "Hard"}]. Return ONLY the JSON array.` }],
+          }),
+        });
+        const searchData = await searchResponse.json();
+        console.log('Search response blocks:', searchData.content?.map(b => b.type));
+        if (searchData.content && Array.isArray(searchData.content)) {
+          const allText = searchData.content.filter(b => b.type === 'text').map(b => b.text).join('');
+          const match = allText.match(/\[[\s\S]*\]/);
+          if (match) {
+            internetQuestions = JSON.parse(match[0]).map(q => ({
+              ...q,
+              a: null,
+              _source: 'internet',
+              _needsAnswer: true,
+              _level: role,
+              _category: 'behavioral',
+            }));
+            console.log('Internet questions parsed:', internetQuestions.length);
           }
         }
+      } catch (e) {
+        console.log('Web search failed, using bank only:', e.message);
       }
 
-      // Step 3 — Store internet questions without answers (generate on demand)
-      let internetWithAnswers = internetQuestions.slice(0, 20).map(q => ({
-        ...q,
-        a: null, // answer will be generated on demand
-        _source: 'internet',
-        _needsAnswer: true,
-      }));
+      // Step 3 — Deduplicate and combine
+      const bankTexts = new Set(bankQuestions.map(q => q.q?.slice(0, 60).toLowerCase()));
+      const uniqueInternet = internetQuestions.filter(q => !bankTexts.has(q.q?.slice(0, 60).toLowerCase()));
 
-      // Step 4 — Combine bank + internet questions
-      // Deduplicate: remove internet questions similar to bank questions
-      const bankQTexts = new Set(bankQuestions.map(q => q.q?.slice(0, 60).toLowerCase()));
-      const uniqueInternet = internetWithAnswers.filter(q =>
-        !bankQTexts.has(q.q?.slice(0, 60).toLowerCase())
-      );
-
-      // Take top 60 from bank + up to 40 from internet = 100 total
+      // Put internet questions FIRST so users see them
       const combined = [
-        ...bankQuestions.slice(0, 60),
         ...uniqueInternet.slice(0, 40),
-      ];
+        ...bankQuestions,
+      ].slice(0, 100);
+
+      console.log('Final combined:', combined.length, 'internet:', uniqueInternet.length, 'bank:', bankQuestions.length);
 
       setResults({
-        questions: combined.slice(0, 100),
+        questions: combined,
         parsed,
         totalMatched: combined.length,
         internetCount: uniqueInternet.length,
-        bankCount: Math.min(bankQuestions.length, 60),
+        bankCount: bankQuestions.length,
       });
       setStep('results');
 
     } catch (err) {
+      console.log('handleGenerate error:', err.message);
       setError('Something went wrong. Please try again.');
       setStep('input');
-      console.error(err);
     }
   };
 
