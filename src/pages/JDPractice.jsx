@@ -738,7 +738,11 @@ Return only the answer text, no JSON.`;
                       <div style={{ paddingBottom: 20, background: '#FAFAF8', borderTop: '1px solid #e5e7eb', padding: '16px 0 20px' }}>
                         <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: '#1a1a1a', fontFamily: F, marginBottom: 10 }}>Expert Answer</div>
                         <button
-                          onClick={() => tts.isSpeaking ? tts.stop() : tts.speak('Expert Answer. ' + currentQ.a)}
+                          onClick={() => {
+                            if (tts.isSpeaking) { tts.stop(); return; }
+                            if (!currentQ.a || currentQ.a === 'Generating expert answer...') return;
+                            tts.speak('Expert Answer. ' + currentQ.a);
+                          }}
                           style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 18px', background: 'linear-gradient(135deg, #a78bfa, #f59e0b)', border: 'none', borderRadius: 50, cursor: 'pointer', fontSize: 13, fontWeight: 600, color: '#fff', fontFamily: F, marginBottom: 12 }}
                         >
                           {tts.isSpeaking ? '⏹ Stop' : '▶ Listen'}
