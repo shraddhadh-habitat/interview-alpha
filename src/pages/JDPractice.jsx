@@ -262,15 +262,20 @@ function ProcessingScreen() {
   const stars = [0, 1, 2, 3, 4];
   return (
     <div style={{
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
       textAlign: 'center',
-      padding: '40px 20px',
-      background: '#FAFAF8',
-      borderRadius: 20,
-      minHeight: 220,
+      padding: '48px 60px',
+      background: '#ffffff',
+      borderRadius: 24,
+      boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      zIndex: 1000,
     }}>
       <style>{`
         @keyframes starBounce {
@@ -429,6 +434,30 @@ export default function JDPractice({ user }) {
       setStep('input');
     }
   };
+
+  // Inject star animation CSS globally
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.id = 'star-bounce-styles';
+    style.textContent = `
+      @keyframes starBounce {
+        0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+        50% { transform: translateY(-16px) scale(1.3); opacity: 1; }
+      }
+      .star-bounce-0 { animation: starBounce 1.4s ease-in-out 0s infinite; }
+      .star-bounce-1 { animation: starBounce 1.4s ease-in-out 0.2s infinite; }
+      .star-bounce-2 { animation: starBounce 1.4s ease-in-out 0.4s infinite; }
+      .star-bounce-3 { animation: starBounce 1.4s ease-in-out 0.6s infinite; }
+      .star-bounce-4 { animation: starBounce 1.4s ease-in-out 0.8s infinite; }
+    `;
+    if (!document.getElementById('star-bounce-styles')) {
+      document.head.appendChild(style);
+    }
+    return () => {
+      const existing = document.getElementById('star-bounce-styles');
+      if (existing) existing.remove();
+    };
+  }, []);
 
   const currentQ = results?.questions[currentIndex];
   const F = "'Plus Jakarta Sans', sans-serif";
