@@ -50,7 +50,6 @@ function SubscriptionBadge({ profile, onUpgradeClick }) {
 const PUBLIC_TABS = [
   { id: 'interview',  label: 'Home' },
   { id: 'practice',   label: 'Practice' },
-  { id: 'jd-practice', label: '🎯 Practice for Job' },
   { id: 'scorecard',  label: 'My Progress' },
   { id: 'resume-tools', label: 'Resume Tools' },
   { id: 'salary',     label: 'Salary Guide' },

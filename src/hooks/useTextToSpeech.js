@@ -53,14 +53,14 @@ export default function useTextToSpeech() {
 
     if (!cleanedText) return;
 
-    // Split into chunks of ~150 words to prevent browser cutoff
+    // Split into chunks of ~50 words to prevent browser cutoff
     const sentences = cleanedText.match(/[^.!?]+[.!?]+/g) || [cleanedText];
     let chunks = [];
     let currentChunk = '';
 
     sentences.forEach((sentence) => {
       const words = currentChunk.split(' ').length + sentence.split(' ').length;
-      if (words > 150) {
+      if (words > 50) {
         if (currentChunk) chunks.push(currentChunk);
         currentChunk = sentence;
       } else {

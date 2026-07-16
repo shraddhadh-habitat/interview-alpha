@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import ATSChecker from './ATSChecker';
 import ResumeOptimizer from './ResumeOptimizer';
 import ResumeTemplates from './ResumeTemplates';
+import JDPractice from './JDPractice';
 
 const C = {
   bg: '#FAFAF8',
@@ -156,6 +157,7 @@ export default function ResumeToolsHub({ user }) {
     { id: 'resume-optimizer', label: 'Resume Optimizer' },
     { id: 'templates', label: 'Templates' },
     { id: 'resume-score', label: 'Resume Score' },
+    { id: 'jd-practice', label: '🎯 Your Unfair Advantage' },
   ];
 
   const isMobile = windowWidth < 1024;
@@ -404,6 +406,7 @@ export default function ResumeToolsHub({ user }) {
           </div>
         )}
         {activeTab === 'resume-score' && <ResumeScore />}
+        {activeTab === 'jd-practice' && <JDPractice user={user} />}
       </div>
     </div>
   );
