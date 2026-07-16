@@ -106,12 +106,11 @@ export default function useTextToSpeech() {
 
       utterance.onstart = () => {
         setIsSpeaking(true);
-        // Chrome bug fix: cancel and re-speak every 8 seconds
-        // to prevent Chrome's ~10s auto-cutoff
+        // Chrome bug fix: call resume() every 8s
+        // to prevent Chrome silently pausing long utterances
         resumeTimerRef.current = setInterval(() => {
-          if (window.speechSynthesis.speaking) {
-            window.speechSynthesis.cancel();
-            window.speechSynthesis.speak(utterance);
+          if (window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
           }
         }, 8000);
       };
