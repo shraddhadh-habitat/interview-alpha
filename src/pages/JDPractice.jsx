@@ -522,7 +522,7 @@ export default function JDPractice({ user }) {
                   Step 2 — Job Description
                 </div>
                 <textarea
-                  placeholder="Paste the full job description here — including role, responsibilities, requirements, and company details..."
+                  placeholder="Paste the full job description here; including role, responsibilities, requirements, and company details..."
                   value={jdText}
                   onChange={(e) => setJdText(e.target.value)}
                   style={{ width: '100%', padding: '12px 14px', border: '1px solid #e5e7eb', borderRadius: 10, fontSize: 13, fontFamily: F, color: '#374151', minHeight: 180, resize: 'vertical', outline: 'none', boxSizing: 'border-box' }}
@@ -543,7 +543,7 @@ export default function JDPractice({ user }) {
                 disabled={!canGenerate}
                 style={{ width: '100%', padding: '16px', background: canGenerate ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : '#e5e7eb', border: 'none', borderRadius: 12, fontSize: 16, fontWeight: 700, fontFamily: F, color: canGenerate ? '#fff' : '#9ca3af', cursor: canGenerate ? 'pointer' : 'not-allowed' }}
               >
-                Build My Interview Kit →
+                Build My Exclusive Interview Prep Kit
               </button>
             </div>
           </>
