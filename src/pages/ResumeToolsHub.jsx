@@ -153,11 +153,11 @@ export default function ResumeToolsHub({ user }) {
   const dropdownMenuRef = useRef(null);
 
   const tabs = [
+    { id: 'jd-practice', label: 'Exclusive Prep' },
     { id: 'ats-checker', label: 'ATS Checker' },
     { id: 'resume-optimizer', label: 'Resume Optimizer' },
-    { id: 'templates', label: 'Templates' },
     { id: 'resume-score', label: 'Resume Score' },
-    { id: 'jd-practice', label: 'Exclusive Prep' },
+    { id: 'templates', label: 'Templates' },
   ];
 
   const isMobile = windowWidth < 1024;
