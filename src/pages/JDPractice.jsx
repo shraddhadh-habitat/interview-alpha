@@ -6,6 +6,7 @@ import { projectManagementQuestions } from '../data/projectManagementQuestions';
 import { consultingQuestions } from '../data/consultingQuestions';
 import { technicalWritingQuestions } from '../data/technicalWritingQuestions';
 import useTextToSpeech from '../hooks/useTextToSpeech';
+import FormattedAnswer from '../components/FormattedAnswer';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
 
@@ -333,6 +334,7 @@ export default function JDPractice({ user }) {
   const [results, setResults] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answer, setAnswer] = useState('');
+  const [showExpert, setShowExpert] = useState(false);
   const resumeFileInputRef = useRef(null);
   const tts = useTextToSpeech();
 
@@ -565,7 +567,7 @@ export default function JDPractice({ user }) {
                   </p>
                 </div>
                 <button
-                  onClick={() => { setStep('practice'); setCurrentIndex(0); setAnswer(''); }}
+                  onClick={() => { setStep('practice'); setCurrentIndex(0); setAnswer(''); setShowExpert(false); }}
                   style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F, color: '#fff', cursor: 'pointer' }}
                 >
                   Start Practising →
@@ -578,7 +580,7 @@ export default function JDPractice({ user }) {
               {results.questions.slice(0, 20).map((q, i) => (
                 <div
                   key={i}
-                  onClick={() => { setStep('practice'); setCurrentIndex(i); setAnswer(''); }}
+                  onClick={() => { setStep('practice'); setCurrentIndex(i); setAnswer(''); setShowExpert(false); }}
                   style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: '14px 18px', cursor: 'pointer', display: 'flex', gap: 14, alignItems: 'flex-start' }}
                 >
                   <div style={{ flex: 1 }}>
@@ -627,7 +629,8 @@ export default function JDPractice({ user }) {
                 {currentQ.domain && <span style={{ fontSize: 11, padding: '3px 10px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{currentQ.domain}</span>}
                 {currentQ.difficulty && <span style={{ fontSize: 11, padding: '3px 10px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{currentQ.difficulty}</span>}
               </div>
-              <p style={{ fontSize: 16, color: '#1a1a1a', fontFamily: F, lineHeight: 1.7, margin: 0 }}>{currentQ.q}</p>
+              <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: '#1a1a1a', fontFamily: F, marginBottom: 10 }}>Question</div>
+              <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1a1a1a', fontFamily: F, margin: 0, fontWeight: 500 }}>{currentQ.q}</p>
               <button
                 onClick={() => tts.isSpeaking ? tts.stop() : tts.speak(currentQ.q)}
                 style={{
@@ -709,34 +712,41 @@ Return only the answer text, no JSON.`;
                     ✨ Generate Expert Answer for This Question
                   </button>
                 ) : currentQ.a && currentQ.a !== 'Generating expert answer...' ? (
-                  <details style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, padding: '16px 20px' }}>
-                    <summary style={{ fontSize: 14, fontWeight: 600, color: '#374151', fontFamily: "'Plus Jakarta Sans', sans-serif", cursor: 'pointer' }}>
-                      View expert answer
-                    </summary>
+                  <div style={{ borderTop: '1px solid #e5e7eb', marginTop: 16 }}>
                     <button
-                      onClick={() => tts.isSpeaking ? tts.stop() : tts.speak(currentQ.a)}
+                      onClick={() => setShowExpert(v => !v)}
                       style={{
-                        display: 'inline-flex',
+                        width: '100%',
+                        padding: '12px 0',
+                        display: 'flex',
                         alignItems: 'center',
-                        gap: 6,
-                        padding: '8px 18px',
-                        background: 'linear-gradient(135deg, #a78bfa, #f59e0b)',
+                        justifyContent: 'space-between',
+                        background: 'transparent',
                         border: 'none',
-                        borderRadius: 50,
                         cursor: 'pointer',
-                        fontSize: 13,
-                        fontWeight: 600,
-                        color: '#fff',
-                        fontFamily: "'Plus Jakarta Sans', sans-serif",
-                        marginTop: 10,
+                        fontSize: 11,
+                        letterSpacing: 1.5,
+                        textTransform: 'uppercase',
+                        color: '#9ca3af',
+                        fontFamily: F,
                       }}
                     >
-                      {tts.isSpeaking ? '⏹ Stop' : '▶ Listen'}
+                      <span>View Expert Answer</span>
+                      <span style={{ fontSize: 14, transform: showExpert ? 'rotate(180deg)' : 'rotate(0deg)', display: 'inline-block', transition: 'transform 0.2s' }}>▾</span>
                     </button>
-                    <div style={{ marginTop: 12, fontSize: 13, color: '#4b5563', fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
-                      {currentQ.a}
-                    </div>
-                  </details>
+                    {showExpert && (
+                      <div style={{ paddingBottom: 20, background: '#FAFAF8', borderTop: '1px solid #e5e7eb', padding: '16px 0 20px' }}>
+                        <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: '#1a1a1a', fontFamily: F, marginBottom: 10 }}>Expert Answer</div>
+                        <button
+                          onClick={() => tts.isSpeaking ? tts.stop() : tts.speak(currentQ.a)}
+                          style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 18px', background: 'linear-gradient(135deg, #a78bfa, #f59e0b)', border: 'none', borderRadius: 50, cursor: 'pointer', fontSize: 13, fontWeight: 600, color: '#fff', fontFamily: F, marginBottom: 12 }}
+                        >
+                          {tts.isSpeaking ? '⏹ Stop' : '▶ Listen'}
+                        </button>
+                        <FormattedAnswer text={currentQ.a} />
+                      </div>
+                    )}
+                  </div>
                 ) : currentQ.a === 'Generating expert answer...' ? (
                   <div style={{ padding: '24px 20px', background: '#FAFAF8', border: '1px solid #e5e7eb', borderRadius: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
                     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -759,14 +769,14 @@ Return only the answer text, no JSON.`;
             {/* Navigation */}
             <div style={{ display: 'flex', gap: 12 }}>
               <button
-                onClick={() => { setCurrentIndex(Math.max(0, currentIndex - 1)); setAnswer(''); }}
+                onClick={() => { setCurrentIndex(Math.max(0, currentIndex - 1)); setAnswer(''); setShowExpert(false); }}
                 disabled={currentIndex === 0}
                 style={{ flex: 1, padding: '12px', border: '1px solid #e5e7eb', borderRadius: 10, fontSize: 14, fontFamily: F, color: '#374151', background: '#fff', cursor: currentIndex === 0 ? 'not-allowed' : 'pointer' }}
               >
                 ← Previous
               </button>
               <button
-                onClick={() => { setCurrentIndex(Math.min(results.questions.length - 1, currentIndex + 1)); setAnswer(''); }}
+                onClick={() => { setCurrentIndex(Math.min(results.questions.length - 1, currentIndex + 1)); setAnswer(''); setShowExpert(false); }}
                 disabled={currentIndex === results.questions.length - 1}
                 style={{ flex: 1, padding: '12px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F, color: '#fff', cursor: currentIndex === results.questions.length - 1 ? 'not-allowed' : 'pointer' }}
               >
