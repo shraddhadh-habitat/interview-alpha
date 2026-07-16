@@ -477,7 +477,7 @@ export default function JDPractice({ user }) {
                 Practice for Your Interview
               </h1>
               <p style={{ fontSize: 15, color: '#6b7280', fontFamily: F }}>
-                Upload your resume and paste the job description. We'll build you a personalised set of 100 practice questions.
+                Upload your resume and paste the job description. We'll build you a personalised set of practice questions.
               </p>
             </div>
 
