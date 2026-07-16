@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth';
 import { pmQuestions } from '../data/pmQuestions';
@@ -257,6 +257,67 @@ const matchQuestions = (jdText, resumeText) => {
   };
 };
 
+// ── PROCESSING SCREEN ──────────────────────────────────────────
+function ProcessingScreen() {
+  const stars = [0, 1, 2, 3, 4];
+  return (
+    <div style={{
+      textAlign: 'center',
+      padding: '60px 20px',
+      background: '#0a0a0a',
+      borderRadius: 20,
+      minHeight: 300,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <style>{`
+        @keyframes starBounce {
+          0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+          50% { transform: translateY(-16px) scale(1.3); opacity: 1; }
+        }
+        .star-bounce-0 { animation: starBounce 1.4s ease-in-out 0s infinite; }
+        .star-bounce-1 { animation: starBounce 1.4s ease-in-out 0.2s infinite; }
+        .star-bounce-2 { animation: starBounce 1.4s ease-in-out 0.4s infinite; }
+        .star-bounce-3 { animation: starBounce 1.4s ease-in-out 0.6s infinite; }
+        .star-bounce-4 { animation: starBounce 1.4s ease-in-out 0.8s infinite; }
+      `}</style>
+      <div style={{ display: 'flex', gap: 12, marginBottom: 32, alignItems: 'center' }}>
+        {[0,1,2,3,4].map(i => (
+          <span
+            key={i}
+            className={`star-bounce-${i}`}
+            style={{
+              fontSize: 38,
+              display: 'inline-block',
+              filter: 'drop-shadow(0 0 10px #fbbf24)',
+            }}
+          >⭐</span>
+        ))}
+      </div>
+      <h2 style={{
+        fontSize: 20,
+        fontWeight: 700,
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        color: '#ffffff',
+        marginBottom: 8,
+        letterSpacing: 4,
+        textTransform: 'uppercase',
+      }}>
+        Generating Results
+      </h2>
+      <p style={{
+        fontSize: 13,
+        color: '#9ca3af',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+      }}>
+        Processing... Please wait
+      </p>
+    </div>
+  );
+}
+
 // ── COMPONENT ────────────────────────────────────────────────
 export default function JDPractice({ user }) {
   const [resumeText, setResumeText] = useState('');
@@ -458,43 +519,7 @@ export default function JDPractice({ user }) {
         )}
 
         {step === 'processing' && (
-          <div style={{ textAlign: 'center', padding: '60px 20px', background: '#0a0a0a', borderRadius: 20, minHeight: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', gap: 12, marginBottom: 32, alignItems: 'center' }}>
-              {[0,1,2,3,4].map(i => (
-                <div key={i} style={{
-                  fontSize: 36,
-                  display: 'inline-block',
-                  animationName: 'none',
-                  transform: 'translateY(0)',
-                  opacity: 0.9,
-                  filter: 'drop-shadow(0 0 10px #fbbf24)',
-                  transition: 'transform 0.3s ease',
-                }}
-                ref={el => {
-                  if (el) {
-                    const delay = i * 300;
-                    const animate = () => {
-                      el.style.transform = 'translateY(-14px) scale(1.2)';
-                      el.style.opacity = '1';
-                      setTimeout(() => {
-                        el.style.transform = 'translateY(0) scale(1)';
-                        el.style.opacity = '0.7';
-                      }, 400);
-                      setTimeout(animate, 1500);
-                    };
-                    setTimeout(animate, delay);
-                  }
-                }}
-                >⭐</div>
-              ))}
-            </div>
-            <h2 style={{ fontSize: 20, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#ffffff', marginBottom: 8, letterSpacing: 4, textTransform: 'uppercase' }}>
-              Generating Results
-            </h2>
-            <p style={{ fontSize: 13, color: '#9ca3af', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Processing... Please wait
-            </p>
-          </div>
+          <ProcessingScreen />
         )}
 
         {step === 'results' && results && (
@@ -577,18 +602,19 @@ export default function JDPractice({ user }) {
               <button
                 onClick={() => tts.isSpeaking ? tts.stop() : tts.speak(currentQ.q)}
                 style={{
-                  marginTop: 12,
-                  padding: '6px 14px',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: 8,
-                  background: 'transparent',
-                  cursor: 'pointer',
-                  fontSize: 12,
-                  color: '#6b7280',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  display: 'flex',
+                  display: 'inline-flex',
                   alignItems: 'center',
                   gap: 6,
+                  padding: '8px 18px',
+                  background: 'linear-gradient(135deg, #a78bfa, #f59e0b)',
+                  border: 'none',
+                  borderRadius: 50,
+                  cursor: 'pointer',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: '#fff',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  marginTop: 10,
                 }}
               >
                 {tts.isSpeaking ? '⏹ Stop' : '🔊 Listen to question'}
@@ -660,7 +686,21 @@ Return only the answer text, no JSON.`;
                     </summary>
                     <button
                       onClick={() => tts.isSpeaking ? tts.stop() : tts.speak(currentQ.a)}
-                      style={{ marginTop: 8, padding: '6px 14px', border: '1px solid #e5e7eb', borderRadius: 8, background: 'transparent', cursor: 'pointer', fontSize: 12, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif", display: 'flex', alignItems: 'center', gap: 6 }}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        padding: '8px 18px',
+                        background: 'linear-gradient(135deg, #a78bfa, #f59e0b)',
+                        border: 'none',
+                        borderRadius: 50,
+                        cursor: 'pointer',
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: '#fff',
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
+                        marginTop: 10,
+                      }}
                     >
                       {tts.isSpeaking ? '⏹ Stop' : '🔊 Listen to answer'}
                     </button>
