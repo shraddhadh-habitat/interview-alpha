@@ -73,8 +73,8 @@ export default function useTextToSpeech() {
       }
 
       const utterance = new SpeechSynthesisUtterance(chunks[chunkIndex]);
-      utterance.rate = 0.92;
-      utterance.pitch = 1.05;
+      utterance.rate = 1.1;
+      utterance.pitch = 1.1;
       utterance.lang = 'en-US';
 
       const preferredNames = [
@@ -153,6 +153,8 @@ export default function useTextToSpeech() {
       resumeTimerRef.current = null;
     }
     window.speechSynthesis.cancel();
+    setTimeout(() => window.speechSynthesis.cancel(), 50);
+    setTimeout(() => window.speechSynthesis.cancel(), 150);
     setIsSpeaking(false);
     setCurrentUtterance(null);
   }, []);
