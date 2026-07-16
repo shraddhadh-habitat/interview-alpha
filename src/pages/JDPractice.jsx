@@ -459,28 +459,41 @@ export default function JDPractice({ user }) {
 
         {step === 'processing' && (
           <div style={{ textAlign: 'center', padding: '60px 20px', background: '#0a0a0a', borderRadius: 20, minHeight: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', gap: 8, marginBottom: 32, alignItems: 'flex-end' }}>
+            <div style={{ display: 'flex', gap: 12, marginBottom: 32, alignItems: 'center' }}>
               {[0,1,2,3,4].map(i => (
                 <div key={i} style={{
-                  fontSize: 40,
-                  animation: `starPulse 1.5s ease-in-out ${i * 0.2}s infinite`,
+                  fontSize: 36,
                   display: 'inline-block',
-                  filter: 'drop-shadow(0 0 8px #fbbf24)',
-                }}>⭐</div>
+                  animationName: 'none',
+                  transform: 'translateY(0)',
+                  opacity: 0.9,
+                  filter: 'drop-shadow(0 0 10px #fbbf24)',
+                  transition: 'transform 0.3s ease',
+                }}
+                ref={el => {
+                  if (el) {
+                    const delay = i * 300;
+                    const animate = () => {
+                      el.style.transform = 'translateY(-14px) scale(1.2)';
+                      el.style.opacity = '1';
+                      setTimeout(() => {
+                        el.style.transform = 'translateY(0) scale(1)';
+                        el.style.opacity = '0.7';
+                      }, 400);
+                      setTimeout(animate, 1500);
+                    };
+                    setTimeout(animate, delay);
+                  }
+                }}
+                >⭐</div>
               ))}
             </div>
-            <h2 style={{ fontSize: 22, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#ffffff', marginBottom: 8, letterSpacing: 3, textTransform: 'uppercase' }}>
+            <h2 style={{ fontSize: 20, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#ffffff', marginBottom: 8, letterSpacing: 4, textTransform: 'uppercase' }}>
               Generating Results
             </h2>
             <p style={{ fontSize: 13, color: '#9ca3af', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Processing... Please wait
             </p>
-            <style>{`
-              @keyframes starPulse {
-                0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
-                50% { transform: translateY(-12px) scale(1.2); opacity: 1; }
-              }
-            `}</style>
           </div>
         )}
 
