@@ -458,14 +458,29 @@ export default function JDPractice({ user }) {
         )}
 
         {step === 'processing' && (
-          <div style={{ textAlign: 'center', padding: '80px 20px' }}>
-            <div style={{ fontSize: 48, marginBottom: 24 }}>⚡</div>
-            <h2 style={{ fontSize: 22, fontWeight: 700, fontFamily: S, color: '#1a1a1a', marginBottom: 8 }}>
-              Building your question set...
+          <div style={{ textAlign: 'center', padding: '60px 20px', background: '#0a0a0a', borderRadius: 20, minHeight: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 32, alignItems: 'flex-end' }}>
+              {[0,1,2,3,4].map(i => (
+                <div key={i} style={{
+                  fontSize: 40,
+                  animation: `starPulse 1.5s ease-in-out ${i * 0.2}s infinite`,
+                  display: 'inline-block',
+                  filter: 'drop-shadow(0 0 8px #fbbf24)',
+                }}>⭐</div>
+              ))}
+            </div>
+            <h2 style={{ fontSize: 22, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#ffffff', marginBottom: 8, letterSpacing: 3, textTransform: 'uppercase' }}>
+              Generating Results
             </h2>
-            <p style={{ fontSize: 14, color: '#6b7280', fontFamily: F }}>
-              This takes 30-60 seconds.
+            <p style={{ fontSize: 13, color: '#9ca3af', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              Processing... Please wait
             </p>
+            <style>{`
+              @keyframes starPulse {
+                0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+                50% { transform: translateY(-12px) scale(1.2); opacity: 1; }
+              }
+            `}</style>
           </div>
         )}
 
@@ -479,9 +494,7 @@ export default function JDPractice({ user }) {
                     Your personalised question set
                   </h2>
                   <p style={{ fontSize: 13, color: '#6b7280', fontFamily: F }}>
-                    {`${results.totalMatched} questions — latest from Glassdoor, Reddit & Blind + expert bank answers`}
-                    {results.parsed.detectedDomains.length > 0 && ` · ${results.parsed.detectedDomains.join(', ')}`}
-                    {results.parsed.detectedLevels.length > 0 && ` · ${results.parsed.detectedLevels[0]}`}
+                    Your personalised question set based on your resume and job description
                   </p>
                 </div>
                 <button
@@ -523,7 +536,7 @@ export default function JDPractice({ user }) {
               ))}
               {results.questions.length > 20 && (
                 <div style={{ textAlign: 'center', padding: '16px', fontSize: 13, color: '#6b7280', fontFamily: F }}>
-                  + {results.questions.length - 20} more questions available when you start practising
+                  Many more questions available when you start practising
                 </div>
               )}
             </div>
