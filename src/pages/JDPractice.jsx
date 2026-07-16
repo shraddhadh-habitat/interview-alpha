@@ -349,6 +349,8 @@ export default function JDPractice({ user }) {
         ...bankQuestions,
       ].slice(0, 100);
 
+      console.log('Question sources:', combined.map(q => q._source).join(', '));
+
       console.log('Final combined:', combined.length, 'internet:', uniqueInternet.length, 'bank:', bankQuestions.length);
 
       setResults({
