@@ -5,6 +5,7 @@ export default function useTextToSpeech() {
   const [currentUtterance, setCurrentUtterance] = useState(null);
   const [voices, setVoices] = useState([]);
   const resumeTimerRef = useRef(null);
+  const cancelledRef = useRef(false);
 
   useEffect(() => {
     if (!window.speechSynthesis) return;
@@ -39,6 +40,7 @@ export default function useTextToSpeech() {
   const speak = useCallback((text) => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
+    cancelledRef.current = false;
     const cleanedText = cleanText(text);
     if (!cleanedText) return;
 
@@ -62,7 +64,7 @@ export default function useTextToSpeech() {
     let chunkIndex = 0;
 
     const speakChunk = () => {
-      if (chunkIndex >= chunks.length) {
+      if (cancelledRef.current || chunkIndex >= chunks.length) {
         if (resumeTimerRef.current) {
           clearInterval(resumeTimerRef.current);
           resumeTimerRef.current = null;
@@ -109,8 +111,10 @@ export default function useTextToSpeech() {
           clearInterval(resumeTimerRef.current);
           resumeTimerRef.current = null;
         }
-        chunkIndex++;
-        setTimeout(speakChunk, isMobile ? 100 : 300);
+        if (!cancelledRef.current) {
+          chunkIndex++;
+          setTimeout(speakChunk, isMobile ? 100 : 300);
+        }
       };
 
       utterance.onerror = (error) => {
@@ -148,13 +152,12 @@ export default function useTextToSpeech() {
 
   const stop = useCallback(() => {
     if (!window.speechSynthesis) return;
+    cancelledRef.current = true;
     if (resumeTimerRef.current) {
       clearInterval(resumeTimerRef.current);
       resumeTimerRef.current = null;
     }
     window.speechSynthesis.cancel();
-    setTimeout(() => window.speechSynthesis.cancel(), 50);
-    setTimeout(() => window.speechSynthesis.cancel(), 150);
     setIsSpeaking(false);
     setCurrentUtterance(null);
   }, []);
