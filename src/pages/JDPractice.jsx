@@ -479,9 +479,7 @@ export default function JDPractice({ user }) {
                     Your personalised question set
                   </h2>
                   <p style={{ fontSize: 13, color: '#6b7280', fontFamily: F }}>
-                    {results.internetCount > 0
-                      ? `${results.bankCount} from our expert bank · ${results.internetCount} sourced from Glassdoor, Reddit & Blind`
-                      : 'Questions matched from our expert bank — tailored to your JD'}
+                    {`${results.totalMatched} questions — latest from Glassdoor, Reddit & Blind + expert bank answers`}
                     {results.parsed.detectedDomains.length > 0 && ` · ${results.parsed.detectedDomains.join(', ')}`}
                     {results.parsed.detectedLevels.length > 0 && ` · ${results.parsed.detectedLevels[0]}`}
                   </p>
@@ -602,7 +600,7 @@ Return only the answer text, no JSON.`;
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({
                             model: 'claude-sonnet-4-6',
-                            max_tokens: 1500,
+                            max_tokens: 800,
                             messages: [{ role: 'user', content: prompt }],
                           }),
                         });
@@ -624,15 +622,15 @@ Return only the answer text, no JSON.`;
                     <summary style={{ fontSize: 14, fontWeight: 600, color: '#374151', fontFamily: "'Plus Jakarta Sans', sans-serif", cursor: 'pointer' }}>
                       View expert answer
                     </summary>
-                    <div style={{ marginTop: 12, fontSize: 13, color: '#4b5563', fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
-                      {currentQ.a}
-                    </div>
                     <button
                       onClick={() => tts.isSpeaking ? tts.stop() : tts.speak(currentQ.a)}
                       style={{ marginTop: 8, padding: '6px 14px', border: '1px solid #e5e7eb', borderRadius: 8, background: 'transparent', cursor: 'pointer', fontSize: 12, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif", display: 'flex', alignItems: 'center', gap: 6 }}
                     >
                       {tts.isSpeaking ? '⏹ Stop' : '🔊 Listen to answer'}
                     </button>
+                    <div style={{ marginTop: 12, fontSize: 13, color: '#4b5563', fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
+                      {currentQ.a}
+                    </div>
                   </details>
                 ) : currentQ.a === 'Generating expert answer...' ? (
                   <div style={{ padding: '16px 20px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, fontSize: 14, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
