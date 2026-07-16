@@ -507,6 +507,16 @@ export default function JDPractice({ user }) {
                       {q.domain && <span style={{ fontSize: 10, padding: '2px 8px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{q.domain}</span>}
                       {q.difficulty && <span style={{ fontSize: 10, padding: '2px 8px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{q.difficulty}</span>}
                       {q._level && <span style={{ fontSize: 10, padding: '2px 8px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{q._level}</span>}
+                      {window.location.search.includes('debug=true') && (
+                        <span style={{ fontSize: 10, padding: '2px 8px',
+                          background: q._source === 'internet' ? '#fef3c7' : '#f0fdf4',
+                          borderRadius: 6,
+                          color: q._source === 'internet' ? '#92400e' : '#166534',
+                          fontFamily: F
+                        }}>
+                          {q._source === 'internet' ? '🌐 Web' : '✓ Bank'}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
