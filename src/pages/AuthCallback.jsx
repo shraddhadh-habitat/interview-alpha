@@ -52,9 +52,9 @@ export default function AuthCallback() {
             window.location.href = `/?page=practice&score_token=${scoreToken}`;
           } else {
             console.log('[AuthCallback] No score token, redirecting to practice with new_user flag');
-            const jdpPostAuthPage = sessionStorage.getItem('jdp_post_auth_page');
+            const jdpPostAuthPage = localStorage.getItem('jdp_post_auth_page');
             if (jdpPostAuthPage) {
-              sessionStorage.removeItem('jdp_post_auth_page');
+              localStorage.removeItem('jdp_post_auth_page');
               window.location.href = `/?page=${jdpPostAuthPage}&new_user=true`;
             } else {
               window.location.href = '/?page=practice&new_user=true';
@@ -87,9 +87,9 @@ export default function AuthCallback() {
               window.location.href = `/?page=practice&score_token=${scoreToken}`;
             } else {
               console.log('[AuthCallback] No score token, redirecting to practice with new_user flag');
-              const jdpPostAuthPage = sessionStorage.getItem('jdp_post_auth_page');
+              const jdpPostAuthPage = localStorage.getItem('jdp_post_auth_page');
               if (jdpPostAuthPage) {
-                sessionStorage.removeItem('jdp_post_auth_page');
+                localStorage.removeItem('jdp_post_auth_page');
                 window.location.href = `/?page=${jdpPostAuthPage}&new_user=true`;
               } else {
                 window.location.href = '/?page=practice&new_user=true';

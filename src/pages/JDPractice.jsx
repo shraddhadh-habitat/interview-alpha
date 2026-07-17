@@ -328,16 +328,16 @@ export default function JDPractice({ user, profile }) {
   // Restore JD Practice state after auth
   useEffect(() => {
     if (!user) return;
-    console.log('[JDPractice] user changed, checking sessionStorage:', {
+    console.log('[JDPractice] user changed, checking localStorage:', {
       user: !!user,
-      savedResults: !!sessionStorage.getItem('jdp_results'),
-      savedStep: sessionStorage.getItem('jdp_step'),
+      savedResults: !!localStorage.getItem('jdp_results'),
+      savedStep: localStorage.getItem('jdp_step'),
     });
-    const savedResults = sessionStorage.getItem('jdp_results');
-    const savedStep = sessionStorage.getItem('jdp_step');
-    const savedIndex = sessionStorage.getItem('jdp_index');
-    const savedResume = sessionStorage.getItem('jdp_resumeText');
-    const savedJD = sessionStorage.getItem('jdp_jdText');
+    const savedResults = localStorage.getItem('jdp_results');
+    const savedStep = localStorage.getItem('jdp_step');
+    const savedIndex = localStorage.getItem('jdp_index');
+    const savedResume = localStorage.getItem('jdp_resumeText');
+    const savedJD = localStorage.getItem('jdp_jdText');
     if (savedResults && savedStep) {
       try {
         const parsed = JSON.parse(savedResults);
@@ -347,11 +347,11 @@ export default function JDPractice({ user, profile }) {
         if (savedResume) setResumeText(savedResume);
         if (savedJD) setJdText(savedJD);
         // Clear after restoring
-        sessionStorage.removeItem('jdp_results');
-        sessionStorage.removeItem('jdp_step');
-        sessionStorage.removeItem('jdp_index');
-        sessionStorage.removeItem('jdp_resumeText');
-        sessionStorage.removeItem('jdp_jdText');
+        localStorage.removeItem('jdp_results');
+        localStorage.removeItem('jdp_step');
+        localStorage.removeItem('jdp_index');
+        localStorage.removeItem('jdp_resumeText');
+        localStorage.removeItem('jdp_jdText');
       } catch (e) {
         console.log('Could not restore JD Practice state:', e);
       }
@@ -733,10 +733,10 @@ export default function JDPractice({ user, profile }) {
                         onClick={() => {
                           // Save post-auth destination BEFORE opening auth modal
                           // This handles email verification flow where user clicks link in email
-                          sessionStorage.setItem('jdp_post_auth_page', 'resume-tools');
-                          sessionStorage.setItem('jdp_step', 'practice');
-                          sessionStorage.setItem('jdp_index', String(currentIndex));
-                          if (results) sessionStorage.setItem('jdp_results', JSON.stringify(results));
+                          localStorage.setItem('jdp_post_auth_page', 'resume-tools');
+                          localStorage.setItem('jdp_step', 'practice');
+                          localStorage.setItem('jdp_index', String(currentIndex));
+                          if (results) localStorage.setItem('jdp_results', JSON.stringify(results));
                           requireAuth('Sign up to see expert answers — free account, no credit card needed', async () => {
                             // Generate answer after signup
                             const prompt = `Generate a professional model answer for this interview question for a ${results.parsed.detectedLevels[0] || 'Senior PM'} role in ${results.parsed.detectedDomains[0] || 'technology'}.

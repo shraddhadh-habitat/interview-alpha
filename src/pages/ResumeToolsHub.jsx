@@ -153,9 +153,9 @@ export default function ResumeToolsHub({ user, profile }) {
   const dropdownMenuRef = useRef(null);
 
   useEffect(() => {
-    const savedTab = sessionStorage.getItem('jdp_active_tab');
+    const savedTab = localStorage.getItem('jdp_active_tab');
     if (savedTab) {
-      sessionStorage.removeItem('jdp_active_tab');
+      localStorage.removeItem('jdp_active_tab');
       setActiveTab(savedTab);
     }
   }, []);

@@ -535,7 +535,7 @@ export default function App() {
       const newUser = params.get('new_user');
       if (newUser === 'true') {
         // Will be handled by ResumeToolsHub to set active tab to jd-practice
-        sessionStorage.setItem('jdp_active_tab', 'jd-practice');
+        localStorage.setItem('jdp_active_tab', 'jd-practice');
       }
     }
   }, []);
@@ -939,9 +939,9 @@ export default function App() {
               console.log('[Auth] onSuccess fired - page:', page, '| postLoginDestination:', postLoginDestination, '| user:', user?.id);
               setShowLoginModal(false);
               setLoginMessage('');
-              const jdpPostAuthPage = sessionStorage.getItem('jdp_post_auth_page');
+              const jdpPostAuthPage = localStorage.getItem('jdp_post_auth_page');
               if (jdpPostAuthPage) {
-                sessionStorage.removeItem('jdp_post_auth_page');
+                localStorage.removeItem('jdp_post_auth_page');
                 setPage(jdpPostAuthPage);
               } else if (postLoginDestination) {
                 setPage(postLoginDestination);
