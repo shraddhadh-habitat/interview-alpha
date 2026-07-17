@@ -1,34 +1,94 @@
 import { useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import posthog from '../lib/analytics';
 
 export default function AuthCallback() {
+  console.log('[AuthCallback] URL on load:', window.location.href);
+  console.log('[AuthCallback] search params:', window.location.search);
+
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        // Exchange the code for a session
-        const { data, error } = await supabase.auth.exchangeCodeForSession(
-          new URLSearchParams(window.location.search).get('code')
-        );
+        const params = new URLSearchParams(window.location.search);
+        const error = params.get('error');
+        const errorCode = params.get('error_code');
+        const scoreToken = params.get('score_token');
 
-        if (error) {
-          console.error('Auth callback error:', error);
-          window.location.href = '/';
+        console.log('[AuthCallback] Error:', error, 'Error code:', errorCode);
+        console.log('[AuthCallback] Score token from URL:', scoreToken);
+
+        // Handle verification errors
+        if (error || errorCode) {
+          console.log('[AuthCallback] Verification error detected');
+
+          // Special case: OTP expired but user is already confirmed
+          // They can sign in manually and still see their score
+          if (errorCode === 'otp_expired' && scoreToken) {
+            console.log('[AuthCallback] OTP expired but user confirmed, redirecting to practice with score');
+            window.location.href = `/?page=practice&score_token=${scoreToken}`;
+            return;
+          }
+
+          // General error: save score token and show error
+          if (scoreToken) {
+            console.log('[AuthCallback] Saving score token to localStorage');
+            localStorage.setItem('ia:score_token', scoreToken);
+          }
+          window.location.href = '/?signup_error=true';
           return;
         }
 
-        if (data?.user) {
-          // Check if user came from practice attempt
-          const practiceOrigin = localStorage.getItem('ia_practice_origin');
-          if (practiceOrigin) {
-            localStorage.removeItem('ia_practice_origin');
-            window.location.href = '/?page=practice';
+        // Check if user is already signed in (auto sign-in after link click)
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        console.log('[AuthCallback] getSession result - has user:', !!sessionData?.session?.user, 'error:', sessionError);
+
+        if (sessionData?.session?.user) {
+          // User is already signed in - no need for exchangeCodeForSession
+          console.log('[AuthCallback] User already signed in from verification link');
+          posthog.capture('email_verified');
+
+          if (scoreToken) {
+            console.log('[AuthCallback] Found score token, redirecting to practice with token');
+            window.location.href = `/?page=practice&score_token=${scoreToken}`;
           } else {
-            // Redirect to scorecard for normal signup
-            window.location.href = '/?page=scorecard';
+            console.log('[AuthCallback] No score token, redirecting to practice with new_user flag');
+            window.location.href = '/?page=practice&new_user=true';
           }
-        } else {
-          window.location.href = '/';
+          return;
         }
+
+        // If not auto-signed-in, try exchangeCodeForSession
+        const code = params.get('code');
+        if (code) {
+          console.log('[AuthCallback] Attempting exchangeCodeForSession');
+          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+
+          if (exchangeError) {
+            console.error('Auth callback exchangeCodeForSession error:', exchangeError);
+            if (scoreToken) {
+              localStorage.setItem('ia:score_token', scoreToken);
+            }
+            window.location.href = '/?signup_error=true';
+            return;
+          }
+
+          if (data?.user) {
+            console.log('[AuthCallback] Successfully exchanged code for session');
+            posthog.capture('email_verified');
+
+            if (scoreToken) {
+              console.log('[AuthCallback] Found score token, redirecting to practice with token');
+              window.location.href = `/?page=practice&score_token=${scoreToken}`;
+            } else {
+              console.log('[AuthCallback] No score token, redirecting to practice with new_user flag');
+              window.location.href = '/?page=practice&new_user=true';
+            }
+            return;
+          }
+        }
+
+        console.log('[AuthCallback] No code or user found, redirecting to homepage');
+        window.location.href = '/';
       } catch (err) {
         console.error('Auth callback exception:', err);
         window.location.href = '/';
