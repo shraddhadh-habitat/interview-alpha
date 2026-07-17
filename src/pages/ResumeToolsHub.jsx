@@ -152,6 +152,14 @@ export default function ResumeToolsHub({ user, profile }) {
   const dropdownButtonRef = useRef(null);
   const dropdownMenuRef = useRef(null);
 
+  useEffect(() => {
+    const savedTab = sessionStorage.getItem('jdp_active_tab');
+    if (savedTab) {
+      sessionStorage.removeItem('jdp_active_tab');
+      setActiveTab(savedTab);
+    }
+  }, []);
+
   const tabs = [
     { id: 'jd-practice', label: 'Exclusive Prep' },
     { id: 'ats-checker', label: 'ATS Checker' },

@@ -529,6 +529,15 @@ export default function App() {
       console.log('[App] Found ?page=practice in URL, setting page to practice');
       setPage('practice');
     }
+
+    // Handle new_user=true for resume-tools page
+    if (pageParam === 'resume-tools') {
+      const newUser = params.get('new_user');
+      if (newUser === 'true') {
+        // Will be handled by ResumeToolsHub to set active tab to jd-practice
+        sessionStorage.setItem('jdp_active_tab', 'jd-practice');
+      }
+    }
   }, []);
 
   // Device tracking is handled by DeviceTracker component
