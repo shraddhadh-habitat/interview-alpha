@@ -6,7 +6,6 @@ import { projectManagementQuestions } from '../data/projectManagementQuestions';
 import { consultingQuestions } from '../data/consultingQuestions';
 import { technicalWritingQuestions } from '../data/technicalWritingQuestions';
 import useTextToSpeech from '../hooks/useTextToSpeech';
-import { useAuth } from '../contexts/AuthContext';
 import FormattedAnswer from '../components/FormattedAnswer';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
@@ -264,14 +263,20 @@ function ProcessingScreen() {
   const stars = [0, 1, 2, 3, 4];
   return (
     <div style={{
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
       textAlign: 'center',
-      padding: '80px 60px',
+      padding: '48px 60px',
       background: '#FAFAF8',
+      borderRadius: 24,
+      boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      minHeight: '60vh',
+      zIndex: 1000,
     }}>
       <style>{`
         @keyframes starBounce {
@@ -320,43 +325,8 @@ function ProcessingScreen() {
 }
 
 // ── COMPONENT ────────────────────────────────────────────────
-export default function JDPractice({ user, profile }) {
-  const isPro = user && profile?.subscription_status === 'active';
-  const { requireAuth } = useAuth();
+export default function JDPractice({ user }) {
   const [resumeText, setResumeText] = useState('');
-
-  // Restore JD Practice state after auth
-  useEffect(() => {
-    if (!user) return;
-    console.log('[JDPractice] user changed, checking localStorage:', {
-      user: !!user,
-      savedResults: !!localStorage.getItem('jdp_results'),
-      savedStep: localStorage.getItem('jdp_step'),
-    });
-    const savedResults = localStorage.getItem('jdp_results');
-    const savedStep = localStorage.getItem('jdp_step');
-    const savedIndex = localStorage.getItem('jdp_index');
-    const savedResume = localStorage.getItem('jdp_resumeText');
-    const savedJD = localStorage.getItem('jdp_jdText');
-    if (savedResults && savedStep) {
-      try {
-        const parsed = JSON.parse(savedResults);
-        setResults(parsed);
-        setStep(savedStep);
-        setCurrentIndex(parseInt(savedIndex) || 0);
-        if (savedResume) setResumeText(savedResume);
-        if (savedJD) setJdText(savedJD);
-        // Clear after restoring
-        localStorage.removeItem('jdp_results');
-        localStorage.removeItem('jdp_step');
-        localStorage.removeItem('jdp_index');
-        localStorage.removeItem('jdp_resumeText');
-        localStorage.removeItem('jdp_jdText');
-      } catch (e) {
-        console.log('Could not restore JD Practice state:', e);
-      }
-    }
-  }, [user]);
   const [jdText, setJdText] = useState('');
   const [fileUploading, setFileUploading] = useState(false);
   const [error, setError] = useState('');
@@ -607,7 +577,7 @@ export default function JDPractice({ user, profile }) {
 
             {/* Question list preview */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {results.questions.slice(0, isPro ? 20 : 5).map((q, i) => (
+              {results.questions.slice(0, 20).map((q, i) => (
                 <div
                   key={i}
                   onClick={() => { setStep('practice'); setCurrentIndex(i); setAnswer(''); setShowExpert(false); }}
@@ -633,33 +603,7 @@ export default function JDPractice({ user, profile }) {
                   </div>
                 </div>
               ))}
-              {!isPro && (
-                <div style={{ marginTop: 8 }}>
-                  {[...Array(15)].map((_, i) => (
-                    <div key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: '14px 18px', marginBottom: 10, position: 'relative', overflow: 'hidden' }}>
-                      <div style={{ filter: 'blur(4px)', pointerEvents: 'none', userSelect: 'none' }}>
-                        <p style={{ fontSize: 13, color: '#1a1a1a', fontFamily: F, margin: 0 }}>
-                          {i % 3 === 0 ? 'How would you approach building a product roadmap for a complex enterprise client with competing stakeholder priorities...' : i % 3 === 1 ? 'Walk me through a time when you had to make a difficult product decision with incomplete data and tight deadlines...' : 'You are a Senior PM at a fintech company. The CEO asks you to evaluate a new market opportunity in embedded finance...'}
-                        </p>
-                      </div>
-                      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.7)' }}>
-                        <span style={{ fontSize: 12, fontWeight: 600, color: '#7c3aed', fontFamily: F }}>🔒 Unlock with Pro</span>
-                      </div>
-                    </div>
-                  ))}
-                  <div style={{ textAlign: 'center', marginTop: 16, padding: '20px', background: 'linear-gradient(135deg, #f5f3ff, #fdf4ff)', borderRadius: 16, border: '1px solid #e9d5ff' }}>
-                    <p style={{ fontSize: 15, fontWeight: 700, color: '#7c3aed', fontFamily: F, marginBottom: 8 }}>Unlock all questions + expert answers</p>
-                    <p style={{ fontSize: 13, color: '#6b7280', fontFamily: F, marginBottom: 16 }}>Get full access to questions sourced from Glassdoor, Reddit and Blind — with complete expert answers</p>
-                    <button
-                      onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'upgrade' }))}
-                      style={{ padding: '12px 32px', background: 'linear-gradient(135deg, #a78bfa, #c084fc)', border: 'none', borderRadius: 50, fontSize: 14, fontWeight: 700, color: '#fff', fontFamily: F, cursor: 'pointer' }}
-                    >
-                      Upgrade to Pro →
-                    </button>
-                  </div>
-                </div>
-              )}
-              {isPro && results.questions.length > 20 && (
+              {results.questions.length > 20 && (
                 <div style={{ textAlign: 'center', padding: '16px', fontSize: 13, color: '#6b7280', fontFamily: F }}>
                   Many more questions available when you start practising
                 </div>
@@ -721,25 +665,10 @@ export default function JDPractice({ user, profile }) {
             {currentQ && (
               <div style={{ marginBottom: 20 }}>
                 {currentQ._needsAnswer && !currentQ.a ? (
-                  !user ? (
-                    <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, padding: '20px', textAlign: 'center' }}>
-                      <p style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a', fontFamily: F, marginBottom: 4 }}>
-                        Sign up to see the expert answer
-                      </p>
-                      <p style={{ fontSize: 12, color: '#6b7280', fontFamily: F, marginBottom: 16 }}>
-                        Free account. No credit card required.
-                      </p>
-                      <button
-                        onClick={() => {
-                          // Save post-auth destination BEFORE opening auth modal
-                          // This handles email verification flow where user clicks link in email
-                          localStorage.setItem('jdp_post_auth_page', 'resume-tools');
-                          localStorage.setItem('jdp_step', 'practice');
-                          localStorage.setItem('jdp_index', String(currentIndex));
-                          if (results) localStorage.setItem('jdp_results', JSON.stringify(results));
-                          requireAuth('Sign up to see expert answers — free account, no credit card needed', async () => {
-                            // Generate answer after signup
-                            const prompt = `Generate a professional model answer for this interview question for a ${results.parsed.detectedLevels[0] || 'Senior PM'} role in ${results.parsed.detectedDomains[0] || 'technology'}.
+                  <button
+                    onClick={async () => {
+                      // Generate answer on demand
+                      const prompt = `Generate a professional model answer for this interview question for a ${results.parsed.detectedLevels[0] || 'Senior PM'} role in ${results.parsed.detectedDomains[0] || 'technology'}.
 
 Follow this EXACT format:
 - Start with 2 clarifying questions the candidate would ask
@@ -755,98 +684,33 @@ Question: ${currentQ.q}
 
 Return only the answer text, no JSON.`;
 
-                            const updatedQuestions = [...results.questions];
-                            updatedQuestions[currentIndex] = { ...currentQ, a: 'Generating expert answer...' };
-                            setResults({ ...results, questions: updatedQuestions });
+                      const updatedQuestions = [...results.questions];
+                      updatedQuestions[currentIndex] = { ...currentQ, a: 'Generating expert answer...' };
+                      setResults({ ...results, questions: updatedQuestions });
 
-                            try {
-                              const res = await fetch('/api/messages', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                  model: 'claude-sonnet-4-6',
-                                  max_tokens: 800,
-                                  messages: [{ role: 'user', content: prompt }],
-                                }),
-                              });
-                              const data = await res.json();
-                              const answerText = data.content?.find(b => b.type === 'text')?.text || 'Could not generate answer.';
-                              updatedQuestions[currentIndex] = { ...currentQ, a: answerText, _needsAnswer: false };
-                              setResults({ ...results, questions: updatedQuestions });
-                            } catch (e) {
-                              updatedQuestions[currentIndex] = { ...currentQ, a: 'Could not generate answer. Please try again.', _needsAnswer: false };
-                              setResults({ ...results, questions: updatedQuestions });
-                            }
-                          });
-                        }}
-                        style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #a78bfa, #c084fc)', border: 'none', borderRadius: 50, fontSize: 13, fontWeight: 700, color: '#fff', fontFamily: F, cursor: 'pointer' }}
-                      >
-                        Sign Up Free →
-                      </button>
-                    </div>
-                  ) : isPro || currentIndex === 0 ? (
-                    <button
-                      onClick={async () => {
-                        // Generate answer on demand
-                        const prompt = `Generate a professional model answer for this interview question for a ${results.parsed.detectedLevels[0] || 'Senior PM'} role in ${results.parsed.detectedDomains[0] || 'technology'}.
-
-Follow this EXACT format:
-- Start with 2 clarifying questions the candidate would ask
-- State assumptions explicitly
-- Give a structured numbered approach (3-5 steps)
-- Include specific metrics and examples
-- Acknowledge trade-offs
-- End with TWO real examples in first person past tense starting with "In a past project where I tackled similar challenges..."
-
-Write in first person as the candidate. Answer must be 300-400 words.
-
-Question: ${currentQ.q}
-
-Return only the answer text, no JSON.`;
-
-                        const updatedQuestions = [...results.questions];
-                        updatedQuestions[currentIndex] = { ...currentQ, a: 'Generating expert answer...' };
+                      try {
+                        const res = await fetch('/api/messages', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            model: 'claude-sonnet-4-6',
+                            max_tokens: 800,
+                            messages: [{ role: 'user', content: prompt }],
+                          }),
+                        });
+                        const data = await res.json();
+                        const answerText = data.content?.find(b => b.type === 'text')?.text || 'Could not generate answer.';
+                        updatedQuestions[currentIndex] = { ...currentQ, a: answerText, _needsAnswer: false };
                         setResults({ ...results, questions: updatedQuestions });
-
-                        try {
-                          const res = await fetch('/api/messages', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              model: 'claude-sonnet-4-6',
-                              max_tokens: 800,
-                              messages: [{ role: 'user', content: prompt }],
-                            }),
-                          });
-                          const data = await res.json();
-                          const answerText = data.content?.find(b => b.type === 'text')?.text || 'Could not generate answer.';
-                          updatedQuestions[currentIndex] = { ...currentQ, a: answerText, _needsAnswer: false };
-                          setResults({ ...results, questions: updatedQuestions });
-                        } catch (e) {
-                          updatedQuestions[currentIndex] = { ...currentQ, a: 'Could not generate answer. Please try again.', _needsAnswer: false };
-                          setResults({ ...results, questions: updatedQuestions });
-                        }
-                      }}
-                      style={{ width: '100%', padding: '12px 16px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, cursor: 'pointer', fontSize: 14, color: '#6b7280', fontFamily: F }}
-                    >
-                      ✨ Generate Expert Answer for This Question
-                    </button>
-                  ) : (
-                    <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, padding: '20px', textAlign: 'center' }}>
-                      <p style={{ fontSize: 13, color: '#6b7280', fontFamily: F, marginBottom: 4 }}>
-                        Expert answer available with Pro
-                      </p>
-                      <p style={{ fontSize: 11, color: '#9ca3af', fontFamily: F, marginBottom: 16 }}>
-                        Upgrade to unlock expert answers for all questions
-                      </p>
-                      <button
-                        onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'upgrade' }))}
-                        style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #a78bfa, #c084fc)', border: 'none', borderRadius: 50, fontSize: 13, fontWeight: 700, color: '#fff', fontFamily: F, cursor: 'pointer' }}
-                      >
-                        Upgrade to Pro →
-                      </button>
-                    </div>
-                  )
+                      } catch (e) {
+                        updatedQuestions[currentIndex] = { ...currentQ, a: 'Could not generate answer. Please try again.', _needsAnswer: false };
+                        setResults({ ...results, questions: updatedQuestions });
+                      }
+                    }}
+                    style={{ width: '100%', padding: '12px 16px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, cursor: 'pointer', fontSize: 14, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  >
+                    ✨ Generate Expert Answer for This Question
+                  </button>
                 ) : currentQ.a && currentQ.a !== 'Generating expert answer...' ? (
                   <div style={{ borderTop: '1px solid #e5e7eb', marginTop: 16 }}>
                     <button
