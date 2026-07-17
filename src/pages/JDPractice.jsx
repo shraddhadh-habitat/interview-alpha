@@ -324,6 +324,34 @@ export default function JDPractice({ user, profile }) {
   const isPro = user && profile?.subscription_status === 'active';
   const { requireAuth } = useAuth();
   const [resumeText, setResumeText] = useState('');
+
+  // Restore JD Practice state after auth
+  useEffect(() => {
+    if (!user) return;
+    const savedResults = sessionStorage.getItem('jdp_results');
+    const savedStep = sessionStorage.getItem('jdp_step');
+    const savedIndex = sessionStorage.getItem('jdp_index');
+    const savedResume = sessionStorage.getItem('jdp_resumeText');
+    const savedJD = sessionStorage.getItem('jdp_jdText');
+    if (savedResults && savedStep) {
+      try {
+        const parsed = JSON.parse(savedResults);
+        setResults(parsed);
+        setStep(savedStep);
+        setCurrentIndex(parseInt(savedIndex) || 0);
+        if (savedResume) setResumeText(savedResume);
+        if (savedJD) setJdText(savedJD);
+        // Clear after restoring
+        sessionStorage.removeItem('jdp_results');
+        sessionStorage.removeItem('jdp_step');
+        sessionStorage.removeItem('jdp_index');
+        sessionStorage.removeItem('jdp_resumeText');
+        sessionStorage.removeItem('jdp_jdText');
+      } catch (e) {
+        console.log('Could not restore JD Practice state:', e);
+      }
+    }
+  }, [user]);
   const [jdText, setJdText] = useState('');
   const [fileUploading, setFileUploading] = useState(false);
   const [error, setError] = useState('');
@@ -697,47 +725,17 @@ export default function JDPractice({ user, profile }) {
                         Free account. No credit card required.
                       </p>
                       <button
-                        onClick={() => requireAuth('Sign up to see expert answers', async () => {
-                          // After signup, generate the expert answer automatically
-                          const prompt = `Generate a professional model answer for this interview question for a ${results.parsed.detectedLevels[0] || 'Senior PM'} role in ${results.parsed.detectedDomains[0] || 'technology'}.
-
-Follow this EXACT format:
-- Start with 2 clarifying questions the candidate would ask
-- State assumptions explicitly
-- Give a structured numbered approach (3-5 steps)
-- Include specific metrics and examples
-- Acknowledge trade-offs
-- End with TWO real examples in first person past tense starting with "In a past project where I tackled similar challenges..."
-
-Write in first person as the candidate. Answer must be 300-400 words.
-
-Question: ${currentQ.q}
-
-Return only the answer text, no JSON.`;
-
-                          const updatedQuestions = [...results.questions];
-                          updatedQuestions[currentIndex] = { ...currentQ, a: 'Generating expert answer...' };
-                          setResults({ ...results, questions: updatedQuestions });
-
-                          try {
-                            const res = await fetch('/api/messages', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({
-                                model: 'claude-sonnet-4-6',
-                                max_tokens: 800,
-                                messages: [{ role: 'user', content: prompt }],
-                              }),
-                            });
-                            const data = await res.json();
-                            const answerText = data.content?.find(b => b.type === 'text')?.text || 'Could not generate answer.';
-                            updatedQuestions[currentIndex] = { ...currentQ, a: answerText, _needsAnswer: false };
-                            setResults({ ...results, questions: updatedQuestions });
-                          } catch (e) {
-                            updatedQuestions[currentIndex] = { ...currentQ, a: 'Could not generate answer. Please try again.', _needsAnswer: false };
-                            setResults({ ...results, questions: updatedQuestions });
+                        onClick={() => {
+                          // Save current state to sessionStorage before auth
+                          if (results) {
+                            sessionStorage.setItem('jdp_results', JSON.stringify(results));
+                            sessionStorage.setItem('jdp_step', 'practice');
+                            sessionStorage.setItem('jdp_index', String(currentIndex));
+                            sessionStorage.setItem('jdp_resumeText', resumeText);
+                            sessionStorage.setItem('jdp_jdText', jdText);
                           }
-                        })}
+                          requireAuth('Sign up to see expert answers');
+                        }}
                         style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #a78bfa, #c084fc)', border: 'none', borderRadius: 50, fontSize: 13, fontWeight: 700, color: '#fff', fontFamily: F, cursor: 'pointer' }}
                       >
                         Sign Up Free →
