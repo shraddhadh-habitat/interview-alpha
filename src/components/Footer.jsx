@@ -241,6 +241,17 @@ export default function Footer() {
             Questions, scoring frameworks, and AI methodologies are proprietary and protected under IP law.
           </p>
         </div>
+        <div style={{
+          textAlign: 'center',
+          padding: '16px 24px',
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          fontSize: 11,
+          color: 'rgba(255,255,255,0.4)',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          lineHeight: 1.6,
+        }}>
+          InterviewAlpha is an independent interview preparation platform and is not affiliated with, endorsed by, or connected to any companies mentioned in practice questions.
+        </div>
       </div>
     </footer>
   );
