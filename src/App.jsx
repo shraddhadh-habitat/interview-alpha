@@ -864,8 +864,8 @@ export default function App() {
           {page === 'progress'    && <MyProgress user={user} />}
           {page === 'scorecard'   && <Scorecard user={user} />}
           {page === 'salary'      && <SalaryGuide user={user} onPracticeCTA={handleLandingPrimaryCTA} />}
-          {page === 'resume-tools' && <ResumeToolsHub user={user} />}
-          {page === 'jd-practice' && <JDPractice user={user} />}
+          {page === 'resume-tools' && <ResumeToolsHub user={user} profile={profile} />}
+          {page === 'jd-practice' && <JDPractice user={user} profile={profile} />}
           {page === 'resources'   && <LearningResources />}
           {page === 'upgrade'     && (
             <UpgradePage

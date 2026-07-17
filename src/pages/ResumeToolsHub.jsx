@@ -145,7 +145,7 @@ function ResumeScore() {
   );
 }
 
-export default function ResumeToolsHub({ user }) {
+export default function ResumeToolsHub({ user, profile }) {
   const [activeTab, setActiveTab] = useState('ats-checker');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
@@ -408,7 +408,7 @@ export default function ResumeToolsHub({ user }) {
           </div>
         )}
         {activeTab === 'resume-score' && <ResumeScore />}
-        {activeTab === 'jd-practice' && <JDPractice user={user} />}
+        {activeTab === 'jd-practice' && <JDPractice user={user} profile={profile} />}
       </div>
     </div>
   );
