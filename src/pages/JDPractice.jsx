@@ -328,6 +328,11 @@ export default function JDPractice({ user, profile }) {
   // Restore JD Practice state after auth
   useEffect(() => {
     if (!user) return;
+    console.log('[JDPractice] user changed, checking sessionStorage:', {
+      user: !!user,
+      savedResults: !!sessionStorage.getItem('jdp_results'),
+      savedStep: sessionStorage.getItem('jdp_step'),
+    });
     const savedResults = sessionStorage.getItem('jdp_results');
     const savedStep = sessionStorage.getItem('jdp_step');
     const savedIndex = sessionStorage.getItem('jdp_index');
