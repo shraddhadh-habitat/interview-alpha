@@ -59,7 +59,7 @@ export default function ReviewsDisplay() {
 
   return (
     <div style={{ marginBottom: 48 }}>
-      <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 24, fontFamily: FONT, textAlign: 'center' }}>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 24, fontFamily: FONT, textAlign: 'center' }}>
         What PMs Are Saying
       </div>
       <div style={{

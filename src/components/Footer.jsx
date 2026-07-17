@@ -2,10 +2,10 @@ import { useAuth } from '../contexts/AuthContext';
 
 const C = {
   bg: '#f0ede8',
-  link: '#6b6b6b',
+  link: '#3d3d3d',
   linkHover: 'var(--gradient-brand)',
   heading: '#111111',
-  muted: '#9a9a9a',
+  muted: '#6b6b6b',
   border: '#e8e6e1',
 };
 
