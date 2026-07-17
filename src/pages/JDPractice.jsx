@@ -731,16 +731,13 @@ export default function JDPractice({ user, profile }) {
                       </p>
                       <button
                         onClick={() => {
-                          // Save current state to sessionStorage before auth
-                          if (results) {
-                            sessionStorage.setItem('jdp_results', JSON.stringify(results));
-                            sessionStorage.setItem('jdp_step', 'practice');
-                            sessionStorage.setItem('jdp_index', String(currentIndex));
-                            sessionStorage.setItem('jdp_resumeText', resumeText);
-                            sessionStorage.setItem('jdp_jdText', jdText);
-                            sessionStorage.setItem('jdp_post_auth_page', 'resume-tools');
-                          }
-                          requireAuth('Sign up to see expert answers', async () => {
+                          // Save post-auth destination BEFORE opening auth modal
+                          // This handles email verification flow where user clicks link in email
+                          sessionStorage.setItem('jdp_post_auth_page', 'resume-tools');
+                          sessionStorage.setItem('jdp_step', 'practice');
+                          sessionStorage.setItem('jdp_index', String(currentIndex));
+                          if (results) sessionStorage.setItem('jdp_results', JSON.stringify(results));
+                          requireAuth('Sign up to see expert answers — free account, no credit card needed', async () => {
                             // Generate answer after signup
                             const prompt = `Generate a professional model answer for this interview question for a ${results.parsed.detectedLevels[0] || 'Senior PM'} role in ${results.parsed.detectedDomains[0] || 'technology'}.
 
