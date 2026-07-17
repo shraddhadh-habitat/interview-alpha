@@ -697,7 +697,47 @@ export default function JDPractice({ user, profile }) {
                         Free account. No credit card required.
                       </p>
                       <button
-                        onClick={() => requireAuth('Sign up to see expert answers')}
+                        onClick={() => requireAuth('Sign up to see expert answers', async () => {
+                          // After signup, generate the expert answer automatically
+                          const prompt = `Generate a professional model answer for this interview question for a ${results.parsed.detectedLevels[0] || 'Senior PM'} role in ${results.parsed.detectedDomains[0] || 'technology'}.
+
+Follow this EXACT format:
+- Start with 2 clarifying questions the candidate would ask
+- State assumptions explicitly
+- Give a structured numbered approach (3-5 steps)
+- Include specific metrics and examples
+- Acknowledge trade-offs
+- End with TWO real examples in first person past tense starting with "In a past project where I tackled similar challenges..."
+
+Write in first person as the candidate. Answer must be 300-400 words.
+
+Question: ${currentQ.q}
+
+Return only the answer text, no JSON.`;
+
+                          const updatedQuestions = [...results.questions];
+                          updatedQuestions[currentIndex] = { ...currentQ, a: 'Generating expert answer...' };
+                          setResults({ ...results, questions: updatedQuestions });
+
+                          try {
+                            const res = await fetch('/api/messages', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                model: 'claude-sonnet-4-6',
+                                max_tokens: 800,
+                                messages: [{ role: 'user', content: prompt }],
+                              }),
+                            });
+                            const data = await res.json();
+                            const answerText = data.content?.find(b => b.type === 'text')?.text || 'Could not generate answer.';
+                            updatedQuestions[currentIndex] = { ...currentQ, a: answerText, _needsAnswer: false };
+                            setResults({ ...results, questions: updatedQuestions });
+                          } catch (e) {
+                            updatedQuestions[currentIndex] = { ...currentQ, a: 'Could not generate answer. Please try again.', _needsAnswer: false };
+                            setResults({ ...results, questions: updatedQuestions });
+                          }
+                        })}
                         style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #a78bfa, #c084fc)', border: 'none', borderRadius: 50, fontSize: 13, fontWeight: 700, color: '#fff', fontFamily: F, cursor: 'pointer' }}
                       >
                         Sign Up Free →
