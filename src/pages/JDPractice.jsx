@@ -6,6 +6,7 @@ import { projectManagementQuestions } from '../data/projectManagementQuestions';
 import { consultingQuestions } from '../data/consultingQuestions';
 import { technicalWritingQuestions } from '../data/technicalWritingQuestions';
 import useTextToSpeech from '../hooks/useTextToSpeech';
+import { useAuth } from '../contexts/AuthContext';
 import FormattedAnswer from '../components/FormattedAnswer';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
@@ -263,20 +264,14 @@ function ProcessingScreen() {
   const stars = [0, 1, 2, 3, 4];
   return (
     <div style={{
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
       textAlign: 'center',
-      padding: '48px 60px',
+      padding: '80px 60px',
       background: '#FAFAF8',
-      borderRadius: 24,
-      boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      zIndex: 1000,
+      minHeight: '60vh',
     }}>
       <style>{`
         @keyframes starBounce {
@@ -327,6 +322,7 @@ function ProcessingScreen() {
 // ── COMPONENT ────────────────────────────────────────────────
 export default function JDPractice({ user, profile }) {
   const isPro = user && profile?.subscription_status === 'active';
+  const { requireAuth } = useAuth();
   const [resumeText, setResumeText] = useState('');
   const [jdText, setJdText] = useState('');
   const [fileUploading, setFileUploading] = useState(false);
@@ -692,7 +688,22 @@ export default function JDPractice({ user, profile }) {
             {currentQ && (
               <div style={{ marginBottom: 20 }}>
                 {currentQ._needsAnswer && !currentQ.a ? (
-                  isPro ? (
+                  !user ? (
+                    <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, padding: '20px', textAlign: 'center' }}>
+                      <p style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a', fontFamily: F, marginBottom: 4 }}>
+                        Sign up to see the expert answer
+                      </p>
+                      <p style={{ fontSize: 12, color: '#6b7280', fontFamily: F, marginBottom: 16 }}>
+                        Free account. No credit card required.
+                      </p>
+                      <button
+                        onClick={() => requireAuth('Sign up to see expert answers')}
+                        style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #a78bfa, #c084fc)', border: 'none', borderRadius: 50, fontSize: 13, fontWeight: 700, color: '#fff', fontFamily: F, cursor: 'pointer' }}
+                      >
+                        Sign Up Free →
+                      </button>
+                    </div>
+                  ) : isPro || currentIndex === 0 ? (
                     <button
                       onClick={async () => {
                         // Generate answer on demand
@@ -735,7 +746,7 @@ Return only the answer text, no JSON.`;
                           setResults({ ...results, questions: updatedQuestions });
                         }
                       }}
-                      style={{ width: '100%', padding: '12px 16px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, cursor: 'pointer', fontSize: 14, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      style={{ width: '100%', padding: '12px 16px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, cursor: 'pointer', fontSize: 14, color: '#6b7280', fontFamily: F }}
                     >
                       ✨ Generate Expert Answer for This Question
                     </button>
