@@ -356,7 +356,7 @@ export default function JDPractice({ user, profile }) {
         console.log('Could not restore JD Practice state:', e);
       }
     }
-  }, [user]);
+  }, [user, step]);
   const [jdText, setJdText] = useState('');
   const [fileUploading, setFileUploading] = useState(false);
   const [error, setError] = useState('');
@@ -738,6 +738,7 @@ export default function JDPractice({ user, profile }) {
                             sessionStorage.setItem('jdp_index', String(currentIndex));
                             sessionStorage.setItem('jdp_resumeText', resumeText);
                             sessionStorage.setItem('jdp_jdText', jdText);
+                            sessionStorage.setItem('jdp_post_auth_page', 'resume-tools');
                           }
                           requireAuth('Sign up to see expert answers');
                         }}

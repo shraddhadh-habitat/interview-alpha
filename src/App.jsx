@@ -930,7 +930,11 @@ export default function App() {
               console.log('[Auth] onSuccess fired - page:', page, '| postLoginDestination:', postLoginDestination, '| user:', user?.id);
               setShowLoginModal(false);
               setLoginMessage('');
-              if (postLoginDestination) {
+              const jdpPostAuthPage = sessionStorage.getItem('jdp_post_auth_page');
+              if (jdpPostAuthPage) {
+                sessionStorage.removeItem('jdp_post_auth_page');
+                setPage(jdpPostAuthPage);
+              } else if (postLoginDestination) {
                 setPage(postLoginDestination);
                 setPostLoginDestination(null);
               }
