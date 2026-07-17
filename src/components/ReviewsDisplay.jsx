@@ -66,6 +66,7 @@ export default function ReviewsDisplay() {
         display: 'flex', gap: 16, overflowX: 'auto', paddingBottom: 12,
         scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch',
         scrollbarWidth: 'none', msOverflowStyle: 'none',
+        justifyContent: reviews.length < 3 ? 'center' : 'flex-start',
       }}>
         <style>{`.reviews-scroll::-webkit-scrollbar { display: none; }`}</style>
         {reviews.map(r => <ReviewCard key={r.id} review={r} />)}
