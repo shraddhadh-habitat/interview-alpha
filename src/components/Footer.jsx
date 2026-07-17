@@ -24,6 +24,7 @@ function FooterLink({ children, onClick, href, email = false }) {
       }}
       style={{
         fontSize: 14,
+        fontWeight: 500,
         color: C.link,
         textDecoration: 'none',
         display: 'block',
@@ -56,7 +57,7 @@ function FooterHeading({ children }) {
   return (
     <div style={{
       fontSize: 12,
-      fontWeight: 600,
+      fontWeight: 700,
       letterSpacing: 2,
       textTransform: 'uppercase',
       color: C.heading,
