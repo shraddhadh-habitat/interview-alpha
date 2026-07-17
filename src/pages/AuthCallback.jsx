@@ -3,6 +3,8 @@ import { supabase } from '../lib/supabase';
 import posthog from '../lib/analytics';
 
 export default function AuthCallback() {
+  console.log('[AuthCallback] START - localStorage jdp_post_auth_page:', localStorage.getItem('jdp_post_auth_page'));
+  console.log('[AuthCallback] All localStorage keys:', Object.keys(localStorage));
   console.log('[AuthCallback] URL on load:', window.location.href);
   console.log('[AuthCallback] search params:', window.location.search);
 
