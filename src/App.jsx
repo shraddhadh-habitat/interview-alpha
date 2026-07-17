@@ -979,7 +979,7 @@ export default function App() {
                   fontFamily: "'Plus Jakarta Sans', sans-serif"
                 }}
               >
-                Upgrade - from ₹799/month
+                Upgrade - from ₹1,299/month
               </button>
               <button
                 onClick={() => setShowUpgradePrompt(false)}

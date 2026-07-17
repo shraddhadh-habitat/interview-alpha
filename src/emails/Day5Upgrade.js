@@ -63,7 +63,7 @@ export const day5UpgradeEmail = (userName) => ({
 
       <div class="price-box">
         <p style="margin: 0 0 8px; font-weight: 700; color: #111;">Start Pro today</p>
-        <p class="price">799 <span class="period">/month</span></p>
+        <p class="price">1,299 <span class="period">/month</span></p>
         <p style="font-size: 0.78rem; color: #9a9a9a; margin: 4px 0 0;">Or 583/month on the yearly plan</p>
       </div>
 

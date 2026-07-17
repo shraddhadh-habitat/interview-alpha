@@ -61,7 +61,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12 }}>
             <span style={{ fontSize: 14, fontWeight: 600, color: C.text, letterSpacing: 0.5 }}>Pro Plan</span>
             <div>
-              <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 24, fontWeight: 700, color: C.green }}>₹799</span>
+              <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: 24, fontWeight: 700, color: C.green }}>₹1,299</span>
               <span style={{ fontSize: 11, color: C.textMuted }}>/mo</span>
             </div>
           </div>
