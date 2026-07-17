@@ -356,7 +356,7 @@ export default function JDPractice({ user, profile }) {
         console.log('Could not restore JD Practice state:', e);
       }
     }
-  }, [user, step]);
+  }, [user]);
   const [jdText, setJdText] = useState('');
   const [fileUploading, setFileUploading] = useState(false);
   const [error, setError] = useState('');
