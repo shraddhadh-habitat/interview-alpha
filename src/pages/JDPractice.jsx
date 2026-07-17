@@ -263,20 +263,14 @@ function ProcessingScreen() {
   const stars = [0, 1, 2, 3, 4];
   return (
     <div style={{
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
       textAlign: 'center',
-      padding: '48px 60px',
+      padding: '80px 60px',
       background: '#FAFAF8',
-      borderRadius: 24,
-      boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      zIndex: 1000,
+      minHeight: '70vh',
     }}>
       <style>{`
         @keyframes starBounce {
