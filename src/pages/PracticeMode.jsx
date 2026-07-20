@@ -273,7 +273,15 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
       tts.stop();
       setIsSpeakingFeedback(false);
     } else {
-      tts.speak(feedback_text);
+      // Build full results text to read
+      const parts = [];
+      if (feedback_text) parts.push(feedback_text);
+      if (strengths?.length) parts.push('Strengths. ' + strengths.join('. '));
+      if (weaknesses?.length) parts.push('What to Improve. ' + weaknesses.join('. '));
+      if (improvement_tips?.length) parts.push('Improvement Tips. ' + improvement_tips.join('. '));
+      if (expert_rewrite) parts.push('Expert Rewrite. How a senior professional would answer this. ' + expert_rewrite);
+      const fullText = parts.join('. ');
+      tts.speak(fullText);
       setIsSpeakingFeedback(true);
     }
   };
