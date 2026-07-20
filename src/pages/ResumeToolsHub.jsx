@@ -146,7 +146,7 @@ function ResumeScore() {
 }
 
 export default function ResumeToolsHub({ user, profile }) {
-  const [activeTab, setActiveTab] = useState('ats-checker');
+  const [activeTab, setActiveTab] = useState('jd-practice');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const dropdownButtonRef = useRef(null);
