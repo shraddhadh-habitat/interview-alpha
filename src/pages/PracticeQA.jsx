@@ -1469,6 +1469,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             questionId: `associate-pm-product-${Math.random().toString(36).substr(2, 9)}`,
             designation: level,
             category: category,
+            subcategory: randomQuestion?.subcategory || '',
           });
           setShowTrackSelector(false);
           return;
@@ -1492,6 +1493,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               questionId: `data-scientist-${selectedCategory}-${Math.random().toString(36).substr(2, 9)}`,
               designation: level,
               category: selectedCategory,
+              subcategory: randomQuestion?.subcategory || '',
             });
             setShowTrackSelector(false);
             return;
@@ -1512,6 +1514,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             questionId: `consulting-analyst-${Math.random().toString(36).substr(2, 9)}`,
             designation: level,
             category: 'case_interview',
+            subcategory: randomQuestion?.subcategory || '',
           });
           setShowTrackSelector(false);
           return;
@@ -1534,6 +1537,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               questionId: `project-manager-${selectedCategory}-${Math.random().toString(36).substr(2, 9)}`,
               designation: level,
               category: selectedCategory,
+              subcategory: randomQuestion?.subcategory || '',
             });
             setShowTrackSelector(false);
             return;
@@ -1557,6 +1561,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               questionId: `technical-writer-${selectedCategory}-${Math.random().toString(36).substr(2, 9)}`,
               designation: level,
               category: selectedCategory,
+              subcategory: randomQuestion?.subcategory || '',
             });
             setShowTrackSelector(false);
             return;
@@ -1785,6 +1790,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       questionId: nextItem.key,
       designation: nextItem.level,
       category: nextItem.dataCategory,
+      subcategory: nextItem?.question?.subcategory || '',
     }) : null;
 
     const refreshStats = () => {
@@ -1807,6 +1813,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         questionId={practiceQuestion.questionId}
         designation={practiceQuestion.designation}
         category={practiceQuestion.category}
+        subcategory={practiceQuestion.subcategory}
         user={user}
         profile={profile}
         checkSession={checkSession}
@@ -2088,6 +2095,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                   questionId: item.key,
                   designation: item.level,
                   category: item.dataCategory,
+                  subcategory: item?.question?.subcategory || '',
                 })}
                 practiceData={practiceStats[item.key] || null}
                 onReport={() => requireAuth('Sign up to report question issues', () => setReportTarget(item.key))}

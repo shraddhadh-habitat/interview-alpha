@@ -528,7 +528,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
 }
 
 // ─── Main PracticeMode component ───
-export default function PracticeMode({ question, questionId, designation, category, user, onBack, onNextQuestion, profile, checkSession, onSessionUsed }) {
+export default function PracticeMode({ question, questionId, designation, category, subcategory, user, onBack, onNextQuestion, profile, checkSession, onSessionUsed }) {
   console.log('[PracticeMode] Component render - URL:', window.location.href);
 
   const [mode, setMode] = useState('text'); // 'text' | 'voice'
@@ -543,12 +543,121 @@ export default function PracticeMode({ question, questionId, designation, catego
   const [resolvedUser, setResolvedUser] = useState(null);
   const [restoredQuestion, setRestoredQuestion] = useState(null);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
 
   const voice = useVoiceToText();
   const { requireAuth } = useAuth();
 
   // Use resolved user if prop user is undefined (handles async hydration delay)
   const authenticatedUser = user || resolvedUser;
+
+  const getLoadingMessages = () => {
+    const sub = (subcategory || '').toLowerCase();
+    const cat = (category || '').toLowerCase();
+
+    if (cat === 'behavioral' || sub === 'behavioral') return [
+      'Evaluating your storytelling and clarity...',
+      'Analysing your situation, action, and outcome...',
+      'Checking depth of self-awareness and impact...',
+      'Almost ready...',
+    ];
+    if (sub === 'product_design') return [
+      'Evaluating your user empathy and problem framing...',
+      'Analysing your solution structure and trade-offs...',
+      'Checking depth of product thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'product_strategy') return [
+      'Evaluating your market understanding and vision...',
+      'Analysing your strategic trade-offs and prioritisation...',
+      'Checking depth of business thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'product_metrics' || sub === 'product_growth' || sub === 'product_retention') return [
+      'Evaluating your metric selection and north star...',
+      'Analysing your diagnostic and segmentation approach...',
+      'Checking depth of data-driven thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'analytical' || sub === 'case_studies') return [
+      'Evaluating your assumption clarity and structure...',
+      'Analysing your decomposition and reasoning approach...',
+      'Checking depth of analytical thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'sql_data' || sub === 'python' || sub === 'statistics' || sub === 'machine_learning') return [
+      'Evaluating your technical reasoning and approach...',
+      'Analysing your methodology and solution logic...',
+      'Checking depth of technical thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'system_design') return [
+      'Evaluating your system structure and scalability thinking...',
+      'Analysing your trade-offs and architecture approach...',
+      'Checking depth of technical design thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'case_interview' || sub === 'case_study') return [
+      'Evaluating your case structure and hypothesis...',
+      'Analysing your MECE framework and quantitative reasoning...',
+      'Checking depth of strategic thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'situational') return [
+      'Evaluating your situational judgement and clarity...',
+      'Analysing your decision-making approach...',
+      'Checking depth of leadership thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'leadership') return [
+      'Evaluating your leadership framing and clarity...',
+      'Analysing your people and stakeholder approach...',
+      'Checking depth of management thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'ux_writing') return [
+      'Evaluating your user empathy and copy clarity...',
+      'Analysing your tone, brevity, and audience awareness...',
+      'Checking depth of UX communication thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'technical_docs') return [
+      'Evaluating your document structure and technical accuracy...',
+      'Analysing your clarity and information architecture...',
+      'Checking depth of documentation thinking...',
+      'Almost ready...',
+    ];
+    if (sub === 'ai_content') return [
+      'Evaluating your AI content approach and clarity...',
+      'Analysing your prompt and output quality thinking...',
+      'Checking depth of AI communication approach...',
+      'Almost ready...',
+    ];
+    if (sub === 'content_strategy') return [
+      'Evaluating your content structure and strategic thinking...',
+      'Analysing your audience and channel approach...',
+      'Checking depth of content planning...',
+      'Almost ready...',
+    ];
+    return [
+      'Evaluating your structure and clarity...',
+      'Analysing your problem-solving approach...',
+      'Checking depth of thinking and reasoning...',
+      'Almost ready...',
+    ];
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      setLoadingMsgIndex(0);
+      return;
+    }
+    const msgs = getLoadingMessages();
+    const interval = setInterval(() => {
+      setLoadingMsgIndex(prev => prev >= msgs.length - 1 ? prev : prev + 1);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [loading]);
 
   // Restore score from pending_scores if redirected after email verification
   useEffect(() => {
@@ -1216,7 +1325,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 Analyzing your answer...
               </div>
               <p style={{ fontSize: 15, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
-                We're scoring your structure, clarity, and problem-solving approach.
+                {getLoadingMessages()[loadingMsgIndex]}
               </p>
               {/* Pulsing dots animation */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
