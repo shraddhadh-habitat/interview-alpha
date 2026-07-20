@@ -659,6 +659,29 @@ export default function PracticeMode({ question, questionId, designation, catego
     return () => clearInterval(interval);
   }, [loading]);
 
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.id = 'star-bounce-pa-styles';
+    style.textContent = `
+      @keyframes starBouncePA {
+        0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+        50% { transform: translateY(-12px) scale(1.2); opacity: 1; }
+      }
+      .star-pa-0 { animation: starBouncePA 1.4s ease-in-out 0s infinite; }
+      .star-pa-1 { animation: starBouncePA 1.4s ease-in-out 0.2s infinite; }
+      .star-pa-2 { animation: starBouncePA 1.4s ease-in-out 0.4s infinite; }
+      .star-pa-3 { animation: starBouncePA 1.4s ease-in-out 0.6s infinite; }
+      .star-pa-4 { animation: starBouncePA 1.4s ease-in-out 0.8s infinite; }
+    `;
+    if (!document.getElementById('star-bounce-pa-styles')) {
+      document.head.appendChild(style);
+    }
+    return () => {
+      const existing = document.getElementById('star-bounce-pa-styles');
+      if (existing) existing.remove();
+    };
+  }, []);
+
   // Restore score from pending_scores if redirected after email verification
   useEffect(() => {
     console.log('[Restore] useEffect fired, URL:', window.location.href);
@@ -1327,21 +1350,17 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               <p style={{ fontSize: 15, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
                 {getLoadingMessages()[loadingMsgIndex]}
               </p>
-              {/* Pulsing dots animation */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
-                {[0, 1, 2].map(i => (
-                  <div
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 20 }}>
+                {[0,1,2,3,4].map(i => (
+                  <span
                     key={i}
+                    className={`star-pa-${i}`}
                     style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #9333ea, #3b82f6, #22c55e)',
-                      animation: `pulse 1.5s ease-in-out infinite`,
-                      animationDelay: `${i * 0.2}s`,
-                      opacity: 0.7
+                      fontSize: 24,
+                      display: 'inline-block',
+                      filter: 'drop-shadow(0 0 6px #fbbf24)',
                     }}
-                  />
+                  >⭐</span>
                 ))}
               </div>
             </div>
