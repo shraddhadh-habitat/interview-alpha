@@ -554,7 +554,6 @@ export default function PracticeMode({ question, questionId, designation, catego
   const getLoadingMessages = () => {
     const sub = (subcategory || '').toLowerCase();
     const cat = (category || '').toLowerCase();
-    console.log('[LoadingMessages] subcategory:', subcategory, '| category:', category, '| sub:', sub, '| cat:', cat);
 
     if (cat === 'behavioral' || sub === 'behavioral') return [
       'Evaluating your storytelling and clarity...',
