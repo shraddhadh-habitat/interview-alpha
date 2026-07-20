@@ -281,6 +281,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
       if (improvement_tips?.length) parts.push('Improvement Tips. ' + improvement_tips.join('. '));
       if (expert_rewrite) parts.push('Expert Rewrite. How a senior professional would answer this. ' + expert_rewrite);
       const fullText = parts.join('. ');
+      console.log('[TTS] Full text length:', fullText.length, 'chars | parts:', parts.length);
       tts.speak(fullText);
       setIsSpeakingFeedback(true);
     }
