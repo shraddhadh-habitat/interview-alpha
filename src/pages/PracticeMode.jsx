@@ -1364,43 +1364,6 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 ))}
               </div>
             </div>
-
-            {/* Score skeleton */}
-            <div style={{ marginBottom: 24, padding: '20px 24px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12 }}>
-              <div style={{ height: 10, width: 60, background: 'linear-gradient(90deg, #9333ea, #3b82f6, #22c55e)', borderRadius: 4, marginBottom: 12, animation: 'shimmer 2s infinite' }} />
-              <div style={{ height: 44, width: 100, background: 'linear-gradient(90deg, #9333ea, #3b82f6, #22c55e)', borderRadius: 8, animation: 'shimmer 2s infinite' }} />
-            </div>
-
-            {/* Competency bars skeleton (5 competencies) */}
-            <div style={{ display: 'grid', gap: 14, marginBottom: 24 }}>
-              {[1, 2, 3, 4, 5].map(i => (
-                <div key={i}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                    <div style={{ height: 11, width: 100, background: 'linear-gradient(90deg, #9333ea, #3b82f6)', borderRadius: 4, animation: 'shimmer 2s infinite', animationDelay: `${i * 0.1}s` }} />
-                    <div style={{ height: 11, width: 35, background: 'linear-gradient(90deg, #3b82f6, #22c55e)', borderRadius: 4, animation: 'shimmer 2s infinite', animationDelay: `${i * 0.1}s` }} />
-                  </div>
-                  <div style={{ height: 5, background: 'linear-gradient(90deg, #9333ea, #3b82f6, #22c55e)', borderRadius: 3, animation: 'shimmer 2s infinite', animationDelay: `${i * 0.1}s` }} />
-                </div>
-              ))}
-            </div>
-
-            {/* Feedback section skeleton */}
-            <div style={{ padding: '16px 20px', background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: 16 }}>
-              <div style={{ height: 10, width: 80, background: 'linear-gradient(90deg, #9333ea, #3b82f6)', borderRadius: 4, marginBottom: 12, animation: 'shimmer 2s infinite' }} />
-              <div style={{ height: 60, background: 'linear-gradient(90deg, #3b82f6, #22c55e)', borderRadius: 4, animation: 'shimmer 2s infinite' }} />
-            </div>
-
-            <style>{`
-              @keyframes shimmer {
-                0% { background-position: -1000px 0; }
-                100% { background-position: 1000px 0; }
-              }
-              @keyframes gradientShift {
-                0% { background: linear-gradient(135deg, rgba(147, 51, 234, 0.08) 0%, rgba(59, 130, 246, 0.08) 50%, rgba(34, 197, 94, 0.08) 100%); }
-                50% { background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(34, 197, 94, 0.08) 50%, rgba(147, 51, 234, 0.08) 100%); }
-                100% { background: linear-gradient(135deg, rgba(147, 51, 234, 0.08) 0%, rgba(59, 130, 246, 0.08) 50%, rgba(34, 197, 94, 0.08) 100%); }
-              }
-            `}</style>
           </div>
         )}
 
