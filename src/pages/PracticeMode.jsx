@@ -1198,6 +1198,27 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                         >
                           {loading ? 'Submitting...' : 'Submit Answer'}
                         </button>
+                          {onNextQuestion && (
+                            <button
+                              onClick={onNextQuestion}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                color: C.textMuted,
+                                fontSize: 12,
+                                cursor: 'pointer',
+                                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                                marginTop: 8,
+                                textDecoration: 'underline',
+                                display: 'block',
+                                width: '100%',
+                                textAlign: 'center',
+                                padding: '4px 0',
+                              }}
+                            >
+                              Skip this question →
+                            </button>
+                          )}
                       </div>
                       {showSessionCounter && (
                         <div style={{ marginTop: 8, fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
