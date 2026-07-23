@@ -311,7 +311,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <div>
-            <div style={{ fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: 'rgba(27,27,24,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 24 }}>
+            <div style={{ fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: 'rgba(27,27,24,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 24, fontWeight: 700 }}>
               Attempt #{attemptNumber} · Feedback
             </div>
             <div style={{ position: 'relative', display: 'inline-block', marginBottom: 24 }}>
@@ -448,7 +448,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
             What to Improve
           </div>
           {(weaknesses || []).length > 0
-            ? weaknesses.map((w, i) => <div key={i} style={{ fontSize: 15, color: '#1B1B18', lineHeight: 1.75, marginBottom: 8, marginLeft: 16, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400 }}>→ {w}</div>)
+            ? weaknesses.map((w, i) => <div key={i} style={{ fontSize: 15, color: '#1B1B18', lineHeight: 1.75, marginBottom: 8, marginLeft: 16, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400 }}>● {w}</div>)
             : <div style={{ fontSize: 15, color: 'rgba(27,27,24,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
         </div>
       </div>
@@ -460,7 +460,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
             <span style={{ color: '#60A5FA', marginRight: 8 }}>●</span>
             Expert Rewrite
           </div>
-          <div style={{ fontSize: 12, color: 'rgba(27,27,24,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 12 }}>
+          <div style={{ fontSize: 12, color: 'rgba(27,27,24,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 12, fontWeight: 700 }}>
             How a senior professional would answer this
           </div>
           <div style={{
@@ -483,13 +483,12 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
       {(improvement_tips || []).length > 0 && (
         <div style={{ marginBottom: 56 }}>
           <div style={{ fontSize: 16, fontWeight: 700, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>
-            <span style={{ color: '#22C55E', marginRight: 8 }}>●</span>
             Quick Wins
           </div>
           <div style={{ display: 'grid', gap: 12 }}>
             {improvement_tips.map((tip, i) => (
               <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                <span style={{ color: '#22C55E', fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, marginTop: 1, flexShrink: 0, fontWeight: 600 }}>→</span>
+                <span style={{ color: '#22C55E', fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, marginTop: 1, flexShrink: 0, fontWeight: 600 }}>●</span>
                 <span style={{ fontSize: 15, lineHeight: 1.75, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400 }}>{tip}</span>
               </div>
             ))}
@@ -502,7 +501,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
       {/* Missing concepts */}
       {(missing_concepts || []).length > 0 && (
         <div style={{ padding: '12px 14px', background: '#FCFCFC', border: `1px solid #E5E7EB`, borderRadius: 12, marginBottom: 12, opacity: 0.65 }}>
-          <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6, fontWeight: 600 }}>Missing Concepts</div>
+          <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6, fontWeight: 700 }}>Missing Concepts</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {missing_concepts.map((m, i) => (
               <span key={i} style={{ padding: '4px 10px', background: '#f59e0b', border: 'none', borderRadius: 12, fontSize: 11, color: '#fff', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>{m}</span>
@@ -514,7 +513,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
       {/* Filler words / Keywords - minimal diagnostic details */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, opacity: 0.55 }}>
         <div>
-          <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 500 }}>Filler Words</div>
+          <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 700 }}>Filler Words</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {(filler_words || []).length > 0
               ? filler_words.map((w, i) => <span key={i} style={{ padding: '3px 8px', background: '#fee2e2', border: 'none', borderRadius: 4, fontSize: 10, color: '#dc2626', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{w}</span>)
@@ -522,7 +521,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
           </div>
         </div>
         <div>
-          <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 500 }}>High-Signal Keywords</div>
+          <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 700 }}>High-Signal Keywords</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {(high_signal_keywords || []).length > 0
               ? high_signal_keywords.map((w, i) => <span key={i} style={{ padding: '3px 8px', background: '#dcfce7', border: 'none', borderRadius: 4, fontSize: 10, color: '#16a34a', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{w}</span>)
