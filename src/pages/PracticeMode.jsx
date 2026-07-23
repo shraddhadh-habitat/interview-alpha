@@ -1080,7 +1080,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: C.textMuted,
+                    color: '#7c3aed',
                     fontSize: 11,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1208,7 +1208,8 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                           style={{
                             padding: '12px 32px',
                             background: disabled ? C.bgMuted : 'linear-gradient(135deg, #a78bfa, #c084fc)',
-                            border: 'none', borderRadius: 12,
+                            border: disabled ? 'none' : '2px solid #fbbf24',
+                            borderRadius: 12,
                             color: disabled ? C.textMuted : '#fff',
                             fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                             cursor: disabled ? 'not-allowed' : 'pointer',
