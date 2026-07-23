@@ -27,6 +27,7 @@ function ReviewCard({ review, isMobile }) {
       minWidth: isMobile ? 'unset' : 264,
       maxWidth: isMobile ? 'unset' : 300,
       width: isMobile ? '100%' : 'auto',
+      height: isMobile ? 'auto' : '100%',
       flexShrink: 0,
       background: C.bg, borderRadius: 16, padding: '20px 22px',
       border: `1px solid ${C.border}`,
@@ -101,6 +102,7 @@ export default function ReviewsDisplay() {
           scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none', msOverflowStyle: 'none',
           justifyContent: reviews.length < 3 ? 'center' : 'flex-start',
+          alignItems: 'stretch',
           paddingLeft: isMobile ? 16 : 0,
           paddingRight: isMobile ? 16 : 0,
         }}>
