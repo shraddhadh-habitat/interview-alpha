@@ -1082,13 +1082,14 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                     border: 'none',
                     color: C.textMuted,
                     fontSize: 11,
+                    fontWeight: 600,
                     cursor: 'pointer',
                     fontFamily: "'Plus Jakarta Sans', sans-serif",
                     letterSpacing: 1,
                     padding: 0,
                   }}
                 >
-                  Skip Question →
+                  Skip Question
                 </button>
               )}
             </div>
@@ -1195,7 +1196,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
                   return (
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+                      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 12 }}>
                         {wordCount > 0 && wordCount < 50 && (
                           <span style={{ fontSize: 11, color: ready ? C.success : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                             {wordCount} / 50 words min{!ready && wordCount > 0 ? `  -  ${50 - wordCount} more` : ''}
