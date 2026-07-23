@@ -1045,17 +1045,18 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
             background: 'transparent', border: 'none', cursor: 'pointer',
             color: C.textMuted, fontSize: 11, letterSpacing: 1.5,
             textTransform: 'uppercase', fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontWeight: 700,
             marginBottom: 32, padding: 0,
           }}
           onMouseEnter={e => e.currentTarget.style.color = C.green}
           onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
         >
-          ← Back to Q&A
+          Back to Q&A
         </button>
 
         {/* Page header */}
         <div style={{ marginBottom: 28 }}>
-          <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 8 }}>
+          <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 8, fontWeight: 700 }}>
             {designation} · {category === 'product' ? 'Product' : 'Behavioral'}
           </div>
           <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 30, fontWeight: 700, color: C.text, marginBottom: 0 }}>
@@ -1073,7 +1074,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         }}>
           <div style={{ padding: '20px 24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-              <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Question</div>
+              <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>Question</div>
               {onNextQuestion && (
                 <button
                   onClick={onNextQuestion}
@@ -1097,7 +1098,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               {restoredQuestion || question.q}
             </p>
             {attemptNumber > 1 && (
-              <div style={{ marginTop: 10, fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <div style={{ marginTop: 10, fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>
                 Attempt #{attemptNumber}
               </div>
             )}
@@ -1114,6 +1115,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   border: 'none', cursor: 'pointer',
                   fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
                   color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 700,
                   transition: 'all 0.2s',
                 }}
                 onMouseEnter={e => { e.currentTarget.style.color = C.green; }}
@@ -1217,7 +1219,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                             transition: 'all 0.2s',
                           }}
                         >
-                          {loading ? 'Submitting...' : 'Submit Answer'}
+                          {loading ? <span style={{ fontWeight: 700 }}>Submitting...</span> : 'Submit Answer'}
                         </button>
                       </div>
                       {showSessionCounter && (
@@ -1321,7 +1323,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                             cursor: loading ? 'wait' : 'pointer', opacity: loading ? 0.6 : 1,
                           }}
                         >
-                          {loading ? 'Submitting...' : 'Submit Answer'}
+                          {loading ? <span style={{ fontWeight: 700 }}>Submitting...</span> : 'Submit Answer'}
                         </button>
                       )}
 
