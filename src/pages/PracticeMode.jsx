@@ -1152,9 +1152,9 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   onClick={() => setMode(m)}
                   style={{
                     padding: '7px 18px',
-                    background: mode === m ? C.green : C.bg,
-                    border: `1px solid ${mode === m ? C.green : C.border}`,
-                    borderRadius: 10, fontSize: 11, letterSpacing: 1.5,
+                    background: mode === m ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : C.bg,
+                    border: `1px solid ${mode === m ? 'transparent' : C.border}`,
+                    borderRadius: 50, fontSize: 11, letterSpacing: 1.5,
                     textTransform: 'uppercase', cursor: 'pointer',
                     color: mode === m ? '#fff' : C.textMuted,
                     fontFamily: "'Plus Jakarta Sans', sans-serif",
