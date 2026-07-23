@@ -1183,7 +1183,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                           </span>
                         )}
                         {onNextQuestion ? (
-                          <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginTop: 8 }}>
+                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8, marginTop: 8 }}>
                             <button
                               onClick={() => handleSubmit(textAnswer, false)}
                               disabled={disabled}
@@ -1196,30 +1196,26 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                                 cursor: disabled ? 'not-allowed' : 'pointer',
                                 fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: loading ? 700 : 600,
                                 transition: 'all 0.2s',
-                                boxShadow: disabled ? 'none' : '0 4px 20px rgba(251, 191, 36, 0.5)',
                               }}
                             >
-                              {loading ? 'Submitting...' : 'Submit'}
+                              {loading ? 'Submitting...' : 'Submit Answer'}
                             </button>
                             <button
                               onClick={onNextQuestion}
                               style={{
-                                background: '#ffffff',
-                                border: '1.5px solid #a78bfa',
-                                color: '#7c3aed',
-                                fontSize: 11,
+                                background: 'none',
+                                border: 'none',
+                                color: C.textMuted,
+                                fontSize: 12,
                                 cursor: 'pointer',
                                 fontFamily: "'Plus Jakarta Sans', sans-serif",
-                                padding: '12px 32px',
-                                borderRadius: 12,
-                                fontWeight: 600,
-                                letterSpacing: 1.5,
-                                textTransform: 'uppercase',
-                                transition: 'all 0.2s',
-                                boxShadow: '0 4px 15px rgba(251, 191, 36, 0.3)',
+                                textDecoration: 'underline',
+                                padding: '4px 0',
+                                textAlign: 'left',
+                                whiteSpace: 'nowrap',
                               }}
                             >
-                              Skip this question
+                              Skip This Question
                             </button>
                           </div>
                         ) : (
@@ -1235,10 +1231,9 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                               cursor: disabled ? 'not-allowed' : 'pointer',
                               fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: loading ? 700 : 600,
                               transition: 'all 0.2s',
-                              boxShadow: disabled ? 'none' : '0 4px 20px rgba(251, 191, 36, 0.5)',
                             }}
                           >
-                            {loading ? 'Submitting...' : 'Submit'}
+                            {loading ? 'Submitting...' : 'Submit Answer'}
                           </button>
                         )}
                       </div>
