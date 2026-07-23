@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 
 const C = {
@@ -18,13 +18,16 @@ function StarDisplay({ rating }) {
   );
 }
 
-function ReviewCard({ review }) {
+function ReviewCard({ review, isMobile }) {
   const name = review.show_name && review.display_name ? review.display_name : 'Anonymous PM';
   const date = new Date(review.created_at).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
 
   return (
     <div style={{
-      minWidth: 264, maxWidth: 300, flexShrink: 0,
+      minWidth: isMobile ? 'unset' : 264,
+      maxWidth: isMobile ? 'unset' : 300,
+      width: isMobile ? '100%' : 'auto',
+      flexShrink: 0,
       background: C.bg, borderRadius: 16, padding: '20px 22px',
       border: `1px solid ${C.border}`,
       boxShadow: '0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.03)',
@@ -44,6 +47,9 @@ function ReviewCard({ review }) {
 
 export default function ReviewsDisplay() {
   const [reviews, setReviews] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     supabase
@@ -55,6 +61,32 @@ export default function ReviewsDisplay() {
       .then(({ data }) => setReviews(data || []));
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile || !scrollContainerRef.current) return;
+
+    const handleScroll = () => {
+      const container = scrollContainerRef.current;
+      if (!container) return;
+
+      const scrollLeft = container.scrollLeft;
+      const cardWidth = container.offsetWidth;
+      const newIndex = Math.round(scrollLeft / cardWidth);
+      setCurrentIndex(newIndex);
+    };
+
+    const container = scrollContainerRef.current;
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [isMobile, reviews.length]);
+
   if (reviews.length === 0) return null;
 
   return (
@@ -62,15 +94,53 @@ export default function ReviewsDisplay() {
       <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 24, fontFamily: FONT, textAlign: 'center' }}>
         What PMs Are Saying
       </div>
-      <div style={{
-        display: 'flex', gap: 16, overflowX: 'auto', paddingBottom: 12,
-        scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch',
-        scrollbarWidth: 'none', msOverflowStyle: 'none',
-        justifyContent: reviews.length < 3 ? 'center' : 'flex-start',
-      }}>
+      <div
+        ref={scrollContainerRef}
+        style={{
+          display: 'flex', gap: 16, overflowX: 'auto', paddingBottom: 12,
+          scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none', msOverflowStyle: 'none',
+          justifyContent: reviews.length < 3 ? 'center' : 'flex-start',
+          paddingLeft: isMobile ? 16 : 0,
+          paddingRight: isMobile ? 16 : 0,
+        }}>
         <style>{`.reviews-scroll::-webkit-scrollbar { display: none; }`}</style>
-        {reviews.map(r => <ReviewCard key={r.id} review={r} />)}
+        {reviews.map(r => <ReviewCard key={r.id} review={r} isMobile={isMobile} />)}
       </div>
+
+      {isMobile && reviews.length > 1 && (
+        <div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            marginTop: 16,
+          }}>
+            {reviews.map((_, index) => (
+              <div
+                key={index}
+                style={{
+                  height: currentIndex === index ? 8 : 6,
+                  borderRadius: currentIndex === index ? 999 : '50%',
+                  background: currentIndex === index ? '#7c3aed' : '#D1D5DB',
+                  width: currentIndex === index ? 24 : 6,
+                  transition: 'all 0.3s ease',
+                }}
+              />
+            ))}
+          </div>
+          <div style={{
+            fontSize: 12,
+            color: C.textMuted,
+            fontFamily: FONT,
+            textAlign: 'center',
+            marginTop: 8,
+          }}>
+            swipe to see more
+          </div>
+        </div>
+      )}
     </div>
   );
 }
