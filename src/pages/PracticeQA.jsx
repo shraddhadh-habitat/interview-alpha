@@ -893,15 +893,14 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
                 onClick={(e) => { e.stopPropagation(); onPractice(); }}
                 style={{
                   padding: '10px 22px',
-                  background: C.green, border: 'none', borderRadius: 12,
+                  background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
+                  border: 'none',
+                  borderRadius: 50,
                   color: '#fff', fontSize: 14,
                   cursor: 'pointer',
                   fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
-                  transition: 'background 0.2s',
-                  boxShadow: '0 1px 2px rgba(22,163,74,0.3)',
+                  transition: 'all 0.2s',
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
-                onMouseLeave={e => e.currentTarget.style.background = C.green}
               >
                 Practice This Question
               </button>

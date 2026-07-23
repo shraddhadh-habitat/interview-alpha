@@ -536,7 +536,7 @@ export default function JDPractice({ user, profile }) {
               <button
                 onClick={handleGenerate}
                 disabled={!canGenerate}
-                style={{ width: '100%', padding: '16px', background: canGenerate ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : '#e5e7eb', border: 'none', borderRadius: 12, fontSize: 16, fontWeight: 700, fontFamily: F, color: canGenerate ? '#fff' : '#9ca3af', cursor: canGenerate ? 'pointer' : 'not-allowed' }}
+                style={{ width: '100%', padding: '16px', background: canGenerate ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : '#e5e7eb', border: 'none', borderRadius: 50, fontSize: 16, fontWeight: 700, fontFamily: F, color: canGenerate ? '#fff' : '#9ca3af', cursor: canGenerate ? 'pointer' : 'not-allowed' }}
               >
                 Build My Exclusive Interview Prep Kit
               </button>
@@ -563,7 +563,7 @@ export default function JDPractice({ user, profile }) {
                 </div>
                 <button
                   onClick={() => { setStep('practice'); setCurrentIndex(0); setAnswer(''); setShowExpert(false); }}
-                  style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F, color: '#fff', cursor: 'pointer' }}
+                  style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #a78bfa, #c084fc)', border: 'none', borderRadius: 50, fontSize: 14, fontWeight: 700, fontFamily: F, color: '#fff', cursor: 'pointer' }}
                 >
                   Start Practising →
                 </button>
@@ -729,7 +729,7 @@ Return only the answer text, no JSON.`;
                           setResults({ ...results, questions: updatedQuestions });
                         }
                       }}
-                      style={{ width: '100%', padding: '12px 16px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, cursor: 'pointer', fontSize: 14, color: '#6b7280', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      style={{ width: '100%', padding: '12px 16px', background: 'linear-gradient(135deg, #a78bfa, #c084fc)', border: 'none', borderRadius: 50, cursor: 'pointer', fontSize: 14, color: '#fff', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     >
                       ✨ Generate Expert Answer for This Question
                     </button>

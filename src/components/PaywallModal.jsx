@@ -84,13 +84,13 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
         <button
           style={{
             width: '100%', padding: '14px 0',
-            background: C.green, border: 'none', borderRadius: 12,
+            background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
+            border: 'none',
+            borderRadius: 50,
             color: '#fff', fontSize: 11, letterSpacing: 3, textTransform: 'uppercase',
             cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
-            marginBottom: 12, transition: 'background 0.2s',
+            marginBottom: 12, transition: 'all 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
-          onMouseLeave={e => e.currentTarget.style.background = C.green}
           onClick={onUpgrade}
         >
           Upgrade to Pro
