@@ -183,11 +183,12 @@ function ScoreChart({ data }) {
 function CompBar({ label, value, max = 10 }) {
   const pct = Math.round((value / max) * 100);
   const color = pct >= 70 ? C.success : pct >= 40 ? C.yellow : C.red;
+  const displayLabel = label.replace(/_/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
         <span style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          {label.replace(/_/g, ' ')}
+          {displayLabel}
         </span>
         <span style={{ fontSize: 12, color, fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{value}/{max}</span>
       </div>
@@ -201,9 +202,9 @@ function CompBar({ label, value, max = 10 }) {
 function StatCard({ label, value, sub, color }) {
   return (
     <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: '20px 22px', flex: 1, minWidth: 110, boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)' }}>
-      <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8 }}>{label}</div>
+      <div style={{ fontSize: 11, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 8, fontWeight: 700 }}>{label}</div>
       <div style={{ fontSize: 34, fontWeight: 700, color: color || C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1 }}>{value}</div>
-      {sub && <div style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginTop: 6 }}>{sub}</div>}
+      {sub && <div style={{ fontSize: 11, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", marginTop: 6, fontWeight: 700 }}>{sub}</div>}
     </div>
   );
 }
@@ -267,7 +268,7 @@ function Section({ title, sub, children }) {
     <div style={{ marginBottom: 40 }}>
       <div style={{ marginBottom: 20 }}>
         <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 22, fontWeight: 400, color: C.text, letterSpacing: -0.5, marginBottom: 5 }}>{title}</h2>
-        {sub && <p style={{ fontSize: 13, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{sub}</p>}
+        {sub && <p style={{ fontSize: 13, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>{sub}</p>}
       </div>
       <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 26, boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)' }}>
         {children}
@@ -280,7 +281,7 @@ function InsightCard({ title, icon, iconColor, value, sub, subColor, badge, badg
   return (
     <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: '18px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
-        <span style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{title}</span>
+        <span style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>{title}</span>
         {badge && <span style={{ padding: '2px 7px', background: badgeColor, border: `1px solid ${badgeBorder}`, borderRadius: 10, fontSize: 9, color: badgeText, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{badge}</span>}
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
@@ -295,7 +296,7 @@ function InsightCard({ title, icon, iconColor, value, sub, subColor, badge, badg
 function FilterSelect({ label, value, onChange, options }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-      <span style={{ fontSize: 10, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 1, textTransform: 'uppercase' }}>{label}:</span>
+      <span style={{ fontSize: 10, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 1, textTransform: 'uppercase', fontWeight: 700 }}>{label}:</span>
       <select value={value} onChange={e => onChange(e.target.value)} style={{ padding: '5px 10px', border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.text, background: C.card, cursor: 'pointer', outline: 'none' }}>
         {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
@@ -691,7 +692,7 @@ export default function Scorecard({ user }) {
   );
 
   const sectionBox = { background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: '24px 28px', marginBottom: 24 };
-  const sectionLabel = { fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 18, fontWeight: 600 };
+  const sectionLabel = { fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 18, fontWeight: 700 };
 
   return (
     <div style={{ background: C.bg, minHeight: '100vh', paddingTop: NAV_H, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -720,14 +721,14 @@ export default function Scorecard({ user }) {
 
         {/* ── PAGE HEADER ── */}
         <div style={{ marginBottom: 44, paddingBottom: 28, borderBottom: `1px solid ${C.border}` }}>
-          <div style={{ fontSize: 10, letterSpacing: 6, textTransform: 'uppercase', color: C.textMuted, marginBottom: 12 }}>Performance Evaluation</div>
+          <div style={{ fontSize: 10, letterSpacing: 6, textTransform: 'uppercase', color: C.text, marginBottom: 12, fontWeight: 700 }}>Performance Evaluation</div>
           <h1 className="sc-h1" style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 900, color: C.text, lineHeight: 1.05, letterSpacing: -1.5, marginBottom: 12 }}>
             Your Performance<br /><span style={{ color: C.green }}>Scorecard</span>
           </h1>
-          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: C.textMuted, lineHeight: 1.7, maxWidth: 500, marginBottom: 12 }}>
+          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: C.text, lineHeight: 1.7, maxWidth: 500, marginBottom: 12, fontWeight: 700 }}>
             Comprehensive analytics across all your interview sessions and practice attempts.
           </p>
-          <div style={{ fontSize: 11, color: C.textMuted, letterSpacing: 0.5 }}>{user.email}</div>
+          <div style={{ fontSize: 11, color: C.text, letterSpacing: 0.5, fontWeight: 700 }}>{user.email}</div>
         </div>
 
         {/* ════════════════════════════════════════════════════════════
@@ -736,7 +737,7 @@ export default function Scorecard({ user }) {
         <div style={{ marginBottom: 52 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24 }}>
             <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 26, fontWeight: 700, color: C.text, letterSpacing: -0.5, margin: 0 }}>Practice Analytics</h2>
-            <span style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.textMuted, paddingTop: 2 }}>Q&amp;A Practice</span>
+            <span style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.text, paddingTop: 2, fontWeight: 700 }}>Q&amp;A Practice</span>
           </div>
 
           {practiceAttempts.length === 0 ? (
@@ -782,7 +783,7 @@ export default function Scorecard({ user }) {
                   <div style={{ padding: '12px 16px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 12 }}>
                     <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.yellow, marginBottom: 6 }}>Tip</div>
                     <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, margin: 0 }}>
-                      Focus your next practice on <strong>{progress.weakest[0].key.replace(/_/g, ' ')}</strong>. Look for questions requiring explicit trade-off reasoning and structured frameworks.
+                      Focus your next practice on <strong>{progress.weakest[0].key.replace(/_/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</strong>. Look for questions requiring explicit trade-off reasoning and structured frameworks.
                     </p>
                   </div>
                 </div>
@@ -796,7 +797,7 @@ export default function Scorecard({ user }) {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                       <thead>
                         <tr>{['Designation', 'Questions', 'Attempts', 'Avg Score', 'Best'].map(h => (
-                          <th key={h} style={{ textAlign: 'left', padding: '8px 12px', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, borderBottom: `1px solid ${C.border}`, fontWeight: 500 }}>{h}</th>
+                          <th key={h} style={{ textAlign: 'left', padding: '8px 12px', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.text, borderBottom: `1px solid ${C.border}`, fontWeight: 700 }}>{h}</th>
                         ))}</tr>
                       </thead>
                       <tbody>
@@ -833,7 +834,7 @@ export default function Scorecard({ user }) {
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                     <thead>
                       <tr>{['Date', 'Answer Preview', 'Designation', 'Attempt', 'Score', ''].map(h => (
-                        <th key={h} style={{ textAlign: 'left', padding: '8px 12px', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, borderBottom: `1px solid ${C.border}`, fontWeight: 500, whiteSpace: 'nowrap' }}>{h}</th>
+                        <th key={h} style={{ textAlign: 'left', padding: '8px 12px', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.text, borderBottom: `1px solid ${C.border}`, fontWeight: 700, whiteSpace: 'nowrap' }}>{h}</th>
                       ))}</tr>
                     </thead>
                     <tbody>
@@ -867,7 +868,7 @@ export default function Scorecard({ user }) {
 
         {/* Divider */}
         <div style={{ borderTop: `2px solid ${C.border}`, marginBottom: 52, position: 'relative' }}>
-          <span style={{ position: 'absolute', top: -10, left: '50%', transform: 'translateX(-50%)', background: C.bg, padding: '0 16px', fontSize: 9, letterSpacing: 4, textTransform: 'uppercase', color: C.textMuted }}>Interview Performance</span>
+          <span style={{ position: 'absolute', top: -10, left: '50%', transform: 'translateX(-50%)', background: C.bg, padding: '0 16px', fontSize: 9, letterSpacing: 4, textTransform: 'uppercase', color: C.text, fontWeight: 700 }}>Interview Performance</span>
         </div>
 
         {/* ════════════════════════════════════════════════════════════
