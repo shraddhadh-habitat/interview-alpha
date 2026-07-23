@@ -91,10 +91,11 @@ export default function ReviewsDisplay() {
   if (reviews.length === 0) return null;
 
   return (
-    <div style={{ marginBottom: 48 }}>
-      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 24, fontFamily: FONT, textAlign: 'center' }}>
-        What PMs Are Saying
-      </div>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+      <div style={{ marginBottom: 48 }}>
+        <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 24, fontFamily: FONT, textAlign: 'center' }}>
+          What PMs Are Saying
+        </div>
       <div
         ref={scrollContainerRef}
         style={{
@@ -143,6 +144,7 @@ export default function ReviewsDisplay() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
