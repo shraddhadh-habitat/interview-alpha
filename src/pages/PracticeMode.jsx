@@ -501,7 +501,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
       {/* Missing concepts */}
       {(missing_concepts || []).length > 0 && (
         <div style={{ padding: '12px 14px', background: '#FCFCFC', border: `1px solid #E5E7EB`, borderRadius: 12, marginBottom: 12, opacity: 0.65 }}>
-          <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6, fontWeight: 700 }}>Missing Concepts</div>
+          <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: '#0A0A0A', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 6, fontWeight: 700 }}>Missing Concepts</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {missing_concepts.map((m, i) => (
               <span key={i} style={{ padding: '4px 10px', background: '#f59e0b', border: 'none', borderRadius: 12, fontSize: 11, color: '#fff', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>{m}</span>
@@ -513,7 +513,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
       {/* Filler words / Keywords - minimal diagnostic details */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, opacity: 0.55 }}>
         <div>
-          <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 700 }}>Filler Words</div>
+          <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#0A0A0A', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 700 }}>Filler Words</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {(filler_words || []).length > 0
               ? filler_words.map((w, i) => <span key={i} style={{ padding: '3px 8px', background: '#fee2e2', border: 'none', borderRadius: 4, fontSize: 10, color: '#dc2626', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{w}</span>)
@@ -521,7 +521,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
           </div>
         </div>
         <div>
-          <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 700 }}>High-Signal Keywords</div>
+          <div style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: '#0A0A0A', fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 4, fontWeight: 700 }}>High-Signal Keywords</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {(high_signal_keywords || []).length > 0
               ? high_signal_keywords.map((w, i) => <span key={i} style={{ padding: '3px 8px', background: '#dcfce7', border: 'none', borderRadius: 4, fontSize: 10, color: '#16a34a', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>{w}</span>)
