@@ -232,7 +232,7 @@ function ScoreBar({ label, value, max = 10 }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
       <span style={{ fontSize: 14, fontWeight: 600, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", minWidth: 140 }}>
-        {label.replace(/_/g, ' ')}
+        {label.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
       </span>
       <div style={{ flex: 1, height: 8, background: '#F5F3EF', borderRadius: 4, overflow: 'hidden' }}>
         <div style={{
