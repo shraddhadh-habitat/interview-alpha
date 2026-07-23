@@ -1072,7 +1072,26 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           overflow: 'hidden',
         }}>
           <div style={{ padding: '20px 24px' }}>
-            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 10 }}>Question</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+              <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Question</div>
+              {onNextQuestion && (
+                <button
+                  onClick={onNextQuestion}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: C.textMuted,
+                    fontSize: 11,
+                    cursor: 'pointer',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    letterSpacing: 1,
+                    padding: 0,
+                  }}
+                >
+                  Skip Question →
+                </button>
+              )}
+            </div>
             <p style={{ fontSize: 15, lineHeight: 1.7, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, fontWeight: 500 }}>
               {restoredQuestion || question.q}
             </p>
@@ -1182,60 +1201,22 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                             {wordCount} / 50 words min{!ready && wordCount > 0 ? `  -  ${50 - wordCount} more` : ''}
                           </span>
                         )}
-                        {onNextQuestion ? (
-                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8, marginTop: 8 }}>
-                            <button
-                              onClick={() => handleSubmit(textAnswer, false)}
-                              disabled={disabled}
-                              style={{
-                                padding: '12px 32px',
-                                background: disabled ? C.bgMuted : 'linear-gradient(135deg, #a78bfa, #c084fc)',
-                                border: 'none', borderRadius: 12,
-                                color: disabled ? C.textMuted : '#fff',
-                                fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                                cursor: disabled ? 'not-allowed' : 'pointer',
-                                fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: loading ? 700 : 600,
-                                transition: 'all 0.2s',
-                              }}
-                            >
-                              {loading ? 'Submitting...' : 'Submit Answer'}
-                            </button>
-                            <button
-                              onClick={onNextQuestion}
-                              style={{
-                                background: 'none',
-                                border: 'none',
-                                color: C.textMuted,
-                                fontSize: 12,
-                                cursor: 'pointer',
-                                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                                textDecoration: 'underline',
-                                padding: '4px 0',
-                                textAlign: 'left',
-                                whiteSpace: 'nowrap',
-                              }}
-                            >
-                              Skip This Question
-                            </button>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => handleSubmit(textAnswer, false)}
-                            disabled={disabled}
-                            style={{
-                              padding: '12px 32px',
-                              background: disabled ? C.bgMuted : 'linear-gradient(135deg, #a78bfa, #c084fc)',
-                              border: 'none', borderRadius: 12,
-                              color: disabled ? C.textMuted : '#fff',
-                              fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
-                              cursor: disabled ? 'not-allowed' : 'pointer',
-                              fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: loading ? 700 : 600,
-                              transition: 'all 0.2s',
-                            }}
-                          >
-                            {loading ? 'Submitting...' : 'Submit Answer'}
-                          </button>
-                        )}
+                        <button
+                          onClick={() => handleSubmit(textAnswer, false)}
+                          disabled={disabled}
+                          style={{
+                            padding: '12px 32px',
+                            background: disabled ? C.bgMuted : 'linear-gradient(135deg, #a78bfa, #c084fc)',
+                            border: 'none', borderRadius: 12,
+                            color: disabled ? C.textMuted : '#fff',
+                            fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase',
+                            cursor: disabled ? 'not-allowed' : 'pointer',
+                            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: loading ? 700 : 600,
+                            transition: 'all 0.2s',
+                          }}
+                        >
+                          {loading ? 'Submitting...' : 'Submit Answer'}
+                        </button>
                       </div>
                       {showSessionCounter && (
                         <div style={{ marginTop: 8, fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
