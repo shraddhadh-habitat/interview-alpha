@@ -4,7 +4,7 @@ import { formatLabeledText } from '../lib/formatText';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
-  text: '#0A0A0A', textSoft: '#0A0A0A', textMuted: '#5C5C57',
+  text: '#0A0A0A', textSoft: '#0A0A0A', textMuted: '#0A0A0A',
   border: '#E8E6E1', borderLight: '#F0EDE8',
   green: '#16A34A', greenHover: '#15803D',
   greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',

@@ -7,7 +7,7 @@ export default function BlogPost() {
 
   const C = {
     text: '#1B1B18',
-    textMuted: 'rgba(27, 27, 24, 0.5)',
+    textMuted: '#0A0A0A',
   };
 
   const handleBack = () => {

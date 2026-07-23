@@ -5,7 +5,7 @@ import posthog from '../lib/analytics';
 const RAINBOW = 'var(--gradient-brand)';
 
 const C = {
-  text: '#1B1B18', textMuted: 'rgba(27, 27, 24, 0.5)', textLight: 'rgba(27, 27, 24, 0.5)',
+  text: '#1B1B18', textMuted: '#0A0A0A', textLight: 'rgba(27, 27, 24, 0.5)',
   border: 'rgba(27, 27, 24, 0.12)', bg: '#FAFAF8',
   green: '#1B1B18',
   red: '#1B1B18', redLight: 'rgba(27, 27, 24, 0.08)', redBorder: 'rgba(27, 27, 24, 0.12)',

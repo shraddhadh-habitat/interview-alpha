@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8',
-  text: '#0A0A0A', textMuted: '#5C5C57',
+  text: '#0A0A0A', textMuted: '#0A0A0A',
   border: '#E8E6E1',
 };
 const FONT = "'Plus Jakarta Sans', sans-serif";

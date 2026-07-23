@@ -9,7 +9,7 @@ import PaywallModal from '../components/PaywallModal';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
-  text: '#1B1B18', textSoft: '#1B1B18', textMuted: 'rgba(27, 27, 24, 0.5)',
+  text: '#1B1B18', textSoft: '#1B1B18', textMuted: '#0A0A0A',
   border: 'rgba(27, 27, 24, 0.12)', borderLight: 'rgba(27, 27, 24, 0.08)',
   green: '#1B1B18', greenHover: '#0A0A0A',
   greenLight: 'rgba(27, 27, 24, 0.08)', greenBorder: 'rgba(27, 27, 24, 0.12)',

@@ -1,6 +1,6 @@
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8',
-  text: '#0A0A0A', textSoft: '#0A0A0A', textMuted: '#5C5C57',
+  text: '#0A0A0A', textSoft: '#0A0A0A', textMuted: '#0A0A0A',
   border: '#E8E6E1',
   green: '#16A34A', greenHover: '#15803D',
   greenLight: 'rgba(22,163,74,0.08)', greenBorder: 'rgba(22,163,74,0.2)',

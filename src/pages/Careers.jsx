@@ -4,7 +4,7 @@ const C = {
   bg: '#FAFAF8',
   text: '#1B1B18',
   textSoft: '#5C5C57',
-  textMuted: '#9C9C97',
+  textMuted: '#0A0A0A',
   border: '#E8E6E1',
   green: '#16A34A',
 };

@@ -3,7 +3,7 @@ import React from 'react';
 const C = {
   bg: '#FAFAF8',
   text: '#1B1B18',
-  textMuted: '#5C5C57',
+  textMuted: '#0A0A0A',
   border: '#E8E6E1',
 };
 

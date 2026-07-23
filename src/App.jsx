@@ -39,11 +39,11 @@ import DeviceTracker from './components/DeviceTracker';
 import ActivityTicker from './components/ActivityTickerPortal';
 import TrackSelection from './components/TrackSelection';
 
-const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#9C9C97', green: '#16A34A' };
+const C = { bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#0A0A0A', green: '#16A34A' };
 
 const RAINBOW = 'var(--gradient-brand)';
 const RC = {
-  bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#5C5C57', border: '#E8E6E1',
+  bg: '#FAFAF8', text: '#0A0A0A', textMuted: '#0A0A0A', border: '#E8E6E1',
   green: '#16A34A',
   red: '#CF222E', redLight: 'rgba(207,34,46,0.06)', redBorder: 'rgba(207,34,46,0.18)',
   success: '#1A7F37', successLight: 'rgba(26,127,55,0.06)', successBorder: 'rgba(26,127,55,0.2)',
