@@ -4,6 +4,9 @@ Behavioral guidelines to reduce common LLM coding mistakes.
 
 **Tradeoff:** These guidelines bias toward caution over speed.
 
+## ⚠️ CRITICAL: Git Operations
+Never run `git add`, `git commit`, or `git push` without explicit instruction from the user. Always show diffs and wait for approval before any git operations.
+
 ## 1. Think Before Coding
 Don't assume. Don't hide confusion. Surface tradeoffs.
 

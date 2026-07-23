@@ -1,0 +1,123 @@
+================================================================================
+QUICK START: Append 60 Technical Writing Questions
+================================================================================
+
+GOAL: Add 60 questions to src/data/technicalWritingQuestions.js
+
+================================================================================
+STEP 1: Validate Source Data (Optional)
+================================================================================
+
+Run this to parse and validate the batch files:
+
+  node parse_batch_questions.mjs
+
+This will:
+  - Read batch_60_questions.txt (16 UX writing questions)
+  - Read batch_tech_ai_strategy.txt (44 technical/AI/strategy questions)
+  - Validate structure and count
+  - Save parsed_batch_questions.json for review
+
+Expected output:
+  ✓ 60 total questions found
+  - ux_writing: 16
+  - technical_docs: 15
+  - ai_content: 14
+  - content_strategy: 15
+
+================================================================================
+STEP 2: Run Appender Script
+================================================================================
+
+  node append_60_questions_to_technical_writing.mjs
+
+This will:
+  - Read existing technicalWritingQuestions.js
+  - Append 60 questions to all 5 career levels
+  - Write updated file
+  - Verify success
+
+Expected output:
+  ✓ SUCCESS: 60 questions appended to technicalWritingQuestions.js
+  Updated question counts show +60 for each level and roundType
+
+================================================================================
+STEP 3: Verify Result
+================================================================================
+
+Check the updated file:
+  cat src/data/technicalWritingQuestions.js | head -50
+
+Verify in code:
+  import { technicalWritingQuestions } from './src/data/technicalWritingQuestions.js';
+  console.log(technicalWritingQuestions['Technical Writer'].ux_writing.length);
+
+Expected: Original count + 16 (for ux_writing, and +15, +14, +15 for other types)
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Script fails to run:
+  ✗ Node.js not installed
+  → Install Node.js v14+ from https://nodejs.org
+
+Script can't find batch files:
+  ✗ batch_60_questions.txt or batch_tech_ai_strategy.txt not found
+  → Check files exist in project root: ls batch_*.txt
+
+Script fails to parse questions:
+  ✗ Malformed JSON in batch files
+  → Run: node parse_batch_questions.mjs (see console for details)
+  → Review batch files for valid JSON syntax
+
+Cannot write to file:
+  ✗ Permission denied on src/data/
+  → Check write permissions: ls -la src/data/
+  → May need to run as admin
+
+================================================================================
+WHAT HAPPENS
+================================================================================
+
+Before running script:
+  Junior Technical Writer
+    ux_writing: 10 questions
+    technical_docs: 8 questions
+    ai_content: 5 questions
+    content_strategy: 7 questions
+
+After running script:
+  Junior Technical Writer
+    ux_writing: 26 questions (10 + 16 new)
+    technical_docs: 23 questions (8 + 15 new)
+    ai_content: 19 questions (5 + 14 new)
+    content_strategy: 22 questions (7 + 15 new)
+
+(Same applies to all 5 career levels)
+
+================================================================================
+FILES
+================================================================================
+
+Main script:        append_60_questions_to_technical_writing.mjs
+Parser script:      parse_batch_questions.mjs
+Source (UX):        batch_60_questions.txt
+Source (Tech/AI):   batch_tech_ai_strategy.txt
+Target file:        src/data/technicalWritingQuestions.js
+Documentation:      APPEND_QUESTIONS_WORKFLOW.md
+                    IMPLEMENTATION_SUMMARY.md
+
+================================================================================
+NEXT
+================================================================================
+
+After appending:
+  1. Test that the updated file loads without errors
+  2. Review question content if needed
+  3. Commit to git when ready
+  4. Deploy to production
+
+NO COMMITS ARE MADE BY THESE SCRIPTS - you manage git separately
+
+================================================================================

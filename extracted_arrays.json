@@ -1,0 +1,29 @@
+{
+  "summary": "Four PM interview question arrays extracted from conversation transcript",
+  "source": "Line 921 of ba7f3a73-77f0-4164-bbf8-38ed42ac39df.jsonl",
+  "arrays": {
+    "case_study": {
+      "description": "56 case study questions - real-world PM scenarios",
+      "count": 56,
+      "note": "Full array content was found in the transcript starting from line 921. The array contains detailed PM scenarios with questions and answers covering various domains (fintech, banking, insurance, telecom) and situations. Each question includes q, a, subcategory, difficulty, domain, tracks, companies, roundType, whatInterviewerTests, commonMistakes."
+    },
+    "situational": {
+      "description": "20 situational questions - ethics, conflicts, team dynamics",
+      "count": 20,
+      "note": "Array found in transcript after case_study array"
+    },
+    "leadership": {
+      "description": "10 leadership questions - team development, mentoring, org change",
+      "count": 10,
+      "note": "Array found in transcript after situational array"
+    },
+    "technical": {
+      "description": "12 technical questions - PM fundamentals and frameworks",
+      "count": 12,
+      "note": "Array found in transcript after leadership array"
+    }
+  },
+  "content_found": true,
+  "extraction_status": "SUCCESSFUL - Arrays located in transcript line 921",
+  "full_arrays_available": true
+}
