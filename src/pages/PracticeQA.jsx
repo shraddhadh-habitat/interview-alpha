@@ -1463,7 +1463,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         const allQuestions = pmQuestionBank.product;
         if (allQuestions.length > 0) {
           const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-          const filteredItem = filtered.find(f => f.question === randomQuestion);
+          const filteredItem = filtered.find(f => f.question.q === randomQuestion.q);
           const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
           setPracticeQuestion({
             question: randomQuestion,
@@ -1489,7 +1489,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           const allQuestions = dsLevel[selectedCategory];
           if (allQuestions.length > 0) {
             const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-            const filteredItem = filtered.find(f => f.question === randomQuestion);
+            const filteredItem = filtered.find(f => f.question.q === randomQuestion.q);
             const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
             setPracticeQuestion({
               question: randomQuestion,
@@ -1512,7 +1512,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         const allQuestions = consultingLevel.case_interview;
         if (allQuestions.length > 0) {
           const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-          const filteredItem = filtered.find(f => f.question === randomQuestion);
+          const filteredItem = filtered.find(f => f.question.q === randomQuestion.q);
           const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
           setPracticeQuestion({
             question: randomQuestion,
@@ -1537,7 +1537,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           const allQuestions = pmLevel[selectedCategory];
           if (allQuestions.length > 0) {
             const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-            const filteredItem = filtered.find(f => f.question === randomQuestion);
+            const filteredItem = filtered.find(f => f.question.q === randomQuestion.q);
             const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
             setPracticeQuestion({
               question: randomQuestion,
@@ -1563,7 +1563,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           const allQuestions = twLevel[selectedCategory];
           if (allQuestions.length > 0) {
             const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-            const filteredItem = filtered.find(f => f.question === randomQuestion);
+            const filteredItem = filtered.find(f => f.question.q === randomQuestion.q);
             const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
             setPracticeQuestion({
               question: randomQuestion,
