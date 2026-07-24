@@ -535,7 +535,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
 }
 
 // ─── Main PracticeMode component ───
-export default function PracticeMode({ question, questionId, designation, category, subcategory, user, onBack, onNextQuestion, profile, checkSession, onSessionUsed }) {
+export default function PracticeMode({ question, questionId, designation, category, subcategory, user, onBack, onNextQuestion, onPrevQuestion, profile, checkSession, onSessionUsed }) {
   console.log('[PracticeMode] Component render - URL:', window.location.href);
 
   const [mode, setMode] = useState('text'); // 'text' | 'voice'
@@ -1074,24 +1074,6 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           <div style={{ padding: '20px 24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
               <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>Question</div>
-              {onNextQuestion && (
-                <button
-                  onClick={onBack}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#7c3aed',
-                    fontSize: 11,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    letterSpacing: 1,
-                    padding: 0,
-                  }}
-                >
-                  Skip Question
-                </button>
-              )}
             </div>
             <p style={{ fontSize: 15, lineHeight: 1.7, color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: 0, fontWeight: 500 }}>
               {restoredQuestion || question.q}
@@ -1101,6 +1083,55 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 Attempt #{attemptNumber}
               </div>
             )}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <button
+              onClick={onPrevQuestion}
+              disabled={!onPrevQuestion}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: onPrevQuestion ? '#7c3aed' : '#D1D5DB',
+                fontSize: 12,
+                fontWeight: 600,
+                cursor: onPrevQuestion ? 'pointer' : 'default',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                padding: 0,
+              }}
+            >
+              ← Previous
+            </button>
+            <button
+              onClick={onBack}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#7c3aed',
+                fontSize: 12,
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                padding: 0,
+              }}
+            >
+              Skip Question
+            </button>
+            <button
+              onClick={onNextQuestion}
+              disabled={!onNextQuestion}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: onNextQuestion ? '#7c3aed' : '#D1D5DB',
+                fontSize: 12,
+                fontWeight: 600,
+                cursor: onNextQuestion ? 'pointer' : 'default',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                padding: 0,
+              }}
+            >
+              Next →
+            </button>
           </div>
           {/* View Expert Answer collapsible - only for logged-in users */}
           {user && (
