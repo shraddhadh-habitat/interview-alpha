@@ -1783,6 +1783,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   if (practiceQuestion) {
     const currentIdx = filtered.findIndex(f => f.key === practiceQuestion.questionId);
+    console.log('[Nav] currentIdx:', currentIdx, '| questionId:', practiceQuestion.questionId, '| filtered length:', filtered.length, '| first key:', filtered[0]?.key);
     const nextItem = currentIdx !== -1 && currentIdx < filtered.length - 1 ? filtered[currentIdx + 1] : null;
     const handleNextQuestion = nextItem ? () => setPracticeQuestion({
       question: nextItem.question,
