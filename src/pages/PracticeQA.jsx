@@ -1463,9 +1463,11 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         const allQuestions = pmQuestionBank.product;
         if (allQuestions.length > 0) {
           const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+          const filteredItem = filtered.find(f => f.question === randomQuestion);
+          const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
           setPracticeQuestion({
             question: randomQuestion,
-            questionId: `associate-pm-product-${Math.random().toString(36).substr(2, 9)}`,
+            questionId: questionKey,
             designation: level,
             category: category,
             subcategory: randomQuestion?.subcategory || '',
@@ -1487,9 +1489,11 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           const allQuestions = dsLevel[selectedCategory];
           if (allQuestions.length > 0) {
             const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+            const filteredItem = filtered.find(f => f.question === randomQuestion);
+            const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
             setPracticeQuestion({
               question: randomQuestion,
-              questionId: `data-scientist-${selectedCategory}-${Math.random().toString(36).substr(2, 9)}`,
+              questionId: questionKey,
               designation: level,
               category: selectedCategory,
               subcategory: randomQuestion?.subcategory || '',
@@ -1508,9 +1512,11 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         const allQuestions = consultingLevel.case_interview;
         if (allQuestions.length > 0) {
           const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+          const filteredItem = filtered.find(f => f.question === randomQuestion);
+          const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
           setPracticeQuestion({
             question: randomQuestion,
-            questionId: `consulting-analyst-${Math.random().toString(36).substr(2, 9)}`,
+            questionId: questionKey,
             designation: level,
             category: 'case_interview',
             subcategory: randomQuestion?.subcategory || '',
@@ -1531,9 +1537,11 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           const allQuestions = pmLevel[selectedCategory];
           if (allQuestions.length > 0) {
             const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+            const filteredItem = filtered.find(f => f.question === randomQuestion);
+            const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
             setPracticeQuestion({
               question: randomQuestion,
-              questionId: `project-manager-${selectedCategory}-${Math.random().toString(36).substr(2, 9)}`,
+              questionId: questionKey,
               designation: level,
               category: selectedCategory,
               subcategory: randomQuestion?.subcategory || '',
@@ -1555,9 +1563,11 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           const allQuestions = twLevel[selectedCategory];
           if (allQuestions.length > 0) {
             const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+            const filteredItem = filtered.find(f => f.question === randomQuestion);
+            const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
             setPracticeQuestion({
               question: randomQuestion,
-              questionId: `technical-writer-${selectedCategory}-${Math.random().toString(36).substr(2, 9)}`,
+              questionId: questionKey,
               designation: level,
               category: selectedCategory,
               subcategory: randomQuestion?.subcategory || '',
