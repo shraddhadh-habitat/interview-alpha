@@ -1097,6 +1097,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 cursor: onPrevQuestion ? 'pointer' : 'default',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 padding: 0,
+                paddingLeft: 24,
               }}
             >
               Previous Question
