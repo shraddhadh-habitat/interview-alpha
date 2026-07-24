@@ -1099,7 +1099,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 padding: 0,
               }}
             >
-              ← Previous
+              Previous Question
             </button>
             <button
               onClick={onBack}
@@ -1130,7 +1130,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 padding: 0,
               }}
             >
-              Next →
+              Next Question
             </button>
           </div>
           {/* View Expert Answer collapsible - only for logged-in users */}
