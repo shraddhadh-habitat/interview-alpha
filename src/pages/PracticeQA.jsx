@@ -1792,6 +1792,15 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       subcategory: nextItem?.question?.subcategory || '',
     }) : null;
 
+    const prevItem = currentIdx > 0 ? filtered[currentIdx - 1] : null;
+    const handlePrevQuestion = prevItem ? () => setPracticeQuestion({
+      question: prevItem.question,
+      questionId: prevItem.key,
+      designation: prevItem.level,
+      category: prevItem.dataCategory,
+      subcategory: prevItem?.question?.subcategory || '',
+    }) : null;
+
     const refreshStats = () => {
       if (!user) return;
       supabase.from('practice_attempts').select('question_id, score').eq('user_id', user.id)
@@ -1817,7 +1826,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         profile={profile}
         checkSession={checkSession}
         onSessionUsed={onSessionUsed}
-        onNextQuestion={() => { setPracticeQuestion(null); refreshStats(); }}
+        onNextQuestion={handleNextQuestion}
+        onPrevQuestion={handlePrevQuestion}
         onBack={() => { setPracticeQuestion(null); refreshStats(); }}
       />
     );
