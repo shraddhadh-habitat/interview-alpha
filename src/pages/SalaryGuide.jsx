@@ -375,10 +375,10 @@ function CTABanner({ text, onClick }) {
         onClick={onClick}
         className="cta-banner-btn"
         style={{
-          background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+          background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
           color: '#fff',
           border: 'none',
-          borderRadius: '8px',
+          borderRadius: '50px',
           fontSize: '13px',
           fontWeight: 600,
           padding: '10px 20px',
@@ -391,7 +391,7 @@ function CTABanner({ text, onClick }) {
         onMouseEnter={e => e.currentTarget.style.opacity = '0.92'}
         onMouseLeave={e => e.currentTarget.style.opacity = '1'}
       >
-        Answer your first question
+        Start Practising Free
       </button>
     </div>
   );
