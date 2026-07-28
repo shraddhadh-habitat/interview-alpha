@@ -15,9 +15,6 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  console.log('RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY);
-  console.log('RESEND_API_KEY starts with:', process.env.RESEND_API_KEY?.substring(0, 8));
-
   // For testing — only send to interviewalpha.ai@gmail.com
   const testMode = true;
   console.log('Test mode:', testMode);
