@@ -15,10 +15,6 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  // For testing — only send to interviewalpha.ai@gmail.com
-  const testMode = true;
-  console.log('Test mode:', testMode);
-
   const supabaseAdmin = createClient(
     process.env.VITE_SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY
