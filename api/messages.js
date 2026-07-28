@@ -3,7 +3,7 @@ const Anthropic = require('@anthropic-ai/sdk');
 // Simple in-memory rate limiter
 const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const RATE_LIMIT_MAX = 10; // max 10 requests per minute per IP
+const RATE_LIMIT_MAX = 60; // max 60 requests per minute per IP
 
 function isRateLimited(ip) {
   const now = Date.now();
