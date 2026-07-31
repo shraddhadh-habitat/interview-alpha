@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import PaywallModal from '../components/PaywallModal';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import mammoth from 'mammoth';
@@ -85,7 +86,7 @@ const STATUS_MESSAGES = [
   'Almost done...',
 ];
 
-export default function ATSChecker({ user }) {
+export default function ATSChecker({ user, profile }) {
   const { requireAuth } = useAuth();
   const [resumeText, setResumeText] = useState('');
   const [jdText, setJdText] = useState('');
@@ -95,6 +96,7 @@ export default function ATSChecker({ user }) {
   const [fileUploading, setFileUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [messageIndex, setMessageIndex] = useState(0);
+  const [showPaywall, setShowPaywall] = useState(false);
   const resumeFileInputRef = useRef(null);
 
   useEffect(() => {
@@ -123,6 +125,33 @@ export default function ATSChecker({ user }) {
 
     return () => clearInterval(messageInterval);
   }, [loading]);
+
+  // Check subscription status
+  useEffect(() => {
+    if (user) {
+      const isAdmin = user.email === 'shraddhadh@gmail.com' || user.email === 'vaishnavi.kulkarni2012@gmail.com';
+      const isPaid = profile?.subscription_status === 'active';
+
+      if (!isAdmin && !isPaid) {
+        setShowPaywall(true);
+      }
+    }
+  }, [user, profile]);
+
+  const handleUpgrade = () => {
+    window.location.href = '/upgrade';
+  };
+
+  if (showPaywall) {
+    return (
+      <PaywallModal
+        onClose={() => window.history.back()}
+        onUpgrade={handleUpgrade}
+        title="Resume tools are available on Pro"
+        message="Resume tools are available on Pro. Upgrade to get your ATS score, optimized resume, and templates."
+      />
+    );
+  }
 
   const handleResumeFileSelect = async (e) => {
     const file = e.target.files?.[0];

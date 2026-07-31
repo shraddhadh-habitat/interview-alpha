@@ -408,8 +408,8 @@ export default function ResumeToolsHub({ user, profile }) {
 
       {/* Tab Content */}
       <div style={{ width: '100%', flex: 1, boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
-        {activeTab === 'ats-checker' && <ATSChecker user={user} />}
-        {activeTab === 'resume-optimizer' && <ResumeOptimizer user={user} />}
+        {activeTab === 'ats-checker' && <ATSChecker user={user} profile={profile} />}
+        {activeTab === 'resume-optimizer' && <ResumeOptimizer user={user} profile={profile} />}
         {activeTab === 'templates' && (
           <div style={{ width: '100%', paddingTop: 0, boxSizing: 'border-box', flex: 1, display: 'flex', flexDirection: 'column' }}>
             <ResumeTemplates hideAtsButton={true} />
