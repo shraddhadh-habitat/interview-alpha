@@ -7,10 +7,7 @@ const C = {
   success: '#1A7F37', successLight: 'rgba(27,140,58,0.08)', successBorder: 'rgba(27,140,58,0.2)',
 };
 
-export default function PaywallModal({ onClose, onUpgrade, lastSession = false, title, message }) {
-  const defaultTitle = 'Upgrade to keep practicing';
-  const defaultMessage = 'Upgrade to Pro to continue practicing with Alpha.';
-
+export default function PaywallModal({ onClose, onUpgrade, lastSession = false }) {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 200,
@@ -49,11 +46,11 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false, 
           fontSize: 26, fontWeight: 700, color: C.text,
           marginBottom: 12, lineHeight: 1.2,
         }}>
-          {title || defaultTitle}
+          Upgrade to keep practicing
         </h2>
 
         <p style={{ fontSize: 13, color: C.textSoft, lineHeight: 1.75, marginBottom: 28, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          {message || defaultMessage}
+          Upgrade to Pro to continue practicing with Alpha.
         </p>
 
         {/* Plan card */}
