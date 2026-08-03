@@ -840,115 +840,123 @@ export default function UpgradePage({ user, profile, onBack }) {
                 What changes when you go Pro
               </h2>
 
-              {/* Header row */}
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
-                gap: 8,
-                marginBottom: 8,
-                padding: '0 4px'
+                gap: 16,
+                alignItems: 'start'
               }}>
-                <div style={{
-                  background: '#f5f3ef',
-                  borderRadius: 8,
-                  padding: '6px 12px',
-                  textAlign: 'center'
-                }}>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#9a9a9a', textTransform: 'uppercase', letterSpacing: 3 }}>Free</span>
-                </div>
-                <div style={{
-                  background: 'linear-gradient(135deg, rgba(167,139,250,0.12), rgba(192,132,252,0.12))',
-                  borderRadius: 8,
-                  padding: '6px 12px',
-                  textAlign: 'center',
-                  border: '1px solid rgba(167,139,250,0.2)'
-                }}>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase', letterSpacing: 3 }}>Pro</span>
-                </div>
-              </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {[
-                  {
-                    free: '3 practice sessions total',
-                    pro: 'Unlimited sessions, every day',
-                    icon: '🔁',
-                    impact: 'Practice as much as you need before any interview'
-                  },
-                  {
-                    free: 'Full AI scoring on your 3 sessions',
-                    pro: 'Full AI scoring across 8 competencies — unlimited',
-                    icon: '✨',
-                    impact: 'Know exactly what a senior interviewer would say instead'
-                  },
-                  {
-                    free: 'Full expert rewrite on your 3 sessions',
-                    pro: 'Full expert rewrite on every answer — unlimited',
-                    icon: '📝',
-                    impact: 'See how a senior professional would answer every question'
-                  },
-                  {
-                    free: '1 free ATS resume scan',
-                    pro: 'Unlimited ATS Checker + Resume Optimizer + Templates',
-                    icon: '📄',
-                    impact: 'Get through the screening before the interview even starts'
-                  },
-                  {
-                    free: 'No Exclusive Prep',
-                    pro: 'Exclusive Prep — questions from your JD and resume',
-                    icon: '🎯',
-                    impact: 'Practice questions tailored to the exact role you are targeting'
-                  },
-                  {
-                    free: 'Progress tracking for 3 sessions',
-                    pro: 'Full progress history and improvement tracking',
-                    icon: '📊',
-                    impact: 'Track your scores over time and see how much you have improved'
-                  },
-                ].map(({ free, pro, icon, impact }) => (
-                  <div key={icon} style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: 8,
-                    alignItems: 'stretch'
-                  }}>
-                    <div style={{
-                      background: '#ffffff',
-                      borderRadius: 10,
-                      padding: '14px 16px',
-                      border: '1px solid #e4e1db',
-                      display: 'flex',
-                      gap: 10,
-                      alignItems: 'center'
-                    }}>
-                      <span style={{ fontSize: '0.85rem', flexShrink: 0, filter: 'grayscale(1)', opacity: 0.4 }}>
-                        {icon}
-                      </span>
-                      <p style={{ fontSize: '0.82rem', color: '#555', fontWeight: 500, margin: 0, lineHeight: 1.5 }}>
-                        {free}
-                      </p>
-                    </div>
-                    <div style={{
-                      background: 'linear-gradient(135deg, rgba(168,230,207,0.08), rgba(167,139,250,0.08))',
-                      borderRadius: 10,
-                      padding: '14px 16px',
-                      border: '1px solid rgba(167,139,250,0.2)',
-                      display: 'flex',
-                      gap: 10,
-                      alignItems: 'flex-start'
-                    }}>
-                      <span style={{ fontSize: '0.85rem', flexShrink: 0, marginTop: 2 }}>{icon}</span>
-                      <div>
-                        <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#111', margin: '0 0 3px' }}>
-                          {pro}
-                        </p>
-                        <p style={{ fontSize: '0.72rem', color: '#6b6b6b', margin: 0, lineHeight: 1.5 }}>
-                          {impact}
-                        </p>
+                {/* Free column */}
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(251,191,36,0.08), rgba(253,205,52,0.05))',
+                  border: '1.5px solid rgba(251,191,36,0.25)',
+                  borderRadius: 16,
+                  padding: '28px 24px',
+                  height: '100%'
+                }}>
+                  <p style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    color: '#b45309',
+                    textTransform: 'uppercase',
+                    letterSpacing: 3,
+                    marginBottom: 8
+                  }}>Free</p>
+                  <p style={{
+                    fontSize: '1.4rem',
+                    fontWeight: 800,
+                    color: '#111',
+                    marginBottom: 4
+                  }}>Get started</p>
+                  <p style={{
+                    fontSize: '0.82rem',
+                    color: '#6b6b6b',
+                    marginBottom: 24,
+                    lineHeight: 1.5
+                  }}>3 full sessions to experience the platform</p>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {[
+                      '3 practice sessions',
+                      'Full AI scoring across 8 competencies',
+                      'Full expert rewrite on every answer',
+                      'Voice and text answer modes',
+                      '1 ATS resume scan',
+                      'Progress tracking for 3 sessions',
+                    ].map(item => (
+                      <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                        <span style={{ color: '#b45309', fontWeight: 700, fontSize: '0.85rem', flexShrink: 0, marginTop: 1 }}>✓</span>
+                        <p style={{ fontSize: '0.85rem', color: '#444', margin: 0, lineHeight: 1.5 }}>{item}</p>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                {/* Pro column */}
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(167,139,250,0.1), rgba(192,132,252,0.08))',
+                  border: '1.5px solid rgba(167,139,250,0.35)',
+                  borderRadius: 16,
+                  padding: '28px 24px',
+                  height: '100%',
+                  position: 'relative'
+                }}>
+                  <div style={{
+                    position: 'absolute',
+                    top: -12,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
+                    color: '#fff',
+                    borderRadius: 999,
+                    padding: '3px 16px',
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    whiteSpace: 'nowrap',
+                    letterSpacing: 1
+                  }}>
+                    RECOMMENDED
+                  </div>
+
+                  <p style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    color: '#7c3aed',
+                    textTransform: 'uppercase',
+                    letterSpacing: 3,
+                    marginBottom: 8
+                  }}>Pro</p>
+                  <p style={{
+                    fontSize: '1.4rem',
+                    fontWeight: 800,
+                    color: '#111',
+                    marginBottom: 4
+                  }}>Everything, unlimited</p>
+                  <p style={{
+                    fontSize: '0.82rem',
+                    color: '#6b6b6b',
+                    marginBottom: 24,
+                    lineHeight: 1.5
+                  }}>Everything in Free, plus:</p>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {[
+                      'Unlimited practice sessions every day',
+                      'Full AI scoring — unlimited',
+                      'Full expert rewrite — unlimited',
+                      'Exclusive Prep: questions from your JD and resume',
+                      'Unlimited ATS Checker + Resume Optimizer + Templates',
+                      'Full progress history and improvement tracking',
+                    ].map(item => (
+                      <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                        <span style={{ color: '#7c3aed', fontWeight: 700, fontSize: '0.85rem', flexShrink: 0, marginTop: 1 }}>✓</span>
+                        <p style={{ fontSize: '0.85rem', color: '#444', margin: 0, lineHeight: 1.5 }}>{item}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
