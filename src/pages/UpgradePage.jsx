@@ -476,7 +476,7 @@ export default function UpgradePage({ user, profile, onBack }) {
             maxWidth: 520,
             margin: '0 auto 24px'
           }}>
-            Free users get 3 sessions. Pro users get unlimited practice, all tracks, all companies, and feedback that actually tells you what to fix.
+            Free users get 3 full sessions with complete AI scoring and expert rewrite. Pro users get unlimited everything plus Exclusive Prep.
           </p>
 
           {/* Social proof line */}
@@ -849,34 +849,34 @@ export default function UpgradePage({ user, profile, onBack }) {
                     impact: 'Practice as much as you need before any interview'
                   },
                   {
-                    free: 'PM questions only on free tier',
-                    pro: 'PM + Data Science + all future tracks',
-                    icon: '🎯',
-                    impact: 'One platform for your entire interview prep'
-                  },
-                  {
-                    free: 'General questions',
-                    pro: 'Company-specific: Google, Amazon, Flipkart, Meta, Razorpay',
-                    icon: '🏢',
-                    impact: 'Practice the exact questions asked at your target company'
-                  },
-                  {
-                    free: 'Basic feedback',
-                    pro: 'Full 8-competency score + expert rewrite on every answer',
+                    free: 'Full AI scoring on your 3 sessions',
+                    pro: 'Full AI scoring across 8 competencies — unlimited',
                     icon: '✨',
                     impact: 'Know exactly what a senior interviewer would say instead'
                   },
                   {
-                    free: 'No resume tools',
-                    pro: 'ATS Checker + Resume Optimizer + Templates',
+                    free: 'Full expert rewrite on your 3 sessions',
+                    pro: 'Full expert rewrite on every answer — unlimited',
+                    icon: '📝',
+                    impact: 'See how a senior professional would answer every question'
+                  },
+                  {
+                    free: '1 free ATS resume scan',
+                    pro: 'Unlimited ATS Checker + Resume Optimizer + Templates',
                     icon: '📄',
                     impact: 'Get through the screening before the interview even starts'
                   },
                   {
-                    free: 'No salary data',
-                    pro: 'Full Salary Guide with negotiation scripts',
-                    icon: '💰',
-                    impact: 'Know your worth and how to ask for it'
+                    free: 'No Exclusive Prep',
+                    pro: 'Exclusive Prep — questions from your JD and resume',
+                    icon: '🎯',
+                    impact: 'Practice questions tailored to the exact role you are targeting'
+                  },
+                  {
+                    free: 'Progress tracking for 3 sessions',
+                    pro: 'Full progress history and improvement tracking',
+                    icon: '📊',
+                    impact: 'Track your scores over time and see how much you have improved'
                   },
                 ].map(({ free, pro, icon, impact }) => (
                   <div key={icon} style={{
