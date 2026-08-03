@@ -840,17 +840,34 @@ export default function UpgradePage({ user, profile, onBack }) {
                 What changes when you go Pro
               </h2>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {/* Header row */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: 8,
+                marginBottom: 8,
+                padding: '0 4px'
+              }}>
                 <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: 16,
-                  padding: '0 20px',
-                  marginBottom: 4
+                  background: '#f5f3ef',
+                  borderRadius: 8,
+                  padding: '6px 12px',
+                  textAlign: 'center'
                 }}>
-                  <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#9a9a9a', textTransform: 'uppercase', letterSpacing: 2, margin: 0 }}>Free</p>
-                  <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase', letterSpacing: 2, margin: 0 }}>Pro</p>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#9a9a9a', textTransform: 'uppercase', letterSpacing: 3 }}>Free</span>
                 </div>
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(167,139,250,0.12), rgba(192,132,252,0.12))',
+                  borderRadius: 8,
+                  padding: '6px 12px',
+                  textAlign: 'center',
+                  border: '1px solid rgba(167,139,250,0.2)'
+                }}>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase', letterSpacing: 3 }}>Pro</span>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {[
                   {
                     free: '3 practice sessions total',
@@ -890,37 +907,42 @@ export default function UpgradePage({ user, profile, onBack }) {
                   },
                 ].map(({ free, pro, icon, impact }) => (
                   <div key={icon} style={{
-                    background: '#ffffff',
-                    borderRadius: 12,
-                    padding: '16px 20px',
-                    border: '1px solid #e4e1db',
                     display: 'grid',
                     gridTemplateColumns: '1fr 1fr',
-                    gap: 16,
-                    alignItems: 'center'
+                    gap: 8,
+                    alignItems: 'stretch'
                   }}>
-                    <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                      <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: 1, filter: 'grayscale(1)', opacity: 0.5 }}>
+                    <div style={{
+                      background: '#ffffff',
+                      borderRadius: 10,
+                      padding: '14px 16px',
+                      border: '1px solid #e4e1db',
+                      display: 'flex',
+                      gap: 10,
+                      alignItems: 'center'
+                    }}>
+                      <span style={{ fontSize: '0.85rem', flexShrink: 0, filter: 'grayscale(1)', opacity: 0.4 }}>
                         {icon}
                       </span>
-                      <p style={{ fontSize: '0.82rem', color: '#111', fontWeight: 500, margin: 0, lineHeight: 1.5 }}>
+                      <p style={{ fontSize: '0.82rem', color: '#555', fontWeight: 500, margin: 0, lineHeight: 1.5 }}>
                         {free}
                       </p>
                     </div>
                     <div style={{
+                      background: 'linear-gradient(135deg, rgba(168,230,207,0.08), rgba(167,139,250,0.08))',
+                      borderRadius: 10,
+                      padding: '14px 16px',
+                      border: '1px solid rgba(167,139,250,0.2)',
                       display: 'flex',
                       gap: 10,
-                      alignItems: 'flex-start',
-                      background: 'linear-gradient(135deg, rgba(168,230,207,0.08), rgba(167,139,250,0.08))',
-                      borderRadius: 8,
-                      padding: 10
+                      alignItems: 'flex-start'
                     }}>
-                      <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: 1 }}>{icon}</span>
+                      <span style={{ fontSize: '0.85rem', flexShrink: 0, marginTop: 2 }}>{icon}</span>
                       <div>
                         <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#111', margin: '0 0 3px' }}>
                           {pro}
                         </p>
-                        <p style={{ fontSize: '0.75rem', color: '#6b6b6b', margin: 0 }}>
+                        <p style={{ fontSize: '0.72rem', color: '#6b6b6b', margin: 0, lineHeight: 1.5 }}>
                           {impact}
                         </p>
                       </div>
