@@ -114,12 +114,7 @@ const detectCurrency = () => {
   return 'USD';
 };
 
-const DISCOUNT_CODES = {
-  'ALPHA2026':  { percent: 10, description: '10% Early Adopter Discount',  active: true, maxUses: 100, currentUses: 0 },
-  'PMREADY10':  { percent: 10, description: '10% Launch Discount',         active: true, maxUses: 50,  currentUses: 0 },
-  'FOUNDER20':  { percent: 20, description: '20% Founder Discount',          active: true, maxUses: 20,  currentUses: 0 },
-  'WEEKEND299': { discount_amount_inr: 500, description: 'Weekend Special - Save ₹500', valid_until: '2026-06-22T23:59:59', max_uses: 50, current_uses: 0, applies_to: 'monthly' },
-};
+const DISCOUNT_CODES = {};
 
 const FREE_FEATURES  = ['Free to start', 'Browse thousands of questions', 'Read expert answers', 'Salary Guide'];
 const PRO_FEATURES   = ['Unlimited AI interview sessions', 'Unlimited practice with AI scoring', 'Unlimited ATS Resume Checker', 'Unlimited Resume Optimizer', 'Resume Templates access', 'Scorecard & progress tracking', 'Company-specific interview prep', 'Priority support'];
