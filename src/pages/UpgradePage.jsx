@@ -841,6 +841,16 @@ export default function UpgradePage({ user, profile, onBack }) {
               </h2>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: 16,
+                  padding: '0 20px',
+                  marginBottom: 4
+                }}>
+                  <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#9a9a9a', textTransform: 'uppercase', letterSpacing: 2, margin: 0 }}>Free</p>
+                  <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase', letterSpacing: 2, margin: 0 }}>Pro</p>
+                </div>
                 {[
                   {
                     free: '3 practice sessions total',
@@ -893,7 +903,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                       <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: 1, filter: 'grayscale(1)', opacity: 0.5 }}>
                         {icon}
                       </span>
-                      <p style={{ fontSize: '0.82rem', color: '#9a9a9a', margin: 0, lineHeight: 1.5 }}>
+                      <p style={{ fontSize: '0.82rem', color: '#111', fontWeight: 500, margin: 0, lineHeight: 1.5 }}>
                         {free}
                       </p>
                     </div>
