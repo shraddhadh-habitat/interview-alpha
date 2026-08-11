@@ -7,6 +7,8 @@ import { scrumMasterQuestions, SCRUMMASTER_LEVELS } from '../data/scrumMasterQue
 import { scrumMasterQuestions_batch2 } from '../data/scrumMasterQuestions_batch2';
 import { scrumMasterQuestions_batch3 } from '../data/scrumMasterQuestions_batch3';
 import { scrumMasterQuestions_batch4 } from '../data/scrumMasterQuestions_batch4';
+import { scrumMasterQuestions_batch5a } from '../data/scrumMasterQuestions_batch5a';
+import { scrumMasterQuestions_batch5b } from '../data/scrumMasterQuestions_batch5b';
 import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
 import { useAuth } from '../contexts/AuthContext';
@@ -1094,6 +1096,8 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
         ...(scrumMasterQuestions_batch2[level]?.behavioral || []),
         ...(scrumMasterQuestions_batch3[level]?.behavioral || []),
         ...(scrumMasterQuestions_batch4[level]?.behavioral || []),
+        ...(scrumMasterQuestions_batch5a[level]?.behavioral || []),
+        ...(scrumMasterQuestions_batch5b[level]?.behavioral || []),
       ]
     } : pmQuestions[level];
     if (!bank) continue;
@@ -1688,6 +1692,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           ...(scrumMasterQuestions_batch2[level]?.behavioral || []),
           ...(scrumMasterQuestions_batch3[level]?.behavioral || []),
           ...(scrumMasterQuestions_batch4[level]?.behavioral || []),
+          ...(scrumMasterQuestions_batch5a[level]?.behavioral || []),
+          ...(scrumMasterQuestions_batch5b[level]?.behavioral || []),
         ]
       } : pmQuestions[level];
       if (!bank) continue;
