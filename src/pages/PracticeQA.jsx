@@ -3,6 +3,7 @@ import { pmQuestions, PM_LEVELS, DS_LEVELS } from '../data/pmQuestions';
 import { consultingQuestions, CONSULTING_LEVELS } from '../data/consultingQuestions';
 import { projectManagementQuestions, PROJECTMANAGEMENT_LEVELS } from '../data/projectManagementQuestions';
 import { technicalWritingQuestions, TECHNICALWRITING_LEVELS } from '../data/technicalWritingQuestions';
+import { scrumMasterQuestions, SCRUMMASTER_LEVELS } from '../data/scrumMasterQuestions';
 import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
 import { useAuth } from '../contexts/AuthContext';
@@ -325,6 +326,18 @@ const ROLES = {
       { id: 'head_tw', label: 'Head of TW', levels: ['Head of Technical Writing'] },
     ],
     titleSuffix: 'Technical Writing Interview Questions',
+    comingSoon: false,
+  },
+  scrummaster: {
+    id: 'scrummaster',
+    label: 'Scrum Master',
+    levels: SCRUMMASTER_LEVELS,
+    expLevelChips: [
+      { id: 'sm', label: 'Scrum Master', levels: ['Scrum Master'] },
+      { id: 'ssm', label: 'Senior Scrum Master', levels: ['Senior Scrum Master'] },
+      { id: 'ac', label: 'Agile Coach', levels: ['Agile Coach'] },
+    ],
+    titleSuffix: 'Scrum Master Interview Questions',
     comingSoon: false,
   },
   finance: {
@@ -1031,6 +1044,8 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
     dataCats = ['behavioral', 'case_study', 'situational', 'leadership', 'technical'];
   } else if (selectedRole === 'technicalwriting') {
     dataCats = ['ux_writing', 'technical_docs', 'ai_content', 'content_strategy'];
+  } else if (selectedRole === 'scrummaster') {
+    dataCats = ['behavioral'];
   } else {
     dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
   }
@@ -1070,7 +1085,7 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
 
   let count = 0;
   for (const level of levelsToShow) {
-    const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : pmQuestions[level];
+    const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? scrumMasterQuestions[level] : pmQuestions[level];
     if (!bank) continue;
     for (const cat of dataCats) {
       const questions = bank[cat] || [];
@@ -1657,7 +1672,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const searchLower = search.toLowerCase();
 
     for (const level of levelsToShow) {
-      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : pmQuestions[level];
+      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? scrumMasterQuestions[level] : pmQuestions[level];
       if (!bank) continue;
       for (const cat of dataCats) {
         const questions = bank[cat] || [];
@@ -1968,6 +1983,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             <option value="consulting">{ROLES.consulting.label}</option>
             <option value="projectmanagement">{ROLES.projectmanagement.label}</option>
             <option value="technicalwriting">{ROLES.technicalwriting.label}</option>
+            <option value="scrummaster">{ROLES.scrummaster.label}</option>
           </select>
         </div>
 
