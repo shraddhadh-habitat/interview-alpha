@@ -6,6 +6,7 @@ import { technicalWritingQuestions, TECHNICALWRITING_LEVELS } from '../data/tech
 import { scrumMasterQuestions, SCRUMMASTER_LEVELS } from '../data/scrumMasterQuestions';
 import { scrumMasterQuestions_batch2 } from '../data/scrumMasterQuestions_batch2';
 import { scrumMasterQuestions_batch3 } from '../data/scrumMasterQuestions_batch3';
+import { scrumMasterQuestions_batch4 } from '../data/scrumMasterQuestions_batch4';
 import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
 import { useAuth } from '../contexts/AuthContext';
@@ -1092,6 +1093,7 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
         ...(scrumMasterQuestions[level]?.behavioral || []),
         ...(scrumMasterQuestions_batch2[level]?.behavioral || []),
         ...(scrumMasterQuestions_batch3[level]?.behavioral || []),
+        ...(scrumMasterQuestions_batch4[level]?.behavioral || []),
       ]
     } : pmQuestions[level];
     if (!bank) continue;
@@ -1685,6 +1687,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           ...(scrumMasterQuestions[level]?.behavioral || []),
           ...(scrumMasterQuestions_batch2[level]?.behavioral || []),
           ...(scrumMasterQuestions_batch3[level]?.behavioral || []),
+          ...(scrumMasterQuestions_batch4[level]?.behavioral || []),
         ]
       } : pmQuestions[level];
       if (!bank) continue;
