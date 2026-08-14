@@ -994,47 +994,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
     </div>
   );
 
-  // Coming soon section
-  const ComingSoonSection = () => (
-    <div style={{ background: C.bg, paddingTop: '40px' }}>
-      <style>{`
-        @media (max-width: 768px) {
-          .coming-container { padding: 0 20px !important; }
-        }
-      `}</style>
-      <div className="coming-container" style={{
-        maxWidth: '1080px',
-        width: '100%',
-        margin: '0 auto',
-        padding: '0 40px',
-        textAlign: 'center',
-      }}>
-        {/* Section label */}
-        <div style={{
-          fontSize: '14px',
-          letterSpacing: '2px',
-          textTransform: 'uppercase',
-          color: '#1B1B18',
-          fontWeight: 900,
-          marginBottom: '16px',
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-        }}>
-          Coming soon
-        </div>
-
-        <p style={{
-          fontSize: '16px',
-          color: C.textSoft,
-          lineHeight: 1.6,
-          margin: 0,
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          fontWeight: 700,
-        }}>
-          Software Engineering · Product Design · Analytics
-        </p>
-      </div>
-    </div>
-  );
+  // Coming soon section removed
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
@@ -1043,7 +1003,6 @@ export default function LandingPage({ user, onNavigate, profile }) {
       <GuidedPathsSection />
       <ProductProofSection />
       <TrustSection />
-      <ComingSoonSection />
     </div>
   );
 }
