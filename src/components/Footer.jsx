@@ -81,7 +81,7 @@ export default function Footer() {
   const { requireAuth } = useAuth();
 
   return (
-    <footer style={{ background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.link, borderTop: 'none' }}>
+    <footer style={{ background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.link, borderTop: `4px solid ${C.bg}`, marginTop: '-1px' }}>
       <style>{`
         @media (max-width: 768px) {
           .footer-grid { grid-template-columns: 1fr !important; gap: 48px !important; text-align: center !important; }
@@ -233,7 +233,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ borderTop: `1px solid ${C.border}` }}>
+      <div style={{ borderTop: 'none' }}>
         <div className="footer-bottom" style={{ maxWidth: 1120, margin: '0 auto', padding: '24px 40px', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <p style={{ fontSize: 12, color: C.muted, margin: 0 }}>
             © 2026 InterviewAlpha.ai™. All rights reserved.
@@ -245,7 +245,7 @@ export default function Footer() {
         <div style={{
           textAlign: 'center',
           padding: '16px 24px',
-          borderTop: '1px solid rgba(27,27,24,0.08)',
+          borderTop: 'none',
           fontSize: 11,
           color: 'rgba(27,27,24,0.4)',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
