@@ -120,6 +120,16 @@ export default function LandingPage({ user, onNavigate, profile }) {
             }}>
               Consulting
             </span>
+            {', '}
+            <span style={{
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              fontWeight: 700
+            }}>
+              Technical Writing
+            </span>
             {', and '}
             <span style={{
               background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
@@ -128,7 +138,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
               backgroundClip: 'text',
               fontWeight: 700
             }}>
-              Technical Writing roles
+              Scrum Master roles
             </span>
           </p>
 
@@ -232,16 +242,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
             <a onClick={() => onNavigate('practice')} style={{ color: '#6b6b6b', textDecoration: 'underline', fontWeight: 500, cursor: 'pointer' }}>
               Or browse questions free.
             </a>
-            {' '}Thousands of{' '}
-            <strong style={{
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}>
-              Product Managers, Project Managers, Data Science, Consulting, and Technical Writing
-            </strong>
-            {' '}questions and answers to practice from.
+            {' '}1,500+ questions across all roles and domains.
           </p>
 
           {/* Community proof */}
@@ -251,7 +252,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
             marginTop: '8px',
             fontWeight: 500
           }}>
-            Thousands of Product Managers, Project Managers, Data Science, Consulting, and Technical Writing aspirants practicing right now. Your interview could be next week.
+            Thousands of professionals practicing right now. Your interview could be next week.
           </p>
         </div>
 
