@@ -81,7 +81,7 @@ export default function Footer() {
   const { requireAuth } = useAuth();
 
   return (
-    <footer style={{ background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.link }}>
+    <footer style={{ background: C.bg, fontFamily: "'Plus Jakarta Sans', sans-serif", color: C.link, borderTop: 'none' }}>
       <style>{`
         @media (max-width: 768px) {
           .footer-grid { grid-template-columns: 1fr !important; gap: 48px !important; text-align: center !important; }
