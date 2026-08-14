@@ -2187,7 +2187,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                     fontFamily: "'Plus Jakarta Sans', sans-serif",
                   }}
                 >
-                  Load More ({filtered.length - visibleCount} remaining)
+                  Load More
                 </button>
               </div>
             )}
