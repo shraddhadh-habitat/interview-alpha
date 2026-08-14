@@ -80,66 +80,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
             fontWeight: 700,
             marginBottom: '16px'
           }}>
-            AI interview coaching for{' '}
-            <span style={{
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              fontWeight: 700
-            }}>
-              Product Management
-            </span>
-            {', '}
-            <span style={{
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              fontWeight: 700
-            }}>
-              Project Management
-            </span>
-            {', '}
-            <span style={{
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              fontWeight: 700
-            }}>
-              Data Science
-            </span>
-            {', '}
-            <span style={{
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              fontWeight: 700
-            }}>
-              Consulting
-            </span>
-            {', '}
-            <span style={{
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              fontWeight: 700
-            }}>
-              Technical Writing
-            </span>
-            {', and '}
-            <span style={{
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              fontWeight: 700
-            }}>
-              Scrum Master roles
-            </span>
+            AI interview coaching for Product Management, Project Management, Data Science, Consulting, Technical Writing, and Scrum Master roles
           </p>
 
           {/* Headline */}
