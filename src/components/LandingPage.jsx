@@ -314,7 +314,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 wordWrap: 'break-word',
               }}>
-                Thousands of real questions across Product Management and Data Science by company, role, or topic.
+                Thousands of real questions across all roles and domains by company, level, or topic.
               </p>
             </div>
           </div>

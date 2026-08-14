@@ -135,6 +135,34 @@ For the 15 payment methods, I'd use a decision tree format: "Need to accept loca
     }
   },
   // ============================================================
+  {
+    id: 'scrum_master',
+    label: 'Scrum Master',
+    emoji: '🔄',
+    color: '#8b5cf6',
+    example: {
+      category: 'SCRUM MASTER',
+      question: "You are a Scrum Master at a fintech company. Your sprint velocity has dropped 30% over the last three sprints and the engineering manager wants you to pressure the team to commit to more. How do you respond?",
+      sampleAnswer: "I would not pressure the team to commit to more. Velocity is a measurement tool, not a target. First I'd investigate why velocity dropped. Was it production incidents, unplanned work, team members on leave, or stories that were harder than estimated? I'd present this data to the manager and explain that committing to more story points without fixing the root cause will only lead to more sprint failures and lower team morale. I'd propose addressing the root cause instead.",
+      overallScore: 7,
+      competencies: [
+        { label: 'Servant Leadership',    score: 8 },
+        { label: 'Data Driven Thinking',  score: 8 },
+        { label: 'Stakeholder Management', score: 7 },
+        { label: 'Team Protection',       score: 8 },
+        { label: 'Communication',         score: 7 },
+        { label: 'Root Cause Analysis',   score: 8 },
+        { label: 'Agile Principles',      score: 8 },
+        { label: 'Conflict Resolution',   score: 6 },
+      ],
+      expertRewrite: `My first response to the manager is empathetic but clear: I understand the pressure you are feeling and I want to help the team deliver more. Pressuring the team to commit to more story points is not the path to that outcome.
+
+Velocity is a measurement of actual throughput, not a commitment target. When teams are pressured to inflate commitments, two things happen: they either burn out trying to meet them, or they game the estimates to make the numbers look better. Both outcomes reduce actual delivery.
+
+I would present three sprints of data showing what consumed the team's capacity: production incidents absorbed four days in sprint one, two team members were on leave in sprint two, and sprint three had three stories that required rework because of unclear acceptance criteria. Each of these is addressable. I would propose three specific actions: establish an on-call rotation to contain incident impact, build leave into capacity planning, and improve our definition of ready to prevent rework. If we address these, velocity will recover. If we simply pressure for higher commitments, it will not.`,
+    }
+  },
+  // ============================================================
   // ADD NEW TRACKS HERE IN FUTURE: example:
   // {
   //   id: 'swe',
