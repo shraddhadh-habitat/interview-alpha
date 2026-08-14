@@ -78,7 +78,6 @@ export default function ActivityTickerPortal() {
       opacity: visible ? 1 : 0,
       transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.95)',
       transition: 'opacity 0.5s ease, transform 0.5s ease',
-      position: 'relative',
       display: 'flex',
       alignItems: 'flex-start',
       gap: '10px',
