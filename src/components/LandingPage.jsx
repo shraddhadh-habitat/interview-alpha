@@ -557,7 +557,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
 
   // Guided paths section
   const GuidedPathsSection = () => (
-    <div style={{ background: C.bg, paddingTop: '0' }}>
+    <div style={{ background: C.bg, paddingTop: '48px', paddingBottom: '48px' }}>
       <style>{`
         @media (max-width: 768px) {
           .paths-container { padding: 0 20px !important; }
@@ -565,45 +565,59 @@ export default function LandingPage({ user, onNavigate, profile }) {
         }
       `}</style>
       <div className="paths-container" style={{
-        maxWidth: '1080px',
+        maxWidth: '860px',
         width: '100%',
         margin: '0 auto',
         padding: '0 40px',
       }}>
         {/* Section heading */}
         <h2 style={{
-          fontSize: '18px',
-          fontWeight: 900,
+          fontSize: '26px',
+          fontWeight: 400,
           color: '#1B1B18',
           textAlign: 'center',
-          marginBottom: '48px',
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          textShadow: '0 0 0 #1B1B18',
+          marginBottom: '8px',
+          fontFamily: "'Instrument Serif', serif",
         }}>
           Where do you want to start?
         </h2>
+        <p style={{
+          fontSize: '14px',
+          color: '#6b6b6b',
+          textAlign: 'center',
+          marginBottom: '36px',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
+          Every path leads to the same place — real practice with real feedback.
+        </p>
 
-        {/* 2x2 grid */}
+        {/* 2x2 grid — no buttons */}
         <div className="paths-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',
           gap: '16px',
+          marginBottom: '32px',
         }}>
           {/* Card 1 */}
           <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
+            background: '#ffffff',
+            border: '1.5px solid #e4e1db',
             borderRadius: '16px',
-            padding: '20px',
-            transition: 'border-color 0.2s',
-            cursor: 'pointer',
+            padding: '28px 24px',
+            transition: 'border-color 0.2s, box-shadow 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-          onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = '#a78bfa';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(167, 139, 250, 0.12)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = '#e4e1db';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
           >
             <h3 style={{
               fontSize: '15px',
-              fontWeight: 600,
+              fontWeight: 700,
               color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -613,48 +627,35 @@ export default function LandingPage({ user, onNavigate, profile }) {
             </h3>
             <p style={{
               fontSize: '13px',
-              color: '#1B1B18',
-              marginBottom: '16px',
-              lineHeight: 1.5,
+              color: '#6b6b6b',
+              lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
+              margin: 0,
             }}>
-              Practice company-specific questions
+              Practice company-specific questions for your target role
             </p>
-            <button onClick={() => onNavigate('practice')} style={{
-              fontSize: '13px',
-              border: 'none',
-              borderRadius: '50px',
-              padding: '8px 16px',
-              color: '#FFFFFF',
-              background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
-              cursor: 'pointer',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 700,
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
-            >
-              Start prepping
-            </button>
           </div>
 
           {/* Card 2 */}
           <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
+            background: '#ffffff',
+            border: '1.5px solid #e4e1db',
             borderRadius: '16px',
-            padding: '20px',
-            transition: 'border-color 0.2s',
-            cursor: 'pointer',
+            padding: '28px 24px',
+            transition: 'border-color 0.2s, box-shadow 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-          onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = '#a78bfa';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(167, 139, 250, 0.12)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = '#e4e1db';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
           >
             <h3 style={{
               fontSize: '15px',
-              fontWeight: 600,
+              fontWeight: 700,
               color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -664,48 +665,35 @@ export default function LandingPage({ user, onNavigate, profile }) {
             </h3>
             <p style={{
               fontSize: '13px',
-              color: '#1B1B18',
-              marginBottom: '16px',
-              lineHeight: 1.5,
+              color: '#6b6b6b',
+              lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
+              margin: 0,
             }}>
-              Answer one question and see how you score
+              Answer one question and see exactly how you score
             </p>
-            <button onClick={() => onNavigate('practice')} style={{
-              fontSize: '13px',
-              border: 'none',
-              borderRadius: '50px',
-              padding: '8px 16px',
-              color: '#FFFFFF',
-              background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
-              cursor: 'pointer',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 700,
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
-            >
-              Try a question
-            </button>
           </div>
 
           {/* Card 3 */}
           <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
+            background: '#ffffff',
+            border: '1.5px solid #e4e1db',
             borderRadius: '16px',
-            padding: '20px',
-            transition: 'border-color 0.2s',
-            cursor: 'pointer',
+            padding: '28px 24px',
+            transition: 'border-color 0.2s, box-shadow 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-          onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = '#a78bfa';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(167, 139, 250, 0.12)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = '#e4e1db';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
           >
             <h3 style={{
               fontSize: '15px',
-              fontWeight: 600,
+              fontWeight: 700,
               color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -715,48 +703,35 @@ export default function LandingPage({ user, onNavigate, profile }) {
             </h3>
             <p style={{
               fontSize: '13px',
-              color: '#1B1B18',
-              marginBottom: '16px',
-              lineHeight: 1.5,
+              color: '#6b6b6b',
+              lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
+              margin: 0,
             }}>
-              Start with fundamentals for any role
+              Start with fundamentals across any role or domain
             </p>
-            <button onClick={() => onNavigate('practice')} style={{
-              fontSize: '13px',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '8px 16px',
-              color: '#FFFFFF',
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              cursor: 'pointer',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 700,
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
-            >
-              Start with basics
-            </button>
           </div>
 
           {/* Card 4 */}
           <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8E6E1',
+            background: '#ffffff',
+            border: '1.5px solid #e4e1db',
             borderRadius: '16px',
-            padding: '20px',
-            transition: 'border-color 0.2s',
-            cursor: 'pointer',
+            padding: '28px 24px',
+            transition: 'border-color 0.2s, box-shadow 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = C.text}
-          onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = '#a78bfa';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(167, 139, 250, 0.12)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = '#e4e1db';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
           >
             <h3 style={{
               fontSize: '15px',
-              fontWeight: 600,
+              fontWeight: 700,
               color: '#1B1B18',
               marginBottom: '8px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -766,32 +741,46 @@ export default function LandingPage({ user, onNavigate, profile }) {
             </h3>
             <p style={{
               fontSize: '13px',
-              color: '#1B1B18',
-              marginBottom: '16px',
-              lineHeight: 1.5,
+              color: '#6b6b6b',
+              lineHeight: 1.6,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              margin: '0 0 16px 0',
+              margin: 0,
             }}>
-              Thousands of questions with expert answers
+              Thousands of questions with expert answers across all tracks
             </p>
-            <button onClick={() => onNavigate('practice')} style={{
-              fontSize: '13px',
-              border: 'none',
-              borderRadius: '50px',
-              padding: '8px 16px',
-              color: '#FFFFFF',
-              background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
-              cursor: 'pointer',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 700,
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
-            >
-              Browse questions
-            </button>
           </div>
+        </div>
+
+        {/* Single CTA */}
+        <div style={{ textAlign: 'center' }}>
+          <button
+            onClick={() => onNavigate('practice')}
+            style={{
+              display: 'inline-block',
+              padding: '16px 48px',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '999px',
+              fontSize: '16px',
+              fontWeight: 700,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              cursor: 'pointer',
+              transition: 'opacity 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+          >
+            Start Practicing Free
+          </button>
+          <p style={{
+            fontSize: '12px',
+            color: '#9a9a9a',
+            marginTop: '12px',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            No resume. No setup. Free. Takes 2 minutes.
+          </p>
         </div>
       </div>
     </div>
