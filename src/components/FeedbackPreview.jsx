@@ -384,7 +384,7 @@ export default function FeedbackPreview({ onNavigate }) {
                     fontFamily: 'inherit'
                   }}
                 >
-                  🎙️ Answer by Voice
+                  Answer by Voice
                 </button>
                 <button
                   onClick={handleFeaturedQuestionClick}
@@ -401,7 +401,7 @@ export default function FeedbackPreview({ onNavigate }) {
                     fontFamily: 'inherit'
                   }}
                 >
-                  ✍️ Type Answer
+                  Type Answer
                 </button>
               </div>
 
@@ -471,7 +471,7 @@ export default function FeedbackPreview({ onNavigate }) {
                 fontFamily: 'inherit'
               }}
             >
-              Find out my score →
+              Find out my score
             </button>
           </div>
         </div>
@@ -495,7 +495,7 @@ export default function FeedbackPreview({ onNavigate }) {
             letterSpacing: '0.08em',
             margin: '0 0 8px'
           }}>
-            ✨ Expert Rewrite
+            Expert Rewrite
           </p>
           <p style={{
             color: '#111',
@@ -527,7 +527,7 @@ export default function FeedbackPreview({ onNavigate }) {
               fontFamily: 'inherit'
             }}
           >
-            Answer to unlock expert rewrite →
+            Answer to unlock expert rewrite
           </button>
         </div>
 
