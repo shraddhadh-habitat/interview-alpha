@@ -1616,10 +1616,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   // ── Filtering ──────────────────────────────────────────────────────────────
 
-  useEffect(() => {
-    setVisibleCount(10);
-  }, [search, selectedRole, filterState]);
-
   const filtered = useMemo(() => {
     const role = ROLES[selectedRole] || ROLES.pm;
 
