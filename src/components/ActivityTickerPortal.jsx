@@ -41,6 +41,7 @@ export default function ActivityTickerPortal() {
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -56,6 +57,7 @@ export default function ActivityTickerPortal() {
   }, []);
 
   if (!mounted) return null;
+  if (dismissed) return null;
 
   const el = document.getElementById('activity-ticker-root');
   if (!el) return null;
@@ -76,11 +78,30 @@ export default function ActivityTickerPortal() {
       opacity: visible ? 1 : 0,
       transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.95)',
       transition: 'opacity 0.5s ease, transform 0.5s ease',
+      position: 'relative',
       display: 'flex',
       alignItems: 'flex-start',
       gap: '10px',
-      pointerEvents: 'none'
+      pointerEvents: 'auto'
     }}>
+      {/* Close button */}
+      <button
+        onClick={() => setDismissed(true)}
+        style={{
+          position: 'absolute',
+          top: '6px',
+          right: '8px',
+          background: 'none',
+          border: 'none',
+          color: 'rgba(255,255,255,0.8)',
+          cursor: 'pointer',
+          fontSize: '14px',
+          lineHeight: 1,
+          padding: '2px 4px',
+        }}
+      >
+        ×
+      </button>
       {/* Pulsing dot */}
       <span style={{
         width: '10px',
