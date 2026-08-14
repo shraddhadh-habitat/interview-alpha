@@ -106,7 +106,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontWeight: 500,
           }}>
-            Most candidates think they are. Most candidates are wrong.
+            You can memorize answers, not thinking.
           </p>
 
           <p className="hero-subheadline" style={{
@@ -118,7 +118,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontWeight: 500,
           }}>
-            They studied the answers. Interviews test how you think under pressure, not what you memorized.
+            PM interviews test how you think under pressure; not how well you prepared a script.
           </p>
 
           <p className="hero-subheadline" style={{
@@ -130,7 +130,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontWeight: 500,
           }}>
-            Answer one real question right now. Free. No signup.
+            Put your thinking to the test. Answer one real PM interview question.
           </p>
 
           {/* Free Session Countdown */}
