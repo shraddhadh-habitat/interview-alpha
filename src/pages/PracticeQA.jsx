@@ -1363,6 +1363,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [filterDifficulty, setFilterDifficulty] = useState(null);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
+  const [visibleCount, setVisibleCount] = useState(10);
   const [showTrackSelector, setShowTrackSelector] = useState(false);
   const [practiceQuestion, setPracticeQuestion] = useState(() => {
     console.log('[PracticeQA] initializer running - localStorage has ia_sample_question:', !!localStorage.getItem('ia_sample_question'));
@@ -1614,6 +1615,10 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   };
 
   // ── Filtering ──────────────────────────────────────────────────────────────
+
+  useEffect(() => {
+    setVisibleCount(10);
+  }, [search, selectedRole, filterState]);
 
   const filtered = useMemo(() => {
     const role = ROLES[selectedRole] || ROLES.pm;
@@ -2146,29 +2151,51 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             </button>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {filtered.map((item, displayIndex) => (
-              <QuestionCard
-                key={item.key}
-                question={item.question}
-                questionId={item.key}
-                index={displayIndex}
-                isOpen={expandedKeys.has(item.key)}
-                onToggle={() => toggleCard(item.key)}
-                onPractice={() => setPracticeQuestion({
-                  question: item.question,
-                  questionId: item.key,
-                  designation: item.level,
-                  category: item.dataCategory,
-                  subcategory: item?.question?.subcategory || '',
-                })}
-                practiceData={practiceStats[item.key] || null}
-                onReport={() => requireAuth('Sign up to report question issues', () => setReportTarget(item.key))}
-                tts={tts}
-                user={user}
-              />
-            ))}
-          </div>
+          <>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {filtered.slice(0, visibleCount).map((item, displayIndex) => (
+                <QuestionCard
+                  key={item.key}
+                  question={item.question}
+                  questionId={item.key}
+                  index={displayIndex}
+                  isOpen={expandedKeys.has(item.key)}
+                  onToggle={() => toggleCard(item.key)}
+                  onPractice={() => setPracticeQuestion({
+                    question: item.question,
+                    questionId: item.key,
+                    designation: item.level,
+                    category: item.dataCategory,
+                    subcategory: item?.question?.subcategory || '',
+                  })}
+                  practiceData={practiceStats[item.key] || null}
+                  onReport={() => requireAuth('Sign up to report question issues', () => setReportTarget(item.key))}
+                  tts={tts}
+                  user={user}
+                />
+              ))}
+            </div>
+            {filtered.length > visibleCount && (
+              <div style={{ textAlign: 'center', marginTop: 24, marginBottom: 16 }}>
+                <button
+                  onClick={() => setVisibleCount(v => v + 10)}
+                  style={{
+                    padding: '12px 32px',
+                    background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
+                    border: 'none',
+                    borderRadius: 999,
+                    color: '#fff',
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  }}
+                >
+                  Load More ({filtered.length - visibleCount} remaining)
+                </button>
+              </div>
+            )}
+          </>
         )}
 
       </div>
