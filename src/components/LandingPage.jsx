@@ -242,7 +242,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
             <a onClick={() => onNavigate('practice')} style={{ color: '#6b6b6b', textDecoration: 'underline', fontWeight: 500, cursor: 'pointer' }}>
               Or browse questions free.
             </a>
-            {' '}1,500+ questions across all roles and domains.
+            {' '}Thousands of questions across all roles and domains.
           </p>
 
           {/* Community proof */}

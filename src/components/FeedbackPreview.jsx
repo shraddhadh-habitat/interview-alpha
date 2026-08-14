@@ -532,18 +532,6 @@ export default function FeedbackPreview({ onNavigate }) {
         </div>
 
       </div>
-
-      {/* Bottom CTA */}
-      <p style={{
-        textAlign: 'center',
-        fontSize: '0.95rem',
-        color: '#111',
-        marginTop: '16px',
-        marginBottom: '0',
-        fontWeight: 600
-      }}>
-        Dhruv scored 4 out of 10 on his first try. Two weeks later he had an offer. What would your score be?
-      </p>
     </section>
   );
 }
