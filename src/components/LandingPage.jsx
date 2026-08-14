@@ -522,15 +522,6 @@ export default function LandingPage({ user, onNavigate, profile }) {
         }}>
           Where do you want to start?
         </h2>
-        <p style={{
-          fontSize: '14px',
-          color: '#6b6b6b',
-          textAlign: 'center',
-          marginBottom: '36px',
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-        }}>
-          Every path leads to the same place — real practice with real feedback.
-        </p>
 
         {/* 2x2 grid — no buttons */}
         <div className="paths-grid" style={{
