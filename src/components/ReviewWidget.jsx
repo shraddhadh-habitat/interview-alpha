@@ -38,6 +38,13 @@ export default function ReviewWidget({ user, profile }) {
   const [visible, setVisible]               = useState(false);
   const [alreadySubmitted, setAlreadySubmitted] = useState(false);
   const [showModal, setShowModal]           = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => setFilterOpen(e.detail);
+    window.addEventListener('ia:filterDrawer', handler);
+    return () => window.removeEventListener('ia:filterDrawer', handler);
+  }, []);
 
   // Modal form state
   const [rating, setRating]         = useState(0);
@@ -90,7 +97,7 @@ export default function ReviewWidget({ user, profile }) {
     setError('');
   };
 
-  if (!visible) return null;
+  if (!visible || filterOpen) return null;
 
   const charCount = reviewText.trim().length;
 

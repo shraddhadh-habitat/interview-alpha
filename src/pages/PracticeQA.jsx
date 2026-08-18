@@ -1346,6 +1346,9 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [expandedKeys, setExpandedKeys] = useState(new Set());
   const [visibleCount, setVisibleCount] = useState(10);
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('ia:filterDrawer', { detail: showFilters }));
+  }, [showFilters]);
   const [showTrackSelector, setShowTrackSelector] = useState(false);
   const [practiceQuestion, setPracticeQuestion] = useState(() => {
     console.log('[PracticeQA] initializer running - localStorage has ia_sample_question:', !!localStorage.getItem('ia_sample_question'));
