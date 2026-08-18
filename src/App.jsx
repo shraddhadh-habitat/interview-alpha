@@ -910,8 +910,9 @@ export default function App() {
             }}
           />
         )}
-        {user && showQuickStart && onboardingStep === 'question' && (
+        {showQuickStart && onboardingStep === 'question' && (
           <QuickStart
+            user={user}
             onDismiss={handleQuickStartDismiss}
             onSessionUsed={onSessionUsed}
             onExplore={handleQuickStartExplore}

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8', bgMuted: '#F5F3EF',
@@ -380,7 +381,8 @@ function FeedbackPanel({ result }) {
 }
 
 // ─── Main QuickStart component ───
-export default function QuickStart({ onDismiss, onSessionUsed, onExplore, selectedTrack = 'both' }) {
+export default function QuickStart({ user, onDismiss, onSessionUsed, onExplore, selectedTrack = 'both' }) {
+  const { requireAuth } = useAuth();
   const rotatingQ = getRotatingQuestion(selectedTrack);
   const QUESTION = rotatingQ.question;
   const QUESTION_TIP = rotatingQ.tip;
@@ -472,6 +474,17 @@ Be honest and specific. Return ONLY the JSON, no markdown, no preamble.`;
     const answerText = mode === 'voice' ? dedupeTranscript(voiceText) : textAnswer;
     if (!answerText.trim()) return;
 
+    // Check auth - show login if not authenticated
+    if (!user) {
+      requireAuth('Sign in to get AI feedback on your answer');
+      return;
+    }
+
+    // User is authenticated - proceed with submission
+    handleSubmitInternal(answerText);
+  };
+
+  const handleSubmitInternal = async (answerText) => {
     if (onSessionUsed) await onSessionUsed();
 
     setPhase('loading');

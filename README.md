@@ -1,16 +1,96 @@
-# React + Vite
+# InterviewAlpha.ai
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI-powered interview coaching platform for Product Managers, Data Scientists, Consultants, Project Managers, Technical Writers, and Scrum Masters.
 
-Currently, two official plugins are available:
+🌐 **Live:** [interviewalpha.ai](https://interviewalpha.ai)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## What is InterviewAlpha?
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+InterviewAlpha helps professionals prepare for senior interviews through:
 
-## Expanding the ESLint configuration
+- **AI-scored practice** — Answer questions and get scored across 8 competencies instantly
+- **Expert rewrites** — See how a senior professional would have answered the same question
+- **Voice and text modes** — Practice the way you think
+- **1,500+ questions** — Across PM, Data Science, Consulting, Project Management, Technical Writing, and Scrum Master roles
+- **Domain-specific prep** — Telecom, Fintech, Banking, Healthcare domains
+- **Exclusive Prep** — JD and resume-based personalized questions (Pro)
+- **ATS Checker and Resume Optimizer** — Get through screening before the interview starts
+- **Salary Guide** — Know your worth before negotiating
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 18 + Vite |
+| Database | Supabase (PostgreSQL) — Mumbai region |
+| Auth | Supabase Auth |
+| AI | Anthropic Claude API |
+| Email | Resend |
+| Payments | Razorpay |
+| Analytics | PostHog |
+| Hosting | Vercel |
+
+---
+
+## Architecture
+
+Single Page Application (SPA) with serverless API functions.
+
+```
+src/
+├── components/       # Reusable UI components
+├── pages/            # Page-level components
+├── data/             # Question banks (PM, DS, Consulting, Scrum Master etc.)
+├── emails/           # Email templates
+├── hooks/            # Custom React hooks
+├── lib/              # Supabase client and utilities
+api/                  # Serverless API functions (Vercel)
+public/               # Static assets, robots.txt, sitemap.xml
+```
+
+---
+
+## Pricing
+
+| Plan | Price |
+|------|-------|
+| Free | 3 full sessions |
+| Monthly | ₹1,299/month |
+| Quarterly | ₹1,999/quarter |
+| Yearly | ₹6,999/year |
+
+---
+
+## Features Roadmap
+
+- [x] PM interview practice (1,000+ questions)
+- [x] Data Science practice (241+ questions)
+- [x] Consulting practice
+- [x] Project Management practice
+- [x] Technical Writing practice
+- [x] Scrum Master practice (200+ questions)
+- [x] ATS Checker
+- [x] Resume Optimizer
+- [x] Resume Templates
+- [x] Salary Guide
+- [x] Exclusive Prep (JD + resume based questions)
+- [ ] React Router migration (separate URLs per page)
+- [ ] Salary negotiation prep
+- [ ] Referral call prep
+
+---
+
+## Contact
+
+**Founder:** Shraddha Dudhgaonli  
+**Email:** shraddha@interviewalpha.ai  
+**LinkedIn:** [linkedin.com/in/shraddhadudhgaonli](https://linkedin.com/in/shraddhadudhgaonli)  
+**Website:** [interviewalpha.ai](https://interviewalpha.ai)
+
+---
+
+*Built by a solo non-technical founder using AI. 16 years of fintech product experience at Mastercard, Western Union, and UBS.*
