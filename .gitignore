@@ -31,3 +31,7 @@ dist-ssr
 tests/screenshots/
 tests/report/
 playwright-report/
+dist
+playwright-report
+test-results
+data-archive
