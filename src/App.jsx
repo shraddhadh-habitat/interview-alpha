@@ -535,7 +535,7 @@ export default function App() {
       const newUser = params.get('new_user');
       if (newUser === 'true') {
         // Will be handled by ResumeToolsHub to set active tab to jd-practice
-        localStorage.setItem('jdp_active_tab', 'jd-practice');
+        localStorage.setItem('jdp_active_tab', 'exclusive-prep');
       }
     }
   }, []);
@@ -869,13 +869,13 @@ export default function App() {
               onSessionUsed={onSessionUsed}
             />
           )}
-          {page === 'sessions'    && <PastSessions user={user} />}
+          {page === 'history'    && <PastSessions user={user} />}
           {page === 'progress'    && <MyProgress user={user} />}
           {page === 'scorecard'   && <Scorecard user={user} />}
           {page === 'salary'      && <SalaryGuide user={user} onPracticeCTA={handleLandingPrimaryCTA} />}
           {page === 'resume-tools' && <ResumeToolsHub user={user} profile={profile} />}
-          {page === 'jd-practice' && <JDPractice user={user} profile={profile} />}
-          {page === 'resources'   && <LearningResources />}
+          {page === 'exclusive-prep' && <JDPractice user={user} profile={profile} />}
+          {page === 'learning'   && <LearningResources />}
           {page === 'upgrade'     && (
             <UpgradePage
               user={user}

@@ -65,7 +65,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
   // Authenticated tabs include Upgrade (for free users) and admin
   const authedTabs = [
     ...PUBLIC_TABS,
-    ...(isAdmin ? [{ id: 'resources', label: 'Resources' }] : []),
+    ...(isAdmin ? [{ id: 'learning', label: 'Resources' }] : []),
     ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
   ];
 
@@ -204,7 +204,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     { id: 'scorecard', label: 'My Progress' },
     { id: 'resume-tools', label: 'Resume Tools' },
     { id: 'salary', label: 'Salary Guide' },
-    ...(isAdmin ? [{ id: 'resources', label: 'Learning Resources' }] : []),
+    ...(isAdmin ? [{ id: 'learning', label: 'Learning Resources' }] : []),
     ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
     ...(isAdmin ? [{ id: 'admin', label: 'Admin' }] : []),
     { id: 'progress', label: 'My Progress' },

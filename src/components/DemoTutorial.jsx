@@ -50,7 +50,7 @@ const STEPS = [
     body: `On any question in the Practice Q&A library, click "Practice This Question" to enter Practice Mode.\n\nType or speak your answer. InterviewAlpha.ai evaluates it against the expert answer across five competencies: Structure, Depth, Frameworks, Communication, and Trade-off Awareness.\n\nYou get a score out of 100, identified strengths and weaknesses, missing concepts, filler word detection, and an expert rewrite of your answer. Each attempt is numbered and saved to your history.`,
   },
   {
-    id: 'sessions',
+    id: 'history',
     icon: '◇',
     label: 'Past Sessions & Leaderboard',
     title: 'Track Your Progress',

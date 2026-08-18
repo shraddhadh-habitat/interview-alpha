@@ -146,7 +146,7 @@ function ResumeScore() {
 }
 
 export default function ResumeToolsHub({ user, profile }) {
-  const [activeTab, setActiveTab] = useState('jd-practice');
+  const [activeTab, setActiveTab] = useState('exclusive-prep');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const dropdownButtonRef = useRef(null);
@@ -161,7 +161,7 @@ export default function ResumeToolsHub({ user, profile }) {
   }, []);
 
   const tabs = [
-    { id: 'jd-practice', label: 'Exclusive Prep' },
+    { id: 'exclusive-prep', label: 'Exclusive Prep' },
     { id: 'ats-checker', label: 'ATS Checker' },
     { id: 'resume-optimizer', label: 'Resume Optimizer' },
     { id: 'resume-score', label: 'Resume Score' },
@@ -416,7 +416,7 @@ export default function ResumeToolsHub({ user, profile }) {
           </div>
         )}
         {activeTab === 'resume-score' && <ResumeScore />}
-        {activeTab === 'jd-practice' && <JDPractice user={user} profile={profile} />}
+        {activeTab === 'exclusive-prep' && <JDPractice user={user} profile={profile} />}
       </div>
     </div>
   );
