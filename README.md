@@ -93,4 +93,4 @@ public/               # Static assets, robots.txt, sitemap.xml
 
 ---
 
-*Built by a solo non-technical founder using AI. 16 years of fintech product experience at Mastercard, Western Union, and UBS.*
+*Built by a solo founder using AI. 16 years of fintech product experience at Mastercard, Western Union, and UBS.*
