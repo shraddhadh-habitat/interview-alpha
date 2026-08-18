@@ -107,7 +107,7 @@ export default function ReviewWidget({ user, profile }) {
           white-space: nowrap;
         }
         .rw-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.2); }
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
           .rw-fab { display: none; }
           .rw-fab-text { display: none; }
         }
