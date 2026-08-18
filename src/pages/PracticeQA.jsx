@@ -3,14 +3,7 @@ import { pmQuestions, PM_LEVELS, DS_LEVELS } from '../data/pmQuestions';
 import { consultingQuestions, CONSULTING_LEVELS } from '../data/consultingQuestions';
 import { projectManagementQuestions, PROJECTMANAGEMENT_LEVELS } from '../data/projectManagementQuestions';
 import { technicalWritingQuestions, TECHNICALWRITING_LEVELS } from '../data/technicalWritingQuestions';
-import { scrumMasterQuestions, SCRUMMASTER_LEVELS } from '../data/scrumMasterQuestions';
-import { scrumMasterQuestions_batch2 } from '../data/scrumMasterQuestions_batch2';
-import { scrumMasterQuestions_batch3 } from '../data/scrumMasterQuestions_batch3';
-import { scrumMasterQuestions_batch4 } from '../data/scrumMasterQuestions_batch4';
-import { scrumMasterQuestions_batch5a } from '../data/scrumMasterQuestions_batch5a';
-import { scrumMasterQuestions_batch5b } from '../data/scrumMasterQuestions_batch5b';
-import { scrumMasterQuestions_batch6a } from '../data/scrumMasterQuestions_batch6a';
-import { scrumMasterQuestions_batch6b } from '../data/scrumMasterQuestions_batch6b';
+import { scrumMasterQuestions, SCRUMMASTER_LEVELS } from '../data/scrumMasterQuestions_consolidated';
 import { supabase } from '../lib/supabase';
 import PracticeMode from './PracticeMode';
 import { useAuth } from '../contexts/AuthContext';
@@ -1092,18 +1085,7 @@ function countQuestionsForFilterState(selectedRole, filterState, pmQuestions, PM
 
   let count = 0;
   for (const level of levelsToShow) {
-    const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? {
-      behavioral: [
-        ...(scrumMasterQuestions[level]?.behavioral || []),
-        ...(scrumMasterQuestions_batch2[level]?.behavioral || []),
-        ...(scrumMasterQuestions_batch3[level]?.behavioral || []),
-        ...(scrumMasterQuestions_batch4[level]?.behavioral || []),
-        ...(scrumMasterQuestions_batch5a[level]?.behavioral || []),
-        ...(scrumMasterQuestions_batch5b[level]?.behavioral || []),
-        ...(scrumMasterQuestions_batch6a[level]?.behavioral || []),
-        ...(scrumMasterQuestions_batch6b[level]?.behavioral || []),
-      ]
-    } : pmQuestions[level];
+    const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? scrumMasterQuestions[level] : pmQuestions[level];
     if (!bank) continue;
     for (const cat of dataCats) {
       const questions = bank[cat] || [];
@@ -1691,18 +1673,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const searchLower = search.toLowerCase();
 
     for (const level of levelsToShow) {
-      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? {
-        behavioral: [
-          ...(scrumMasterQuestions[level]?.behavioral || []),
-          ...(scrumMasterQuestions_batch2[level]?.behavioral || []),
-          ...(scrumMasterQuestions_batch3[level]?.behavioral || []),
-          ...(scrumMasterQuestions_batch4[level]?.behavioral || []),
-          ...(scrumMasterQuestions_batch5a[level]?.behavioral || []),
-          ...(scrumMasterQuestions_batch5b[level]?.behavioral || []),
-          ...(scrumMasterQuestions_batch6a[level]?.behavioral || []),
-          ...(scrumMasterQuestions_batch6b[level]?.behavioral || []),
-        ]
-      } : pmQuestions[level];
+      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? scrumMasterQuestions[level] : pmQuestions[level];
       if (!bank) continue;
       for (const cat of dataCats) {
         const questions = bank[cat] || [];
