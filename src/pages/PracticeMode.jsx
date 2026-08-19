@@ -871,7 +871,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
       try {
         const res = await fetch('/api/messages', {
           method: 'POST',
-          headers: { 'content-type': 'application/json' },
+          headers: { 'content-type': 'application/json', 'x-ia-secret': import.meta.env.VITE_IA_API_SECRET },
           body: JSON.stringify({
             model: 'claude-sonnet-4-6',
             max_tokens: 1500,
@@ -885,7 +885,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         // Fallback non-streaming
         const res = await fetch('/api/messages', {
           method: 'POST',
-          headers: { 'content-type': 'application/json' },
+          headers: { 'content-type': 'application/json', 'x-ia-secret': import.meta.env.VITE_IA_API_SECRET },
           body: JSON.stringify({
             model: 'claude-sonnet-4-6',
             max_tokens: 1500,
