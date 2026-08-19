@@ -1047,7 +1047,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
       // Try streaming first
       const res = await fetch("/api/messages", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-ia-secret": import.meta.env.VITE_IA_API_SECRET },
         body: JSON.stringify({
           model: "claude-sonnet-4-6",
           max_tokens: 2048,
@@ -1064,7 +1064,7 @@ export default function InterviewAlpha({ user, profile, checkSession, onSessionU
         fullText = "";
         const res = await fetch("/api/messages", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", "x-ia-secret": import.meta.env.VITE_IA_API_SECRET },
           body: JSON.stringify({
             model: "claude-sonnet-4-6",
             max_tokens: 2048,

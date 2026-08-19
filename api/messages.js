@@ -3,10 +3,15 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  // Security: verify internal secret header
+  const secret = req.headers['x-ia-secret'];
+  if (!secret || secret !== process.env.IA_API_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   const { stream, ...body } = req.body;
 
   try {
-    console.log('API Key present:', !!process.env.ANTHROPIC_API_KEY);
     const upstream = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
