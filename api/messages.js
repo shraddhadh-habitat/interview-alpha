@@ -1,6 +1,30 @@
+// Simple in-memory rate limiter: max 30 requests per IP per minute
+const rateLimitMap = new Map();
+const RATE_LIMIT = 30;
+const RATE_WINDOW = 60 * 1000; // 1 minute
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip) || { count: 0, start: now };
+  if (now - entry.start > RATE_WINDOW) {
+    rateLimitMap.set(ip, { count: 1, start: now });
+    return false;
+  }
+  if (entry.count >= RATE_LIMIT) return true;
+  entry.count++;
+  rateLimitMap.set(ip, entry);
+  return false;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  // Security: rate limiting
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || 'unknown';
+  if (isRateLimited(ip)) {
+    return res.status(429).json({ error: 'Too many requests. Please slow down.' });
   }
 
   // Security: verify internal secret header
@@ -9,7 +33,24 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
+  // Security: check request body size (max 50KB)
+  const bodySize = JSON.stringify(req.body).length;
+  if (bodySize > 50000) {
+    return res.status(413).json({ error: 'Request too large' });
+  }
+
+  // Security: basic content filtering
+  const bodyStr = JSON.stringify(req.body);
+  const blockedPatterns = ['<script>', 'javascript:', 'eval(', 'document.cookie'];
+  if (blockedPatterns.some(p => bodyStr.toLowerCase().includes(p))) {
+    return res.status(400).json({ error: 'Invalid request content' });
+  }
+
+  // Security: cap max_tokens to prevent abuse
   const { stream, ...body } = req.body;
+  if (body.max_tokens && body.max_tokens > 4000) {
+    body.max_tokens = 4000;
+  }
 
   try {
     const upstream = await fetch("https://api.anthropic.com/v1/messages", {
@@ -23,8 +64,6 @@ export default async function handler(req, res) {
       body: JSON.stringify(stream ? { ...body, stream: true } : body),
     });
 
-    console.log('Upstream status:', upstream.status);
-
     if (stream) {
       res.setHeader("Content-Type", "text/event-stream");
       res.setHeader("Cache-Control", "no-cache");
@@ -32,7 +71,6 @@ export default async function handler(req, res) {
 
       if (!upstream.ok) {
         const errorText = await upstream.text();
-        console.log('Upstream error:', errorText);
         let errData;
         try {
           errData = JSON.parse(errorText);
