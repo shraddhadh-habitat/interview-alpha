@@ -729,6 +729,113 @@ function ScoreBadge({ score, attempts }) {
   );
 }
 
+function AnswerPanel({ question, practiceData, onPractice, onReport, tts, user, handleSpeakAnswer, isSpeakingAnswer }) {
+  const [showExpertAnswer, setShowExpertAnswer] = useState(false);
+
+  return (
+    <div style={{
+      borderTop: `1px solid rgba(27, 27, 24, 0.12)`,
+      background: 'rgba(27, 27, 24, 0.08)',
+      animation: 'fadeUp 0.25s cubic-bezier(0.22,1,0.36,1)',
+    }}>
+      {/* Two primary actions */}
+      <div style={{ padding: '16px 22px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+        <button
+          onClick={(e) => { e.stopPropagation(); onPractice(); }}
+          style={{
+            padding: '10px 22px',
+            background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
+            border: 'none',
+            borderRadius: 50,
+            color: '#fff', fontSize: 14,
+            cursor: 'pointer',
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+          onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
+        >
+          Practice This Question
+        </button>
+
+        <span style={{ fontSize: 13, color: 'rgba(27,27,24,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>or</span>
+
+        <button
+          onClick={(e) => { e.stopPropagation(); setShowExpertAnswer(v => !v); }}
+          style={{
+            padding: '10px 22px',
+            background: 'transparent',
+            border: '1.5px solid rgba(27, 27, 24, 0.2)',
+            borderRadius: 50,
+            color: '#1B1B18', fontSize: 14,
+            cursor: 'pointer',
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+            transition: 'all 0.2s',
+            display: 'flex', alignItems: 'center', gap: 6,
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(27,27,24,0.4)'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(27,27,24,0.2)'; }}
+        >
+          Expert Answer {showExpertAnswer ? '▲' : '▼'}
+        </button>
+
+        {practiceData && (
+          <span style={{ fontSize: 11, color: 'rgba(27,27,24,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif", marginLeft: 'auto' }}>
+            Best: {practiceData.best_score}/100 · {practiceData.attempts} attempt{practiceData.attempts !== 1 ? 's' : ''}
+          </span>
+        )}
+      </div>
+
+      {/* Expert answer — only shown when toggled */}
+      {showExpertAnswer && (
+        <div style={{ padding: '0 22px 16px', animation: 'fadeUp 0.2s ease' }}>
+          <div style={{ marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{
+              padding: '3px 10px', background: '#8250DF', color: '#fff',
+              borderRadius: 20, fontSize: 10, fontWeight: 600,
+              fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
+            }}>
+              Expert Answer
+            </span>
+            {tts.isSupported && user && (
+              <button
+                onClick={handleSpeakAnswer}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '5px 12px',
+                  background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
+                  border: 'none', borderRadius: 20, cursor: 'pointer',
+                  fontSize: 13, fontWeight: 600, color: '#fff',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  minHeight: 44, opacity: isSpeakingAnswer ? 1 : 0.9,
+                }}
+              >
+                {isSpeakingAnswer ? '■ Stop' : '▶ Listen'}
+              </button>
+            )}
+          </div>
+          <BlurredAnswer text={question.a} />
+        </div>
+      )}
+
+      {/* Report link */}
+      <div style={{ padding: '0 22px 14px', display: 'flex', justifyContent: 'flex-end' }}>
+        <button
+          onClick={(e) => { e.stopPropagation(); onReport(); }}
+          style={{
+            background: 'none', border: 'none', padding: 0,
+            fontSize: 11, color: 'rgba(27,27,24,0.4)', cursor: 'pointer',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            textDecoration: 'underline', textUnderlineOffset: 3,
+          }}
+        >
+          Report Issue
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData, onReport, tts, user }) {
   const [isSpeakingQuestion, setIsSpeakingQuestion] = useState(false);
   const [isSpeakingAnswer, setIsSpeakingAnswer] = useState(false);
@@ -847,98 +954,16 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
 
       {/* Answer panel */}
       {user && isOpen && (
-        <div style={{
-          borderTop: `1px solid ${C.greenBorder}`,
-          background: C.greenLight,
-          animation: 'fadeUp 0.25s cubic-bezier(0.22,1,0.36,1)',
-        }}>
-          <div style={{ padding: '20px 22px 16px' }}>
-            <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{
-                padding: '3px 10px', background: '#8250DF', color: '#fff',
-                borderRadius: 20, fontSize: 10, fontWeight: 600,
-                fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
-              }}>
-                Expert Answer
-              </span>
-              {tts.isSupported && user && (
-                <button
-                  onClick={handleSpeakAnswer}
-                  title={isSpeakingAnswer ? "Stop listening" : "Listen to answer"}
-                  className="listen-btn"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 6,
-                    padding: '5px 12px',
-                    background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
-                    border: 'none',
-                    borderRadius: 20,
-                    cursor: 'pointer',
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: '#fff',
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    transition: 'all 0.2s',
-                    minHeight: 44,
-                    opacity: isSpeakingAnswer ? 1 : 0.9,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.opacity = '0.88';
-                    e.currentTarget.style.transform = 'translateY(-1px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.opacity = isSpeakingAnswer ? '1' : '0.9';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
-                >
-                  {isSpeakingAnswer ? '■ Stop' : '▶ Listen'}
-                </button>
-              )}
-            </div>
-            <BlurredAnswer text={question.a} />
-          </div>
-          {/* Practice button + Report link */}
-          <div style={{ padding: '0 22px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <button
-                onClick={(e) => { e.stopPropagation(); onPractice(); }}
-                style={{
-                  padding: '10px 22px',
-                  background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
-                  border: 'none',
-                  borderRadius: 50,
-                  color: '#fff', fontSize: 14,
-                  cursor: 'pointer',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
-                  transition: 'all 0.2s',
-                }}
-              >
-                Practice This Question
-              </button>
-              {practiceData && (
-                <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  Best: {practiceData.best_score}/100 · {practiceData.attempts} attempt{practiceData.attempts !== 1 ? 's' : ''}
-                </span>
-              )}
-            </div>
-            <button
-              onClick={(e) => { e.stopPropagation(); onReport(); }}
-              style={{
-                background: 'none', border: 'none', padding: 0,
-                fontSize: 11, color: C.textMuted, cursor: 'pointer',
-                fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: 0.5,
-                textDecoration: 'underline', textUnderlineOffset: 3,
-                transition: 'color 0.15s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.color = C.green}
-              onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
-            >
-              Report Issue
-            </button>
-          </div>
-        </div>
+        <AnswerPanel
+          question={question}
+          practiceData={practiceData}
+          onPractice={onPractice}
+          onReport={onReport}
+          tts={tts}
+          user={user}
+          handleSpeakAnswer={handleSpeakAnswer}
+          isSpeakingAnswer={isSpeakingAnswer}
+        />
       )}
     </div>
   );
