@@ -77,10 +77,9 @@ function useVoiceToText() {
     r.interimResults   = !isAndroid; // false on Android (true causes duplicate delivery)
     r.maxAlternatives  = 1;
 
-    r.onstart = () => console.log('[Voice] Recognition started');
+    r.onstart = () => {};
 
     r.onresult = (e) => {
-      console.log('[Voice] onresult  -  resultIndex:', e.resultIndex, 'total:', e.results.length);
       if (isAndroid) {
         const text = e.results[0][0].transcript.trim();
         if (text) setTranscript(prev => prev + (prev.trim() ? ' ' : '') + text);
@@ -98,9 +97,6 @@ function useVoiceToText() {
     };
 
     r.onerror = (e) => {
-      console.error('[Voice] onerror code:', e.error, '| shouldRestart before:', shouldRestartRef.current);
-      console.error('[Voice] onerror:', e.error);
-
       const fatalErrors = ['not-allowed', 'service-not-allowed', 'aborted'];
       if (fatalErrors.includes(e.error)) {
         shouldRestartRef.current = false;
@@ -117,10 +113,7 @@ function useVoiceToText() {
     };
 
     r.onend = () => {
-      console.log('[Voice] onend - shouldRestart:', shouldRestartRef.current);
-
       if (shouldRestartRef.current) {
-        console.log('[Voice] Auto-restarting recognition...');
         // Restart immediately - skip getUserMedia, just create new recognition
         createAndStartRecognition(null, true);
       } else {
@@ -136,9 +129,7 @@ function useVoiceToText() {
         timerRef.current = setInterval(() => setDuration(d => d + 1), 1000);
       }
       r.start();
-      console.log('[Voice] start() called');
     } catch (err) {
-      console.error('[Voice] start() threw:', err);
       clearInterval(timerRef.current);
       setIsListening(false);
       setVoiceError('Could not start voice input. Please type your answer.');
@@ -154,7 +145,6 @@ function useVoiceToText() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { if (onFailure) onFailure(); return; }
 
-    console.log('[Voice] Recognition starting...');
     setVoiceError('');
     shouldRestartRef.current = true; // User is recording - enable auto-restart on pause
     setIsListening(true);
@@ -163,7 +153,6 @@ function useVoiceToText() {
     createAndStartRecognition(
       // onFailure callback: if immediate start fails, request permission and retry
       () => {
-        console.log('[Voice] Immediate start failed, requesting getUserMedia permission...');
         navigator.mediaDevices.getUserMedia({ audio: true })
           .then((stream) => {
             stream.getTracks().forEach(t => t.stop());
@@ -171,7 +160,6 @@ function useVoiceToText() {
             createAndStartRecognition(onFailure, false);
           })
           .catch((err) => {
-            console.error('[Voice] getUserMedia denied:', err);
             clearInterval(timerRef.current);
             setIsListening(false);
             setVoiceError('Microphone access denied. Please allow microphone in browser settings and try again.');
@@ -183,7 +171,6 @@ function useVoiceToText() {
   }, [createAndStartRecognition]);
 
   const stopListening = useCallback(() => {
-    console.log('[Voice] stopListening called');
     shouldRestartRef.current = false; // User manually stopped - do not auto-restart
     clearInterval(timerRef.current);
     try { recognitionRef.current?.stop(); } catch {}
@@ -536,7 +523,6 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
 
 // ─── Main PracticeMode component ───
 export default function PracticeMode({ question, questionId, designation, category, subcategory, user, onBack, onNextQuestion, onPrevQuestion, profile, checkSession, onSessionUsed }) {
-  console.log('[PracticeMode] Component render - URL:', window.location.href);
 
   const [mode, setMode] = useState('text'); // 'text' | 'voice'
   const [textAnswer, setTextAnswer] = useState('');
@@ -691,15 +677,12 @@ export default function PracticeMode({ question, questionId, designation, catego
 
   // Restore score from pending_scores if redirected after email verification
   useEffect(() => {
-    console.log('[Restore] useEffect fired, URL:', window.location.href);
     const params = new URLSearchParams(window.location.search);
     const scoreToken = params.get('score_token');
-    console.log('[PracticeMode] Mount - score_token from URL:', scoreToken);
 
     if (scoreToken) {
       (async () => {
         try {
-          console.log('[PracticeMode] Fetching pending_scores for token:', scoreToken);
           const { data, error } = await supabase
             .from('pending_scores')
             .select('*')
@@ -707,37 +690,28 @@ export default function PracticeMode({ question, questionId, designation, catego
             .single();
 
           if (error) {
-            console.error('[PracticeMode] Failed to fetch from pending_scores:', error);
             return;
           }
 
           if (data) {
-            console.log('[PracticeMode] Successfully restored score from pending_scores:', scoreToken);
             setResult(data.score_data);
             setRestoredQuestion(data.question_text);
             setLoading(false);
 
             // Delete the row from pending_scores
-            const { error: deleteError } = await supabase
+            await supabase
               .from('pending_scores')
               .delete()
               .eq('session_token', scoreToken);
 
-            if (deleteError) {
-              console.error('[PracticeMode] Failed to delete pending_scores:', deleteError);
-            } else {
-              console.log('[PracticeMode] Deleted pending_scores row');
-            }
-
             // Clear localStorage
             localStorage.removeItem('ia:score_token');
-            console.log('[PracticeMode] Cleared localStorage ia:score_token');
 
             // Clean up URL
             window.history.replaceState({}, document.title, window.location.pathname);
           }
         } catch (err) {
-          console.error('[PracticeMode] Failed to restore score:', err);
+          // Failed to restore score
         }
       })();
     }
@@ -807,10 +781,6 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
     // ─── Session gate ───
     const sessionCheckResult = checkSession ? checkSession() : null;
-    console.log('[Submit] checkSession result:', sessionCheckResult);
-    console.log('[Submit] user:', user?.id);
-    console.log('[Submit] answerText length:', answerText?.length);
-
     if (checkSession && !sessionCheckResult) return;
     if (onSessionUsed) await onSessionUsed();
 
@@ -822,7 +792,6 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
       const freeSessionsUsed = profile?.free_sessions_used || 0;
 
       if (!isAdmin && !isPaid && freeSessionsUsed >= 3) {
-        console.log('[Paywall] User hit free session limit:', freeSessionsUsed);
         posthog.capture('paywall_shown', {
           free_sessions_used: freeSessionsUsed,
         });
@@ -916,25 +885,17 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
       if (!user) {
         try {
           const scoreToken = crypto.randomUUID();
-          console.log('[Score] Generated token:', scoreToken);
           localStorage.setItem('ia:score_token', scoreToken);
-          console.log('[Score] Saved token to localStorage');
 
-          const { error } = await supabase.from('pending_scores').insert({
+          await supabase.from('pending_scores').insert({
             session_token: scoreToken,
             question_id: questionId,
             question_text: question.q,
             user_answer: textAnswer || transcript,
             score_data: parsed
           });
-
-          if (error) {
-            console.error('[Score] Supabase insert error:', error);
-          } else {
-            console.log('[Score] Successfully saved to pending_scores with token:', scoreToken);
-          }
         } catch (err) {
-          console.error('[Score] Failed to save to pending_scores:', err);
+          // Failed to save score to pending_scores
         }
       }
 
@@ -948,7 +909,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
             setResolvedUser(sessionUser);
           }
         } catch (err) {
-          console.error('[Submit] Failed to resolve user from session:', err);
+          // Failed to resolve user from session
         }
       }
 
@@ -977,9 +938,8 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
             created_at: new Date().toISOString(),
           });
           if (insertError) console.error('[PracticeMode] practice_attempts insert error:', insertError);
-          else console.log('[PracticeMode] practice_attempts saved successfully');
         } catch (e) {
-          console.error('[PracticeMode] practice_attempts exception:', e);
+          // Failed to save practice attempt
         }
 
         // Increment free_sessions_used in profiles
