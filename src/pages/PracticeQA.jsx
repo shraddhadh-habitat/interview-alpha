@@ -743,14 +743,15 @@ function AnswerPanel({ question, practiceData, onPractice, onReport, tts, user, 
         <button
           onClick={(e) => { e.stopPropagation(); onPractice(); }}
           style={{
-            padding: '10px 22px',
-            background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
+            padding: '5px 12px',
+            background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
             border: 'none',
-            borderRadius: 50,
-            color: '#fff', fontSize: 14,
+            borderRadius: 20,
+            color: '#fff', fontSize: 13,
             cursor: 'pointer',
             fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
             transition: 'all 0.2s',
+            minHeight: 44,
           }}
           onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
           onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
@@ -763,18 +764,19 @@ function AnswerPanel({ question, practiceData, onPractice, onReport, tts, user, 
         <button
           onClick={(e) => { e.stopPropagation(); setShowExpertAnswer(v => !v); }}
           style={{
-            padding: '10px 22px',
-            background: 'transparent',
-            border: '1.5px solid rgba(27, 27, 24, 0.2)',
-            borderRadius: 50,
-            color: '#1B1B18', fontSize: 14,
+            padding: '5px 12px',
+            background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
+            border: 'none',
+            borderRadius: 20,
+            color: '#fff', fontSize: 13,
             cursor: 'pointer',
             fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
             transition: 'all 0.2s',
             display: 'flex', alignItems: 'center', gap: 6,
+            minHeight: 44,
           }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(27,27,24,0.4)'; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(27,27,24,0.2)'; }}
+          onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+          onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
         >
           Expert Answer {showExpertAnswer ? '▲' : '▼'}
         </button>
