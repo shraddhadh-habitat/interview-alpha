@@ -1084,6 +1084,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               </div>
             )}
           </div>
+          {user && (
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, paddingLeft: 8, paddingRight: 8 }}>
             <button
               onClick={onPrevQuestion}
@@ -1134,6 +1135,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
               Next Question
             </button>
           </div>
+          )}
           {/* View Expert Answer collapsible - only for logged-in users */}
           {user && (
             <div style={{ borderTop: `1px solid ${C.border}` }}>
