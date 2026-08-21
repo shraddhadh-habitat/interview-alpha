@@ -1447,7 +1447,16 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                   {onNextQuestion && (
                     <button
-                      onClick={onNextQuestion}
+                      onClick={() => {
+                        setResult(null);
+                        setTextAnswer('');
+                        setAnalysisText('');
+                        setLoading(false);
+                        setError('');
+                        setShowExpert(false);
+                        window.scrollTo(0, 0);
+                        onNextQuestion();
+                      }}
                       style={{
                         flex: 1,
                         minWidth: 140,
