@@ -838,7 +838,7 @@ function AnswerPanel({ question, practiceData, onPractice, onReport, tts, user, 
   );
 }
 
-function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData, onReport, tts, user }) {
+function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractice, practiceData, onReport, tts, user, isMobile }) {
   const [isSpeakingQuestion, setIsSpeakingQuestion] = useState(false);
   const [isSpeakingAnswer, setIsSpeakingAnswer] = useState(false);
 
@@ -892,9 +892,9 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           }
         }}
         style={{
-          width: '100%', display: 'flex', alignItems: 'flex-start', gap: 16,
+          width: '100%', display: 'flex', alignItems: 'center', gap: 12,
           padding: '18px 22px', background: 'transparent', border: 'none',
-          cursor: 'pointer', textAlign: 'left',
+          cursor: 'pointer', textAlign: 'left', overflow: 'hidden',
         }}
       >
         {/* Question text */}
@@ -903,6 +903,10 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           fontFamily: "'Plus Jakarta Sans', sans-serif",
           color: C.text, fontWeight: isOpen ? 600 : 500,
           transition: 'font-weight 0.1s',
+          whiteSpace: isOpen ? 'normal' : 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          minWidth: 0,
         }}>
           {question.q}
         </span>
@@ -947,9 +951,15 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           </button>
         )}
 
-        {/* Score badge (if practiced) */}
-        {practiceData && (
-          <ScoreBadge score={practiceData.best_score} attempts={practiceData.attempts} />
+        {!isMobile && (
+          <span style={{ width: 52, textAlign: 'center', fontSize: 13, fontWeight: 600, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", flexShrink: 0 }}>
+            {practiceData ? practiceData.best_score : ''}
+          </span>
+        )}
+        {!isMobile && (
+          <span style={{ width: 48, textAlign: 'center', fontSize: 12, color: 'rgba(27,27,24,0.45)', fontFamily: "'Plus Jakarta Sans', sans-serif", flexShrink: 0 }}>
+            {practiceData && practiceData.attempts > 0 ? `×${practiceData.attempts}` : ''}
+          </span>
         )}
 
         <ChevronIcon open={isOpen} />
@@ -2150,6 +2160,13 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           </div>
         ) : (
           <>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', paddingRight: 22, paddingLeft: 22, marginBottom: 4 }}>
+              <span style={{ flex: 1 }} />
+              <span style={{ width: 100, textAlign: 'center', fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'rgba(27,27,24,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>Listen</span>
+              {!isMobile && <span style={{ width: 52, textAlign: 'center', fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'rgba(27,27,24,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>Score</span>}
+              {!isMobile && <span style={{ width: 48, textAlign: 'center', fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'rgba(27,27,24,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>Tries</span>}
+              <span style={{ width: 24 }} />
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {filtered.slice(0, visibleCount).map((item, displayIndex) => (
                 <QuestionCard
@@ -2170,6 +2187,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                   onReport={() => requireAuth('Sign up to report question issues', () => setReportTarget(item.key))}
                   tts={tts}
                   user={user}
+                  isMobile={isMobile}
                 />
               ))}
             </div>
