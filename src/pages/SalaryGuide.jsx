@@ -401,7 +401,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
   const [selectedRole, setSelectedRole] = useState('PM');
 
   useEffect(() => {
-    const roleText = selectedRole === 'Product Management' ? 'Product Manager' : selectedRole === 'Project Management' ? 'Project Management' : selectedRole === 'Data Science' ? 'Data Science' : selectedRole === 'Technical Writing' ? 'Technical Writing' : 'Consulting';
+    const roleText = selectedRole === 'Product Management' ? 'Product Manager' : selectedRole === 'Project Management' ? 'Project Management' : selectedRole === 'Data Science' ? 'Data Science' : selectedRole === 'Technical Writing' ? 'Technical Writing' : selectedRole === 'Scrum Master' ? 'Scrum Master' : 'Consulting';
     document.title = `${roleText} Salary Guide 2026 | InterviewAlpha.ai`;
     return () => { document.title = 'Interview Preparation Questions & Answers | AI Mock Interview Practice | InterviewAlpha.ai™'; };
   }, [selectedRole]);
@@ -416,7 +416,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         <div style={{ marginBottom: 32, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>I'm looking at salaries for:</span>
           <div style={{ display: 'flex', gap: 8 }}>
-            {['Product Management', 'Project Management', 'Data Science', 'Consulting', 'Technical Writing'].map(role => (
+            {['Product Management', 'Project Management', 'Data Science', 'Technical Writing', 'Scrum Master', 'Consulting'].map(role => (
               <button
                 key={role}
                 onClick={() => setSelectedRole(role)}
@@ -455,7 +455,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         <div style={{ marginBottom: 36 }}>
           <div style={{ fontSize: 10, letterSpacing: 6, color: C.textMuted, marginBottom: 10 }}>CAREER RESOURCES</div>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 40, fontWeight: 700, color: C.text, marginBottom: 12, lineHeight: 1.15 }}>
-            {selectedRole === 'Product Management' ? 'Product Management Salary & Negotiation Guide' : selectedRole === 'Project Management' ? 'Project Management Salary Guide' : selectedRole === 'Data Science' ? 'Data Science Salary & Negotiation Guide' : selectedRole === 'Technical Writing' ? 'Technical Writing Salary Guide' : 'Consulting Salary Guide'}
+            {selectedRole === 'Product Management' ? 'Product Management Salary & Negotiation Guide' : selectedRole === 'Project Management' ? 'Project Management Salary Guide' : selectedRole === 'Data Science' ? 'Data Science Salary & Negotiation Guide' : selectedRole === 'Technical Writing' ? 'Technical Writing Salary Guide' : selectedRole === 'Scrum Master' ? 'Scrum Master Salary Guide' : 'Consulting Salary Guide'}
           </h1>
           <p style={{ fontSize: 14, color: C.textSoft, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.75, maxWidth: 620 }}>
             {selectedRole === 'Product Management'
@@ -466,6 +466,8 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
               ? 'Salary ranges, negotiation frameworks, and word-for-word scripts to help you maximize your compensation as a Data Scientist  . at every level.'
               : selectedRole === 'Technical Writing'
               ? 'Salary ranges, skills premium, and career progression for Technical Writers across companies and career levels in India and the US.'
+              : selectedRole === 'Scrum Master'
+              ? 'Salary ranges, certification premiums, and career progression for Scrum Masters and Agile Coaches across companies in India and the US.'
               : 'Salary ranges for consulting roles across top firms in India. Understand your worth at every level.'}
           </p>
           <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
@@ -477,6 +479,8 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
               ? ['India & US Ranges', '5 Negotiation Tips', 'Global Salaries', '6 Cities Breakdown', 'Premium Skills']
               : selectedRole === 'Technical Writing'
               ? ['India & US Ranges', '5 Top Companies', 'Skills Premium', 'Career Progression']
+              : selectedRole === 'Scrum Master'
+              ? ['India & US Ranges', '5 Companies', 'Certification Premium', 'Career Progression']
               : ['India Ranges', '10 Top Firms', 'All Career Stages']
             ).map(t => (
               <span key={t} style={{
