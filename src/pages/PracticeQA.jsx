@@ -960,15 +960,20 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           </button>
         )}
 
-        {!isMobile && practiceData && (
+        {!isMobile && (
           <span style={{
             display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0,
             fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
             color: 'rgba(27,27,24,0.55)', whiteSpace: 'nowrap',
+            minWidth: 200,
           }}>
-            <span style={{ fontWeight: 700, color: '#1B1B18' }}>Score: {practiceData.best_score}/100</span>
-            <span>·</span>
-            <span>{practiceData.attempts} Attempt{practiceData.attempts !== 1 ? 's' : ''}</span>
+            {practiceData ? (
+              <>
+                <span style={{ fontWeight: 700, color: '#1B1B18' }}>Score: {practiceData.best_score}/100</span>
+                <span>·</span>
+                <span>{practiceData.attempts} Attempt{practiceData.attempts !== 1 ? 's' : ''}</span>
+              </>
+            ) : null}
           </span>
         )}
 
