@@ -368,7 +368,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
                   justifyContent: 'center',
                   gap: 6,
                   padding: '8px 16px',
-                  background: 'linear-gradient(135deg, #F472B6, #A78BFA, #60A5FA, #34D399, #FDCD34)',
+                  background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
                   border: 'none',
                   borderRadius: 8,
                   cursor: 'pointer',
@@ -1202,7 +1202,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                           disabled={disabled}
                           style={{
                             padding: '12px 32px',
-                            background: disabled ? C.bgMuted : 'linear-gradient(135deg, #a78bfa, #c084fc)',
+                            background: disabled ? C.bgMuted : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                             border: 'none',
                             borderRadius: 50,
                             color: disabled ? C.textMuted : '#fff',
@@ -1295,7 +1295,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                         onClick={() => voice.startChunk(() => setMode('text'))}
                         style={{
                           display: 'flex', alignItems: 'center', gap: 8,
-                          padding: '11px 24px', background: C.green, border: 'none', borderRadius: 12,
+                          padding: '11px 24px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 12,
                           color: '#fff', fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif",
                           fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer',
                         }}
@@ -1310,7 +1310,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                           onClick={() => handleSubmit(dedupeTranscript(voiceText), true)}
                           disabled={loading}
                           style={{
-                            padding: '11px 24px', background: C.green, border: 'none', borderRadius: 12,
+                            padding: '11px 24px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 12,
                             color: '#fff', fontSize: 11, fontFamily: "'Plus Jakarta Sans', sans-serif",
                             fontWeight: loading ? 700 : 600, letterSpacing: 1.5, textTransform: 'uppercase',
                             cursor: loading ? 'wait' : 'pointer', opacity: loading ? 0.6 : 1,
@@ -1439,7 +1439,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                         flex: 1,
                         minWidth: 140,
                         padding: '13px 0',
-                        background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
+                        background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                         border: 'none',
                         borderRadius: 50,
                         color: '#fff',
@@ -1479,7 +1479,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                 }}
                 style={{
                   padding: '10px 24px',
-                  background: C.green,
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                   border: 'none',
                   borderRadius: 8,
                   color: '#fff',
@@ -1489,10 +1489,10 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   cursor: 'pointer',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 600,
-                  transition: 'background 0.2s',
+                  transition: 'opacity 0.2s',
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
-                onMouseLeave={e => e.currentTarget.style.background = C.green}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}
               >
                 Sign Up
               </button>
