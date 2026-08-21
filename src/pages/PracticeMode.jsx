@@ -544,6 +544,19 @@ export default function PracticeMode({ question, questionId, designation, catego
   // Use resolved user if prop user is undefined (handles async hydration delay)
   const authenticatedUser = user || resolvedUser;
 
+  // Reset all answer state when question changes (Previous/Next navigation)
+  useEffect(() => {
+    setResult(null);
+    setTextAnswer('');
+    setAnalysisText('');
+    setLoading(false);
+    setError('');
+    setShowExpert(false);
+    setAttemptNumber(1);
+    setPrevBestScore(null);
+    window.scrollTo(0, 0);
+  }, [questionId]);
+
   const getLoadingMessages = () => {
     const sub = (subcategory || '').toLowerCase();
     const cat = (category || '').toLowerCase();
