@@ -620,7 +620,7 @@ function TrackSelectorModal({ onSelectTrack }) {
             onClick={() => onSelectTrack('technicalwriting')}
             style={{
               padding: '14px 24px', height: 48,
-              background: 'linear-gradient(135deg, #ffd89b 0%, #19547b 100%)',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
               border: 'none', borderRadius: 12,
               color: '#fff', fontSize: 15, fontWeight: 700,
               cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -2178,7 +2178,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
                   onClick={() => setVisibleCount(v => v + 10)}
                   style={{
                     padding: '12px 32px',
-                    background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
+                    background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                     border: 'none',
                     borderRadius: 999,
                     color: '#fff',
