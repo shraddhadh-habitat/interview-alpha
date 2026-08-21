@@ -897,54 +897,53 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           cursor: 'pointer', textAlign: 'left',
         }}
       >
-        {/* Question text + Listen button */}
-        <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-          <span style={{
-            flex: 1, fontSize: 15, lineHeight: 1.65,
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            color: C.text, fontWeight: isOpen ? 600 : 500,
-            transition: 'font-weight 0.1s',
-          }}>
-            {question.q}
-          </span>
-          {tts.isSupported && (
-            <button
-              onClick={handleSpeakQuestion}
-              title={isSpeakingQuestion ? "Stop listening" : "Listen to question"}
-              className="listen-btn"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 6,
-                padding: '5px 12px',
-                background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
-                border: 'none',
-                borderRadius: 20,
-                cursor: 'pointer',
-                fontSize: 13,
-                fontWeight: 600,
-                color: '#fff',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                transition: 'all 0.2s',
-                flexShrink: 0,
-                marginTop: 2,
-                minHeight: 44,
-                opacity: isSpeakingQuestion ? 1 : 0.9,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.opacity = '0.88';
-                e.currentTarget.style.transform = 'translateY(-1px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = isSpeakingQuestion ? '1' : '0.9';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-            >
-              {isSpeakingQuestion ? '■ Stop' : '▶ Listen'}
-            </button>
-          )}
-        </div>
+        {/* Question text */}
+        <span style={{
+          flex: 1, fontSize: 15, lineHeight: 1.65,
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          color: C.text, fontWeight: isOpen ? 600 : 500,
+          transition: 'font-weight 0.1s',
+        }}>
+          {question.q}
+        </span>
+
+        {/* Listen button - fixed position column */}
+        {tts.isSupported && (
+          <button
+            onClick={handleSpeakQuestion}
+            title={isSpeakingQuestion ? "Stop listening" : "Listen to question"}
+            className="listen-btn"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              padding: '5px 12px',
+              background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
+              border: 'none',
+              borderRadius: 20,
+              cursor: 'pointer',
+              fontSize: 13,
+              fontWeight: 600,
+              color: '#fff',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              transition: 'all 0.2s',
+              flexShrink: 0,
+              minHeight: 44,
+              opacity: isSpeakingQuestion ? 1 : 0.9,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = '0.88';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = isSpeakingQuestion ? '1' : '0.9';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            {isSpeakingQuestion ? '■ Stop' : '▶ Listen'}
+          </button>
+        )}
 
         {/* Score badge (if practiced) */}
         {practiceData && (
