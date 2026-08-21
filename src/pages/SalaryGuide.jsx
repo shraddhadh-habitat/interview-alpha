@@ -431,7 +431,7 @@ function CTABanner({ text, onClick }) {
 }
 
 export default function SalaryGuide({ user, onPracticeCTA }) {
-  const [selectedRole, setSelectedRole] = useState('PM');
+  const [selectedRole, setSelectedRole] = useState('Product Management');
 
   useEffect(() => {
     const roleText = selectedRole === 'Product Management' ? 'Product Manager' : selectedRole === 'Project Management' ? 'Project Management' : selectedRole === 'Data Science' ? 'Data Science' : selectedRole === 'Technical Writing' ? 'Technical Writing' : selectedRole === 'Scrum Master' ? 'Scrum Master' : 'Consulting';
