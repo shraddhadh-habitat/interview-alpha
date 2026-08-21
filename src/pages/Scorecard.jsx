@@ -650,7 +650,7 @@ export default function Scorecard({ user }) {
         <button
           onClick={() => requireAuth('Sign up to track your interview performance')}
           style={{
-            padding: '14px 32px', background: '#16A34A', border: 'none',
+            padding: '14px 32px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none',
             borderRadius: 12, color: '#fff', fontSize: 15, fontWeight: 600,
             cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}
@@ -680,7 +680,7 @@ export default function Scorecard({ user }) {
         <button
           onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'interview' }))}
           style={{
-            padding: '13px 32px', background: '#16A34A', border: 'none',
+            padding: '13px 32px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none',
             borderRadius: 12, color: '#fff', fontSize: 15, fontWeight: 600,
             cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}

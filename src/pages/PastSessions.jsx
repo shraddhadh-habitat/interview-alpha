@@ -217,7 +217,7 @@ export default function PastSessions({ user }) {
             <button
               onClick={() => requireAuth('Sign up to save your interview history')}
               style={{
-                padding: '14px 32px', background: C.green, border: 'none',
+                padding: '14px 32px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none',
                 borderRadius: 12, color: '#fff', fontSize: 15, fontWeight: 600,
                 cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
               }}
