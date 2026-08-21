@@ -911,7 +911,7 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
             display: 'block',
           } : {
             display: '-webkit-box',
-            WebkitLineClamp: 2,
+            WebkitLineClamp: 3,
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
             whiteSpace: 'normal',
