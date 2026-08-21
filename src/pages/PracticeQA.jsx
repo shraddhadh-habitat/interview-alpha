@@ -765,7 +765,7 @@ function AnswerPanel({ question, practiceData, onPractice, onReport, tts, user, 
           onClick={(e) => { e.stopPropagation(); setShowExpertAnswer(v => !v); }}
           style={{
             padding: '5px 12px',
-            background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
+            background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
             border: 'none',
             borderRadius: 20,
             color: '#fff', fontSize: 13,
