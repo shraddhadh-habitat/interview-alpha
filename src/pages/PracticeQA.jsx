@@ -929,7 +929,9 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               transition: 'all 0.2s',
               flexShrink: 0,
-              minHeight: 44,
+              alignSelf: 'center',
+              width: 100,
+              height: 36,
               opacity: isSpeakingQuestion ? 1 : 0.9,
             }}
             onMouseEnter={(e) => {
