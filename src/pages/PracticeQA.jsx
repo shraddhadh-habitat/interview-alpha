@@ -960,14 +960,15 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           </button>
         )}
 
-        {!isMobile && (
-          <span style={{ width: 52, textAlign: 'center', fontSize: 13, fontWeight: 600, color: '#1B1B18', fontFamily: "'Plus Jakarta Sans', sans-serif", flexShrink: 0 }}>
-            {practiceData ? practiceData.best_score : ''}
-          </span>
-        )}
-        {!isMobile && (
-          <span style={{ width: 48, textAlign: 'center', fontSize: 12, color: 'rgba(27,27,24,0.45)', fontFamily: "'Plus Jakarta Sans', sans-serif", flexShrink: 0 }}>
-            {practiceData && practiceData.attempts > 0 ? `×${practiceData.attempts}` : ''}
+        {!isMobile && practiceData && (
+          <span style={{
+            display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0,
+            fontSize: 12, fontFamily: "'Plus Jakarta Sans', sans-serif",
+            color: 'rgba(27,27,24,0.55)', whiteSpace: 'nowrap',
+          }}>
+            <span style={{ fontWeight: 700, color: '#1B1B18' }}>Score: {practiceData.best_score}/100</span>
+            <span>·</span>
+            <span>{practiceData.attempts} Attempt{practiceData.attempts !== 1 ? 's' : ''}</span>
           </span>
         )}
 
@@ -2169,13 +2170,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           </div>
         ) : (
           <>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', paddingRight: 22, paddingLeft: 22, marginBottom: 4 }}>
-              <span style={{ flex: 1 }} />
-              <span style={{ width: 100, textAlign: 'center', fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'rgba(27,27,24,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>Listen</span>
-              {!isMobile && <span style={{ width: 52, textAlign: 'center', fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'rgba(27,27,24,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>Score</span>}
-              {!isMobile && <span style={{ width: 48, textAlign: 'center', fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'rgba(27,27,24,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>Tries</span>}
-              <span style={{ width: 24 }} />
-            </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {filtered.slice(0, visibleCount).map((item, displayIndex) => (
                 <QuestionCard
