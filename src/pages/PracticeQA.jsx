@@ -783,7 +783,7 @@ function AnswerPanel({ question, practiceData, onPractice, onReport, tts, user, 
 
         {practiceData && (
           <span style={{ fontSize: 11, color: 'rgba(27,27,24,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif", marginLeft: 'auto' }}>
-            Best: {practiceData.best_score}/100 · {practiceData.attempts} attempt{practiceData.attempts !== 1 ? 's' : ''}
+            Score: {practiceData.best_score}/100 · {practiceData.attempts} attempt{practiceData.attempts !== 1 ? 's' : ''}
           </span>
         )}
       </div>
@@ -904,11 +904,10 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           color: C.text, fontWeight: isOpen ? 600 : 500,
           transition: 'font-weight 0.1s',
           minWidth: 0,
-          ...(isOpen ? {
-            whiteSpace: 'normal',
-            overflow: 'visible',
-            textOverflow: 'clip',
+          ...(isOpen && !isMobile ? {
             display: 'block',
+            overflow: 'visible',
+            whiteSpace: 'normal',
           } : {
             display: '-webkit-box',
             WebkitLineClamp: 3,
