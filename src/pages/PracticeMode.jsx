@@ -1421,6 +1421,9 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   voice.setTranscript('');
                   setAnalysisText('');
                   setLoading(false);
+                  setError('');
+                  setShowExpert(false);
+                  setMode('text');
                   window.scrollTo(0, 0);
                   window.history.replaceState({}, document.title, '/');
                   if (onNextQuestion) onNextQuestion();
