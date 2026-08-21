@@ -554,6 +554,7 @@ export default function PracticeMode({ question, questionId, designation, catego
     setShowExpert(false);
     setAttemptNumber(1);
     setPrevBestScore(null);
+    voice.setTranscript('');
     window.scrollTo(0, 0);
   }, [questionId]);
 
@@ -1454,6 +1455,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                         setLoading(false);
                         setError('');
                         setShowExpert(false);
+                        voice.setTranscript('');
                         window.scrollTo(0, 0);
                         onNextQuestion();
                       }}
