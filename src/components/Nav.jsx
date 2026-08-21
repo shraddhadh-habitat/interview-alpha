@@ -354,7 +354,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
               onClick={() => { setDrawerOpen(false); requireAuth('Sign in to continue'); }}
               style={{
                 width: '100%', height: 48,
-                background: '#1B1B18', border: 'none', borderRadius: 12,
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 12,
                 color: '#fff', fontSize: 16, fontWeight: 700,
                 cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
               }}

@@ -84,7 +84,7 @@ export default function PaywallModal({ onClose, onUpgrade, lastSession = false }
         <button
           style={{
             width: '100%', padding: '14px 0',
-            background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
+            background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
             border: 'none',
             borderRadius: 50,
             color: '#fff', fontSize: 11, letterSpacing: 3, textTransform: 'uppercase',
