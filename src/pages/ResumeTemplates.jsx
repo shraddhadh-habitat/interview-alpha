@@ -291,8 +291,8 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
               style={{
                 padding: '14px 32px',
                 height: 44,
-                background: C.yellow,
-                color: C.text,
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                color: '#fff',
                 border: 'none',
                 borderRadius: 10,
                 fontSize: 15,
@@ -303,11 +303,9 @@ export default function ResumeTemplates({ hideAtsButton = false }) {
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.opacity = '0.9';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(253, 205, 52, 0.25)';
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.opacity = '1';
-                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               Check if your resume passes ATS

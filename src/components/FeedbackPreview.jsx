@@ -390,9 +390,9 @@ export default function FeedbackPreview({ onNavigate }) {
                   onClick={handleFeaturedQuestionClick}
                   style={{
                     flex: 1,
-                    background: 'white',
-                    color: '#a78bfa',
-                    border: '1.5px solid #a78bfa',
+                    background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                    color: '#fff',
+                    border: 'none',
                     borderRadius: '10px',
                     padding: '12px',
                     fontSize: '0.82rem',
@@ -516,9 +516,9 @@ export default function FeedbackPreview({ onNavigate }) {
           <button
             onClick={handleFeaturedQuestionClick}
             style={{
-              background: 'white',
-              color: '#a78bfa',
-              border: '1.5px solid #a78bfa',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              color: '#fff',
+              border: 'none',
               borderRadius: '12px',
               padding: '12px 24px',
               fontSize: '0.85rem',

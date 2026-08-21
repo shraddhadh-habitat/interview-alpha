@@ -378,7 +378,7 @@ export default function ResumeToolsHub({ user, profile }) {
                   fontSize: 13,
                   fontWeight: activeTab === tab.id ? 600 : 500,
                   color: activeTab === tab.id ? '#ffffff' : '#4a4a6a',
-                  background: activeTab === tab.id ? 'linear-gradient(135deg, #a78bfa, #c084fc)' : 'transparent',
+                  background: activeTab === tab.id ? 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)' : 'transparent',
                   border: activeTab === tab.id ? 'none' : '1px solid #e5e7eb',
                   borderRadius: 50,
                   cursor: 'pointer',

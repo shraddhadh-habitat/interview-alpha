@@ -563,7 +563,7 @@ export default function JDPractice({ user, profile }) {
                 </div>
                 <button
                   onClick={() => { setStep('practice'); setCurrentIndex(0); setAnswer(''); setShowExpert(false); }}
-                  style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #a78bfa, #c084fc)', border: 'none', borderRadius: 50, fontSize: 14, fontWeight: 700, fontFamily: F, color: '#fff', cursor: 'pointer' }}
+                  style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 50, fontSize: 14, fontWeight: 700, fontFamily: F, color: '#fff', cursor: 'pointer' }}
                 >
                   Start Practising →
                 </button>
@@ -617,7 +617,7 @@ export default function JDPractice({ user, profile }) {
                     <p style={{ fontSize: 13, color: '#6b7280', fontFamily: F, marginBottom: 16 }}>Get full access to questions sourced from Glassdoor, Reddit and Blind — with complete expert answers</p>
                     <button
                       onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'upgrade' }))}
-                      style={{ padding: '12px 32px', background: 'linear-gradient(135deg, #a78bfa, #c084fc)', border: 'none', borderRadius: 50, fontSize: 14, fontWeight: 700, color: '#fff', fontFamily: F, cursor: 'pointer' }}
+                      style={{ padding: '12px 32px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 50, fontSize: 14, fontWeight: 700, color: '#fff', fontFamily: F, cursor: 'pointer' }}
                     >
                       Upgrade to Pro →
                     </button>
@@ -659,7 +659,7 @@ export default function JDPractice({ user, profile }) {
                   alignItems: 'center',
                   gap: 6,
                   padding: '8px 18px',
-                  background: 'linear-gradient(135deg, #a78bfa, #f59e0b)',
+                  background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)',
                   border: 'none',
                   borderRadius: 50,
                   cursor: 'pointer',
@@ -781,7 +781,7 @@ Return only the answer text, no JSON.`;
                             if (!currentQ.a || currentQ.a === 'Generating expert answer...') return;
                             tts.speak('Expert Answer. ' + currentQ.a);
                           }}
-                          style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 18px', background: 'linear-gradient(135deg, #a78bfa, #f59e0b)', border: 'none', borderRadius: 50, cursor: 'pointer', fontSize: 13, fontWeight: 600, color: '#fff', fontFamily: F, marginBottom: 12 }}
+                          style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 18px', background: 'linear-gradient(135deg, #c084fc 0%, #a78bfa 35%, #d4a017 75%, #f5c842 100%)', border: 'none', borderRadius: 50, cursor: 'pointer', fontSize: 13, fontWeight: 600, color: '#fff', fontFamily: F, marginBottom: 12 }}
                         >
                           {tts.isSpeaking ? '⏹ Stop' : '▶ Listen'}
                         </button>

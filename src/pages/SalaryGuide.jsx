@@ -375,7 +375,7 @@ function CTABanner({ text, onClick }) {
         onClick={onClick}
         className="cta-banner-btn"
         style={{
-          background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
+          background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
           color: '#fff',
           border: 'none',
           borderRadius: '50px',
