@@ -997,8 +997,12 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
   const handleTryAgain = () => {
     setResult(null);
     setTextAnswer('');
+    setAnalysisText('');
+    setError('');
+    setMode('text');
     voice.resetVoice();
     setAttemptNumber(n => n + 1);
+    window.scrollTo(0, 0);
   };
 
   // Only final transcript for submit/button logic.
