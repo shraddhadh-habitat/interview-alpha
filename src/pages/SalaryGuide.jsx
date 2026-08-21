@@ -17,7 +17,7 @@ const globalStyles = `
   * { box-sizing: border-box; }
   @media (max-width: 768px) {
     .sg-page-pad { padding: 24px 16px !important; }
-    .sg-section-pad { padding: 16px 16px 24px !important; }
+    .sg-section-pad { padding: 0 20px 24px !important; }
     .sg-section-btn { padding: 18px 20px !important; min-height: 44px !important; }
     .sg-table { overflow-x: auto !important; }
     .sg-select { width: 100% !important; min-height: 44px !important; font-size: 16px !important; }
@@ -366,7 +366,7 @@ function Section({ title, subtitle, children, defaultOpen = false }) {
         <span style={{ fontSize: 18, color: C.green, transition: 'transform 0.2s', display: 'inline-block', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', flexShrink: 0, marginLeft: 16 }}>▾</span>
       </button>
       {open && (
-        <div style={{ padding: '0 32px 32px', borderTop: `1px solid ${C.border}`, animation: 'fadeUp 0.25s ease' }}>
+        <div className="sg-section-pad" style={{ padding: '0 32px 32px', borderTop: `1px solid ${C.border}`, animation: 'fadeUp 0.25s ease' }}>
           {children}
         </div>
       )}
@@ -448,7 +448,7 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
         {/* Role Selector */}
         <div style={{ marginBottom: 32, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>I'm looking at salaries for:</span>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {['Product Management', 'Project Management', 'Data Science', 'Technical Writing', 'Scrum Master', 'Consulting'].map(role => (
               <button
                 key={role}
