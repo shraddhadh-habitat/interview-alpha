@@ -39,6 +39,7 @@ export default function ReviewWidget({ user, profile }) {
   const [alreadySubmitted, setAlreadySubmitted] = useState(false);
   const [showModal, setShowModal]           = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     const handler = (e) => setFilterOpen(e.detail);
@@ -97,7 +98,7 @@ export default function ReviewWidget({ user, profile }) {
     setError('');
   };
 
-  if (!visible || filterOpen) return null;
+  if (!visible || filterOpen || dismissed) return null;
 
   const charCount = reviewText.trim().length;
 
@@ -142,22 +143,40 @@ export default function ReviewWidget({ user, profile }) {
       `}</style>
 
       {/* Floating button */}
-      <button
-        className="rw-fab"
-        onClick={() => !alreadySubmitted && setShowModal(true)}
-        disabled={alreadySubmitted}
-        style={{
-          background: alreadySubmitted ? C.greenLight : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-          color: '#fff',
-          border: alreadySubmitted ? `1.5px solid ${C.greenBorder}` : 'none',
-          cursor: alreadySubmitted ? 'default' : 'pointer',
-        }}
-      >
-        {alreadySubmitted ? '✓' : '⭐⭐⭐⭐⭐'}
-        <span className="rw-fab-text">
-          {alreadySubmitted ? 'Review Submitted' : 'Leave a Review'}
-        </span>
-      </button>
+      <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 800, display: 'flex', alignItems: 'center', gap: 6 }}>
+        <button
+          className="rw-fab"
+          onClick={() => !alreadySubmitted && setShowModal(true)}
+          disabled={alreadySubmitted}
+          style={{
+            position: 'static',
+            background: alreadySubmitted ? C.greenLight : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+            color: '#fff',
+            border: alreadySubmitted ? `1.5px solid ${C.greenBorder}` : 'none',
+            cursor: alreadySubmitted ? 'default' : 'pointer',
+          }}
+        >
+          {alreadySubmitted ? '✓' : '⭐⭐⭐⭐⭐'}
+          <span className="rw-fab-text">
+            {alreadySubmitted ? 'Review Submitted' : 'Leave a Review'}
+          </span>
+        </button>
+        {!alreadySubmitted && (
+          <button
+            onClick={() => setDismissed(true)}
+            style={{
+              width: 24, height: 24, borderRadius: '50%',
+              background: 'rgba(0,0,0,0.25)', border: 'none',
+              color: '#fff', fontSize: 14, lineHeight: 1,
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              flexShrink: 0,
+            }}
+          >
+            ×
+          </button>
+        )}
+      </div>
 
       {/* Modal */}
       {showModal && (
