@@ -309,6 +309,39 @@ const TW_SKILLS_PREMIUM = [
   { skill: 'Regulatory / Compliance Writing', premium: '+12–18%', note: 'Critical in BFSI — IRDAI, RBI, SEBI documentation expertise' },
 ];
 
+// ─── Scrum Master Salary Data ───
+const SM_IN_SALARIES = [
+  { level: 'Scrum Master (0–2 yrs)', tc: '₹8–15 LPA', base: '₹7–12 LPA', bonus: '8–12%', equity: 'ESOP at startups' },
+  { level: 'Scrum Master (2–5 yrs)', tc: '₹15–28 LPA', base: '₹12–22 LPA', bonus: '10–15%', equity: '₹2–8 L vesting 4yr' },
+  { level: 'Senior Scrum Master', tc: '₹28–45 LPA', base: '₹22–35 LPA', bonus: '12–18%', equity: '₹5–15 L vesting 4yr' },
+  { level: 'Agile Coach', tc: '₹40–70 LPA', base: '₹32–55 LPA', bonus: '15–20%', equity: '₹10–25 L vesting 4yr' },
+  { level: 'Head of Agile / RTE', tc: '₹65–110 LPA', base: '₹50–85 LPA', bonus: '18–25%', equity: '₹20–50 L vesting 4yr' },
+];
+
+const SM_US_SALARIES = [
+  { level: 'Scrum Master (0–2 yrs)', tc: '$85–115K', base: '$75–100K', bonus: '8–12%', equity: '$10–20K RSU/yr' },
+  { level: 'Scrum Master (2–5 yrs)', tc: '$115–155K', base: '$95–130K', bonus: '10–15%', equity: '$20–40K RSU/yr' },
+  { level: 'Senior Scrum Master', tc: '$145–195K', base: '$120–160K', bonus: '12–18%', equity: '$35–65K RSU/yr' },
+  { level: 'Agile Coach', tc: '$175–240K', base: '$140–195K', bonus: '15–20%', equity: '$50–90K RSU/yr' },
+  { level: 'Head of Agile / RTE', tc: '$220–310K', base: '$175–250K', bonus: '18–25%', equity: '$70–130K RSU/yr' },
+];
+
+const SM_COMPANY_COMP = [
+  { company: 'TCS / Infosys / Wipro', levels: 'SM–Senior SM', tc_in: '₹10–30 LPA', tc_us: '$90–150K', notes: 'Large delivery teams, SAFe preferred' },
+  { company: 'Accenture / Capgemini', levels: 'SM–Agile Coach', tc_in: '₹15–50 LPA', tc_us: '$110–180K', notes: 'Client-facing agile transformation' },
+  { company: 'Amazon / Flipkart', levels: 'SM–Senior SM', tc_in: '₹22–60 LPA', tc_us: '$130–200K', notes: 'Agile-first, high ownership culture' },
+  { company: 'Banks (HDFC/ICICI/Axis)', levels: 'SM–Agile Coach', tc_in: '₹18–55 LPA', tc_us: 'N/A', notes: 'Agile transformation initiatives, stable comp' },
+  { company: 'Telecom (Jio/Airtel)', levels: 'SM–Senior SM', tc_in: '₹15–45 LPA', tc_us: 'N/A', notes: 'Large team coordination, strong SAFe premium' },
+];
+
+const SM_CERTIFICATIONS = [
+  { cert: 'CSM (Certified Scrum Master)', premium: '+10–15%', note: 'Most common entry-level cert, good for 0–3 yrs' },
+  { cert: 'PSM I / PSM II (Scrum.org)', premium: '+12–18%', note: 'Highly respected, harder than CSM' },
+  { cert: 'SAFe Scrum Master (SSM)', premium: '+15–22%', note: 'High demand in large enterprises running SAFe' },
+  { cert: 'SAFe Release Train Engineer (RTE)', premium: '+25–35%', note: 'Senior roles only, significant jump to Agile Coach' },
+  { cert: 'Certified Agile Coach (ICP-ACC)', premium: '+20–30%', note: 'For Agile Coaches leading org-wide transformation' },
+];
+
 // ─── Collapsible section ───
 function Section({ title, subtitle, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -1118,6 +1151,125 @@ export default function SalaryGuide({ user, onPracticeCTA }) {
             {/* ── BOTTOM CTA BANNER ── */}
             <CTABanner
               text="Ready to ace your Technical Writing interview? Practice now."
+              onClick={onPracticeCTA}
+            />
+          </>
+        ) : selectedRole === 'Scrum Master' ? (
+          <>
+            {/* ── SCRUM MASTER CONTENT ── */}
+            <Section title="Know Your Worth" subtitle="Salary ranges by level  . India & United States" defaultOpen={true}>
+              <div style={{ paddingTop: 24 }}>
+                <p style={{ fontSize: 12, color: C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6, marginBottom: 24, fontStyle: 'italic' }}>
+                  Salary ranges reflect compensation at top-tier companies. Actual packages vary based on company size, location, and individual performance.
+                </p>
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>India (₹ LPA / Cr)</div>
+                <div style={{ overflowX: 'auto', marginBottom: 32 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Level', 'Total Comp', 'Base', 'Bonus', 'Equity'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {SM_IN_SALARIES.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc}</td>
+                          <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: C.green, fontFamily: "'Plus Jakarta Sans', sans-serif", marginBottom: 16 }}>United States (USD)</div>
+                <div style={{ overflowX: 'auto', marginBottom: 20 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Level', 'Total Comp', 'Base', 'Bonus', 'Equity'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {SM_US_SALARIES.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.level}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc}</td>
+                          <td style={{ padding: '12px 14px', color: C.textSoft }}>{row.base}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted }}>{row.bonus}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.equity}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div style={{ padding: '14px 18px', background: C.yellowLight, border: `1px solid ${C.yellowBorder}`, borderRadius: 12 }}>
+                  <p style={{ fontSize: 12, color: C.yellow, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.65, margin: 0 }}>
+                    Ranges reflect 2025–2026 market data. Total comp (TC) includes base + annual bonus + annualized equity. Verify with levels.fyi, Glassdoor, and LinkedIn Salary.
+                  </p>
+                </div>
+              </div>
+            </Section>
+
+            <Section title="Compensation by Company" subtitle="Top tech, consulting, and product companies">
+              <div style={{ paddingTop: 24 }}>
+                <div style={{ overflowX: 'auto', marginBottom: 20 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Company', 'Levels', 'India TC', 'US TC', 'Notes'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {SM_COMPANY_COMP.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.company}</td>
+                          <td style={{ padding: '12px 14px', color: C.textSoft, fontSize: 12 }}>{row.levels}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc_in}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.tc_us}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.notes}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </Section>
+
+            <Section title="Certification Premium" subtitle="CSM, SAFe, PSM boost compensation">
+              <div style={{ paddingTop: 24 }}>
+                <div style={{ overflowX: 'auto', marginBottom: 20 }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                    <thead>
+                      <tr>
+                        {['Certification', 'Salary Premium', 'Notes'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: C.textMuted, borderBottom: `1px solid ${C.border}`, background: '#F5F3EF' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {SM_CERTIFICATIONS.map((row, i) => (
+                        <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAF8' }}>
+                          <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{row.cert}</td>
+                          <td style={{ padding: '12px 14px', fontWeight: 700, fontFamily: "'Plus Jakarta Sans', sans-serif", background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{row.premium}</td>
+                          <td style={{ padding: '12px 14px', color: C.textMuted, fontSize: 11 }}>{row.note}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </Section>
+
+            <CTABanner
+              text="Ready to ace your Scrum Master interview? Practice now."
               onClick={onPracticeCTA}
             />
           </>
