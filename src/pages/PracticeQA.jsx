@@ -903,10 +903,19 @@ function QuestionCard({ question, questionId, index, isOpen, onToggle, onPractic
           fontFamily: "'Plus Jakarta Sans', sans-serif",
           color: C.text, fontWeight: isOpen ? 600 : 500,
           transition: 'font-weight 0.1s',
-          whiteSpace: isOpen ? 'normal' : 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
           minWidth: 0,
+          ...(isOpen ? {
+            whiteSpace: 'normal',
+            overflow: 'visible',
+            textOverflow: 'clip',
+            display: 'block',
+          } : {
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            whiteSpace: 'normal',
+          }),
         }}>
           {question.q}
         </span>
