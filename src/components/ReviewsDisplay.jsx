@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
 const C = {
   bg: '#FFFFFF', bgSoft: '#FAFAF8',
-  text: '#0A0A0A', textMuted: '#0A0A0A',
+  text: '#0A0A0A', textMuted: '#6b6b6b',
   border: '#E8E6E1',
 };
 const FONT = "'Plus Jakarta Sans', sans-serif";
@@ -18,24 +18,19 @@ function StarDisplay({ rating }) {
   );
 }
 
-function ReviewCard({ review, isMobile }) {
+function ReviewCard({ review }) {
   const name = review.show_name && review.display_name ? review.display_name : 'Anonymous PM';
   const date = new Date(review.created_at).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
-
   return (
     <div style={{
-      minWidth: isMobile ? '85vw' : 264,
-      maxWidth: isMobile ? '85vw' : 300,
-      width: isMobile ? '85vw' : 'auto',
-      height: isMobile ? 'auto' : '100%',
-      flexShrink: 0,
       background: C.bg, borderRadius: 16, padding: '20px 22px',
       border: `1px solid ${C.border}`,
-      boxShadow: '0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.03)',
-      scrollSnapAlign: 'start', display: 'flex', flexDirection: 'column', gap: 12,
+      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+      display: 'flex', flexDirection: 'column', gap: 12,
+      width: '100%', boxSizing: 'border-box',
     }}>
       <StarDisplay rating={review.rating} />
-      <p style={{ fontSize: 13, lineHeight: 1.7, color: C.text, fontFamily: FONT, margin: 0, flex: 1 }}>
+      <p style={{ fontSize: 13, lineHeight: 1.7, color: C.text, fontFamily: FONT, margin: 0 }}>
         "{review.review_text}"
       </p>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -49,8 +44,15 @@ function ReviewCard({ review, isMobile }) {
 export default function ReviewsDisplay() {
   const [reviews, setReviews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const scrollContainerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mq.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   useEffect(() => {
     supabase
@@ -62,89 +64,55 @@ export default function ReviewsDisplay() {
       .then(({ data }) => setReviews(data || []));
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (!isMobile || !scrollContainerRef.current) return;
-
-    const handleScroll = () => {
-      const container = scrollContainerRef.current;
-      if (!container) return;
-
-      const scrollLeft = container.scrollLeft;
-      const cardWidth = container.offsetWidth;
-      const newIndex = Math.round(scrollLeft / cardWidth);
-      setCurrentIndex(newIndex);
-    };
-
-    const container = scrollContainerRef.current;
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [isMobile, reviews.length]);
-
   if (reviews.length === 0) return null;
 
-  return (
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '0' : '0 24px' }}>
-      <div style={{ marginBottom: 48 }}>
+  if (isMobile) {
+    return (
+      <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 48 }}>
         <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 24, fontFamily: FONT, textAlign: 'center' }}>
           What PMs Are Saying
         </div>
-      <div
-        ref={scrollContainerRef}
-        style={{
-          display: 'flex', gap: 16, overflowX: 'auto', paddingBottom: 12,
-          scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch',
-          scrollbarWidth: 'none', msOverflowStyle: 'none',
-          justifyContent: reviews.length < 3 ? 'center' : 'flex-start',
-          alignItems: 'stretch',
-          paddingLeft: isMobile ? 16 : 0,
-          paddingRight: isMobile ? 16 : 0,
-          scrollPaddingLeft: isMobile ? 16 : 0,
-        }}>
-        <style>{`.reviews-scroll::-webkit-scrollbar { display: none; }`}</style>
-        {reviews.map(r => <ReviewCard key={r.id} review={r} isMobile={isMobile} />)}
+        <ReviewCard review={reviews[currentIndex]} />
+        {reviews.length > 1 && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: 16 }}>
+            <button
+              onClick={() => setCurrentIndex(i => (i - 1 + reviews.length) % reviews.length)}
+              style={{ background: 'none', border: 'none', fontSize: 22, cursor: 'pointer', color: '#a78bfa', padding: '4px 12px' }}
+            >
+              ←
+            </button>
+            <span style={{ fontSize: 12, color: C.textMuted, fontFamily: FONT }}>
+              {currentIndex + 1} of {reviews.length}
+            </span>
+            <button
+              onClick={() => setCurrentIndex(i => (i + 1) % reviews.length)}
+              style={{ background: 'none', border: 'none', fontSize: 22, cursor: 'pointer', color: '#a78bfa', padding: '4px 12px' }}
+            >
+              →
+            </button>
+          </div>
+        )}
       </div>
+    );
+  }
 
-      {isMobile && reviews.length > 1 && (
-        <div>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 8,
-            marginTop: 16,
-          }}>
-            {reviews.map((_, index) => (
-              <div
-                key={index}
-                style={{
-                  height: currentIndex === index ? 8 : 6,
-                  borderRadius: currentIndex === index ? 999 : '50%',
-                  background: currentIndex === index ? '#7c3aed' : '#D1D5DB',
-                  width: currentIndex === index ? 24 : 6,
-                  transition: 'all 0.3s ease',
-                }}
-              />
-            ))}
+  return (
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', marginBottom: 48 }}>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 24, fontFamily: FONT, textAlign: 'center' }}>
+        What PMs Are Saying
+      </div>
+      <div style={{
+        display: 'flex', gap: 16, overflowX: 'auto', paddingBottom: 12,
+        scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch',
+        scrollbarWidth: 'none', msOverflowStyle: 'none',
+        justifyContent: reviews.length < 3 ? 'center' : 'flex-start',
+        alignItems: 'stretch',
+      }}>
+        {reviews.map(r => (
+          <div key={r.id} style={{ minWidth: 264, maxWidth: 300, flexShrink: 0 }}>
+            <ReviewCard review={r} />
           </div>
-          <div style={{
-            fontSize: 12,
-            color: C.textMuted,
-            fontFamily: FONT,
-            textAlign: 'center',
-            marginTop: 8,
-          }}>
-            swipe to see more
-          </div>
-        </div>
-      )}
+        ))}
       </div>
     </div>
   );
