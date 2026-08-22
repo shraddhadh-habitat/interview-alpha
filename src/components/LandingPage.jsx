@@ -20,16 +20,17 @@ const C = {
 export default function LandingPage({ user, onNavigate, profile }) {
   // Hero section  . proper two-column layout with container
   const HeroSection = () => (
-    <div style={{
+    <div className="hero-section-outer" style={{
       background: C.bg,
       paddingTop: '40px',
     }}>
       <style>{`
         @media (max-width: 768px) {
+          .hero-section-outer { padding-top: 16px !important; }
           .hero-container {
             grid-template-columns: 1fr !important;
-            padding: 32px 16px !important;
-            gap: 32px !important;
+            padding: 16px 16px 32px !important;
+            gap: 24px !important;
           }
           .hero-left {
             max-width: 100% !important;
