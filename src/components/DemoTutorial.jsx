@@ -62,6 +62,10 @@ const STEPS = [
 const globalStyles = `
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 480px) {
+    .demo-content { padding: 24px 20px 20px !important; }
+    .demo-nav-btn { padding: 10px 16px !important; letter-spacing: 0.5px !important; }
+  }
 `;
 
 export default function DemoTutorial({ onClose }) {
@@ -137,6 +141,7 @@ export default function DemoTutorial({ onClose }) {
         {/* Content */}
         <div
           key={animKey}
+          className="demo-content"
           style={{
             padding: '40px 44px 32px',
             animation: 'slideUp 0.35s cubic-bezier(0.22,1,0.36,1)',
@@ -212,6 +217,7 @@ export default function DemoTutorial({ onClose }) {
               {step > 0 && (
                 <button
                   onClick={handleBack}
+                  className="demo-nav-btn"
                   style={{
                     padding: '10px 20px',
                     background: 'transparent',
@@ -220,7 +226,7 @@ export default function DemoTutorial({ onClose }) {
                     color: C.textMuted, fontSize: 11,
                     letterSpacing: 1.5, textTransform: 'uppercase',
                     cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    transition: 'all 0.2s',
+                    transition: 'all 0.2s', whiteSpace: 'nowrap',
                   }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.color = C.green; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textMuted; }}
@@ -230,6 +236,7 @@ export default function DemoTutorial({ onClose }) {
               )}
               <button
                 onClick={handleNext}
+                className="demo-nav-btn"
                 style={{
                   padding: '10px 28px',
                   background: C.green,
@@ -237,7 +244,7 @@ export default function DemoTutorial({ onClose }) {
                   color: '#fff', fontSize: 11,
                   letterSpacing: 1.5, textTransform: 'uppercase',
                   cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontWeight: 600, transition: 'background 0.2s',
+                  fontWeight: 600, transition: 'background 0.2s', whiteSpace: 'nowrap',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background = C.greenHover}
                 onMouseLeave={e => e.currentTarget.style.background = C.green}
