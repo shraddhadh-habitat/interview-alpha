@@ -27,6 +27,9 @@ const globalStyles = `
   @media (max-width: 480px) {
     .pm-container { padding: 20px 16px 40px !important; }
     .pm-answer-textarea { font-size: 16px !important; }
+    .sw-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .score-card { padding: 20px !important; }
+    .feedback-card { padding: 20px !important; }
   }
 `;
 
@@ -285,7 +288,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
   return (
     <div style={{ animation: 'fadeUp 0.4s cubic-bezier(0.22,1,0.36,1)' }}>
       {/* Score block card - hero section */}
-      <div style={{
+      <div className="score-card" style={{
         background: '#FFFFFF',
         border: `1px solid #E8E6E1`,
         borderRadius: 16,
@@ -407,8 +410,8 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
       )}
 
       {/* Strengths / Weaknesses */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 48 }}>
-        <div style={{
+      <div className="sw-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 48 }}>
+        <div className="feedback-card" style={{
           background: '#FFFFFF',
           border: `1px solid #E8E6E1`,
           borderRadius: 16,
@@ -423,7 +426,7 @@ function FeedbackPanel({ result, attemptNumber, questionId, user, onNextQuestion
             ? strengths.map((s, i) => <div key={i} style={{ fontSize: 15, color: '#1B1B18', lineHeight: 1.75, marginBottom: 8, marginLeft: 16, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400 }}>✓ {s}</div>)
             : <div style={{ fontSize: 15, color: 'rgba(27,27,24,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>None identified</div>}
         </div>
-        <div style={{
+        <div className="feedback-card" style={{
           background: '#FFFFFF',
           border: `1px solid #E8E6E1`,
           borderRadius: 16,
