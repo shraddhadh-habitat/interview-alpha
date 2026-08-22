@@ -91,7 +91,7 @@ export default function ReviewsDisplay() {
   if (reviews.length === 0) return null;
 
   return (
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '0' : '0 24px' }}>
       <div style={{ marginBottom: 48 }}>
         <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, marginBottom: 24, fontFamily: FONT, textAlign: 'center' }}>
           What PMs Are Saying
@@ -106,6 +106,7 @@ export default function ReviewsDisplay() {
           alignItems: 'stretch',
           paddingLeft: isMobile ? 16 : 0,
           paddingRight: isMobile ? 16 : 0,
+          scrollPaddingLeft: isMobile ? 16 : 0,
         }}>
         <style>{`.reviews-scroll::-webkit-scrollbar { display: none; }`}</style>
         {reviews.map(r => <ReviewCard key={r.id} review={r} isMobile={isMobile} />)}
