@@ -27,9 +27,11 @@ const globalStyles = `
   @media (max-width: 480px) {
     .pm-container { padding: 20px 16px 40px !important; }
     .pm-answer-textarea { font-size: 16px !important; }
-    .sw-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
     .score-card { padding: 20px !important; }
     .feedback-card { padding: 20px !important; }
+  }
+  @media (max-width: 768px) {
+    .sw-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
   }
 `;
 
@@ -1234,7 +1236,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                             transition: 'all 0.2s',
                           }}
                         >
-                          {loading ? <span style={{ fontWeight: 700 }}>Submitting...</span> : 'Submit Answer'}
+                          {loading ? <span style={{ fontWeight: 700, color: '#fff' }}>Submitting...</span> : 'Submit Answer'}
                         </button>
                       </div>
                       {showSessionCounter && (
@@ -1338,7 +1340,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                             cursor: loading ? 'wait' : 'pointer', opacity: loading ? 0.6 : 1,
                           }}
                         >
-                          {loading ? <span style={{ fontWeight: 700 }}>Submitting...</span> : 'Submit Answer'}
+                          {loading ? <span style={{ fontWeight: 700, color: '#fff' }}>Submitting...</span> : 'Submit Answer'}
                         </button>
                       )}
 
