@@ -33,6 +33,7 @@ const globalStyles = `
   @media (max-width: 768px) {
     .sw-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
     .loading-state { padding: 8px 0 !important; }
+    .pm-bottom-spacer { height: 16px !important; }
   }
 `;
 
@@ -1560,7 +1561,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           )
         )}
 
-        <div style={{ height: 60 }} />
+        <div className="pm-bottom-spacer" style={{ height: 60 }} />
       </div>
 
       {showPaywall && (
