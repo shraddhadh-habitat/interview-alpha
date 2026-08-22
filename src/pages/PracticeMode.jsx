@@ -1381,9 +1381,14 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
           </div>
         )}
 
-        {/* Loading state with skeleton placeholders */}
+        {/* Loading state - full screen overlay */}
         {loading && (
-          <div className="loading-state" style={{ padding: '32px 0', animation: 'fadeUp 0.3s ease', minHeight: 'calc(100vh - 200px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            background: C.bgSoft, zIndex: 100,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '0 24px',
+          }}>
             {/* Loading message with animated gradient background */}
             <div style={{
               marginBottom: 28,
