@@ -199,7 +199,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
 
   // Mobile drawer items for authenticated users
   const authDrawerTabs = [
-    { id: 'interview', label: 'Interview' },
+    { id: 'interview', label: 'Home' },
     { id: 'practice', label: 'Practice Q&A' },
     { id: 'scorecard', label: 'My Progress' },
     { id: 'resume-tools', label: 'Resume Tools' },
@@ -207,7 +207,6 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     ...(isAdmin ? [{ id: 'learning', label: 'Learning Resources' }] : []),
     ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
     ...(isAdmin ? [{ id: 'admin', label: 'Admin' }] : []),
-    { id: 'progress', label: 'My Progress' },
     ...(onReplayDemo ? [{ id: '__tour', label: 'Take Tour' }] : []),
   ];
 
