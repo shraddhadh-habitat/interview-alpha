@@ -33,9 +33,8 @@ function ReviewCard({ review }) {
       <p style={{ fontSize: 13, lineHeight: 1.7, color: C.text, fontFamily: FONT, margin: 0 }}>
         "{review.review_text}"
       </p>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <span style={{ fontSize: 12, fontWeight: 600, color: C.text, fontFamily: FONT }}>{name}</span>
-        <span style={{ fontSize: 11, color: C.textMuted, fontFamily: FONT }}>{date}</span>
       </div>
     </div>
   );
@@ -74,22 +73,21 @@ export default function ReviewsDisplay() {
         </div>
         <ReviewCard review={reviews[currentIndex]} />
         {reviews.length > 1 && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: 16 }}>
-            <button
-              onClick={() => setCurrentIndex(i => (i - 1 + reviews.length) % reviews.length)}
-              style={{ background: 'none', border: 'none', fontSize: 22, cursor: 'pointer', color: '#a78bfa', padding: '4px 12px' }}
-            >
-              ←
-            </button>
-            <span style={{ fontSize: 12, color: C.textMuted, fontFamily: FONT }}>
-              {currentIndex + 1} of {reviews.length}
-            </span>
-            <button
-              onClick={() => setCurrentIndex(i => (i + 1) % reviews.length)}
-              style={{ background: 'none', border: 'none', fontSize: 22, cursor: 'pointer', color: '#a78bfa', padding: '4px 12px' }}
-            >
-              →
-            </button>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 16 }}>
+            {reviews.map((_, index) => (
+              <div
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                style={{
+                  width: currentIndex === index ? 24 : 6,
+                  height: 6,
+                  borderRadius: 999,
+                  background: currentIndex === index ? '#a78bfa' : '#D1D5DB',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                }}
+              />
+            ))}
           </div>
         )}
       </div>
