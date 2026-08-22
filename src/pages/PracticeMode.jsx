@@ -32,6 +32,7 @@ const globalStyles = `
   }
   @media (max-width: 768px) {
     .sw-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .loading-state { padding: 8px 0 !important; }
   }
 `;
 
