@@ -24,9 +24,9 @@ function ReviewCard({ review, isMobile }) {
 
   return (
     <div style={{
-      minWidth: isMobile ? 'unset' : 264,
-      maxWidth: isMobile ? 'unset' : 300,
-      width: isMobile ? '100%' : 'auto',
+      minWidth: isMobile ? '85vw' : 264,
+      maxWidth: isMobile ? '85vw' : 300,
+      width: isMobile ? '85vw' : 'auto',
       height: isMobile ? 'auto' : '100%',
       flexShrink: 0,
       background: C.bg, borderRadius: 16, padding: '20px 22px',

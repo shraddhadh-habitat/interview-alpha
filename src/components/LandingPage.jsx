@@ -33,6 +33,8 @@ export default function LandingPage({ user, onNavigate, profile }) {
           }
           .hero-left {
             max-width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
           }
           .hero-right {
             max-width: 100% !important;
@@ -41,8 +43,9 @@ export default function LandingPage({ user, onNavigate, profile }) {
           }
           .hero-headline { font-size: 24px !important; }
           .hero-subheadline { font-size: 14px !important; }
-          .hero-eyebrow { font-size: 0.7rem !important; letter-spacing: 0.06em !important; margin-bottom: 8px !important; }
-          .hero-cta-wrapper { order: -1 !important; }
+          .hero-countdown-wrapper { order: 2 !important; }
+          .hero-cta-wrapper { order: 1 !important; }
+          .hero-eyebrow { font-size: 0.65rem !important; letter-spacing: 0.05em !important; margin-bottom: 6px !important; }
           .hero-cta {
             display: block !important;
             width: 100% !important;
