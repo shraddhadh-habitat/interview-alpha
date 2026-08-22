@@ -39,8 +39,10 @@ export default function LandingPage({ user, onNavigate, profile }) {
             width: 100% !important;
             gap: 12px !important;
           }
-          .hero-headline { font-size: 26px !important; }
-          .hero-subheadline { font-size: 15px !important; }
+          .hero-headline { font-size: 24px !important; }
+          .hero-subheadline { font-size: 14px !important; }
+          .hero-eyebrow { font-size: 0.7rem !important; letter-spacing: 0.06em !important; margin-bottom: 8px !important; }
+          .hero-cta-wrapper { order: -1 !important; }
           .hero-cta {
             display: block !important;
             width: 100% !important;
@@ -72,7 +74,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
           <WeeklyActiveBar />
 
           {/* Eyebrow */}
-          <p style={{
+          <p className="hero-eyebrow" style={{
             textTransform: 'uppercase',
             letterSpacing: '0.12em',
             fontSize: '0.95rem',
@@ -106,7 +108,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontWeight: 500,
           }}>
-            You can memorize answers, not thinking.
+            You can memorize answers. You can't memorize thinking.
           </p>
 
           <p className="hero-subheadline" style={{
@@ -134,49 +136,53 @@ export default function LandingPage({ user, onNavigate, profile }) {
           </p>
 
           {/* Free Session Countdown */}
-          <FreeSessionCountdown
-            user={user}
-            profile={profile}
-          />
+          <div className="hero-countdown-wrapper" style={{ order: 0 }}>
+            <FreeSessionCountdown
+              user={user}
+              profile={profile}
+            />
+          </div>
 
-          {/* Primary CTA  . inline-block, not full width */}
-          <button
-            className="hero-cta"
-            onClick={() => window.location.href = '/?page=practice&new_user=true'}
-            style={{
-              display: 'inline-block',
-              height: '44px',
-              padding: '0 28px',
-              background: 'var(--gradient-brand)',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '50px',
-              fontSize: '15px',
-              fontWeight: 700,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >
-            Answer your first question
-          </button>
+          {/* Primary CTA + reassurance */}
+          <div className="hero-cta-wrapper" style={{ order: 0 }}>
+            <button
+              className="hero-cta"
+              onClick={() => window.location.href = '/?page=practice&new_user=true'}
+              style={{
+                display: 'inline-block',
+                height: '44px',
+                padding: '0 28px',
+                background: 'var(--gradient-brand)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '50px',
+                fontSize: '15px',
+                fontWeight: 700,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+            >
+              Answer your first question
+            </button>
 
-          {/* Reassurance text - hidden for logged-in users */}
-          {!user && (
-            <p style={{
-              fontSize: '13px',
-              color: '#1B1B18',
-              marginTop: '12px',
-              marginBottom: '0',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 900,
-              textShadow: '0 0 0 #1B1B18',
-            }}>
-              No resume. No setup. Free. Takes 2 minutes.
-            </p>
-          )}
+            {/* Reassurance text - hidden for logged-in users */}
+            {!user && (
+              <p style={{
+                fontSize: '13px',
+                color: '#1B1B18',
+                marginTop: '12px',
+                marginBottom: '0',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 900,
+                textShadow: '0 0 0 #1B1B18',
+              }}>
+                No resume. No setup. Free. Takes 2 minutes.
+              </p>
+            )}
+          </div>
 
           {/* Secondary link */}
           <p style={{ fontSize: '0.95rem', marginTop: '12px', color: '#111', lineHeight: 1.5, fontWeight: 600 }}>
