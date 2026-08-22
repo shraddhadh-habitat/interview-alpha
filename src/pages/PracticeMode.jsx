@@ -1383,7 +1383,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
 
         {/* Loading state with skeleton placeholders */}
         {loading && (
-          <div style={{ padding: '32px 0', animation: 'fadeUp 0.3s ease' }}>
+          <div className="loading-state" style={{ padding: '32px 0', animation: 'fadeUp 0.3s ease', minHeight: 'calc(100vh - 200px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {/* Loading message with animated gradient background */}
             <div style={{
               marginBottom: 28,
