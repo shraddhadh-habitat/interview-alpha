@@ -151,6 +151,8 @@ export default function ResumeToolsHub({ user, profile }) {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const dropdownButtonRef = useRef(null);
   const dropdownMenuRef = useRef(null);
+  const stickyHeaderRef = useRef(null);
+  const [stickyHeaderHeight, setStickyHeaderHeight] = useState(NAV_H + 60);
 
   useEffect(() => {
     const savedTab = localStorage.getItem('jdp_active_tab');
@@ -175,6 +177,17 @@ export default function ResumeToolsHub({ user, profile }) {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!stickyHeaderRef.current) return;
+    const observer = new ResizeObserver(() => {
+      if (stickyHeaderRef.current) {
+        setStickyHeaderHeight(NAV_H + stickyHeaderRef.current.offsetHeight);
+      }
+    });
+    observer.observe(stickyHeaderRef.current);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -206,13 +219,16 @@ export default function ResumeToolsHub({ user, profile }) {
       boxSizing: 'border-box',
     }}>
       {/* Hero + Tabs Bar - single sticky container */}
-      <div style={{
-        position: 'sticky',
-        top: NAV_H,
-        background: '#FAFAF8',
-        zIndex: 10,
-        borderBottom: '1px solid #e4e4f0',
-      }}>
+      <div
+        ref={stickyHeaderRef}
+        style={{
+          position: 'sticky',
+          top: NAV_H,
+          background: '#FAFAF8',
+          zIndex: 10,
+          borderBottom: '1px solid #e4e4f0',
+        }}
+      >
         {/* Hero section */}
         <div className="resume-tools-hero" style={{ padding: '16px 0' }}>
           <div style={{ width: '100%', maxWidth: 1390, margin: '0 auto', padding: '0 28px', boxSizing: 'border-box' }}>
@@ -278,6 +294,7 @@ export default function ResumeToolsHub({ user, profile }) {
               position: 'relative',
               padding: '12px 16px',
               minHeight: 60,
+              width: '100%',
               background: '#FFFFFF',
               border: 'none',
               borderBottom: '2px solid transparent',
@@ -288,6 +305,7 @@ export default function ResumeToolsHub({ user, profile }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               display: isMobile ? 'flex' : 'none',
               alignItems: 'center',
+              justifyContent: 'space-between',
               gap: '8px',
               whiteSpace: 'nowrap',
             }}
@@ -302,7 +320,7 @@ export default function ResumeToolsHub({ user, profile }) {
               ref={dropdownMenuRef}
               style={{
                 position: 'fixed',
-                top: `${NAV_H + 60}px`,
+                top: `${stickyHeaderHeight}px`,
                 left: 0,
                 right: 0,
                 background: '#FFFFFF',
