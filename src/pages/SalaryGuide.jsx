@@ -377,7 +377,7 @@ function Section({ title, subtitle, children, defaultOpen = false }) {
 // ─── CTA Banner ───
 function CTABanner({ text, onClick }) {
   return (
-    <div style={{
+    <div className="cta-banner" style={{
       background: C.bgMuted,
       borderRadius: '12px',
       padding: '16px 24px',
