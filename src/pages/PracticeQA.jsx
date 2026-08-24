@@ -221,6 +221,9 @@ const POPULAR_KEYWORDS = {
   pm: ['AI Product', 'Stakeholder', 'Agile', 'Growth', 'Product Strategy', 'Leadership', 'Data', 'System Design'],
   ds: ['Machine Learning', 'SQL', 'Statistics', 'Python', 'A/B Testing', 'Feature Engineering', 'Model Evaluation', 'Data Pipeline'],
   consulting: ['Case Interview', 'Market Entry', 'Profitability', 'Market Sizing', 'Growth Strategy', 'Operations', 'M&A', 'Digital Transformation'],
+  scrummaster: ['Behavioral', 'Sprint Planning', 'Conflict Resolution', 'Agile', 'Retrospective', 'Stakeholder', 'Velocity', 'SAFe'],
+  projectmanagement: ['Behavioral', 'Stakeholder', 'Risk Management', 'Budget', 'Scope Creep', 'Leadership', 'Agile', 'Waterfall'],
+  technicalwriting: ['UX Writing', 'API Documentation', 'Style Guide', 'Content Strategy', 'Technical Docs', 'AI Content', 'User Guide', 'Release Notes'],
 };
 
 // Sorting priority functions for each track
