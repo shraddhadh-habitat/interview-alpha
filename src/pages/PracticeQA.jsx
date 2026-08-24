@@ -1648,6 +1648,31 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           }
         }
       }
+    } else if (track === 'scrummaster') {
+      role = 'scrummaster';
+      level = 'Scrum Master';
+      const smLevel = scrumMasterQuestions['Scrum Master'];
+      if (smLevel) {
+        const availableCategories = Object.keys(smLevel).filter(k => Array.isArray(smLevel[k]) && smLevel[k].length > 0);
+        if (availableCategories.length > 0) {
+          const selectedCategory = availableCategories[0];
+          const allQuestions = smLevel[selectedCategory];
+          if (allQuestions.length > 0) {
+            const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+            const filteredItem = filtered.find(f => f.question.q === randomQuestion.q);
+            const questionKey = filteredItem ? filteredItem.key : `fallback-${Math.random().toString(36).substr(2, 9)}`;
+            setPracticeQuestion({
+              question: randomQuestion,
+              questionId: questionKey,
+              designation: level,
+              category: selectedCategory,
+              subcategory: randomQuestion?.subcategory || '',
+            });
+            setShowTrackSelector(false);
+            return;
+          }
+        }
+      }
     }
   };
 
