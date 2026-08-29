@@ -132,8 +132,8 @@ export default function AdminPanel({ user }) {
       // Calculate summary stats from profiles
       const profiles = data || [];
       const totalUsers = profiles.length;
-      const proUsers = profiles.filter(p => p.subscription_status === 'active').length;
-      const freeUsers = profiles.filter(p => p.subscription_status !== 'active').length;
+      const proUsers = profiles.filter(p => p.subscription_status === 'active' || p.subscription_status === 'pro').length;
+      const freeUsers = profiles.filter(p => p.subscription_status !== 'active' && p.subscription_status !== 'pro').length;
       const practicedUsers = profiles.filter(p => (p.free_sessions_used ?? 0) > 0 || (p.monthly_sessions_used ?? 0) > 0).length;
       const withPhoneUsers = profiles.filter(p => p.phone_number && p.phone_number !== '' && p.phone_number !== '-').length;
       const mobileUsers = profiles.filter(p => p.device_type === 'android' || p.device_type === 'ios' || p.device_type === 'mobile').length;
@@ -307,7 +307,8 @@ export default function AdminPanel({ user }) {
     const map = {
       free:    { bg: C.bgMuted,      border: C.border,        color: C.textMuted, label: 'Free' },
       pending: { bg: C.yellowLight,  border: C.yellowBorder,  color: C.yellow,    label: 'Pending' },
-      active:  { bg: C.successLight,   border: C.successBorder,   color: C.success,     label: 'Active' },
+      active:  { bg: C.successLight, border: C.successBorder, color: C.success,   label: 'Active' },
+      pro:     { bg: C.successLight, border: C.successBorder, color: C.success,   label: 'Pro' },
       expired: { bg: C.redLight,     border: C.redBorder,     color: C.red,       label: 'Expired' },
     };
     const s = map[status] || map.free;
@@ -490,7 +491,7 @@ export default function AdminPanel({ user }) {
                 if (f.status !== 'all') {
                   const st = u.subscription_status || 'free';
                   if (f.status === 'free'    && st !== 'free')    return false;
-                  if (f.status === 'active'  && st !== 'active')  return false;
+                  if (f.status === 'active'  && st !== 'active' && st !== 'pro')  return false;
                   if (f.status === 'expired' && st !== 'expired') return false;
                 }
                 if (f.device !== 'all' && u.device_type !== f.device) return false;
