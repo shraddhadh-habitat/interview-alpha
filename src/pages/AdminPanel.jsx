@@ -570,7 +570,7 @@ export default function AdminPanel({ user }) {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, minWidth: 700 }}>
                       <thead>
                         <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
-                          {['Device', 'Email', 'Name', 'Phone', 'Status', 'Free Sess.', 'Monthly Sess.', 'Last Seen'].map(h => (
+                          {['Email', 'Name', 'Status', 'Last Seen', 'Free Sess.', 'Monthly Sess.', 'Phone', 'Device'].map(h => (
                             <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
                           ))}
                         </tr>
@@ -580,19 +580,19 @@ export default function AdminPanel({ user }) {
                           <tr><td colSpan={8} style={{ padding: '28px 14px', textAlign: 'center', color: C.textMuted, fontSize: 12 }}>No users match the filters.</td></tr>
                         ) : filtered.map((u, i) => (
                           <tr key={u.id} style={{ borderBottom: i < filtered.length - 1 ? `1px solid ${C.border}` : 'none' }}>
+                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.email || ' - '}</td>
+                            <td style={{ padding: '12px 14px', color: u.display_name ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.display_name || ' - '}</td>
+                            <td style={{ padding: '12px 14px' }}>{subChip(u.subscription_status)}</td>
+                            <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{formatIST(u.last_seen_at)}</td>
+                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.free_sessions_used ?? 0}</td>
+                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.monthly_sessions_used ?? 0}</td>
+                            <td style={{ padding: '12px 14px', color: u.phone_number ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.phone_number || ' - '}</td>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, whiteSpace: 'nowrap' }}>
                               {u.device_type === 'android' ? '🤖 Android'
                                 : u.device_type === 'ios' ? '🍎 Apple iOS'
                                 : u.device_type === 'desktop' ? '💻 Desktop'
                                 : <span style={{ color: C.textMuted, fontSize: '0.85rem' }}>-</span>}
                             </td>
-                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.email || ' - '}</td>
-                            <td style={{ padding: '12px 14px', color: u.display_name ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.display_name || ' - '}</td>
-                            <td style={{ padding: '12px 14px', color: u.phone_number ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.phone_number || ' - '}</td>
-                            <td style={{ padding: '12px 14px' }}>{subChip(u.subscription_status)}</td>
-                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.free_sessions_used ?? 0}</td>
-                            <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.monthly_sessions_used ?? 0}</td>
-                            <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{formatIST(u.last_seen_at)}</td>
                           </tr>
                         ))}
                       </tbody>
