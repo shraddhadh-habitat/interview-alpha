@@ -106,7 +106,6 @@ export default function ReviewWidget({ user, profile }) {
     <>
       <style>{`
         .rw-fab {
-          position: fixed; bottom: 24px; right: 24px; z-index: 800;
           display: flex; align-items: center; gap: 8px;
           padding: 12px 20px; border: none; border-radius: 50px;
           font-family: ${FONT}; font-size: 13px; font-weight: 600;
@@ -143,13 +142,13 @@ export default function ReviewWidget({ user, profile }) {
       `}</style>
 
       {/* Floating button */}
-      <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 800, position: 'relative', display: 'inline-block' }}>
+      <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 800, display: 'inline-block' }}>
         <button
           className="rw-fab"
           onClick={() => !alreadySubmitted && setShowModal(true)}
           disabled={alreadySubmitted}
           style={{
-            position: 'static',
+            position: 'relative',
             background: alreadySubmitted ? C.greenLight : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
             color: '#fff',
             border: alreadySubmitted ? `1.5px solid ${C.greenBorder}` : 'none',
