@@ -142,40 +142,34 @@ export default function ReviewWidget({ user, profile }) {
       `}</style>
 
       {/* Floating button */}
-      <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 800, display: 'inline-flex', alignItems: 'center' }}>
+      <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 800 }}>
         <button
           className="rw-fab"
           onClick={() => !alreadySubmitted && setShowModal(true)}
           disabled={alreadySubmitted}
           style={{
-            position: 'relative',
             background: alreadySubmitted ? C.greenLight : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
             color: '#fff',
             border: alreadySubmitted ? `1.5px solid ${C.greenBorder}` : 'none',
             cursor: alreadySubmitted ? 'default' : 'pointer',
           }}
         >
-          {alreadySubmitted ? '✓' : '⭐⭐⭐⭐⭐'}
-          <span className="rw-fab-text">
-            {alreadySubmitted ? 'Review Submitted' : 'Leave a Review'}
-          </span>
+          ⭐ Review Us ⭐
+          {!alreadySubmitted && (
+            <span
+              onClick={e => { e.stopPropagation(); setDismissed(true); }}
+              style={{
+                marginLeft: 8,
+                fontSize: 14,
+                opacity: 0.7,
+                cursor: 'pointer',
+                fontWeight: 400,
+              }}
+            >
+              ×
+            </span>
+          )}
         </button>
-        {!alreadySubmitted && (
-          <button
-            onClick={() => setDismissed(true)}
-            style={{
-              position: 'absolute', top: -8, right: -8,
-              width: 20, height: 20, borderRadius: '50%',
-              background: 'rgba(0,0,0,0.45)', border: 'none',
-              color: '#fff', fontSize: 12, lineHeight: 1,
-              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              zIndex: 801,
-            }}
-          >
-            ×
-          </button>
-        )}
       </div>
 
       {/* Modal */}
