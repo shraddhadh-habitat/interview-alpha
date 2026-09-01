@@ -117,7 +117,7 @@ export default function AdminPanel({ user }) {
           .order('submitted_at', { ascending: false }),
         supabase
           .from('profiles')
-          .select('id, email, display_name, phone_number, device_type, device_os, subscription_status, free_sessions_used, monthly_sessions_used, last_seen_at, updated_at, email_day1_sent, email_day3_sent, email_day5_sent')
+          .select('id, email, display_name, phone_number, device_type, device_os, subscription_status, subscription_expires_at, free_sessions_used, monthly_sessions_used, last_seen_at, updated_at, email_day1_sent, email_day3_sent, email_day5_sent')
           .order('updated_at', { ascending: false }),
         supabase.rpc('get_all_reviews'),
       ]);
@@ -570,7 +570,7 @@ export default function AdminPanel({ user }) {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, minWidth: 700 }}>
                       <thead>
                         <tr style={{ background: C.bgMuted, borderBottom: `1px solid ${C.border}` }}>
-                          {['Email', 'Name', 'Status', 'Last Seen', 'Free Sess.', 'Monthly Sess.', 'Phone', 'Device'].map(h => (
+                          {['Email', 'Name', 'Status', 'Expires', 'Last Seen', 'Free Sess.', 'Monthly Sess.', 'Phone', 'Device'].map(h => (
                             <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: C.textMuted, fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
                           ))}
                         </tr>
@@ -583,6 +583,13 @@ export default function AdminPanel({ user }) {
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>{u.email || ' - '}</td>
                             <td style={{ padding: '12px 14px', color: u.display_name ? C.text : C.textMuted, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.display_name || ' - '}</td>
                             <td style={{ padding: '12px 14px' }}>{subChip(u.subscription_status)}</td>
+                            <td style={{ padding: '12px 14px', whiteSpace: 'nowrap', fontSize: 11 }}>
+                              {(u.subscription_status === 'pro' || u.subscription_status === 'active') && u.subscription_expires_at ? (
+                                <span style={{ color: new Date(u.subscription_expires_at) < new Date() ? C.red : C.success, fontWeight: 600 }}>
+                                  {formatIST(u.subscription_expires_at)}
+                                </span>
+                              ) : <span style={{ color: C.textMuted }}>-</span>}
+                            </td>
                             <td style={{ padding: '12px 14px', color: C.textMuted, whiteSpace: 'nowrap', fontSize: 11 }}>{formatIST(u.last_seen_at)}</td>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.free_sessions_used ?? 0}</td>
                             <td style={{ padding: '12px 14px', color: C.text, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{u.monthly_sessions_used ?? 0}</td>
