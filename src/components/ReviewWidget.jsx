@@ -142,7 +142,7 @@ export default function ReviewWidget({ user, profile }) {
       `}</style>
 
       {/* Floating button */}
-      <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 800, display: 'inline-block' }}>
+      <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 800, display: 'inline-flex', alignItems: 'center' }}>
         <button
           className="rw-fab"
           onClick={() => !alreadySubmitted && setShowModal(true)}
