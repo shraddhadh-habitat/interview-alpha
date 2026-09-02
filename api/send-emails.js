@@ -85,7 +85,7 @@ async function sendResendEmail(to, subject, html) {
       'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ from: 'InterviewAlpha <communications@interviewalpha.ai>', to, subject, html })
+    body: JSON.stringify({ from: 'InterviewAlpha <communications@interviewalpha.in>', to, subject, html })
   });
   const data = await response.json();
   console.log('Resend response:', JSON.stringify(data));
@@ -359,7 +359,7 @@ function email5Html(name) {
       </div>
     </div>
     <a href="https://interviewalpha.ai/upgrade" style="display:block;background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(15,12,41,0.3)">See Pro plans →</a>
-    <p style="color:#9a9a9a;font-size:0.78rem;margin:20px 0 0;text-align:center">Not happy in 7 days? Email <a href="mailto:communications@interviewalpha.ai" style="color:#a78bfa;text-decoration:none">communications@interviewalpha.ai</a> and we will sort it out.</p>
+    <p style="color:#9a9a9a;font-size:0.78rem;margin:20px 0 0;text-align:center">Not happy in 7 days? Email <a href="mailto:communications@interviewalpha.in" style="color:#a78bfa;text-decoration:none">communications@interviewalpha.in</a> and we will sort it out.</p>
     <div style="height:1px;background:#f0ede8;margin:28px 0"></div>
     <div style="display:flex;align-items:center;gap:12px">
       <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#a8e6cf,#a78bfa);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:1rem;flex-shrink:0">S</div>

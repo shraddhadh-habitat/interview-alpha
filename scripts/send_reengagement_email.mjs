@@ -85,7 +85,7 @@ async function sendReengagementEmails() {
 </div>`;
 
         await resend.emails.send({
-          from: 'Shraddha <shraddha@interviewalpha.ai>',
+          from: 'Shraddha <communications@interviewalpha.in>',
           to: user.email,
           subject: 'Your 3 free practice sessions are waiting',
           html: emailBody,
