@@ -83,8 +83,8 @@ function AuthForm({ tab, mobile, onSuccess }) {
 
         // Build redirect URL with score token if present
         const emailRedirectTo = scoreToken
-          ? `https://www.interviewalpha.ai/auth/callback?next=practice&score_token=${scoreToken}`
-          : 'https://www.interviewalpha.ai/auth/callback?next=practice';
+          ? `https://www.interviewalpha.in/auth/callback?next=practice&score_token=${scoreToken}`
+          : 'https://www.interviewalpha.in/auth/callback?next=practice';
         console.log('[LoginModal] emailRedirectTo:', emailRedirectTo);
 
         const { data, error: err } = await supabase.auth.signUp({
