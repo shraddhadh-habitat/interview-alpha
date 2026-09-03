@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 export default function BlogPost() {
   useEffect(() => {
-    document.title = 'The Interview Feedback Black Hole | InterviewAlpha.ai Blog';
+    document.title = 'The Interview Feedback Black Hole | InterviewAlpha.in Blog';
   }, []);
 
   const C = {
@@ -89,7 +89,7 @@ export default function BlogPost() {
             marginBottom: '32px',
             flexWrap: 'wrap',
           }}>
-            <span>InterviewAlpha.ai</span>
+            <span>InterviewAlpha.in</span>
             <span>May 21, 2026</span>
             <span>8 min read</span>
           </div>
@@ -267,7 +267,7 @@ export default function BlogPost() {
               marginTop: '48px',
               marginBottom: '16px',
             }}>
-              What InterviewAlpha.ai Is Actually Building
+              What InterviewAlpha.in Is Actually Building
             </h2>
 
             <p style={{
@@ -275,7 +275,7 @@ export default function BlogPost() {
               lineHeight: 1.8,
               marginBottom: '24px',
             }}>
-              InterviewAlpha.ai is built on a thesis that most people in the interview prep space haven't articulated: the value is not in the questions or the frameworks. The value is in the per-answer, per-competency feedback that closes the loop between practice and improvement.
+              InterviewAlpha.in is built on a thesis that most people in the interview prep space haven't articulated: the value is not in the questions or the frameworks. The value is in the per-answer, per-competency feedback that closes the loop between practice and improvement.
             </p>
 
             <p style={{
@@ -291,7 +291,7 @@ export default function BlogPost() {
               lineHeight: 1.8,
               marginBottom: '24px',
             }}>
-              This is fundamentally different from what the existing market offers. Other platforms give you videos to watch or peers to practice with who don't know the rubric either. InterviewAlpha.ai gives you the rubric, applied to your actual answer, every time you practice.
+              This is fundamentally different from what the existing market offers. Other platforms give you videos to watch or peers to practice with who don't know the rubric either. InterviewAlpha.in gives you the rubric, applied to your actual answer, every time you practice.
             </p>
 
             <h2 style={{
@@ -351,7 +351,7 @@ export default function BlogPost() {
               lineHeight: 1.8,
               marginBottom: '24px',
             }}>
-              The interesting strategic question for InterviewAlpha.ai is whether per-answer feedback is a feature or a platform.
+              The interesting strategic question for InterviewAlpha.in is whether per-answer feedback is a feature or a platform.
             </p>
 
             <p style={{
@@ -359,7 +359,7 @@ export default function BlogPost() {
               lineHeight: 1.8,
               marginBottom: '24px',
             }}>
-              If it's a feature, the large incumbents will eventually integrate AI feedback into their existing products and InterviewAlpha.ai will face a distribution disadvantage.
+              If it's a feature, the large incumbents will eventually integrate AI feedback into their existing products and InterviewAlpha.in will face a distribution disadvantage.
             </p>
 
             <p style={{
@@ -367,7 +367,7 @@ export default function BlogPost() {
               lineHeight: 1.8,
               marginBottom: '24px',
             }}>
-              If it's a platform, meaning the data from millions of practice answers creates a proprietary understanding of what distinguishes strong candidates from weak ones across roles, levels, companies, and competencies, then InterviewAlpha.ai builds a moat that scales with usage. Every answer evaluated makes the next evaluation better. Every pattern detected across thousands of candidates for a specific role at a specific company creates intelligence that no generic AI model can replicate.
+              If it's a platform, meaning the data from millions of practice answers creates a proprietary understanding of what distinguishes strong candidates from weak ones across roles, levels, companies, and competencies, then InterviewAlpha.in builds a moat that scales with usage. Every answer evaluated makes the next evaluation better. Every pattern detected across thousands of candidates for a specific role at a specific company creates intelligence that no generic AI model can replicate.
             </p>
 
             <p style={{
