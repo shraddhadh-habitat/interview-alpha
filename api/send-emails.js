@@ -154,7 +154,7 @@ function email1Html(name) {
       </div>
     </div>
   </div>
-  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
+  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.in</a> · Built for PM and Data Science aspirants</p>
 </div>
 </body>
 </html>`;
@@ -205,7 +205,7 @@ function email2Html(name) {
       </div>
     </div>
   </div>
-  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
+  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.in</a> · Built for PM and Data Science aspirants</p>
 </div>
 </body>
 </html>`;
@@ -259,7 +259,7 @@ function email3Html(name) {
       </div>
     </div>
   </div>
-  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
+  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.in</a> · Built for PM and Data Science aspirants</p>
 </div>
 </body>
 </html>`;
@@ -313,7 +313,7 @@ function email4Html(name) {
       </div>
     </div>
   </div>
-  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
+  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.in</a> · Built for PM and Data Science aspirants</p>
 </div>
 </body>
 </html>`;
@@ -369,7 +369,7 @@ function email5Html(name) {
       </div>
     </div>
   </div>
-  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
+  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.in</a> · Built for PM and Data Science aspirants</p>
 </div>
 </body>
 </html>`;

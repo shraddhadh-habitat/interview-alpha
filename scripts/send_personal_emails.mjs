@@ -22,7 +22,7 @@ const emails = [
 <p>You answer a real PM or Data Science interview question by voice or text. AI scores you instantly across 8 competencies. You see your actual score and exactly how a stronger answer would have looked.</p>
 <p>Most candidates are surprised by their first score. In a good way, because now they know what to work on.</p>
 <p>Your first 3 sessions are on us. Takes 5 minutes.</p>
-<a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Find out your score at interviewalpha.ai</a>
+<a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Find out your score at interviewalpha.in</a>
 <p>Reply if you have questions. I read every email personally.</p>
 <p>Rooting for you,<br>Shraddha<br>Founder, InterviewAlpha 🚀</p>
 </div>`
@@ -39,7 +39,7 @@ const emails = [
 <p>I built this after 16 years in product roles at Mastercard, Western Union, and UBS because I kept seeing strong candidates lose out in interviews not from lack of ability but from lack of real practice with real feedback.</p>
 <p>You answer a real PM or Data Science question by voice or text. AI scores you instantly across 8 competencies. You see exactly where you stood and how a stronger answer would have looked.</p>
 <p>Your first 3 sessions are on us. No card needed. Takes 5 minutes.</p>
-<a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Start practicing at interviewalpha.ai</a>
+<a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Start practicing at interviewalpha.in</a>
 <p>Reply if you have questions. I read every email personally.</p>
 <p>Rooting for you,<br>Shraddha<br>Founder, InterviewAlpha 🚀</p>
 </div>`
@@ -56,7 +56,7 @@ const emails = [
 <p>I built InterviewAlpha after 16 years in product roles at Mastercard, Western Union, and UBS. The problem I kept seeing: strong candidates failing interviews not because they were not good enough, but because they never practiced with real feedback before the interview that actually mattered.</p>
 <p>You answer a real PM or Data Science interview question by voice or text. AI scores you instantly across 8 competencies. You see your actual score and exactly how a stronger answer would have looked.</p>
 <p>Your first 3 sessions are on us. Takes 5 minutes.</p>
-<a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Start your sessions at interviewalpha.ai</a>
+<a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Start your sessions at interviewalpha.in</a>
 <p>Reply if you have questions. I read every email personally.</p>
 <p>Rooting for you,<br>Shraddha<br>Founder, InterviewAlpha 🚀</p>
 </div>`
