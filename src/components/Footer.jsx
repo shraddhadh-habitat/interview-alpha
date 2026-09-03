@@ -236,7 +236,7 @@ export default function Footer() {
       <div style={{ borderTop: 'none' }}>
         <div className="footer-bottom" style={{ maxWidth: 1120, margin: '0 auto', padding: '24px 40px', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <p style={{ fontSize: 12, color: C.muted, margin: 0 }}>
-            © 2026 InterviewAlpha.ai™. All rights reserved.
+            © 2026 InterviewAlpha.in™. All rights reserved.
           </p>
           <p style={{ fontSize: 11, color: C.muted, margin: 0 }}>
             Questions, scoring frameworks, and AI methodologies are proprietary and protected under IP law.
