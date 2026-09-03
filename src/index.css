@@ -648,24 +648,6 @@ div[class*="review"] button {
   stroke: none !important;
 }
 
-/* --- NAV TABS (main) --- */
-nav a, nav button,
-[class*="nav-tab"],
-[class*="navbar"] a,
-[class*="tab-item"],
-header nav a {
-  background: var(--gradient-brand) !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  border-radius: 10px !important;
-  font-weight: 600 !important;
-}
-
-[class*="tab"] span {
-  color: inherit;
-  -webkit-text-fill-color: inherit;
-}
-
 /* --- CATEGORY BADGES (PRODUCT MANAGEMENT, DATA SCIENCE etc.) --- */
 [class*="category"],
 [class*="topic-tag"],
