@@ -415,7 +415,7 @@ export default function BlogPost() {
 
           {/* CTA Card */}
           <div style={{
-            background: '#FDCD34',
+            background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
             borderRadius: '12px',
             padding: '32px',
             marginTop: '60px',
@@ -424,7 +424,7 @@ export default function BlogPost() {
             <p style={{
               fontSize: '18px',
               fontWeight: 700,
-              color: C.text,
+              color: '#fff',
               marginBottom: '20px',
               margin: '0 0 20px 0',
             }}>
