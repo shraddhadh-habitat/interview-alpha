@@ -251,7 +251,7 @@ export default function Footer() {
           fontFamily: "'Plus Jakarta Sans', sans-serif",
           lineHeight: 1.6,
         }}>
-          InterviewAlpha is an independent interview preparation platform and is not affiliated with, endorsed by, or connected to any companies mentioned in practice questions.
+          InterviewAlpha.in is an independent interview preparation platform and is not affiliated with, endorsed by, or connected to any companies mentioned in practice questions.
         </div>
       </div>
     </footer>

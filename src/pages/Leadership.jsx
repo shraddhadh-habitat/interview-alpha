@@ -77,7 +77,7 @@ export default function Leadership() {
             Leadership
           </h1>
           <p style={{ fontSize: 16, color: C.textMuted, marginBottom: 0 }}>
-            The team behind InterviewAlpha
+            People behind InterviewAlpha.in
           </p>
         </div>
 
