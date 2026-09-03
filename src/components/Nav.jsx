@@ -128,16 +128,6 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     .nav-tab:hover { color: #1B1B18; transform: translateY(-1px); }
     .nav-tab.active {
       color: #1B1B18;
-      border-bottom: 3px solid transparent;
-      position: relative;
-    }
-    .nav-tab.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 12px; right: 12px;
-      height: 3px;
-      background: #a259f7;
-      border-radius: 2px 2px 0 0;
     }
     .nav-tab.admin { color: #1B1B18; -webkit-text-fill-color: #1B1B18; }
     .hamburger-btn {
