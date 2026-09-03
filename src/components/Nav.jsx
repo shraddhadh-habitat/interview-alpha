@@ -102,7 +102,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
       -webkit-overflow-scrolling: touch;
       -ms-overflow-style: none;
       scrollbar-width: none;
-      height: 60px;
+      height: 48px;
       align-items: stretch;
     }
     .nav-tabs::-webkit-scrollbar { display: none; }
