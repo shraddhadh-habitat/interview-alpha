@@ -106,7 +106,7 @@ export default function Footer() {
               My Progress
             </FooterLink>
             <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'resume-tools' })); }}>
-              Resume Tools
+              Career Tools
             </FooterLink>
             <FooterLink onClick={() => { window.scrollTo(0, 0); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'salary' })); }}>
               Salary Guide

@@ -74,7 +74,7 @@ for (const device of devices) {
       await page.goto('/');
       await page.waitForLoadState('networkidle');
 
-      const resumeTab = page.locator('text=Resume Tools').first();
+      const resumeTab = page.locator('text=Career Tools').first();
       if (await resumeTab.isVisible()) {
         await resumeTab.click();
         await page.waitForTimeout(1000);

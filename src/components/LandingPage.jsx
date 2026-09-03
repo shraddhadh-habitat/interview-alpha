@@ -919,7 +919,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               margin: '0 0 8px 0',
             }}>
-              Resume Tools
+              Career Tools
             </h3>
             <p style={{
               fontSize: '12px',

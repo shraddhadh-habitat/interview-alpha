@@ -51,7 +51,7 @@ const PUBLIC_TABS = [
   { id: 'interview',  label: 'Home' },
   { id: 'practice',   label: 'Practice' },
   { id: 'scorecard',  label: 'My Progress' },
-  { id: 'resume-tools', label: 'Resume Tools' },
+  { id: 'resume-tools', label: 'Career Tools' },
   { id: 'salary',     label: 'Salary Guide' },
 ];
 
@@ -202,7 +202,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     { id: 'interview', label: 'Home' },
     { id: 'practice', label: 'Practice Q&A' },
     { id: 'scorecard', label: 'My Progress' },
-    { id: 'resume-tools', label: 'Resume Tools' },
+    { id: 'resume-tools', label: 'Career Tools' },
     { id: 'salary', label: 'Salary Guide' },
     ...(isAdmin ? [{ id: 'learning', label: 'Learning Resources' }] : []),
     ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
