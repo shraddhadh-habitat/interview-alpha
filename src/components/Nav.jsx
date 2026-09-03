@@ -265,9 +265,10 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
                   onClick={() => setAvatarDropOpen(v => !v)}
                   style={{
                     width: 32, height: 32, borderRadius: '50%',
-                    background: C.bgMuted, border: `1.5px solid ${C.border}`,
+                    background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                    border: 'none',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 14, fontWeight: 700, color: C.text,
+                    fontSize: 14, fontWeight: 700, color: '#fff',
                     cursor: 'pointer', flexShrink: 0
                   }}
                 >
