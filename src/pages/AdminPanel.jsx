@@ -348,28 +348,6 @@ export default function AdminPanel({ user }) {
           </div>
         )}
 
-        {/* Preview Onboarding Button */}
-        <div style={{ padding: '0 0 24px' }}>
-          <button
-            onClick={() => {
-              sessionStorage.setItem('showOnboarding', 'true');
-              window.location.href = '/';
-            }}
-            style={{
-              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '10px',
-              padding: '10px 20px',
-              fontWeight: 600,
-              fontSize: '0.85rem',
-              cursor: 'pointer'
-            }}
-          >
-            🧪 Preview Onboarding Flow
-          </button>
-        </div>
-
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 24, borderBottom: `1px solid ${C.border}` }}>
           {[['payments', 'Payment Requests'], ['users', 'Users'], ['reviews', 'Reviews']].map(([id, label]) => {
