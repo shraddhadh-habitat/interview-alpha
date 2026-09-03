@@ -77,11 +77,11 @@ async function sendReengagementEmails() {
 
   <p>Most candidates are surprised by their first score. Takes 5 minutes.</p>
 
-  <a href="https://interviewalpha.ai" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">
+  <a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">
     Start your first session →
   </a>
 
-  <p>Shraddha<br>Founder, InterviewAlpha<br>www.interviewalpha.ai</p>
+  <p>Shraddha<br>Founder, InterviewAlpha<br>www.interviewalpha.in</p>
 </div>`;
 
         await resend.emails.send({

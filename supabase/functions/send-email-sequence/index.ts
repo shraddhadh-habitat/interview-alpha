@@ -94,7 +94,7 @@ function day1Html(name: string) {
     <p><strong>Session 1:</strong> Answer any question cold. See your baseline score.</p>
     <p><strong>Session 2:</strong> Read the expert rewrite. Answer a similar question. Watch your score improve.</p>
     <p><strong>Session 3:</strong> Pick your target company. Answer one of their specific questions.</p>
-    <a href="https://interviewalpha.ai" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Start your first session now</a>
+    <a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Start your first session now</a>
     <p>Shraddha<br>Founder, InterviewAlpha</p>
   </div>`
 }
@@ -107,7 +107,7 @@ function day3Html(name: string, sessionsLeft: number) {
     <p>Hi ${name},</p>
     <p>You still have <strong>${sessionsLeft} free session${sessionsLeft !== 1 ? 's' : ''}</strong> unused.</p>
     <p>Every session gives you a score across 8 competencies and an expert rewrite of your answer. Most users say it is the most specific feedback they have ever gotten on an interview answer.</p>
-    <a href="https://interviewalpha.ai" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Use a free session now</a>
+    <a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Use a free session now</a>
     <p>Shraddha<br>Founder, InterviewAlpha</p>
   </div>`
 }
@@ -120,7 +120,7 @@ function day5Html(name: string) {
     <p>Hi ${name},</p>
     <p>You have seen what InterviewAlpha can do. Pro users get unlimited sessions, company-specific questions, and full 8-competency feedback every day.</p>
     <p><em>"Subscribed after my first free session. Worth every penny. Got an offer within 3 weeks."</em><br><strong>Dhruv Pandit, Data Scientist</strong></p>
-    <a href="https://interviewalpha.ai/upgrade" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Upgrade to Pro now</a>
+    <a href="https://interviewalpha.in/upgrade" style="display:block;background:linear-gradient(135deg,#a8e6cf,#a78bfa);color:white;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;margin:24px 0">Upgrade to Pro now</a>
     <p>Not happy in your first 7 days? Email us and we will sort it out.</p>
     <p>Shraddha<br>Founder, InterviewAlpha</p>
   </div>`

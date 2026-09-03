@@ -2,7 +2,7 @@
 
 AI-powered interview coaching platform for Product Managers, Data Scientists, Consultants, Project Managers, Technical Writers, and Scrum Masters.
 
-🌐 **Live:** [interviewalpha.ai](https://interviewalpha.ai)
+🌐 **Live:** [interviewalpha.in](https://interviewalpha.in)
 
 ---
 
@@ -87,9 +87,9 @@ public/               # Static assets, robots.txt, sitemap.xml
 ## Contact
 
 **Founder:** Shraddha Dudhgaonli  
-**Email:** shraddha@interviewalpha.ai  
+**Email:** shraddha@interviewalpha.in  
 **LinkedIn:** [linkedin.com/in/shraddhadudhgaonli](https://linkedin.com/in/shraddhadudhgaonli)  
-**Website:** [interviewalpha.ai](https://interviewalpha.ai)
+**Website:** [interviewalpha.in](https://interviewalpha.in)
 
 ---
 

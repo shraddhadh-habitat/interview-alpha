@@ -143,7 +143,7 @@ function email1Html(name) {
       <p style="color:#111;font-size:0.92rem;line-height:1.7;margin:0;font-style:italic">"Dhruv answered his first question and scored 4 out of 10. That number changed everything. Two weeks later he had a job offer. He was not exceptional. He just knew where he stood and fixed it."</p>
     </div>
     <p style="color:#444;font-size:0.92rem;line-height:1.8;margin:0 0 28px">You have 3 free sessions waiting. No credit card. No pressure. Just answer one question and see exactly where you stand today.</p>
-    <a href="https://interviewalpha.ai" style="display:block;background:linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(167,139,250,0.4)">Answer my first question →</a>
+    <a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(167,139,250,0.4)">Answer my first question →</a>
     <p style="color:#9a9a9a;font-size:0.78rem;margin:20px 0 0;text-align:center">Takes 2 minutes. I read every reply personally.</p>
     <div style="height:1px;background:#f0ede8;margin:28px 0"></div>
     <div style="display:flex;align-items:center;gap:12px">
@@ -154,7 +154,7 @@ function email1Html(name) {
       </div>
     </div>
   </div>
-  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.ai" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
+  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
 </div>
 </body>
 </html>`;
@@ -194,7 +194,7 @@ function email2Html(name) {
     <div style="background:#f9f8f6;border-radius:14px;padding:20px 24px;margin:0 0 28px;border-left:4px solid #7ec8c8">
       <p style="color:#111;font-size:0.92rem;line-height:1.7;margin:0">InterviewAlpha gives you a safe place to blank first. Score your answer. See the expert version. Fix what is missing. Then walk into the real interview ready.</p>
     </div>
-    <a href="https://interviewalpha.ai" style="display:block;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(102,126,234,0.4)">Practice before my next interview →</a>
+    <a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(102,126,234,0.4)">Practice before my next interview →</a>
     <p style="color:#9a9a9a;font-size:0.78rem;margin:20px 0 0;text-align:center">3 free sessions. No credit card needed.</p>
     <div style="height:1px;background:#f0ede8;margin:28px 0"></div>
     <div style="display:flex;align-items:center;gap:12px">
@@ -205,7 +205,7 @@ function email2Html(name) {
       </div>
     </div>
   </div>
-  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.ai" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
+  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
 </div>
 </body>
 </html>`;
@@ -248,7 +248,7 @@ function email3Html(name) {
     </div>
     <p style="color:#444;font-size:0.92rem;line-height:1.8;margin:0 0 16px">I am not telling you this to impress you. Dhruv was not exceptional. He just knew where he stood and fixed it.</p>
     <p style="color:#111;font-size:0.92rem;line-height:1.8;margin:0 0 28px;font-weight:600">What would your score be today?</p>
-    <a href="https://interviewalpha.ai" style="display:block;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(245,87,108,0.4)">Find out my score →</a>
+    <a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(245,87,108,0.4)">Find out my score →</a>
     <p style="color:#9a9a9a;font-size:0.78rem;margin:20px 0 0;text-align:center">3 free sessions. No credit card needed.</p>
     <div style="height:1px;background:#f0ede8;margin:28px 0"></div>
     <div style="display:flex;align-items:center;gap:12px">
@@ -259,7 +259,7 @@ function email3Html(name) {
       </div>
     </div>
   </div>
-  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.ai" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
+  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
 </div>
 </body>
 </html>`;
@@ -302,7 +302,7 @@ function email4Html(name) {
       </div>
       <p style="color:#6b6b6b;font-size:0.84rem;line-height:1.6;margin:0;padding-left:44px">Every answer needs success criteria. Interviewers always notice when this is missing.</p>
     </div>
-    <a href="https://interviewalpha.ai" style="display:block;background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(79,172,254,0.4)">See which mistake I make →</a>
+    <a href="https://interviewalpha.in" style="display:block;background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(79,172,254,0.4)">See which mistake I make →</a>
     <p style="color:#9a9a9a;font-size:0.78rem;margin:20px 0 0;text-align:center">3 free sessions. No credit card needed.</p>
     <div style="height:1px;background:#f0ede8;margin:28px 0"></div>
     <div style="display:flex;align-items:center;gap:12px">
@@ -313,7 +313,7 @@ function email4Html(name) {
       </div>
     </div>
   </div>
-  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.ai" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
+  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
 </div>
 </body>
 </html>`;
@@ -358,7 +358,7 @@ function email5Html(name) {
         <p style="color:#444;font-size:0.88rem;margin:0">Full 8 competency feedback and expert rewrite every time</p>
       </div>
     </div>
-    <a href="https://interviewalpha.ai/upgrade" style="display:block;background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(15,12,41,0.3)">See Pro plans →</a>
+    <a href="https://interviewalpha.in/upgrade" style="display:block;background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);color:white;text-align:center;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:1rem;box-shadow:0 4px 16px rgba(15,12,41,0.3)">See Pro plans →</a>
     <p style="color:#9a9a9a;font-size:0.78rem;margin:20px 0 0;text-align:center">Not happy in 7 days? Email <a href="mailto:communications@interviewalpha.in" style="color:#a78bfa;text-decoration:none">communications@interviewalpha.in</a> and we will sort it out.</p>
     <div style="height:1px;background:#f0ede8;margin:28px 0"></div>
     <div style="display:flex;align-items:center;gap:12px">
@@ -369,7 +369,7 @@ function email5Html(name) {
       </div>
     </div>
   </div>
-  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.ai" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
+  <p style="text-align:center;color:#9a9a9a;font-size:0.75rem;margin:16px 0 0"><a href="https://interviewalpha.in" style="color:#a78bfa;text-decoration:none">interviewalpha.ai</a> · Built for PM and Data Science aspirants</p>
 </div>
 </body>
 </html>`;
