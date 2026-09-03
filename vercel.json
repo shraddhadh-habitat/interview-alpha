@@ -5,6 +5,30 @@
     { "source": "/api/admin-users", "destination": "/api/admin-users" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://www.interviewalpha.in/$1",
+      "permanent": true,
+      "has": [
+        {
+          "type": "host",
+          "value": "interviewalpha.ai"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://www.interviewalpha.in/$1",
+      "permanent": true,
+      "has": [
+        {
+          "type": "host",
+          "value": "www.interviewalpha.ai"
+        }
+      ]
+    }
+  ],
   "crons": [
     {
       "path": "/api/send-emails",
