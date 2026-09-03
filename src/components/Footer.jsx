@@ -169,7 +169,7 @@ export default function Footer() {
             <div>
               <FooterHeading>Contact</FooterHeading>
               <a
-                href="mailto:communications@interviewalpha.ai"
+                href="mailto:communications@interviewalpha.in"
                 style={{
                   fontSize: 14,
                   color: C.link,
@@ -195,7 +195,7 @@ export default function Footer() {
                   e.currentTarget.style.WebkitTextFillColor = 'unset';
                 }}
               >
-                communications@interviewalpha.ai
+                communications@interviewalpha.in
               </a>
               <a
                 href="https://www.linkedin.com/in/shraddha-d-9399ba26"

@@ -33,7 +33,7 @@ export default function PrivacyPolicy() {
     },
     {
       title: 'YOUR RIGHTS',
-      content: 'You have the right to: access your personal data, correct inaccurate information, delete your account and associated data, withdraw consent for data processing, and export your practice history. To exercise these rights, contact communications@interviewalpha.ai.'
+      content: 'You have the right to: access your personal data, correct inaccurate information, delete your account and associated data, withdraw consent for data processing, and export your practice history. To exercise these rights, contact communications@interviewalpha.in.'
     },
     {
       title: 'DATA RETENTION',
@@ -53,7 +53,7 @@ export default function PrivacyPolicy() {
     },
     {
       title: 'CONTACT',
-      content: 'For privacy-related questions or requests, contact us at communications@interviewalpha.ai.'
+      content: 'For privacy-related questions or requests, contact us at communications@interviewalpha.in.'
     }
   ];
 

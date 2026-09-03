@@ -38,13 +38,13 @@ export const day3ReminderEmail = (userName, sessionsLeft) => ({
       <p>Every session gives you a score across 8 competencies and an expert rewrite of your answer. Most users who see their first score say it is the most specific feedback they have ever gotten on an interview answer.</p>
       <p>Your next interview could be closer than you think. The best time to practice is right now.</p>
 
-      <a href="https://interviewalpha.ai" class="cta-button">Use a free session now</a>
+      <a href="https://interviewalpha.in" class="cta-button">Use a free session now</a>
 
       <p>It takes 2 minutes. You do not need to prepare anything.</p>
       <p>Shraddha<br>Founder, InterviewAlpha</p>
     </div>
     <div class="footer">
-      <p>InterviewAlpha. <a href="https://interviewalpha.ai" style="color: #a78bfa;">interviewalpha.ai</a></p>
+      <p>InterviewAlpha. <a href="https://interviewalpha.in" style="color: #a78bfa;">interviewalpha.in</a></p>
     </div>
   </div>
 </body>

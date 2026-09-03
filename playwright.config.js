@@ -6,7 +6,7 @@ export default defineConfig({
   retries: 1,
   reporter: [['html', { outputFolder: 'tests/report' }], ['list']],
   use: {
-    baseURL: 'https://www.interviewalpha.ai',
+    baseURL: 'https://www.interviewalpha.in',
     trace: 'on-first-retry',
   },
 });

@@ -58,7 +58,7 @@ const CURRENCY_CONFIG = {
       yearly:    { label: 'Yearly',    price: 199, period: '/year',    badge: 'Most Popular', saves: 'Billed as $199 per year' },
     },
     paymentNote: null,
-    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.ai',
+    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.in',
   },
   GBP: {
     symbol: '£',
@@ -70,7 +70,7 @@ const CURRENCY_CONFIG = {
       yearly:    { label: 'Yearly',    price: 159, period: '/year',    badge: 'Most Popular', saves: 'Billed as £159 per year' },
     },
     paymentNote: null,
-    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.ai',
+    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.in',
   },
   AED: {
     symbol: 'AED ',
@@ -82,7 +82,7 @@ const CURRENCY_CONFIG = {
       yearly:    { label: 'Yearly',    price: 749, period: '/year',    badge: 'Most Popular', saves: 'Billed as AED 749 per year' },
     },
     paymentNote: null,
-    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.ai',
+    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.in',
   },
   SGD: {
     symbol: 'SGD ',
@@ -94,7 +94,7 @@ const CURRENCY_CONFIG = {
       yearly:    { label: 'Yearly',    price: 269, period: '/year',    badge: 'Most Popular', saves: 'Billed as SGD 269 per year' },
     },
     paymentNote: null,
-    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.ai',
+    contactNote: 'International payments via bank transfer — contact communications@interviewalpha.in',
   },
 };
 
@@ -806,7 +806,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                 }}>
                   <strong>Not happy in your first 7 days?</strong>
                   <br />
-                  Email us at communications@interviewalpha.ai with one message about why, and we'll sort it out. No complicated process. Just a human response within 24 hours.
+                  Email us at communications@interviewalpha.in with one message about why, and we'll sort it out. No complicated process. Just a human response within 24 hours.
                 </p>
               </div>
             </div>
@@ -1134,7 +1134,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                   We process international payments manually via bank transfer. Once you contact us we will send you payment details and activate your account within 24 hours.
                 </p>
                 <a
-                  href={`mailto:communications@interviewalpha.ai?subject=Pro upgrade - ${currencyConfig.symbol}${PLANS[plan].price} ${currencyConfig.label}&body=Hi, I would like to upgrade to InterviewAlpha Pro. Plan: ${plan}. Amount: ${currencyConfig.symbol}${PLANS[plan].price} ${currencyConfig.label}.`}
+                  href={`mailto:communications@interviewalpha.in?subject=Pro upgrade - ${currencyConfig.symbol}${PLANS[plan].price} ${currencyConfig.label}&body=Hi, I would like to upgrade to InterviewAlpha Pro. Plan: ${plan}. Amount: ${currencyConfig.symbol}${PLANS[plan].price} ${currencyConfig.label}.`}
                   style={{
                     display: 'inline-block',
                     background: 'linear-gradient(135deg,#a8e6cf 0%,#7ec8c8 25%,#a78bfa 65%,#c084fc 100%)',
@@ -1149,7 +1149,7 @@ export default function UpgradePage({ user, profile, onBack }) {
                   Contact us to pay
                 </a>
                 <p style={{ color: '#9a9a9a', fontSize: '0.75rem', margin: '12px 0 0' }}>
-                  communications@interviewalpha.ai
+                  communications@interviewalpha.in
                 </p>
               </div>
             )}

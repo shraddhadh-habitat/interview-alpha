@@ -47,14 +47,14 @@ export const day1WelcomeEmail = (userName) => ({
         <p>Pick a company you want to work at. Answer one of their specific questions. This is the closest thing to a real interview you will get without being in the room.</p>
       </div>
 
-      <a href="https://interviewalpha.ai" class="cta-button">Start your first session now</a>
+      <a href="https://interviewalpha.in" class="cta-button">Start your first session now</a>
 
       <p>Takes 2 minutes. No resume needed. Just answer like you are in the room.</p>
       <p>Good luck,<br><strong>Shraddha</strong><br>Founder, InterviewAlpha</p>
     </div>
     <div class="footer">
       <p>InterviewAlpha. Built for PM and Data Science aspirants.<br>
-      <a href="https://interviewalpha.ai" style="color: #a78bfa;">interviewalpha.ai</a></p>
+      <a href="https://interviewalpha.in" style="color: #a78bfa;">interviewalpha.in</a></p>
     </div>
   </div>
 </body>

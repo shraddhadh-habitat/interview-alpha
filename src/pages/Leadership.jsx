@@ -173,7 +173,7 @@ export default function Leadership() {
               Connect on LinkedIn
             </a>
             <a
-              href="mailto:communications@interviewalpha.ai"
+              href="mailto:communications@interviewalpha.in"
               style={{
                 fontSize: 14,
                 color: C.textMuted,
@@ -184,7 +184,7 @@ export default function Leadership() {
               onMouseEnter={e => e.currentTarget.style.color = C.text}
               onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
             >
-              communications@interviewalpha.ai
+              communications@interviewalpha.in
             </a>
           </div>
         </div>

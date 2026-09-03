@@ -45,7 +45,7 @@ export default function TermsOfService() {
     },
     {
       title: 'TERMINATION',
-      content: 'We reserve the right to suspend or terminate your account at any time for violation of these terms. You may delete your account by contacting communications@interviewalpha.ai.'
+      content: 'We reserve the right to suspend or terminate your account at any time for violation of these terms. You may delete your account by contacting communications@interviewalpha.in.'
     },
     {
       title: 'CHANGES TO TERMS',
@@ -57,7 +57,7 @@ export default function TermsOfService() {
     },
     {
       title: 'CONTACT',
-      content: 'For questions about these Terms, contact us at communications@interviewalpha.ai.'
+      content: 'For questions about these Terms, contact us at communications@interviewalpha.in.'
     }
   ];
 

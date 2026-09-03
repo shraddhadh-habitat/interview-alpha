@@ -67,14 +67,14 @@ export const day5UpgradeEmail = (userName) => ({
         <p style="font-size: 0.78rem; color: #9a9a9a; margin: 4px 0 0;">Or 583/month on the yearly plan</p>
       </div>
 
-      <a href="https://interviewalpha.ai/upgrade" class="cta-button">Upgrade to Pro now</a>
+      <a href="https://interviewalpha.in/upgrade" class="cta-button">Upgrade to Pro now</a>
 
       <p class="guarantee">Not happy in your first 7 days? Email us and we will sort it out.</p>
 
       <p>Shraddha<br>Founder, InterviewAlpha</p>
     </div>
     <div class="footer">
-      <p>InterviewAlpha. <a href="https://interviewalpha.ai" style="color: #a78bfa;">interviewalpha.ai</a></p>
+      <p>InterviewAlpha. <a href="https://interviewalpha.in" style="color: #a78bfa;">interviewalpha.in</a></p>
     </div>
   </div>
 </body>
