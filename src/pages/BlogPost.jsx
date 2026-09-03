@@ -416,10 +416,13 @@ export default function BlogPost() {
           {/* CTA Card */}
           <div style={{
             background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-            borderRadius: '12px',
-            padding: '32px',
+            borderRadius: '16px',
+            padding: '40px 48px',
             marginTop: '60px',
+            marginBottom: '40px',
             textAlign: 'center',
+            maxWidth: '480px',
+            margin: '60px auto 40px',
           }}>
             <p style={{
               fontSize: '18px',
