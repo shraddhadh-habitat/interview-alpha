@@ -156,7 +156,7 @@ export default function LandingPage({ user, onNavigate, profile }) {
                 display: 'inline-block',
                 height: '44px',
                 padding: '0 28px',
-                background: 'var(--gradient-brand)',
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                 color: '#fff',
                 border: 'none',
                 borderRadius: '50px',
