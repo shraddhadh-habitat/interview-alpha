@@ -563,16 +563,6 @@ a[class*="answer"],
   border-radius: 12px;
 }
 
-/* Fix 5: Review button gradient */
-[class*="leave-review"], [class*="review-btn"], button[class*="review"] {
-  background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important;
-  color: #ffffff !important;
-  border: none !important;
-}
-[class*="review"] svg, [class*="review"] .star-icon {
-  fill: #ffffff !important;
-  color: #ffffff !important;
-}
 
 /* ============================================
    INTERVIEWALPHA BRAND THEME - COMPREHENSIVE
@@ -886,23 +876,6 @@ html, body {
     width: 100% !important;
   }
 
-  /* Leave a Review button - compact on mobile */
-  [class*="leave"],
-  [class*="review-float"],
-  button[class*="review"] {
-    position: fixed !important;
-    bottom: 20px !important;
-    left: 16px !important;
-    z-index: 9999 !important;
-    width: auto !important;
-    padding: 10px 16px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    font-size: 0.9rem !important;
-    white-space: nowrap !important;
-    box-shadow: 0 4px 16px rgba(167, 139, 250, 0.4) !important;
-  }
 
   /* Hide text on very small screens if needed */
   @media (max-width: 480px) {

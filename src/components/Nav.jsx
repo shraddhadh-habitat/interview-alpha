@@ -221,11 +221,11 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
         <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
           <span style={{
             fontFamily: "'Instrument Serif', serif",
-            fontSize: 24,
+            fontSize: 26,
             fontWeight: 900,
             letterSpacing: -0.5,
             cursor: 'pointer',
-            background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+            background: 'linear-gradient(135deg, #00b894 0%, #00cec9 30%, #6c5ce7 70%, #a855f7 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
