@@ -27,6 +27,9 @@ export default function BlogPost() {
       fontFamily: "'Plus Jakarta Sans', sans-serif",
     }}>
       <style>{`
+        .blog-cta { all: unset; display: block; border-top: 1px solid rgba(27,27,24,0.1); padding-top: 48px; margin-top: 60px; margin-bottom: 40px; text-align: center; }
+        .blog-cta p { all: unset; display: block; font-size: 15px; color: rgba(27,27,24,0.45); margin-bottom: 20px; font-style: italic; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .blog-cta button { all: unset; display: inline-block; background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important; color: #fff !important; border-radius: 50px; padding: 12px 32px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; }
         @media (max-width: 768px) {
           .blog-post-container { padding: 0 20px !important; }
           .blog-post-title { font-size: 26px !important; }
@@ -413,43 +416,12 @@ export default function BlogPost() {
             </p>
           </div>
 
-          {/* CTA Card */}
-          <div style={{
-            background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-            borderRadius: '16px',
-            padding: '40px 48px',
-            marginTop: '60px',
-            marginBottom: '40px',
-            textAlign: 'center',
-            maxWidth: '480px',
-            margin: '60px auto 40px',
-          }}>
-            <p style={{
-              fontSize: '18px',
-              fontWeight: 700,
-              color: '#fff',
-              marginBottom: '20px',
-              margin: '0 0 20px 0',
-            }}>
+          {/* CTA */}
+          <div className="blog-cta">
+            <p>
               Stop reading about interviews. Start practicing.
             </p>
-            <button
-              onClick={handleCTA}
-              style={{
-                background: '#1B1B18',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '8px',
-                padding: '12px 32px',
-                fontSize: '14px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                transition: 'background 0.2s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = '#2A2A24'}
-              onMouseLeave={e => e.currentTarget.style.background = '#1B1B18'}
-            >
+            <button onClick={handleCTA}>
               Answer your first question
             </button>
           </div>
