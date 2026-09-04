@@ -68,14 +68,13 @@ export default function ActivityTickerPortal() {
       bottom: '90px',
       left: '16px',
       zIndex: 2147483647,
-      background: 'rgba(255,255,255,0.95)',
+      background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
       borderRadius: '12px',
       padding: '10px 14px',
-      boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+      boxShadow: '0 2px 12px rgba(167,139,250,0.25)',
       fontSize: '0.78rem',
-      color: '#1B1B18',
+      color: '#ffffff',
       maxWidth: '240px',
-      border: '1px solid rgba(27,27,24,0.08)',
       opacity: visible ? 1 : 0,
       transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.95)',
       transition: 'opacity 0.5s ease, transform 0.5s ease',
@@ -93,7 +92,7 @@ export default function ActivityTickerPortal() {
           right: '8px',
           background: 'none',
           border: 'none',
-          color: 'rgba(27,27,24,0.4)',
+          color: 'rgba(255,255,255,0.7)',
           cursor: 'pointer',
           fontSize: '14px',
           lineHeight: 1,
@@ -107,17 +106,17 @@ export default function ActivityTickerPortal() {
         width: '8px',
         height: '8px',
         borderRadius: '50%',
-        background: '#22c55e',
+        background: '#ffffff',
         flexShrink: 0,
         marginTop: '3px',
         animation: 'tickerPulse 1.5s ease-in-out infinite'
       }} />
       <div>
-        <div style={{ fontWeight: 600, marginBottom: '2px', lineHeight: 1.3, color: '#1B1B18' }}>
-          {ACTIVITIES[index].split(' · ')[0]}
+        <div style={{ fontWeight: 600, marginBottom: '2px', lineHeight: 1.3, color: '#ffffff' }}>
+          🔥 {ACTIVITIES[index].split(' · ')[0]}
         </div>
-        <div style={{ color: 'rgba(27,27,24,0.45)', fontSize: '0.7rem' }}>
-          {ACTIVITIES[index].split(' · ')[1]}
+        <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.7rem' }}>
+          ⏱ {ACTIVITIES[index].split(' · ')[1]}
         </div>
       </div>
     </div>,
