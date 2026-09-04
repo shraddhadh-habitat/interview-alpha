@@ -346,15 +346,11 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
                 type="file"
                 accept=".pdf"
                 style={{ display: 'none' }}
-                onChange={async e => {
+                onChange={e => {
                   const file = e.target.files?.[0];
                   if (!file) return;
-                  const reader = new FileReader();
-                  reader.onload = ev => {
-                    set('resumeFileName', file.name);
-                    set('resumeText', `[PDF uploaded: ${file.name}] - Please also paste your resume text below for best results.`);
-                  };
-                  reader.readAsDataURL(file);
+                  set('resumeFileName', file.name);
+                  set('resumeText', '');
                 }}
               />
             </label>
@@ -365,8 +361,8 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
             )}
             <textarea
               style={{ ...inputStyle, minHeight: '120px', resize: 'vertical' }}
-              placeholder="Or paste your resume text here: experience, skills, education, achievements..."
-              value={form.resumeText.startsWith('[PDF uploaded:') ? '' : form.resumeText}
+              placeholder="Paste your resume text here: copy and paste from your resume document..."
+              value={form.resumeText}
               onChange={e => set('resumeText', e.target.value)}
             />
           </div>
