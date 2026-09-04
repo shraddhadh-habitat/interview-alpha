@@ -39,6 +39,7 @@ export default function ReviewWidget({ user, profile }) {
   const [alreadySubmitted, setAlreadySubmitted] = useState(false);
   const [showModal, setShowModal]           = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     const handler = (e) => setFilterOpen(e.detail);
@@ -97,13 +98,27 @@ export default function ReviewWidget({ user, profile }) {
     setError('');
   };
 
-  if (!visible || filterOpen) return null;
+  if (!visible || filterOpen || dismissed) return null;
 
   const charCount = reviewText.trim().length;
 
   return (
     <>
       <style>{`
+        .rw-fab {
+          display: flex; align-items: center; gap: 6px;
+          padding: 8px 16px; border: none; border-radius: 50px;
+          font-family: ${FONT}; font-size: 12px; font-weight: 600;
+          cursor: pointer; transition: all 0.2s;
+          white-space: nowrap;
+          background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important;
+          color: #fff !important;
+        }
+        .rw-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.2); }
+        @media (max-width: 768px) {
+          .rw-fab { display: none; }
+          .rw-fab-text { display: none; }
+        }
         .rw-modal-card {
           width: 100%; max-width: 480px;
           background: ${C.bg}; border-radius: 20px;
@@ -127,35 +142,35 @@ export default function ReviewWidget({ user, profile }) {
         .rw-input:focus { outline: none; border-color: ${C.green}; }
       `}</style>
 
-      {/* Vertical edge tab */}
-      <div
-        onClick={() => !alreadySubmitted && setShowModal(true)}
-        style={{
-          position: 'fixed',
-          right: 0,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 800,
-          background: 'linear-gradient(180deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-          color: '#fff',
-          writingMode: 'vertical-rl',
-          textOrientation: 'mixed',
-          transform: 'translateY(-50%) rotate(180deg)',
-          padding: '16px 10px',
-          borderRadius: '8px 0 0 8px',
-          fontSize: '12px',
-          fontWeight: 600,
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          letterSpacing: '1px',
-          cursor: alreadySubmitted ? 'default' : 'pointer',
-          boxShadow: '-2px 0 12px rgba(167,139,250,0.2)',
-          userSelect: 'none',
-          transition: 'opacity 0.2s',
-        }}
-        onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-        onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-      >
-        {alreadySubmitted ? '✓ Reviewed' : '⭐ Review Us'}
+      {/* Floating pill button */}
+      <div style={{ position: 'fixed', bottom: 90, right: 24, zIndex: 800 }}>
+        <button
+          className="rw-fab"
+          onClick={() => !alreadySubmitted && setShowModal(true)}
+          disabled={alreadySubmitted}
+          style={{
+            position: 'relative',
+            background: alreadySubmitted ? C.greenLight : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+            color: alreadySubmitted ? C.success : '#fff',
+            border: alreadySubmitted ? `1.5px solid ${C.greenBorder}` : 'none',
+            cursor: alreadySubmitted ? 'default' : 'pointer',
+          }}
+        >
+          {alreadySubmitted ? '✓ Reviewed' : '⭐ Review Us'}
+          {!alreadySubmitted && (
+            <span
+              onClick={e => { e.stopPropagation(); setDismissed(true); }}
+              style={{
+                marginLeft: 8,
+                fontSize: 14,
+                opacity: 0.7,
+                cursor: 'pointer',
+              }}
+            >
+              ×
+            </span>
+          )}
+        </button>
       </div>
 
       {/* Modal */}
