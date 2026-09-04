@@ -106,11 +106,10 @@ export default function ReviewWidget({ user, profile }) {
     <>
       <style>{`
         .rw-fab {
-          display: flex; align-items: center; gap: 8px;
-          padding: 12px 20px; border: none; border-radius: 50px;
-          font-family: ${FONT}; font-size: 13px; font-weight: 600;
+          display: flex; align-items: center; gap: 6px;
+          padding: 8px 16px; border: none; border-radius: 50px;
+          font-family: ${FONT}; font-size: 12px; font-weight: 600;
           cursor: pointer; transition: all 0.2s;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.15);
           white-space: nowrap;
         }
         .rw-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.2); }
@@ -148,10 +147,12 @@ export default function ReviewWidget({ user, profile }) {
           onClick={() => !alreadySubmitted && setShowModal(true)}
           disabled={alreadySubmitted}
           style={{
+            position: 'relative',
             background: alreadySubmitted ? C.greenLight : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-            color: '#fff',
+            color: alreadySubmitted ? C.success : '#fff',
             border: alreadySubmitted ? `1.5px solid ${C.greenBorder}` : 'none',
             cursor: alreadySubmitted ? 'default' : 'pointer',
+            boxShadow: '0 2px 12px rgba(167,139,250,0.25)',
           }}
         >
           ⭐ Review Us ⭐
