@@ -3,6 +3,7 @@ import ATSChecker from './ATSChecker';
 import ResumeOptimizer from './ResumeOptimizer';
 import ResumeTemplates from './ResumeTemplates';
 import JDPractice from './JDPractice';
+import CareerGapAnalysis from './CareerGapAnalysis';
 
 const C = {
   bg: '#FAFAF8',
@@ -164,6 +165,7 @@ export default function ResumeToolsHub({ user, profile }) {
 
   const tabs = [
     { id: 'exclusive-prep', label: 'Exclusive Prep' },
+    { id: 'gap-analysis', label: 'Gap Analysis' },
     { id: 'ats-checker', label: 'ATS Checker' },
     { id: 'resume-optimizer', label: 'Resume Optimizer' },
     { id: 'resume-score', label: 'Resume Score' },
@@ -435,6 +437,7 @@ export default function ResumeToolsHub({ user, profile }) {
         )}
         {activeTab === 'resume-score' && <ResumeScore />}
         {activeTab === 'exclusive-prep' && <JDPractice user={user} profile={profile} />}
+        {activeTab === 'gap-analysis' && <CareerGapAnalysis user={user} profile={profile} />}
       </div>
     </div>
   );
