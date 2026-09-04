@@ -26,7 +26,7 @@ export default function CareerGapAnalysis({ user, profile }) {
   const [form, setForm] = useState({
     currentRole: '', currentOrg: '', currentIndustry: '', experience: '',
     targetRole: '', targetOrg: '', targetIndustry: '', targetLevel: '',
-    resumeText: '', jdText: '',
+    resumeText: '', jdText: '', resumeFileName: '',
   });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -323,13 +323,50 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
       {mode === 'deep' && (
         <>
           <div style={sectionStyle}>
-            <h2 style={{ fontSize: '11px', fontWeight: 700, color: '#1B1B18', marginBottom: '16px', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+            <h2 style={{ fontSize: '11px', fontWeight: 700, color: '#1B1B18', marginBottom: '4px', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
               Your Resume
             </h2>
+            <p style={{ fontSize: '12px', color: 'rgba(27,27,24,0.4)', marginBottom: '16px', fontFamily: FONT }}>
+              Upload a PDF or paste your resume text below.
+            </p>
+            <label
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                width: '100%', padding: '12px', marginBottom: '12px',
+                border: '1.5px dashed rgba(27,27,24,0.2)', borderRadius: '12px',
+                background: '#FAFAF8', cursor: 'pointer', fontFamily: FONT,
+                fontSize: '13px', color: 'rgba(27,27,24,0.5)', boxSizing: 'border-box',
+                transition: 'border-color 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = '#a78bfa'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(27,27,24,0.2)'}
+            >
+              📄 Upload Resume (PDF)
+              <input
+                type="file"
+                accept=".pdf"
+                style={{ display: 'none' }}
+                onChange={async e => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const reader = new FileReader();
+                  reader.onload = ev => {
+                    set('resumeFileName', file.name);
+                    set('resumeText', `[PDF uploaded: ${file.name}] - Please also paste your resume text below for best results.`);
+                  };
+                  reader.readAsDataURL(file);
+                }}
+              />
+            </label>
+            {form.resumeFileName && (
+              <p style={{ fontSize: '12px', color: '#16A34A', marginBottom: '12px', fontFamily: FONT }}>
+                ✓ {form.resumeFileName} uploaded
+              </p>
+            )}
             <textarea
-              style={{ ...inputStyle, minHeight: '160px', resize: 'vertical' }}
-              placeholder="Paste your resume text here: experience, skills, education, achievements..."
-              value={form.resumeText}
+              style={{ ...inputStyle, minHeight: '120px', resize: 'vertical' }}
+              placeholder="Or paste your resume text here: experience, skills, education, achievements..."
+              value={form.resumeText.startsWith('[PDF uploaded:') ? '' : form.resumeText}
               onChange={e => set('resumeText', e.target.value)}
             />
           </div>
