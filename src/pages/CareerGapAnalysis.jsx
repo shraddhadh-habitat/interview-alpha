@@ -521,16 +521,24 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
 
           {/* Practice CTA */}
           {result.ia_tracks?.length > 0 && (
-            <div style={{ background: GRAD, borderRadius: '16px', padding: '28px 24px', textAlign: 'center', marginBottom: '16px' }}>
-              <p style={{ fontSize: '15px', fontWeight: 700, color: '#fff', marginBottom: '6px', fontFamily: FONT }}>
-                Practice for your target role on InterviewAlpha
+            <div style={{ borderTop: '1px solid rgba(27,27,24,0.1)', paddingTop: '32px', marginTop: '8px', marginBottom: '32px', textAlign: 'center' }}>
+              <p style={{ fontSize: '13px', color: 'rgba(27,27,24,0.45)', marginBottom: '6px', fontFamily: FONT }}>
+                Recommended practice tracks: {result.ia_tracks.join(', ')}
               </p>
-              <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)', marginBottom: '20px', fontFamily: FONT }}>
-                Recommended tracks: {result.ia_tracks.join(', ')}
+              <p style={{ fontSize: '13px', color: 'rgba(27,27,24,0.45)', marginBottom: '20px', fontStyle: 'italic', fontFamily: FONT }}>
+                Practice the interview questions that matter for your target role.
               </p>
               <button
                 onClick={() => window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))}
-                style={{ background: '#fff', color: '#a78bfa', border: 'none', borderRadius: '50px', padding: '10px 28px', fontSize: '13px', fontWeight: 700, fontFamily: FONT, cursor: 'pointer' }}
+                style={{
+                  background: GRAD, color: '#fff', border: 'none',
+                  borderRadius: '50px', padding: '12px 32px',
+                  fontSize: '13px', fontWeight: 600, letterSpacing: '1px',
+                  textTransform: 'uppercase', cursor: 'pointer',
+                  fontFamily: FONT, transition: 'opacity 0.2s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}
               >
                 Start Practicing →
               </button>
