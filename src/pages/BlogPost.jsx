@@ -29,7 +29,7 @@ export default function BlogPost() {
       <style>{`
         .blog-cta { all: unset; display: block; border-top: 1px solid rgba(27,27,24,0.1); padding-top: 48px; margin-top: 60px; margin-bottom: 40px; text-align: center; }
         .blog-cta p { all: unset; display: block; font-size: 15px; color: rgba(27,27,24,0.45); margin-bottom: 20px; font-style: italic; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .blog-cta button { all: unset; display: inline-block; background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important; color: #fff !important; border-radius: 50px; padding: 12px 32px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .blog-cta button { all: unset; display: inline-block !important; width: fit-content !important; background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important; color: #fff !important; border-radius: 50px !important; padding: 12px 32px !important; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 1px !important; text-transform: uppercase !important; cursor: pointer !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
         @media (max-width: 768px) {
           .blog-post-container { padding: 0 20px !important; }
           .blog-post-title { font-size: 26px !important; }
