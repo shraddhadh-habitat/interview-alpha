@@ -66,7 +66,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
   const authedTabs = [
     ...PUBLIC_TABS,
     ...(isAdmin ? [{ id: 'learning', label: 'Resources' }] : []),
-    ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
+    ...(isFree ? [{ id: 'upgrade', label: 'Upgrade' }] : []),
   ];
 
   const tabs = user ? authedTabs : PUBLIC_TABS;
@@ -195,7 +195,7 @@ export default function Nav({ user, page, setPage, onReplayDemo, profile, onUpgr
     { id: 'resume-tools', label: 'Career Tools' },
     { id: 'salary', label: 'Salary Guide' },
     ...(isAdmin ? [{ id: 'learning', label: 'Learning Resources' }] : []),
-    ...(isFree ? [{ id: 'upgrade', label: '◆ Upgrade' }] : []),
+    ...(isFree ? [{ id: 'upgrade', label: 'Upgrade' }] : []),
     ...(isAdmin ? [{ id: 'admin', label: 'Admin' }] : []),
     ...(onReplayDemo ? [{ id: '__tour', label: 'Take Tour' }] : []),
   ];
