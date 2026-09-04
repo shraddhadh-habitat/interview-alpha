@@ -536,7 +536,7 @@ export default function JDPractice({ user, profile }) {
               <button
                 onClick={handleGenerate}
                 disabled={!canGenerate}
-                style={{ width: '100%', padding: '16px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 50, fontSize: 16, fontWeight: 700, fontFamily: F, color: '#fff', cursor: canGenerate ? 'pointer' : 'not-allowed', opacity: canGenerate ? 1 : 0.7 }}
+                style={{ width: 'fit-content', display: 'block', margin: '0 auto', padding: '12px 32px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 50, fontSize: 16, fontWeight: 700, fontFamily: F, color: '#fff', cursor: canGenerate ? 'pointer' : 'not-allowed', opacity: canGenerate ? 1 : 0.7 }}
               >
                 Build My Exclusive Interview Prep Kit
               </button>

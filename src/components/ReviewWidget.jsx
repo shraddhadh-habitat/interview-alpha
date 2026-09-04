@@ -110,7 +110,7 @@ export default function ReviewWidget({ user, profile }) {
           padding: 8px 14px; border: none; border-radius: 50px;
           font-family: ${FONT}; font-size: 12px; font-weight: 600;
           cursor: pointer; transition: all 0.2s;
-          white-space: nowrap; width: fit-content;
+          white-space: nowrap; width: fit-content !important; max-width: fit-content !important;
           background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important;
           color: #fff !important;
         }
