@@ -106,11 +106,11 @@ export default function ReviewWidget({ user, profile }) {
     <>
       <style>{`
         .rw-fab {
-          display: flex; align-items: center; gap: 6px;
-          padding: 8px 16px; border: none; border-radius: 50px;
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 8px 14px; border: none; border-radius: 50px;
           font-family: ${FONT}; font-size: 12px; font-weight: 600;
           cursor: pointer; transition: all 0.2s;
-          white-space: nowrap;
+          white-space: nowrap; width: fit-content;
           background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important;
           color: #fff !important;
         }
