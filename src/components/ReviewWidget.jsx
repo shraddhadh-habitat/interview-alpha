@@ -111,6 +111,8 @@ export default function ReviewWidget({ user, profile }) {
           font-family: ${FONT}; font-size: 12px; font-weight: 600;
           cursor: pointer; transition: all 0.2s;
           white-space: nowrap;
+          background: linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%) !important;
+          color: #fff !important;
         }
         .rw-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.2); }
         @media (max-width: 768px) {

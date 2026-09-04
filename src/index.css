@@ -631,15 +631,6 @@ form button[type="submit"] {
   font-weight: 600 !important;
 }
 
-/* --- LEAVE A REVIEW BUTTON (floating) --- */
-[class*="leave"],
-[class*="review-float"],
-div[class*="review"] button {
-  background: var(--gradient-brand) !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  border: none !important;
-}
 [class*="review"] svg,
 [class*="review"] .star,
 [class*="review"] [class*="icon"] {
