@@ -37,7 +37,9 @@ export default function CareerGapAnalysis({ user, profile }) {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
-  const isPro = profile?.subscription_status === 'pro' || profile?.subscription_status === 'active';
+  const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAIL || '').split(',').map(e => e.trim().toLowerCase());
+  const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
+  const isPro = isAdmin || profile?.subscription_status === 'pro' || profile?.subscription_status === 'active';
   const quickUsed = localStorage.getItem('ia_gap_analysis_used') === 'true';
   const canAnalyze = isPro || !quickUsed;
 
