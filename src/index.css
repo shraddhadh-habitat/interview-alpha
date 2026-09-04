@@ -849,14 +849,14 @@ html, body {
   }
 
   /* CTA Buttons - full width on mobile */
-  button[class*="cta"],
-  button[class*="submit"],
-  button[class*="check"],
-  button[class*="upload"],
-  button[class*="answer"],
-  button[class*="start"],
-  button[class*="try"],
-  button[class*="browse"],
+  button[class*="cta"]:not([class*="rw-fab"]),
+  button[class*="submit"]:not([class*="rw-fab"]),
+  button[class*="check"]:not([class*="rw-fab"]),
+  button[class*="upload"]:not([class*="rw-fab"]),
+  button[class*="answer"]:not([class*="rw-fab"]),
+  button[class*="start"]:not([class*="rw-fab"]),
+  button[class*="try"]:not([class*="rw-fab"]),
+  button[class*="browse"]:not([class*="rw-fab"]),
   [class*="upload"] label,
   [class*="file-upload"] label {
     width: 100% !important;
@@ -987,4 +987,14 @@ section + section,
   section[class*="about-platform"] {
     padding: 32px 16px 0 !important;
   }
+}
+
+/* ─── Review Widget FAB Override ─── */
+.rw-fab {
+  width: fit-content !important;
+  max-width: fit-content !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  padding: 8px 14px !important;
+  display: inline-flex !important;
 }
