@@ -406,9 +406,9 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
         disabled={loading}
         style={{
           width: '100%', padding: '14px',
-          background: loading ? '#F5F3EF' : GRAD,
+          background: GRAD,
           border: 'none', borderRadius: '50px',
-          color: loading ? 'rgba(27,27,24,0.5)' : '#fff',
+          color: '#fff',
           fontSize: '15px', fontWeight: 700, fontFamily: FONT,
           cursor: loading ? 'wait' : 'pointer',
           marginBottom: '32px', opacity: loading ? 0.7 : 1,
@@ -496,7 +496,7 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
               📚 Recommended Courses
             </h3>
             <p style={{ fontSize: '11px', color: 'rgba(27,27,24,0.35)', marginBottom: '16px', fontFamily: FONT }}>
-              If a link doesn't open the course directly, search the course name on the platform.
+              If a link does not open the course directly, search the course name on the platform.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {result.courses?.map((c, i) => (
