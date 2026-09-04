@@ -144,13 +144,20 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
       const response = await fetch('/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], max_tokens: 2000 }),
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 2000,
+          stream: false,
+          messages: [{ role: 'user', content: prompt }],
+        }),
       });
       const data = await response.json();
+      if (data.error) throw new Error(data.error.message || 'API error');
       const text = data?.content?.[0]?.text || '';
+      if (!text) throw new Error('Empty response from AI');
       const clean = text.replace(/```json[\n\r]?|```/g, '').trim();
       const jsonMatch = clean.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error('Invalid response format');
+      if (!jsonMatch) throw new Error('Could not parse AI response');
       const parsed = JSON.parse(jsonMatch[0]);
       if (mode === 'quick') localStorage.setItem('ia_gap_analysis_used', 'true');
       setResult(parsed);
