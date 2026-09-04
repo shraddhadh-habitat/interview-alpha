@@ -184,8 +184,8 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
             Fill in your profile details. Get a comprehensive gap analysis in seconds.
           </p>
           <div style={{ fontSize: '12px', color: 'rgba(27,27,24,0.4)', marginBottom: '20px', lineHeight: 1.8 }}>
-            ✓ Transferable skills &nbsp;&nbsp; ✓ Critical gaps<br />
-            ✓ Recommended courses &nbsp;&nbsp; ✓ Timeline
+            • Transferable skills &nbsp;&nbsp; • Critical gaps<br />
+            • Recommended courses &nbsp;&nbsp; • Timeline
           </div>
           {quickUsed && !isPro ? (
             <span style={{ display: 'inline-block', background: 'rgba(27,27,24,0.06)', color: 'rgba(27,27,24,0.4)', borderRadius: '50px', padding: '4px 12px', fontSize: '11px', fontWeight: 600 }}>
@@ -221,8 +221,8 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
             Paste your resume and the target job description. Get a precise gap analysis against the actual role requirements.
           </p>
           <div style={{ fontSize: '12px', color: 'rgba(27,27,24,0.4)', marginBottom: '20px', lineHeight: 1.8 }}>
-            ✓ Everything in Quick &nbsp;&nbsp; ✓ Resume vs JD match<br />
-            ✓ JD match score &nbsp;&nbsp; ✓ Role-specific courses
+            • Everything in Quick &nbsp;&nbsp; • Resume vs JD match<br />
+            • JD match score &nbsp;&nbsp; • Role-specific courses
           </div>
           {isPro ? (
             <span style={{ display: 'inline-block', background: GRAD, color: '#fff', borderRadius: '50px', padding: '4px 12px', fontSize: '11px', fontWeight: 600 }}>
@@ -233,7 +233,7 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
               onClick={e => { e.stopPropagation(); window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'upgrade' })); }}
               style={{ background: GRAD, color: '#fff', border: 'none', borderRadius: '50px', padding: '8px 20px', fontSize: '12px', fontWeight: 600, fontFamily: FONT, cursor: 'pointer' }}
             >
-              Upgrade to Pro →
+              Upgrade to Pro
             </button>
           )}
         </div>
