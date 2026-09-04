@@ -164,7 +164,7 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
         Career Gap Analysis
       </h1>
       <p style={{ fontSize: '15px', color: 'rgba(27,27,24,0.5)', marginBottom: '40px', lineHeight: 1.6 }}>
-        Find out exactly what stands between you and your target role — and what to do about it.
+        Find out exactly what stands between you and your target role and what to do about it.
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '16px' }}>
@@ -192,7 +192,7 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
           </div>
           {quickUsed && !isPro ? (
             <span style={{ display: 'inline-block', background: 'rgba(27,27,24,0.06)', color: 'rgba(27,27,24,0.4)', borderRadius: '50px', padding: '4px 12px', fontSize: '11px', fontWeight: 600 }}>
-              Used — Upgrade for more
+              Used - Upgrade for more
             </span>
           ) : (
             <span style={{ display: 'inline-block', background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.2)', color: '#16A34A', borderRadius: '50px', padding: '4px 12px', fontSize: '11px', fontWeight: 600 }}>
@@ -328,7 +328,7 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
             </h2>
             <textarea
               style={{ ...inputStyle, minHeight: '160px', resize: 'vertical' }}
-              placeholder="Paste your resume text here — experience, skills, education, achievements..."
+              placeholder="Paste your resume text here: experience, skills, education, achievements..."
               value={form.resumeText}
               onChange={e => set('resumeText', e.target.value)}
             />
@@ -374,7 +374,7 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
       {result && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-          {/* JD Match Score — Deep only */}
+          {/* JD Match Score - Deep only */}
           {mode === 'deep' && result.jd_match_score && (
             <div style={{ ...sectionStyle, textAlign: 'center', padding: '32px' }}>
               <p style={{ fontSize: '11px', letterSpacing: '1.5px', textTransform: 'uppercase', color: 'rgba(27,27,24,0.5)', marginBottom: '8px', fontFamily: FONT }}>
@@ -416,7 +416,7 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
           {/* Critical Gaps */}
           <div style={sectionStyle}>
             <h3 style={{ fontSize: '11px', fontWeight: 700, color: '#CF222E', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '16px', fontFamily: FONT }}>
-              ⚠ Critical Gaps — Must Fix
+              ⚠ Critical Gaps - Must Fix
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {result.critical_gaps?.map((g, i) => (
