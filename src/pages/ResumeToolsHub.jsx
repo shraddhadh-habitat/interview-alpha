@@ -236,7 +236,6 @@ export default function ResumeToolsHub({ user, profile }) {
           <div style={{ width: '100%', maxWidth: 1390, margin: '0 auto', padding: '0 28px', boxSizing: 'border-box' }}>
             <div style={{ marginBottom: 24 }}>
               <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 600, margin: '0 0 8px 0', color: C.text }}>Career Tools</h1>
-              <p style={{ fontSize: 16, color: C.textMuted, margin: 0, lineHeight: 1.6 }}>Resume tools, gap analysis, interview prep and salary insights to accelerate your career</p>
             </div>
           </div>
         </div>

@@ -21,7 +21,7 @@ export default function CareerGapAnalysis({ user, profile }) {
   const [mode, setMode] = useState(null);
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === 'undefined') return false;
-    return window.matchMedia('(max-width: 767px)').matches;
+    return window.matchMedia('(max-width: 1023px)').matches;
   });
   const [form, setForm] = useState({
     currentRole: '', currentOrg: '', currentIndustry: '', experience: '',
@@ -33,7 +33,7 @@ export default function CareerGapAnalysis({ user, profile }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)');
+    const mq = window.matchMedia('(max-width: 1023px)');
     setIsMobile(mq.matches);
     const handler = e => setIsMobile(e.matches);
     mq.addEventListener('change', handler);
