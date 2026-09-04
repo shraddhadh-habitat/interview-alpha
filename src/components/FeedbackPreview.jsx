@@ -86,7 +86,7 @@ I would compute accuracy per segment, identify the worst-performing slices, then
     emoji: '🎯',
     color: '#d97706',
     example: {
-      category: 'CASE INTERVIEW',
+      category: 'CONSULTING',
       question: "Your client is a leading coffee chain seeing a 15% drop in same-store sales over the past two quarters. How would you approach diagnosing the problem?",
       sampleAnswer: "I'd start by understanding the scope. Is this drop across all stores or concentrated in specific regions? Are all product categories down or just certain items? First, I'd segment the data by location, store type, and product mix to pinpoint where the problem is worse. Then I'd investigate demand-side factors: Are customers coming in less frequently? Are they buying less per visit? Is this due to new competitors, economic shifts, or our own execution? Finally, I'd check supply-side: pricing changes, promotions from competitors, staffing issues affecting service quality, or product changes that reduced appeal.",
       overallScore: 7,
