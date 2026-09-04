@@ -151,7 +151,8 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
       if (mode === 'quick') localStorage.setItem('ia_gap_analysis_used', 'true');
       setResult(parsed);
     } catch (e) {
-      setError('Analysis failed. Please try again.');
+      console.error('[GapAnalysis] error:', e.message, e);
+      setError(`Analysis failed: ${e.message || 'Please try again.'}`);
     } finally {
       setLoading(false);
     }
