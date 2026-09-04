@@ -60,8 +60,12 @@ export default function CareerGapAnalysis({ user, profile }) {
       setError('Please fill in all required fields marked with *');
       return;
     }
-    if (mode === 'deep' && (!form.resumeText.trim() || !form.jdText.trim())) {
-      setError('Please paste your resume and the target job description for Deep Analysis.');
+    if (mode === 'deep' && !form.jdText.trim()) {
+      setError('Please paste the target job description to run Deep Analysis.');
+      return;
+    }
+    if (mode === 'deep' && !form.resumeText.trim() && !form.resumeFileName) {
+      setError('Please paste your resume text or upload your resume PDF.');
       return;
     }
     if (!canAnalyze) {
