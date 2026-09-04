@@ -271,15 +271,15 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '16px' }}>
           <div>
             <label style={labelStyle}>Current Role *</label>
-            <input style={inputStyle} placeholder="e.g. Technical Writer, Data Analyst" value={form.currentRole} onChange={e => set('currentRole', e.target.value)} />
+            <input style={inputStyle} placeholder="e.g. Technical Writer" value={form.currentRole} onChange={e => set('currentRole', e.target.value)} />
           </div>
           <div>
             <label style={labelStyle}>Current Organization *</label>
-            <input style={inputStyle} placeholder="e.g. Mastercard, Infosys, TCS" value={form.currentOrg} onChange={e => set('currentOrg', e.target.value)} />
+            <input style={inputStyle} placeholder="e.g. Mastercard, TCS" value={form.currentOrg} onChange={e => set('currentOrg', e.target.value)} />
           </div>
           <div>
             <label style={labelStyle}>Current Industry *</label>
-            <input style={inputStyle} placeholder="e.g. Fintech, Healthcare, E-commerce" value={form.currentIndustry} onChange={e => set('currentIndustry', e.target.value)} />
+            <input style={inputStyle} placeholder="e.g. Fintech, Healthcare" value={form.currentIndustry} onChange={e => set('currentIndustry', e.target.value)} />
           </div>
           <div>
             <label style={labelStyle}>Years of Experience *</label>
@@ -299,7 +299,7 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '16px' }}>
           <div>
             <label style={labelStyle}>Target Role *</label>
-            <input style={inputStyle} placeholder="e.g. Product Manager, Data Scientist" value={form.targetRole} onChange={e => set('targetRole', e.target.value)} />
+            <input style={inputStyle} placeholder="e.g. Product Manager" value={form.targetRole} onChange={e => set('targetRole', e.target.value)} />
           </div>
           <div>
             <label style={labelStyle}>Target Level *</label>
@@ -310,11 +310,11 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
           </div>
           <div>
             <label style={labelStyle}>Target Organization</label>
-            <input style={inputStyle} placeholder="e.g. Google, McKinsey, Mastercard" value={form.targetOrg} onChange={e => set('targetOrg', e.target.value)} />
+            <input style={inputStyle} placeholder="e.g. Google, McKinsey" value={form.targetOrg} onChange={e => set('targetOrg', e.target.value)} />
           </div>
           <div>
             <label style={labelStyle}>Target Industry</label>
-            <input style={inputStyle} placeholder="e.g. Fintech, Consulting, Tech" value={form.targetIndustry} onChange={e => set('targetIndustry', e.target.value)} />
+            <input style={inputStyle} placeholder="e.g. Fintech, Consulting" value={form.targetIndustry} onChange={e => set('targetIndustry', e.target.value)} />
           </div>
         </div>
       </div>
