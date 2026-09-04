@@ -148,45 +148,43 @@ export default function LandingPage({ user, onNavigate, profile }) {
           </div>
 
           {/* Primary CTA + reassurance */}
-          <div className="hero-cta-wrapper" style={{ order: 0 }}>
-            <button
-              className="hero-cta"
-              onClick={() => window.location.href = '/?page=practice&new_user=true'}
-              style={{
-                display: 'inline-block',
-                height: '44px',
-                padding: '0 28px',
-                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '50px',
-                fontSize: '15px',
-                fontWeight: 700,
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
-              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-            >
-              Answer your first question
-            </button>
+          <button
+            className="hero-cta"
+            onClick={() => window.location.href = '/?page=practice&new_user=true'}
+            style={{
+              display: 'inline-block',
+              height: '44px',
+              padding: '0 28px',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '50px',
+              fontSize: '15px',
+              fontWeight: 700,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+          >
+            Answer your first question
+          </button>
 
-            {/* Reassurance text - hidden for logged-in users */}
-            {!user && (
-              <p style={{
-                fontSize: '13px',
-                color: '#1B1B18',
-                marginTop: '12px',
-                marginBottom: '0',
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 900,
-                textShadow: '0 0 0 #1B1B18',
-              }}>
-                No resume. No setup. Free. Takes 2 minutes.
-              </p>
-            )}
-          </div>
+          {/* Reassurance text - hidden for logged-in users */}
+          {!user && (
+            <p style={{
+              fontSize: '13px',
+              color: '#1B1B18',
+              marginTop: '12px',
+              marginBottom: '0',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 900,
+              textShadow: '0 0 0 #1B1B18',
+            }}>
+              No resume. No setup. Free. Takes 2 minutes.
+            </p>
+          )}
 
           {/* Secondary link */}
           <p style={{ fontSize: '0.95rem', marginTop: '12px', color: '#111', lineHeight: 1.5, fontWeight: 600 }}>
