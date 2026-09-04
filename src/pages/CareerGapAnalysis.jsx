@@ -177,7 +177,6 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
           onMouseEnter={e => { if (canAnalyze) { e.currentTarget.style.borderColor = '#a78bfa'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(167,139,250,0.12)'; }}}
           onMouseLeave={e => { e.currentTarget.style.borderColor = quickUsed && !isPro ? 'rgba(27,27,24,0.06)' : 'rgba(27,27,24,0.12)'; e.currentTarget.style.boxShadow = 'none'; }}
         >
-          <div style={{ fontSize: '32px', marginBottom: '12px' }}>⚡</div>
           <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#1B1B18', marginBottom: '8px' }}>Quick Analysis</h2>
           <p style={{ fontSize: '13px', color: 'rgba(27,27,24,0.5)', lineHeight: 1.6, marginBottom: '20px' }}>
             Fill in your profile details. Get a comprehensive gap analysis in seconds.
@@ -215,7 +214,6 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
               PRO
             </div>
           )}
-          <div style={{ fontSize: '32px', marginBottom: '12px' }}>🔍</div>
           <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#1B1B18', marginBottom: '8px' }}>Deep Analysis</h2>
           <p style={{ fontSize: '13px', color: 'rgba(27,27,24,0.5)', lineHeight: 1.6, marginBottom: '20px' }}>
             Paste your resume and the target job description. Get a precise gap analysis against the actual role requirements.
@@ -252,7 +250,7 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
       </button>
 
       <h1 style={{ fontSize: isMobile ? '20px' : '22px', fontWeight: 400, color: '#1B1B18', marginBottom: '6px', fontFamily: "'Instrument Serif', serif" }}>
-        {mode === 'deep' ? '🔍 Deep Gap Analysis' : '⚡ Quick Gap Analysis'}
+        {mode === 'deep' ? 'Deep Gap Analysis' : 'Quick Gap Analysis'}
       </h1>
       <p style={{ fontSize: '14px', color: 'rgba(27,27,24,0.5)', marginBottom: '28px', lineHeight: 1.6 }}>
         {mode === 'deep'
