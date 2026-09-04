@@ -19,7 +19,10 @@ const sectionStyle = {
 
 export default function CareerGapAnalysis({ user, profile }) {
   const [mode, setMode] = useState(null);
-  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(max-width: 767px)').matches;
+  });
   const [form, setForm] = useState({
     currentRole: '', currentOrg: '', currentIndustry: '', experience: '',
     targetRole: '', targetOrg: '', targetIndustry: '', targetLevel: '',
