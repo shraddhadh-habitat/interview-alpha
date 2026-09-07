@@ -232,7 +232,7 @@ export default function ResumeToolsHub({ user, profile }) {
         }}
       >
         {/* Hero section */}
-        <div className="resume-tools-hero" style={{ padding: '16px 0' }}>
+        <div className="resume-tools-hero" style={{ padding: isMobile ? '8px 0' : '16px 0' }}>
           <div style={{ width: '100%', maxWidth: 1390, margin: '0 auto', padding: '0 28px', boxSizing: 'border-box' }}>
             <div style={{ marginBottom: 24 }}>
               <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 600, margin: '0 0 8px 0', color: C.text }}>Career Tools</h1>
@@ -328,7 +328,7 @@ export default function ResumeToolsHub({ user, profile }) {
                 borderTop: 'none',
                 borderRadius: '0 0 12px 12px',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                zIndex: 20,
+                zIndex: 50,
                 overflow: 'hidden',
                 maxWidth: '100vw',
               }}
