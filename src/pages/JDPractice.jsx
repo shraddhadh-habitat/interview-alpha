@@ -585,8 +585,8 @@ export default function JDPractice({ user, profile }) {
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: 13, color: '#1a1a1a', fontFamily: F, margin: 0, lineHeight: 1.5 }}>{q.q?.slice(0, 120)}...</p>
                     <div style={{ display: 'flex', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
-                      {q.domain && <span style={{ fontSize: 10, padding: '2px 8px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{q.domain}</span>}
-                      {q.difficulty && <span style={{ fontSize: 10, padding: '2px 8px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{q.difficulty}</span>}
+                      {q.domain && <span style={{ fontSize: 10, padding: '2px 8px', background: 'rgba(167,139,250,0.08)', border: '1px solid rgba(167,139,250,0.2)', borderRadius: 50, color: '#a78bfa', fontFamily: F, fontWeight: 600 }}>{q.domain}</span>}
+                      {q.difficulty && <span style={{ fontSize: 10, padding: '2px 8px', background: 'rgba(168,230,207,0.15)', border: '1px solid rgba(168,230,207,0.4)', borderRadius: 50, color: '#16A34A', fontFamily: F, fontWeight: 600 }}>{q.difficulty}</span>}
                       {q._level && <span style={{ fontSize: 10, padding: '2px 8px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{q._level}</span>}
                       {window.location.search.includes('debug=true') && (
                         <span style={{ fontSize: 10, padding: '2px 8px',
@@ -651,8 +651,8 @@ export default function JDPractice({ user, profile }) {
             {/* Question */}
             <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 16, padding: 28, marginBottom: 20 }}>
               <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-                {currentQ.domain && <span style={{ fontSize: 11, padding: '3px 10px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{currentQ.domain}</span>}
-                {currentQ.difficulty && <span style={{ fontSize: 11, padding: '3px 10px', background: '#f3f4f6', borderRadius: 6, color: '#6b7280', fontFamily: F }}>{currentQ.difficulty}</span>}
+                {currentQ.domain && <span style={{ fontSize: 11, padding: '3px 10px', background: 'rgba(167,139,250,0.08)', border: '1px solid rgba(167,139,250,0.2)', borderRadius: 50, color: '#a78bfa', fontFamily: F, fontWeight: 600 }}>{currentQ.domain}</span>}
+                {currentQ.difficulty && <span style={{ fontSize: 11, padding: '3px 10px', background: 'rgba(168,230,207,0.15)', border: '1px solid rgba(168,230,207,0.4)', borderRadius: 50, color: '#16A34A', fontFamily: F, fontWeight: 600 }}>{currentQ.difficulty}</span>}
               </div>
               <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: '#1a1a1a', fontFamily: F, marginBottom: 10 }}>Question</div>
               <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1a1a1a', fontFamily: F, margin: 0, fontWeight: 500 }}>{currentQ.q}</p>
@@ -870,8 +870,9 @@ Return only the answer text, no JSON.`;
                         fontSize: 11,
                         letterSpacing: 1.5,
                         textTransform: 'uppercase',
-                        color: '#9ca3af',
+                        color: '#a78bfa',
                         fontFamily: F,
+                        fontWeight: 600,
                       }}
                     >
                       <span>View Expert Answer</span>
