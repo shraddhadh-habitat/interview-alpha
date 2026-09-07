@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import ATSChecker from './ATSChecker';
 import ResumeOptimizer from './ResumeOptimizer';
 import ResumeTemplates from './ResumeTemplates';
@@ -324,60 +325,67 @@ export default function ResumeToolsHub({ user, profile }) {
             <span style={{ fontSize: 16 }}>▼</span>
           </button>
 
-          {/* Mobile dropdown menu */}
-          {isMobile && dropdownOpen && (
-            <div
-              ref={dropdownMenuRef}
-              style={{
-                position: 'fixed',
-                top: `${stickyHeaderHeight}px`,
-                left: 0,
-                right: 0,
-                background: '#FFFFFF',
-                border: `1px solid #e4e4f0`,
-                borderTop: 'none',
-                borderRadius: '0 0 12px 12px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                zIndex: 50,
-                overflow: 'auto',
-                maxWidth: '100vw',
-                maxHeight: '60vh',
-              }}
-            >
-              {tabs.map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabSelect(tab.id)}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: '14px 16px',
-                    background: activeTab === tab.id ? '#a259f7' : '#FFFFFF',
-                    border: 'none',
-                    borderBottom: tab.id !== tabs[tabs.length - 1].id ? `1px solid ${C.border}` : 'none',
-                    textAlign: 'left',
-                    fontSize: 13,
-                    fontWeight: activeTab === tab.id ? 700 : 500,
-                    color: activeTab === tab.id ? '#FFFFFF' : '#4a4a6a',
-                    cursor: 'pointer',
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    transition: 'all 0.2s',
-                  }}
-                  onMouseEnter={e => {
-                    if (activeTab !== tab.id) {
-                      e.currentTarget.style.background = 'rgba(168, 230, 207, 0.1)';
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    if (activeTab !== tab.id) {
-                      e.currentTarget.style.background = '#FFFFFF';
-                    }
-                  }}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+          {isMobile && dropdownOpen && createPortal(
+            <>
+              <div
+                onClick={() => setDropdownOpen(false)}
+                style={{
+                  position: 'fixed',
+                  top: 0, left: 0, right: 0, bottom: 0,
+                  background: 'rgba(0,0,0,0.3)',
+                  zIndex: 9998,
+                }}
+              />
+              <div
+                ref={dropdownMenuRef}
+                style={{
+                  position: 'fixed',
+                  top: `${stickyHeaderHeight}px`,
+                  left: 0,
+                  right: 0,
+                  background: '#FFFFFF',
+                  border: '1px solid #e4e4f0',
+                  borderTop: 'none',
+                  borderRadius: '0 0 12px 12px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                  zIndex: 9999,
+                  overflow: 'auto',
+                  maxWidth: '100vw',
+                  maxHeight: '60vh',
+                }}
+              >
+                {tabs.map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleTabSelect(tab.id)}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '14px 16px',
+                      background: activeTab === tab.id ? '#a259f7' : '#FFFFFF',
+                      border: 'none',
+                      borderBottom: tab.id !== tabs[tabs.length - 1].id ? `1px solid ${C.border}` : 'none',
+                      textAlign: 'left',
+                      fontSize: 13,
+                      fontWeight: activeTab === tab.id ? 700 : 500,
+                      color: activeTab === tab.id ? '#FFFFFF' : '#4a4a6a',
+                      cursor: 'pointer',
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseEnter={e => {
+                      if (activeTab !== tab.id) e.currentTarget.style.background = 'rgba(168, 230, 207, 0.1)';
+                    }}
+                    onMouseLeave={e => {
+                      if (activeTab !== tab.id) e.currentTarget.style.background = '#FFFFFF';
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </>,
+            document.body
           )}
 
           {/* Desktop inline tabs */}
