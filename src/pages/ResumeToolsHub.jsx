@@ -333,7 +333,7 @@ export default function ResumeToolsHub({ user, profile }) {
                   position: 'fixed',
                   top: 0, left: 0, right: 0, bottom: 0,
                   background: 'rgba(0,0,0,0.3)',
-                  zIndex: 9998,
+                  zIndex: 999998,
                 }}
               />
               <div
@@ -348,7 +348,7 @@ export default function ResumeToolsHub({ user, profile }) {
                   borderTop: 'none',
                   borderRadius: '0 0 12px 12px',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  zIndex: 9999,
+                  zIndex: 999999,
                   overflow: 'auto',
                   maxWidth: '100vw',
                   maxHeight: '60vh',
