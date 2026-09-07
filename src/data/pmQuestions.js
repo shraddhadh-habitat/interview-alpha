@@ -14,6 +14,7 @@ export const PM_LEVELS = [
   "Telecom PM",
   "Fintech PM",
   "Healthcare PM",
+  "Visa",
   "Company Prep"
 ];
 
