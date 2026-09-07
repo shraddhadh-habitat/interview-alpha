@@ -84,6 +84,7 @@ const PM_COMPANY_CHIPS = [
   { id: 'Razorpay',  label: 'Razorpay' },
   { id: 'CRED',      label: 'CRED' },
   { id: 'Zepto',     label: 'Zepto' },
+  { id: 'Visa',      label: 'Visa' },
 ];
 
 const DS_COMPANY_CHIPS = [
