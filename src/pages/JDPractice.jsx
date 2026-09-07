@@ -332,6 +332,8 @@ export default function JDPractice({ user, profile }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answer, setAnswer] = useState('');
   const [showExpert, setShowExpert] = useState(false);
+  const [feedback, setFeedback] = useState(null);
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
   const resumeFileInputRef = useRef(null);
   const tts = useTextToSpeech();
 
@@ -684,6 +686,107 @@ export default function JDPractice({ user, profile }) {
               style={{ width: '100%', padding: '16px', border: '1px solid #e5e7eb', borderRadius: 12, fontSize: 14, fontFamily: F, color: '#374151', minHeight: 160, resize: 'vertical', outline: 'none', boxSizing: 'border-box', marginBottom: 16 }}
             />
 
+            {/* Submit button */}
+            {answer.trim().length > 50 && !feedbackLoading && !feedback && (
+              <button
+                onClick={async () => {
+                  setFeedbackLoading(true);
+                  try {
+                    const res = await fetch('/api/messages', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'x-ia-secret': import.meta.env.VITE_IA_API_SECRET || '',
+                      },
+                      body: JSON.stringify({
+                        model: 'claude-sonnet-4-6',
+                        max_tokens: 1000,
+                        stream: false,
+                        messages: [{
+                          role: 'user',
+                          content: `You are an expert interview coach. Score this answer to an interview question.
+
+Question: ${currentQ.q}
+
+Candidate Answer: ${answer}
+
+Return ONLY a JSON object:
+{
+  "score": <number 1-10>,
+  "summary": "<2 sentence assessment>",
+  "strengths": ["strength 1", "strength 2"],
+  "gaps": ["gap 1", "gap 2"],
+  "tip": "<one specific actionable tip to improve this answer>"
+}`,
+                        }],
+                      }),
+                    });
+                    const data = await res.json();
+                    const text = data?.content?.[0]?.text || '';
+                    const clean = text.replace(/```json[\n\r]?|```/g, '').trim();
+                    const jsonMatch = clean.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) setFeedback(JSON.parse(jsonMatch[0]));
+                  } catch (e) {
+                    setFeedback({ score: null, summary: 'Could not analyse answer. Please try again.', strengths: [], gaps: [], tip: '' });
+                  } finally {
+                    setFeedbackLoading(false);
+                  }
+                }}
+                style={{
+                  width: '100%', padding: '12px', marginBottom: 16,
+                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                  border: 'none', borderRadius: 50, fontSize: 14, fontWeight: 700,
+                  fontFamily: F, color: '#fff', cursor: 'pointer',
+                }}
+              >
+                Submit Answer for AI Feedback
+              </button>
+            )}
+
+            {feedbackLoading && (
+              <div style={{ textAlign: 'center', padding: '20px', marginBottom: 16, background: '#FAFAF8', borderRadius: 12, border: '1px solid #e5e7eb' }}>
+                <p style={{ fontSize: 13, color: '#6b7280', fontFamily: F, margin: 0 }}>Analysing your answer...</p>
+              </div>
+            )}
+
+            {feedback && (
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20, marginBottom: 16 }}>
+                {feedback.score && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                    <span style={{ fontSize: 32, fontWeight: 700, background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{feedback.score}/10</span>
+                    <p style={{ fontSize: 13, color: '#374151', fontFamily: F, margin: 0, lineHeight: 1.6 }}>{feedback.summary}</p>
+                  </div>
+                )}
+                {feedback.strengths?.length > 0 && (
+                  <div style={{ marginBottom: 12 }}>
+                    <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase', color: '#16A34A', fontFamily: F, marginBottom: 8 }}>Strengths</p>
+                    {feedback.strengths.map((s, i) => (
+                      <p key={i} style={{ fontSize: 13, color: '#374151', fontFamily: F, margin: '0 0 4px', paddingLeft: 12 }}>• {s}</p>
+                    ))}
+                  </div>
+                )}
+                {feedback.gaps?.length > 0 && (
+                  <div style={{ marginBottom: 12 }}>
+                    <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase', color: '#CF222E', fontFamily: F, marginBottom: 8 }}>Gaps</p>
+                    {feedback.gaps.map((g, i) => (
+                      <p key={i} style={{ fontSize: 13, color: '#374151', fontFamily: F, margin: '0 0 4px', paddingLeft: 12 }}>• {g}</p>
+                    ))}
+                  </div>
+                )}
+                {feedback.tip && (
+                  <div style={{ padding: '12px 16px', background: 'rgba(167,139,250,0.08)', border: '1px solid rgba(167,139,250,0.2)', borderRadius: 10 }}>
+                    <p style={{ fontSize: 13, color: '#a78bfa', fontFamily: F, margin: 0, fontWeight: 600 }}>Tip: {feedback.tip}</p>
+                  </div>
+                )}
+                <button
+                  onClick={() => setFeedback(null)}
+                  style={{ marginTop: 12, fontSize: 12, color: '#9ca3af', background: 'none', border: 'none', cursor: 'pointer', fontFamily: F }}
+                >
+                  Try again
+                </button>
+              </div>
+            )}
+
             {/* Expert answer */}
             {currentQ && (
               <div style={{ marginBottom: 20 }}>
@@ -813,14 +916,14 @@ Return only the answer text, no JSON.`;
             {/* Navigation */}
             <div style={{ display: 'flex', gap: 12 }}>
               <button
-                onClick={() => { setCurrentIndex(Math.max(0, currentIndex - 1)); setAnswer(''); setShowExpert(false); }}
+                onClick={() => { setCurrentIndex(Math.max(0, currentIndex - 1)); setAnswer(''); setShowExpert(false); setFeedback(null); }}
                 disabled={currentIndex === 0}
                 style={{ flex: 1, padding: '12px', border: '1px solid #e5e7eb', borderRadius: 10, fontSize: 14, fontFamily: F, color: '#374151', background: '#fff', cursor: currentIndex === 0 ? 'not-allowed' : 'pointer' }}
               >
                 ← Previous
               </button>
               <button
-                onClick={() => { setCurrentIndex(Math.min(results.questions.length - 1, currentIndex + 1)); setAnswer(''); setShowExpert(false); }}
+                onClick={() => { setCurrentIndex(Math.min(results.questions.length - 1, currentIndex + 1)); setAnswer(''); setShowExpert(false); setFeedback(null); }}
                 disabled={currentIndex === results.questions.length - 1}
                 style={{ flex: 1, padding: '12px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F, color: '#fff', cursor: currentIndex === results.questions.length - 1 ? 'not-allowed' : 'pointer' }}
               >
