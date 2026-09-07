@@ -193,6 +193,15 @@ export default function ResumeToolsHub({ user, profile }) {
   }, []);
 
   useEffect(() => {
+    if (isMobile && dropdownOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMobile, dropdownOpen]);
+
+  useEffect(() => {
     const handleClickOutside = (e) => {
       if (
         dropdownButtonRef.current && !dropdownButtonRef.current.contains(e.target) &&
@@ -232,7 +241,7 @@ export default function ResumeToolsHub({ user, profile }) {
         }}
       >
         {/* Hero section */}
-        <div className="resume-tools-hero" style={{ padding: isMobile ? '8px 0' : '16px 0' }}>
+        <div className="resume-tools-hero" style={{ padding: isMobile ? '4px 0' : '16px 0' }}>
           <div style={{ width: '100%', maxWidth: 1390, margin: '0 auto', padding: '0 28px', boxSizing: 'border-box' }}>
             <div style={{ marginBottom: 24 }}>
               <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 600, margin: '0 0 8px 0', color: C.text }}>Career Tools</h1>
