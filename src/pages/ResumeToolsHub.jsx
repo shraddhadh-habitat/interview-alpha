@@ -339,8 +339,9 @@ export default function ResumeToolsHub({ user, profile }) {
                 borderRadius: '0 0 12px 12px',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                 zIndex: 50,
-                overflow: 'hidden',
+                overflow: 'auto',
                 maxWidth: '100vw',
+                maxHeight: '60vh',
               }}
             >
               {tabs.map(tab => (
