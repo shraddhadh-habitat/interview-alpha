@@ -320,7 +320,9 @@ function ProcessingScreen() {
 
 // ── COMPONENT ────────────────────────────────────────────────
 export default function JDPractice({ user, profile }) {
-  const isPro = user && profile?.subscription_status === 'active';
+  const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAIL || '').split(',').map(e => e.trim().toLowerCase());
+  const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
+  const isPro = isAdmin || (user && (profile?.subscription_status === 'active' || profile?.subscription_status === 'pro'));
   const [resumeText, setResumeText] = useState('');
   const [jdText, setJdText] = useState('');
   const [fileUploading, setFileUploading] = useState(false);
