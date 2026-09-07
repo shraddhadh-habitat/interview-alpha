@@ -427,7 +427,7 @@ export default function JDPractice({ user, profile }) {
 
     } catch (err) {
       console.log('handleGenerate error:', err.message);
-      setError('Something went wrong. Please try again.');
+      setError('Something went wrong on our end. Please wait a moment and try again.');
       setStep('input');
     }
   };
