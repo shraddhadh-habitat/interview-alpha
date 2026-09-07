@@ -810,7 +810,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
     // Check if user is free and has used all free sessions
     if (user) {
       const isAdmin = user.email === 'shraddhadh@gmail.com' || user.email === 'vaishnavi.kulkarni2012@gmail.com';
-      const isPaid = profile?.subscription_status === 'active';
+      const isPaid = profile?.subscription_status === 'active' || profile?.subscription_status === 'pro';
       const freeSessionsUsed = profile?.free_sessions_used || 0;
 
       if (!isAdmin && !isPaid && freeSessionsUsed >= 3) {
@@ -981,7 +981,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
         }
 
         // Increment monthly_sessions_used for active/paid subscribers
-        if (freshProfile?.subscription_status === 'active') {
+        if (freshProfile?.subscription_status === 'active' || freshProfile?.subscription_status === 'pro') {
           const newMonthlyCount = (freshProfile?.monthly_sessions_used || 0) + 1;
           const { error: monthlyError } = await supabase
             .from('profiles')
@@ -1212,7 +1212,7 @@ Be honest and specific. Do not pad scores. Return ONLY the JSON, no markdown, no
                   const disabled = loading || !ready;
                   const freeSessionsUsed = user ? (profile?.free_sessions_used || 0) : 0;
                   const isAdmin = user && (user.email === 'shraddhadh@gmail.com' || user.email === 'vaishnavi.kulkarni2012@gmail.com');
-                  const isPaid = user && profile?.subscription_status === 'active';
+                  const isPaid = user && (profile?.subscription_status === 'active' || profile?.subscription_status === 'pro');
                   const showSessionCounter = user && !isAdmin && !isPaid;
 
                   return (

@@ -325,7 +325,7 @@ export default function UpgradePage({ user, profile, onBack }) {
   const PLANS = currencyConfig.plans;
 
   const isPending = profile?.subscription_status === 'pending';
-  const isActive  = profile?.subscription_status === 'active';
+  const isActive  = profile?.subscription_status === 'active' || profile?.subscription_status === 'pro';
 
   const discountedPrice = (basePrice) => {
     if (!appliedDiscount) return basePrice;
