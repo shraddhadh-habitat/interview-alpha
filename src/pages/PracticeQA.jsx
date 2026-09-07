@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { pmQuestions, PM_LEVELS, DS_LEVELS } from '../data/pmQuestions';
+import { VISA_FINTECH_PM_QUESTIONS } from '../data/visaQuestions';
 import { consultingQuestions, CONSULTING_LEVELS } from '../data/consultingQuestions';
 import { projectManagementQuestions, PROJECTMANAGEMENT_LEVELS } from '../data/projectManagementQuestions';
 import { technicalWritingQuestions, TECHNICALWRITING_LEVELS } from '../data/technicalWritingQuestions';
@@ -1755,8 +1756,11 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const results = [];
     const searchLower = search.toLowerCase();
 
+    // Merge Visa questions into pmQuestions for PM role
+    const allPMQuestions = selectedRole === 'pm' ? { ...pmQuestions, "Visa": VISA_FINTECH_PM_QUESTIONS["Senior PM"] } : pmQuestions;
+
     for (const level of levelsToShow) {
-      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? scrumMasterQuestions[level] : pmQuestions[level];
+      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? scrumMasterQuestions[level] : allPMQuestions[level];
       if (!bank) continue;
       for (const cat of dataCats) {
         const questions = bank[cat] || [];
