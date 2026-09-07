@@ -641,7 +641,7 @@ export default function JDPractice({ user, profile }) {
           <div>
             {/* Progress bar */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-              <button onClick={() => setStep('results')} style={{ fontSize: 13, color: '#6b7280', background: 'none', border: 'none', cursor: 'pointer', fontFamily: F }}>← Back to list</button>
+              <button onClick={() => setStep('results')} style={{ fontSize: 13, fontWeight: 700, color: '#a78bfa', background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, textDecoration: 'underline', textUnderlineOffset: 3 }}>Back to list</button>
               <div style={{ flex: 1, height: 4, background: '#e5e7eb', borderRadius: 2 }}>
                 <div style={{ height: '100%', background: 'linear-gradient(90deg, #a78bfa, #c084fc)', borderRadius: 2, width: `${((currentIndex + 1) / results.questions.length) * 100}%` }} />
               </div>
@@ -921,14 +921,14 @@ Return only the answer text, no JSON.`;
                 disabled={currentIndex === 0}
                 style={{ flex: 1, padding: '12px', border: '1px solid #e5e7eb', borderRadius: 10, fontSize: 14, fontFamily: F, color: '#374151', background: '#fff', cursor: currentIndex === 0 ? 'not-allowed' : 'pointer' }}
               >
-                ← Previous
+                Previous
               </button>
               <button
                 onClick={() => { setCurrentIndex(Math.min(results.questions.length - 1, currentIndex + 1)); setAnswer(''); setShowExpert(false); setFeedback(null); }}
                 disabled={currentIndex === results.questions.length - 1}
                 style={{ flex: 1, padding: '12px', background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F, color: '#fff', cursor: currentIndex === results.questions.length - 1 ? 'not-allowed' : 'pointer' }}
               >
-                Next →
+                Next
               </button>
             </div>
           </div>
