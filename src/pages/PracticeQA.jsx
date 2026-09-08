@@ -1757,9 +1757,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const results = [];
     const searchLower = search.toLowerCase();
 
-    // Merge Visa questions into pmQuestions for PM role
-    const allPMQuestions = selectedRole === 'pm' ? { ...pmQuestions, "Visa": VISA_FINTECH_PM_QUESTIONS["Senior PM"] } : pmQuestions;
-
     for (const level of levelsToShow) {
       const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? scrumMasterQuestions[level] : allPMQuestions[level];
       if (!bank) continue;
@@ -1950,6 +1947,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   // ── Filter props bundle ────────────────────────────────────────────────────
 
+  const allPMQuestions = selectedRole === 'pm' ? { ...pmQuestions, "Visa": VISA_FINTECH_PM_QUESTIONS["Senior PM"] } : pmQuestions;
+
   const filterContentProps = {
     filterCategory, setFilterCategory,
     filterExpLevel, setFilterExpLevel,
@@ -1961,7 +1960,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     onApply: () => setShowFilters(false),
     onClearAll: clearAllFilters,
     selectedRole,
-    pmQuestions,
+    pmQuestions: allPMQuestions,
   };
 
   // ── Render ─────────────────────────────────────────────────────────────────
