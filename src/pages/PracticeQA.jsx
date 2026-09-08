@@ -1683,7 +1683,37 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   // ── Filtering ──────────────────────────────────────────────────────────────
 
-  const allPMQuestions = selectedRole === 'pm' ? { ...pmQuestions, "Visa": VISA_FINTECH_PM_QUESTIONS["Senior PM"] } : pmQuestions;
+// ── Filtering ──────────────────────────────────────────────────────────────
+
+  const allPMQuestions = useMemo(() => {
+    if (selectedRole !== 'pm') return pmQuestions;
+
+    // Deep copy pmQuestions so we don't mutate original state
+    const combined = { ...pmQuestions };
+
+    if (VISA_FINTECH_PM_QUESTIONS) {
+      Object.entries(VISA_FINTECH_PM_QUESTIONS).forEach(([level, categories]) => {
+        if (!combined[level]) combined[level] = {};
+        if (categories && typeof categories === 'object') {
+          Object.entries(categories).forEach(([cat, questions]) => {
+            if (Array.isArray(questions)) {
+              // Ensure every Visa question has company set to 'Visa'
+              const taggedQuestions = questions.map((q) => ({
+                ...q,
+                company: q.company || 'Visa',
+              }));
+              combined[level][cat] = [
+                ...(combined[level][cat] || []),
+                ...taggedQuestions,
+              ];
+            }
+          });
+        }
+      });
+    }
+
+    return combined;
+  }, [selectedRole, pmQuestions]);
 
   const filtered = useMemo(() => {
     const role = ROLES[selectedRole] || ROLES.pm;
@@ -1715,7 +1745,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     } else if (selectedRole === 'technicalwriting') {
       dataCats = ['ux_writing', 'technical_docs', 'ai_content', 'content_strategy'];
     } else {
-      dataCats = ['product', 'behavioral', 'ai', 'ai_technical'];
+      dataCats = ['product', 'behavioral', 'ai', 'ai_technical', 'compliance_aml', 'product_strategy'];
     }
 
     let subcategoryFilter = null;
@@ -1784,7 +1814,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
               const chipLabel = (CONSULTING_COMPANY_CHIPS.find(c => c.id === filterCompany)?.label || '').toLowerCase();
               if (!firms.some(f => f.includes(chipLabel) || chipLabel.includes(f.split(' ')[0]))) continue;
             } else {
-              if (!q.company || q.company.toLowerCase() !== filterCompany.toLowerCase()) continue;
+              if (!q.company || q.company.trim().toLowerCase() !== filterCompany.trim().toLowerCase()) continue;
             }
           }
 
@@ -1827,7 +1857,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     }
 
     return results;
-  }, [filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, isPopularSearch, practiceStats, selectedRole, selectedTrack]);
+  }, [allPMQuestions, filterCategory, filterExpLevel, filterCompany, filterDomain, filterDifficulty, search, isPopularSearch, practiceStats, selectedRole, selectedTrack]);
 
   // ── Applied filter tags ────────────────────────────────────────────────────
 
