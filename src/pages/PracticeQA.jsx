@@ -1683,6 +1683,8 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   // ── Filtering ──────────────────────────────────────────────────────────────
 
+  const allPMQuestions = selectedRole === 'pm' ? { ...pmQuestions, "Visa": VISA_FINTECH_PM_QUESTIONS["Senior PM"] } : pmQuestions;
+
   const filtered = useMemo(() => {
     const role = ROLES[selectedRole] || ROLES.pm;
 
@@ -1946,8 +1948,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
   }
 
   // ── Filter props bundle ────────────────────────────────────────────────────
-
-  const allPMQuestions = selectedRole === 'pm' ? { ...pmQuestions, "Visa": VISA_FINTECH_PM_QUESTIONS["Senior PM"] } : pmQuestions;
 
   const filterContentProps = {
     filterCategory, setFilterCategory,
