@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { pmQuestions, PM_LEVELS, DS_LEVELS } from '../data/pmQuestions';
+import { pmQuestions, pmQuestions as PMQuestions, pmQuestions as allPMQuestions, PM_LEVELS, DS_LEVELS } from '../data/pmQuestions';
 import { VISA_FINTECH_PM_QUESTIONS } from '../data/visaQuestions';
 import { consultingQuestions, CONSULTING_LEVELS } from '../data/consultingQuestions';
 import { projectManagementQuestions, PROJECTMANAGEMENT_LEVELS } from '../data/projectManagementQuestions';
