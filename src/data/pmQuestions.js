@@ -26882,6 +26882,36 @@ const PM_QUESTIONS = {
         "domain": "general",
         "company": "Accenture",
         "a": "Before I dive in, let me ask a few clarifying questions. First, when you say predictions under 10ms, is that per single prediction or batch inference? Second, are these categorical features high cardinality, like merchant IDs or device fingerprints with thousands of unique values, or low cardinality like country codes? And third, is retraining frequency a constraint here, like daily retraining in a production pipeline?\n\nLet me assume we're talking about single prediction latency under 10ms, a mix of high and low cardinality categoricals, and a production system that retrains at least daily. With that context, here's how I'd think through this.\n\nXGBoost is mature and battle-tested, but its fundamental weakness here is how it handles categoricals. It converts them via one-hot encoding, so if you have 50 categorical features with average cardinality of around 4, you're already looking at 200 plus binary features. Across 2 million rows that's roughly 1.6GB of memory just for feature storage, training slows to around 8 minutes, and inference lands around 5ms. It technically fits your 10ms budget, but you're leaving very little headroom.\n\nLightGBM handles categoricals natively using histogram-based splits, so there's zero feature expansion. Training drops to around 2 minutes, memory stays around 400MB, and inference comes in under 1ms. From data analysis I have done in similar contexts, I noticed that native categorical handling in LightGBM consistently reduces memory overhead by 60 to 70 percent compared to one-hot approaches, which matters a lot when you're retraining daily in production.\n\nCatBoost has arguably the most sophisticated categorical handling through ordered boosting, which reduces overfitting on high-cardinality features. Inference is even faster at around 0.3ms. But training time balloons to 15 to 20 minutes, which in a daily retraining pipeline becomes genuinely painful operationally.\n\nIn past projects where I have tackled similar challenges, I noticed that CatBoost delivers roughly 0.5 to 1 percent AUC improvement over LightGBM on heavily categorical datasets, but that accuracy gain rarely justifies 10x slower training when your pipeline has a tight retraining window.\n\nThe trade-off I'm consciously making here is choosing speed over peak accuracy. CatBoost is statistically superior on categorical data, but for a 2M row dataset with daily retraining and a sub-10ms SLA, LightGBM is my recommendation. It trains in 2 minutes, serves in under 1ms, and runs comfortably on modest infrastructure.\n\nThe best model isn't the most accurate one in isolation, it's the one that's accurate enough, fast enough, and reliable enough to actually ship and stay in production."
+      },
+      {
+        q: "CRED has 35M users with high credit scores but low daily active usage. You're the PM. What's the one feature you build next and why?",
+        a: "Focus on driving high-frequency engagement loops (e.g., utility management, household bill tracking, or CRED Garage) while leveraging trust and premium positioning.",
+        company: "Cred",
+        difficulty: "Hard"
+      },
+      {
+        q: "How would you design CRED Pay to increase merchant adoption among high-end D2C brands?",
+        a: "Position CRED Pay as a high-intent, high-LTV checkout option offering instant rewards, lower drop-off rates, and targeted access to affluent credit-worthy consumers.",
+        company: "Cred",
+        difficulty: "Medium"
+      },
+      {
+        q: "CRED Garage aims to track vehicle condition, insurance, and maintenance. How would you measure success for this feature?",
+        a: "Primary metrics: Vehicle onboarding rate, Monthly Active Garage Users (MAGU), insurance renewal conversion rate, and 90-day feature retention.",
+        company: "Cred",
+        difficulty: "Medium"
+      },
+      {
+        q: "CRED coins are often criticized for low perceived value. How would you redesign the rewards and engagement loop?",
+        a: "Shift from randomized burn/gamification loops to guaranteed utility discounts, curated premium brand vouchers, and tiered redemption power based on user engagement.",
+        company: "Cred",
+        difficulty: "Hard"
+      },
+      {
+        q: "If CRED wants to expand into wealth management (CRED Money), what should be the MVP feature set?",
+        a: "Start with net-worth tracking, high-yield liquid park accounts, and automated credit health analysis before introducing complex investment products.",
+        company: "Cred",
+        difficulty: "Hard"
       }
     ]
   }
