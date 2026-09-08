@@ -1222,7 +1222,7 @@ function FilterContent({
     ...categoryChips.map(c => ({ id: c.id, label: c.label })),
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: opt.id, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, allPMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
+    countQuestionsForFilterState(selectedRole, { category: opt.id, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, PMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
   );
 
   const expLevelOptions = !role.expLevelChips || role.expLevelChips.length === 0
@@ -1232,7 +1232,7 @@ function FilterContent({
         ...(role.expLevelChips || []),
       ].filter(opt =>
         opt.id === '' ||
-        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: opt.id, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, allPMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
+        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: opt.id, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, PMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
       );
 
   const companyChips = selectedRole === 'ds'
@@ -1245,7 +1245,7 @@ function FilterContent({
     ...companyChips,
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: opt.id, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, allPMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: opt.id, difficulty: filterDifficulty, domain: filterDomain, track: selectedTrack }, PMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
   );
 
   const domainChips = selectedRole === 'ds'
@@ -1260,7 +1260,7 @@ function FilterContent({
     ...domainChips,
   ].filter(opt =>
     opt.id === '' ||
-    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: opt.id, track: selectedTrack }, allPMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
+    countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: opt.id, track: selectedTrack }, PMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
   );
 
   const difficultyOptions = selectedRole === 'projectmanagement'
@@ -1271,7 +1271,7 @@ function FilterContent({
         { id: 'Hard', label: 'Hard' },
       ].filter(opt =>
         opt.id === '' ||
-        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain, track: selectedTrack }, allPMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
+        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain, track: selectedTrack }, PMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
       )
     : [
       { id: '', label: 'All' },
@@ -1280,7 +1280,7 @@ function FilterContent({
       { id: 'Difficult', label: 'Difficult' },
     ].filter(opt =>
       opt.id === '' ||
-      countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain, track: selectedTrack }, allPMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
+      countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: opt.id, domain: filterDomain, track: selectedTrack }, PMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
     );
 
   const trackOptions = selectedRole === 'pm'
@@ -1289,7 +1289,7 @@ function FilterContent({
         ...CAREER_TRACK_CHIPS,
       ].filter(opt =>
         opt.id === '' ||
-        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: opt.id }, allPMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
+        countQuestionsForFilterState(selectedRole, { category: filterCategory, expLevel: filterExpLevel, company: filterCompany, difficulty: filterDifficulty, domain: filterDomain, track: opt.id }, PMQuestions, PM_LEVELS, DS_LEVELS, consultingQuestions, projectManagementQuestions, PROJECTMANAGEMENT_LEVELS) > 0
       )
     : [];
 
@@ -1683,7 +1683,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
   // ── Filtering ──────────────────────────────────────────────────────────────
 
-  const allPMQuestions = selectedRole === 'pm' ? { ...pmQuestions, "Visa": VISA_FINTECH_PM_QUESTIONS["Senior PM"] } : pmQuestions;
+  const PMQuestions = selectedRole === 'pm' ? { ...pmQuestions, "Visa": VISA_FINTECH_PM_QUESTIONS["Senior PM"] } : pmQuestions;
 
   const filtered = useMemo(() => {
     const role = ROLES[selectedRole] || ROLES.pm;
@@ -1760,7 +1760,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     const searchLower = search.toLowerCase();
 
     for (const level of levelsToShow) {
-      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? scrumMasterQuestions[level] : allPMQuestions[level];
+      const bank = selectedRole === 'consulting' ? consultingQuestions[level] : selectedRole === 'projectmanagement' ? projectManagementQuestions[level] : selectedRole === 'technicalwriting' ? technicalWritingQuestions[level] : selectedRole === 'scrummaster' ? scrumMasterQuestions[level] : PMQuestions[level];
       if (!bank) continue;
       for (const cat of dataCats) {
         const questions = bank[cat] || [];
@@ -1960,7 +1960,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     onApply: () => setShowFilters(false),
     onClearAll: clearAllFilters,
     selectedRole,
-    pmQuestions: allPMQuestions,
+    pmQuestions: PMQuestions,
   };
 
   // ── Render ─────────────────────────────────────────────────────────────────
