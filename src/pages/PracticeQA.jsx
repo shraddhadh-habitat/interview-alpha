@@ -1685,10 +1685,11 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
 
 // ── Filtering ──────────────────────────────────────────────────────────────
 
+// ── Filtering ──────────────────────────────────────────────────────────────
+
   const allPMQuestions = useMemo(() => {
     if (selectedRole !== 'pm') return pmQuestions;
 
-    // Deep copy pmQuestions so we don't mutate original state
     const combined = { ...pmQuestions };
 
     if (VISA_FINTECH_PM_QUESTIONS) {
@@ -1697,7 +1698,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
         if (categories && typeof categories === 'object') {
           Object.entries(categories).forEach(([cat, questions]) => {
             if (Array.isArray(questions)) {
-              // Ensure every Visa question has company set to 'Visa'
               const taggedQuestions = questions.map((q) => ({
                 ...q,
                 company: q.company || 'Visa',
@@ -1733,7 +1733,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       categoryChips = PM_CATEGORY_CHIPS;
     }
 
-    // For DS, dynamically get all category keys from the Data Scientist level
     let dataCats;
     if (selectedRole === 'ds') {
       const dsLevel = pmQuestions['Data Scientist'];
@@ -1745,7 +1744,14 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
     } else if (selectedRole === 'technicalwriting') {
       dataCats = ['ux_writing', 'technical_docs', 'ai_content', 'content_strategy'];
     } else {
-      dataCats = ['product', 'behavioral', 'ai', 'ai_technical', 'compliance_aml', 'product_strategy'];
+      // Dynamically include ALL category keys present across all levels in allPMQuestions
+      const allKeys = new Set(['product', 'behavioral', 'ai', 'ai_technical']);
+      Object.values(allPMQuestions || {}).forEach((lvl) => {
+        if (lvl && typeof lvl === 'object') {
+          Object.keys(lvl).forEach((catKey) => allKeys.add(catKey));
+        }
+      });
+      dataCats = Array.from(allKeys);
     }
 
     let subcategoryFilter = null;
@@ -1757,14 +1763,17 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       }
     }
 
+    // Force inclusion of all levels if filtering specifically by Visa
     let levelsToShow = role.levels || PM_LEVELS;
-    let dsLevelsToShow = null; // For DS, map expLevel to question.level values
+    if (filterCompany && filterCompany.toLowerCase() === 'visa') {
+      levelsToShow = Array.from(new Set([...levelsToShow, ...Object.keys(VISA_FINTECH_PM_QUESTIONS || {})]));
+    }
 
-    // For DS, map expLevel filter to DS level values
+    let dsLevelsToShow = null;
+
     if (selectedRole === 'ds' && filterExpLevel && role.expLevelChips && role.expLevelChips.length > 0) {
       const chip = role.expLevelChips.find(c => c.id === filterExpLevel);
       if (chip && chip.id) {
-        // Map expLevel chip ID to actual question.level values
         const levelMap = {
           'junior_ds': ['junior_ds'],
           'mid_ds': ['mid_ds'],
@@ -1776,8 +1785,7 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       }
     }
 
-    // For PM, continue using existing logic
-    if (selectedRole !== 'ds' && filterExpLevel && role.expLevelChips && role.expLevelChips.length > 0) {
+    if (selectedRole !== 'ds' && filterExpLevel && role.expLevelChips && role.expLevelChips.length > 0 && (!filterCompany || filterCompany.toLowerCase() !== 'visa')) {
       const chip = role.expLevelChips.find(c => c.id === filterExpLevel);
       if (chip) {
         const allowed = new Set(chip.levels);
@@ -1798,16 +1806,13 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
           const q = questions[i];
           if (search && (isPopularSearch ? !q.q.toLowerCase().includes(searchLower) : (!q.q.toLowerCase().includes(searchLower) && !q.a.toLowerCase().includes(searchLower)))) continue;
 
-          // For DS, filter by question.level if expLevel filter is set
           if (selectedRole === 'ds' && dsLevelsToShow && !dsLevelsToShow.has(q.level)) {
             continue;
           }
 
-          // Difficulty filter
           const effectiveDifficulty = q.difficulty || getDifficulty(level);
           if (filterDifficulty && effectiveDifficulty !== filterDifficulty) continue;
 
-          // Company filter
           if (filterCompany) {
             if (selectedRole === 'consulting') {
               const firms = (q.companies || []).map(c => c.toLowerCase());
@@ -1818,7 +1823,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             }
           }
 
-          // Domain filter
           if (filterDomain) {
             if (selectedRole === 'consulting') {
               const chip = CONSULTING_DOMAIN_CHIPS.find(c => c.id === filterDomain);
@@ -1830,13 +1834,10 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
             }
           }
 
-          // Subcategory filter (for Product Design vs Product Strategy)
           if (subcategoryFilter) {
             if (q.subcategory && q.subcategory !== subcategoryFilter) continue;
-            // questions with no subcategory pass through (show in both)
           }
 
-          // Career track filter (only for PM)
           if (selectedRole === 'pm' && selectedTrack) {
             const trackLabel = CAREER_TRACK_CHIPS.find(c => c.id === selectedTrack)?.label;
             if (trackLabel && (!q.tracks || !q.tracks.includes(trackLabel))) continue;
@@ -1847,7 +1848,6 @@ export default function PracticeQA({ user, profile, checkSession, onSessionUsed 
       }
     }
 
-    // Sort results by priority only when no search is active
     if (!search || search.trim() === '') {
       results.sort((a, b) => {
         const priorityA = getQuestionPriority(a.question, selectedRole);
