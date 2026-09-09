@@ -27118,8 +27118,5 @@ const PM_QUESTIONS = {
     ]
   }
 };
-    ]
-  }
-};
 
 export { PM_QUESTIONS as pmQuestions };
