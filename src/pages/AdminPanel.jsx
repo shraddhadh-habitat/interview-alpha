@@ -131,7 +131,9 @@ export default function AdminPanel({ user }) {
 
       // Calculate summary stats from profiles
       const profiles = data || [];
-      const totalUsers = profiles.length;
+      const internalPatterns = ['shraddha', 'vaishnavi', 'sidhesh', 'interviewalpha', 'guerrillamail', 'sharklasers'];
+      const realUsers = profiles.filter(p => !internalPatterns.some(pattern => (p.email || '').toLowerCase().includes(pattern)));
+      const totalUsers = realUsers.length;
       const proUsers = profiles.filter(p => p.subscription_status === 'active' || p.subscription_status === 'pro').length;
       const freeUsers = profiles.filter(p => p.subscription_status !== 'active' && p.subscription_status !== 'pro').length;
       const practicedUsers = profiles.filter(p => (p.free_sessions_used ?? 0) > 0 || (p.monthly_sessions_used ?? 0) > 0).length;
