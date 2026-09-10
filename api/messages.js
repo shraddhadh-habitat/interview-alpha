@@ -1,3 +1,5 @@
+export const maxDuration = 60;
+
 // Simple in-memory rate limiter: max 30 requests per IP per minute
 const rateLimitMap = new Map();
 const RATE_LIMIT = 30;
