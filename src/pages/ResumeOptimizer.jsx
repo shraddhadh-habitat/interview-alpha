@@ -389,7 +389,7 @@ export default function ResumeOptimizer({ user }) {
                     boxSizing: 'border-box',
                     padding: '10px 16px',
                     border: resumeText ? '1.5px solid rgba(27,27,24,0.12)' : 'none',
-                    borderRadius: '8px',
+                    borderRadius: '999px',
                     background: resumeText
                       ? 'transparent'
                       : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
@@ -493,7 +493,7 @@ export default function ResumeOptimizer({ user }) {
                 background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                 color: '#ffffff',
                 border: 'none',
-                borderRadius: '12px',
+                borderRadius: '999px',
                 fontWeight: 700,
                 width: '100%',
                 padding: '16px',

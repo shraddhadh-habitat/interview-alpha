@@ -347,7 +347,7 @@ export default function ATSChecker({ user }) {
                     width: '100%',
                     padding: '14px 24px',
                     border: resumeText ? '1.5px solid rgba(27,27,24,0.12)' : 'none',
-                    borderRadius: '10px',
+                    borderRadius: '999px',
                     background: resumeText
                       ? 'transparent'
                       : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
@@ -456,7 +456,7 @@ export default function ATSChecker({ user }) {
                 background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                 color: 'white',
                 border: 'none',
-                borderRadius: '12px',
+                borderRadius: '999px',
                 fontSize: '16px',
                 fontWeight: 600,
                 cursor: loading ? 'not-allowed' : 'pointer',
