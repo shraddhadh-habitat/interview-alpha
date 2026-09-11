@@ -387,7 +387,7 @@ export default function ResumeOptimizer({ user }) {
                     disabled={fileUploading}
                     style={{
                       width: 'auto',
-                      padding: '10px 32px',
+                      padding: '14px 32px',
                       border: resumeText ? '1.5px solid rgba(27,27,24,0.12)' : 'none',
                       borderRadius: '999px',
                       background: resumeText
