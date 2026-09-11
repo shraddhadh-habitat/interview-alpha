@@ -380,26 +380,30 @@ export default function ResumeOptimizer({ user }) {
                   marginBottom: '12px',
                 }}
               />
-              <button
-                onClick={() => resumeFileInputRef.current?.click()}
-                disabled={fileUploading}
-                style={{
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  padding: '10px 16px',
-                  border: 'none',
-                  borderRadius: '8px',
-                  background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-                  color: '#ffffff',
-                  WebkitTextFillColor: '#ffffff',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  cursor: fileUploading ? 'not-allowed' : 'pointer',
-                  opacity: fileUploading ? 0.6 : 1,
-                }}
-              >
-                {fileUploading ? 'Uploading...' : 'Upload Resume (PDF or DOCX)'}
-              </button>
+              {!loading && (
+                <button
+                  onClick={() => resumeFileInputRef.current?.click()}
+                  disabled={fileUploading}
+                  style={{
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    padding: '10px 16px',
+                    border: resumeText ? '1.5px solid rgba(27,27,24,0.12)' : 'none',
+                    borderRadius: '8px',
+                    background: resumeText
+                      ? 'transparent'
+                      : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+                    color: resumeText ? '#1B1B18' : '#ffffff',
+                    WebkitTextFillColor: resumeText ? '#1B1B18' : '#ffffff',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    cursor: fileUploading ? 'not-allowed' : 'pointer',
+                    opacity: fileUploading ? 0.6 : 1,
+                  }}
+                >
+                  {fileUploading ? 'Uploading...' : resumeText ? 'Change Resume' : 'Upload Resume (PDF or DOCX)'}
+                </button>
+              )}
               <input
                 ref={resumeFileInputRef}
                 type="file"
