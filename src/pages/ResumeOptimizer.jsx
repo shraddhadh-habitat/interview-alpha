@@ -875,6 +875,7 @@ export default function ResumeOptimizer({ user }) {
               gap: '12px',
               marginBottom: '32px',
               flexWrap: 'wrap',
+              justifyContent: 'center',
             }}
           >
             <button
@@ -882,16 +883,17 @@ export default function ResumeOptimizer({ user }) {
                 window.dispatchEvent(new CustomEvent('ia:navigate', { detail: 'practice' }))
               }
               style={{
-                flex: 1,
-                minWidth: '200px',
+                flex: '0 1 auto',
+                padding: '0 28px',
                 height: '48px',
-                background: 'var(--gradient-brand)',
+                background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                 color: 'white',
                 border: 'none',
-                borderRadius: '12px',
+                borderRadius: '999px',
                 fontSize: '16px',
                 fontWeight: 700,
                 cursor: 'pointer',
+                whiteSpace: 'nowrap',
               }}
             >
               Now practice your interview →
@@ -899,16 +901,17 @@ export default function ResumeOptimizer({ user }) {
             <button
               onClick={resetForm}
               style={{
-                flex: 1,
-                minWidth: '200px',
+                flex: '0 1 auto',
+                padding: '0 28px',
                 height: '48px',
                 background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                 color: '#fff',
                 border: 'none',
-                borderRadius: '12px',
+                borderRadius: '999px',
                 fontSize: '16px',
                 fontWeight: 600,
                 cursor: 'pointer',
+                whiteSpace: 'nowrap',
               }}
             >
               Optimize for another role
