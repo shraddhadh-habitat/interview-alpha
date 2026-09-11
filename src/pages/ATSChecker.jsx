@@ -451,8 +451,12 @@ export default function ATSChecker({ user }) {
               onClick={handleCheckResume}
               disabled={loading}
               style={{
-                width: '100%',
-                height: '48px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                margin: '0 auto',
+                padding: '14px 40px',
                 background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                 color: 'white',
                 border: 'none',
@@ -460,12 +464,6 @@ export default function ATSChecker({ user }) {
                 fontSize: '16px',
                 fontWeight: 600,
                 cursor: loading ? 'not-allowed' : 'pointer',
-                opacity: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                boxSizing: 'border-box',
               }}
             >
               {loading ? (

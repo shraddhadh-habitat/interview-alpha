@@ -490,20 +490,19 @@ export default function ResumeOptimizer({ user }) {
               onClick={handleOptimize}
               disabled={loading}
               style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                margin: '0 auto',
+                padding: '14px 40px',
                 background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '999px',
                 fontWeight: 700,
-                width: '100%',
-                padding: '16px',
                 fontSize: '1rem',
                 cursor: loading ? 'not-allowed' : 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                boxSizing: 'border-box',
               }}
             >
               {loading ? (
