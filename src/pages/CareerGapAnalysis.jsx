@@ -340,36 +340,6 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
               • Transferable skills &nbsp;&nbsp; • Critical gaps
               <br />• Recommended courses &nbsp;&nbsp; • Timeline
             </div>
-            {quickUsed && !isPro ? (
-              <span
-                style={{
-                  display: "inline-block",
-                  background: "rgba(27,27,24,0.06)",
-                  color: "rgba(27,27,24,0.4)",
-                  borderRadius: "50px",
-                  padding: "4px 12px",
-                  fontSize: "11px",
-                  fontWeight: 600,
-                }}
-              >
-                Used - Upgrade for more
-              </span>
-            ) : (
-              <span
-                style={{
-                  display: "inline-block",
-                  background: "rgba(22,163,74,0.08)",
-                  border: "1px solid rgba(22,163,74,0.2)",
-                  color: "#16A34A",
-                  borderRadius: "50px",
-                  padding: "4px 12px",
-                  fontSize: "11px",
-                  fontWeight: 600,
-                }}
-              >
-                1 free use
-              </span>
-            )}
           </div>
 
           {/* Deep Analysis Card */}
