@@ -353,7 +353,7 @@ Provide 4-6 items per array and 4-5 courses with real working URLs from well-kno
                   fontWeight: 600,
                 }}
               >
-                Try Free
+                Try Now
               </span>
             )}
           </div>
