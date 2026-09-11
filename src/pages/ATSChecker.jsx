@@ -426,7 +426,7 @@ export default function ATSChecker({ user }) {
             `}</style>
             {loading && (
               <>
-                <div style={{ marginBottom: '12px', width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}>
+                <div style={{ marginBottom: '12px', width: '100vw', marginLeft: 'calc(-50vw + 50%)', textAlign: 'center' }}>
                   <div style={{ fontSize: '14px', color: '#1B1B18', fontWeight: 600, marginBottom: '8px', textAlign: 'center' }}>
                     {STATUS_MESSAGES[messageIndex]}
                   </div>
