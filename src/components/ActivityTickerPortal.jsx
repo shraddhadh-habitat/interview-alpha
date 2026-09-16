@@ -69,7 +69,7 @@ export default function ActivityTickerPortal() {
       left: '16px',
       zIndex: 2147483647,
       background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
-      borderRadius: '12px',
+      borderRadius: '50px',
       padding: '10px 14px',
       boxShadow: '0 2px 12px rgba(167,139,250,0.25)',
       fontSize: '0.78rem',
