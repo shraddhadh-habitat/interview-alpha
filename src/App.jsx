@@ -1014,7 +1014,7 @@ export default function App() {
         <EnvBanner />
       </div>
     </div>
-    {page !== 'practice' && page !== 'upgrade' && <ActivityTicker />}
+    {page !== 'practice' && page !== 'upgrade' && page !== 'progress' && page !== 'resume-tools' && page !== 'exclusive-prep' && <ActivityTicker />}
     </AuthProvider>
   );
 }
