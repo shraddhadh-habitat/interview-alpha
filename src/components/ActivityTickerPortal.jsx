@@ -74,7 +74,7 @@ export default function ActivityTickerPortal() {
       boxShadow: '0 2px 12px rgba(167,139,250,0.25)',
       fontSize: '0.78rem',
       color: '#ffffff',
-      maxWidth: '240px',
+      maxWidth: 'fit-content',
       opacity: visible ? 1 : 0,
       transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.95)',
       transition: 'opacity 0.5s ease, transform 0.5s ease',
