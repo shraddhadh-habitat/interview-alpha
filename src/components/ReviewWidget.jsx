@@ -107,7 +107,7 @@ export default function ReviewWidget({ user, profile }) {
       <style>{`
         .rw-fab {
           display: inline-flex; align-items: center; gap: 6px;
-          padding: 8px 14px; border: none; border-radius: 50px;
+          padding: 12px 32px; border: none; border-radius: 999px;
           font-family: ${FONT}; font-size: 12px; font-weight: 600;
           cursor: pointer; transition: all 0.2s;
           white-space: nowrap; width: fit-content !important; max-width: fit-content !important;
