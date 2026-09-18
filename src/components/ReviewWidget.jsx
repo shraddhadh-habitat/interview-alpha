@@ -47,6 +47,14 @@ export default function ReviewWidget({ user, profile }) {
     return () => window.removeEventListener('ia:filterDrawer', handler);
   }, []);
 
+  useEffect(() => {
+    const handler = () => {
+      if (!alreadySubmitted) setShowModal(true);
+    };
+    window.addEventListener('ia:open-review', handler);
+    return () => window.removeEventListener('ia:open-review', handler);
+  }, [alreadySubmitted]);
+
   // Modal form state
   const [rating, setRating]         = useState(0);
   const [hoverRating, setHoverRating] = useState(0);

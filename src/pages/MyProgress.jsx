@@ -451,7 +451,44 @@ export default function MyProgress({ user }) {
           </>
         )}
 
-        <div style={{ height: 60 }} />
+        <div style={{ height: 40 }} />
+
+        {/* Contextual review prompt */}
+        <div style={{
+          margin: '0 auto 32px',
+          maxWidth: 480,
+          background: '#FFFFFF',
+          border: '1px solid rgba(27,27,24,0.12)',
+          borderRadius: 16,
+          padding: '24px',
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: 20, marginBottom: 8 }}>🎯</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#1B1B18', marginBottom: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Loving your progress?
+          </div>
+          <div style={{ fontSize: 13, color: 'rgba(27,27,24,0.5)', marginBottom: 16, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.6 }}>
+            Let us know how InterviewAlpha is working for your goals.
+          </div>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('ia:open-review'))}
+            style={{
+              padding: '12px 32px',
+              background: 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
+              border: 'none',
+              borderRadius: '999px',
+              color: '#fff',
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}
+          >
+            ⭐ Share your experience
+          </button>
+        </div>
+
+        <div style={{ height: 20 }} />
       </div>
     </div>
   );
