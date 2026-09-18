@@ -59,6 +59,9 @@ export default function ActivityTickerPortal() {
   if (!mounted) return null;
   if (dismissed) return null;
 
+  // Hide on mobile
+  if (typeof window !== 'undefined' && window.innerWidth <= 768) return null;
+
   const el = document.getElementById('activity-ticker-root');
   if (!el) return null;
 
