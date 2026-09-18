@@ -896,7 +896,7 @@ export default function App() {
           {page === 'privacy' && <PrivacyPolicy />}
         </div>
         <Footer />
-        {user && !showQuickStart && page !== 'practice' && page !== 'upgrade' && <ReviewWidget user={user} profile={profile} />}
+        {user && !showQuickStart && page !== 'practice' && page !== 'upgrade' && page !== 'scorecard' && <ReviewWidget user={user} profile={profile} />}
         {user && showQuickStart && onboardingStep === 'track' && (
           <TrackSelection
             user={user}
