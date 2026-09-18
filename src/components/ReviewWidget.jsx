@@ -150,6 +150,7 @@ export default function ReviewWidget({ user, profile }) {
           disabled={alreadySubmitted}
           style={{
             position: 'relative',
+            borderRadius: '999px',
             background: alreadySubmitted ? C.greenLight : 'linear-gradient(135deg, #a8e6cf 0%, #7ec8c8 25%, #a78bfa 65%, #c084fc 100%)',
             color: alreadySubmitted ? C.success : '#fff',
             border: alreadySubmitted ? `1.5px solid ${C.greenBorder}` : 'none',
