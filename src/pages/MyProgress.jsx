@@ -453,13 +453,16 @@ export default function MyProgress({ user }) {
 
         {/* Contextual review prompt — always visible */}
         <div style={{
-          margin: '0 auto 32px',
+          display: 'block',
+          margin: '24px auto 32px',
           maxWidth: 480,
+          width: '100%',
           background: '#FFFFFF',
           border: '1px solid rgba(27,27,24,0.12)',
           borderRadius: 16,
           padding: '24px',
           textAlign: 'center',
+          boxSizing: 'border-box',
         }}>
           <div style={{ fontSize: 20, marginBottom: 8 }}>🎯</div>
           <div style={{ fontSize: 15, fontWeight: 700, color: '#1B1B18', marginBottom: 6, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
