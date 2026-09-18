@@ -896,7 +896,7 @@ export default function App() {
           {page === 'privacy' && <PrivacyPolicy />}
         </div>
         <Footer />
-        {user && !showQuickStart && <ReviewWidget user={user} profile={profile} />}
+        {user && !showQuickStart && page !== 'practice' && <ReviewWidget user={user} profile={profile} />}
         {user && showQuickStart && onboardingStep === 'track' && (
           <TrackSelection
             user={user}
@@ -1014,7 +1014,7 @@ export default function App() {
         <EnvBanner />
       </div>
     </div>
-    <ActivityTicker />
+    {page !== 'practice' && <ActivityTicker />}
     </AuthProvider>
   );
 }
