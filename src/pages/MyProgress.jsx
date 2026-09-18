@@ -451,9 +451,7 @@ export default function MyProgress({ user }) {
           </>
         )}
 
-        <div style={{ height: 40 }} />
-
-        {/* Contextual review prompt */}
+        {/* Contextual review prompt — always visible */}
         <div style={{
           margin: '0 auto 32px',
           maxWidth: 480,
